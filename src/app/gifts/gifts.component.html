@@ -1,0 +1,20 @@
+<h1>Gifts</h1>
+
+<div class="listofcards">
+  <div class="container">
+      <div class="card" *ngFor="let gift of gifts">
+        <a href="{{gift.textlink}}">
+            <div class="card-body">
+                <h5 class="card-title">{{gift.name}}</h5>
+                <p class="card-text">{{gift.description}}</p>
+                <div class="link" innerHTML={{gift.imagelink}}></div>
+              </div>
+        </a>
+        
+      </div>
+    </div>
+      
+</div>
+
+
+

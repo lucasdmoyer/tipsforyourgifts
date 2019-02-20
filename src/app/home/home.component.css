@@ -1,0 +1,43 @@
+.display {
+    width: 100%;
+}
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  height: 100px;
+  width: 100px;
+  outline: black;
+  background-size: 100%, 100%;
+  border-radius: 50%;
+  border: 1px solid black;
+  background-image: none;
+}
+
+.carousel-control-next-icon:after
+{
+  content: '>';
+  font-size: 55px;
+  color: #353A55;
+}
+
+.carousel-control-prev-icon:after {
+  content: '<';
+  font-size: 55px;
+  color: #353A55;
+}
+
+.carousel-caption {
+    background-color: #FFEAB8;
+    color: #353A55;
+}
+
+.carousel-indicators li {
+    background-color: #FFEAB8;
+}
+
+.carousel-indicators .active {
+    background-color: #353A55;
+}
+  
+.jumbotron {
+    background-color:#FFEAB8;
+}

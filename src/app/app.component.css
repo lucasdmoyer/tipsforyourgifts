@@ -1,0 +1,16 @@
+nav {
+    background-color: #E3DCD7;
+}
+
+
+
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: #E3DCD7;
+    color: #353A55;
+    text-align: center;
+    margin-top: 40px;
+  }

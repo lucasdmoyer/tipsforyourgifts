@@ -1,0 +1,29 @@
+<img src="../../assets/images/gifts.jpg">
+<form (ngSubmit)="onSubmit()" #consultationForm="ngForm">
+  <div class="form-group">
+    <label for="exampleInputEmail1">Email address</label>
+    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" required placeholder="Enter email" [(ngModel)]="model.email" name="email">
+    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+  </div>
+  <div class="form-group">
+    <label for="name">Name</label>
+    <input type="text" class="form-control" id="name" placeholder="Your name please" required [(ngModel)]="model.name" name="name" >
+  </div>
+  <div class="form-group">
+    <label for="request">Tell me about the gift you want to give</label>
+    <textarea required [(ngModel)]="model.request" name="request" class="form-control" id="request" rows="3"></textarea>
+  </div>
+  <div class="form-group">
+    <label for="budget">Budget</label>
+    <input [(ngModel)]="model.budget" name="budget" type="text" class="form-control" id="budget" required placeholder="What are you willing to spend">
+  </div>
+  <div class="form-group">
+    <label for="name">Ocasion</label>
+    <input required [(ngModel)]="model.ocasion" name="request" type="text" class="form-control" id="ocasion" placeholder="Birthday? Christmas? Just for fun?">
+  </div>
+  <div class="form-check">
+    <input [(ngModel)]="model.emaillist" name="emaillist" type="checkbox" class="form-check-input" id="exampleCheck1">
+    <label class="form-check-label" for="exampleCheck1">Add to email list for gifts that may be of interest to you</label>
+  </div>
+  <button type="submit" class="btn btn-primary" (click)="newRequest(); consultationForm.reset()" [disabled]="!consultationForm.form.valid">Submit</button>
+</form>
