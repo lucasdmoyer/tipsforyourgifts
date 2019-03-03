@@ -1,0 +1,51 @@
+
+<form (ngSubmit)="onSubmit()" #makeGiftForm="ngForm">
+  <h2>Gift</h2>
+  <div class="form-group">
+    <label for="id">id</label>
+    <input type="number" class="form-control" id="id" placeholder="id" required [(ngModel)]="model.id" name="id" >
+  </div>
+  <div class="form-group">
+    <label for="password">password</label>
+    <input type="text" class="form-control" id="password" placeholder="" required [(ngModel)]="password" name="password" >
+  </div>
+  <div class="form-group">
+    <label for="name">Name</label>
+    <input type="text" class="form-control" id="name" placeholder="Name of product" required [(ngModel)]="model.name" name="name" >
+  </div>
+  <div class="form-group">
+    <label for="description">Description</label>
+    <textarea required [(ngModel)]="model.description" name="description" class="form-control" id="request" rows="3"></textarea>
+  </div>
+  <div class="form-group">
+    <label for="textlink">textlink</label>
+    <input required [(ngModel)]="model.textlink" name="textlink" type="text" class="form-control" id="textlink" placeholder="textlink">
+  </div>
+  <div class="form-group">
+    <label for="imagelink">imagelink</label>
+    <input required [(ngModel)]="model.imagelink" name="imagelink" type="text" class="form-control" id="imagelink" placeholder="imagelink">
+  </div>
+  <div class="form-group">
+    <label for="textimagelink">textimagelink</label>
+    <input required [(ngModel)]="model.textimagelink" name="textimagelink" type="text" class="form-control" id="textimagelink" placeholder="textimagelink">
+  </div>
+  <div class="form-group">
+    <label for="imgurl">imgurl</label>
+    <input required [(ngModel)]="model.imgurl" name="imgurl" type="text" class="form-control" id="imgurl" placeholder="imgurl">
+  </div>
+
+  <h2>Blog</h2>
+  <div class="form-group">
+    <label for="title">Title</label>
+    <input type="text" class="form-control" id="title" placeholder="title" required [(ngModel)]="blog.title" name="title" >
+  </div> 
+  <div class="form-group">
+    <label for="post">post</label>
+    <textarea required [(ngModel)]="blog.post" name="post" class="form-control" id="post" rows="3"></textarea>
+  </div> 
+
+  <button type="submit" class="btn btn-primary" (click)="newRequest(); makeGiftForm.reset()" [disabled]="!makeGiftForm.form.valid">Submit</button>
+</form>
+
+
+<h1>end</h1>

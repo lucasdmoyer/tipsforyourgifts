@@ -11,24 +11,25 @@ import { Router, NavigationEnd } from '@angular/router';
 })
 export class BlogComponent implements OnInit {
   posts$: Observable<Blog[]>;
+  reversedposts$: Observable<Blog[]>;
 
   constructor(private blogService: BlogService,) {
     this.posts$ = blogService.getPosts();
   }
 
   ngOnInit() {
-    //this.getPosts();
+    this.getPosts();
   }
 
 
   getPosts(): void {
-    /*this.blogService.getPosts().subscribe(posts => {
-      this.posts = posts;
-      console.log(this.posts)
+    this.blogService.getPosts().subscribe(posts => {
+      console.log(posts)
       console.log("posts gotten!")
 
-    });*/
+    });
     this.posts$ = this.blogService.getPosts();
+    
   }
 
 }

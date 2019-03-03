@@ -5,14 +5,16 @@ import { HomeComponent } from '../app/home/home.component';
 import { BlogComponent } from './blog/blog.component';
 import { BlogdetailComponent } from './blogdetail/blogdetail.component';
 import { ConsultationFormComponent } from './consultation-form/consultation-form.component';
-import { GiftsComponent } from './gifts/gifts.component'
+import { GiftsComponent } from './gifts/gifts.component';
+import { MakegiftComponent } from './makegift/makegift.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent},
   { path: 'blog', component: BlogComponent},
   { path: 'blog/:id', component: BlogdetailComponent},
   { path: 'consultation', component: ConsultationFormComponent},
-  { path: 'gifts', component: GiftsComponent}
+  { path: 'gifts', component: GiftsComponent},
+  { path: 'makegift', component: MakegiftComponent },
 
 
 ]

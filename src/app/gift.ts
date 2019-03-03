@@ -4,8 +4,6 @@ export class Gift {
     textlink: string;
     imagelink: string;
     textimagelink: string;
-    tags: string[];
-    ratings: string[];
     description: string;
     imgurl: string;
 }

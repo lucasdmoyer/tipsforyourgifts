@@ -1,7 +1,12 @@
+
+
 export class Blog {
-    id: number;
-    title: string;
-    post: string;
-    description: string;
-    imgurl: string;
+    public id: number;
+    public title: string;
+    public post: string;
+    public description: string;
+    public imgurl: string;
+    public texstimagelink: string;
+
+    
 }

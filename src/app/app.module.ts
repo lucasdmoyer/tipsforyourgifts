@@ -16,6 +16,7 @@ import { ConsultationFormComponent } from './consultation-form/consultation-form
 import { FormsModule } from '@angular/forms';
 import { GiftsComponent } from './gifts/gifts.component';
 import { GiftdetailComponent } from './giftdetail/giftdetail.component';
+import { MakegiftComponent } from './makegift/makegift.component';
 
 
 @NgModule({
@@ -26,7 +27,8 @@ import { GiftdetailComponent } from './giftdetail/giftdetail.component';
     BlogdetailComponent,
     ConsultationFormComponent,
     GiftsComponent,
-    GiftdetailComponent
+    GiftdetailComponent,
+    MakegiftComponent
   ],
   imports: [
     BrowserModule,

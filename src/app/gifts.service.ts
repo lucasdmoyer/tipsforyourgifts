@@ -18,4 +18,8 @@ export class GiftsService {
   getGifts(): Observable<Gift[]> {
     return this.gifts;
   }
+
+  addGift(gift: any) {
+    this.giftsCollection.add(gift);
+  }
 }
