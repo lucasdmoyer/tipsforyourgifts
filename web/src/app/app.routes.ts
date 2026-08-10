@@ -3,6 +3,7 @@ import {
   AffiliateDisclosurePage,
   ArticlePage,
   BlogPage,
+  FounderBriefPage,
   GiftsPage,
   HomePage,
   NotFoundPage,
@@ -18,5 +19,6 @@ export const routes: Routes = [
   { path: 'standards', component: StandardsPage },
   { path: 'affiliate-disclosure', component: AffiliateDisclosurePage },
   { path: 'studio', component: StudioPage },
+  { path: 'studio/brief', component: FounderBriefPage },
   { path: '**', component: NotFoundPage }
 ];

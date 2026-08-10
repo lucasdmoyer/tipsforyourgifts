@@ -2,11 +2,11 @@ import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { App } from './app';
 import { GROWTH, OPERATIONS, STRATEGY } from './generated/content.generated';
-import { StudioPage } from './pages';
+import { FounderBriefPage, StudioPage } from './pages';
 
 describe('App', () => {
   beforeEach(async () => {
-    await TestBed.configureTestingModule({ imports: [App, StudioPage], providers: [provideRouter([])] }).compileComponents();
+    await TestBed.configureTestingModule({ imports: [App, StudioPage, FounderBriefPage], providers: [provideRouter([])] }).compileComponents();
   });
 
   it('renders the editorial brand and primary navigation', () => {
@@ -37,6 +37,7 @@ describe('App', () => {
     expect(element.textContent).toContain('Strategy proposals');
     expect(element.querySelector('a[href*="strategy-approval.yml"]')).not.toBeNull();
     expect(element.querySelector('a[href*="strategy-idea.yml"]')).not.toBeNull();
+    expect(element.querySelector('a[href="/studio/brief"]')?.textContent).toContain('Compose a thoughtful brief');
     const proposedIdeas = STRATEGY.ideas.filter((idea) => idea.founderDisposition === 'proposed').sort((left, right) => ({ high: 0, medium: 1, low: 2 }[left.priority] ?? 3) - ({ high: 0, medium: 1, low: 2 }[right.priority] ?? 3) || (right.pairing?.coherenceScore ?? 0) - (left.pairing?.coherenceScore ?? 0) || left.id.localeCompare(right.id));
     if (proposedIdeas[0]) {
       expect(element.textContent).toContain(`${proposedIdeas.length} thoughtful ${proposedIdeas.length === 1 ? 'thesis awaits' : 'theses await'} your decision`);
@@ -64,6 +65,17 @@ describe('App', () => {
       expect(element.textContent).toContain('legacy or out-of-band state remains unknown');
     }
     expect(element.textContent).toContain('machine-validated receipt retained for 90 days');
+  });
+
+  it('renders the fail-closed founder brief builder', () => {
+    const fixture = TestBed.createComponent(FounderBriefPage);
+    fixture.detectChanges();
+    const element = fixture.nativeElement as HTMLElement;
+    expect(element.textContent).toContain('Notice the gift before naming the product.');
+    expect(element.textContent).toContain('1/12 complete');
+    expect(element.textContent).toContain('Complete the missing decisions');
+    expect(element.querySelector('a[href*="github.com/lucasdmoyer/tipsforyourgifts/issues/new"]')).toBeNull();
+    expect(element.textContent).toContain('proposal workflow');
   });
 
   it('renders a ranked evidence-backed founder agenda', () => {

@@ -11,6 +11,7 @@ const checks = [
   ['blog index', 'blog/index.html', ['Every guide starts with a question.', 'How we research gifts']],
   ['standards', 'standards/index.html', ['Trust is the product.', '12 candidate products']],
   ['studio', 'studio/index.html', ['Executive studio', 'Founder agenda', 'unknown until aggregate measurement', 'noindex,nofollow']],
+  ['founder brief builder', 'studio/brief/index.html', ['Founder brief builder', 'Notice the gift before naming the product.', 'Complete the missing decisions', 'noindex,nofollow']],
   ['robots', 'robots.txt', ['Disallow: /studio', 'Sitemap:']],
   ['sitemap', 'sitemap.xml', ['blog/how-we-research-gifts', 'standards']],
   ['publication manifest', 'publication-manifest.json', ['"status": "release_candidate"', '"projectId": "tipsforyourgifts"']]

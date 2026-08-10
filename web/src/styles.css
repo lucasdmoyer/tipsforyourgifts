@@ -22,7 +22,7 @@ html { scroll-behavior: smooth; }
 body { margin: 0; min-width: 320px; background: var(--cream); line-height: 1.6; }
 a { color: inherit; text-underline-offset: 0.2em; }
 img { display: block; max-width: 100%; }
-button, input, textarea { font: inherit; }
+button, input, textarea, select { font: inherit; }
 .skip-link { position: absolute; left: -9999px; top: auto; }
 .skip-link:focus { left: 16px; top: 16px; z-index: 100; padding: 10px 14px; border-radius: 8px; background: white; }
 
@@ -170,6 +170,35 @@ h3 { font-size: 1.35rem; }
 .queue-details > summary { cursor: pointer; color: var(--evergreen); font-weight: 850; }
 .command { overflow-x: auto; padding: 16px; border-radius: 14px; color: #f5f7f2; background: #19332c; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.88rem; }
 
+.brief-hero h1 { max-width: 15ch; }
+.brief-layout { display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(300px, 0.55fr); align-items: start; gap: 22px; }
+.brief-form { display: grid; gap: 20px; }
+.brief-form-heading { display: flex; align-items: start; justify-content: space-between; gap: 20px; }
+.brief-form-heading h2 { margin-bottom: 0; }
+.brief-form label { display: grid; gap: 7px; color: var(--evergreen-dark); font-weight: 800; }
+.brief-form label > span { color: var(--ink-soft); font-size: 0.78rem; font-weight: 650; }
+.brief-form input:not([type="checkbox"]), .brief-form textarea, .brief-form select { width: 100%; border: 1px solid #bfcac1; border-radius: 12px; padding: 11px 13px; color: var(--ink); background: white; }
+.brief-form textarea { resize: vertical; line-height: 1.5; }
+.brief-form input:focus, .brief-form textarea:focus, .brief-form select:focus { outline: 3px solid rgba(31, 91, 72, 0.2); border-color: var(--evergreen); }
+.brief-field-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.pair-builder, .authority-checks { display: grid; gap: 16px; margin: 4px 0; border: 1px solid #d5c07a; border-radius: 16px; padding: 20px; background: #fff7dc; }
+.pair-builder legend, .authority-checks legend { padding: 0 8px; color: var(--evergreen-dark); font-weight: 900; }
+.pair-builder > p { margin: 0; color: var(--ink-soft); }
+.authority-checks { border-color: #c8d9cf; background: #f1f8f3; }
+.authority-checks label { display: grid; grid-template-columns: auto 1fr; align-items: start; gap: 10px; font-weight: 700; }
+.authority-checks input { margin-top: 5px; }
+.brief-warning { margin: 0; padding: 14px 16px; border-left: 4px solid var(--coral); border-radius: 0 12px 12px 0; color: #713727; background: #fff0eb; }
+.brief-sidebar { position: sticky; top: 96px; display: grid; gap: 18px; }
+.brief-readiness h2 { font-size: 1.8rem; }
+.brief-checks { display: grid; gap: 8px; padding: 0; list-style: none; }
+.brief-checks li { display: grid; grid-template-columns: 20px 1fr; gap: 8px; color: var(--ink-soft); }
+.brief-checks li.passed { color: var(--evergreen); font-weight: 760; }
+.brief-submit { width: 100%; margin-top: 10px; text-align: center; }
+.button.disabled { cursor: not-allowed; border-color: #9aa8a1; color: #edf0ee; background: #81918a; }
+.brief-prompts ul { margin-bottom: 0; padding-left: 1.2rem; }
+.brief-preview-card summary { cursor: pointer; color: var(--evergreen); font-weight: 850; }
+.brief-preview { max-height: 500px; overflow: auto; margin: 16px 0 0; white-space: pre-wrap; overflow-wrap: anywhere; color: #f5f7f2; background: #19332c; border-radius: 12px; padding: 14px; font: 0.78rem/1.55 ui-monospace, SFMono-Regular, Menlo, monospace; }
+
 .site-footer { margin-top: 70px; padding: 50px 0; color: #d6e3dd; background: var(--evergreen-dark); }
 .footer-grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 40px; }
 .footer-eyebrow { color: var(--saffron); }
@@ -182,6 +211,8 @@ h3 { font-size: 1.35rem; }
   .grid.three, .grid.two, .kpi-grid { grid-template-columns: 1fr 1fr; }
   .idea-proof-grid { grid-template-columns: 1fr; }
   .experiment-grid, .mission-grid, .agenda-proof-grid, .agenda-grid { grid-template-columns: 1fr; }
+  .brief-layout { grid-template-columns: 1fr; }
+  .brief-sidebar { position: static; }
 }
 
 @media (max-width: 620px) {
@@ -198,6 +229,7 @@ h3 { font-size: 1.35rem; }
   .idea-card-header { display: block; }
   .idea-card-header .status { margin-top: 12px; }
   .pair-roles { grid-template-columns: 1fr; }
+  .brief-field-grid { grid-template-columns: 1fr; }
   .article-shell { width: min(100% - 28px, 820px); }
 }
 

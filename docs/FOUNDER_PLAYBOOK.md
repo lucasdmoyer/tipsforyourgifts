@@ -18,7 +18,7 @@ After a managed Firebase release, the release card remains until the strict post
 
 ## The executive brief
 
-Use `/studio` or the GitHub executive-content issue form to record:
+Use `/studio/brief` for a guided completeness check, or use the raw GitHub executive-content issue form, to record:
 
 - recipient or audience
 - occasion and timing
@@ -31,7 +31,7 @@ Use `/studio` or the GitHub executive-content issue form to record:
 - the proof-of-fit and compatibility questions the team must answer
 - when two gifts belong together, the shared idea and different role of each item
 
-Submitting an owner-authored `[Strategy]` issue starts the strategy council automatically. It may create one proposed brief, but cannot approve it. Review the proposal pull request, then run **Approve strategy idea for research** with the exact ID and revision shown in Studio. When that second pull request merges, a separate workflow verifies that exactly one unchanged proposed thesis advanced one revision to `approved_for_research`, reruns all gates, and automatically queues its research mission. The merge authorizes only that research mission.
+The Angular builder performs only local completeness and credential-pattern checks, then opens a prefilled issue for final review in GitHub. It stores nothing and does not bypass GitHub ownership or approval controls. Submitting an owner-authored `[Strategy]` issue starts the strategy council automatically. It may create one proposed brief, but cannot approve it. Review the proposal pull request, then run **Approve strategy idea for research** with the exact ID and revision shown in Studio. When that second pull request merges, a separate workflow verifies that exactly one unchanged proposed thesis advanced one revision to `approved_for_research`, reruns all gates, and automatically queues its research mission. The merge authorizes only that research mission.
 
 Example:
 

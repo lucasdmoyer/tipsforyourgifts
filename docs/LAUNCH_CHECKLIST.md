@@ -6,6 +6,7 @@
 - Create the GitHub `production` environment and require Lucas as a reviewer for the first ten releases.
 - Add `OPENAI_API_KEY` as a repository secret for the read-only research job.
 - Confirm owner-authored `[Strategy]` issues can run the strategy-intake workflow and that non-owner issues cannot access the AI job.
+- Confirm `/studio/brief` blocks incomplete or credential-like drafts, opens the exact owner-authored GitHub issue for review, and grants no research or publication authority by itself.
 - Require review on strategy proposal and strategy approval pull requests; the AI proposal job must never set `approved_for_research`.
 - Confirm the weekly opportunity scout exits before model execution at the founder proposal cap, creates no mission file in that posture, and can append at most one `proposed` idea when capacity exists.
 - Require a separate hash-bound opportunity editor receipt; the scout author must never validate their own report or advance a proposal to `approved_for_research`.

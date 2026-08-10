@@ -3,6 +3,7 @@ import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import type { Article, Product, StrategyIdea } from './content.types';
 import { ContentService } from './content.service';
+import { assessFounderBrief, buildFounderBriefMarkdown, buildStrategyIssueUrl, EMPTY_FOUNDER_BRIEF, type FounderBriefDraft } from './founder-brief';
 import { SeoService } from './seo.service';
 
 @Component({
@@ -320,6 +321,7 @@ export class AffiliateDisclosurePage {
 }
 
 @Component({
+  imports: [RouterLink],
   template: `
     <section class="shell studio-hero">
       <p class="eyebrow">Executive studio</p><h1>Set the direction. Let the system run.</h1>
@@ -430,7 +432,8 @@ export class AffiliateDisclosurePage {
       <div class="section-heading">
         <div><p class="eyebrow">Executive idea queue</p><h2>Where the team goes next.</h2></div>
         <div class="actions executive-actions">
-          <a class="button" href="https://github.com/lucasdmoyer/tipsforyourgifts/issues/new?template=strategy-idea.yml" target="_blank" rel="noopener">Suggest an idea</a>
+          <a class="button" routerLink="/studio/brief">Compose a thoughtful brief</a>
+          <a class="button secondary" href="https://github.com/lucasdmoyer/tipsforyourgifts/issues/new?template=strategy-idea.yml" target="_blank" rel="noopener">Open raw issue form</a>
           <a class="button secondary" href="https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/strategy-approval.yml" target="_blank" rel="noopener">Approve a proposal</a>
           <a class="button secondary" href="https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/research-agent.yml" target="_blank" rel="noopener">Manual research recovery</a>
           <a class="button secondary" href="https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/opportunity-scout.yml" target="_blank" rel="noopener">Run opportunity scout</a>
@@ -714,6 +717,153 @@ export class StudioPage {
     if (stage === 'publication_ready') return `Review the exact-SHA pull request and Firebase preview for ${idea.id} before production release.`;
     if (stage === 'blocked_on_account') return `Resolve the founder-approved account, rights, cadence, and official API gates for ${idea.id}.`;
     return `Hold ${idea.id}; revise or reject the thesis before any new research authority is granted.`;
+  }
+}
+
+@Component({
+  imports: [RouterLink],
+  template: `
+    <section class="shell studio-hero brief-hero">
+      <p class="eyebrow">Founder brief builder</p>
+      <h1>Notice the gift before naming the product.</h1>
+      <p class="lede">Give the AI team a high-level direction. This private-in-your-browser worksheet checks the thoughtfulness logic, then opens a reviewable owner-authored GitHub issue. It does not start research or publish anything by itself.</p>
+      <p><a routerLink="/studio">← Return to Executive Studio</a></p>
+    </section>
+
+    <section class="shell compact-section brief-layout">
+      <form class="panel brief-form" (submit)="$event.preventDefault()">
+        <div class="brief-form-heading">
+          <div><p class="eyebrow">1 · Frame the direction</p><h2>What should the team investigate?</h2></div>
+          <span class="status" [class.approved_for_research]="assessment.ready">{{ assessment.passed }}/{{ assessment.total }} complete</span>
+        </div>
+
+        <label>Idea shape
+          <select name="mode" [value]="draft.mode" (change)="updateMode($event)">
+            <option value="recipient_friction">One recipient-friction opportunity</option>
+            <option value="coherent_pair">Two gifts that create one interaction</option>
+          </select>
+        </label>
+        <label>Strategic direction
+          <input name="title" [value]="draft.title" (input)="updateText('title', $event)" maxlength="180" placeholder="Small golf frustrations players tolerate instead of fixing">
+        </label>
+        <div class="brief-field-grid">
+          <label>Recipient or audience
+            <input name="audience" [value]="draft.audience" (input)="updateText('audience', $event)" maxlength="180" placeholder="Recreational golfers who play most weekends">
+          </label>
+          <label>Occasion and timing
+            <input name="occasion" [value]="draft.occasion" (input)="updateText('occasion', $event)" maxlength="180" placeholder="Evergreen birthdays and Father’s Day">
+          </label>
+          <label>Budget boundary
+            <input name="budget" [value]="draft.budget" (input)="updateText('budget', $event)" maxlength="80" placeholder="$25–$100">
+          </label>
+          <label>Geography
+            <input name="geography" [value]="draft.geography" (input)="updateText('geography', $event)" maxlength="100">
+          </label>
+        </div>
+
+        <label>What have you actually noticed?
+          <textarea name="observedFriction" [value]="draft.observedFriction" (input)="updateText('observedFriction', $event)" rows="4" maxlength="1200" placeholder="Name the workaround, worn item, repeated complaint, or routine—not a product trend."></textarea>
+        </label>
+        <label>Why would they welcome it but postpone buying it?
+          <textarea name="selfPurchaseGap" [value]="draft.selfPurchaseGap" (input)="updateText('selfPurchaseGap', $event)" rows="4" maxlength="1200" placeholder="Replacement inertia, research burden, a deferred small luxury, or coordination burden—not simply ‘they would never buy it.’"></textarea>
+        </label>
+        <div class="brief-field-grid">
+          <label>Proof-of-fit signals <span>one per line</span>
+            <textarea name="fitSignals" [value]="draft.fitSignals" (input)="updateText('fitSignals', $event)" rows="5" maxlength="1400" placeholder="I have seen the workaround&#10;I know the size, platform, routine, or current setup"></textarea>
+          </label>
+          <label>Reject the idea when <span>one per line</span>
+            <textarea name="rejectionConditions" [value]="draft.rejectionConditions" (input)="updateText('rejectionConditions', $event)" rows="5" maxlength="1400" placeholder="They already own a good version&#10;It creates storage, maintenance, or compatibility burden"></textarea>
+          </label>
+        </div>
+
+        @if (draft.mode === 'coherent_pair') {
+          <fieldset class="pair-builder">
+            <legend>2 · Make the pair interact</legend>
+            <p>A pair must do more than match. Each item should qualify alone, perform a different role, and create one observable use-together moment.</p>
+            <div class="brief-field-grid">
+              <label>Anchor gift
+                <input name="pairAnchor" [value]="draft.pairAnchor" (input)="updateText('pairAnchor', $event)" maxlength="180" placeholder="The idea-opening gift">
+              </label>
+              <label>Companion gift
+                <input name="pairCompanion" [value]="draft.pairCompanion" (input)="updateText('pairCompanion', $event)" maxlength="180" placeholder="The gift that lets them act on it">
+              </label>
+            </div>
+            <label>Different roles and interaction moment
+              <textarea name="pairInteraction" [value]="draft.pairInteraction" (input)="updateText('pairInteraction', $event)" rows="4" maxlength="1200" placeholder="Explain what the recipient can do, discuss, test, or notice because the gifts are together."></textarea>
+            </label>
+            <label>Compatibility, ownership, and clutter checks <span>one per line</span>
+              <textarea name="compatibilityChecks" [value]="draft.compatibilityChecks" (input)="updateText('compatibilityChecks', $event)" rows="5" maxlength="1400" placeholder="Confirm platform or edition compatibility&#10;Confirm they do not already own either item"></textarea>
+            </label>
+          </fieldset>
+        }
+
+        <label>Exclusions and guardrails
+          <textarea name="exclusions" [value]="draft.exclusions" (input)="updateText('exclusions', $event)" rows="3" maxlength="1000" placeholder="Categories, claims, merchants, subscriptions, geographies, or risks to exclude."></textarea>
+        </label>
+        <label>What would a successful result help us decide?
+          <textarea name="desiredOutcome" [value]="draft.desiredOutcome" (input)="updateText('desiredOutcome', $event)" rows="3" maxlength="1000" placeholder="Five defensible finalists, one evergreen guide, and three testable distribution angles."></textarea>
+        </label>
+
+        <fieldset class="authority-checks">
+          <legend>3 · Keep authority explicit</legend>
+          <label><input type="checkbox" name="authorityConfirmed" [checked]="draft.authorityConfirmed" (change)="updateBoolean('authorityConfirmed', $event)"> I understand this issue can create only a proposed brief. A separate founder approval is required before research.</label>
+          <label><input type="checkbox" name="noSensitiveDataConfirmed" [checked]="draft.noSensitiveDataConfirmed" (change)="updateBoolean('noSensitiveDataConfirmed', $event)"> I included no credentials, tracking IDs, private customer data, or private-group content.</label>
+        </fieldset>
+        @if (assessment.credentialLikeTextDetected) {
+          <p class="brief-warning"><strong>Stop:</strong> credential-like text was detected. Remove it before opening GitHub.</p>
+        }
+      </form>
+
+      <aside class="brief-sidebar">
+        <div class="panel brief-readiness">
+          <p class="eyebrow">Draft readiness</p>
+          <h2>{{ assessment.ready ? 'Ready for founder review.' : 'Strengthen the brief.' }}</h2>
+          <ul class="brief-checks">
+            @for (check of assessment.checks; track check.id) {
+              <li [class.passed]="check.passed"><span aria-hidden="true">{{ check.passed ? '✓' : '○' }}</span>{{ check.label }}</li>
+            }
+          </ul>
+          @if (issueUrl) {
+            <a class="button brief-submit" [href]="issueUrl" target="_blank" rel="noopener">Review issue in GitHub →</a>
+          } @else {
+            <span class="button brief-submit disabled" aria-disabled="true">Complete the missing decisions</span>
+          }
+          <p class="quiet">GitHub shows the final issue before submission. Submitting it starts only the proposal workflow; it does not approve research.</p>
+        </div>
+        <div class="panel brief-prompts">
+          <p class="eyebrow">Use observation, not assumption</p>
+          <h3>Signals worth bringing to the team</h3>
+          <ul>
+            <li>A workaround they repeat.</li>
+            <li>A worn item they tolerate.</li>
+            <li>A small upgrade deferred behind bigger purchases.</li>
+            <li>Two interests that become one shared activity.</li>
+          </ul>
+        </div>
+        <details class="panel brief-preview-card">
+          <summary>Preview the exact issue body</summary>
+          <pre class="brief-preview">{{ briefMarkdown }}</pre>
+        </details>
+      </aside>
+    </section>
+  `,
+  changeDetection: ChangeDetectionStrategy.OnPush
+})
+export class FounderBriefPage {
+  readonly draft: FounderBriefDraft = { ...EMPTY_FOUNDER_BRIEF };
+  private readonly seo = inject(SeoService);
+  constructor() {
+    this.seo.set({ title: 'Founder brief builder', description: 'Compose a thoughtful, bounded strategy brief for the Tips for Your Gifts research team.', path: '/studio/brief', noindex: true });
+  }
+  get assessment() { return assessFounderBrief(this.draft); }
+  get issueUrl() { return buildStrategyIssueUrl(this.draft); }
+  get briefMarkdown() { return buildFounderBriefMarkdown(this.draft); }
+  updateMode(event: Event) { this.draft.mode = (event.target as HTMLSelectElement).value as FounderBriefDraft['mode']; }
+  updateText(field: Exclude<keyof FounderBriefDraft, 'mode' | 'authorityConfirmed' | 'noSensitiveDataConfirmed'>, event: Event) {
+    this.draft[field] = (event.target as HTMLInputElement | HTMLTextAreaElement).value;
+  }
+  updateBoolean(field: 'authorityConfirmed' | 'noSensitiveDataConfirmed', event: Event) {
+    this.draft[field] = (event.target as HTMLInputElement).checked;
   }
 }
 
