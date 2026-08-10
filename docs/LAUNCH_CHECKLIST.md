@@ -17,6 +17,7 @@
 
 - Verify the explicit project and site are both `tipsforyourgifts`.
 - Confirm `web/dist` is the only Hosting public directory.
+- Treat the pre-modern live homepage as historical, unverified state. The read-only 2026-08-10 baseline still exposed a legacy Sapiens merchant pitch, the short link `https://amzn.to/2UiRnkY`, and a personal-email footer; none of those observations authorizes an affiliate relationship or reuse in the modern release. Confirm the exact preview contains no forbidden legacy marker and reports zero active paid links unless a separately reviewed overlay exists.
 - Verify Firestore and Realtime Database production rules before any rules deployment.
 - Confirm the founder release workflow builds and smokes the exact current `master` SHA, attaches its generated preview URL to the protected production approval, and downloads the same static artifact after approval.
 - Confirm the protected job clones the current `tipsforyourgifts:live` release to a unique 30-day rollback channel before live mutation.

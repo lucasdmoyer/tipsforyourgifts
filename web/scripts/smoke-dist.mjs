@@ -16,6 +16,11 @@ const checks = [
   ['sitemap', 'sitemap.xml', ['blog/how-we-research-gifts', 'standards']],
   ['publication manifest', 'publication-manifest.json', ['"status": "release_candidate"', '"projectId": "tipsforyourgifts"']]
 ];
+const forbiddenLegacyMarkers = [
+  'https://amzn.to/2UiRnkY',
+  'The Summer Reading Pick for President Barack Obama, Bill Gates, and Mark Zuckerberg',
+  'Email TipsForYourGifts.com at lucasdmoyer@gmail.com'
+];
 
 const failures = [];
 let publicationManifest;
@@ -109,9 +114,16 @@ for (const article of draftArticles) {
   if (publicJs.includes(article.title)) failures.push(`${article.slug}: draft content leaked into the public JavaScript bundle`);
 }
 
+const deployTextPaths = (await fs.readdir(dist, { recursive: true }))
+  .filter((name) => /\.(?:css|html|js|json|svg|txt|xml)$/.test(name));
+const deployText = (await Promise.all(deployTextPaths.map((name) => fs.readFile(path.join(dist, name), 'utf8')))).join('\n');
+for (const marker of forbiddenLegacyMarkers) {
+  if (deployText.includes(marker)) failures.push(`legacy migration: release candidate contains forbidden historical marker ${JSON.stringify(marker)}`);
+}
+
 if (failures.length > 0) {
   console.error(failures.map((failure) => `- ${failure}`).join('\n'));
   process.exitCode = 1;
 } else {
-  console.log(JSON.stringify({ smoke: 'passed', staticChecks: checks.length, publicationReadyArticles: readyArticles.length, publicationManifestId: publicationManifest?.manifestId, publicationManifestSha256, noProductionWritesAttempted: true }, null, 2));
+  console.log(JSON.stringify({ smoke: 'passed', staticChecks: checks.length, legacySurfaceMarkersChecked: forbiddenLegacyMarkers.length, publicationReadyArticles: readyArticles.length, publicationManifestId: publicationManifest?.manifestId, publicationManifestSha256, noProductionWritesAttempted: true }, null, 2));
 }
