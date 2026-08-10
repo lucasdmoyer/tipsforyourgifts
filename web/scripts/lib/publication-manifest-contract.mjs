@@ -3,6 +3,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import matter from 'gray-matter';
 import { z } from 'zod';
+import { loadAffiliateLinkState } from './affiliate-link-contract.mjs';
 
 const sha256Schema = z.string().regex(/^[a-f0-9]{64}$/);
 const slugSchema = z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/);
@@ -20,6 +21,20 @@ const socialPackSchema = z.object({
   sha256: sha256Schema,
   status: z.literal('draft'),
   postCount: z.number().int().min(5)
+}).strict();
+const affiliateLinkEntrySchema = z.object({
+  productId: slugSchema,
+  programId: slugSchema,
+  programRevision: z.number().int().positive(),
+  candidateId: slugSchema,
+  candidatePath: z.string().regex(/^affiliate\/candidates\/[a-z0-9]+(?:-[a-z0-9]+)*\.json$/),
+  candidateSha256: sha256Schema,
+  reviewId: slugSchema,
+  reviewPath: z.string().regex(/^affiliate\/reviews\/[a-z0-9]+(?:-[a-z0-9]+)*\.json$/),
+  reviewSha256: sha256Schema,
+  approvalId: slugSchema,
+  approvalPath: z.string().regex(/^affiliate\/approvals\/[a-z0-9]+(?:-[a-z0-9]+)*\.json$/),
+  approvalSha256: sha256Schema
 }).strict();
 const articleEntrySchema = z.object({
   articleSlug: slugSchema,
@@ -44,18 +59,20 @@ const articleEntrySchema = z.object({
   productCount: z.number().int().nonnegative(),
   pairCount: z.number().int().nonnegative(),
   affiliateLinkCount: z.number().int().nonnegative(),
+  affiliateLinks: z.array(affiliateLinkEntrySchema),
   quality: z.object({
     researchValidated: z.literal(true),
     independentReviewPassed: z.literal(true),
     articlePublicationReady: z.literal(true),
     socialLaunchPackReviewed: z.literal(true).nullable(),
     affiliateRegistryEnforced: z.literal(true),
+    affiliateLinkApprovalEnforced: z.literal(true),
     allArtifactsHashBound: z.literal(true)
   }).strict()
 }).strict();
 
 export const publicationManifestSchema = z.object({
-  schemaVersion: z.literal('1.0.0'),
+  schemaVersion: z.literal('1.1.0'),
   manifestId: z.string().regex(/^publication-set-[a-f0-9]{16}$/),
   generatedAt: z.string().datetime(),
   status: z.literal('release_candidate'),
@@ -75,8 +92,12 @@ export const publicationManifestSchema = z.object({
   }).strict(),
   affiliatePosture: z.object({
     registrySha256: sha256Schema,
+    approvedOverlaySetSha256: sha256Schema,
     enabledProgramIds: z.array(z.string()).default([]),
     enabledProgramCount: z.number().int().nonnegative(),
+    candidateCount: z.number().int().nonnegative(),
+    passedReviewCount: z.number().int().nonnegative(),
+    founderApprovalCount: z.number().int().nonnegative(),
     liveAffiliateLinkCount: z.number().int().nonnegative(),
     editorialRankingIndependent: z.literal(true)
   }).strict(),
@@ -100,6 +121,7 @@ export const publicationManifestSchema = z.object({
       socialDrafts += article.socialPack.postCount;
     }
     affiliateLinks += article.affiliateLinkCount;
+    if (article.affiliateLinkCount !== article.affiliateLinks.length) context.addIssue({ code: z.ZodIssueCode.custom, path: ['articles', index, 'affiliateLinkCount'], message: 'affiliate link count must match approval records' });
   }
   const expectedCounts = {
     articles: manifest.articles.length,
@@ -116,6 +138,8 @@ export const publicationManifestSchema = z.object({
   }
   if (manifest.affiliatePosture.enabledProgramCount !== manifest.affiliatePosture.enabledProgramIds.length) context.addIssue({ code: z.ZodIssueCode.custom, path: ['affiliatePosture', 'enabledProgramCount'], message: 'enabled program count must match IDs' });
   if (manifest.affiliatePosture.liveAffiliateLinkCount !== affiliateLinks || manifest.counts.affiliateLinks !== affiliateLinks) context.addIssue({ code: z.ZodIssueCode.custom, path: ['affiliatePosture', 'liveAffiliateLinkCount'], message: 'affiliate link counts must match article evidence' });
+  const overlayEntries = manifest.articles.flatMap((article) => article.affiliateLinks.map((link) => ({ articleSlug: article.articleSlug, ...link })));
+  if (manifest.affiliatePosture.approvedOverlaySetSha256 !== canonicalSha256(overlayEntries)) context.addIssue({ code: z.ZodIssueCode.custom, path: ['affiliatePosture', 'approvedOverlaySetSha256'], message: 'approved overlay digest must bind all paid-link approval records' });
   const expectedContentSetSha256 = canonicalSha256({ articles: manifest.articles, affiliatePosture: manifest.affiliatePosture });
   if (manifest.contentSetSha256 !== expectedContentSetSha256) context.addIssue({ code: z.ZodIssueCode.custom, path: ['contentSetSha256'], message: 'content set SHA-256 must bind the canonical article and affiliate posture' });
   if (manifest.manifestId !== `publication-set-${manifest.contentSetSha256.slice(0, 16)}`) context.addIssue({ code: z.ZodIssueCode.custom, path: ['manifestId'], message: 'manifest ID must bind the content set SHA-256' });
@@ -158,6 +182,7 @@ function reviewedArticleSha256(raw) {
 }
 
 export async function buildPublicationManifest(root) {
+  const affiliateLinkState = await loadAffiliateLinkState(root);
   const runRecords = await readJsonFiles(path.join(root, 'research', 'runs'));
   const reviewRecords = await readJsonFiles(path.join(root, 'research', 'reviews'));
   const missionRecords = await readJsonFiles(path.join(root, 'research', 'missions'));
@@ -176,7 +201,11 @@ export async function buildPublicationManifest(root) {
   const enabledProgramIds = affiliate.programs.filter((program) => program.enabled).map((program) => program.id).sort();
   const articleNames = (await fs.readdir(path.join(root, 'src', 'data', 'blog'))).filter((name) => name.endsWith('.md')).sort();
   const articles = [];
-  const dates = [];
+  const dates = [
+    ...affiliateLinkState.candidates.map((record) => record.data.createdAt),
+    ...affiliateLinkState.reviews.map((record) => record.data.reviewedAt),
+    ...affiliateLinkState.approvals.map((record) => record.data.approvedAt)
+  ];
 
   for (const name of articleNames) {
     const articleRaw = await fs.readFile(path.join(root, 'src', 'data', 'blog', name));
@@ -204,8 +233,31 @@ export async function buildPublicationManifest(root) {
       if (!social || completion.socialPackSha256 !== sha256(social.raw) || completion.socialPackId !== social.data.packId) throw new Error(`${slug}: completed mission social pack differs from release artifact`);
     }
     const productCount = Array.isArray(parsed.data.products) ? parsed.data.products.length : 0;
-    const affiliateLinkCount = Array.isArray(parsed.data.products) ? parsed.data.products.filter((product) => product.affiliate).length : 0;
-    if (affiliateLinkCount !== run.data.affiliateLinks.length) throw new Error(`${slug}: article and run affiliate link counts differ`);
+    const sourceAffiliateLinkCount = Array.isArray(parsed.data.products) ? parsed.data.products.filter((product) => product.affiliate).length : 0;
+    if (sourceAffiliateLinkCount !== run.data.affiliateLinks.length) throw new Error(`${slug}: article and run affiliate link counts differ`);
+    if (sourceAffiliateLinkCount > 0) throw new Error(`${slug}: source editorial artifacts must keep ordinary links; paid links require the separate approval overlay`);
+    const affiliateLinks = [...affiliateLinkState.overlays.values()]
+      .filter((overlay) => overlay.articleSlug === slug)
+      .sort((left, right) => left.productId.localeCompare(right.productId))
+      .map((overlay) => ({
+        productId: overlay.productId,
+        programId: overlay.programId,
+        programRevision: overlay.programRevision,
+        candidateId: overlay.candidateId,
+        candidatePath: overlay.candidatePath,
+        candidateSha256: overlay.candidateSha256,
+        reviewId: overlay.reviewId,
+        reviewPath: overlay.reviewPath,
+        reviewSha256: overlay.reviewSha256,
+        approvalId: overlay.approvalId,
+        approvalPath: overlay.approvalPath,
+        approvalSha256: overlay.approvalSha256
+      }));
+    const affiliateLinkCount = affiliateLinks.length;
+    for (const overlay of affiliateLinks) {
+      const sourceProduct = (parsed.data.products ?? []).find((product) => product.id === overlay.productId);
+      if (!sourceProduct) throw new Error(`${slug}: approved affiliate overlay targets an unknown product ${overlay.productId}`);
+    }
     const updatedAt = new Date(parsed.data.updatedDate ?? parsed.data.publishDate).toISOString();
     dates.push(updatedAt, run.data.completedAt, review.data.reviewedAt, social?.data.createdAt, mission?.data.completedAt);
     articles.push({
@@ -243,12 +295,14 @@ export async function buildPublicationManifest(root) {
       productCount,
       pairCount: Array.isArray(parsed.data.pairs) ? parsed.data.pairs.length : 0,
       affiliateLinkCount,
+      affiliateLinks,
       quality: {
         researchValidated: true,
         independentReviewPassed: true,
         articlePublicationReady: true,
         socialLaunchPackReviewed: social ? true : null,
         affiliateRegistryEnforced: true,
+        affiliateLinkApprovalEnforced: true,
         allArtifactsHashBound: true
       }
     });
@@ -256,16 +310,21 @@ export async function buildPublicationManifest(root) {
   const validatedRuns = runRecords.filter((record) => record.data.status === 'validated');
   if (validatedRuns.length !== articles.length) throw new Error(`Expected one publication-ready article for each validated run; found ${articles.length}/${validatedRuns.length}`);
   const affiliateLinkCount = articles.reduce((sum, article) => sum + article.affiliateLinkCount, 0);
+  const overlayEntries = articles.flatMap((article) => article.affiliateLinks.map((link) => ({ articleSlug: article.articleSlug, ...link })));
   const affiliatePosture = {
     registrySha256: sha256(affiliateRaw),
+    approvedOverlaySetSha256: canonicalSha256(overlayEntries),
     enabledProgramIds,
     enabledProgramCount: enabledProgramIds.length,
+    candidateCount: affiliateLinkState.counts.candidates,
+    passedReviewCount: affiliateLinkState.counts.passedReviews,
+    founderApprovalCount: affiliateLinkState.counts.approvals,
     liveAffiliateLinkCount: affiliateLinkCount,
     editorialRankingIndependent: true
   };
   const contentSetSha256 = canonicalSha256({ articles, affiliatePosture });
   const manifest = {
-    schemaVersion: '1.0.0',
+    schemaVersion: '1.1.0',
     manifestId: `publication-set-${contentSetSha256.slice(0, 16)}`,
     generatedAt: new Date(Math.max(...dates.filter(Boolean).map((value) => new Date(value).valueOf()))).toISOString(),
     status: 'release_candidate',

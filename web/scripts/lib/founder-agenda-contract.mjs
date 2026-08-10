@@ -274,6 +274,61 @@ export function buildFounderAgenda(input) {
           : `gh workflow run affiliate-program-approval.yml -f program_id=${affiliatePilot.id} -f expected_revision=${affiliatePilot.revision}`
       }
     });
+  } else if (enabledPrograms.length > 0) {
+    const reviewPending = input.affiliateLinks.queue.find((candidate) => candidate.stage === 'independent_review_required');
+    const approvalPending = input.affiliateLinks.queue.find((candidate) => candidate.stage === 'founder_approval_required');
+    const failedCandidate = input.affiliateLinks.queue.find((candidate) => candidate.stage === 'review_failed');
+    const candidate = approvalPending ?? reviewPending ?? failedCandidate;
+    if (input.affiliateLinks.activeOverlays === 0 || candidate) {
+      const mode = approvalPending ? 'approve' : reviewPending ? 'review' : failedCandidate ? 'replace' : 'create';
+      decisions.push({
+        id: 'choose-affiliate-pilot',
+        rank: 0,
+        priorityScore: 65,
+        horizon: 'later',
+        category: 'monetization',
+        title: mode === 'approve' ? 'Decide on one independently reviewed paid link' : mode === 'review' ? 'Send the first exact paid link to evidence review' : mode === 'replace' ? 'Replace the failed paid-link candidate' : 'Choose one existing editorial winner for a paid-link pilot',
+        recommendation: mode === 'approve'
+          ? `Review and approve ${candidate.candidateId} only if its exact destination and separate evidence receipt are acceptable.`
+          : mode === 'review'
+            ? `Run the isolated evidence editor for ${candidate.candidateId}; a candidate alone remains inert.`
+            : mode === 'replace'
+              ? `Leave ${candidate.candidateId} blocked and create an incremented candidate only after its stated evidence problem is corrected.`
+              : `Start with one product from ${enabledPrograms[0].eligibleArticleSlugs[0]} that already won on editorial merit.`,
+        decisionQuestion: mode === 'approve'
+          ? 'Do you approve this exact candidate and clean review hashes for a preview-only paid-link overlay?'
+          : mode === 'review'
+            ? 'Should the independent evidence editor verify this exact destination now?'
+            : mode === 'replace'
+              ? 'Has the failed destination or evidence problem been corrected enough to create a new immutable candidate revision?'
+              : 'Which already-recommended product should receive the first bounded affiliate-link candidate?',
+        rationale: 'Program activation alone cannot prove that one tracked URL still lands on the intended product, preserves approved tracking, and leaves the recommendation useful without commission.',
+        evidence: [
+          `${enabledPrograms.length} affiliate program is enabled and ${input.affiliateLinks.activeOverlays} paid-link overlays are active.`,
+          `${input.affiliateLinks.candidates} exact candidates, ${input.affiliateLinks.passedReviews} clean independent reviews, and ${input.affiliateLinks.approvals} founder approvals are recorded.`,
+          candidate ? `${candidate.candidateId} is at ${candidate.stage}.` : 'No exact product-level paid-link candidate exists yet.',
+          `${input.publicationManifest.counts.affiliateLinks} paid links are bound into the current release manifest.`
+        ],
+        unlocks: 'One approved overlay creates a measurable monetization pilot without rewriting product order, scores, gift logic, pairings, or raw editorial evidence.',
+        tradeoff: 'A paid-link pilot adds destination monitoring, disclosure, terms, and reader-trust obligations before conversion evidence exists.',
+        guardrail: 'Require exact candidate, independent review, and founder approval hashes; then inspect the Firebase preview. Approval does not authorize production deployment.',
+        reversibility: 'high',
+        founderActionRequired: true,
+        action: mode === 'approve' ? {
+          label: 'Open exact-link approval',
+          url: 'https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/affiliate-link-approval.yml',
+          command: `gh workflow run affiliate-link-approval.yml -f candidate_id=${candidate.candidateId} -f expected_candidate_sha256=${candidate.candidateSha256} -f expected_review_sha256=${candidate.reviewSha256} -f confirmation=APPROVE-${candidate.candidateId}`
+        } : mode === 'review' ? {
+          label: 'Open independent review',
+          url: 'https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/affiliate-link-review.yml',
+          command: `gh workflow run affiliate-link-review.yml -f candidate_id=${candidate.candidateId} -f expected_candidate_sha256=${candidate.candidateSha256}`
+        } : {
+          label: 'Open link candidate',
+          url: 'https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/affiliate-link-candidate.yml',
+          command: null
+        }
+      });
+    }
   }
 
   const ranked = decisions

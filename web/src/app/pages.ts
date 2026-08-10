@@ -275,7 +275,7 @@ export class ArticlePage {
         <h2>What we will never claim</h2>
         <p>If we did not physically test a product, we do not say “we tested,” “we used,” or imply personal ownership. Desk research can still be useful, but it must be labeled honestly and connected to its dated sources.</p>
         <h2>How affiliate links work</h2>
-        <p>Editorial ranking is completed before commission is considered. Affiliate links can only come from a founder-approved program registry, must land on the intended product, and are labeled with a nearby disclosure. If a link cannot be validated, we omit the paid tracking rather than inventing it.</p>
+        <p>Editorial ranking is completed before commission is considered. Paid links are a separate overlay: one exact candidate, one independent destination-and-product review, and one founder approval must all stay hash-bound to the unchanged editorial winner. If any link evidence drifts, we omit the paid tracking rather than inventing it.</p>
         <h2>How publishing works</h2>
         <p>The research agent creates a versioned evidence bundle and article draft. A separate quality role challenges the claims. Deterministic checks validate source coverage, scores, link policy, metadata, structured content, and the static build. Only then can the exact Git commit move to a Firebase preview and publication approval.</p>
         <blockquote>A model finishing its response is not a publication event. Passing the evidence and release gates is.</blockquote>
@@ -298,7 +298,13 @@ export class StandardsPage {
       <div class="prose">
         <p>Tips for Your Gifts may earn a commission when you purchase through certain links. When that applies, the article includes a clear disclosure before its recommendations and paid links are identified near the action.</p>
         <p>Affiliate relationships do not determine which products qualify or how they rank. A product must meet the same evidence and editorial standard even when no paid link is available.</p>
-        <p>No affiliate program is currently enabled in the automated registry. Until Lucas approves an account, tracking identifier, registered site, program terms, and disclosure language, published links must remain ordinary non-affiliate merchant links.</p>
+        @if (content.operations.affiliate.activeOverlays > 0) {
+          <p>{{ content.operations.affiliate.activeOverlays }} independently reviewed and founder-approved paid {{ content.operations.affiliate.activeOverlays === 1 ? 'link is' : 'links are' }} active in the current generated candidate. Every paid action is labeled, uses a sponsored relationship, and remains subject to the separate Firebase preview and release gate.</p>
+        } @else if (content.operations.affiliate.enabledPrograms > 0) {
+          <p>{{ content.operations.affiliate.enabledPrograms }} affiliate {{ content.operations.affiliate.enabledPrograms === 1 ? 'program is' : 'programs are' }} enabled, but no exact paid-link overlay is approved. Published recommendations therefore continue to use ordinary non-affiliate merchant links.</p>
+        } @else {
+          <p>No affiliate program is currently enabled in the automated registry. Until Lucas approves an account, tracking identifier, registered site, program terms, and disclosure language, published links must remain ordinary non-affiliate merchant links.</p>
+        }
         <p>This page explains the editorial operating policy and is not legal advice.</p>
       </div>
     </article>
@@ -306,6 +312,7 @@ export class StandardsPage {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AffiliateDisclosurePage {
+  readonly content = inject(ContentService);
   private readonly seo = inject(SeoService);
   constructor() {
     this.seo.set({ title: 'Affiliate disclosure', description: 'How Tips for Your Gifts uses affiliate links while keeping editorial recommendations independent.', path: '/affiliate-disclosure' });
@@ -486,8 +493,10 @@ export class AffiliateDisclosurePage {
       <div class="grid two">
         <div class="panel">
           <p class="eyebrow">Affiliate decision queue</p>
-          <h2>{{ content.operations.affiliate.proposedPrograms }} candidates. {{ content.operations.affiliate.enabledPrograms }} enabled.</h2>
-          <p><a href="https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/affiliate-program-approval.yml" target="_blank" rel="noopener">Founder onboarding approval</a> · <a href="https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/affiliate-program-activate.yml" target="_blank" rel="noopener">Audited activation handoff</a></p>
+          <h2>{{ content.operations.affiliate.proposedPrograms }} programs proposed. {{ content.operations.affiliate.activeOverlays }} paid links active.</h2>
+          <p><strong>{{ content.operations.affiliate.linkCandidates }}</strong> exact candidates · <strong>{{ content.operations.affiliate.linkReviewsPassed }}</strong> clean independent reviews · <strong>{{ content.operations.affiliate.linkApprovals }}</strong> founder approvals.</p>
+          <p><a href="https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/affiliate-program-approval.yml" target="_blank" rel="noopener">Program onboarding approval</a> · <a href="https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/affiliate-program-activate.yml" target="_blank" rel="noopener">Program activation</a> · <a href="https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/affiliate-link-candidate.yml" target="_blank" rel="noopener">Exact-link candidate</a> · <a href="https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/affiliate-link-review.yml" target="_blank" rel="noopener">Independent link review</a> · <a href="https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/affiliate-link-approval.yml" target="_blank" rel="noopener">Founder link approval</a></p>
+          <details><summary>Exact approved-overlay digest</summary><div class="command">{{ content.operations.affiliate.approvedOverlaySetSha256 }}</div></details>
           <div class="connector-list">
             @for (program of content.operations.affiliate.programs; track program.id) {
               <div class="connector-row">
@@ -499,6 +508,18 @@ export class AffiliateDisclosurePage {
               </div>
             }
           </div>
+          @if (content.operations.affiliate.linkQueue.length > 0) {
+            <div class="connector-list">
+              @for (candidate of content.operations.affiliate.linkQueue; track candidate.candidateId) {
+                <div class="connector-row">
+                  <div><strong>{{ candidate.productId }}</strong><p>{{ candidate.articleSlug }} · {{ candidate.destinationHostname }} · candidate v{{ candidate.candidateRevision }}</p></div>
+                  <span class="status" [class.blocked_on_account]="candidate.stage === 'review_failed'">{{ displayStatus(candidate.stage) }}</span>
+                  <p class="connector-gate"><strong>Next gate:</strong> {{ candidate.nextGate }}</p>
+                  <details><summary>Exact candidate digest</summary><div class="command">{{ candidate.candidateSha256 }}</div></details>
+                </div>
+              }
+            </div>
+          }
         </div>
         <div class="panel">
           <p class="eyebrow">Official channel registry</p>

@@ -785,7 +785,7 @@ export const OPERATIONS: Operations = {
         "horizon": "now",
         "category": "release",
         "title": "Review the first accountable Angular release",
-        "recommendation": "Review publication-set-921f8304f19c5414 as the first founder-controlled Firebase release candidate.",
+        "recommendation": "Review publication-set-acc2c6158d6d3ec2 as the first founder-controlled Firebase release candidate.",
         "decisionQuestion": "Does this exact content set represent the site you want readers to see first?",
         "rationale": "The research and release machinery cannot create traffic, trust, or revenue while the modern reviewed site remains only a local candidate.",
         "evidence": [
@@ -970,6 +970,12 @@ export const OPERATIONS: Operations = {
     "proposedPrograms": 2,
     "founderApprovedPrograms": 0,
     "enabledPrograms": 0,
+    "linkCandidates": 0,
+    "linkReviewsPassed": 0,
+    "linkApprovals": 0,
+    "activeOverlays": 0,
+    "approvedOverlaySetSha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "linkQueue": [],
     "programs": [
       {
         "id": "bookshop-org-us-media",
@@ -1814,8 +1820,8 @@ export const OPERATIONS: Operations = {
     },
     "currentCandidate": {
       "status": "release_candidate",
-      "manifestId": "publication-set-921f8304f19c5414",
-      "contentSetSha256": "921f8304f19c5414bf03655ea214a80a9ea07bd4f9e06e69a5fa110fed868355",
+      "manifestId": "publication-set-acc2c6158d6d3ec2",
+      "contentSetSha256": "acc2c6158d6d3ec2e3b5505af0ffd451cb67176dd7fd6863e854a791678ebb0f",
       "articles": 4,
       "independentReviews": 4,
       "socialLaunchPacks": 3,

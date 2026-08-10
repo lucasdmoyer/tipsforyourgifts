@@ -3,6 +3,7 @@ import path from 'node:path';
 import process from 'node:process';
 import matter from 'gray-matter';
 import { marked } from 'marked';
+import { applyAffiliateLinkOverlays, loadAffiliateLinkState } from './lib/affiliate-link-contract.mjs';
 
 const root = process.cwd();
 const blogDir = path.join(root, 'src', 'data', 'blog');
@@ -12,6 +13,7 @@ const strategyPath = path.join(root, 'src', 'data', 'strategy.json');
 const operationsPath = path.join(root, 'src', 'data', 'operations.json');
 const growthPath = path.join(root, 'src', 'data', 'growth.json');
 const sitemapPath = path.join(root, 'public', 'sitemap.xml');
+const affiliateLinkState = await loadAffiliateLinkState(root);
 
 marked.use({ gfm: true, async: false });
 
@@ -21,7 +23,7 @@ for (const fileName of fileNames) {
   const slug = path.basename(fileName, '.md');
   const parsed = matter(await fs.readFile(path.join(blogDir, fileName), 'utf8'));
   const data = parsed.data;
-  articles.push({
+  const article = {
     slug,
     title: data.title,
     description: data.description,
@@ -40,7 +42,8 @@ for (const fileName of fileNames) {
     products: data.products ?? [],
     pairs: data.pairs ?? [],
     contentHtml: marked.parse(parsed.content)
-  });
+  };
+  articles.push(applyAffiliateLinkOverlays(article, affiliateLinkState));
 }
 const publicArticles = articles.filter((article) => article.status === 'publication_ready');
 

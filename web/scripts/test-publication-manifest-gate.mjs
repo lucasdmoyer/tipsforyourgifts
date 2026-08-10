@@ -19,9 +19,11 @@ expectFailure('review count cannot drift', (manifest) => { manifest.counts.indep
 expectFailure('social count cannot drift', (manifest) => { manifest.counts.socialDrafts += 1; });
 expectFailure('mission count cannot drift', (manifest) => { manifest.counts.missionBoundArticles += 1; });
 expectFailure('affiliate count cannot drift', (manifest) => { manifest.affiliatePosture.liveAffiliateLinkCount += 1; });
+expectFailure('approved overlay digest cannot drift', (manifest) => { manifest.affiliatePosture.approvedOverlaySetSha256 = 'f'.repeat(64); });
+expectFailure('article affiliate approval count cannot drift', (manifest) => { manifest.articles[0].affiliateLinkCount += 1; });
 expectFailure('quality pass cannot be weakened', (manifest) => { manifest.articles[0].quality.independentReviewPassed = false; });
 expectFailure('article route must bind slug', (manifest) => { manifest.articles[0].route = '/blog/something-else'; });
 expectFailure('duplicate article slug rejected', (manifest) => { manifest.articles[1].articleSlug = manifest.articles[0].articleSlug; manifest.articles[1].route = manifest.articles[0].route; });
 expectFailure('duplicate research run rejected', (manifest) => { manifest.articles[1].researchRunId = manifest.articles[0].researchRunId; });
 expectFailure('unexpected fields rejected', (manifest) => { manifest.unverifiedNote = 'trust me'; });
-console.log(JSON.stringify({ publicationManifestNegativeGateTests: 'passed', checks: 13, articles: base.counts.articles, hashBoundReviews: base.counts.independentReviews }, null, 2));
+console.log(JSON.stringify({ publicationManifestNegativeGateTests: 'passed', checks: 15, articles: base.counts.articles, hashBoundReviews: base.counts.independentReviews, hashBoundAffiliateOverlays: base.counts.affiliateLinks }, null, 2));

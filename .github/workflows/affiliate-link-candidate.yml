@@ -1,0 +1,134 @@
+name: Record one affiliate link candidate
+
+on:
+  workflow_dispatch:
+    inputs:
+      article_slug:
+        description: "Exact publication-ready article slug"
+        required: true
+        type: string
+      product_id:
+        description: "Exact editorial product ID"
+        required: true
+        type: string
+      program_id:
+        description: "Exact enabled affiliate program ID"
+        required: true
+        type: string
+      expected_program_revision:
+        description: "Exact enabled program revision visible in Studio"
+        required: true
+        type: number
+      candidate_revision:
+        description: "Immutable attempt number; start at 1 and increment after a failed candidate"
+        required: true
+        type: number
+      expected_article_sha256:
+        description: "Exact source article SHA-256 from the publication manifest"
+        required: true
+        type: string
+      paid_url:
+        description: "Exact program-issued public HTTPS product URL, including real tracking"
+        required: true
+        type: string
+      product_identity_evidence_url:
+        description: "Credential-free HTTPS official product evidence with no query or fragment"
+        required: true
+        type: string
+      confirmation:
+        description: "CANDIDATE- followed by the full expected candidate ID"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: affiliate-link-candidate-${{ inputs.article_slug }}-${{ inputs.product_id }}
+  cancel-in-progress: false
+
+jobs:
+  record:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    environment: affiliate-links
+    steps:
+      - name: Require repository-owner action-time decision
+        env:
+          ACTOR: ${{ github.actor }}
+          OWNER: ${{ github.repository_owner }}
+        run: test "$ACTOR" = "$OWNER" || { echo "Only the repository owner may supply a program-issued paid URL." >&2; exit 1; }
+      - uses: actions/checkout@v5
+        with:
+          ref: master
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24.14.0"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - name: Bind one exact paid destination to reviewed editorial evidence
+        id: candidate
+        env:
+          ARTICLE_SLUG: ${{ inputs.article_slug }}
+          PRODUCT_ID: ${{ inputs.product_id }}
+          PROGRAM_ID: ${{ inputs.program_id }}
+          EXPECTED_PROGRAM_REVISION: ${{ inputs.expected_program_revision }}
+          CANDIDATE_REVISION: ${{ inputs.candidate_revision }}
+          EXPECTED_ARTICLE_SHA256: ${{ inputs.expected_article_sha256 }}
+          PAID_URL: ${{ inputs.paid_url }}
+          PRODUCT_IDENTITY_EVIDENCE_URL: ${{ inputs.product_identity_evidence_url }}
+          CONFIRMATION: ${{ inputs.confirmation }}
+          CREATOR_ID: ${{ github.actor }}
+        run: |
+          npm ci --prefix web
+          npm run validate
+          echo "baseline_live_links=$(node -p 'require(\"./web/public/publication-manifest.json\").affiliatePosture.liveAffiliateLinkCount')" >> "$GITHUB_OUTPUT"
+          npm --prefix web run affiliate:link:candidate -- \
+            --article-slug="$ARTICLE_SLUG" \
+            --product-id="$PRODUCT_ID" \
+            --program-id="$PROGRAM_ID" \
+            --expected-program-revision="$EXPECTED_PROGRAM_REVISION" \
+            --candidate-revision="$CANDIDATE_REVISION" \
+            --expected-article-sha256="$EXPECTED_ARTICLE_SHA256" \
+            --paid-url="$PAID_URL" \
+            --product-identity-evidence-url="$PRODUCT_IDENTITY_EVIDENCE_URL" \
+            --created-by="$CREATOR_ID" \
+            --confirmation="$CONFIRMATION"
+          npm --prefix web run generate
+      - name: Prove the candidate is inert and the patch is bounded
+        env:
+          CANDIDATE_PATH: ${{ steps.candidate.outputs.candidate_path }}
+          BASELINE_LIVE_LINKS: ${{ steps.candidate.outputs.baseline_live_links }}
+        run: |
+          git add -N .
+          while IFS= read -r changed_path; do
+            case "$changed_path" in
+              "$CANDIDATE_PATH"|web/src/data/operations.json|web/src/app/generated/content.generated.ts|web/public/publication-manifest.json|web/public/sitemap.xml) ;;
+              *) echo "Affiliate candidate changed forbidden path: $changed_path" >&2; exit 1 ;;
+            esac
+          done < <(git diff --name-only HEAD)
+          test "$(node -p "require('./web/public/publication-manifest.json').affiliatePosture.liveAffiliateLinkCount")" -eq "$BASELINE_LIVE_LINKS"
+          npm run validate
+          npm run build
+          npm run smoke
+          git diff --check
+      - name: Commit the candidate branch
+        env:
+          RUN_ID: ${{ github.run_id }}
+          CANDIDATE_PATH: ${{ steps.candidate.outputs.candidate_path }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -c "codex/affiliate-link-candidate-$RUN_ID"
+          git add "$CANDIDATE_PATH" web/src/data/operations.json web/src/app/generated/content.generated.ts web/public/publication-manifest.json web/public/sitemap.xml
+          git commit -m "Record affiliate link candidate ${{ steps.candidate.outputs.candidate_id }}"
+          git push origin "codex/affiliate-link-candidate-$RUN_ID"
+      - name: Open independent-review pull request
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ github.run_id }}
+          CANDIDATE_ID: ${{ steps.candidate.outputs.candidate_id }}
+        run: |
+          gh pr create --base master --head "codex/affiliate-link-candidate-$RUN_ID" --title "Review affiliate link candidate $CANDIDATE_ID" --body "This founder-supplied, hash-bound record contains one program-issued public paid URL. It does not change editorial ranking or copy, render a paid link, deploy Firebase, or authorize production. Merge only records the candidate so a separate evidence editor can verify it."

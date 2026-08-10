@@ -209,6 +209,33 @@ export interface Operations {
     proposedPrograms: number;
     founderApprovedPrograms: number;
     enabledPrograms: number;
+    linkCandidates: number;
+    linkReviewsPassed: number;
+    linkApprovals: number;
+    activeOverlays: number;
+    approvedOverlaySetSha256: string;
+    linkQueue: Array<{
+      candidateId: string;
+      candidateRevision: number;
+      candidatePath: string;
+      candidateSha256: string;
+      articleSlug: string;
+      productId: string;
+      programId: string;
+      programRevision: number;
+      destinationHostname: string;
+      createdAt: string;
+      createdBy: string;
+      stage: 'independent_review_required' | 'review_failed' | 'founder_approval_required' | 'approved_overlay';
+      reviewVerdict: 'passed' | 'failed' | null;
+      reviewPath: string | null;
+      reviewSha256: string | null;
+      reviewedAt: string | null;
+      approvalPath: string | null;
+      approvalSha256: string | null;
+      approvedAt: string | null;
+      nextGate: string;
+    }>;
     programs: Array<{
       id: string;
       revision: number;

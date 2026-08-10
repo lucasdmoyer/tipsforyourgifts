@@ -4,6 +4,7 @@ import path from 'node:path';
 import process from 'node:process';
 import matter from 'gray-matter';
 import { buildFounderAgenda } from './lib/founder-agenda-contract.mjs';
+import { loadAffiliateLinkState } from './lib/affiliate-link-contract.mjs';
 
 const root = process.cwd();
 const runsDir = path.join(root, 'research', 'runs');
@@ -70,6 +71,7 @@ const growthRaw = await fs.readFile(growthPath);
 const growth = JSON.parse(growthRaw.toString('utf8'));
 const growthSha256 = createHash('sha256').update(growthRaw).digest('hex');
 const affiliate = JSON.parse(await fs.readFile(affiliatePath, 'utf8'));
+const affiliateLinkState = await loadAffiliateLinkState(root);
 const socialChannelsRaw = await fs.readFile(socialChannelsPath);
 const socialChannels = JSON.parse(socialChannelsRaw.toString('utf8'));
 const socialChannelsSha256 = createHash('sha256').update(socialChannelsRaw).digest('hex');
@@ -84,7 +86,42 @@ const draftPosts = articles.filter((article) => article.status === 'draft').leng
 const affiliateProgramsEnabled = affiliate.programs.filter((program) => program.enabled).length;
 const affiliateProgramsProposed = affiliate.programs.filter((program) => program.status === 'proposed').length;
 const affiliateProgramsFounderApproved = affiliate.programs.filter((program) => program.status === 'founder_approved').length;
-const affiliateLinksLive = articles.flatMap((article) => article.products ?? []).filter((product) => product.affiliate).length;
+const affiliateLinksLive = affiliateLinkState.counts.activeOverlays;
+const affiliateReviewByCandidate = new Map(affiliateLinkState.reviews.map((record) => [record.data.candidateId, record]));
+const affiliateApprovalByCandidate = new Map(affiliateLinkState.approvals.map((record) => [record.data.candidateId, record]));
+const affiliateLinkQueue = affiliateLinkState.candidates.map((record) => {
+  const review = affiliateReviewByCandidate.get(record.data.candidateId);
+  const approval = affiliateApprovalByCandidate.get(record.data.candidateId);
+  const stage = approval ? 'approved_overlay' : review?.data.verdict === 'passed' ? 'founder_approval_required' : review?.data.verdict === 'failed' ? 'review_failed' : 'independent_review_required';
+  return {
+    candidateId: record.data.candidateId,
+    candidateRevision: record.data.candidateRevision,
+    candidatePath: record.path,
+    candidateSha256: record.sha256,
+    articleSlug: record.data.articleSlug,
+    productId: record.data.productId,
+    programId: record.data.programId,
+    programRevision: record.data.programRevision,
+    destinationHostname: record.data.destination.hostname,
+    createdAt: record.data.createdAt,
+    createdBy: record.data.createdBy,
+    stage,
+    reviewVerdict: review?.data.verdict ?? null,
+    reviewPath: review?.path ?? null,
+    reviewSha256: review?.sha256 ?? null,
+    reviewedAt: review?.data.reviewedAt ?? null,
+    approvalPath: approval?.path ?? null,
+    approvalSha256: approval?.sha256 ?? null,
+    approvedAt: approval?.data.approvedAt ?? null,
+    nextGate: approval
+      ? 'Include this exact approved overlay in a Firebase preview, verify disclosure and sponsored rel, then use the separate exact-SHA release gate.'
+      : review?.data.verdict === 'passed'
+        ? 'Lucas reviews the exact candidate and independent review hashes, then issues one action-time approval receipt.'
+        : review?.data.verdict === 'failed'
+          ? 'Do not approve. Correct the destination or evidence and record a new incremented candidate revision.'
+          : 'Run the isolated affiliate evidence editor against this exact candidate SHA-256.'
+  };
+});
 const socialPublished = socialPublications.length;
 const socialApproved = socialApprovals.filter((approval) => approval.status === 'approved' && !publicationByPost.has(approval.postId)).length;
 const socialDrafts = socialPosts.length - socialApprovals.length;
@@ -152,6 +189,7 @@ const alerts = [];
 alerts.push('Production Firebase rules have not been verified from this checkout.');
 if (affiliateProgramsEnabled === 0) alerts.push('No affiliate program is enabled; links must remain non-affiliate.');
 if (affiliateProgramsProposed > 0) alerts.push(`${affiliateProgramsProposed} affiliate program candidate${affiliateProgramsProposed === 1 ? ' awaits' : 's await'} founder review; approval does not enroll or enable tracking.`);
+if (affiliateLinkState.counts.candidates > 0) alerts.push(`${affiliateLinkState.counts.candidates} exact affiliate link candidate${affiliateLinkState.counts.candidates === 1 ? '' : 's'}: ${affiliateLinkState.counts.activeOverlays} independently reviewed and founder-approved overlay${affiliateLinkState.counts.activeOverlays === 1 ? '' : 's'} active in generated content.`);
 if (socialDrafts > 0) alerts.push(`${socialDrafts} social launch drafts await approved media, content approval, and official API access.`);
 if (socialCandidates.length > 0) alerts.push(`${socialCandidates.length} original social creative candidate${socialCandidates.length === 1 ? ' is' : 's are'} locally verified but not rights-approved, released, or published.`);
 else alerts.push('Social publishing is draft-only until official accounts and APIs are approved.');
@@ -186,6 +224,9 @@ const sourceDates = [
   ...socialCandidates.map((candidate) => candidate.generatedAt),
   ...socialAssets.map((asset) => asset.approvedAt),
   ...socialPublications.map((publication) => publication.publishedAt),
+  ...affiliateLinkState.candidates.map((record) => record.data.createdAt),
+  ...affiliateLinkState.reviews.map((record) => record.data.reviewedAt),
+  ...affiliateLinkState.approvals.map((record) => record.data.approvedAt),
   ...articles.flatMap((article) => [article.publishDate, article.updatedDate]).filter(Boolean)
 ].map((value) => new Date(value).valueOf()).filter(Number.isFinite);
 const generatedAt = new Date(Math.max(...sourceDates)).toISOString();
@@ -203,7 +244,14 @@ const founderAgenda = buildFounderAgenda({
   socialDraftCount: socialPosts.length,
   socialCreativeCandidateCount: socialCandidates.length,
   socialChannelsSha256,
-  growthSha256
+  growthSha256,
+  affiliateLinks: {
+    candidates: affiliateLinkState.counts.candidates,
+    passedReviews: affiliateLinkState.counts.passedReviews,
+    approvals: affiliateLinkState.counts.approvals,
+    activeOverlays: affiliateLinkState.counts.activeOverlays,
+    queue: affiliateLinkQueue
+  }
 });
 
 const operations = {
@@ -307,6 +355,12 @@ const operations = {
     proposedPrograms: affiliateProgramsProposed,
     founderApprovedPrograms: affiliateProgramsFounderApproved,
     enabledPrograms: affiliateProgramsEnabled,
+    linkCandidates: affiliateLinkState.counts.candidates,
+    linkReviewsPassed: affiliateLinkState.counts.passedReviews,
+    linkApprovals: affiliateLinkState.counts.approvals,
+    activeOverlays: affiliateLinkState.counts.activeOverlays,
+    approvedOverlaySetSha256: publicationManifest.affiliatePosture.approvedOverlaySetSha256,
+    linkQueue: affiliateLinkQueue,
     programs: affiliate.programs.map((program) => ({
       id: program.id,
       revision: program.revision,

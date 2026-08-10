@@ -101,11 +101,16 @@ describe('App', () => {
     const fixture = TestBed.createComponent(StudioPage);
     fixture.detectChanges();
     const element = fixture.nativeElement as HTMLElement;
-    expect(element.textContent).toContain(`${OPERATIONS.affiliate.proposedPrograms} candidates. ${OPERATIONS.affiliate.enabledPrograms} enabled.`);
+    expect(element.textContent).toContain(`${OPERATIONS.affiliate.proposedPrograms} programs proposed. ${OPERATIONS.affiliate.activeOverlays} paid links active.`);
+    expect(element.textContent).toContain(`${OPERATIONS.affiliate.linkCandidates} exact candidates · ${OPERATIONS.affiliate.linkReviewsPassed} clean independent reviews · ${OPERATIONS.affiliate.linkApprovals} founder approvals.`);
     expect(element.textContent).toContain(`${OPERATIONS.social.channelsActive}/${OPERATIONS.social.channelsTotal} channels active.`);
     expect(element.textContent).toContain(`Open the ${OPERATIONS.social.queue.length}-post approval queue`);
     expect(element.querySelector('a[href*="affiliate-program-approval.yml"]')).not.toBeNull();
     expect(element.querySelector('a[href*="affiliate-program-activate.yml"]')).not.toBeNull();
+    expect(element.querySelector('a[href*="affiliate-link-candidate.yml"]')).not.toBeNull();
+    expect(element.querySelector('a[href*="affiliate-link-review.yml"]')).not.toBeNull();
+    expect(element.querySelector('a[href*="affiliate-link-approval.yml"]')).not.toBeNull();
+    expect(element.textContent).toContain(OPERATIONS.affiliate.approvedOverlaySetSha256);
     expect(element.querySelector('a[href*="social-channel-configure.yml"]')).not.toBeNull();
     expect(element.querySelector('a[href*="social-channel-activate.yml"]')).not.toBeNull();
     expect(element.querySelector('a[href*="social-media-approval.yml"]')).not.toBeNull();

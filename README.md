@@ -34,7 +34,7 @@ The workflow creates a trusted, hash-bound research mission envelope before Code
 
 A separate Friday collector can propose finalized Search Console page aggregates only after Lucas verifies the exact URL-prefix property, records the reviewed OIDC boundary, and merges separate configuration and protected activation pull requests. Before activation it exits without authentication. The Monday growth workflow reads only committed aggregate snapshots and may propose a bounded experiment in a pull request, but it cannot invent missing metrics, approve its own proposal, publish social content, add affiliate tracking, spend money, or deploy. See `docs/GROWTH_MEASUREMENT.md`.
 
-Affiliate and social decisions use the same separation. Public program research may create a disabled candidate; only the repository owner can open a deterministic approval pull request, and approval still does not enroll, accept terms, add tracking, or enable links. Social publication requires an original creative candidate, a stable Firebase asset URL, byte-verified founder media approval, a hash-bound content receipt, an active official channel, protected action-time approval, and an external platform ID. Pinterest now has this official-API path and its first golf-friction visual candidate, but it remains disabled until Lucas completes the external account, release, and environment gates. See `docs/AFFILIATE_OPERATIONS.md` and `docs/SOCIAL_OPERATIONS.md`.
+Affiliate and social decisions use the same separation. Public program research may create a disabled program candidate; only the repository owner can approve external onboarding, and approval still does not enroll, accept terms, add tracking, or enable links. After audited program activation, an exact paid URL moves through a founder-supplied candidate, an isolated evidence-editor receipt, and a separate founder approval. Static generation overlays only that final hash-bound state onto the unchanged editorial winner; pending, failed, stale, or unapproved records render no paid link. Social publication requires an original creative candidate, a stable Firebase asset URL, byte-verified founder media approval, a hash-bound content receipt, an active official channel, protected action-time approval, and an external platform ID. Pinterest now has this official-API path and its first golf-friction visual candidate, but it remains disabled until Lucas completes the external account, release, and environment gates. See `docs/AFFILIATE_OPERATIONS.md` and `docs/SOCIAL_OPERATIONS.md`.
 
 The first ten content releases retain founder review. After GitHub records ten successful production deployments, Lucas may run **Enable proven automatic publication**. It opens a final policy pull request; only after that merge can validated research PRs request check-gated auto-merge and exact-SHA Firebase preview-to-live promotion. A model merely finishing is never the publication signal. See `docs/PUBLICATION_AUTOMATION.md`.
 
@@ -47,9 +47,11 @@ The first ten content releases retain founder review. After GitHub records ten s
 - Research mission receipts: `web/research/missions/`
 - Articles: `web/src/data/blog/`
 - Affiliate registry: `web/config/affiliate-programs.json`
+- Exact paid-link candidates, independent reviews, and founder approvals: `web/affiliate/candidates/`, `web/affiliate/reviews/`, and `web/affiliate/approvals/`
 - Official social-channel registry: `web/config/social-channels.json`
 - Versioned original creative candidates: `web/social/candidates/` and `web/public/social-media/`
 - Affiliate candidate approval: `.github/workflows/affiliate-program-approval.yml`
+- Exact paid-link candidate, evidence review, and approval: `.github/workflows/affiliate-link-candidate.yml`, `.github/workflows/affiliate-link-review.yml`, and `.github/workflows/affiliate-link-approval.yml`
 - Hash-bound social content approval: `.github/workflows/social-content-approval.yml`
 - Byte-verified social media approval: `.github/workflows/social-media-approval.yml`
 - Protected official Pinterest publisher: `.github/workflows/social-pinterest-publish.yml`

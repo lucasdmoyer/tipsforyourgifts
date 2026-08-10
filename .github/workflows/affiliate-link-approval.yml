@@ -1,0 +1,108 @@
+name: Approve one independently reviewed affiliate link
+
+on:
+  workflow_dispatch:
+    inputs:
+      candidate_id:
+        description: "Exact candidate ID"
+        required: true
+        type: string
+      expected_candidate_sha256:
+        description: "Exact candidate record SHA-256"
+        required: true
+        type: string
+      expected_review_sha256:
+        description: "Exact clean independent review SHA-256"
+        required: true
+        type: string
+      confirmation:
+        description: "APPROVE- followed by the full candidate ID"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: affiliate-link-approval-${{ inputs.candidate_id }}
+  cancel-in-progress: false
+
+jobs:
+  approve:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    environment: affiliate-link-approval
+    steps:
+      - name: Require repository-owner action-time decision
+        env:
+          ACTOR: ${{ github.actor }}
+          OWNER: ${{ github.repository_owner }}
+          CANDIDATE_ID: ${{ inputs.candidate_id }}
+          CONFIRMATION: ${{ inputs.confirmation }}
+        run: |
+          test "$ACTOR" = "$OWNER" || { echo "Only the repository owner may approve a paid link." >&2; exit 1; }
+          test "$CONFIRMATION" = "APPROVE-$CANDIDATE_ID" || { echo "Action-time confirmation does not match the exact candidate." >&2; exit 1; }
+      - uses: actions/checkout@v5
+        with:
+          ref: master
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24.14.0"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - name: Create one immutable founder approval receipt
+        id: approval
+        env:
+          CANDIDATE_ID: ${{ inputs.candidate_id }}
+          EXPECTED_CANDIDATE_SHA256: ${{ inputs.expected_candidate_sha256 }}
+          EXPECTED_REVIEW_SHA256: ${{ inputs.expected_review_sha256 }}
+          CONFIRMATION: ${{ inputs.confirmation }}
+          FOUNDER_LOGIN: ${{ github.actor }}
+        run: |
+          npm ci --prefix web
+          npm run validate
+          echo "baseline_live_links=$(node -p 'require(\"./web/public/publication-manifest.json\").affiliatePosture.liveAffiliateLinkCount')" >> "$GITHUB_OUTPUT"
+          npm --prefix web run affiliate:link:approve -- \
+            --candidate-id="$CANDIDATE_ID" \
+            --expected-candidate-sha256="$EXPECTED_CANDIDATE_SHA256" \
+            --expected-review-sha256="$EXPECTED_REVIEW_SHA256" \
+            --founder-login="$FOUNDER_LOGIN" \
+            --confirmation="$CONFIRMATION"
+          npm --prefix web run generate
+      - name: Prove only the approved overlay changes rendered content
+        env:
+          APPROVAL_PATH: ${{ steps.approval.outputs.approval_path }}
+          BASELINE_LIVE_LINKS: ${{ steps.approval.outputs.baseline_live_links }}
+        run: |
+          git add -N .
+          while IFS= read -r changed_path; do
+            case "$changed_path" in
+              "$APPROVAL_PATH"|web/src/data/operations.json|web/src/app/generated/content.generated.ts|web/public/publication-manifest.json|web/public/sitemap.xml) ;;
+              *) echo "Affiliate approval changed forbidden path: $changed_path" >&2; exit 1 ;;
+            esac
+          done < <(git diff --name-only HEAD)
+          test "$(node -p "require('./web/public/publication-manifest.json').affiliatePosture.liveAffiliateLinkCount")" -eq "$((BASELINE_LIVE_LINKS + 1))"
+          npm run validate
+          npm run build
+          npm run smoke
+          git diff --check
+      - name: Commit the founder-controlled overlay branch
+        env:
+          RUN_ID: ${{ github.run_id }}
+          APPROVAL_PATH: ${{ steps.approval.outputs.approval_path }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -c "codex/affiliate-link-approval-$RUN_ID"
+          git add "$APPROVAL_PATH" web/src/data/operations.json web/src/app/generated/content.generated.ts web/public/publication-manifest.json web/public/sitemap.xml
+          git commit -m "Approve affiliate link ${{ inputs.candidate_id }}"
+          git push origin "codex/affiliate-link-approval-$RUN_ID"
+      - name: Open exact-link approval pull request
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ github.run_id }}
+          CANDIDATE_ID: ${{ inputs.candidate_id }}
+        run: |
+          gh pr create --base master --head "codex/affiliate-link-approval-$RUN_ID" --title "Approve exact affiliate link $CANDIDATE_ID" --body "This founder-controlled receipt activates one separately researched and independently reviewed paid-link overlay. Product order, scores, copy, pairings, and raw editorial artifacts remain unchanged. The pull request must show disclosure, sponsored rel, destination, and removal behavior in a Firebase preview. Merge is not a production deployment; the exact-SHA release workflow remains separate."

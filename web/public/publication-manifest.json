@@ -1,12 +1,12 @@
 {
-  "schemaVersion": "1.0.0",
-  "manifestId": "publication-set-921f8304f19c5414",
+  "schemaVersion": "1.1.0",
+  "manifestId": "publication-set-acc2c6158d6d3ec2",
   "generatedAt": "2026-08-03T16:30:00.000Z",
   "status": "release_candidate",
   "projectId": "tipsforyourgifts",
   "siteId": "tipsforyourgifts",
   "publicBaseUrl": "https://tipsforyourgifts.web.app",
-  "contentSetSha256": "921f8304f19c5414bf03655ea214a80a9ea07bd4f9e06e69a5fa110fed868355",
+  "contentSetSha256": "acc2c6158d6d3ec2e3b5505af0ffd451cb67176dd7fd6863e854a791678ebb0f",
   "counts": {
     "articles": 4,
     "researchRuns": 4,
@@ -19,8 +19,12 @@
   },
   "affiliatePosture": {
     "registrySha256": "4028b58d56ac775b470f9a0a7cfc8297d3b7cc0c32972687676e2bb0403d08fd",
+    "approvedOverlaySetSha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
     "enabledProgramIds": [],
     "enabledProgramCount": 0,
+    "candidateCount": 0,
+    "passedReviewCount": 0,
+    "founderApprovalCount": 0,
     "liveAffiliateLinkCount": 0,
     "editorialRankingIndependent": true
   },
@@ -54,12 +58,14 @@
       "productCount": 5,
       "pairCount": 1,
       "affiliateLinkCount": 0,
+      "affiliateLinks": [],
       "quality": {
         "researchValidated": true,
         "independentReviewPassed": true,
         "articlePublicationReady": true,
         "socialLaunchPackReviewed": true,
         "affiliateRegistryEnforced": true,
+        "affiliateLinkApprovalEnforced": true,
         "allArtifactsHashBound": true
       }
     },
@@ -86,12 +92,14 @@
       "productCount": 0,
       "pairCount": 0,
       "affiliateLinkCount": 0,
+      "affiliateLinks": [],
       "quality": {
         "researchValidated": true,
         "independentReviewPassed": true,
         "articlePublicationReady": true,
         "socialLaunchPackReviewed": null,
         "affiliateRegistryEnforced": true,
+        "affiliateLinkApprovalEnforced": true,
         "allArtifactsHashBound": true
       }
     },
@@ -124,12 +132,14 @@
       "productCount": 20,
       "pairCount": 10,
       "affiliateLinkCount": 0,
+      "affiliateLinks": [],
       "quality": {
         "researchValidated": true,
         "independentReviewPassed": true,
         "articlePublicationReady": true,
         "socialLaunchPackReviewed": true,
         "affiliateRegistryEnforced": true,
+        "affiliateLinkApprovalEnforced": true,
         "allArtifactsHashBound": true
       }
     },
@@ -162,12 +172,14 @@
       "productCount": 5,
       "pairCount": 0,
       "affiliateLinkCount": 0,
+      "affiliateLinks": [],
       "quality": {
         "researchValidated": true,
         "independentReviewPassed": true,
         "articlePublicationReady": true,
         "socialLaunchPackReviewed": true,
         "affiliateRegistryEnforced": true,
+        "affiliateLinkApprovalEnforced": true,
         "allArtifactsHashBound": true
       }
     }

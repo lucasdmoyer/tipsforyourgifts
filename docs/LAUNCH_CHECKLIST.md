@@ -55,6 +55,8 @@
 - Recheck the official program and terms sources before their recorded review-expiry date.
 - Record allowed domains, registered sites, disclosure requirements, price-display constraints, and tracking identity.
 - Create the protected `affiliate-activation` environment before using the audited activation workflow; store no tracking values in its inputs or repository output.
+- Create protected `affiliate-links` and `affiliate-link-approval` environments before recording or approving exact paid destinations. Require the repository owner, preserve the independent-review job, and never approve a failed or stale hash.
+- On every paid-link pull request, inspect the Firebase preview for the exact product destination, disclosure before recommendations, the `(paid link)` label, `rel="sponsored noopener"`, unchanged product order and copy, and ordinary-link fallback when the approval record is absent.
 - Test redirect destination and disclosure placement on a Firebase preview.
 - Do not enable exact prices unless an authorized, fresh program feed supports them.
 

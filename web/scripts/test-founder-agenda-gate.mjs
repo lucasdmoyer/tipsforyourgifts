@@ -37,7 +37,8 @@ const baseInput = {
   socialDraftCount: socialDraftPacks.reduce((sum, pack) => sum + pack.posts.length, 0),
   socialCreativeCandidateCount: socialCandidateCount,
   socialChannelsSha256,
-  growthSha256
+  growthSha256,
+  affiliateLinks: { candidates: 0, passedReviews: 0, approvals: 0, activeOverlays: 0, queue: [] }
 };
 const base = buildFounderAgenda(baseInput);
 
@@ -78,6 +79,26 @@ const activeSearch = activeMeasurementInput.growth.connectors.find((connector) =
 Object.assign(activeSearch, { status: 'active', activatedAt: '2026-08-10T13:00:00.000Z', snapshotImportEnabled: true, automatedCollectionEnabled: true });
 const activeDecision = buildFounderAgenda(activeMeasurementInput).decisions.find((decision) => decision.id === 'establish-measurement');
 assert.match(activeDecision.action.url, /search-console-collect\.yml$/);
+
+const enabledAffiliateInput = structuredClone(baseInput);
+for (const program of enabledAffiliateInput.affiliate.programs) { program.status = 'rejected'; program.enabled = false; program.founderDisposition = 'rejected'; }
+enabledAffiliateInput.affiliate.programs[0].status = 'enabled';
+enabledAffiliateInput.affiliate.programs[0].enabled = true;
+enabledAffiliateInput.affiliate.programs[0].founderDisposition = 'approved';
+enabledAffiliateInput.affiliateLinks = {
+  candidates: 1,
+  passedReviews: 0,
+  approvals: 0,
+  activeOverlays: 0,
+  queue: [{ candidateId: 'affiliate-link-test-v1', candidateSha256: 'a'.repeat(64), reviewSha256: null, stage: 'independent_review_required' }]
+};
+const linkReviewDecision = buildFounderAgenda(enabledAffiliateInput).decisions.find((decision) => decision.id === 'choose-affiliate-pilot');
+assert.match(linkReviewDecision.action.url, /affiliate-link-review\.yml$/);
+enabledAffiliateInput.affiliateLinks.passedReviews = 1;
+enabledAffiliateInput.affiliateLinks.queue[0].stage = 'founder_approval_required';
+enabledAffiliateInput.affiliateLinks.queue[0].reviewSha256 = 'b'.repeat(64);
+const linkApprovalDecision = buildFounderAgenda(enabledAffiliateInput).decisions.find((decision) => decision.id === 'choose-affiliate-pilot');
+assert.match(linkApprovalDecision.action.url, /affiliate-link-approval\.yml$/);
 
 const clone = (value) => structuredClone(value);
 const fixtureInput = clone(baseInput);

@@ -46,3 +46,29 @@ Before changing a candidate to `enabled`, attach a founder-controlled evidence r
 An enabled program may monetize an existing editorial winner; it cannot increase the product's rank or rescue a weak recommendation.
 
 After activation, exact destination-link candidates still require independent review, disclosure, `rel="sponsored noopener"`, a Firebase preview, and validation that removing tracking leaves the recommendation useful.
+
+## Exact paid-link overlay
+
+Program activation is not product-level approval. The paid-link lane keeps raw articles, research runs, article QA receipts, product order, scores, copy, and pairings unchanged:
+
+```text
+ordinary editorial winner
+  -> founder-supplied program URL candidate
+  -> isolated evidence-editor receipt
+  -> founder exact-hash approval
+  -> generated overlay
+  -> Firebase preview
+  -> separate exact-SHA production decision
+```
+
+1. **Record one affiliate link candidate** accepts one real program-issued public URL only after its program is enabled. It binds the URL to the exact source article, validated research run, independent article review, product editorial fingerprint, program revision, allowed final domain, approved tracking-key names, and credential-free product-identity evidence. Use candidate revision `1`; after a failed review, correct the problem and increment the immutable revision.
+2. **Independently review one affiliate link** runs a separate evidence editor. It may create only one review receipt. A pass requires a live HTTPS response, allowlisted resolved domain, preserved tracking values, intended-product or edition match, no new price or availability claim, disclosure, sponsored relationship, unchanged editorial rank, and a recommendation that still works with the paid link removed. Uncertainty becomes a failed receipt.
+3. **Approve one independently reviewed affiliate link** is repository-owner-only and requires the exact candidate SHA-256, clean review SHA-256, and action-time `APPROVE-<candidate-id>` confirmation. The receipt authorizes only a generated overlay and explicitly does not authorize production.
+
+`web/scripts/lib/affiliate-link-contract.mjs` fails closed if an article, research run, article QA receipt, program revision, allowed domain, tracking key, candidate, review, or founder approval digest drifts. `generate-content.mjs` then replaces only the selected product URL in memory, marks that action as paid, adds the approved program ID, and turns on the article disclosure. Source Markdown and research evidence remain ordinary and commission-independent.
+
+The public publication manifest records every active overlay's candidate, independent-review, and founder-approval paths and hashes. A candidate or passing review alone contributes zero rendered links. A program pause or source drift blocks the build until the state is safely resolved.
+
+## Current link posture
+
+The committed registry currently has no enabled program, no exact link candidates, no independent link receipts, no founder link approvals, and no active overlays. The workflows are dormant and create no account, credential, tracking identity, affiliate URL, external post, Firebase preview, or production deployment on their own.
