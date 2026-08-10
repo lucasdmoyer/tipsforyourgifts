@@ -1,0 +1,110 @@
+name: Collect aggregate Search Console snapshot
+
+on:
+  schedule:
+    - cron: "23 14 * * 5"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: search-console-weekly-collection
+  cancel-in-progress: false
+
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    outputs:
+      enabled: ${{ steps.posture.outputs.enabled }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: master
+          persist-credentials: false
+      - name: Skip before authentication unless the founder-approved connector is active
+        id: posture
+        run: |
+          enabled="$(node -e 'const growth=require("./web/src/data/growth.json"); const connector=growth.connectors.find((entry)=>entry.id==="search-console"); process.stdout.write(String(connector?.status==="active" && connector?.founderApproved===true && connector?.snapshotImportEnabled===true && connector?.automatedCollectionEnabled===true))')"
+          echo "enabled=$enabled" >> "$GITHUB_OUTPUT"
+          if [ "$enabled" != "true" ]; then
+            echo "Search Console collection is not founder-activated; no authentication or external request will occur."
+          fi
+
+  collect:
+    needs: preflight
+    if: needs.preflight.outputs.enabled == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    permissions:
+      contents: write
+      pull-requests: write
+      id-token: write
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: master
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24.14.0"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - name: Validate trusted state before minting any access token
+        run: |
+          npm ci --prefix web
+          npm run validate
+      - id: auth
+        name: Mint a short-lived read-only Google access token through OIDC
+        uses: google-github-actions/auth@v3
+        with:
+          workload_identity_provider: ${{ secrets.SEARCH_CONSOLE_WIF_PROVIDER }}
+          service_account: ${{ secrets.SEARCH_CONSOLE_SERVICE_ACCOUNT }}
+          token_format: access_token
+          access_token_scopes: https://www.googleapis.com/auth/webmasters.readonly
+          create_credentials_file: false
+      - name: Collect and import one finalized seven-day page aggregate
+        id: snapshot
+        env:
+          SEARCH_CONSOLE_ACCESS_TOKEN: ${{ steps.auth.outputs.access_token }}
+          RUN_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          npm --prefix web run growth:search-console:collect -- --output=../search-console-snapshot.json --evidence-url="$RUN_URL"
+          npm --prefix web run growth:import -- --input=../search-console-snapshot.json --if-exists=no-op
+          rm -f ../search-console-snapshot.json
+          npm --prefix web run generate
+      - name: Prove the aggregate-only patch
+        if: steps.snapshot.outputs.imported == 'true'
+        run: |
+          while IFS= read -r changed_path; do
+            case "$changed_path" in
+              web/src/data/growth.json|web/src/data/operations.json|web/src/app/generated/content.generated.ts|web/public/sitemap.xml) ;;
+              *) echo "Search Console collection changed forbidden path: $changed_path" >&2; exit 1 ;;
+            esac
+          done < <(git diff --name-only HEAD)
+          test -z "$(git diff -G 'rawQuery|userId|email|phone|ipAddress|cookieId|deviceId|preciseLocation' -- web/src/data/growth.json)" || { echo "Snapshot contains a prohibited data field." >&2; exit 1; }
+          npm run validate
+          npm run build
+          npm run smoke
+          git diff --check
+      - name: Commit the snapshot branch
+        if: steps.snapshot.outputs.imported == 'true'
+        env:
+          RUN_ID: ${{ github.run_id }}
+          SNAPSHOT_ID: ${{ steps.snapshot.outputs.snapshot_id }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -c "codex/search-console-snapshot-$RUN_ID"
+          git add web/src/data/growth.json web/src/data/operations.json web/src/app/generated/content.generated.ts web/public/sitemap.xml
+          git commit -m "Record aggregate Search Console snapshot $SNAPSHOT_ID"
+          git push origin "codex/search-console-snapshot-$RUN_ID"
+      - name: Open a check-gated auto-merge pull request
+        if: steps.snapshot.outputs.imported == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ github.run_id }}
+          SNAPSHOT_ID: ${{ steps.snapshot.outputs.snapshot_id }}
+        run: |
+          pr_url="$(gh pr create --base master --head "codex/search-console-snapshot-$RUN_ID" --title "Record aggregate Search Console snapshot $SNAPSHOT_ID" --body "This deterministic read-only collector queried the exact founder-approved URL-prefix property with the webmasters.readonly scope, one exact page filter per publication-ready article, finalized data only, and no query dimension. The patch stores seven-day aggregate clicks and impressions plus a source digest; all unsupported metrics remain null. It contains no credential, personal identifier, raw query, experiment approval, social action, affiliate action, Firebase mutation, or deployment.")"
+          gh pr merge "$pr_url" --auto --squash

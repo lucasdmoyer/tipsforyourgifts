@@ -1,0 +1,94 @@
+{
+  "schemaVersion": "1.2.0",
+  "updatedAt": "2026-08-03T09:15:00.000Z",
+  "policy": {
+    "officialApiOnly": true,
+    "browserPostingAllowed": false,
+    "credentialsInRepositoryAllowed": false,
+    "perPostApprovalReceiptRequired": true,
+    "mediaRightsEvidenceRequired": true,
+    "publicationReceiptRequired": true,
+    "founderApproverLogin": "lucasdmoyer",
+    "aggregateReportingRequiredBeforeAutopilot": true,
+    "ownedDestinationHosts": [
+      "tipsforyourgifts.web.app"
+    ]
+  },
+  "channels": [
+    {
+      "id": "pinterest",
+      "priority": 1,
+      "status": "not_connected",
+      "founderApproved": false,
+      "officialAccountReference": null,
+      "officialPublicationTargetId": null,
+      "configurationEvidenceUrl": null,
+      "configuredAt": null,
+      "activatedAt": null,
+      "publisher": null,
+      "publishingEnabled": false,
+      "apiCredentialSecretName": null,
+      "allowedFormats": [
+        "avoidance-list",
+        "buy-skip-card",
+        "carousel",
+        "checklist-pin",
+        "decision-flow",
+        "interaction-loop-card",
+        "recipient-matrix",
+        "split-card-series",
+        "systems-diagram",
+        "two-part-diagram",
+        "two-step-map",
+        "vertical-checklist",
+        "vertical-flowchart",
+        "worksheet"
+      ],
+      "maxPostsPerWeek": 0,
+      "nextGate": "Lucas approves an official business account, rights-cleared visual system, cadence, privacy posture, and official API credential before any post can be approved."
+    },
+    {
+      "id": "instagram",
+      "priority": 2,
+      "status": "not_connected",
+      "founderApproved": false,
+      "officialAccountReference": null,
+      "officialPublicationTargetId": null,
+      "configurationEvidenceUrl": null,
+      "configuredAt": null,
+      "activatedAt": null,
+      "publisher": null,
+      "publishingEnabled": false,
+      "apiCredentialSecretName": null,
+      "allowedFormats": [
+        "carousel",
+        "five-slide-carousel",
+        "four-slide-carousel",
+        "seven-slide-carousel",
+        "six-slide-carousel"
+      ],
+      "maxPostsPerWeek": 0,
+      "nextGate": "Lucas approves the official account, Meta app/API access, rights-cleared assets, disclosures, and a measured cadence before content approval."
+    },
+    {
+      "id": "tiktok",
+      "priority": 3,
+      "status": "not_connected",
+      "founderApproved": false,
+      "officialAccountReference": null,
+      "officialPublicationTargetId": null,
+      "configurationEvidenceUrl": null,
+      "configuredAt": null,
+      "activatedAt": null,
+      "publisher": null,
+      "publishingEnabled": false,
+      "apiCredentialSecretName": null,
+      "allowedFormats": [
+        "short-script",
+        "thirty-second-script"
+      ],
+      "maxPostsPerWeek": 0,
+      "nextGate": "Keep this channel paused until Lucas approves the official account, original-video production rights, platform API eligibility, disclosure pattern, and reporting export."
+    }
+  ]
+}

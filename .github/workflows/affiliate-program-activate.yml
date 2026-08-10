@@ -1,0 +1,117 @@
+name: Activate audited affiliate program
+
+on:
+  workflow_dispatch:
+    inputs:
+      program_id:
+        description: "Exact founder-approved program ID visible in Studio"
+        required: true
+        type: string
+      expected_revision:
+        description: "Exact founder-approved revision visible in Studio"
+        required: true
+        type: number
+      allowed_domains:
+        description: "Comma-separated official merchant domains allowed by current terms"
+        required: true
+        type: string
+      tracking_parameter_keys:
+        description: "Comma-separated program-provided parameter names only; never enter values"
+        required: true
+        type: string
+      terms_accepted_at:
+        description: "ISO timestamp when Lucas personally accepted the current terms"
+        required: true
+        type: string
+      acceptance_evidence_url:
+        description: "Credential-free HTTPS issue or PR recording the external activation review"
+        required: true
+        type: string
+      reporting_export_approved:
+        description: "Whether aggregate reporting export was reviewed and approved"
+        required: true
+        type: boolean
+      confirmation:
+        description: "Type ACTIVATE- followed by the exact program ID"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: affiliate-activation-${{ inputs.program_id }}
+  cancel-in-progress: false
+
+jobs:
+  activate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    environment: affiliate-activation
+    steps:
+      - name: Require repository-owner action-time decision
+        env:
+          ACTOR: ${{ github.actor }}
+          OWNER: ${{ github.repository_owner }}
+          PROGRAM_ID: ${{ inputs.program_id }}
+          CONFIRMATION: ${{ inputs.confirmation }}
+        run: |
+          test "$ACTOR" = "$OWNER" || { echo "Only the repository owner may activate an affiliate program." >&2; exit 1; }
+          [[ "$PROGRAM_ID" =~ ^[a-z0-9]+(-[a-z0-9]+)*$ ]] || { echo "Invalid program ID." >&2; exit 1; }
+          test "$CONFIRMATION" = "ACTIVATE-$PROGRAM_ID" || { echo "Action-time confirmation does not match the exact program." >&2; exit 1; }
+      - uses: actions/checkout@v5
+        with:
+          ref: master
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24.14.0"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - name: Record non-secret external activation evidence
+        env:
+          PROGRAM_ID: ${{ inputs.program_id }}
+          EXPECTED_REVISION: ${{ inputs.expected_revision }}
+          ALLOWED_DOMAINS: ${{ inputs.allowed_domains }}
+          TRACKING_PARAMETER_KEYS: ${{ inputs.tracking_parameter_keys }}
+          TERMS_ACCEPTED_AT: ${{ inputs.terms_accepted_at }}
+          ACCEPTANCE_EVIDENCE_URL: ${{ inputs.acceptance_evidence_url }}
+          REPORTING_EXPORT_APPROVED: ${{ inputs.reporting_export_approved }}
+          CONFIRMATION: ${{ inputs.confirmation }}
+          FOUNDER_LOGIN: ${{ github.actor }}
+        run: |
+          npm ci --prefix web
+          npm run validate
+          npm --prefix web run affiliate:activate -- --program-id="$PROGRAM_ID" --expected-revision="$EXPECTED_REVISION" --allowed-domains="$ALLOWED_DOMAINS" --tracking-parameter-keys="$TRACKING_PARAMETER_KEYS" --terms-accepted-at="$TERMS_ACCEPTED_AT" --acceptance-evidence-url="$ACCEPTANCE_EVIDENCE_URL" --reporting-export-approved="$REPORTING_EXPORT_APPROVED" --confirmation="$CONFIRMATION" --founder-login="$FOUNDER_LOGIN"
+          npm --prefix web run generate
+      - name: Prove the bounded activation patch
+        run: |
+          while IFS= read -r changed_path; do
+            case "$changed_path" in
+              web/config/affiliate-programs.json|web/src/data/operations.json|web/src/app/generated/content.generated.ts|web/public/publication-manifest.json|web/public/sitemap.xml) ;;
+              *) echo "Affiliate activation changed forbidden path: $changed_path" >&2; exit 1 ;;
+            esac
+          done < <(git diff --name-only HEAD)
+          npm run validate
+          npm run build
+          npm run smoke
+          git diff --check
+      - name: Commit the founder-controlled activation branch
+        env:
+          RUN_ID: ${{ github.run_id }}
+          PROGRAM_ID: ${{ inputs.program_id }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -c "codex/activate-affiliate-$RUN_ID"
+          git add web/config/affiliate-programs.json web/src/data/operations.json web/src/app/generated/content.generated.ts web/public/publication-manifest.json web/public/sitemap.xml
+          git commit -m "Activate audited affiliate program $PROGRAM_ID"
+          git push origin "codex/activate-affiliate-$RUN_ID"
+      - name: Open the activation pull request
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ github.run_id }}
+          PROGRAM_ID: ${{ inputs.program_id }}
+        run: |
+          gh pr create --base master --head "codex/activate-affiliate-$RUN_ID" --title "Activate audited affiliate program $PROGRAM_ID" --body "This founder-dispatched patch records external account, current-terms, registered-site, non-secret tracking-configuration, destination-domain, disclosure, and reporting evidence. It creates no account, accepts no terms, creates no paid link, authorizes no price, changes no editorial rank, and does not deploy. Exact link candidates and their Firebase preview remain separately reviewed."

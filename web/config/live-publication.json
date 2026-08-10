@@ -1,0 +1,10 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectId": "tipsforyourgifts",
+  "siteId": "tipsforyourgifts",
+  "hostingChannel": "live",
+  "productionUrl": "https://tipsforyourgifts.web.app/",
+  "status": "no_verified_managed_release",
+  "updatedAt": null,
+  "latestVerifiedContentRelease": null
+}

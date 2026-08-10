@@ -1,0 +1,105 @@
+name: Approve one social media asset
+
+on:
+  workflow_dispatch:
+    inputs:
+      post_id:
+        description: "Exact social post ID visible in Studio"
+        required: true
+        type: string
+      expected_pack_sha256:
+        description: "SHA-256 of the exact reviewed social pack"
+        required: true
+        type: string
+      candidate_id:
+        description: "Exact creative candidate ID visible in Studio"
+        required: true
+        type: string
+      expected_candidate_record_sha256:
+        description: "SHA-256 of the exact creative candidate JSON"
+        required: true
+        type: string
+      rights_evidence_url:
+        description: "HTTPS issue or pull-request URL recording media rights"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: social-media-approval-${{ inputs.post_id }}
+  cancel-in-progress: false
+
+jobs:
+  approve:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Require repository-owner decision
+        env:
+          ACTOR: ${{ github.actor }}
+          OWNER: ${{ github.repository_owner }}
+        run: |
+          test "$ACTOR" = "$OWNER" || { echo "Only the repository owner may approve social media." >&2; exit 1; }
+      - uses: actions/checkout@v5
+        with:
+          ref: master
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24.14.0"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - name: Download, hash, and record one approved asset
+        env:
+          POST_ID: ${{ inputs.post_id }}
+          EXPECTED_PACK_SHA256: ${{ inputs.expected_pack_sha256 }}
+          CANDIDATE_ID: ${{ inputs.candidate_id }}
+          EXPECTED_CANDIDATE_RECORD_SHA256: ${{ inputs.expected_candidate_record_sha256 }}
+          RIGHTS_EVIDENCE_URL: ${{ inputs.rights_evidence_url }}
+          FOUNDER_LOGIN: ${{ github.actor }}
+        run: |
+          [[ "$POST_ID" =~ ^[a-z0-9]+(-[a-z0-9]+)*$ ]] || { echo "Invalid post ID." >&2; exit 1; }
+          [[ "$EXPECTED_PACK_SHA256" =~ ^[a-f0-9]{64}$ ]] || { echo "Invalid pack SHA-256." >&2; exit 1; }
+          [[ "$CANDIDATE_ID" =~ ^[a-z0-9]+(-[a-z0-9]+)*$ ]] || { echo "Invalid creative candidate ID." >&2; exit 1; }
+          [[ "$EXPECTED_CANDIDATE_RECORD_SHA256" =~ ^[a-f0-9]{64}$ ]] || { echo "Invalid creative candidate record SHA-256." >&2; exit 1; }
+          [[ "$RIGHTS_EVIDENCE_URL" =~ ^https:// ]] || { echo "Rights evidence must use HTTPS." >&2; exit 1; }
+          npm ci --prefix web
+          npm run validate
+          npm --prefix web run social:media:approve -- --post-id="$POST_ID" --expected-pack-sha256="$EXPECTED_PACK_SHA256" --candidate-id="$CANDIDATE_ID" --expected-candidate-record-sha256="$EXPECTED_CANDIDATE_RECORD_SHA256" --rights-evidence-url="$RIGHTS_EVIDENCE_URL" --founder-login="$FOUNDER_LOGIN"
+          npm --prefix web run generate
+      - name: Prove the fail-closed media approval patch
+        env:
+          POST_ID: ${{ inputs.post_id }}
+        run: |
+          git add -N .
+          while IFS= read -r changed_path; do
+            case "$changed_path" in
+              web/social/assets/"$POST_ID"-image.json|web/src/data/operations.json|web/src/app/generated/content.generated.ts|web/public/sitemap.xml) ;;
+              *) echo "Media approval changed forbidden path: $changed_path" >&2; exit 1 ;;
+            esac
+          done < <(git diff --name-only HEAD)
+          npm run validate
+          npm run build
+          npm run smoke
+          git diff --check
+      - name: Commit the founder-controlled media branch
+        env:
+          RUN_ID: ${{ github.run_id }}
+          POST_ID: ${{ inputs.post_id }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -c "codex/approve-social-media-$RUN_ID"
+          git add "web/social/assets/$POST_ID-image.json" web/src/data/operations.json web/src/app/generated/content.generated.ts web/public/sitemap.xml
+          git commit -m "Approve social media for $POST_ID"
+          git push origin "codex/approve-social-media-$RUN_ID"
+      - name: Open the media approval pull request
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ github.run_id }}
+          POST_ID: ${{ inputs.post_id }}
+        run: |
+          gh pr create --base master --head "codex/approve-social-media-$RUN_ID" --title "Approve social media for $POST_ID" --body "This byte-level receipt records one rights-reviewed public image for one exact social post. It does not approve copy and does not publish externally."

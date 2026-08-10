@@ -1,0 +1,31 @@
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <nav class="shell nav" aria-label="Primary navigation">
+    <a class="brand" routerLink="/">
+      <span class="brand-mark" aria-hidden="true">✦</span>
+      <span>Tips for Your Gifts</span>
+    </a>
+    <ul class="nav-links">
+      <li><a routerLink="/gifts" routerLinkActive="active">Gift guides</a></li>
+      <li><a routerLink="/blog" routerLinkActive="active">Journal</a></li>
+      <li><a routerLink="/standards" routerLinkActive="active">Our method</a></li>
+      <li><a routerLink="/studio" routerLinkActive="active">Studio</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main id="main"><router-outlet /></main>
+
+<footer class="site-footer">
+  <div class="shell footer-grid">
+    <div>
+      <p class="eyebrow footer-eyebrow">Tips for Your Gifts</p>
+      <h2>Useful ideas. Honest tradeoffs. No fake testing.</h2>
+    </div>
+    <div>
+      <p>Every recommendation must pass an evidence and editorial gate before it appears here.</p>
+      <p><a routerLink="/affiliate-disclosure">Affiliate disclosure</a> · <a routerLink="/standards">Research standards</a></p>
+      <p>Contact: <a href="mailto:lucasdmoyer@gmail.com">lucasdmoyer@gmail.com</a></p>
+    </div>
+  </div>
+</footer>

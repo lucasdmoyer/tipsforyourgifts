@@ -1,0 +1,312 @@
+{
+  "schemaVersion": "1.0.0",
+  "packId": "read-it-then-play-it-gift-pairs-launch",
+  "articleSlug": "read-it-then-play-it-gift-pairs",
+  "researchRun": "20260803-read-it-then-play-it-c437f208",
+  "status": "draft",
+  "createdAt": "2026-08-03T16:30:00.000Z",
+  "policy": {
+    "officialApiRequired": true,
+    "externalPublishingAuthorized": false,
+    "containsAffiliateLinks": false
+  },
+  "posts": [
+    {
+      "id": "pair-or-pile-diagnostic",
+      "platform": "pinterest",
+      "format": "vertical-checklist",
+      "status": "draft",
+      "angle": "Teach the general pair-or-pile decision before introducing any single bundle",
+      "headline": "Pair or pile? The four-question gift-pair test",
+      "copy": "Two gifts belong together only when they do different jobs, create a specific interaction, work separately, and pass the recipient checks. Use the guide before adding a companion.",
+      "assetBrief": "Original vertical-checklist using typography and simple line illustrations only; show the interaction, the choose-one fallback, and no third-party product photography or logos.",
+      "altText": "Editorial graphic explaining The fungal-network table, its interaction, and the check that determines whether to choose only one item.",
+      "destinationUrl": "https://tipsforyourgifts.web.app/blog/read-it-then-play-it-gift-pairs",
+      "claimIds": [
+        "claim-fungal-network-table-friction",
+        "claim-fungal-network-table-coherence",
+        "claim-fungal-network-table-budget",
+        "claim-entangled-life-paperback-compatibility",
+        "claim-entangled-life-paperback-drawback",
+        "claim-undergrove-base-game-compatibility",
+        "claim-undergrove-base-game-drawback"
+      ],
+      "productIds": [
+        "entangled-life-paperback",
+        "undergrove-base-game"
+      ],
+      "pairIds": [
+        "fungal-network-table"
+      ],
+      "disclosureRequired": false,
+      "externalPostId": null
+    },
+    {
+      "id": "read-play-disagree",
+      "platform": "instagram",
+      "format": "five-slide-carousel",
+      "status": "draft",
+      "angle": "Teach the The big-history strategy debate decision through recipient fit and a concrete interaction",
+      "headline": "Read it, play it, disagree with it",
+      "copy": "Sapiens plus Civilization VI works as a debate, not a history course. Read one claim, play the related era, and name what the game turns into a controllable variable.",
+      "assetBrief": "Original five-slide-carousel using typography and simple line illustrations only; show the interaction, the choose-one fallback, and no third-party product photography or logos.",
+      "altText": "Editorial graphic explaining The big-history strategy debate, its interaction, and the check that determines whether to choose only one item.",
+      "destinationUrl": "https://tipsforyourgifts.web.app/blog/read-it-then-play-it-gift-pairs",
+      "claimIds": [
+        "claim-big-history-strategy-debate-friction",
+        "claim-big-history-strategy-debate-coherence",
+        "claim-big-history-strategy-debate-budget",
+        "claim-sapiens-us-paperback-compatibility",
+        "claim-sapiens-us-paperback-drawback",
+        "claim-civilization-vi-windows-steam-compatibility",
+        "claim-civilization-vi-windows-steam-drawback"
+      ],
+      "productIds": [
+        "sapiens-us-paperback",
+        "civilization-vi-windows-steam"
+      ],
+      "pairIds": [
+        "big-history-strategy-debate"
+      ],
+      "disclosureRequired": false,
+      "externalPostId": null
+    },
+    {
+      "id": "bird-cards-to-outdoors",
+      "platform": "pinterest",
+      "format": "interaction-loop-card",
+      "status": "draft",
+      "angle": "Teach the The bird-cognition engine loop decision through recipient fit and a concrete interaction",
+      "headline": "From bird cards to birds outside",
+      "copy": "Read one bird-cognition story, find a related behavior in Wingspan Digital, verify the fact, then look for it outdoors. Confirm Steam, a supported computer, and ownership first.",
+      "assetBrief": "Original interaction-loop-card using typography and simple line illustrations only; show the interaction, the choose-one fallback, and no third-party product photography or logos.",
+      "altText": "Editorial graphic explaining The bird-cognition engine loop, its interaction, and the check that determines whether to choose only one item.",
+      "destinationUrl": "https://tipsforyourgifts.web.app/blog/read-it-then-play-it-gift-pairs",
+      "claimIds": [
+        "claim-bird-cognition-engine-loop-friction",
+        "claim-bird-cognition-engine-loop-coherence",
+        "claim-bird-cognition-engine-loop-budget",
+        "claim-genius-of-birds-paperback-compatibility",
+        "claim-genius-of-birds-paperback-drawback",
+        "claim-wingspan-digital-steam-compatibility",
+        "claim-wingspan-digital-steam-drawback"
+      ],
+      "productIds": [
+        "genius-of-birds-paperback",
+        "wingspan-digital-steam"
+      ],
+      "pairIds": [
+        "bird-cognition-engine-loop"
+      ],
+      "disclosureRequired": false,
+      "externalPostId": null
+    },
+    {
+      "id": "mars-model-gap",
+      "platform": "instagram",
+      "format": "six-slide-carousel",
+      "status": "draft",
+      "angle": "Teach the The Mars constraint counterpoint decision through recipient fit and a concrete interaction",
+      "headline": "What does the Mars game make too easy?",
+      "copy": "Pair one real settlement constraint with one Ares Expedition round. The interesting gift is the disagreement between the models—not matching red-planet covers. Confirm the standalone base game.",
+      "assetBrief": "Original six-slide-carousel using typography and simple line illustrations only; show the interaction, the choose-one fallback, and no third-party product photography or logos.",
+      "altText": "Editorial graphic explaining The Mars constraint counterpoint, its interaction, and the check that determines whether to choose only one item.",
+      "destinationUrl": "https://tipsforyourgifts.web.app/blog/read-it-then-play-it-gift-pairs",
+      "claimIds": [
+        "claim-mars-constraint-counterpoint-friction",
+        "claim-mars-constraint-counterpoint-coherence",
+        "claim-mars-constraint-counterpoint-budget",
+        "claim-a-city-on-mars-paperback-compatibility",
+        "claim-a-city-on-mars-paperback-drawback",
+        "claim-terraforming-mars-ares-expedition-compatibility",
+        "claim-terraforming-mars-ares-expedition-drawback"
+      ],
+      "productIds": [
+        "a-city-on-mars-paperback",
+        "terraforming-mars-ares-expedition"
+      ],
+      "pairIds": [
+        "mars-constraint-counterpoint"
+      ],
+      "disclosureRequired": false,
+      "externalPostId": null
+    },
+    {
+      "id": "systems-after-game",
+      "platform": "pinterest",
+      "format": "worksheet",
+      "status": "draft",
+      "angle": "Teach the The feedback-loop table decision through recipient fit and a concrete interaction",
+      "headline": "After Pandemic, draw the feedback loop",
+      "copy": "Name one stock, one flow, one delay, and one feedback loop after the game. Confirm the outbreak theme is welcome and keep one player from taking over every decision.",
+      "assetBrief": "Original worksheet using typography and simple line illustrations only; show the interaction, the choose-one fallback, and no third-party product photography or logos.",
+      "altText": "Editorial graphic explaining The feedback-loop table, its interaction, and the check that determines whether to choose only one item.",
+      "destinationUrl": "https://tipsforyourgifts.web.app/blog/read-it-then-play-it-gift-pairs",
+      "claimIds": [
+        "claim-feedback-loop-table-friction",
+        "claim-feedback-loop-table-coherence",
+        "claim-thinking-in-systems-paperback-compatibility",
+        "claim-thinking-in-systems-paperback-drawback",
+        "claim-pandemic-base-game-compatibility",
+        "claim-pandemic-base-game-drawback"
+      ],
+      "productIds": [
+        "thinking-in-systems-paperback",
+        "pandemic-base-game"
+      ],
+      "pairIds": [
+        "feedback-loop-table"
+      ],
+      "disclosureRequired": false,
+      "externalPostId": null
+    },
+    {
+      "id": "game-gift-five-checks",
+      "platform": "tiktok",
+      "format": "thirty-second-script",
+      "status": "draft",
+      "angle": "Teach the The language-context table decision through recipient fit and a concrete interaction",
+      "headline": "Five checks before gifting any game",
+      "copy": "Exact edition. Ownership. Player count. Learning time. Accessibility. If one answer is unknown, the anchor book is more thoughtful than an unusable bundle.",
+      "assetBrief": "Original thirty-second-script using typography and simple line illustrations only; show the interaction, the choose-one fallback, and no third-party product photography or logos.",
+      "altText": "Editorial graphic explaining The language-context table, its interaction, and the check that determines whether to choose only one item.",
+      "destinationUrl": "https://tipsforyourgifts.web.app/blog/read-it-then-play-it-gift-pairs",
+      "claimIds": [
+        "claim-language-context-table-friction",
+        "claim-language-context-table-coherence",
+        "claim-because-internet-paperback-compatibility",
+        "claim-because-internet-paperback-drawback",
+        "claim-codenames-2025-english-compatibility",
+        "claim-codenames-2025-english-drawback"
+      ],
+      "productIds": [
+        "because-internet-paperback",
+        "codenames-2025-english"
+      ],
+      "pairIds": [
+        "language-context-table"
+      ],
+      "disclosureRequired": false,
+      "externalPostId": null
+    },
+    {
+      "id": "park-story-to-trail-social",
+      "platform": "pinterest",
+      "format": "two-step-map",
+      "status": "draft",
+      "angle": "Teach the The park-story-to-trail loop decision through recipient fit and a concrete interaction",
+      "headline": "Turn a park story into one real trail",
+      "copy": "Read a park chapter, play until the park appears, then save one trail or revisit one photo album. Confirm Trekking the National Parks Third Edition, small-part safety, and a real player plan.",
+      "assetBrief": "Original two-step-map using typography and simple line illustrations only; show the interaction, the choose-one fallback, and no third-party product photography or logos.",
+      "altText": "Editorial graphic explaining The park-story-to-trail loop, its interaction, and the check that determines whether to choose only one item.",
+      "destinationUrl": "https://tipsforyourgifts.web.app/blog/read-it-then-play-it-gift-pairs",
+      "claimIds": [
+        "claim-park-story-to-trail-friction",
+        "claim-park-story-to-trail-coherence",
+        "claim-park-story-to-trail-budget",
+        "claim-leave-only-footprints-paperback-compatibility",
+        "claim-leave-only-footprints-paperback-drawback",
+        "claim-trekking-national-parks-third-edition-compatibility",
+        "claim-trekking-national-parks-third-edition-drawback"
+      ],
+      "productIds": [
+        "leave-only-footprints-paperback",
+        "trekking-national-parks-third-edition"
+      ],
+      "pairIds": [
+        "park-story-to-trail"
+      ],
+      "disclosureRequired": false,
+      "externalPostId": null
+    },
+    {
+      "id": "photo-technique-weekend",
+      "platform": "instagram",
+      "format": "four-slide-carousel",
+      "status": "draft",
+      "angle": "Teach the The technique-to-photo-walk loop decision through recipient fit and a concrete interaction",
+      "headline": "Technique today, one assignment this weekend",
+      "copy": "The camera they already own may be enough. Pair one approachable technique with one safe, lawful photo walk and review a single image together afterward.",
+      "assetBrief": "Original four-slide-carousel using typography and simple line illustrations only; show the interaction, the choose-one fallback, and no third-party product photography or logos.",
+      "altText": "Editorial graphic explaining The technique-to-photo-walk loop, its interaction, and the check that determines whether to choose only one item.",
+      "destinationUrl": "https://tipsforyourgifts.web.app/blog/read-it-then-play-it-gift-pairs",
+      "claimIds": [
+        "claim-technique-to-photo-walk-friction",
+        "claim-technique-to-photo-walk-coherence",
+        "claim-read-this-great-photographs-2023-compatibility",
+        "claim-read-this-great-photographs-2023-drawback",
+        "claim-52-assignments-street-photography-compatibility",
+        "claim-52-assignments-street-photography-drawback"
+      ],
+      "productIds": [
+        "read-this-great-photographs-2023",
+        "52-assignments-street-photography"
+      ],
+      "pairIds": [
+        "technique-to-photo-walk"
+      ],
+      "disclosureRequired": false,
+      "externalPostId": null
+    },
+    {
+      "id": "fungal-network-trace",
+      "platform": "pinterest",
+      "format": "systems-diagram",
+      "status": "draft",
+      "angle": "Teach the The fungal-network table decision through recipient fit and a concrete interaction",
+      "headline": "Trace the fungal exchange from page to table",
+      "copy": "Entangled Life opens the ecology; Undergrove turns exchange into a puzzle. Follow carbon and nutrients, then name what the game necessarily leaves out.",
+      "assetBrief": "Original systems-diagram using typography and simple line illustrations only; show the interaction, the choose-one fallback, and no third-party product photography or logos.",
+      "altText": "Editorial graphic explaining The fungal-network table, its interaction, and the check that determines whether to choose only one item.",
+      "destinationUrl": "https://tipsforyourgifts.web.app/blog/read-it-then-play-it-gift-pairs",
+      "claimIds": [
+        "claim-fungal-network-table-friction",
+        "claim-fungal-network-table-coherence",
+        "claim-fungal-network-table-budget",
+        "claim-entangled-life-paperback-compatibility",
+        "claim-entangled-life-paperback-drawback",
+        "claim-undergrove-base-game-compatibility",
+        "claim-undergrove-base-game-drawback"
+      ],
+      "productIds": [
+        "entangled-life-paperback",
+        "undergrove-base-game"
+      ],
+      "pairIds": [
+        "fungal-network-table"
+      ],
+      "disclosureRequired": false,
+      "externalPostId": null
+    },
+    {
+      "id": "cook-tool-self-purchase-gap",
+      "platform": "tiktok",
+      "format": "thirty-second-script",
+      "status": "draft",
+      "angle": "Teach the The temperature-to-measurement loop decision through recipient fit and a concrete interaction",
+      "headline": "The useful kitchen tool cooks postpone buying",
+      "copy": "If you have watched a cook guess doneness or borrow a thermometer, that observed workaround is the gift clue. Verify model TP19H, duplicates, probe safety, one AAA battery, and the live bundle subtotal.",
+      "assetBrief": "Original thirty-second-script using typography and simple line illustrations only; show the interaction, the choose-one fallback, and no third-party product photography or logos.",
+      "altText": "Editorial graphic explaining The temperature-to-measurement loop, its interaction, and the check that determines whether to choose only one item.",
+      "destinationUrl": "https://tipsforyourgifts.web.app/blog/read-it-then-play-it-gift-pairs",
+      "claimIds": [
+        "claim-temperature-to-measurement-friction",
+        "claim-temperature-to-measurement-coherence",
+        "claim-temperature-to-measurement-budget",
+        "claim-the-food-lab-hardcover-compatibility",
+        "claim-the-food-lab-hardcover-drawback",
+        "claim-temppro-tp19h-compatibility",
+        "claim-temppro-tp19h-drawback"
+      ],
+      "productIds": [
+        "the-food-lab-hardcover",
+        "temppro-tp19h"
+      ],
+      "pairIds": [
+        "temperature-to-measurement"
+      ],
+      "disclosureRequired": false,
+      "externalPostId": null
+    }
+  ]
+}

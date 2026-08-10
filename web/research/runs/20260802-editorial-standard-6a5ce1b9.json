@@ -1,0 +1,150 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "20260802-editorial-standard-6a5ce1b9",
+  "ideaId": "foundation-editorial-standard",
+  "contentType": "editorial",
+  "status": "validated",
+  "topic": "Tips for Your Gifts editorial research and affiliate standards",
+  "audience": "Thoughtful gift buyers",
+  "occasion": "Every occasion",
+  "budgetBands": ["all"],
+  "riskClass": "low",
+  "draftAuthor": "editorial-writer",
+  "startedAt": "2026-08-02T20:00:00.000Z",
+  "completedAt": "2026-08-02T22:00:00.000Z",
+  "researchPasses": [
+    { "pass": 1, "materialNoveltyRate": 1, "newCandidates": 0, "newDecisionFactors": 8 },
+    { "pass": 2, "materialNoveltyRate": 0.08, "newCandidates": 0, "newDecisionFactors": 1 },
+    { "pass": 3, "materialNoveltyRate": 0, "newCandidates": 0, "newDecisionFactors": 0 }
+  ],
+  "sources": [
+    {
+      "id": "src-ftc-endorsements",
+      "url": "https://www.ftc.gov/business-guidance/resources/ftcs-endorsement-guides-what-people-are-asking",
+      "publisher": "Federal Trade Commission",
+      "title": "The FTC's Endorsement Guides: What People Are Asking",
+      "accessedAt": "2026-08-02",
+      "sourceClass": "regulator",
+      "trustTier": "A",
+      "independenceGroup": "ftc"
+    },
+    {
+      "id": "src-ftc-reviews",
+      "url": "https://www.ftc.gov/business-guidance/resources/consumer-reviews-testimonials-rule-questions-answers",
+      "publisher": "Federal Trade Commission",
+      "title": "Consumer Reviews and Testimonials Rule: Questions and Answers",
+      "accessedAt": "2026-08-02",
+      "sourceClass": "regulator",
+      "trustTier": "A",
+      "independenceGroup": "ftc"
+    },
+    {
+      "id": "src-google-reviews",
+      "url": "https://developers.google.com/search/docs/specialty/ecommerce/write-high-quality-reviews",
+      "publisher": "Google Search Central",
+      "title": "Write high quality reviews",
+      "accessedAt": "2026-08-02",
+      "sourceClass": "search-policy",
+      "trustTier": "A",
+      "independenceGroup": "google"
+    },
+    {
+      "id": "src-google-ai",
+      "url": "https://developers.google.com/search/docs/fundamentals/using-gen-ai-content",
+      "publisher": "Google Search Central",
+      "title": "Guidance on generative AI content",
+      "accessedAt": "2026-08-02",
+      "sourceClass": "search-policy",
+      "trustTier": "A",
+      "independenceGroup": "google"
+    },
+    {
+      "id": "src-google-links",
+      "url": "https://developers.google.com/search/docs/crawling-indexing/qualify-outbound-links",
+      "publisher": "Google Search Central",
+      "title": "Qualify outbound links",
+      "accessedAt": "2026-08-02",
+      "sourceClass": "search-policy",
+      "trustTier": "A",
+      "independenceGroup": "google"
+    },
+    {
+      "id": "src-cpsc-recalls",
+      "url": "https://www.cpsc.gov/Recalls",
+      "publisher": "U.S. Consumer Product Safety Commission",
+      "title": "Recalls",
+      "accessedAt": "2026-08-02",
+      "sourceClass": "safety-authority",
+      "trustTier": "A",
+      "independenceGroup": "cpsc"
+    },
+    {
+      "id": "src-amazon-agreement",
+      "url": "https://affiliate-program.amazon.com/help/operating/agreement",
+      "publisher": "Amazon Associates",
+      "title": "Associates Program Operating Agreement",
+      "accessedAt": "2026-08-02",
+      "sourceClass": "affiliate-program",
+      "trustTier": "A",
+      "independenceGroup": "amazon"
+    },
+    {
+      "id": "src-firebase-hosting",
+      "url": "https://firebase.google.com/docs/hosting/quickstart",
+      "publisher": "Firebase",
+      "title": "Get started with Firebase Hosting",
+      "accessedAt": "2026-08-02",
+      "sourceClass": "platform-documentation",
+      "trustTier": "A",
+      "independenceGroup": "google-firebase"
+    }
+  ],
+  "claims": [
+    {
+      "id": "claim-clear-disclosure",
+      "text": "Material affiliate relationships should be clearly and conspicuously disclosed near the endorsement.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": ["src-ftc-endorsements"]
+    },
+    {
+      "id": "claim-no-fake-reviews",
+      "text": "False or fake reviews and testimonials, including AI-generated examples, are prohibited by the FTC consumer review rule.",
+      "risk": "high",
+      "status": "supported",
+      "sourceIds": ["src-ftc-reviews"]
+    },
+    {
+      "id": "claim-ai-value",
+      "text": "Scaled AI content without added user value can violate Google spam policies.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": ["src-google-ai"]
+    },
+    {
+      "id": "claim-sponsored-rel",
+      "text": "Paid outbound links should use the sponsored relationship value.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": ["src-google-links"]
+    }
+  ],
+  "candidates": [],
+  "finalists": [],
+  "affiliateLinks": [],
+  "article": {
+    "slug": "how-we-research-gifts",
+    "editorialScore": 94,
+    "evidenceConfidence": 92,
+    "evidenceMode": "editorial_standard",
+    "status": "publication_ready"
+  },
+  "qa": {
+    "passed": true,
+    "reviewerRole": "independent-editor",
+    "reviewerId": "standards-red-team",
+    "receiptPath": "research/reviews/20260802-editorial-standard-6a5ce1b9.qa.v1.json",
+    "blockers": [],
+    "warnings": []
+  }
+}

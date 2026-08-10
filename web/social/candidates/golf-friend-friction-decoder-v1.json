@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "1.0.0",
+  "candidateId": "golf-friend-friction-decoder-v1",
+  "packId": "gifts-for-a-golf-friend-launch",
+  "postId": "golf-friend-friction-decoder",
+  "platform": "pinterest",
+  "packSha256": "e429b8839bffc4de9dfc36cd00dd6d81bdc4f641c2a468061ad3160bb3473f1f",
+  "postSha256": "bfb80a974ee83e48be5a4bc751107cb86e64ce1adf8be844b39e2f467d433715",
+  "assetPath": "/social-media/golf-friend-friction-decoder-v1.png",
+  "publicUrl": "https://tipsforyourgifts.web.app/social-media/golf-friend-friction-decoder-v1.png",
+  "contentSha256": "4f2ca07b52851c7b96a03af1fd289c2389f37b65de10c0dfb33bcf3a5eb7f760",
+  "contentType": "image/png",
+  "byteLength": 2515715,
+  "width": 1024,
+  "height": 1536,
+  "aspectRatio": "2:3",
+  "altText": "Checklist showing four observed golfer frictions: dirty grooves, a worn towel, wet grip, and postponed putting practice.",
+  "generator": "openai-built-in-imagegen",
+  "generatedAt": "2026-08-03T09:09:00.000Z",
+  "rightsPosture": "original-ai-generated-candidate-unapproved",
+  "status": "candidate",
+  "automatedChecks": {
+    "exactTextVerified": true,
+    "postBriefMatch": true,
+    "noThirdPartyLogos": true,
+    "noMerchantImagery": true,
+    "noProductClaims": true,
+    "dimensionsVerified": true
+  }
+}

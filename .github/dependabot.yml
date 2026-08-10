@@ -1,0 +1,15 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /web
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    groups:
+      angular:
+        patterns:
+          - "@angular/*"
+      test-and-build:
+        dependency-type: development
+    labels:
+      - dependencies

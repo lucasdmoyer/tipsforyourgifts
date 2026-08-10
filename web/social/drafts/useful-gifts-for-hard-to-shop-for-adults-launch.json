@@ -1,0 +1,113 @@
+{
+  "schemaVersion": "1.0.0",
+  "packId": "useful-gifts-for-hard-to-shop-for-adults-launch",
+  "articleSlug": "useful-gifts-for-hard-to-shop-for-adults",
+  "researchRun": "20260803-useful-gifts-hard-to-shop-for-adults-ceca335c",
+  "status": "draft",
+  "createdAt": "2026-08-03T04:10:00.000Z",
+  "policy": {
+    "officialApiRequired": true,
+    "externalPublishingAuthorized": false,
+    "containsAffiliateLinks": false
+  },
+  "posts": [
+    {
+      "id": "pinterest-gift-decoder",
+      "platform": "pinterest",
+      "format": "vertical-flowchart",
+      "status": "draft",
+      "angle": "Five-minute recipient decoder",
+      "headline": "The 5-Minute Hard-to-Shop-For Gift Decoder",
+      "copy": "They buy what they want and hate random clutter. Start with one observed friction, then run it through five recipient-fit gates before you buy. Save this decoder for the next birthday or holiday.",
+      "assetBrief": "Vertical evergreen flowchart moving from recipient phrases to observed routines, fit gates, and a final buy-or-skip decision in the site palette.",
+      "altText": "A vertical gift decision flowchart for people who buy what they want and dislike clutter.",
+      "destinationUrl": "https://tipsforyourgifts.web.app/blog/useful-gifts-for-hard-to-shop-for-adults",
+      "disclosureRequired": false,
+      "externalPostId": null
+    },
+    {
+      "id": "pinterest-daily-friction",
+      "platform": "pinterest",
+      "format": "checklist-pin",
+      "status": "draft",
+      "angle": "Daily friction test",
+      "headline": "A Useful Gift Should Fix a Problem They Already Notice",
+      "copy": "The practical-gift test: used weekly, replaces or organizes, stores easily, needs no subscription, and is simple to return. If the idea fails one gate, skip it without guilt.",
+      "assetBrief": "Clean checklist Pin with five large checkboxes and a quiet final skip cue; show no product photography or merchant marks.",
+      "altText": "Five checks for deciding whether a practical gift will be useful instead of becoming clutter.",
+      "destinationUrl": "https://tipsforyourgifts.web.app/blog/useful-gifts-for-hard-to-shop-for-adults",
+      "disclosureRequired": false,
+      "externalPostId": null
+    },
+    {
+      "id": "pinterest-no-clutter-matrix",
+      "platform": "pinterest",
+      "format": "recipient-matrix",
+      "status": "draft",
+      "angle": "No-clutter recipient matrix",
+      "headline": "Five Useful Gifts Organized by the Habit You Actually See",
+      "copy": "Traveler, home cook, laptop commuter, dog walker, or careful fixer: match the gift to a routine you have observed. Each idea includes the reason to buy and the reason to walk away.",
+      "assetBrief": "Vertical matrix with five recipient behaviors, one friction each, and a paired buy-when and skip-when cell for every row.",
+      "altText": "A matrix matching five practical gift categories to observed recipient habits and reasons to skip.",
+      "destinationUrl": "https://tipsforyourgifts.web.app/blog/useful-gifts-for-hard-to-shop-for-adults",
+      "disclosureRequired": false,
+      "externalPostId": null
+    },
+    {
+      "id": "pinterest-what-they-say",
+      "platform": "pinterest",
+      "format": "carousel",
+      "status": "draft",
+      "angle": "Translate recipient phrases",
+      "headline": "What “I Don’t Need Anything” Should Change About Your Search",
+      "copy": "Sometimes it means respect the boundary. Sometimes it means notice the worn item or repeated complaint. Translate common hard-to-shop-for phrases into a better research question before choosing a product.",
+      "assetBrief": "Five-slide carousel pairing a common recipient phrase with a non-pushy action: observe, ask, replace, spend time, or choose no gift.",
+      "altText": "Carousel translating common hard-to-shop-for phrases into respectful gift research actions.",
+      "destinationUrl": "https://tipsforyourgifts.web.app/blog/useful-gifts-for-hard-to-shop-for-adults",
+      "disclosureRequired": false,
+      "externalPostId": null
+    },
+    {
+      "id": "pinterest-right-gift-wrong-person",
+      "platform": "pinterest",
+      "format": "split-card-series",
+      "status": "draft",
+      "angle": "Great product wrong recipient",
+      "headline": "Useful Gift, Wrong Recipient? Read the Skip Side First",
+      "copy": "A packing cube can be smart for one traveler and clutter for another. See five evidence-backed ideas with an equally prominent drawback, because a practical gift only works when the recipient fit is real.",
+      "assetBrief": "Split-screen Pin series with green Great for and coral Skip if columns; use simple original line icons rather than product imagery.",
+      "altText": "A split card comparing who a useful gift fits with who should skip it.",
+      "destinationUrl": "https://tipsforyourgifts.web.app/blog/useful-gifts-for-hard-to-shop-for-adults",
+      "disclosureRequired": false,
+      "externalPostId": null
+    },
+    {
+      "id": "instagram-five-filters",
+      "platform": "instagram",
+      "format": "carousel",
+      "status": "draft",
+      "angle": "Five filters before checkout",
+      "headline": "Before You Buy for the Person Who Buys Everything",
+      "copy": "Do not start with a product. Start with the complaint you have actually heard. Swipe through five filters that turn a generic practical gift into a recipient-specific decision—and make it easy to skip the wrong idea.",
+      "assetBrief": "Seven-card square carousel: hook, five filters, and article CTA; typography-led, original graphics, no manufacturer logos.",
+      "altText": "Instagram carousel explaining five recipient-fit filters for practical gifts.",
+      "destinationUrl": "https://tipsforyourgifts.web.app/blog/useful-gifts-for-hard-to-shop-for-adults",
+      "disclosureRequired": false,
+      "externalPostId": null
+    },
+    {
+      "id": "tiktok-three-skips",
+      "platform": "tiktok",
+      "format": "short-script",
+      "status": "draft",
+      "angle": "Three fast reasons to skip",
+      "headline": "Three Reasons a “Useful” Gift Still Becomes Clutter",
+      "copy": "It solves a problem they do not have. It requires an account they do not want. It duplicates the exact version they already chose. Use the observed-friction test before you buy for a practical and picky adult.",
+      "assetBrief": "Twenty-second text-led short with three quick failure examples, a pause on respect no gift, and an owned-article end card.",
+      "altText": "Short video script listing three reasons a practical gift can still become unwanted clutter.",
+      "destinationUrl": "https://tipsforyourgifts.web.app/blog/useful-gifts-for-hard-to-shop-for-adults",
+      "disclosureRequired": false,
+      "externalPostId": null
+    }
+  ]
+}

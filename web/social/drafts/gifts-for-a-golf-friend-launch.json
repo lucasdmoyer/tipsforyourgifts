@@ -1,0 +1,193 @@
+{
+  "schemaVersion": "1.0.0",
+  "packId": "gifts-for-a-golf-friend-launch",
+  "articleSlug": "gifts-for-a-golf-friend",
+  "researchRun": "20260803-gifts-for-golf-friend-53cb00a5",
+  "status": "draft",
+  "createdAt": "2026-08-03T06:50:00.000Z",
+  "policy": {
+    "officialApiRequired": true,
+    "externalPublishingAuthorized": false,
+    "containsAffiliateLinks": false
+  },
+  "posts": [
+    {
+      "id": "golf-friend-friction-decoder",
+      "platform": "pinterest",
+      "format": "vertical-checklist",
+      "status": "draft",
+      "angle": "Translate a golfer's visible workaround into a safer gift decision",
+      "headline": "The thoughtful golf-gift test: what have you actually noticed?",
+      "copy": "Before buying golf gear, name the workaround: dirty grooves cleaned with a tee, a worn towel, wet grip, or a practice plan that never gets set up. Our guide maps five witnessed frictions to gifts—and tells you when a gift card is smarter.",
+      "assetBrief": "Original vertical checklist with four illustrated course-day frictions, one check-before-buying line, and no product photography or logos.",
+      "altText": "Checklist showing four observed golfer frictions: dirty grooves, a worn towel, wet grip, and postponed putting practice.",
+      "destinationUrl": "https://tipsforyourgifts.web.app/blog/gifts-for-a-golf-friend",
+      "claimIds": [
+        "claim-golf-preference-specificity",
+        "claim-dirty-groove-workaround",
+        "claim-small-item-deferral"
+      ],
+      "productIds": [
+        "grooveit-minig",
+        "club-glove-caddy-towel",
+        "footjoy-raingrip-pair",
+        "puttout-pressure-putt-trainer"
+      ],
+      "pairIds": [],
+      "disclosureRequired": false,
+      "externalPostId": null
+    },
+    {
+      "id": "golf-friend-clean-club-pair",
+      "platform": "pinterest",
+      "format": "two-part-diagram",
+      "status": "draft",
+      "angle": "Show why a coherent pair completes one job instead of adding cart value",
+      "headline": "A golf gift pair that actually belongs together",
+      "copy": "Brush first, wipe second. A compact groove brush and a replacement towel perform different parts of one course-day routine. Save the pair only if both current tools are missing or worn; otherwise choose the anchor alone.",
+      "assetBrief": "Original two-step brush-then-wipe diagram with distinct item roles, an 84 coherence score, and a clear choose-only-one fallback.",
+      "altText": "Two-step diagram showing a golf brush loosening groove debris and a towel wiping moisture from the club.",
+      "destinationUrl": "https://tipsforyourgifts.web.app/blog/gifts-for-a-golf-friend",
+      "claimIds": [
+        "claim-clean-club-pair",
+        "claim-minig-benefit",
+        "claim-towel-benefit"
+      ],
+      "productIds": [
+        "grooveit-minig",
+        "club-glove-caddy-towel"
+      ],
+      "pairIds": [
+        "clean-club-course-kit"
+      ],
+      "disclosureRequired": false,
+      "externalPostId": null
+    },
+    {
+      "id": "golf-friend-buy-skip-brush",
+      "platform": "pinterest",
+      "format": "buy-skip-card",
+      "status": "draft",
+      "angle": "Make the recipient observation and rejection condition equally prominent",
+      "headline": "Buy this golf brush only if you have seen this exact workaround",
+      "copy": "Great fit: they scrape groove dirt with a tee or complain about an awkward brush. Skip it: they already carry a water brush they like or do not use a bag. Current owner reviews also make durability a check, not an assumption. Thoughtfulness is the fit signal, not the category label.",
+      "assetBrief": "Original split card with green Buy if and coral Skip if columns, a simple tee and brush line illustration, and no merchant imagery.",
+      "altText": "Buy-if and skip-if card for a compact golf brush based on whether the recipient improvises groove cleaning.",
+      "destinationUrl": "https://tipsforyourgifts.web.app/blog/gifts-for-a-golf-friend",
+      "claimIds": [
+        "claim-dirty-groove-workaround",
+        "claim-minig-benefit",
+        "claim-minig-drawback",
+        "claim-minig-compatibility"
+      ],
+      "productIds": [
+        "grooveit-minig"
+      ],
+      "pairIds": [],
+      "disclosureRequired": false,
+      "externalPostId": null
+    },
+    {
+      "id": "golf-friend-weather-check",
+      "platform": "pinterest",
+      "format": "decision-flow",
+      "status": "draft",
+      "angle": "Separate a true all-weather golfer from a generic golf recipient",
+      "headline": "Does your golf friend actually play through bad weather?",
+      "copy": "Rain gloves require both the FootJoy fit profile—Regular Pair or Cadet Pair—and size from S through XL. A full-size umbrella requires weather habits and storage. This decision flow keeps a useful all-weather gift from becoming the wrong fit for a fair-weather or minimalist golfer.",
+      "assetBrief": "Original vertical yes-no decision flow covering wet conditions, FootJoy fit profile, size, umbrella storage, and a gift-card fallback.",
+      "altText": "Decision flow asking about wet-weather play, Regular or Cadet FootJoy fit, glove size, and storage for a full-size golf umbrella.",
+      "destinationUrl": "https://tipsforyourgifts.web.app/blog/gifts-for-a-golf-friend",
+      "claimIds": [
+        "claim-wet-grip-friction",
+        "claim-raingrip-compatibility",
+        "claim-umbrella-compatibility"
+      ],
+      "productIds": [
+        "footjoy-raingrip-pair",
+        "titleist-tour-double-canopy"
+      ],
+      "pairIds": [],
+      "disclosureRequired": false,
+      "externalPostId": null
+    },
+    {
+      "id": "golf-friend-not-equipment",
+      "platform": "pinterest",
+      "format": "avoidance-list",
+      "status": "draft",
+      "angle": "Turn hobby specificity into a confident list of gifts not to guess",
+      "headline": "The golf gifts not to surprise a selective golfer with",
+      "copy": "Clubs, balls, shoes, bags, grips, rangefinders, and swing technology can all be great—when the exact preference is known. Without it, solve a witnessed small annoyance or fund the choice they want to make themselves.",
+      "assetBrief": "Original no-guessing checklist with seven equipment categories, one observed-friction alternative, and one gift-credit fallback.",
+      "altText": "Checklist of preference-heavy golf equipment categories that should not be guessed as surprise gifts.",
+      "destinationUrl": "https://tipsforyourgifts.web.app/blog/gifts-for-a-golf-friend",
+      "claimIds": [
+        "claim-golf-preference-specificity"
+      ],
+      "productIds": [
+        "grooveit-minig"
+      ],
+      "pairIds": [],
+      "disclosureRequired": false,
+      "externalPostId": null
+    },
+    {
+      "id": "golf-friend-instagram-carousel",
+      "platform": "instagram",
+      "format": "seven-slide-carousel",
+      "status": "draft",
+      "angle": "Teach the observed-friction framework through five golfer moments",
+      "headline": "Five golf gifts that say 'I noticed'",
+      "copy": "The friend who cleans grooves with a tee. The towel that should have retired. The all-weather round. The putting plan with no setup. Five researched gifts, five reasons to skip, and one pair that completes a real job.",
+      "assetBrief": "Seven original slides: thesis, five friction scenes, and final pre-gift checklist; use illustrations and typography only.",
+      "altText": "Carousel summarizing five observed golfer frictions and the check-before-buying rule for each gift.",
+      "destinationUrl": "https://tipsforyourgifts.web.app/blog/gifts-for-a-golf-friend",
+      "claimIds": [
+        "claim-dirty-groove-workaround",
+        "claim-small-item-deferral",
+        "claim-wet-grip-friction",
+        "claim-practice-setup-friction"
+      ],
+      "productIds": [
+        "grooveit-minig",
+        "club-glove-caddy-towel",
+        "footjoy-raingrip-pair",
+        "titleist-tour-double-canopy",
+        "puttout-pressure-putt-trainer"
+      ],
+      "pairIds": [
+        "clean-club-course-kit"
+      ],
+      "disclosureRequired": false,
+      "externalPostId": null
+    },
+    {
+      "id": "golf-friend-tiktok-script",
+      "platform": "tiktok",
+      "format": "thirty-second-script",
+      "status": "draft",
+      "angle": "Open with the wrong generic-golf-gift pattern and resolve it with observation",
+      "headline": "Stop buying your golf friend random golf stuff",
+      "copy": "Hook: your golf friend does not need another novelty gadget. Show four quick workarounds—a tee cleaning grooves, a worn towel, a wet grip, and an unused practice plan—then ask one question: which problem have you actually seen?",
+      "assetBrief": "Original short-form storyboard using staged generic props only; no third-party product images, logos, course footage, or hands-on performance claims.",
+      "altText": "Short video storyboard contrasting random golf gadgets with four observable course-day friction points.",
+      "destinationUrl": "https://tipsforyourgifts.web.app/blog/gifts-for-a-golf-friend",
+      "claimIds": [
+        "claim-golf-preference-specificity",
+        "claim-dirty-groove-workaround",
+        "claim-small-item-deferral",
+        "claim-wet-grip-friction"
+      ],
+      "productIds": [
+        "grooveit-minig",
+        "club-glove-caddy-towel",
+        "footjoy-raingrip-pair",
+        "puttout-pressure-putt-trainer"
+      ],
+      "pairIds": [],
+      "disclosureRequired": false,
+      "externalPostId": null
+    }
+  ]
+}

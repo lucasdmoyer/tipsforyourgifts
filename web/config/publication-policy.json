@@ -1,0 +1,22 @@
+{
+  "schemaVersion": "1.0.0",
+  "updatedAt": "2026-08-03T08:15:00.000Z",
+  "mode": "founder_reviewed",
+  "requiredApproverLogin": "lucasdmoyer",
+  "automaticPromotion": {
+    "enabled": false,
+    "minimumSuccessfulFounderReviewedReleases": 10,
+    "verifiedSuccessfulReleaseCount": 0,
+    "founderApproved": false,
+    "approvedBy": null,
+    "approvedAt": null
+  },
+  "requiredGates": {
+    "independentQaReceipt": true,
+    "deterministicValidation": true,
+    "firebaseExactShaPreview": true,
+    "productionSmoke": true,
+    "rollbackTargetRecorded": true,
+    "verifiedReleaseReceipt": true
+  }
+}

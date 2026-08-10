@@ -1,0 +1,16 @@
+{
+  "schemaVersion": "1.0.0",
+  "receiptId": "20260802-editorial-standard-6a5ce1b9-qa",
+  "runId": "20260802-editorial-standard-6a5ce1b9",
+  "articleSlug": "how-we-research-gifts",
+  "reviewedAt": "2026-08-03T04:40:00.000Z",
+  "reviewerRole": "independent-editor",
+  "reviewerId": "standards-red-team",
+  "workflowRunId": "local-codex-foundation-review",
+  "verdict": "passed",
+  "evidenceSha256": "f871ef023df1df7b801e71b3b0603a2feb0aa26558548d736ab3dfe67f949ad1",
+  "articleSha256": "9cb70d6fabae778577ef63dd13c241e3335d5badeaf7e184e07784b4b3fdee1a",
+  "socialSha256": null,
+  "blockers": [],
+  "warnings": []
+}

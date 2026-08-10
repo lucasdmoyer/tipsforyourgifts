@@ -1,0 +1,93 @@
+name: Configure aggregate Search Console measurement
+
+on:
+  workflow_dispatch:
+    inputs:
+      expected_growth_sha256:
+        description: "Exact growth registry SHA-256 visible in Studio"
+        required: true
+        type: string
+      property_reference:
+        description: "Exact verified URL-prefix property; must be https://tipsforyourgifts.web.app/"
+        required: true
+        type: string
+        default: "https://tipsforyourgifts.web.app/"
+      configuration_evidence_url:
+        description: "Credential-free HTTPS issue or PR recording ownership, read-only API, OIDC, and reporting review"
+        required: true
+        type: string
+      confirmation:
+        description: "Type CONFIGURE-search-console"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: search-console-configure
+  cancel-in-progress: false
+
+jobs:
+  configure:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Require repository-owner decision
+        env:
+          ACTOR: ${{ github.actor }}
+          OWNER: ${{ github.repository_owner }}
+          CONFIRMATION: ${{ inputs.confirmation }}
+        run: |
+          test "$ACTOR" = "$OWNER" || { echo "Only the repository owner may configure growth measurement." >&2; exit 1; }
+          test "$CONFIRMATION" = "CONFIGURE-search-console" || { echo "Action-time confirmation does not match the Search Console connector." >&2; exit 1; }
+      - uses: actions/checkout@v5
+        with:
+          ref: master
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24.14.0"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - name: Record the non-secret configured measurement boundary
+        env:
+          EXPECTED_GROWTH_SHA256: ${{ inputs.expected_growth_sha256 }}
+          PROPERTY_REFERENCE: ${{ inputs.property_reference }}
+          CONFIGURATION_EVIDENCE_URL: ${{ inputs.configuration_evidence_url }}
+          CONFIRMATION: ${{ inputs.confirmation }}
+          FOUNDER_LOGIN: ${{ github.actor }}
+        run: |
+          npm ci --prefix web
+          npm run validate
+          npm --prefix web run growth:search-console:configure -- --expected-growth-sha256="$EXPECTED_GROWTH_SHA256" --property-reference="$PROPERTY_REFERENCE" --configuration-evidence-url="$CONFIGURATION_EVIDENCE_URL" --confirmation="$CONFIRMATION" --founder-login="$FOUNDER_LOGIN"
+          npm --prefix web run generate
+      - name: Prove configuration has no external measurement authority
+        run: |
+          while IFS= read -r changed_path; do
+            case "$changed_path" in
+              web/src/data/growth.json|web/src/data/operations.json|web/src/app/generated/content.generated.ts|web/public/sitemap.xml) ;;
+              *) echo "Search Console configuration changed forbidden path: $changed_path" >&2; exit 1 ;;
+            esac
+          done < <(git diff --name-only HEAD)
+          npm run validate
+          npm run build
+          npm run smoke
+          git diff --check
+      - name: Commit the configuration branch
+        env:
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -c "codex/configure-search-console-$RUN_ID"
+          git add web/src/data/growth.json web/src/data/operations.json web/src/app/generated/content.generated.ts web/public/sitemap.xml
+          git commit -m "Configure aggregate Search Console measurement"
+          git push origin "codex/configure-search-console-$RUN_ID"
+      - name: Open the configuration pull request
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          gh pr create --base master --head "codex/configure-search-console-$RUN_ID" --title "Configure aggregate Search Console measurement" --body "This founder-dispatched patch records the exact URL-prefix property, credential secret names, OIDC authentication method, read-only page-aggregate collection method, and credential-free evidence URL. It stores no credential value, calls no Google API, imports no snapshot, changes no Firebase state, and starts no growth experiment. Activation remains a separate protected decision."

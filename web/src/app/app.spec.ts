@@ -1,0 +1,137 @@
+import { TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
+import { App } from './app';
+import { GROWTH, OPERATIONS, STRATEGY } from './generated/content.generated';
+import { StudioPage } from './pages';
+
+describe('App', () => {
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({ imports: [App, StudioPage], providers: [provideRouter([])] }).compileComponents();
+  });
+
+  it('renders the editorial brand and primary navigation', () => {
+    const fixture = TestBed.createComponent(App);
+    fixture.detectChanges();
+    const element = fixture.nativeElement as HTMLElement;
+    expect(element.querySelector('.brand')?.textContent).toContain('Tips for Your Gifts');
+    expect(element.querySelectorAll('.nav-links a')).toHaveLength(4);
+  });
+
+  it('renders the aggregate-only growth and experiment controls', () => {
+    const fixture = TestBed.createComponent(StudioPage);
+    fixture.detectChanges();
+    const element = fixture.nativeElement as HTMLElement;
+    expect(element.textContent).toContain('Measure first. Scale what earns attention.');
+    expect(element.textContent).toContain('Personal data stored');
+    const connectorLists = element.querySelectorAll('.connector-list');
+    expect(connectorLists[connectorLists.length - 1].querySelectorAll('.connector-row')).toHaveLength(OPERATIONS.growth.connectorsTotal);
+    const experimentGrids = element.querySelectorAll('.experiment-grid');
+    expect(experimentGrids[experimentGrids.length - 1].querySelectorAll('.experiment-card')).toHaveLength(GROWTH.experiments.length);
+  });
+
+  it('renders the founder strategy intake and approval controls', () => {
+    const fixture = TestBed.createComponent(StudioPage);
+    fixture.detectChanges();
+    const element = fixture.nativeElement as HTMLElement;
+    expect(element.textContent).toContain('Ideas flow in. Authority stays separated.');
+    expect(element.textContent).toContain('Strategy proposals');
+    expect(element.querySelector('a[href*="strategy-approval.yml"]')).not.toBeNull();
+    expect(element.querySelector('a[href*="strategy-idea.yml"]')).not.toBeNull();
+    const proposedIdeas = STRATEGY.ideas.filter((idea) => idea.founderDisposition === 'proposed').sort((left, right) => ({ high: 0, medium: 1, low: 2 }[left.priority] ?? 3) - ({ high: 0, medium: 1, low: 2 }[right.priority] ?? 3) || (right.pairing?.coherenceScore ?? 0) - (left.pairing?.coherenceScore ?? 0) || left.id.localeCompare(right.id));
+    if (proposedIdeas[0]) {
+      expect(element.textContent).toContain(`${proposedIdeas.length} thoughtful ${proposedIdeas.length === 1 ? 'thesis awaits' : 'theses await'} your decision`);
+      expect(element.textContent).toContain(`gh workflow run strategy-approval.yml -f idea_id=${proposedIdeas[0].id} -f expected_revision=${proposedIdeas[0].revision}`);
+      expect(element.textContent).toContain(proposedIdeas[0].title);
+    }
+    expect(element.textContent).toContain(`Publication mode: ${OPERATIONS.publication.mode.replaceAll('_', ' ')}`);
+    expect(element.textContent).toContain(`policy snapshot ${OPERATIONS.publication.verifiedSuccessfulReleaseCount}/${OPERATIONS.publication.minimumSuccessfulFounderReviewedReleases}`);
+    expect(element.textContent).toContain('recounts unique successful GitHub production deployments');
+    expect(element.querySelector('a[href*="publication-policy-enable.yml"]')).not.toBeNull();
+    expect(element.querySelector('a[href*="firebase-production.yml"]')).not.toBeNull();
+    expect(element.textContent).toContain('pauses with its preview URL for production approval');
+    expect(element.textContent).toContain('promotes the same static artifact');
+    expect(element.textContent).toContain('Current release candidate: publication-set-');
+    const candidate = OPERATIONS.publication.currentCandidate;
+    expect(element.textContent).toContain(`${candidate.articles} articles · ${candidate.independentReviews} independent receipts · ${candidate.socialLaunchPacks} launch packs · ${candidate.socialDrafts} social drafts · ${candidate.affiliateLinks} affiliate links`);
+    expect(element.textContent).toContain('prepared bytes; it is not proof of a live deployment');
+    expect(element.textContent).toContain('Exact candidate content digest');
+    if (OPERATIONS.publication.currentLive.status === 'verified_managed_content_release') {
+      expect(element.textContent).toContain(`Git-recorded live content: ${OPERATIONS.publication.currentLive.manifestId}`);
+      expect(element.textContent).toContain(`candidate match ${OPERATIONS.publication.currentLive.matchesCurrentCandidate ? 'yes' : 'no'}`);
+      expect(element.querySelector(`a[href="${OPERATIONS.publication.currentLive.workflowRunUrl}"]`)).not.toBeNull();
+    } else {
+      expect(element.textContent).toContain('no verified managed release is recorded');
+      expect(element.textContent).toContain('legacy or out-of-band state remains unknown');
+    }
+    expect(element.textContent).toContain('machine-validated receipt retained for 90 days');
+  });
+
+  it('renders a ranked evidence-backed founder agenda', () => {
+    const fixture = TestBed.createComponent(StudioPage);
+    fixture.detectChanges();
+    const element = fixture.nativeElement as HTMLElement;
+    const agenda = OPERATIONS.founderAgenda;
+    expect(element.textContent).toContain(`${agenda.decisions.length} ${agenda.decisions.length === 1 ? 'decision' : 'decisions'}. One clear order.`);
+    expect(element.textContent).toContain('Profitability remains unknown until aggregate measurement.');
+    for (const decision of agenda.decisions) {
+      expect(element.textContent).toContain(`Decision ${decision.rank} · ${decision.category.replaceAll('_', ' ')}`);
+      expect(element.textContent).toContain(decision.title);
+      expect(element.textContent).toContain(decision.recommendation);
+      if (decision.action.command) expect(element.textContent).toContain(decision.action.command);
+      expect(element.querySelector(`a[href="${decision.action.url}"]`)).not.toBeNull();
+    }
+    expect(element.querySelectorAll('.agenda-card')).toHaveLength(Math.max(0, agenda.decisions.length - 1));
+  });
+
+  it('renders the fail-closed autonomous opportunity desk', () => {
+    const fixture = TestBed.createComponent(StudioPage);
+    fixture.detectChanges();
+    const element = fixture.nativeElement as HTMLElement;
+    expect(element.textContent).toContain('Autonomous opportunity desk');
+    expect(element.textContent).toContain('Deep weekly research. One proposal at a time.');
+    expect(element.textContent).toContain(`${OPERATIONS.opportunityScouting.openProposals}/${OPERATIONS.opportunityScouting.maxOpenProposals} founder proposals open.`);
+    if (OPERATIONS.opportunityScouting.posture === 'founder_backlog_full') expect(element.textContent).toContain('The weekly run stops before calling a model.');
+    else expect(element.textContent).toContain(`${OPERATIONS.opportunityScouting.capacityRemaining} proposal slot`);
+    expect(element.textContent).toContain('10+ public sources');
+    expect(element.textContent).toContain('80+ thoughtful');
+    expect(element.querySelector('a[href*="opportunity-scout.yml"]')).not.toBeNull();
+  });
+
+  it('renders fail-closed affiliate and social approval operations', () => {
+    const fixture = TestBed.createComponent(StudioPage);
+    fixture.detectChanges();
+    const element = fixture.nativeElement as HTMLElement;
+    expect(element.textContent).toContain(`${OPERATIONS.affiliate.proposedPrograms} candidates. ${OPERATIONS.affiliate.enabledPrograms} enabled.`);
+    expect(element.textContent).toContain(`${OPERATIONS.social.channelsActive}/${OPERATIONS.social.channelsTotal} channels active.`);
+    expect(element.textContent).toContain(`Open the ${OPERATIONS.social.queue.length}-post approval queue`);
+    expect(element.querySelector('a[href*="affiliate-program-approval.yml"]')).not.toBeNull();
+    expect(element.querySelector('a[href*="affiliate-program-activate.yml"]')).not.toBeNull();
+    expect(element.querySelector('a[href*="social-channel-configure.yml"]')).not.toBeNull();
+    expect(element.querySelector('a[href*="social-channel-activate.yml"]')).not.toBeNull();
+    expect(element.querySelector('a[href*="social-media-approval.yml"]')).not.toBeNull();
+    expect(element.querySelector('a[href*="social-content-approval.yml"]')).not.toBeNull();
+    expect(element.querySelector('a[href*="social-pinterest-publish.yml"]')).not.toBeNull();
+    expect(element.textContent).toContain(`${OPERATIONS.social.creativeCandidates} original creative candidates · ${OPERATIONS.social.mediaAssetsApproved} approved media · ${OPERATIONS.social.approvalReceipts} content receipts · ${OPERATIONS.social.publishReady} ready for official API.`);
+    expect(element.textContent).toContain(OPERATIONS.social.configSha256);
+    const visualCandidate = OPERATIONS.social.queue.find((post) => post.creativeCandidateAssetPath);
+    if (visualCandidate) {
+      expect(element.querySelector(`img[src="${visualCandidate.creativeCandidateAssetPath}"]`)).not.toBeNull();
+      expect(element.textContent).toContain('generated, locally verified, not rights-approved or published');
+    }
+  });
+
+  it('renders the hash-bound research mission operating model', () => {
+    const fixture = TestBed.createComponent(StudioPage);
+    fixture.detectChanges();
+    const element = fixture.nativeElement as HTMLElement;
+    expect(element.textContent).toContain('Research mission control');
+    expect(element.textContent).toContain('One founder decision. Four accountable roles.');
+    expect(element.textContent).toContain('Research editorial team');
+    expect(element.textContent).toContain('Independent evidence editor');
+    expect(element.textContent).toContain('Release operator');
+    expect(element.textContent).toContain('Growth analyst');
+    expect(element.textContent).toContain(`${OPERATIONS.researchMissions.completed} completed · ${OPERATIONS.researchMissions.active} active`);
+    if (OPERATIONS.researchMissions.queue.length === 0) expect(element.textContent).toContain('No automated mission has completed yet.');
+    else expect(element.textContent).toContain(OPERATIONS.researchMissions.queue[0].missionId);
+  });
+});
