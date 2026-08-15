@@ -8,6 +8,7 @@ const root = process.cwd();
 const dist = path.join(root, 'dist');
 const checks = [
   ['home', 'index.html', ['Good gifts, minus the guesswork.', 'rel="canonical"', 'tfg-root']],
+  ['gift finder', 'gift-finder/index.html', ['Find the signal before the product.', 'Reviewed guide directions', 'No quiz result is a purchase instruction.', 'gift_finder_guide_open']],
   ['blog index', 'blog/index.html', ['Every guide starts with a question.', 'How we research gifts']],
   ['standards', 'standards/index.html', ['Trust is the product.', '12 candidate products']],
   ['studio', 'studio/index.html', ['Executive studio', 'Founder agenda', 'unknown until aggregate measurement', 'noindex,nofollow']],

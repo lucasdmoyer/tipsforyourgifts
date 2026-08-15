@@ -60,7 +60,7 @@ const source = `${banner}import type { Article, Growth, Operations, Strategy } f
 await fs.mkdir(generatedDir, { recursive: true });
 await fs.writeFile(outputPath, source);
 const paths = [
-  '/', '/gifts', '/blog', '/standards', '/affiliate-disclosure',
+  '/', '/gift-finder', '/gifts', '/blog', '/standards', '/affiliate-disclosure',
   ...publicArticles.map((article) => `/blog/${article.slug}`)
 ];
 const sitemap = [

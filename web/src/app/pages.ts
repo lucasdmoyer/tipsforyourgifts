@@ -4,6 +4,7 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import type { Article, Product, StrategyIdea } from './content.types';
 import { ContentService } from './content.service';
 import { assessFounderBrief, buildFounderBriefMarkdown, buildStrategyIssueUrl, EMPTY_FOUNDER_BRIEF, type FounderBriefDraft } from './founder-brief';
+import { findGiftGuides, type GiftShape, type RecipientSignal } from './gift-finder';
 import { SeoService } from './seo.service';
 
 @Component({
@@ -20,7 +21,7 @@ import { SeoService } from './seo.service';
       <div>
         @for (tag of article().tags.slice(0, 3); track tag) { <span class="tag">{{ tag }}</span> }
       </div>
-      <a class="read" [routerLink]="['/blog', article().slug]">Read the guide →</a>
+      <a class="read" [routerLink]="['/blog', article().slug]" data-event-name="guide_open" [attr.data-guide-slug]="article().slug">Read the guide →</a>
     </article>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -40,14 +41,17 @@ export class ArticleCardComponent { readonly article = input.required<Article>()
       </div>
       <p class="drawback"><strong>Know before buying:</strong> {{ product().drawback }}</p>
       <p class="quiet">Merchant: {{ product().merchant }} @if (product().priceBand) { · {{ product().priceBand }} }</p>
-      <a class="button" [href]="product().url" target="_blank" [attr.rel]="product().affiliate ? 'sponsored noopener' : 'noopener'">
+      <a class="button" [href]="product().url" target="_blank" [attr.rel]="product().affiliate ? 'sponsored noopener' : 'noopener'" data-event-name="merchant_outbound_click" [attr.data-article-slug]="articleSlug()" [attr.data-product-id]="product().id" [attr.data-paid-link]="product().affiliate">
         Check with {{ product().merchant }}{{ product().affiliate ? ' (paid link)' : '' }}
       </a>
     </article>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ProductCardComponent { readonly product = input.required<Product>(); }
+export class ProductCardComponent {
+  readonly product = input.required<Product>();
+  readonly articleSlug = input.required<string>();
+}
 
 @Component({
   imports: [RouterLink, ArticleCardComponent],
@@ -58,7 +62,8 @@ export class ProductCardComponent { readonly product = input.required<Product>()
         <h1>Good gifts, minus the guesswork.</h1>
         <p class="lede">We turn scattered reviews, product facts, real-world concerns, and budget tradeoffs into useful recommendations you can trust.</p>
         <div class="actions">
-          <a class="button" routerLink="/gifts">Explore gift guides</a>
+          <a class="button" routerLink="/gift-finder">Find a gift direction</a>
+          <a class="button secondary" routerLink="/gifts">Explore gift guides</a>
           <a class="button secondary" routerLink="/standards">See how we research</a>
         </div>
       </div>
@@ -112,6 +117,136 @@ export class HomePage {
       }
     });
   }
+}
+
+@Component({
+  imports: [RouterLink],
+  template: `
+    <section class="shell finder-hero">
+      <div>
+        <p class="eyebrow">Gift finder</p>
+        <h1>Find the signal before the product.</h1>
+        <p class="lede">Choose what you have actually noticed. We will route you to independently reviewed guide directions—not invent a personality profile or pretend a quiz knows the recipient.</p>
+      </div>
+      <aside class="panel finder-boundary">
+        <p class="eyebrow">The honest boundary</p>
+        <h2>No quiz result is a purchase instruction.</h2>
+        <p>Confirm ownership, compatibility, storage, maintenance, and whether the recipient welcomes a physical gift before buying anything.</p>
+      </aside>
+    </section>
+
+    <section class="shell finder-layout">
+      <form class="panel finder-controls" (submit)="$event.preventDefault()">
+        <div><p class="eyebrow">1 · Recipient signal</p><h2>What have you observed?</h2></div>
+        <label>
+          <span>Strongest clue</span>
+          <select name="signal" [value]="signal" (change)="updateSignal($event)">
+            <option value="unsure">I need to narrow the clue first</option>
+            <option value="observed_friction">A workaround, worn item, or postponed upgrade</option>
+            <option value="golf_routine">A specific golf-bag or course-day friction</option>
+            <option value="shared_curiosity">Two interests that could become one activity</option>
+          </select>
+        </label>
+        <label>
+          <span>Gift shape</span>
+          <select name="shape" [value]="shape" (change)="updateShape($event)">
+            <option value="either">Show single gifts and thoughtful pairs</option>
+            <option value="single">Start with one independently useful item</option>
+            <option value="pair">Show only guides with qualified pairs</option>
+          </select>
+        </label>
+        <div class="finder-checklist">
+          <strong>Before using a result, ask:</strong>
+          <ul>
+            <li>Can I name the observed clue without guessing?</li>
+            <li>Have I checked duplicates, platform, size, edition, or routine fit?</li>
+            <li>Is the self-purchase gap delay or effort—not lack of interest?</li>
+            <li>Would the recipient welcome the ownership burden?</li>
+          </ul>
+        </div>
+      </form>
+
+      <div class="finder-results" aria-live="polite">
+        <div class="section-heading finder-heading">
+          <div><p class="eyebrow">Reviewed guide directions</p><h2>{{ results.length }} evidence-backed route{{ results.length === 1 ? '' : 's' }}</h2></div>
+          <p>Results are derived only from publication-ready articles and their reviewed product sets.</p>
+        </div>
+        @if (results.length > 0) {
+          <div class="finder-result-list">
+            @for (result of results; track result.article.slug; let rank = $index) {
+              <article class="finder-result">
+                <div class="finder-result-rank" aria-hidden="true">0{{ rank + 1 }}</div>
+                <div>
+                  <p class="eyebrow">Evidence {{ result.article.evidenceScore }}/100 · {{ result.article.products.length }} researched options@if (result.article.pairs.length > 0) { · {{ result.article.pairs.length }} qualified pairs }</p>
+                  <h3>{{ result.article.title }}</h3>
+                  <p class="finder-reason">{{ result.matchReason }}</p>
+                  <p>{{ result.article.description }}</p>
+                  <p class="quiet"><strong>Research-time budget:</strong> {{ result.article.priceBand }}. Recheck current totals, stock, delivery, and returns before purchase.</p>
+                  <a class="button" [routerLink]="['/blog', result.article.slug]" data-event-name="gift_finder_guide_open" [attr.data-guide-slug]="result.article.slug" [attr.data-result-rank]="rank + 1">Open the reviewed guide →</a>
+                </div>
+              </article>
+            }
+          </div>
+        } @else {
+          <div class="panel finder-empty">
+            <p class="eyebrow">Stop condition</p>
+            <h2>No reviewed guide fits both choices yet.</h2>
+            <p>Broaden the gift shape or use the research method to sharpen the recipient clue. We will not fill the gap with an unreviewed product list.</p>
+            <a class="button secondary" routerLink="/standards">Use the thoughtfulness test</a>
+          </div>
+        }
+      </div>
+    </section>
+
+    <section class="mint-section finder-method">
+      <div class="shell section">
+        <div class="section-heading">
+          <div><p class="eyebrow">Why this finder is different</p><h2>One clue. One useful next decision.</h2></div>
+          <p>It reduces a broad shopping problem without inventing personal knowledge or letting commission choose the result.</p>
+        </div>
+        <div class="grid three">
+          <article class="panel"><span class="number">01</span><h3>Notice</h3><p>Begin with a workaround, repeated phrase, worn object, known curiosity, or deferred small upgrade.</p></article>
+          <article class="panel"><span class="number">02</span><h3>Verify</h3><p>Check duplicates, compatibility, effort, storage, maintenance, and the recipient’s actual welcome.</p></article>
+          <article class="panel"><span class="number">03</span><h3>Choose</h3><p>Use a reviewed guide, keep the drawback visible, and walk away when the fit remains uncertain.</p></article>
+        </div>
+      </div>
+    </section>
+  `,
+  changeDetection: ChangeDetectionStrategy.OnPush
+})
+export class GiftFinderPage {
+  private readonly content = inject(ContentService);
+  private readonly seo = inject(SeoService);
+  signal: RecipientSignal = 'unsure';
+  shape: GiftShape = 'either';
+
+  get results() { return findGiftGuides(this.content.articles, this.signal, this.shape); }
+
+  constructor() {
+    const guides = findGiftGuides(this.content.articles, 'unsure', 'either');
+    this.seo.set({
+      title: 'Thoughtful gift finder',
+      description: 'Turn an observed recipient clue into an evidence-backed gift-guide direction without fabricated personalization or commission-led ranking.',
+      path: '/gift-finder',
+      structuredData: {
+        '@context': 'https://schema.org',
+        '@type': 'WebPage',
+        name: 'Tips for Your Gifts thoughtful gift finder',
+        description: 'A decision tool that routes observed recipient signals to independently reviewed gift guides.',
+        mainEntity: {
+          '@type': 'ItemList',
+          numberOfItems: guides.length,
+          itemListElement: guides.map(({ article }, index) => ({
+            '@type': 'ListItem', position: index + 1, name: article.title,
+            url: `https://tipsforyourgifts.web.app/blog/${article.slug}`
+          }))
+        }
+      }
+    });
+  }
+
+  updateSignal(event: Event) { this.signal = (event.target as HTMLSelectElement).value as RecipientSignal; }
+  updateShape(event: Event) { this.shape = (event.target as HTMLSelectElement).value as GiftShape; }
 }
 
 @Component({
@@ -189,7 +324,7 @@ export class BlogPage {
           <section aria-labelledby="recommendations">
             <h2 id="recommendations">The recommendations</h2>
             <div class="product-list">
-              @for (product of article.products; track product.id) { <tfg-product-card [product]="product" /> }
+              @for (product of article.products; track product.id) { <tfg-product-card [product]="product" [articleSlug]="article.slug" /> }
             </div>
           </section>
         }

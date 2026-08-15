@@ -25,6 +25,20 @@ npm --prefix web run growth:import -- --input=/absolute/path/to/aggregate-snapsh
 
 The importer validates the entire model before changing the versioned source.
 
+## Consent-ready funnel labels
+
+The static Angular candidate includes inert `data-*` labels for three reader actions:
+
+| Event label | Reader action | Allowed dimensions |
+|---|---|---|
+| `gift_finder_guide_open` | Opens a reviewed guide from `/gift-finder` | `guide_slug`, `result_rank` |
+| `guide_open` | Opens a reviewed guide from an internal article card | `guide_slug` |
+| `merchant_outbound_click` | Leaves a guide for its reviewed merchant destination | `article_slug`, `product_id`, `paid_link` |
+
+These attributes do not execute code, set cookies, contact an analytics service, or prove an event occurred. A future consent-aware web-analytics connector may translate them into aggregate counts only after Lucas approves the privacy posture and official configuration. Do not add recipient answers, free text, URLs, referrers, user identifiers, session identifiers, device identifiers, or precise location to the event payload. The Gift Finder keeps its selections in component memory only and sends nothing to a server.
+
+The primary funnel is `qualified discovery -> gift finder guide open -> engaged guide -> merchant outbound click -> approved affiliate conversion`. Missing stages remain unknown. A merchant click is intent evidence, not a sale, satisfied reader, or profitable session.
+
 ## Search Console: founder setup, protected activation, then automation
 
 The first measurement source is the exact URL-prefix property `https://tipsforyourgifts.web.app/`. Google documents that URL-prefix properties include only URLs under the specified protocol and prefix, and that ownership must be verified before private performance data is accessible: [property types](https://support.google.com/webmasters/answer/34592?hl=en) and [ownership verification](https://support.google.com/webmasters/answer/9008080?hl=en).
