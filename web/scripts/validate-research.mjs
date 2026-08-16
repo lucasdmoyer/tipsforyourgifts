@@ -136,6 +136,10 @@ const runSchema = z.object({
     status: z.enum(['supported', 'conflicted', 'unsupported']),
     sourceIds: z.array(z.string()).min(1)
   })),
+  conflicts: z.array(z.object({
+    id: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
+    summary: z.string().min(40)
+  })).optional(),
   candidates: z.array(candidateSchema),
   finalists: z.array(candidateSchema),
   pairs: z.array(pairSchema).optional(),
@@ -388,10 +392,13 @@ for (const articleFile of articleFiles) {
 const runFiles = await filesUnder(runsDir, '.json');
 const seenRunIds = new Set();
 const runsById = new Map();
+const rawRunsById = new Map();
 for (const runFile of runFiles) {
   let run;
+  let rawRun;
   try {
-    run = runSchema.parse(JSON.parse(await fs.readFile(runFile, 'utf8')));
+    rawRun = JSON.parse(await fs.readFile(runFile, 'utf8'));
+    run = runSchema.parse(rawRun);
   } catch (error) {
     if (error instanceof z.ZodError) {
       for (const issue of error.issues) errors.push(`${path.basename(runFile)} ${issue.path.join('.')}: ${issue.message}`);
@@ -404,6 +411,7 @@ for (const runFile of runFiles) {
   if (seenRunIds.has(run.runId)) errors.push(`${run.runId}: duplicate run ID`);
   seenRunIds.add(run.runId);
   runsById.set(run.runId, run);
+  rawRunsById.set(run.runId, rawRun);
   if (!path.basename(runFile, '.json').startsWith(run.runId)) errors.push(`${run.runId}: filename must begin with the run ID`);
 
   const strategyIdea = strategyIdeasById.get(run.ideaId);
@@ -684,7 +692,10 @@ for (const run of runsById.values()) {
   if (receipt.receiptId !== `${run.runId}-qa` || receipt.runId !== run.runId || receipt.articleSlug !== run.article.slug) errors.push(`${run.runId}: QA receipt identity does not match the run`);
   if (receipt.verdict !== 'passed' || receipt.blockers.length > 0) errors.push(`${run.runId}: QA receipt did not pass cleanly`);
   if (receipt.reviewerId !== run.qa.reviewerId || receipt.reviewerId === run.draftAuthor) errors.push(`${run.runId}: QA receipt reviewer separation failed`);
-  if (receipt.evidenceSha256 !== evidenceDigest(run)) errors.push(`${run.runId}: evidence changed after independent review`);
+  const currentEvidenceSha256 = evidenceDigest(rawRunsById.get(run.runId));
+  if (receipt.evidenceSha256 !== currentEvidenceSha256) {
+    errors.push(`${run.runId}: evidence changed after independent review (expected ${receipt.evidenceSha256}, found ${currentEvidenceSha256})`);
+  }
   const articlePath = path.join(blogDir, `${run.article.slug}.md`);
   if (receipt.articleSha256 !== articleDigest(await fs.readFile(articlePath))) errors.push(`${run.runId}: article changed after independent review`);
   const socialPath = path.join(socialDir, `${run.article.slug}-launch.json`);

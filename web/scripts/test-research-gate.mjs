@@ -8,6 +8,7 @@ const runId = '20260803-useful-gifts-hard-to-shop-for-adults-ceca335c';
 const slug = 'useful-gifts-for-hard-to-shop-for-adults';
 const thoughtfulRunId = '20260803-gifts-for-golf-friend-53cb00a5';
 const thoughtfulSlug = 'gifts-for-a-golf-friend';
+const conflictLedgerRunId = '20260816-neighborhood-tree-walk-b8a44f32';
 
 async function makeFixture() {
   const fixture = await fs.mkdtemp(path.join(root, '.gate-fixture-'));
@@ -58,6 +59,12 @@ await expectFailure('publication-ready article with non-validated run', async (f
 
 await expectFailure('missing independent QA receipt', async (fixture) => {
   await fs.rm(path.join(fixture, 'research', 'reviews', `${runId}.qa.v1.json`));
+});
+
+await expectFailure('reviewed conflict ledger changed after independent QA', async (fixture) => {
+  await updateJson(path.join(fixture, 'research', 'runs', `${conflictLedgerRunId}.json`), (run) => {
+    run.conflicts[0].summary = `${run.conflicts[0].summary} Unreviewed change.`;
+  });
 });
 
 await expectFailure('duplicate source ID', async (fixture) => {

@@ -1,0 +1,171 @@
+{
+  "schemaVersion": "1.0.0",
+  "packId": "neighborhood-tree-walk-field-guide-loupe-gift-pairs-launch",
+  "articleSlug": "neighborhood-tree-walk-field-guide-loupe-gift-pairs",
+  "researchRun": "20260816-neighborhood-tree-walk-b8a44f32",
+  "status": "draft",
+  "createdAt": "2026-08-16T21:00:00.000Z",
+  "policy": {
+    "officialApiRequired": true,
+    "externalPublishingAuthorized": false,
+    "containsAffiliateLinks": false
+  },
+  "posts": [
+    {
+      "id": "tree-walk-one-tree-not-whole-forest",
+      "platform": "pinterest",
+      "format": "interaction-loop-card",
+      "status": "draft",
+      "angle": "Shrink a new nature hobby to one tree and one provisional name",
+      "headline": "The thoughtful tree gift starts with one tree, not a whole forest",
+      "copy": "Look at the silhouette. Notice the bark. Check one already-fallen leaf or reachable feature. Use the regional guide for one provisional name—then stop. A ten-minute first walk is a gift ritual, not a homework assignment.",
+      "assetBrief": "Original vertical five-step illustration of one neighborhood tree, bark texture, fallen leaf, physical guide, and a removable provisional-name card; no product covers or logos.",
+      "altText": "Five-step card showing one neighborhood tree moving from silhouette and bark to a fallen leaf, field guide, and provisional name.",
+      "destinationUrl": "https://tipsforyourgifts.web.app/blog/neighborhood-tree-walk-field-guide-loupe-gift-pairs",
+      "claimIds": [
+        "claim-one-tree-ritual",
+        "claim-no-collection-boundary"
+      ],
+      "productIds": [
+        "peterson-eastern-trees"
+      ],
+      "pairIds": [
+        "compact-eastern-one-tree-pair"
+      ],
+      "disclosureRequired": false,
+      "externalPostId": null
+    },
+    {
+      "id": "tree-walk-map-before-book",
+      "platform": "instagram",
+      "format": "five-slide-carousel",
+      "status": "draft",
+      "angle": "Make geography the first gift-guide filter",
+      "headline": "Before buying a tree guide, place their neighborhood on the map",
+      "copy": "Peterson says eastern U.S. and Canada including the Midwest. Princeton says east through the Great Plains. Sibley and Audubon are broader North America. The thoughtful choice starts with the recipient's actual walking location—not the prettiest cover.",
+      "assetBrief": "Five original illustrated slides: recipient address, eastern and central scope bands, four guide roles, stop-if-west boundary, and preview-the-book reminder; no copied maps or cover art.",
+      "altText": "Carousel comparing the stated geographic roles of Peterson, Princeton, Sibley, and Audubon tree guides before gifting one.",
+      "destinationUrl": "https://tipsforyourgifts.web.app/blog/neighborhood-tree-walk-field-guide-loupe-gift-pairs",
+      "claimIds": [
+        "claim-region-and-format-gate",
+        "claim-peterson-compatibility",
+        "claim-princeton-compatibility",
+        "claim-sibley-compatibility",
+        "claim-audubon-compatibility"
+      ],
+      "productIds": [
+        "peterson-eastern-trees",
+        "princeton-eastern-north-america",
+        "sibley-guide-to-trees",
+        "audubon-trees-north-america"
+      ],
+      "pairIds": [],
+      "disclosureRequired": false,
+      "externalPostId": null
+    },
+    {
+      "id": "tree-walk-loupe-fit-test",
+      "platform": "pinterest",
+      "format": "vertical-checklist",
+      "status": "draft",
+      "angle": "Show the close-eye focusing motion before recommending a 10x loupe",
+      "headline": "A 10x loupe is only thoughtful after this handling check",
+      "copy": "Can they hold a small lens close to the eye, bring the subject to about an inch, steady both hands, and focus comfortably with their usual glasses? If not, skip the folding loupe and gift only the guide; a different magnifier should be tested in person before buying.",
+      "assetBrief": "Original accessibility checklist with a side-profile focusing diagram, glasses check, hand-steadying check, comfort stop sign, and alternative-tool branch; no medical claims.",
+      "altText": "Checklist showing the close-eye focusing position for a 10x hand lens and comfort checks for vision, glasses, and hand steadiness.",
+      "destinationUrl": "https://tipsforyourgifts.web.app/blog/neighborhood-tree-walk-field-guide-loupe-gift-pairs",
+      "claimIds": [
+        "claim-loupe-technique",
+        "claim-bausch-accessibility"
+      ],
+      "productIds": [
+        "bausch-hastings-triplet-10x"
+      ],
+      "pairIds": [],
+      "disclosureRequired": false,
+      "externalPostId": null
+    },
+    {
+      "id": "tree-walk-two-guide-paths",
+      "platform": "instagram",
+      "format": "six-slide-carousel",
+      "status": "draft",
+      "angle": "Compare the compact eastern guide path with the denser eastern guide path",
+      "headline": "One qualified loupe, two very different guide jobs",
+      "copy": "Peterson is the more compact eastern-and-Midwest path. Princeton is the denser eastern-through-Great-Plains path. Both can pair with the same independently reviewed 10x loupe—but only after a close-eye comfort test. Choose one guide, not both.",
+      "assetBrief": "Original six-slide comparison using generic line drawings: recipient signal, Peterson role, Princeton role, shared loupe technique, carry tradeoff, and choose-one decision; no brand marks or copied cover art.",
+      "altText": "Comparison of a compact regional tree-guide pair and a denser illustrated tree-guide pair that use the same small folding 10x loupe.",
+      "destinationUrl": "https://tipsforyourgifts.web.app/blog/neighborhood-tree-walk-field-guide-loupe-gift-pairs",
+      "claimIds": [
+        "claim-pair-peterson-bausch",
+        "claim-pair-princeton-bausch",
+        "claim-bausch-accessibility"
+      ],
+      "productIds": [
+        "bausch-hastings-triplet-10x",
+        "peterson-eastern-trees",
+        "princeton-eastern-north-america"
+      ],
+      "pairIds": [
+        "compact-eastern-one-tree-pair",
+        "illustrated-deep-dive-one-tree-pair"
+      ],
+      "disclosureRequired": false,
+      "externalPostId": null
+    },
+    {
+      "id": "tree-walk-compact-pair",
+      "platform": "tiktok",
+      "format": "thirty-second-script",
+      "status": "draft",
+      "angle": "Demonstrate the compact guide-to-detail loop without collecting a specimen",
+      "headline": "A field guide plus loupe is a loop—not just a matching gift set",
+      "copy": "Hook: they point out this tree every week but still search from scratch. Show one silhouette, one bark note, one already-fallen leaf under a 10x lens, then one Peterson comparison. End: buy only the guide if close-eye focusing fails the comfort test.",
+      "assetBrief": "Original storyboard filmed with an unbranded guide mockup and generic lens silhouette; include a no-cutting, provisional-ID, and desk-research caption.",
+      "altText": "Short storyboard showing a familiar tree, an already-fallen leaf under a hand lens, and one regional field-guide comparison.",
+      "destinationUrl": "https://tipsforyourgifts.web.app/blog/neighborhood-tree-walk-field-guide-loupe-gift-pairs",
+      "claimIds": [
+        "claim-pair-peterson-bausch",
+        "claim-no-collection-boundary",
+        "claim-bausch-accessibility"
+      ],
+      "productIds": [
+        "peterson-eastern-trees",
+        "bausch-hastings-triplet-10x"
+      ],
+      "pairIds": [
+        "compact-eastern-one-tree-pair"
+      ],
+      "disclosureRequired": false,
+      "externalPostId": null
+    },
+    {
+      "id": "tree-walk-buy-one-half",
+      "platform": "pinterest",
+      "format": "buy-skip-card",
+      "status": "draft",
+      "angle": "Make the anchor-only and skip decisions as visible as the bundle",
+      "headline": "When a thoughtful tree-walk pair should be only one gift",
+      "copy": "Buy only the guide when optics add discomfort. Buy only the magnifier when a trusted regional guide already works. Skip both when they do not want an identification ritual. And choose the compact Peterson pair or denser Princeton pair—never both.",
+      "assetBrief": "Original four-column decision card labeled Compact pair, Deep-reference pair, One item, and Skip, with generic book and magnifier icons and explicit duplicate checks.",
+      "altText": "Decision card showing when to choose one of two tree-walk pairs, one item only, or skip the gift entirely.",
+      "destinationUrl": "https://tipsforyourgifts.web.app/blog/neighborhood-tree-walk-field-guide-loupe-gift-pairs",
+      "claimIds": [
+        "claim-duplicate-clutter-gate",
+        "claim-pair-peterson-bausch",
+        "claim-pair-princeton-bausch"
+      ],
+      "productIds": [
+        "peterson-eastern-trees",
+        "princeton-eastern-north-america",
+        "bausch-hastings-triplet-10x"
+      ],
+      "pairIds": [
+        "compact-eastern-one-tree-pair",
+        "illustrated-deep-dive-one-tree-pair"
+      ],
+      "disclosureRequired": false,
+      "externalPostId": null
+    }
+  ]
+}

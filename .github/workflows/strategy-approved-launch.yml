@@ -34,6 +34,8 @@ jobs:
         env:
           BEFORE_SHA: ${{ github.event.before }}
           AFTER_SHA: ${{ github.event.after }}
+          ACTOR: ${{ github.actor }}
+          OWNER: ${{ github.repository_owner }}
         run: |
           test "$(printf '%s' "$BEFORE_SHA" | grep -Ec '^[0-9a-f]{40}$')" -eq 1
           test "$(printf '%s' "$AFTER_SHA" | grep -Ec '^[0-9a-f]{40}$')" -eq 1
@@ -41,15 +43,23 @@ jobs:
           git cat-file -e "$AFTER_SHA^{commit}"
           git merge-base --is-ancestor "$BEFORE_SHA" "$AFTER_SHA"
           test "$(git rev-parse HEAD)" = "$AFTER_SHA"
-          git show "${BEFORE_SHA}:web/src/data/strategy.json" > strategy.before.json
-          git show "${AFTER_SHA}:web/src/data/strategy.json" > strategy.after.json
-          node web/scripts/classify-strategy-change.mjs strategy.before.json strategy.after.json > strategy-transition.json
+          if git cat-file -e "${BEFORE_SHA}:web/src/data/strategy.json" 2>/dev/null; then
+            git show "${BEFORE_SHA}:web/src/data/strategy.json" > strategy.before.json
+            git show "${AFTER_SHA}:web/src/data/strategy.json" > strategy.after.json
+            if ! node web/scripts/classify-strategy-change.mjs strategy.before.json strategy.after.json > strategy-transition.json; then
+              test "$ACTOR" = "$OWNER" || { echo "Only the repository owner may merge an already-completed strategy batch." >&2; exit 1; }
+              node web/scripts/verify-completed-strategy-batch.mjs strategy.before.json strategy.after.json > strategy-transition.json
+            fi
+          else
+            test "$ACTOR" = "$OWNER" || { echo "Only the repository owner may merge the initial governed strategy ledger." >&2; exit 1; }
+            printf '%s\n' '{"gate":"passed","changeType":"bootstrap","launchResearch":false}' > strategy-transition.json
+          fi
           change_type="$(jq -r '.changeType' strategy-transition.json)"
           launch_research="$(jq -r '.launchResearch' strategy-transition.json)"
           idea_id="$(jq -r '.ideaId // ""' strategy-transition.json)"
           idea_revision="$(jq -r '.ideaRevision // ""' strategy-transition.json)"
           case "$change_type:$launch_research" in
-            approval:true|proposal:false|no_change:false) ;;
+            approval:true|proposal:false|no_change:false|completed_batch:false|bootstrap:false) ;;
             *) echo "Strategy classifier returned an invalid transition posture." >&2; exit 1 ;;
           esac
           if [ "$launch_research" = "true" ]; then
@@ -84,3 +94,9 @@ jobs:
       - name: Record a proposal-only transition
         if: steps.transition.outputs.change_type == 'proposal'
         run: echo "A strategy proposal merged. Founder research approval is still required; no research mission was dispatched."
+      - name: Record an already-completed founder batch
+        if: steps.transition.outputs.change_type == 'completed_batch'
+        run: echo "The repository owner merged two or three digest-bound, independently reviewed runs with their exact strategy approvals; no duplicate research mission was dispatched."
+      - name: Record the initial governed strategy ledger
+        if: steps.transition.outputs.change_type == 'bootstrap'
+        run: echo "The repository owner merged the initial validated strategy and research ledger; no duplicate research mission was dispatched."

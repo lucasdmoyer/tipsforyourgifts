@@ -35,6 +35,7 @@
     "strategy:approve": "node scripts/approve-strategy-idea.mjs",
     "strategy:verify-proposal": "node scripts/verify-strategy-proposal-patch.mjs",
     "strategy:classify-change": "node scripts/classify-strategy-change.mjs",
+    "strategy:verify-completed-batch": "node scripts/verify-completed-strategy-batch.mjs",
     "affiliate:approve": "node scripts/approve-affiliate-program.mjs",
     "affiliate:activate": "node scripts/activate-affiliate-program.mjs",
     "affiliate:link:candidate": "node scripts/create-affiliate-link-candidate.mjs",

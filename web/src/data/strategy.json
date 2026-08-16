@@ -1,8 +1,8 @@
 {
   "schemaVersion": "1.1.0",
-  "updatedAt": "2026-08-16T18:51:33.016Z",
+  "updatedAt": "2026-08-16T20:53:40.891Z",
   "northStar": "Become the most trusted place to make a confident gift decision without wasting time or money.",
-  "currentBet": "Turn one family photo into one findable story, then test two more repeatable ritual pairings for adult language practice and miniature-painting consistency.",
+  "currentBet": "Turn three observed frictions into low-pressure rituals: preserve night vision while finding one constellation, name one detail on a neighborhood nature walk, and pause a puzzle without surrendering the dining table.",
   "thoughtfulnessFramework": {
     "minimumPairCoherenceScore": 80,
     "principles": [
@@ -176,8 +176,8 @@
     },
     {
       "id": "founder-idea-005",
-      "revision": 1,
-      "founderDisposition": "proposed",
+      "revision": 2,
+      "founderDisposition": "approved_for_research",
       "ideaType": "editorial",
       "thesisType": "ritual_pairing",
       "title": "Field guide + observation tool: turn curiosity into a weekend ritual",
@@ -376,8 +376,8 @@
     },
     {
       "id": "founder-idea-009",
-      "revision": 1,
-      "founderDisposition": "proposed",
+      "revision": 2,
+      "founderDisposition": "approved_for_research",
       "ideaType": "editorial",
       "thesisType": "ritual_pairing",
       "title": "Step outside without the screen glare: a first night-sky ritual",
@@ -423,6 +423,56 @@
         "minimumSocialAngles": 5
       },
       "researchBrief": "Research beginner night-sky pairs built from a latitude-appropriate analog reference and a direct-access dim red light. Require exact hemisphere, latitude, date, readability, light-mode, battery, weather, carry, and dark-sky-etiquette checks; define one named observing evening, prove independent usefulness, and reject telescopes, bright novelty lights, wrong-region guides, or mandatory app accounts."
+    },
+    {
+      "id": "founder-idea-010",
+      "revision": 2,
+      "founderDisposition": "approved_for_research",
+      "ideaType": "editorial",
+      "thesisType": "ritual_pairing",
+      "title": "Pause the puzzle, reclaim the table: a start-and-store ritual",
+      "audience": "An adult jigsaw-puzzle fan who delays larger puzzles because a shared table cannot stay occupied between sessions",
+      "occasion": "Birthday, holiday, housewarming, retirement, or the start of a winter puzzle season",
+      "budget": "$35-$140",
+      "priority": "high",
+      "insight": "A size-compatible puzzle-storage surface protects an unfinished session while sorting trays preserve the decisions that make restarting easy.",
+      "observedFriction": "They keep a puzzle box unopened, balance an unfinished puzzle on cardboard, or rush to finish before the dining table is needed again.",
+      "selfPurchaseReluctance": "A new puzzle feels fun to buy; the bulky workflow tools that make one practical feel like boring infrastructure and require more comparison than the puzzle itself.",
+      "fitSignals": [
+        "They already enjoy jigsaws and have mentioned table space, pets, children, cleanup, or losing sorted groups between sessions.",
+        "You know their usual maximum piece count, finished puzzle dimensions, available storage orientation, and whether they prefer trays or loose sorting."
+      ],
+      "avoidIf": [
+        "They dislike large puzzles, already have a trusted storage system, or the real barrier is vision, dexterity, piece size, or interest rather than shared-table access.",
+        "The surface is too small, heavy, flexible, or awkward to store, or the trays add more floor and shelf clutter than they remove."
+      ],
+      "pairing": {
+        "unifyingIdea": "Preserve both the unfinished image and the sorting decisions, so a satisfying puzzle can pause without taking over a shared room.",
+        "itemRoles": [
+          {
+            "item": "A rigid board, closing case, or carefully qualified roll-up surface sized to the recipient's puzzles",
+            "role": "The continuity layer that keeps the assembled section together and makes the shared table recoverable."
+          },
+          {
+            "item": "Stackable or lidded sorting trays with useful contrast",
+            "role": "The restart layer that keeps edge pieces, colors, and patterns separated between sessions."
+          }
+        ],
+        "interactionMoment": "Sort one puzzle's edge and two major color groups, build on the storage surface, then close or move both systems before the table is needed.",
+        "compatibilityChecks": [
+          "Confirm finished puzzle dimensions rather than relying on piece count, plus usable interior dimensions, closure pressure, board weight, carrying orientation, and the exact place it will be stored.",
+          "Confirm tray capacity, lid or stacking behavior, piece size, surface contrast, reach, labeling preference, and whether separate trays help rather than fragment the recipient's process."
+        ],
+        "coherenceScore": 91,
+        "clutterRisk": "An oversized board plus a tower of trays can become more intrusive than the puzzle; the anchor must fit a named storage location and the companion must collapse, stack, or earn permanent shelf space."
+      },
+      "successMetric": "Two independently qualified start-sort-store pairs for common adult puzzle sizes, each with exact fit, weight, closure, storage, contrast, and clutter checks",
+      "deliverables": {
+        "minimumFinalists": 4,
+        "minimumQualifiedPairs": 2,
+        "minimumSocialAngles": 5
+      },
+      "researchBrief": "Research jigsaw-puzzle storage-surface plus sorting-tray pairs for adults who lose a shared table between sessions. Require exact finished-puzzle dimensions, usable surface area, closure or roll behavior, board weight, storage orientation, tray capacity, contrast, reach, pet and child realities, independent usefulness, and one start-sort-store interaction. Reject generic puzzle gifts, unsupported piece-count fit, bulky systems without a named storage location, and pairings that merely add accessories."
     }
   ]
 }

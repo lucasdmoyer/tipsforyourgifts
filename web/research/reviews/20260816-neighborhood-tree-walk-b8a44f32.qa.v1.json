@@ -1,0 +1,16 @@
+{
+  "schemaVersion": "1.0.0",
+  "receiptId": "20260816-neighborhood-tree-walk-b8a44f32-qa",
+  "runId": "20260816-neighborhood-tree-walk-b8a44f32",
+  "articleSlug": "neighborhood-tree-walk-field-guide-loupe-gift-pairs",
+  "reviewedAt": "2026-08-16T21:30:53.582Z",
+  "reviewerRole": "independent-editor",
+  "reviewerId": "tree-walk-independent-editor-20260816-r2",
+  "workflowRunId": "local-independent-review",
+  "verdict": "passed",
+  "evidenceSha256": "5052b2a4bd73ce47737cff29ee979c97a1c8aef1488a35a9d9e4ca8d966aed4a",
+  "articleSha256": "d1dd2c4cbf2a90f3139687ac8c6e3c35f7d2dccef5e6621137f1f9f6bd973791",
+  "socialSha256": "9721da0c38842fc79b7d971a01e9e873df78ccc5073bde3cdcb56cfa8ef20f45",
+  "blockers": [],
+  "warnings": []
+}

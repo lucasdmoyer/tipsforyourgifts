@@ -24,6 +24,10 @@ const forbiddenLegacyMarkers = [
 ];
 
 const failures = [];
+const escapeHtmlText = (value) => value
+  .replaceAll('&', '&amp;')
+  .replaceAll('<', '&lt;')
+  .replaceAll('>', '&gt;');
 let publicationManifest;
 let publicationManifestSha256;
 for (const [label, relativePath, markers] of checks) {
@@ -105,7 +109,7 @@ for (const article of readyArticles) {
   const products = Array.isArray(article.products) ? article.products : [];
   if (products.length > 0 && !giftsIndex.includes(article.title)) failures.push(`${article.slug}: roundup missing from gifts index`);
   for (const product of products) {
-    if (!html.includes(product.name)) failures.push(`${article.slug}: missing product ${product.id}`);
+    if (!html.includes(escapeHtmlText(product.name))) failures.push(`${article.slug}: missing product ${product.id}`);
     if (!html.includes(product.drawback)) failures.push(`${article.slug}: missing drawback for ${product.id}`);
   }
 }

@@ -10,7 +10,7 @@
 - Require review on strategy proposal and strategy approval pull requests; the AI proposal job must never set `approved_for_research`.
 - Confirm the weekly opportunity scout exits before model execution at the founder proposal cap, creates no mission file in that posture, and can append at most one `proposed` idea when capacity exists.
 - Require a separate hash-bound opportunity editor receipt; the scout author must never validate their own report or advance a proposal to `approved_for_research`.
-- Add `FIREBASE_SERVICE_ACCOUNT_TIPSFORYOURGIFTS` only after creating a least-privilege Firebase Hosting service account.
+- Configure the founder-reviewed production workflow with its dedicated, workflow-path-bound GitHub OIDC provider and keyless Firebase Hosting service account; never add a long-lived service-account JSON key.
 - Keep Dependabot enabled for `/web`.
 
 ## Firebase controls

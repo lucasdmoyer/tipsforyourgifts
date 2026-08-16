@@ -43,5 +43,11 @@ assert.match(manualWorkflow, /needs: preview/, 'founder-reviewed live release mu
 assert.match(manualWorkflow, /url: \$\{\{ needs\.preview\.outputs\.preview_url \}\}/, 'production approval must expose the exact preview URL');
 assert.match(manualWorkflow, /actions\/download-artifact@v4/, 'founder-reviewed release must download the reviewed static artifact');
 assert.doesNotMatch(manualWorkflow, /inputs\.preview_url/, 'founder-reviewed release must not trust a caller-supplied preview URL');
+assert.match(manualWorkflow, /id-token: write/, 'founder-reviewed release must explicitly request a short-lived GitHub OIDC token');
+assert.match(manualWorkflow, /tips-github-production\/providers\/github-production/, 'founder-reviewed release must use the isolated production identity pool');
+assert.match(manualWorkflow, /service_account: github-production@tipsforyourgifts\.iam\.gserviceaccount\.com/, 'founder-reviewed release must use the dedicated production service account');
+assert.doesNotMatch(manualWorkflow, /FIREBASE_SERVICE_ACCOUNT_TIPSFORYOURGIFTS/, 'founder-reviewed release must not depend on a long-lived service-account key');
+assert.match(manualWorkflow, /firebase-tools@15\.26\.0 deploy --only hosting --project tipsforyourgifts --non-interactive/, 'founder-reviewed live deployment must target only Hosting in the explicit project');
+assert.match(manualWorkflow, /hosting:channel:list[\s\S]*--site tipsforyourgifts[\s\S]*--project tipsforyourgifts/, 'founder-reviewed preview must resolve its exact Firebase site and project');
 
-console.log(JSON.stringify({ publicationPolicyNegativeGateTests: 'passed', negativeChecks: 8, workflowReleaseChecks: 12 }, null, 2));
+console.log(JSON.stringify({ publicationPolicyNegativeGateTests: 'passed', negativeChecks: 8, workflowReleaseChecks: 18 }, null, 2));

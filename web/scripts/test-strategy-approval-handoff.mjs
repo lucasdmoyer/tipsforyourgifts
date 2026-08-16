@@ -5,7 +5,16 @@ import { classifyStrategyChange } from './classify-strategy-change.mjs';
 import { verifyStrategyApprovalChange } from './verify-strategy-approval-change.mjs';
 
 const root = process.cwd();
-const base = JSON.parse(await fs.readFile(path.join(root, 'src', 'data', 'strategy.json'), 'utf8'));
+const repositoryStrategy = JSON.parse(await fs.readFile(path.join(root, 'src', 'data', 'strategy.json'), 'utf8'));
+const base = structuredClone(repositoryStrategy);
+let proposedFixtureCount = base.ideas.filter((idea) => idea.founderDisposition === 'proposed').length;
+for (const seed of [...base.ideas].reverse()) {
+  if (proposedFixtureCount >= 2) break;
+  if (seed.founderDisposition !== 'approved_for_research') continue;
+  seed.founderDisposition = 'proposed';
+  seed.revision = Math.max(1, seed.revision - 1);
+  proposedFixtureCount += 1;
+}
 const proposedIdeaId = base.ideas.find((idea) => idea.founderDisposition === 'proposed')?.id;
 assert.ok(proposedIdeaId, 'fixture requires one proposed idea');
 

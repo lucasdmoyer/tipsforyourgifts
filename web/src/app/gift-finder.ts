@@ -12,8 +12,11 @@ function matchesSignal(article: Article, signal: RecipientSignal) {
   const searchable = [article.slug, article.title, ...article.tags].join(' ').toLowerCase();
   if (signal === 'unsure') return true;
   if (signal === 'golf_routine') return searchable.includes('golf');
-  if (signal === 'shared_curiosity') return article.pairs.length > 0 && /curious|book|history|read|play|experiment|learn|observation/.test(searchable);
-  return /friction|hard-to-shop|golf|workaround/.test(searchable);
+  if (signal === 'shared_curiosity') {
+    return article.pairs.length > 0 && !searchable.includes('golf') &&
+      /curious|book|history|read|play|experiment|learn|observation|language|paint|photo|story|tree|nature|sky|astronomy|stargaz|puzzle/.test(searchable);
+  }
+  return /friction|hard-to-shop|golf|workaround|palette|paint|puzzle|storage/.test(searchable);
 }
 
 function matchesShape(article: Article, shape: GiftShape) {

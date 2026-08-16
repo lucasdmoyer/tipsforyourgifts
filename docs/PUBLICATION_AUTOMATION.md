@@ -8,7 +8,7 @@ The policy treats a finished model response as insufficient. Independent QA, det
 
 Every generated build also carries `publication-manifest.json`, a deterministic public release-candidate ledger. It binds each publication-ready article to the exact article bytes, validated research run, separate QA receipt, reviewed evidence digest, optional completed research mission, and optional reviewed social launch pack. It records the affiliate registry plus every active paid-link overlay's candidate, independent-review, and founder-approval paths and hashes. Pending records contribute zero live links. The manifest's `release_candidate` status means only that the prepared content set passed local gates; it is not a deployment claim.
 
-Immediately before either production workflow mutates `live`, it uses the existing least-privilege Firebase service account to create a 30-day rollback channel and clone the current `tipsforyourgifts:live` release into it. This is the first-release-safe rollback source; it does not depend on a prior GitHub deployment record. After the new live smoke passes, the workflow creates a strict receipt binding the released SHA, reviewed preview URL, deployed publication-manifest byte digest and content-set digest, `tipsforyourgifts` project, live URL, rollback channel, workflow identity, release mode, and every required gate. GitHub retains the receipt and rollback metadata as separate 90-day artifacts. No success receipt is created when a pre-release gate, clone, deployment, hosted smoke, or manifest validation fails.
+Immediately before the founder-reviewed production workflow mutates `live`, it uses a least-privilege Firebase Hosting identity reached through short-lived GitHub OIDC credentials to create a 30-day rollback channel and clone the current `tipsforyourgifts:live` release into it. The provider is restricted to this repository, Lucas, `workflow_dispatch`, `master`, and the exact production workflow path; it has no service-account key. This is the first-release-safe rollback source and does not depend on a prior GitHub deployment record. After the new live smoke passes, the workflow creates a strict receipt binding the released SHA, reviewed preview URL, deployed publication-manifest byte digest and content-set digest, `tipsforyourgifts` project, live URL, rollback channel, workflow identity, release mode, and every required gate. GitHub retains the receipt and rollback metadata as separate 90-day artifacts. No success receipt is created when a pre-release gate, clone, deployment, hosted smoke, or manifest validation fails. The automatic path remains disabled and must receive its own separately approved keyless identity before it can be enabled.
 
 ## Durable live-content synchronization
 
@@ -37,14 +37,15 @@ Merging that pull request enables two bounded behaviors:
 - a newly validated research pull request may request GitHub check-gated auto-merge; and
 - a resulting `master` commit may run an exact-SHA temporary Firebase preview, smoke that preview, clone the current Firebase live release to a bounded rollback channel, promote the verified checkout to `live`, smoke production, and issue the immutable release receipt.
 
-The Firebase Hosting action's declared `details_url` output supplies the exact preview URL used by the smoke gate: https://github.com/FirebaseExtended/action-hosting-deploy/blob/main/action.yml#L60-L68
+The Firebase CLI deploys a unique temporary channel, then the workflow resolves that exact channel from `hosting:channel:list --json`; the resulting URL supplies the preview smoke and protected environment link.
 
 ## External configuration required before enabling
 
 - `master` branch protection requires content quality and Firebase preview checks.
 - GitHub auto-merge is enabled for the repository.
 - `OPENAI_API_KEY` exists only for the read-only drafting and review jobs.
-- `FIREBASE_SERVICE_ACCOUNT_TIPSFORYOURGIFTS` is least-privilege and limited to Firebase Hosting.
+- The production GitHub OIDC provider is restricted to repository `lucasdmoyer/tipsforyourgifts`, actor `lucasdmoyer`, `workflow_dispatch`, `refs/heads/master`, and `.github/workflows/firebase-production.yml@refs/heads/master`.
+- `github-production@tipsforyourgifts.iam.gserviceaccount.com` is limited to Firebase Hosting and has no user-managed key.
 - The `production` environment requires Lucas as its per-release reviewer and shows the exact release-candidate preview URL. Remove that reviewer only when the proven automatic policy is intentionally being enabled.
 - The Firebase service account can create a preview channel and clone the current live Hosting version; rollback channels expire after 30 days, while the live release history remains the longer-lived console fallback.
 - Firebase Hosting notifications and GitHub Actions failure notifications reach Lucas.
