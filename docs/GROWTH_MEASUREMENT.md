@@ -39,6 +39,12 @@ These attributes do not execute code, set cookies, contact an analytics service,
 
 The primary funnel is `qualified discovery -> gift finder guide open -> engaged guide -> merchant outbound click -> approved affiliate conversion`. Missing stages remain unknown. A merchant click is intent evidence, not a sale, satisfied reader, or profitable session.
 
+## Founder privacy decision and baseline state
+
+Lucas approved decision `privacy-measurement-20260816-v1` on 2026-08-16. The approved posture is aggregate-only measurement using the three bounded event labels above, with consent required before any client analytics begins. Client collection remains disabled: no provider, property, cookie, script, or event destination was configured by this decision.
+
+The first baseline is therefore explicitly `awaiting_observed_export`. Traffic, engagement, conversion, and revenue remain unknown rather than zero; the reporting window has not started. The baseline can become observed only after a separately reviewed connector is active and one complete evidence-backed export covering at least seven days is imported. This distinction prevents a privacy approval from being misreported as measurement evidence.
+
 ## Search Console: founder setup, protected activation, then automation
 
 The first measurement source is the exact URL-prefix property `https://tipsforyourgifts.web.app/`. Google documents that URL-prefix properties include only URLs under the specified protocol and prefix, and that ownership must be verified before private performance data is accessible: [property types](https://support.google.com/webmasters/answer/34592?hl=en) and [ownership verification](https://support.google.com/webmasters/answer/9008080?hl=en).

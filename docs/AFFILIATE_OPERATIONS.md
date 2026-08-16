@@ -13,6 +13,14 @@ Two public candidates are recorded but disabled:
 
 The registry records no expected revenue, invented tracking identity, exact price, or account claim. Public terms change; the source-review expiry is a mandatory recheck point, not a guarantee.
 
+### 2026-08-16 Bookshop.org pilot evaluation
+
+Bookshop.org remains the preferred first narrow pilot, but its decision state is `evidence_hold_until_baseline_and_onboarding`. The current official program page says media publications and bloggers may apply, that an account goes through verification, and that the affiliate shares program-generated links. The current official support material says non-bookstore attribution lasts 48 hours, uses last-touch attribution, and requires disclosure whenever a commission-bearing link is used. Bookshop.org also exposes affiliate reporting, but the repository will accept only an aggregate founder export.
+
+The pilot stays limited to one already-qualified book anchor in one reviewed guide. It must not change product scores, pair scores, placement, copy, or the non-book companion link. Success means a separately observed improvement in aggregate affiliate conversion or revenue after a complete pre-pilot traffic baseline; ordinary engagement must not deteriorate. Stop the pilot if the recommendation no longer works without the paid link, the exact edition cannot be verified, disclosure or sponsored-link behavior fails, or reporting requires customer-level data.
+
+No account, terms acceptance, tracking identity, affiliate URL, or commission is recorded by this evaluation. The program remains disabled until all external onboarding evidence exists and the baseline gate has been satisfied. An ordinary merchant link is not an affiliate link and must never be described as one.
+
 ## State and authority
 
 ```text

@@ -83,6 +83,20 @@ export const growthSchema = z.object({
     unknownValuesAreNull: z.literal(true),
     minimumReportingWindowDays: z.number().int().min(7),
     founderApproverLogin: z.string().regex(/^[A-Za-z0-9-]{1,39}$/),
+    privacyReview: z.object({
+      decisionId: z.string().regex(/^privacy-measurement-\d{8}-v\d+$/),
+      status: z.literal('approved'),
+      approvedBy: z.string().regex(/^[A-Za-z0-9-]{1,39}$/),
+      approvedAt: z.string().datetime(),
+      clientCollectionEnabled: z.boolean(),
+      consentRequiredBeforeClientCollection: z.literal(true),
+      approvedEventNames: z.array(z.enum([
+        'gift_finder_guide_open', 'guide_open', 'merchant_outbound_click'
+      ])).length(3),
+      baselineStatus: z.enum(['awaiting_observed_export', 'observed']),
+      baselineWindowStartedAt: z.string().datetime().nullable(),
+      decisionSummary: z.string().min(120)
+    }).strict(),
     forbiddenFields: z.array(z.string().min(2)).min(6)
   }).strict(),
   connectors: z.array(connectorSchema).length(4),
@@ -135,6 +149,19 @@ export function validateGrowthModel(input, options = {}) {
 
   const connectorIds = new Set(growth.connectors.map((connector) => connector.id));
   const connectorById = new Map(growth.connectors.map((connector) => [connector.id, connector]));
+  const privacyReview = growth.measurementPolicy.privacyReview;
+  if (privacyReview.approvedBy !== growth.measurementPolicy.founderApproverLogin) {
+    issues.push('privacy review approver must match the configured founder');
+  }
+  if (new Set(privacyReview.approvedEventNames).size !== privacyReview.approvedEventNames.length) {
+    issues.push('privacy review event names must be unique');
+  }
+  if (privacyReview.baselineStatus === 'awaiting_observed_export' && privacyReview.baselineWindowStartedAt !== null) {
+    issues.push('an unobserved baseline cannot claim a reporting-window start');
+  }
+  if (privacyReview.baselineStatus === 'observed' && privacyReview.baselineWindowStartedAt === null) {
+    issues.push('an observed baseline requires a reporting-window start');
+  }
   if (connectorIds.size !== growth.connectors.length) issues.push('connector IDs must be unique');
   for (const connector of growth.connectors) {
     if (['configured', 'active'].includes(connector.status) && !connector.founderApproved) {
@@ -168,6 +195,13 @@ export function validateGrowthModel(input, options = {}) {
       if (connector.credentialSecretNames.join(',') !== expectedSecrets.join(',')) issues.push('search-console: credential secret references must use the approved names');
       if (connector.status === 'active' && !connector.automatedCollectionEnabled) issues.push('search-console: active status must enable the approved aggregate collector');
     }
+  }
+  const webAnalytics = connectorById.get('web-analytics');
+  if (privacyReview.clientCollectionEnabled && webAnalytics?.status !== 'active') {
+    issues.push('client collection requires an active web-analytics connector');
+  }
+  if (!privacyReview.clientCollectionEnabled && webAnalytics?.automatedCollectionEnabled) {
+    issues.push('web analytics collection cannot be automated while client collection is disabled');
   }
 
   const snapshotIds = new Set();

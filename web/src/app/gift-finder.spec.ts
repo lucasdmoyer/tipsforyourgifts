@@ -22,9 +22,13 @@ describe('gift finder', () => {
     expect(results.every(({ article }) => article.pairs.length > 0 && article.researchRun.length > 0)).toBe(true);
   });
 
-  it('keeps a shared-curiosity clue on the researched book-and-action route', () => {
+  it('routes a shared-curiosity clue to every reviewed book-and-action guide', () => {
     const results = findGiftGuides(ARTICLES, 'shared_curiosity', 'pair');
-    expect(results.map(({ article }) => article.slug)).toEqual(['read-it-then-play-it-gift-pairs']);
+    expect(results.map(({ article }) => article.slug)).toEqual([
+      'one-photo-one-story-gift-pairs',
+      'read-it-then-play-it-gift-pairs',
+      'language-learning-gifts-read-a-scene-say-it-aloud',
+    ]);
   });
 
   it('preserves source article and merchant destinations without creating new links', () => {

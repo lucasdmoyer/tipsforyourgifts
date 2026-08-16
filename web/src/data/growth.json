@@ -6,6 +6,22 @@
     "unknownValuesAreNull": true,
     "minimumReportingWindowDays": 7,
     "founderApproverLogin": "lucasdmoyer",
+    "privacyReview": {
+      "decisionId": "privacy-measurement-20260816-v1",
+      "status": "approved",
+      "approvedBy": "lucasdmoyer",
+      "approvedAt": "2026-08-16T18:54:22.000Z",
+      "clientCollectionEnabled": false,
+      "consentRequiredBeforeClientCollection": true,
+      "approvedEventNames": [
+        "gift_finder_guide_open",
+        "guide_open",
+        "merchant_outbound_click"
+      ],
+      "baselineStatus": "awaiting_observed_export",
+      "baselineWindowStartedAt": null,
+      "decisionSummary": "Approve aggregate-only measurement using the existing bounded event labels. Keep client analytics disabled until a named consent-aware provider, consent behavior, public configuration evidence, and founder-gated connector activation are reviewed. Traffic, conversion, and revenue remain unknown until a complete observed export of at least seven days is imported."
+    },
     "forbiddenFields": [
       "userId",
       "email",

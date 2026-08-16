@@ -1,0 +1,164 @@
+{
+  "schemaVersion": "1.0.0",
+  "packId": "miniature-painting-wet-palette-recipe-pairs-launch",
+  "articleSlug": "miniature-painting-wet-palette-recipe-pairs",
+  "researchRun": "20260816-miniature-painting-recipe-pairs-08892218",
+  "status": "draft",
+  "createdAt": "2026-08-16T15:10:00.000Z",
+  "policy": {
+    "officialApiRequired": true,
+    "externalPublishingAuthorized": false,
+    "containsAffiliateLinks": false
+  },
+  "posts": [
+    {
+      "id": "mini-paint-one-mix-one-record",
+      "platform": "pinterest",
+      "format": "two-part-diagram",
+      "status": "draft",
+      "angle": "Separate the live-mix problem from the next-session memory problem",
+      "headline": "The miniature-painting gift that solves two different losses",
+      "copy": "A wet palette can keep one conventional-acrylic mix workable today. A labeled dry swatch can make it reproducible next session. The thoughtful gift is the loop—only after you verify both problems are real.",
+      "assetBrief": "Original vertical diagram showing one live acrylic mix moving from palette to miniature, then a tiny swatch and four-field recipe record; no logos or product photography.",
+      "altText": "Diagram showing a live acrylic mix on a wet palette and the same mix recorded as a labeled dry swatch for a later painting session.",
+      "destinationUrl": "https://tipsforyourgifts.web.app/blog/miniature-painting-wet-palette-recipe-pairs",
+      "claimIds": [
+        "claim-session-drying-friction",
+        "claim-recipe-memory-friction"
+      ],
+      "productIds": [
+        "redgrass-painter-v2",
+        "strathmore-mixed-media-visual-journal"
+      ],
+      "pairIds": [
+        "roomier-reusable-recipe-pair"
+      ],
+      "disclosureRequired": false,
+      "externalPostId": null
+    },
+    {
+      "id": "mini-paint-material-boundary",
+      "platform": "pinterest",
+      "format": "vertical-checklist",
+      "status": "draft",
+      "angle": "Make paint-medium compatibility the first gift check",
+      "headline": "Ask this before gifting a miniature painter a wet palette",
+      "copy": "Do they mix conventional water-based acrylics? Stop if the workflow is mainly oils, enamels, airbrush-only, or one-coat paints that need a hard palette. The hobby label is not enough; the paint medium decides the tool.",
+      "assetBrief": "Original compatibility checklist with conventional acrylic as the proceed branch and oils, enamels, airbrush-only, and Speedpaint-style workflows as stop-and-ask branches.",
+      "altText": "Checklist asking whether a miniature painter uses conventional water-based acrylics before choosing a wet palette.",
+      "destinationUrl": "https://tipsforyourgifts.web.app/blog/miniature-painting-wet-palette-recipe-pairs",
+      "claimIds": [
+        "claim-acrylic-only-boundary",
+        "claim-thin-paint-hydration-risk"
+      ],
+      "productIds": [
+        "army-painter-wet-palette",
+        "masterson-sta-wet-handy"
+      ],
+      "pairIds": [],
+      "disclosureRequired": false,
+      "externalPostId": null
+    },
+    {
+      "id": "mini-paint-four-field-recipe",
+      "platform": "pinterest",
+      "format": "worksheet",
+      "status": "draft",
+      "angle": "Turn recipe logging into one tiny repeatable action",
+      "headline": "A paint recipe is more than a photo of the palette",
+      "copy": "Record four things before cleanup: paint brand and name, approximate drop ratio, model area, and layer order. Add one small dried swatch. That is enough to make the next matching unit less of a guessing game.",
+      "assetBrief": "Original blank recipe-card graphic with four text fields and one dried-swatch box, using generic color dots and no third-party designs.",
+      "altText": "Blank miniature paint recipe card with fields for paint names, ratio, model area, layer order, and a dried swatch.",
+      "destinationUrl": "https://tipsforyourgifts.web.app/blog/miniature-painting-wet-palette-recipe-pairs",
+      "claimIds": [
+        "claim-recipe-memory-friction",
+        "claim-strathmore-compatibility"
+      ],
+      "productIds": [
+        "strathmore-mixed-media-visual-journal"
+      ],
+      "pairIds": [],
+      "disclosureRequired": false,
+      "externalPostId": null
+    },
+    {
+      "id": "mini-paint-compact-desk-pair",
+      "platform": "instagram",
+      "format": "six-slide-carousel",
+      "status": "draft",
+      "angle": "Show the compact desk pair as a five-minute cleanup ritual",
+      "headline": "Keep the mix today. Remember the recipe next session."
+      ,"copy": "Slide through the compact desk loop: hydrate one ordinary acrylic mix, paint the unit, write the model area and ratio, add a tiny swatch, then let the page dry flat. Buy only one half if the other step will not happen.",
+      "assetBrief": "Six original illustrated slides: observed problem, palette role, journal role, five-line key, compatibility stop signs, and choose-one fallback; no merchant imagery.",
+      "altText": "Carousel explaining a compact miniature-painting routine from hydrated acrylic mix to a written recipe and dried color swatch.",
+      "destinationUrl": "https://tipsforyourgifts.web.app/blog/miniature-painting-wet-palette-recipe-pairs",
+      "claimIds": [
+        "claim-pair-army-strathmore",
+        "claim-cleaning-storage-burden"
+      ],
+      "productIds": [
+        "army-painter-wet-palette",
+        "strathmore-mixed-media-visual-journal"
+      ],
+      "pairIds": [
+        "compact-desk-recipe-pair"
+      ],
+      "disclosureRequired": false,
+      "externalPostId": null
+    },
+    {
+      "id": "mini-paint-buy-only-anchor",
+      "platform": "pinterest",
+      "format": "buy-skip-card",
+      "status": "draft",
+      "angle": "Make the reason to buy only the anchor as prominent as the bundle",
+      "headline": "When the thoughtful miniature-painting pair should be one gift",
+      "copy": "Choose one palette configuration, never both: roomier Redgrass with reusable membranes, or compact Army Painter with brush storage. Both use the same qualified Strathmore record. Buy only the palette if they dislike logging; buy only the journal if their current palette works.",
+      "assetBrief": "Original three-column decision card labeled Pair, Anchor only, and Skip, with simple palette and notebook line icons.",
+      "altText": "Decision card showing when to buy a wet palette and recipe journal together, when to buy one item, and when to skip both.",
+      "destinationUrl": "https://tipsforyourgifts.web.app/blog/miniature-painting-wet-palette-recipe-pairs",
+      "claimIds": [
+        "claim-pair-rgg-strathmore",
+        "claim-pair-army-strathmore",
+        "claim-acrylic-only-boundary"
+      ],
+      "productIds": [
+        "redgrass-painter-v2",
+        "army-painter-wet-palette",
+        "strathmore-mixed-media-visual-journal"
+      ],
+      "pairIds": [
+        "roomier-reusable-recipe-pair",
+        "compact-desk-recipe-pair"
+      ],
+      "disclosureRequired": false,
+      "externalPostId": null
+    },
+    {
+      "id": "mini-paint-thirty-second-script",
+      "platform": "tiktok",
+      "format": "thirty-second-script",
+      "status": "draft",
+      "angle": "Open with the failed color match and reveal the two-part workflow",
+      "headline": "Why the next squad never matches the first one",
+      "copy": "Hook: the perfect armor mix dried, and the photo never captured the ratio. Show a generic acrylic mix, a later mismatched model, then the fix: keep the mix workable now and log four fields plus a dry swatch for next time. End with the paint-medium check.",
+      "assetBrief": "Original staged storyboard with generic unbranded miniatures, paint dots, palette surface, handwritten card, and an explicit no-hands-on-performance-claim caption.",
+      "altText": "Short video storyboard showing a lost acrylic mix, a mismatched later miniature, and a simple palette-to-recipe-card routine.",
+      "destinationUrl": "https://tipsforyourgifts.web.app/blog/miniature-painting-wet-palette-recipe-pairs",
+      "claimIds": [
+        "claim-session-drying-friction",
+        "claim-recipe-memory-friction",
+        "claim-acrylic-only-boundary"
+      ],
+      "productIds": [
+        "redgrass-painter-v2",
+        "strathmore-mixed-media-visual-journal"
+      ],
+      "pairIds": [
+        "roomier-reusable-recipe-pair"
+      ],
+      "disclosureRequired": false,
+      "externalPostId": null
+    }
+  ]
+}

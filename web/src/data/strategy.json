@@ -1,8 +1,8 @@
 {
   "schemaVersion": "1.1.0",
-  "updatedAt": "2026-08-03T09:53:47.000Z",
+  "updatedAt": "2026-08-16T18:51:33.016Z",
   "northStar": "Become the most trusted place to make a confident gift decision without wasting time or money.",
-  "currentBet": "Turn observed recipient friction and high-coherence pairings into the next research runs, starting with golfers and a history book-plus-game pairing.",
+  "currentBet": "Turn one family photo into one findable story, then test two more repeatable ritual pairings for adult language practice and miniature-painting consistency.",
   "thoughtfulnessFramework": {
     "minimumPairCoherenceScore": 80,
     "principles": [
@@ -226,8 +226,8 @@
     },
     {
       "id": "founder-idea-006",
-      "revision": 1,
-      "founderDisposition": "proposed",
+      "revision": 2,
+      "founderDisposition": "approved_for_research",
       "ideaType": "editorial",
       "thesisType": "ritual_pairing",
       "title": "One photo, one story: help a family historian make memories findable",
@@ -276,8 +276,8 @@
     },
     {
       "id": "founder-idea-007",
-      "revision": 1,
-      "founderDisposition": "proposed",
+      "revision": 2,
+      "founderDisposition": "approved_for_research",
       "ideaType": "editorial",
       "thesisType": "ritual_pairing",
       "title": "Read a scene, say it aloud: a language-learning pair that creates practice",
@@ -326,8 +326,8 @@
     },
     {
       "id": "founder-idea-008",
-      "revision": 1,
-      "founderDisposition": "proposed",
+      "revision": 2,
+      "founderDisposition": "approved_for_research",
       "ideaType": "editorial",
       "thesisType": "ritual_pairing",
       "title": "Keep the mix, remember the recipe: a miniature-painting workflow pair",

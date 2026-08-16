@@ -1,0 +1,16 @@
+{
+  "schemaVersion": "1.0.0",
+  "receiptId": "20260816-read-a-scene-say-it-aloud-c92b2f7e-qa",
+  "runId": "20260816-read-a-scene-say-it-aloud-c92b2f7e",
+  "articleSlug": "language-learning-gifts-read-a-scene-say-it-aloud",
+  "reviewedAt": "2026-08-16T19:06:52.591Z",
+  "reviewerRole": "independent-editor",
+  "reviewerId": "language-learning-independent-editor-20260816",
+  "workflowRunId": "local-independent-review",
+  "verdict": "passed",
+  "evidenceSha256": "7b28b9b4b14f98e49bbebd1984bb0dfaeb505e04d42dda45413f24f0f354b2e9",
+  "articleSha256": "c71c42f7b3f12e38dc1727ff3fa63dfce36995ca5c7ffae10973537a45e58217",
+  "socialSha256": "329d182e6f05b355de1501da9074618dfc02eccf9a62f707162f3da23d666366",
+  "blockers": [],
+  "warnings": []
+}

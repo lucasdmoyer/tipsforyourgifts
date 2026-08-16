@@ -1,0 +1,16 @@
+{
+  "schemaVersion": "1.0.0",
+  "receiptId": "20260816-miniature-painting-recipe-pairs-08892218-qa",
+  "runId": "20260816-miniature-painting-recipe-pairs-08892218",
+  "articleSlug": "miniature-painting-wet-palette-recipe-pairs",
+  "reviewedAt": "2026-08-16T19:31:41.384Z",
+  "reviewerRole": "independent-editor",
+  "reviewerId": "miniature-painting-independent-editor-20260816",
+  "workflowRunId": "local-independent-review",
+  "verdict": "passed",
+  "evidenceSha256": "1ba5a4bde07a38626c64b3f8f9c3a94b3d3860fdf5ebe2dc2325e7858d17e6bf",
+  "articleSha256": "4f4ca5a178e30794587189a2a72ac7d95ac90d3b0f9571fdf1fe2f98d0df096a",
+  "socialSha256": "4d5b61897dfa40de20a1d57ff0f29f244d02eeb98c56887ca0600ebad17de81a",
+  "blockers": [],
+  "warnings": []
+}

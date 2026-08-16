@@ -1,0 +1,16 @@
+{
+  "schemaVersion": "1.0.0",
+  "receiptId": "20260816-one-photo-one-story-4cf6dd3f-qa",
+  "runId": "20260816-one-photo-one-story-4cf6dd3f",
+  "articleSlug": "one-photo-one-story-gift-pairs",
+  "reviewedAt": "2026-08-16T19:11:08.635Z",
+  "reviewerRole": "independent-editor",
+  "reviewerId": "family-history-independent-editor-20260816",
+  "workflowRunId": "local-independent-review",
+  "verdict": "passed",
+  "evidenceSha256": "6bcdbf8768cb02a1dd146e8332ebcb3916dd669f464c4e5c8ae8bcfd0ecff7cc",
+  "articleSha256": "45cbe02dba6ce8f4d5fbbc4a26002d9f3f60a3a5050d57cd0d5c3cde64b49dce",
+  "socialSha256": "59d437f207fa0bdaf31ba7a5281be9d892f3a7e06e94750681b13878873db7aa",
+  "blockers": [],
+  "warnings": []
+}

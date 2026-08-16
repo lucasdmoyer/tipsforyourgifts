@@ -441,6 +441,18 @@ export interface Growth {
     unknownValuesAreNull: true;
     minimumReportingWindowDays: number;
     founderApproverLogin: string;
+    privacyReview: {
+      decisionId: string;
+      status: 'approved';
+      approvedBy: string;
+      approvedAt: string;
+      clientCollectionEnabled: boolean;
+      consentRequiredBeforeClientCollection: true;
+      approvedEventNames: Array<'gift_finder_guide_open' | 'guide_open' | 'merchant_outbound_click'>;
+      baselineStatus: 'awaiting_observed_export' | 'observed';
+      baselineWindowStartedAt: string | null;
+      decisionSummary: string;
+    };
     forbiddenFields: string[];
   };
   connectors: GrowthConnector[];
