@@ -12,8 +12,22 @@ const outputPath = path.join(generatedDir, 'content.generated.ts');
 const strategyPath = path.join(root, 'src', 'data', 'strategy.json');
 const operationsPath = path.join(root, 'src', 'data', 'operations.json');
 const growthPath = path.join(root, 'src', 'data', 'growth.json');
+const visualsPath = path.join(root, 'visuals', 'article-visuals.json');
 const sitemapPath = path.join(root, 'public', 'sitemap.xml');
 const affiliateLinkState = await loadAffiliateLinkState(root);
+const visualRegistry = JSON.parse(await fs.readFile(visualsPath, 'utf8'));
+const visualAssets = new Map(
+  visualRegistry.assets.map((asset) => [
+    asset.id,
+    {
+      id: asset.id,
+      src: asset.src,
+      alt: asset.alt,
+      caption: asset.caption,
+    },
+  ]),
+);
+const articleVisuals = new Map(visualRegistry.articles.map((entry) => [entry.slug, entry]));
 
 marked.use({ gfm: true, async: false });
 
@@ -23,6 +37,23 @@ for (const fileName of fileNames) {
   const slug = path.basename(fileName, '.md');
   const parsed = matter(await fs.readFile(path.join(blogDir, fileName), 'utf8'));
   const data = parsed.data;
+  const products = data.products ?? [];
+  const pairs = data.pairs ?? [];
+  const visualEntry = articleVisuals.get(slug);
+  if (!visualEntry) throw new Error(`No visual mapping exists for article ${slug}`);
+  const hero = visualAssets.get(visualEntry.heroId);
+  if (!hero) throw new Error(`Article ${slug} references unknown hero visual ${visualEntry.heroId}`);
+  const resolvedPairSceneIds = Object.fromEntries(pairs.map((pair) => [pair.id, visualEntry.pairSceneIds?.[pair.id] ?? visualEntry.heroId]));
+  const resolvedProductSceneIds = Object.fromEntries(products.map((product) => {
+    const pair = pairs.find((candidate) => candidate.anchorProductId === product.id || candidate.companionProductId === product.id);
+    return [product.id, (pair && resolvedPairSceneIds[pair.id]) || visualEntry.heroId];
+  }));
+  const sceneIds = [...new Set([visualEntry.heroId, ...Object.values(resolvedPairSceneIds), ...Object.values(resolvedProductSceneIds)])];
+  const scenes = sceneIds.map((id) => {
+    const asset = visualAssets.get(id);
+    if (!asset) throw new Error(`Article ${slug} resolves to unknown visual ${id}`);
+    return asset;
+  });
   const article = {
     slug,
     title: data.title,
@@ -39,8 +70,17 @@ for (const fileName of fileNames) {
     evidenceMode: data.evidenceMode,
     featured: Boolean(data.featured),
     affiliateDisclosure: Boolean(data.affiliateDisclosure),
-    products: data.products ?? [],
-    pairs: data.pairs ?? [],
+    products,
+    pairs,
+    visual: {
+      styleVersion: visualRegistry.styleVersion,
+      generator: visualRegistry.generator,
+      rightsPosture: visualRegistry.rightsPosture,
+      hero,
+      scenes,
+      productSceneIds: resolvedProductSceneIds,
+      pairSceneIds: resolvedPairSceneIds
+    },
     contentHtml: marked.parse(parsed.content)
   };
   articles.push(applyAffiliateLinkOverlays(article, affiliateLinkState));

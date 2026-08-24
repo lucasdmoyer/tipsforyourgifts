@@ -26,6 +26,23 @@ export interface ProductPair {
   claimIds: string[];
 }
 
+export interface VisualAsset {
+  id: string;
+  src: string;
+  alt: string;
+  caption: string;
+}
+
+export interface ArticleVisual {
+  styleVersion: 'gift-thread-editorial-cartoon-v1.0';
+  generator: 'openai-built-in-imagegen';
+  rightsPosture: 'founder-approved-original-ai-generated';
+  hero: VisualAsset;
+  scenes: VisualAsset[];
+  productSceneIds: Record<string, string>;
+  pairSceneIds: Record<string, string>;
+}
+
 export interface Article {
   slug: string;
   title: string;
@@ -44,6 +61,7 @@ export interface Article {
   affiliateDisclosure: boolean;
   products: Product[];
   pairs: ProductPair[];
+  visual: ArticleVisual;
   contentHtml: string;
 }
 

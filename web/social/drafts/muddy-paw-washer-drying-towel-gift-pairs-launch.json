@@ -1,0 +1,162 @@
+{
+  "schemaVersion": "1.0.0",
+  "packId": "muddy-paw-washer-drying-towel-gift-pairs-launch",
+  "articleSlug": "muddy-paw-washer-drying-towel-gift-pairs",
+  "researchRun": "20260823-muddy-paw-arrival-e09ff303",
+  "status": "draft",
+  "createdAt": "2026-08-23T21:05:00.000Z",
+  "policy": {
+    "officialApiRequired": true,
+    "externalPublishingAuthorized": false,
+    "containsAffiliateLinks": false
+  },
+  "posts": [
+    {
+      "id": "muddy-paw-two-step-test",
+      "platform": "pinterest",
+      "format": "two-part-diagram",
+      "status": "draft",
+      "angle": "Show why rinse and dry are different jobs",
+      "headline": "A muddy-paw station has two jobs—not two accessories",
+      "copy": "Water and soft bristles loosen visible mud. A washable towel removes the water that step leaves behind. The pair earns its place only when the dog already accepts the routine and both tools live at one measured doorway.",
+      "assetBrief": "Original vertical threshold diagram with a generic water cup on the dirty side, a pocketed towel on a hook, and four paw icons moving toward the clean side; no product photography.",
+      "altText": "Diagram showing a dog paw rinsed in a cup, dried with a towel, and released across a doorway threshold.",
+      "destinationUrl": "https://tipsforyourgifts.web.app/blog/muddy-paw-washer-drying-towel-gift-pairs",
+      "claimIds": [
+        "claim-muddy-entry-friction",
+        "claim-pair-mudbuster-soggy"
+      ],
+      "productIds": [
+        "dexas-mudbuster",
+        "soggy-doggy-super-shammy"
+      ],
+      "pairIds": [
+        "measured-rinse-pocketed-shammy-loop"
+      ],
+      "disclosureRequired": false,
+      "externalPostId": null
+    },
+    {
+      "id": "muddy-paw-measure-the-paw",
+      "platform": "instagram",
+      "format": "five-slide-carousel",
+      "status": "draft",
+      "angle": "Replace breed guessing with an exact paw-width check",
+      "headline": "Before you gift a paw washer, measure this",
+      "copy": "Measure the widest paw while it bears weight. Compare that number with the manufacturer's opening guide. Then confirm the dog already accepts calm paw handling. Breed examples are hints; the actual paw and the dog's comfort decide.",
+      "assetBrief": "Five original illustrated slides: weight-bearing paw, width arrows, generic size chart, calm offered paw, and buy-or-skip card; no logos or merchant images.",
+      "altText": "Carousel demonstrating how to measure a dog's paw width and check calm handling before choosing a washer.",
+      "destinationUrl": "https://tipsforyourgifts.web.app/blog/muddy-paw-washer-drying-towel-gift-pairs",
+      "claimIds": [
+        "claim-mudbuster-fit",
+        "claim-paw-handling-boundary",
+        "claim-paw-health-boundary"
+      ],
+      "productIds": [
+        "dexas-mudbuster"
+      ],
+      "pairIds": [],
+      "disclosureRequired": false,
+      "externalPostId": null
+    },
+    {
+      "id": "muddy-paw-simple-towel-wins",
+      "platform": "pinterest",
+      "format": "buy-skip-card",
+      "status": "draft",
+      "angle": "Make the no-purchase answer explicit",
+      "headline": "Sometimes the old towel is the best dog gift answer",
+      "copy": "Light moisture plus a washable towel that already works is a complete system. Add a washer only for recurring heavy mud. Replace the towel only when grip, size, care, or drying location is the real friction.",
+      "assetBrief": "Original three-column card labeled Keep, Replace one, and Pair, using generic bowl, towel, and paw icons.",
+      "altText": "Decision card showing when to keep an old dog towel, replace one tool, or pair a paw washer with a drying towel.",
+      "destinationUrl": "https://tipsforyourgifts.web.app/blog/muddy-paw-washer-drying-towel-gift-pairs",
+      "claimIds": [
+        "claim-simple-towel-fallback",
+        "claim-paw-self-purchase"
+      ],
+      "productIds": [
+        "dexas-mudbuster",
+        "dirty-dog-shammy"
+      ],
+      "pairIds": [],
+      "disclosureRequired": false,
+      "externalPostId": null
+    },
+    {
+      "id": "muddy-paw-towel-choice",
+      "platform": "instagram",
+      "format": "six-slide-carousel",
+      "status": "draft",
+      "angle": "Choose a drying format by the observed job",
+      "headline": "Pocketed shammy, flat towel, or mat? Pick the job first",
+      "copy": "Choose hand pockets for controlled paw drying, a broader flat towel when wet legs and coat are part of the routine, or a measured mat when stable washable footing is missing. Do not buy all three.",
+      "assetBrief": "Original six-slide comparison using generic silhouettes for pocketed towel, broad towel, and floor mat with job, size, storage, and skip checks.",
+      "altText": "Comparison of a pocketed dog shammy, broad flat towel, and washable entry mat by their different cleanup jobs.",
+      "destinationUrl": "https://tipsforyourgifts.web.app/blog/muddy-paw-washer-drying-towel-gift-pairs",
+      "claimIds": [
+        "claim-soggy-shammy-benefit",
+        "claim-bone-dry-benefit",
+        "claim-soggy-mat-benefit",
+        "claim-soggy-mat-drawback"
+      ],
+      "productIds": [
+        "soggy-doggy-super-shammy",
+        "bone-dry-large-pet-towel",
+        "soggy-doggy-doormat"
+      ],
+      "pairIds": [],
+      "disclosureRequired": false,
+      "externalPostId": null
+    },
+    {
+      "id": "muddy-paw-consent-boundary",
+      "platform": "tiktok",
+      "format": "thirty-second-script",
+      "status": "draft",
+      "angle": "Put dog comfort ahead of the gadget",
+      "headline": "The paw-cleaner gift test starts with the dog saying yes",
+      "copy": "Hook: do not buy the cup before watching one paw wipe. Show a calm offered paw, a red stop card for pulling away or pain, and the rule that gradual positive handling comes before tools. End with: comfort first, measurement second, product third.",
+      "assetBrief": "Original unbranded storyboard with calm body-language icons, a pause symbol, paw-width arrows, and no simulated product test.",
+      "altText": "Short video storyboard putting calm paw handling and health boundaries before measuring or buying a dog paw washer.",
+      "destinationUrl": "https://tipsforyourgifts.web.app/blog/muddy-paw-washer-drying-towel-gift-pairs",
+      "claimIds": [
+        "claim-paw-handling-boundary",
+        "claim-paw-health-boundary"
+      ],
+      "productIds": [
+        "dexas-mudbuster"
+      ],
+      "pairIds": [],
+      "disclosureRequired": false,
+      "externalPostId": null
+    },
+    {
+      "id": "muddy-paw-name-the-door",
+      "platform": "pinterest",
+      "format": "vertical-checklist",
+      "status": "draft",
+      "angle": "Make the physical doorway the thoughtfulness test",
+      "headline": "Six answers before you build a muddy-paw station",
+      "copy": "Name the door, watch the handling, measure the paw, identify heavy mud versus light moisture, inventory the current tools, and name where the cup and towel will dry. Unknown answers mean pause—not purchase.",
+      "assetBrief": "Original vertical checklist centered on a generic doorway floor plan with six labeled callouts and a final return-plan footer.",
+      "altText": "Checklist for doorway, dog handling, paw size, mud level, existing tools, and drying locations before gifting a paw-cleaning pair.",
+      "destinationUrl": "https://tipsforyourgifts.web.app/blog/muddy-paw-washer-drying-towel-gift-pairs",
+      "claimIds": [
+        "claim-muddy-entry-friction",
+        "claim-mudbuster-fit",
+        "claim-simple-towel-fallback"
+      ],
+      "productIds": [
+        "dexas-mudbuster",
+        "soggy-doggy-super-shammy",
+        "dirty-dog-shammy"
+      ],
+      "pairIds": [
+        "measured-rinse-pocketed-shammy-loop",
+        "measured-rinse-low-pile-shammy-loop"
+      ],
+      "disclosureRequired": false,
+      "externalPostId": null
+    }
+  ]
+}

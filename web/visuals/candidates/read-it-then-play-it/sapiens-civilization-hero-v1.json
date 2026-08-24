@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "1.0.0",
+  "candidateId": "read-it-then-play-it-sapiens-civilization-hero-v1",
+  "status": "founder_approved",
+  "rightsPosture": "founder-approved-original-ai-generated",
+  "intendedUse": "blog_hero",
+  "articleSlug": "read-it-then-play-it-gift-pairs",
+  "pairId": "big-history-strategy-debate",
+  "styleVersion": "gift-thread-editorial-cartoon-v1.0",
+  "generator": "openai-built-in-imagegen",
+  "generatedAt": "2026-08-24T01:20:36.012Z",
+  "dimensions": {
+    "width": 1536,
+    "height": 1024,
+    "aspectRatio": "3:2"
+  },
+  "files": {
+    "source": {
+      "path": "web/visuals/sources/read-it-big-history.png",
+      "sha256": "b1a002626fd04ee03e633ef5c51fae76e9e9288b8441572a038f64fbca257964"
+    },
+    "webCandidate": {
+      "path": "web/public/blog-images/read-it-then-play-it-gift-pairs/hero.webp",
+      "sha256": "7239b3da693ecb57e0b042a9b88a563e0cf931f2b1570404ab433c0b399595bb",
+      "encoding": "webp-q84-sharp-yuv"
+    }
+  },
+  "altText": "A reader at a desk moves between an open history book and a laptop showing an original hexagonal world map, joined by a saffron gift ribbon.",
+  "caption": "The pair works when reading creates questions that the recipient wants to test in a strategy game—and the game sends them back to the book with better questions.",
+  "prompt": "Use case: illustration-story. Asset type: wide editorial hero illustration for a thoughtful gift-guide blog article. Create a charming editorial cartoon that expresses the gift pairing of a big-history book with a civilization-building strategy computer game. Show one adult gift recipient at a desk, seen from a gentle three-quarter top-down angle, happily moving between an open history book and a laptop. On the laptop, show only a generic, original top-down hexagonal geography map with rivers, mountains, farms, and a tiny city; it must not resemble or reproduce any real game interface. Let a loose saffron gift ribbon visually connect the open book to the laptop, making the two items feel like one shared curiosity ritual. Use a cozy uncluttered desk on a warm cream field, chunky dark-evergreen ink contours, simplified geometric forms, soft gouache fills, subtle risograph-style misregistration and recycled-paper grain. Use parchment cream, deep evergreen, muted mint, saffron gold, restrained coral accents, and small touches of dusty blue. Landscape 3:2, readable at mobile width, no embedded text. Avoid all logos, wordmarks, book titles, game titles, recognizable Civilization VI interface, copied map assets, copyrighted characters, text, captions, watermarks, distorted hands, clutter, glossy 3D rendering, anime style, or children's-book sweetness.",
+  "review": {
+    "founderVisualApproval": true,
+    "founderRightsApproval": true,
+    "articleIntegrationApproved": true,
+    "responsivePreviewPassed": true
+  },
+  "approvalEvidence": "Lucas approved this style and instructed the team to apply it across all items, products, and articles and deploy on 2026-08-23.",
+  "nextGate": "Independent visual QA, exact-commit preview, same-artifact production promotion, and live smoke verification."
+}

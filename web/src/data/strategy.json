@@ -1,8 +1,8 @@
 {
   "schemaVersion": "1.1.0",
-  "updatedAt": "2026-08-16T20:53:40.891Z",
+  "updatedAt": "2026-08-23T19:50:08.618Z",
   "northStar": "Become the most trusted place to make a confident gift decision without wasting time or money.",
-  "currentBet": "Turn three observed frictions into low-pressure rituals: preserve night vision while finding one constellation, name one detail on a neighborhood nature walk, and pause a puzzle without surrendering the dining table.",
+  "currentBet": "Build three evergreen recipient-intent guides around routines shoppers can actually observe: clean and dry muddy paws at the door, preserve a fiber-art work in progress and its exact stopping point, and move a cleaned vinyl record into a fresh sleeve instead of returning it to dust.",
   "thoughtfulnessFramework": {
     "minimumPairCoherenceScore": 80,
     "principles": [
@@ -473,6 +473,156 @@
         "minimumSocialAngles": 5
       },
       "researchBrief": "Research jigsaw-puzzle storage-surface plus sorting-tray pairs for adults who lose a shared table between sessions. Require exact finished-puzzle dimensions, usable surface area, closure or roll behavior, board weight, storage orientation, tray capacity, contrast, reach, pet and child realities, independent usefulness, and one start-sort-store interaction. Reject generic puzzle gifts, unsupported piece-count fit, bulky systems without a named storage location, and pairings that merely add accessories."
+    },
+    {
+      "id": "founder-idea-011",
+      "revision": 2,
+      "founderDisposition": "approved_for_research",
+      "ideaType": "editorial",
+      "thesisType": "ritual_pairing",
+      "title": "Rinse, dry, release: a muddy-paw arrival station",
+      "audience": "Someone buying for a dog household that keeps a towel, bowl, wipes, or another improvised cleanup system beside a muddy entrance",
+      "occasion": "Birthday, housewarming, new-dog welcome, holiday, or the start of a rainy season",
+      "budget": "$25-$70",
+      "priority": "high",
+      "insight": "The thoughtful gift is not novelty dog gear; it is a two-step station that removes loose mud with water, dries the paw before release, and fits both the dog and the doorway routine.",
+      "observedFriction": "After wet walks, the recipient blocks the doorway with an old towel, carries the dog toward a sink, or wipes repeatedly while damp grit still reaches the floor.",
+      "selfPurchaseReluctance": "They already own a bowl and old towels that technically work, so a purpose-built, correctly sized station feels like an unglamorous upgrade despite repeated use.",
+      "fitSignals": [
+        "You have watched the dog pause at the same entrance for a paw wipe after rain, snow, digging, or a muddy walk.",
+        "You can measure the widest paw, name the cleanup doorway, and confirm that the dog calmly accepts paw handling and water."
+      ],
+      "avoidIf": [
+        "The dog guards its feet, shows pain or skin injury, panics during handling, or needs veterinary or training guidance rather than a new tool.",
+        "The washer opening is unmeasured, the towel has no drying location, or a simple washable towel already solves the household's actual level of mud."
+      ],
+      "pairing": {
+        "unifyingIdea": "Remove the mud with a size-matched water-only wash, then absorb the remaining moisture before the dog crosses the clean side of the threshold.",
+        "itemRoles": [
+          {
+            "item": "A size-qualified manual paw-washing cup or compact water-rinse tool",
+            "role": "The rinse layer that loosens visible mud without a battery, subscription, or unrequested topical product."
+          },
+          {
+            "item": "A washable quick-dry towel with a controllable grip",
+            "role": "The dry layer that finishes each paw and stays assigned to the named entrance between walks."
+          }
+        ],
+        "interactionMoment": "Stage clean water and the dry towel before the walk, rinse one paw at a time on return, pat it dry, then release the dog across the clean side of the threshold.",
+        "compatibilityChecks": [
+          "Measure paw width against the exact opening and verify handling tolerance, water temperature, stable footing, dog size, and the ability to rinse the tool after use.",
+          "Confirm towel dimensions, hand-pocket preference, wash instructions, drying location, floor space, and whether an existing washable cloth makes the companion unnecessary."
+        ],
+        "coherenceScore": 93,
+        "clutterRisk": "A wrong-size cup or damp towel without a hook becomes doorway clutter; buy the pair only when both pieces fit one named entrance and one observed routine."
+      },
+      "successMetric": "Two independently qualified rinse-and-dry pairs with exact paw fit, handling, wash-care, drying-location, and simple-towel fallback checks",
+      "deliverables": {
+        "minimumFinalists": 5,
+        "minimumQualifiedPairs": 2,
+        "minimumSocialAngles": 5
+      },
+      "researchBrief": "Research manual paw-washer plus washable drying-towel pairs for dog households with an observed muddy-entry routine. Require exact paw-opening measurements, dog handling tolerance, water-only instructions, stable footing, tool cleaning, towel dimensions and care, entryway storage, independent usefulness, and one rinse-dry-release interaction. Exclude health claims, unrequested shampoos or wipes, powered devices, aversive handling, and any pair that a simple existing towel already replaces."
+    },
+    {
+      "id": "founder-idea-012",
+      "revision": 2,
+      "founderDisposition": "approved_for_research",
+      "ideaType": "editorial",
+      "thesisType": "ritual_pairing",
+      "title": "Mark the row, protect the work: a fiber-art pause ritual",
+      "audience": "Someone buying for a knitter or crocheter who keeps multiple works in progress and has to reconstruct the project, tools, or last completed row after a break",
+      "occasion": "Birthday, holiday, first sweater or blanket, craft retreat, or return to a paused hobby",
+      "budget": "$20-$130",
+      "priority": "high",
+      "insight": "A project container preserves the physical work while a lockable counter or pattern holder preserves the decision state, so the recipient can resume instead of recounting and searching.",
+      "observedFriction": "Loose yarn, needles or hooks, notions, and a folded pattern migrate between bags while row counts live on scraps of paper or in memory and disappear during a pause.",
+      "selfPurchaseReluctance": "Yarn and patterns feel like the creative purchase; storage and state-tracking tools feel like boring infrastructure and require project-specific sizing research.",
+      "fitSignals": [
+        "You have seen an active project stored in a shopping bag, open basket, or overloaded tote with its tools and pattern separated.",
+        "They mention losing their row, recounting repeats, forgetting modifications, or avoiding a project because resuming it takes too much reconstruction."
+      ],
+      "avoidIf": [
+        "They have one trusted bag-and-tracker system, work entirely from an app they prefer, or would read another organizational tool as criticism rather than support.",
+        "The container cannot fit the named project's yarn and needle or hook length, or the tracker does not match their paper, chart, counter, vision, or dexterity preference."
+      ],
+      "pairing": {
+        "unifyingIdea": "Keep the work, working yarn, and tools together, then leave an unambiguous physical marker for the exact place where the next session should begin.",
+        "itemRoles": [
+          {
+            "item": "A closure-safe project bag or case sized to one known work in progress",
+            "role": "The physical continuity layer that contains the fabric, yarn, needles or hooks, and core notions without snagging."
+          },
+          {
+            "item": "A lockable row counter or magnetic paper-pattern holder",
+            "role": "The decision continuity layer that preserves the last completed row, active chart line, or next instruction through storage."
+          }
+        ],
+        "interactionMoment": "Before putting the project away, finish or mark the current row, lock the counter or move the chart marker to the next instruction, and close every required tool with the work.",
+        "compatibilityChecks": [
+          "Confirm the named project's physical volume, yarn-ball count, straight-needle or hook length, closure snag risk, feeder behavior, carry style, and storage location.",
+          "Confirm paper versus digital pattern use, chart size, row-count convention, vision and dexterity needs, locking behavior, magnetic safety, and whether the tracker can remain with that project."
+        ],
+        "coherenceScore": 94,
+        "clutterRisk": "A premium bag in the wrong size or a tracker the recipient will not update adds two abandoned systems; both pieces must attach to one real work in progress and one pause habit."
+      },
+      "successMetric": "Two independently qualified contain-and-mark pairs for different project sizes, each with exact capacity, closure, snag, pattern, locking, accessibility, and duplicate checks",
+      "deliverables": {
+        "minimumFinalists": 5,
+        "minimumQualifiedPairs": 2,
+        "minimumSocialAngles": 5
+      },
+      "researchBrief": "Research project-container plus physical-state-tracker pairs for knitters or crocheters who lose momentum when a work in progress is paused. Require exact project capacity, yarn feed, closure and snag behavior, needle or hook fit, carry and storage, paper or chart format, count convention, lock behavior, vision and dexterity, independent usefulness, and one mark-close-resume interaction. Reject guessed yarn or tool preferences, mandatory apps or subscriptions, duplicate systems, and bags too large or small for the named project."
+    },
+    {
+      "id": "founder-idea-013",
+      "revision": 2,
+      "founderDisposition": "approved_for_research",
+      "ideaType": "editorial",
+      "thesisType": "ritual_pairing",
+      "title": "Clean once, re-sleeve clean: a used-record reset ritual",
+      "audience": "Someone buying for a vinyl collector who brings home used records, tolerates dusty paper sleeves, or postpones batch cleaning because the maintenance setup feels less exciting than the music",
+      "occasion": "Birthday, holiday, Record Store Day, collection milestone, or move into a dedicated listening space",
+      "budget": "$35-$110",
+      "priority": "high",
+      "insight": "The pair completes one maintenance job: a compatible manual cleaner removes loose contamination, while a fresh inner sleeve keeps the cleaned record from returning to the same dusty paper environment.",
+      "observedFriction": "Used purchases queue beside the turntable, records return to shedding paper inners after cleaning, or one-off wiping never becomes a repeatable receive-clean-rehouse routine.",
+      "selfPurchaseReluctance": "Collectors prioritize records and playback upgrades; a washer and replacement sleeves feel like maintenance overhead and demand unglamorous compatibility research.",
+      "fitSignals": [
+        "They buy used 12-inch vinyl, mention surface dust or paper debris, and have said they intend to clean or re-sleeve part of the collection.",
+        "You can confirm the record formats, available drying and storage space, current cleaning method, and willingness to perform a manual wet-cleaning routine."
+      ],
+      "avoidIf": [
+        "The collection includes shellac, lacquer, picture discs, unusual materials, damaged labels, or other records that the chosen fluid and process do not explicitly support.",
+        "They already own a trusted cleaner and sleeve stock, want ultrasonic or professional service, or lack a safe level workspace and drying location."
+      ],
+      "pairing": {
+        "unifyingIdea": "Give one compatible record a deliberate wet clean, let it dry completely, and move it into a fresh correctly sized inner sleeve rather than back into the contaminated original.",
+        "itemRoles": [
+          {
+            "item": "A manual wet-cleaning system qualified for the recipient's vinyl record formats",
+            "role": "The reset layer that provides a repeatable method for cleaning a newly acquired or visibly dusty record."
+          },
+          {
+            "item": "A correctly sized anti-static or archival-style replacement inner sleeve",
+            "role": "The keep-clean layer that separates the dry record from an abrasive, dusty, or shedding original paper inner."
+          }
+        ],
+        "interactionMoment": "Choose one compatible used record, follow the cleaner's exact dilution and handling instructions, allow it to dry fully, then date the old inner if it has artwork and store the record in a fresh sleeve.",
+        "compatibilityChecks": [
+          "Confirm 12-inch, 10-inch, or 7-inch vinyl support, fluid and water requirements, label exposure, drying method, level workspace, batch size, storage, and replacement-supply burden.",
+          "Confirm sleeve dimensions, jacket clearance, material disclosure, static and paper-dust priorities, artwork retention, pack size, and whether thicker sleeves fit the recipient's tight jackets."
+        ],
+        "coherenceScore": 95,
+        "clutterRisk": "A bulky bath or fifty sleeves without a planned first batch becomes maintenance clutter; size the system to one named queue and skip any medium the instructions do not support."
+      },
+      "successMetric": "Two independently qualified clean-dry-rehouse pairs at different effort levels, with exact format, fluid, label, drying, sleeve-fit, material, and existing-system checks",
+      "deliverables": {
+        "minimumFinalists": 5,
+        "minimumQualifiedPairs": 2,
+        "minimumSocialAngles": 5
+      },
+      "researchBrief": "Research manual vinyl-cleaning plus fresh-inner-sleeve pairs for collectors with an observed queue of used or dusty records. Require exact record-format and material support, fluid and water instructions, label and drying controls, level workspace, batch size, replacement supplies, sleeve material and dimensions, jacket clearance, artwork retention, independent usefulness, and one clean-dry-rehouse interaction. Exclude unsupported media, invented preservation or sound claims, powered systems, exact current prices, and any workflow the recipient did not ask to maintain."
     }
   ]
 }

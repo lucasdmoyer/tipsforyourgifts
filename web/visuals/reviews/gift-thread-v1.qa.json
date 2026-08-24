@@ -1,0 +1,35 @@
+{
+  "schemaVersion": "1.0.0",
+  "receiptId": "gift-thread-v1-independent-visual-qa",
+  "reviewedAt": "2026-08-24T03:52:40Z",
+  "reviewerRole": "independent-visual-editor",
+  "reviewerId": "family-history-independent-qa-desk",
+  "workflowRunId": "local-independent-visual-review-20260824",
+  "verdict": "passed",
+  "registryPath": "visuals/article-visuals.json",
+  "registrySha256": "bd494c5e65de86388d5078aedaf989ad6205ecaae20a06c1e669f606b7b46f82",
+  "promptBookPath": "visuals/PROMPTS.md",
+  "promptBookSha256": "8c9d9c832b8dd233aff93945e93a3893449e6058ccecab0c1bbd830f16958c06",
+  "scope": {
+    "sourceAssetsReviewed": 22,
+    "publicAssetsReviewed": 19,
+    "draftOnlyAssetsReviewed": 3,
+    "articleMappingsReviewed": 13,
+    "productMappingsReviewed": 75,
+    "pairMappingsReviewed": 29
+  },
+  "checks": {
+    "sourceAndPromptProvenance": true,
+    "fileIntegrity": true,
+    "productContextTruth": true,
+    "copyrightAndTradeDressBoundary": true,
+    "accessibilitySemantics": true,
+    "responsiveLayout": true,
+    "draftIsolation": true
+  },
+  "blockers": [],
+  "warnings": [
+    "This receipt certifies visual QA only and does not certify the three draft articles' editorial evidence, affiliate links, deployment, or production state.",
+    "PROMPTS.md is hash-bound as one versioned prompt book; individual prompt sections are not independently hashed."
+  ]
+}

@@ -18,6 +18,25 @@ describe('App', () => {
     expect(element.querySelector('a[href="/gift-finder"]')?.textContent).toContain('Gift finder');
   });
 
+  it('ships a founder-approved visual for every public article, product, and pair', () => {
+    expect(ARTICLES.length).toBeGreaterThan(0);
+    for (const article of ARTICLES) {
+      expect(article.visual.styleVersion).toBe('gift-thread-editorial-cartoon-v1.0');
+      expect(article.visual.generator).toBe('openai-built-in-imagegen');
+      expect(article.visual.rightsPosture).toBe('founder-approved-original-ai-generated');
+      expect(article.visual.hero.src).toMatch(/^\/blog-images\/.+\.webp$/);
+      expect(article.visual.hero.alt.length).toBeGreaterThan(40);
+      for (const product of article.products) {
+        const sceneId = article.visual.productSceneIds[product.id];
+        expect(article.visual.scenes.some((scene) => scene.id === sceneId)).toBe(true);
+      }
+      for (const pair of article.pairs) {
+        const sceneId = article.visual.pairSceneIds[pair.id];
+        expect(article.visual.scenes.some((scene) => scene.id === sceneId)).toBe(true);
+      }
+    }
+  });
+
   it('renders a fail-closed finder from reviewed guides only', () => {
     const fixture = TestBed.createComponent(GiftFinderPage);
     fixture.detectChanges();
@@ -38,8 +57,15 @@ describe('App', () => {
     const fixture = TestBed.createComponent(ProductCardComponent);
     fixture.componentRef.setInput('product', article.products[0]);
     fixture.componentRef.setInput('articleSlug', article.slug);
+    const sceneId = article.visual.productSceneIds[article.products[0].id];
+    fixture.componentRef.setInput('visual', article.visual.scenes.find((scene) => scene.id === sceneId) ?? article.visual.hero);
     fixture.detectChanges();
+    const image = fixture.nativeElement.querySelector('.product-context-visual img') as HTMLImageElement;
     const link = fixture.nativeElement.querySelector('[data-event-name="merchant_outbound_click"]') as HTMLAnchorElement;
+    expect(image.src).toContain('/blog-images/');
+    expect(image.alt).toBe('');
+    expect(image.getAttribute('aria-hidden')).toBe('true');
+    expect(fixture.nativeElement.textContent).toContain('category context, not a product photo');
     expect(link.dataset['articleSlug']).toBe(article.slug);
     expect(link.dataset['productId']).toBe(article.products[0].id);
     expect(link.dataset['paidLink']).toBe(String(article.products[0].affiliate));

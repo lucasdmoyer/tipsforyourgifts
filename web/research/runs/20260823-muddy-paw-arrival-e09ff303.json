@@ -1,0 +1,1390 @@
+{
+  "schemaVersion": "1.1.0",
+  "runId": "20260823-muddy-paw-arrival-e09ff303",
+  "ideaId": "founder-idea-011",
+  "ideaRevision": 2,
+  "ideaSha256": "e09ff303d789dfb39c969dc21d2535e59810ff27b835f965ef9c493c13666939",
+  "decisionLens": "gift_pairing",
+  "contentType": "pairing-guide",
+  "status": "drafted",
+  "topic": "Size-qualified manual paw washers and washable drying tools for a dog household with an observed muddy-door routine",
+  "audience": "People buying for a dog household that already cleans muddy paws at one repeatable entrance",
+  "occasion": "Birthday, housewarming, new-dog welcome, holiday, or the start of a rainy season",
+  "budgetBands": [
+    "Under $35",
+    "$35-$70"
+  ],
+  "riskClass": "medium",
+  "draftAuthor": "muddy-paw-arrival-drafting-research-desk",
+  "startedAt": "2026-08-23T19:55:00.000Z",
+  "researchPasses": [
+    {
+      "pass": 1,
+      "materialNoveltyRate": 1,
+      "newCandidates": 12,
+      "newDecisionFactors": 8
+    },
+    {
+      "pass": 2,
+      "materialNoveltyRate": 0.36,
+      "newCandidates": 0,
+      "newDecisionFactors": 5
+    },
+    {
+      "pass": 3,
+      "materialNoveltyRate": 0.14,
+      "newCandidates": 0,
+      "newDecisionFactors": 3
+    },
+    {
+      "pass": 4,
+      "materialNoveltyRate": 0.07,
+      "newCandidates": 0,
+      "newDecisionFactors": 1
+    },
+    {
+      "pass": 5,
+      "materialNoveltyRate": 0.04,
+      "newCandidates": 0,
+      "newDecisionFactors": 0
+    }
+  ],
+  "sources": [
+    {
+      "id": "src-dog-routine-discussion",
+      "url": "https://www.reddit.com/r/dogs/comments/1cbx30q",
+      "publisher": "Reddit r/dogs",
+      "title": "Dog owners compare muddy-paw cleanup routines using water, towels, and paw washers",
+      "accessedAt": "2026-08-23",
+      "sourceClass": "social-discussion",
+      "trustTier": "C",
+      "independenceGroup": "reddit-dogs-paw-routines-2024"
+    },
+    {
+      "id": "src-dog-entry-discussion",
+      "url": "https://www.reddit.com/r/dogs/comments/1s3jhhu/i_started_wiping_my_dogs_paws_after_muddy_walks/",
+      "publisher": "Reddit r/dogs",
+      "title": "Dog households describe keeping a MudBuster and drying towel together at the entrance",
+      "accessedAt": "2026-08-23",
+      "sourceClass": "social-discussion",
+      "trustTier": "C",
+      "independenceGroup": "reddit-dogs-entry-routines-2026"
+    },
+    {
+      "id": "src-handling-akc",
+      "url": "https://www.akc.org/canine-partners/handling-vs-petting-how-to-make-sure-your-dog-enjoys-both/",
+      "publisher": "American Kennel Club",
+      "title": "Handling versus petting and gradual positive paw-handling associations",
+      "accessedAt": "2026-08-23",
+      "sourceClass": "expert-guidance",
+      "trustTier": "B",
+      "independenceGroup": "akc-handling-guidance"
+    },
+    {
+      "id": "src-paw-injury-vca",
+      "url": "https://vcahospitals.com/pediatric/puppy/health-wellness/dog-paw-injuries-and-how-to-help",
+      "publisher": "VCA Animal Hospitals",
+      "title": "Dog paw injury signs and veterinary-attention boundary",
+      "accessedAt": "2026-08-23",
+      "sourceClass": "veterinary-guidance",
+      "trustTier": "A",
+      "independenceGroup": "vca-paw-health"
+    },
+    {
+      "id": "src-mudbuster-official",
+      "url": "https://store.dexas.com/products/mudbuster%C2%AE-as-seen-on-tv-new-colors",
+      "publisher": "Dexas",
+      "title": "MudBuster official sizes, opening guidance, materials, and use sequence",
+      "accessedAt": "2026-08-23",
+      "sourceClass": "manufacturer",
+      "trustTier": "A",
+      "independenceGroup": "dexas"
+    },
+    {
+      "id": "src-mudbuster-dogsmeetsbaby-review",
+      "url": "https://dogsmeetsbaby.com/reviews/dexas-mudbuster-review/",
+      "publisher": "Dogs Meets Baby",
+      "title": "Dexas MudBuster desk-research review with owner-pattern drawbacks",
+      "accessedAt": "2026-08-23",
+      "sourceClass": "independent-review",
+      "trustTier": "B",
+      "independenceGroup": "dogs-meets-baby"
+    },
+    {
+      "id": "src-mudbuster-yourdogadvisor-review",
+      "url": "https://yourdogadvisor.com/mudbuster-portable-dog-paw-cleaner/",
+      "publisher": "Your Dog Advisor",
+      "title": "Dexas MudBuster hands-on review in a muddy spring routine",
+      "accessedAt": "2026-08-23",
+      "sourceClass": "independent-review",
+      "trustTier": "B",
+      "independenceGroup": "your-dog-advisor"
+    },
+    {
+      "id": "src-soggy-shammy-official",
+      "url": "https://www.soggydoggydoormat.com/products/soggy-doggy-super-shammy-blue",
+      "publisher": "Soggy Doggy",
+      "title": "Super Shammy official dimensions, material, pockets, and wash care",
+      "accessedAt": "2026-08-23",
+      "sourceClass": "manufacturer",
+      "trustTier": "A",
+      "independenceGroup": "soggy-doggy"
+    },
+    {
+      "id": "src-soggy-shammy-rover-review",
+      "url": "https://www.rover.com/blog/top-10-best-dog-towels-for-wet-fur-and-muddy-paws/",
+      "publisher": "Rover",
+      "title": "Dog towel comparison with verified Super Shammy review",
+      "accessedAt": "2026-08-23",
+      "sourceClass": "independent-review",
+      "trustTier": "B",
+      "independenceGroup": "rover-editorial"
+    },
+    {
+      "id": "src-soggy-shammy-gadgeteer-review",
+      "url": "https://the-gadgeteer.com/2011/12/02/soggy-doggy-super-shammy-review/",
+      "publisher": "The Gadgeteer",
+      "title": "Soggy Doggy Super Shammy hands-on review",
+      "accessedAt": "2026-08-23",
+      "sourceClass": "independent-review",
+      "trustTier": "B",
+      "independenceGroup": "the-gadgeteer"
+    },
+    {
+      "id": "src-dirty-shammy-official",
+      "url": "https://dgspetproducts.com/products/dirty-dog-shammy",
+      "publisher": "Dog Gone Smart",
+      "title": "Dirty Dog Shammy official product and care information",
+      "accessedAt": "2026-08-23",
+      "sourceClass": "manufacturer",
+      "trustTier": "A",
+      "independenceGroup": "dog-gone-smart"
+    },
+    {
+      "id": "src-dirty-shammy-sparkles-review",
+      "url": "https://sparklesandsunshineblog.com/dirty-dog-shammy-microfiber-dog-towel-review/",
+      "publisher": "Sparkles and Sunshine Blog",
+      "title": "Dirty Dog Shammy hands-on microfiber towel review",
+      "accessedAt": "2026-08-23",
+      "sourceClass": "independent-review",
+      "trustTier": "B",
+      "independenceGroup": "sparkles-and-sunshine"
+    },
+    {
+      "id": "src-dirty-shammy-chewy-review",
+      "url": "https://www.chewy.com/dog-gone-smart-dirty-dog-shammy-towel/dp/132882",
+      "publisher": "Chewy verified buyers",
+      "title": "Dirty Dog Shammy exact-product owner review corpus",
+      "accessedAt": "2026-08-23",
+      "sourceClass": "independent-review",
+      "trustTier": "B",
+      "independenceGroup": "chewy-dirty-shammy-buyers"
+    },
+    {
+      "id": "src-bone-dry-official",
+      "url": "https://bonedrypet.com/products/taupe-embroidered-paw-pet-towel",
+      "publisher": "Bone Dry Pet",
+      "title": "Bone Dry large microfiber pet towel official dimensions",
+      "accessedAt": "2026-08-23",
+      "sourceClass": "manufacturer",
+      "trustTier": "A",
+      "independenceGroup": "bone-dry-pet"
+    },
+    {
+      "id": "src-bone-dry-rover-review",
+      "url": "https://www.rover.com/blog/top-10-best-dog-towels-for-wet-fur-and-muddy-paws/",
+      "publisher": "Rover",
+      "title": "Dog towel comparison including Bone Dry for rainy walks",
+      "accessedAt": "2026-08-23",
+      "sourceClass": "independent-review",
+      "trustTier": "B",
+      "independenceGroup": "rover-bone-dry-editorial"
+    },
+    {
+      "id": "src-bone-dry-chewy-review",
+      "url": "https://www.chewy.com/bone-dry-printed-moroccan-microfiber/dp/158591",
+      "publisher": "Chewy verified buyers",
+      "title": "Bone Dry microfiber towel exact-product owner reviews",
+      "accessedAt": "2026-08-23",
+      "sourceClass": "independent-review",
+      "trustTier": "B",
+      "independenceGroup": "chewy-bone-dry-buyers"
+    },
+    {
+      "id": "src-soggy-mat-official",
+      "url": "https://www.soggydoggydoormat.com/products/beige-absorbent-dog-doormat",
+      "publisher": "Soggy Doggy",
+      "title": "Soggy Doggy Doormat official sizes, backing, material, and wash care",
+      "accessedAt": "2026-08-23",
+      "sourceClass": "manufacturer",
+      "trustTier": "A",
+      "independenceGroup": "soggy-doggy-mats"
+    },
+    {
+      "id": "src-soggy-mat-gadgeteer-review",
+      "url": "https://the-gadgeteer.com/2011/03/03/soggy-doggy-doormat-review/",
+      "publisher": "The Gadgeteer",
+      "title": "Soggy Doggy Doormat hands-on review",
+      "accessedAt": "2026-08-23",
+      "sourceClass": "independent-review",
+      "trustTier": "B",
+      "independenceGroup": "the-gadgeteer-doormat"
+    },
+    {
+      "id": "src-soggy-mat-rover-review",
+      "url": "https://www.rover.com/blog/top-10-best-dog-towels-for-wet-fur-and-muddy-paws/",
+      "publisher": "Rover",
+      "title": "Dog drying comparison including the Soggy Doggy Doormat",
+      "accessedAt": "2026-08-23",
+      "sourceClass": "independent-review",
+      "trustTier": "B",
+      "independenceGroup": "rover-doormat-editorial"
+    }
+  ],
+  "claims": [
+    {
+      "id": "claim-muddy-entry-friction",
+      "kind": "recipient_friction",
+      "text": "Dog owners describe a repeatable wet-weather doorway routine in which water loosens mud and a towel finishes the paw before the dog proceeds inside.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-dog-routine-discussion",
+        "src-dog-entry-discussion"
+      ]
+    },
+    {
+      "id": "claim-paw-self-purchase",
+      "kind": "self_purchase_pattern",
+      "text": "A bowl and an old towel are common workable substitutes, supporting replacement inertia rather than a claim that every dog household needs special equipment.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-dog-routine-discussion",
+        "src-dog-entry-discussion"
+      ]
+    },
+    {
+      "id": "claim-paw-handling-boundary",
+      "kind": "compatibility",
+      "text": "A paw-washing tool is appropriate only when the dog already accepts gentle paw handling or is being gradually conditioned without force.",
+      "risk": "high",
+      "status": "supported",
+      "sourceIds": [
+        "src-handling-akc",
+        "src-dog-routine-discussion"
+      ]
+    },
+    {
+      "id": "claim-paw-health-boundary",
+      "kind": "compatibility",
+      "text": "Limping, bleeding, persistent licking, pain, or a visible injury moves the situation outside a gift guide and into veterinary guidance.",
+      "risk": "high",
+      "status": "supported",
+      "sourceIds": [
+        "src-paw-injury-vca"
+      ]
+    },
+    {
+      "id": "claim-mudbuster-benefit",
+      "kind": "product_benefit",
+      "text": "The Dexas MudBuster uses a water-filled tumbler with a removable soft-silicone bristle insert and requires a separate drying step.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": [
+        "src-mudbuster-official",
+        "src-mudbuster-dogsmeetsbaby-review",
+        "src-mudbuster-yourdogadvisor-review"
+      ]
+    },
+    {
+      "id": "claim-mudbuster-fit",
+      "kind": "compatibility",
+      "text": "MudBuster selection depends on measured paw width: the official guide distinguishes small, medium, and large openings rather than breed name alone.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": [
+        "src-mudbuster-official"
+      ]
+    },
+    {
+      "id": "claim-mudbuster-drawback",
+      "kind": "product_drawback",
+      "text": "The washer leaves paws damp, requires clean water and post-use rinsing, and can fail as a routine when the dog dislikes foot handling.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": [
+        "src-mudbuster-official",
+        "src-mudbuster-dogsmeetsbaby-review",
+        "src-dog-routine-discussion"
+      ]
+    },
+    {
+      "id": "claim-soggy-shammy-benefit",
+      "kind": "product_benefit",
+      "text": "The Soggy Doggy Super Shammy is a 31-by-14-inch microfiber-chenille towel with hand pockets and machine-washable care.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": [
+        "src-soggy-shammy-official",
+        "src-soggy-shammy-rover-review",
+        "src-soggy-shammy-gadgeteer-review"
+      ]
+    },
+    {
+      "id": "claim-soggy-shammy-drawback",
+      "kind": "product_drawback",
+      "text": "The Super Shammy must be washed without fabric softener and needs a dedicated place to dry between uses; its compact shape is for controlled drying rather than wrapping a large dog.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": [
+        "src-soggy-shammy-official",
+        "src-soggy-shammy-gadgeteer-review"
+      ]
+    },
+    {
+      "id": "claim-dirty-shammy-benefit",
+      "kind": "product_benefit",
+      "text": "The Dirty Dog Shammy is a compact machine-washable microfiber towel with two hand pockets intended to improve grip while drying wet fur and paws.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": [
+        "src-dirty-shammy-official",
+        "src-dirty-shammy-sparkles-review",
+        "src-dirty-shammy-chewy-review"
+      ]
+    },
+    {
+      "id": "claim-dirty-shammy-drawback",
+      "kind": "product_drawback",
+      "text": "Its roughly 31-by-13-inch format is practical for paws and sections of coat but may be too small for one-pass whole-body drying, and it still needs laundering and a drying location.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": [
+        "src-dirty-shammy-official",
+        "src-dirty-shammy-chewy-review"
+      ]
+    },
+    {
+      "id": "claim-bone-dry-benefit",
+      "kind": "product_benefit",
+      "text": "The Bone Dry large pet towel provides a broader 41-by-23.5-inch microfiber surface for households that want one flat towel for paws and wet coat.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": [
+        "src-bone-dry-official",
+        "src-bone-dry-rover-review",
+        "src-bone-dry-chewy-review"
+      ]
+    },
+    {
+      "id": "claim-bone-dry-drawback",
+      "kind": "product_drawback",
+      "text": "The larger flat towel lacks the compact dual-pocket control of the two shammies, and owner feedback is less consistent about absorbency.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": [
+        "src-bone-dry-rover-review",
+        "src-bone-dry-chewy-review"
+      ]
+    },
+    {
+      "id": "claim-soggy-mat-benefit",
+      "kind": "product_benefit",
+      "text": "The Soggy Doggy Doormat offers multiple measured sizes, a non-slip backing, and machine-washable microfiber chenille for a named entrance.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": [
+        "src-soggy-mat-official",
+        "src-soggy-mat-gadgeteer-review",
+        "src-soggy-mat-rover-review"
+      ]
+    },
+    {
+      "id": "claim-soggy-mat-drawback",
+      "kind": "product_drawback",
+      "text": "A mat passively catches some moisture but does not replace deliberate drying between toes, and the larger sizes create meaningful floor, washer, and drying-space obligations.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": [
+        "src-soggy-mat-official",
+        "src-soggy-mat-gadgeteer-review",
+        "src-dog-routine-discussion"
+      ]
+    },
+    {
+      "id": "claim-pair-mudbuster-soggy",
+      "kind": "pair_coherence",
+      "text": "The MudBuster and Super Shammy perform consecutive, non-duplicate jobs in one observed routine: water and bristles loosen mud, then a pocketed towel removes remaining moisture before release.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-mudbuster-official",
+        "src-soggy-shammy-official",
+        "src-dog-entry-discussion"
+      ]
+    },
+    {
+      "id": "claim-pair-mudbuster-dirty",
+      "kind": "pair_coherence",
+      "text": "The MudBuster and Dirty Dog Shammy form the same rinse-then-dry loop with a more conventional low-pile hand-pocket towel as the drying companion.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-mudbuster-official",
+        "src-dirty-shammy-official",
+        "src-dog-routine-discussion"
+      ]
+    },
+    {
+      "id": "claim-simple-towel-fallback",
+      "kind": "duplicate_clutter",
+      "text": "When mud is light and an existing washable towel already completes the routine, a specialized washer or second towel adds clutter rather than value.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-dog-routine-discussion",
+        "src-dog-entry-discussion"
+      ]
+    }
+  ],
+  "conflicts": [
+    {
+      "id": "mudbuster-versus-simple-towel",
+      "summary": "Owners disagree about whether a paw-washing cup improves on a damp towel or bowl; the article resolves this by limiting the cup to observed heavy-mud routines and retaining a towel-only fallback."
+    }
+  ],
+  "candidates": [
+    {
+      "id": "dexas-mudbuster",
+      "name": "Dexas MudBuster Portable Dog Paw Cleaner",
+      "editorialScore": 89,
+      "evidenceConfidence": 88,
+      "drawbacks": [
+        "The washer leaves paws damp, requires clean water and post-use rinsing, and can fail as a routine when the dog dislikes foot handling."
+      ],
+      "primarySourceIds": [
+        "src-mudbuster-official"
+      ],
+      "independentSourceIds": [
+        "src-mudbuster-dogsmeetsbaby-review",
+        "src-mudbuster-yourdogadvisor-review"
+      ],
+      "claimIds": [
+        "claim-mudbuster-benefit",
+        "claim-mudbuster-fit",
+        "claim-mudbuster-drawback",
+        "claim-paw-handling-boundary"
+      ],
+      "evidenceMode": "desk_research",
+      "thoughtfulness": {
+        "observationPrompt": "Have you watched the dog wait at the same entrance while the recipient rinses visibly muddy paws and then reaches for a separate towel?",
+        "frictionClaimIds": [
+          "claim-muddy-entry-friction"
+        ],
+        "physicalGiftBoundary": "welcome_when_verified",
+        "selfPurchase": {
+          "reason": "replacement_inertia",
+          "rationale": "A bowl and old towel technically work, so the purpose-built washer stays optional until repeated heavy mud makes the contained rinse valuable.",
+          "basis": "social_demand",
+          "claimIds": [
+            "claim-paw-self-purchase"
+          ]
+        },
+        "duplicateRisk": {
+          "level": "high",
+          "preGiftCheck": "Confirm there is no correctly sized paw washer already stored at the cleanup entrance."
+        },
+        "clutterRisk": {
+          "level": "medium",
+          "ownershipBurden": "The cup needs clean water, rinsing after use, and an assigned drying or storage place.",
+          "mitigation": "Buy only for a measured paw and a named doorway with a sink or fill-and-empty path."
+        },
+        "compatibilityChecks": [
+          {
+            "dimension": "size_or_fit",
+            "status": "verified",
+            "requirement": "Measure the widest paw and choose against the manufacturer's exact opening guidance, not breed alone.",
+            "claimIds": [
+              "claim-mudbuster-fit"
+            ]
+          },
+          {
+            "dimension": "accessibility",
+            "status": "verified",
+            "requirement": "Confirm the dog already accepts calm paw handling; do not force a fearful or painful paw into the cup.",
+            "claimIds": [
+              "claim-paw-handling-boundary",
+              "claim-paw-health-boundary"
+            ]
+          }
+        ],
+        "score": {
+          "frictionSpecificity": 5,
+          "selfPurchaseLogic": 5,
+          "ownershipEase": 4,
+          "recipientSpecificity": 5,
+          "total": 19
+        }
+      }
+    },
+    {
+      "id": "soggy-doggy-super-shammy",
+      "name": "Soggy Doggy Super Shammy",
+      "editorialScore": 87,
+      "evidenceConfidence": 86,
+      "drawbacks": [
+        "The Super Shammy must be washed without fabric softener and needs a dedicated place to dry between uses; its compact shape is for controlled drying rather than wrapping a large dog."
+      ],
+      "primarySourceIds": [
+        "src-soggy-shammy-official"
+      ],
+      "independentSourceIds": [
+        "src-soggy-shammy-rover-review",
+        "src-soggy-shammy-gadgeteer-review"
+      ],
+      "claimIds": [
+        "claim-soggy-shammy-benefit",
+        "claim-soggy-shammy-drawback"
+      ],
+      "evidenceMode": "desk_research",
+      "thoughtfulness": {
+        "observationPrompt": "Does the recipient currently fold or bunch a flat towel around individual paws and lose grip while the dog tries to move on?",
+        "frictionClaimIds": [
+          "claim-muddy-entry-friction"
+        ],
+        "physicalGiftBoundary": "welcome_when_verified",
+        "selfPurchase": {
+          "reason": "small_luxury_deferral",
+          "rationale": "A dedicated pocketed shammy improves an existing drying step but is easy to defer while old household towels remain available.",
+          "basis": "editorial_inference",
+          "claimIds": [
+            "claim-paw-self-purchase"
+          ]
+        },
+        "duplicateRisk": {
+          "level": "high",
+          "preGiftCheck": "Check the entryway for an existing pocketed pet towel or another towel the recipient already prefers."
+        },
+        "clutterRisk": {
+          "level": "low",
+          "ownershipBurden": "The towel needs routine laundering and a ventilated hook or rail where it can dry fully.",
+          "mitigation": "Name the drying location before purchase and skip it when the existing towel already fits the job."
+        },
+        "compatibilityChecks": [
+          {
+            "dimension": "size_or_fit",
+            "status": "verified",
+            "requirement": "Use the 31-by-14-inch format for controlled paw and section drying, not as an unverified whole-body wrap.",
+            "claimIds": [
+              "claim-soggy-shammy-benefit",
+              "claim-soggy-shammy-drawback"
+            ]
+          },
+          {
+            "dimension": "space_or_storage",
+            "status": "verified",
+            "requirement": "Confirm a ventilated drying location and the household's willingness to follow the no-fabric-softener care rule.",
+            "claimIds": [
+              "claim-soggy-shammy-drawback"
+            ]
+          }
+        ],
+        "score": {
+          "frictionSpecificity": 5,
+          "selfPurchaseLogic": 4,
+          "ownershipEase": 5,
+          "recipientSpecificity": 5,
+          "total": 19
+        }
+      }
+    },
+    {
+      "id": "dirty-dog-shammy",
+      "name": "Dog Gone Smart Dirty Dog Shammy",
+      "editorialScore": 86,
+      "evidenceConfidence": 85,
+      "drawbacks": [
+        "Its roughly 31-by-13-inch format is practical for paws and sections of coat but may be too small for one-pass whole-body drying, and it still needs laundering and a drying location."
+      ],
+      "primarySourceIds": [
+        "src-dirty-shammy-official"
+      ],
+      "independentSourceIds": [
+        "src-dirty-shammy-sparkles-review",
+        "src-dirty-shammy-chewy-review"
+      ],
+      "claimIds": [
+        "claim-dirty-shammy-benefit",
+        "claim-dirty-shammy-drawback"
+      ],
+      "evidenceMode": "desk_research",
+      "thoughtfulness": {
+        "observationPrompt": "Would a lower-pile hand-pocket towel make the existing wipe easier without requiring the recipient to change where or how the routine happens?",
+        "frictionClaimIds": [
+          "claim-muddy-entry-friction"
+        ],
+        "physicalGiftBoundary": "welcome_when_verified",
+        "selfPurchase": {
+          "reason": "small_luxury_deferral",
+          "rationale": "The recipient can keep using an old towel, making a purpose-built grippy version a defensible but nonessential upgrade.",
+          "basis": "editorial_inference",
+          "claimIds": [
+            "claim-paw-self-purchase"
+          ]
+        },
+        "duplicateRisk": {
+          "level": "high",
+          "preGiftCheck": "Confirm that no compact pocketed pet shammy already occupies the named doorway or car kit."
+        },
+        "clutterRisk": {
+          "level": "low",
+          "ownershipBurden": "The towel requires washing and enough air circulation to dry between muddy outings.",
+          "mitigation": "Assign it to one entrance and one hook, and replace rather than add to an excessive towel stack."
+        },
+        "compatibilityChecks": [
+          {
+            "dimension": "size_or_fit",
+            "status": "verified",
+            "requirement": "Treat the 31-by-13-inch format as a paw and targeted-coat towel unless that size matches the intended whole-body job.",
+            "claimIds": [
+              "claim-dirty-shammy-benefit",
+              "claim-dirty-shammy-drawback"
+            ]
+          },
+          {
+            "dimension": "space_or_storage",
+            "status": "verified",
+            "requirement": "Confirm a reachable hook, rail, or laundry path at the same entrance where the dog pauses.",
+            "claimIds": [
+              "claim-dirty-shammy-drawback"
+            ]
+          }
+        ],
+        "score": {
+          "frictionSpecificity": 5,
+          "selfPurchaseLogic": 4,
+          "ownershipEase": 5,
+          "recipientSpecificity": 5,
+          "total": 19
+        }
+      }
+    },
+    {
+      "id": "bone-dry-large-pet-towel",
+      "name": "Bone Dry Large Microfiber Pet Towel",
+      "editorialScore": 79,
+      "evidenceConfidence": 78,
+      "drawbacks": [
+        "The larger flat towel lacks the compact dual-pocket control of the two shammies, and owner feedback is less consistent about absorbency."
+      ],
+      "primarySourceIds": [
+        "src-bone-dry-official"
+      ],
+      "independentSourceIds": [
+        "src-bone-dry-rover-review",
+        "src-bone-dry-chewy-review"
+      ],
+      "claimIds": [
+        "claim-bone-dry-benefit",
+        "claim-bone-dry-drawback"
+      ],
+      "evidenceMode": "desk_research",
+      "thoughtfulness": {
+        "observationPrompt": "Does the household need one broader flat towel for legs and coat after wet walks rather than a compact hand-pocket tool for paws alone?",
+        "frictionClaimIds": [
+          "claim-muddy-entry-friction"
+        ],
+        "physicalGiftBoundary": "welcome_when_verified",
+        "selfPurchase": {
+          "reason": "replacement_inertia",
+          "rationale": "The broader towel replaces an improvised bath towel only when whole-leg or coat drying is already part of the observed routine.",
+          "basis": "recipient_observation_prompt",
+          "claimIds": [
+            "claim-paw-self-purchase"
+          ]
+        },
+        "duplicateRisk": {
+          "level": "high",
+          "preGiftCheck": "Check whether a washable full-size towel already hangs at the entrance and performs this job well."
+        },
+        "clutterRisk": {
+          "level": "low",
+          "ownershipBurden": "A larger wet towel consumes more hook, washer, and drying space than the compact shammies.",
+          "mitigation": "Choose it only when the broader drying surface replaces an existing worn towel rather than joining a pile."
+        },
+        "compatibilityChecks": [
+          {
+            "dimension": "size_or_fit",
+            "status": "verified",
+            "requirement": "Confirm that the 41-by-23.5-inch surface matches the intended paws-plus-coat job and available drying rail.",
+            "claimIds": [
+              "claim-bone-dry-benefit"
+            ]
+          },
+          {
+            "dimension": "accessibility",
+            "status": "verified",
+            "requirement": "Prefer this flat format only when the recipient does not need hand pockets for grip or dexterity support.",
+            "claimIds": [
+              "claim-bone-dry-drawback"
+            ]
+          }
+        ],
+        "score": {
+          "frictionSpecificity": 4,
+          "selfPurchaseLogic": 4,
+          "ownershipEase": 5,
+          "recipientSpecificity": 4,
+          "total": 17
+        }
+      }
+    },
+    {
+      "id": "soggy-doggy-doormat",
+      "name": "Soggy Doggy Doormat",
+      "editorialScore": 80,
+      "evidenceConfidence": 80,
+      "drawbacks": [
+        "A mat passively catches some moisture but does not replace deliberate drying between toes, and the larger sizes create meaningful floor, washer, and drying-space obligations."
+      ],
+      "primarySourceIds": [
+        "src-soggy-mat-official"
+      ],
+      "independentSourceIds": [
+        "src-soggy-mat-gadgeteer-review",
+        "src-soggy-mat-rover-review"
+      ],
+      "claimIds": [
+        "claim-soggy-mat-benefit",
+        "claim-soggy-mat-drawback"
+      ],
+      "evidenceMode": "desk_research",
+      "thoughtfulness": {
+        "observationPrompt": "Is the missing piece stable footing and a washable dirty-side landing zone, or does the recipient really need deliberate paw drying instead?",
+        "frictionClaimIds": [
+          "claim-muddy-entry-friction"
+        ],
+        "physicalGiftBoundary": "welcome_when_verified",
+        "selfPurchase": {
+          "reason": "research_burden",
+          "rationale": "Mat size, door clearance, backing, washer capacity, and drying space make this more conditional than a generic pet doormat purchase.",
+          "basis": "editorial_inference",
+          "claimIds": [
+            "claim-paw-self-purchase"
+          ]
+        },
+        "duplicateRisk": {
+          "level": "high",
+          "preGiftCheck": "Measure the existing mat and verify that a washable nonslip landing zone is actually missing."
+        },
+        "clutterRisk": {
+          "level": "medium",
+          "ownershipBurden": "The selected size occupies permanent floor area and must fit the household washer and a practical drying method.",
+          "mitigation": "Measure door swing, floor area, washer capacity, and the exact dirty-side position before buying."
+        },
+        "compatibilityChecks": [
+          {
+            "dimension": "size_or_fit",
+            "status": "verified",
+            "requirement": "Choose among documented dimensions only after measuring door swing and the full landing area at the entrance.",
+            "claimIds": [
+              "claim-soggy-mat-benefit"
+            ]
+          },
+          {
+            "dimension": "space_or_storage",
+            "status": "verified",
+            "requirement": "Confirm washer capacity and a drying plan, especially for the large and extra-large formats.",
+            "claimIds": [
+              "claim-soggy-mat-drawback"
+            ]
+          }
+        ],
+        "score": {
+          "frictionSpecificity": 4,
+          "selfPurchaseLogic": 4,
+          "ownershipEase": 4,
+          "recipientSpecificity": 4,
+          "total": 16
+        }
+      }
+    },
+    {
+      "id": "generic-water-bowl",
+      "name": "Existing shallow water bowl",
+      "editorialScore": 70,
+      "evidenceConfidence": 76,
+      "drawbacks": [
+        "It can splash at the threshold and is not a gift when the household already owns one."
+      ],
+      "primarySourceIds": [],
+      "independentSourceIds": [],
+      "claimIds": [],
+      "evidenceMode": "desk_research"
+    },
+    {
+      "id": "existing-cotton-towel",
+      "name": "Existing washable cotton towel",
+      "editorialScore": 73,
+      "evidenceConfidence": 79,
+      "drawbacks": [
+        "It may bunch during paw handling, but buying a replacement is unnecessary when it already works."
+      ],
+      "primarySourceIds": [],
+      "independentSourceIds": [],
+      "claimIds": [],
+      "evidenceMode": "desk_research"
+    },
+    {
+      "id": "disposable-paw-wipes",
+      "name": "Disposable pet paw wipes",
+      "editorialScore": 55,
+      "evidenceConfidence": 62,
+      "drawbacks": [
+        "They create repeat consumable waste and introduce an unrequested topical product the dog may lick."
+      ],
+      "primarySourceIds": [],
+      "independentSourceIds": [],
+      "claimIds": [],
+      "evidenceMode": "desk_research"
+    },
+    {
+      "id": "portable-pressure-rinser",
+      "name": "Portable pressure rinse tank",
+      "editorialScore": 58,
+      "evidenceConfidence": 60,
+      "drawbacks": [
+        "It adds fill weight, hose management, spray control, and storage far beyond a typical doorway paw routine."
+      ],
+      "primarySourceIds": [],
+      "independentSourceIds": [],
+      "claimIds": [],
+      "evidenceMode": "desk_research"
+    },
+    {
+      "id": "dog-drying-robe",
+      "name": "Sized dog drying robe",
+      "editorialScore": 61,
+      "evidenceConfidence": 64,
+      "drawbacks": [
+        "Exact body fit and dog tolerance make a robe a poor substitute for a quick four-paw threshold routine."
+      ],
+      "primarySourceIds": [],
+      "independentSourceIds": [],
+      "claimIds": [],
+      "evidenceMode": "desk_research"
+    },
+    {
+      "id": "powered-paw-washer",
+      "name": "Powered automatic paw washer",
+      "editorialScore": 45,
+      "evidenceConfidence": 51,
+      "drawbacks": [
+        "Power, noise, moving parts, cleaning, and dog tolerance add failure points to a simple task."
+      ],
+      "primarySourceIds": [],
+      "independentSourceIds": [],
+      "claimIds": [],
+      "evidenceMode": "desk_research"
+    },
+    {
+      "id": "scented-paw-foam",
+      "name": "Scented no-rinse paw foam",
+      "editorialScore": 48,
+      "evidenceConfidence": 55,
+      "drawbacks": [
+        "It introduces ingredients, scent, repeat purchase, and licking questions that water-only cleaning avoids."
+      ],
+      "primarySourceIds": [],
+      "independentSourceIds": [],
+      "claimIds": [],
+      "evidenceMode": "desk_research"
+    }
+  ],
+  "finalists": [
+    {
+      "id": "dexas-mudbuster",
+      "name": "Dexas MudBuster Portable Dog Paw Cleaner",
+      "editorialScore": 89,
+      "evidenceConfidence": 88,
+      "drawbacks": [
+        "The washer leaves paws damp, requires clean water and post-use rinsing, and can fail as a routine when the dog dislikes foot handling."
+      ],
+      "primarySourceIds": [
+        "src-mudbuster-official"
+      ],
+      "independentSourceIds": [
+        "src-mudbuster-dogsmeetsbaby-review",
+        "src-mudbuster-yourdogadvisor-review"
+      ],
+      "claimIds": [
+        "claim-mudbuster-benefit",
+        "claim-mudbuster-fit",
+        "claim-mudbuster-drawback",
+        "claim-paw-handling-boundary"
+      ],
+      "evidenceMode": "desk_research",
+      "thoughtfulness": {
+        "observationPrompt": "Have you watched the dog wait at the same entrance while the recipient rinses visibly muddy paws and then reaches for a separate towel?",
+        "frictionClaimIds": [
+          "claim-muddy-entry-friction"
+        ],
+        "physicalGiftBoundary": "welcome_when_verified",
+        "selfPurchase": {
+          "reason": "replacement_inertia",
+          "rationale": "A bowl and old towel technically work, so the purpose-built washer stays optional until repeated heavy mud makes the contained rinse valuable.",
+          "basis": "social_demand",
+          "claimIds": [
+            "claim-paw-self-purchase"
+          ]
+        },
+        "duplicateRisk": {
+          "level": "high",
+          "preGiftCheck": "Confirm there is no correctly sized paw washer already stored at the cleanup entrance."
+        },
+        "clutterRisk": {
+          "level": "medium",
+          "ownershipBurden": "The cup needs clean water, rinsing after use, and an assigned drying or storage place.",
+          "mitigation": "Buy only for a measured paw and a named doorway with a sink or fill-and-empty path."
+        },
+        "compatibilityChecks": [
+          {
+            "dimension": "size_or_fit",
+            "status": "verified",
+            "requirement": "Measure the widest paw and choose against the manufacturer's exact opening guidance, not breed alone.",
+            "claimIds": [
+              "claim-mudbuster-fit"
+            ]
+          },
+          {
+            "dimension": "accessibility",
+            "status": "verified",
+            "requirement": "Confirm the dog already accepts calm paw handling; do not force a fearful or painful paw into the cup.",
+            "claimIds": [
+              "claim-paw-handling-boundary",
+              "claim-paw-health-boundary"
+            ]
+          }
+        ],
+        "score": {
+          "frictionSpecificity": 5,
+          "selfPurchaseLogic": 5,
+          "ownershipEase": 4,
+          "recipientSpecificity": 5,
+          "total": 19
+        }
+      }
+    },
+    {
+      "id": "soggy-doggy-super-shammy",
+      "name": "Soggy Doggy Super Shammy",
+      "editorialScore": 87,
+      "evidenceConfidence": 86,
+      "drawbacks": [
+        "The Super Shammy must be washed without fabric softener and needs a dedicated place to dry between uses; its compact shape is for controlled drying rather than wrapping a large dog."
+      ],
+      "primarySourceIds": [
+        "src-soggy-shammy-official"
+      ],
+      "independentSourceIds": [
+        "src-soggy-shammy-rover-review",
+        "src-soggy-shammy-gadgeteer-review"
+      ],
+      "claimIds": [
+        "claim-soggy-shammy-benefit",
+        "claim-soggy-shammy-drawback"
+      ],
+      "evidenceMode": "desk_research",
+      "thoughtfulness": {
+        "observationPrompt": "Does the recipient currently fold or bunch a flat towel around individual paws and lose grip while the dog tries to move on?",
+        "frictionClaimIds": [
+          "claim-muddy-entry-friction"
+        ],
+        "physicalGiftBoundary": "welcome_when_verified",
+        "selfPurchase": {
+          "reason": "small_luxury_deferral",
+          "rationale": "A dedicated pocketed shammy improves an existing drying step but is easy to defer while old household towels remain available.",
+          "basis": "editorial_inference",
+          "claimIds": [
+            "claim-paw-self-purchase"
+          ]
+        },
+        "duplicateRisk": {
+          "level": "high",
+          "preGiftCheck": "Check the entryway for an existing pocketed pet towel or another towel the recipient already prefers."
+        },
+        "clutterRisk": {
+          "level": "low",
+          "ownershipBurden": "The towel needs routine laundering and a ventilated hook or rail where it can dry fully.",
+          "mitigation": "Name the drying location before purchase and skip it when the existing towel already fits the job."
+        },
+        "compatibilityChecks": [
+          {
+            "dimension": "size_or_fit",
+            "status": "verified",
+            "requirement": "Use the 31-by-14-inch format for controlled paw and section drying, not as an unverified whole-body wrap.",
+            "claimIds": [
+              "claim-soggy-shammy-benefit",
+              "claim-soggy-shammy-drawback"
+            ]
+          },
+          {
+            "dimension": "space_or_storage",
+            "status": "verified",
+            "requirement": "Confirm a ventilated drying location and the household's willingness to follow the no-fabric-softener care rule.",
+            "claimIds": [
+              "claim-soggy-shammy-drawback"
+            ]
+          }
+        ],
+        "score": {
+          "frictionSpecificity": 5,
+          "selfPurchaseLogic": 4,
+          "ownershipEase": 5,
+          "recipientSpecificity": 5,
+          "total": 19
+        }
+      }
+    },
+    {
+      "id": "dirty-dog-shammy",
+      "name": "Dog Gone Smart Dirty Dog Shammy",
+      "editorialScore": 86,
+      "evidenceConfidence": 85,
+      "drawbacks": [
+        "Its roughly 31-by-13-inch format is practical for paws and sections of coat but may be too small for one-pass whole-body drying, and it still needs laundering and a drying location."
+      ],
+      "primarySourceIds": [
+        "src-dirty-shammy-official"
+      ],
+      "independentSourceIds": [
+        "src-dirty-shammy-sparkles-review",
+        "src-dirty-shammy-chewy-review"
+      ],
+      "claimIds": [
+        "claim-dirty-shammy-benefit",
+        "claim-dirty-shammy-drawback"
+      ],
+      "evidenceMode": "desk_research",
+      "thoughtfulness": {
+        "observationPrompt": "Would a lower-pile hand-pocket towel make the existing wipe easier without requiring the recipient to change where or how the routine happens?",
+        "frictionClaimIds": [
+          "claim-muddy-entry-friction"
+        ],
+        "physicalGiftBoundary": "welcome_when_verified",
+        "selfPurchase": {
+          "reason": "small_luxury_deferral",
+          "rationale": "The recipient can keep using an old towel, making a purpose-built grippy version a defensible but nonessential upgrade.",
+          "basis": "editorial_inference",
+          "claimIds": [
+            "claim-paw-self-purchase"
+          ]
+        },
+        "duplicateRisk": {
+          "level": "high",
+          "preGiftCheck": "Confirm that no compact pocketed pet shammy already occupies the named doorway or car kit."
+        },
+        "clutterRisk": {
+          "level": "low",
+          "ownershipBurden": "The towel requires washing and enough air circulation to dry between muddy outings.",
+          "mitigation": "Assign it to one entrance and one hook, and replace rather than add to an excessive towel stack."
+        },
+        "compatibilityChecks": [
+          {
+            "dimension": "size_or_fit",
+            "status": "verified",
+            "requirement": "Treat the 31-by-13-inch format as a paw and targeted-coat towel unless that size matches the intended whole-body job.",
+            "claimIds": [
+              "claim-dirty-shammy-benefit",
+              "claim-dirty-shammy-drawback"
+            ]
+          },
+          {
+            "dimension": "space_or_storage",
+            "status": "verified",
+            "requirement": "Confirm a reachable hook, rail, or laundry path at the same entrance where the dog pauses.",
+            "claimIds": [
+              "claim-dirty-shammy-drawback"
+            ]
+          }
+        ],
+        "score": {
+          "frictionSpecificity": 5,
+          "selfPurchaseLogic": 4,
+          "ownershipEase": 5,
+          "recipientSpecificity": 5,
+          "total": 19
+        }
+      }
+    },
+    {
+      "id": "bone-dry-large-pet-towel",
+      "name": "Bone Dry Large Microfiber Pet Towel",
+      "editorialScore": 79,
+      "evidenceConfidence": 78,
+      "drawbacks": [
+        "The larger flat towel lacks the compact dual-pocket control of the two shammies, and owner feedback is less consistent about absorbency."
+      ],
+      "primarySourceIds": [
+        "src-bone-dry-official"
+      ],
+      "independentSourceIds": [
+        "src-bone-dry-rover-review",
+        "src-bone-dry-chewy-review"
+      ],
+      "claimIds": [
+        "claim-bone-dry-benefit",
+        "claim-bone-dry-drawback"
+      ],
+      "evidenceMode": "desk_research",
+      "thoughtfulness": {
+        "observationPrompt": "Does the household need one broader flat towel for legs and coat after wet walks rather than a compact hand-pocket tool for paws alone?",
+        "frictionClaimIds": [
+          "claim-muddy-entry-friction"
+        ],
+        "physicalGiftBoundary": "welcome_when_verified",
+        "selfPurchase": {
+          "reason": "replacement_inertia",
+          "rationale": "The broader towel replaces an improvised bath towel only when whole-leg or coat drying is already part of the observed routine.",
+          "basis": "recipient_observation_prompt",
+          "claimIds": [
+            "claim-paw-self-purchase"
+          ]
+        },
+        "duplicateRisk": {
+          "level": "high",
+          "preGiftCheck": "Check whether a washable full-size towel already hangs at the entrance and performs this job well."
+        },
+        "clutterRisk": {
+          "level": "low",
+          "ownershipBurden": "A larger wet towel consumes more hook, washer, and drying space than the compact shammies.",
+          "mitigation": "Choose it only when the broader drying surface replaces an existing worn towel rather than joining a pile."
+        },
+        "compatibilityChecks": [
+          {
+            "dimension": "size_or_fit",
+            "status": "verified",
+            "requirement": "Confirm that the 41-by-23.5-inch surface matches the intended paws-plus-coat job and available drying rail.",
+            "claimIds": [
+              "claim-bone-dry-benefit"
+            ]
+          },
+          {
+            "dimension": "accessibility",
+            "status": "verified",
+            "requirement": "Prefer this flat format only when the recipient does not need hand pockets for grip or dexterity support.",
+            "claimIds": [
+              "claim-bone-dry-drawback"
+            ]
+          }
+        ],
+        "score": {
+          "frictionSpecificity": 4,
+          "selfPurchaseLogic": 4,
+          "ownershipEase": 5,
+          "recipientSpecificity": 4,
+          "total": 17
+        }
+      }
+    },
+    {
+      "id": "soggy-doggy-doormat",
+      "name": "Soggy Doggy Doormat",
+      "editorialScore": 80,
+      "evidenceConfidence": 80,
+      "drawbacks": [
+        "A mat passively catches some moisture but does not replace deliberate drying between toes, and the larger sizes create meaningful floor, washer, and drying-space obligations."
+      ],
+      "primarySourceIds": [
+        "src-soggy-mat-official"
+      ],
+      "independentSourceIds": [
+        "src-soggy-mat-gadgeteer-review",
+        "src-soggy-mat-rover-review"
+      ],
+      "claimIds": [
+        "claim-soggy-mat-benefit",
+        "claim-soggy-mat-drawback"
+      ],
+      "evidenceMode": "desk_research",
+      "thoughtfulness": {
+        "observationPrompt": "Is the missing piece stable footing and a washable dirty-side landing zone, or does the recipient really need deliberate paw drying instead?",
+        "frictionClaimIds": [
+          "claim-muddy-entry-friction"
+        ],
+        "physicalGiftBoundary": "welcome_when_verified",
+        "selfPurchase": {
+          "reason": "research_burden",
+          "rationale": "Mat size, door clearance, backing, washer capacity, and drying space make this more conditional than a generic pet doormat purchase.",
+          "basis": "editorial_inference",
+          "claimIds": [
+            "claim-paw-self-purchase"
+          ]
+        },
+        "duplicateRisk": {
+          "level": "high",
+          "preGiftCheck": "Measure the existing mat and verify that a washable nonslip landing zone is actually missing."
+        },
+        "clutterRisk": {
+          "level": "medium",
+          "ownershipBurden": "The selected size occupies permanent floor area and must fit the household washer and a practical drying method.",
+          "mitigation": "Measure door swing, floor area, washer capacity, and the exact dirty-side position before buying."
+        },
+        "compatibilityChecks": [
+          {
+            "dimension": "size_or_fit",
+            "status": "verified",
+            "requirement": "Choose among documented dimensions only after measuring door swing and the full landing area at the entrance.",
+            "claimIds": [
+              "claim-soggy-mat-benefit"
+            ]
+          },
+          {
+            "dimension": "space_or_storage",
+            "status": "verified",
+            "requirement": "Confirm washer capacity and a drying plan, especially for the large and extra-large formats.",
+            "claimIds": [
+              "claim-soggy-mat-drawback"
+            ]
+          }
+        ],
+        "score": {
+          "frictionSpecificity": 4,
+          "selfPurchaseLogic": 4,
+          "ownershipEase": 4,
+          "recipientSpecificity": 4,
+          "total": 16
+        }
+      }
+    }
+  ],
+  "pairs": [
+    {
+      "id": "measured-rinse-pocketed-shammy-loop",
+      "name": "The measured rinse and chenille-shammy loop",
+      "anchorCandidateId": "dexas-mudbuster",
+      "companionCandidateId": "soggy-doggy-super-shammy",
+      "recipientJob": "Remove visible mud from four measured paws and dry them with controlled hand pockets before the dog crosses the clean threshold.",
+      "coherenceType": "completes_task",
+      "whyTogether": "The MudBuster contains the water-and-bristle rinse while the Super Shammy provides the separate absorbent hand-pocket step the washer's own instructions still require.",
+      "interactionMoment": "Stage clean water and the towel before the walk; on return, rinse one calmly offered paw, pat it dry, and repeat before releasing the dog.",
+      "compatibilityChecks": [
+        {
+          "dimension": "size_or_fit",
+          "status": "verified",
+          "requirement": "Measure paw width against the MudBuster opening and reserve the compact shammy for paws and targeted coat sections.",
+          "claimIds": [
+            "claim-mudbuster-fit",
+            "claim-soggy-shammy-benefit"
+          ]
+        },
+        {
+          "dimension": "accessibility",
+          "status": "verified",
+          "requirement": "Confirm calm paw handling and enough recipient grip to hold the cup and towel without restraining the dog by force.",
+          "claimIds": [
+            "claim-paw-handling-boundary"
+          ]
+        },
+        {
+          "dimension": "space_or_storage",
+          "status": "verified",
+          "requirement": "Name the fill, empty, cup-rinse, and ventilated towel-drying locations at the same entrance.",
+          "claimIds": [
+            "claim-mudbuster-drawback",
+            "claim-soggy-shammy-drawback"
+          ]
+        }
+      ],
+      "duplicateRisk": "high",
+      "clutterDelta": "neutral",
+      "preGiftCheck": "Measure the widest paw, watch one willing paw-wipe, inventory existing tools, and name the cup and towel drying locations.",
+      "bundleDrawback": "Buy only the shammy when a bowl or hose already rinses well; buy only the MudBuster when an existing towel already dries well; skip both for light dirt or paw-handling distress.",
+      "claimIds": [
+        "claim-pair-mudbuster-soggy"
+      ],
+      "score": {
+        "sharedCuriosity": 19,
+        "complementaryRoles": 20,
+        "interactionLoop": 20,
+        "observableTrigger": 15,
+        "independentValue": 9,
+        "compatibility": 9,
+        "ownershipEase": 4,
+        "total": 96
+      }
+    },
+    {
+      "id": "measured-rinse-low-pile-shammy-loop",
+      "name": "The measured rinse and low-pile-shammy loop",
+      "anchorCandidateId": "dexas-mudbuster",
+      "companionCandidateId": "dirty-dog-shammy",
+      "recipientJob": "Contain a heavy-mud rinse and finish each paw with a lower-pile pocketed towel that remains assigned to the doorway.",
+      "coherenceType": "completes_task",
+      "whyTogether": "The MudBuster removes the dirt a dry towel can smear while the Dirty Dog Shammy removes the moisture that the water-filled cup necessarily leaves behind.",
+      "interactionMoment": "Fill the measured washer before leaving, then rinse and dry each calmly offered paw in sequence on the dirty side of the entrance.",
+      "compatibilityChecks": [
+        {
+          "dimension": "size_or_fit",
+          "status": "verified",
+          "requirement": "Match the opening to measured paw width and treat the 31-by-13-inch shammy as a controlled paw tool.",
+          "claimIds": [
+            "claim-mudbuster-fit",
+            "claim-dirty-shammy-benefit"
+          ]
+        },
+        {
+          "dimension": "accessibility",
+          "status": "verified",
+          "requirement": "Confirm the dog offers paws without distress and the hand pockets improve rather than restrict the recipient's grip.",
+          "claimIds": [
+            "claim-paw-handling-boundary"
+          ]
+        },
+        {
+          "dimension": "space_or_storage",
+          "status": "verified",
+          "requirement": "Reserve one easy-clean cup location and one ventilated shammy hook within the actual arrival path.",
+          "claimIds": [
+            "claim-mudbuster-drawback",
+            "claim-dirty-shammy-drawback"
+          ]
+        }
+      ],
+      "duplicateRisk": "high",
+      "clutterDelta": "neutral",
+      "preGiftCheck": "Confirm heavy mud is recurring, the paw measurement is known, the dog is comfortable, and no existing cup-plus-towel station already works.",
+      "bundleDrawback": "Buy only the Dirty Dog Shammy for light wet-weather wiping; buy only the MudBuster when a preferred towel already exists; do not create a forced handling routine for the sake of the gift.",
+      "claimIds": [
+        "claim-pair-mudbuster-dirty"
+      ],
+      "score": {
+        "sharedCuriosity": 19,
+        "complementaryRoles": 20,
+        "interactionLoop": 20,
+        "observableTrigger": 15,
+        "independentValue": 9,
+        "compatibility": 8,
+        "ownershipEase": 4,
+        "total": 95
+      }
+    }
+  ],
+  "affiliateLinks": [],
+  "article": {
+    "slug": "muddy-paw-washer-drying-towel-gift-pairs",
+    "editorialScore": 88,
+    "evidenceConfidence": 85,
+    "evidenceMode": "desk_research",
+    "status": "draft"
+  },
+  "qa": {
+    "passed": false,
+    "reviewerRole": "independent-editor",
+    "reviewerId": "pending-muddy-paw-independent-qa-desk",
+    "receiptPath": "research/reviews/20260823-muddy-paw-arrival-e09ff303.qa.v1.json",
+    "blockers": [],
+    "warnings": []
+  }
+}

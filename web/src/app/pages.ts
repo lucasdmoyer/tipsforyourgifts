@@ -1,7 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import type { Article, Product, StrategyIdea } from './content.types';
+import type { Article, Product, StrategyIdea, VisualAsset } from './content.types';
 import { ContentService } from './content.service';
 import { assessFounderBrief, buildFounderBriefMarkdown, buildStrategyIssueUrl, EMPTY_FOUNDER_BRIEF, type FounderBriefDraft } from './founder-brief';
 import { findGiftGuides, type GiftShape, type RecipientSignal } from './gift-finder';
@@ -12,6 +12,9 @@ import { SeoService } from './seo.service';
   imports: [DatePipe, RouterLink],
   template: `
     <article class="article-card">
+      <a class="article-card-visual" [routerLink]="['/blog', article().slug]" [attr.aria-label]="'Read ' + article().title">
+        <img [src]="article().visual.hero.src" [alt]="article().visual.hero.alt" width="1536" height="1024" loading="lazy" decoding="async">
+      </a>
       <div class="meta">
         <time [attr.datetime]="article().publishDate">{{ article().publishDate | date: 'MMM d, y': 'UTC' }}</time>
         <span>·</span><span>{{ article().audience }}</span>
@@ -32,6 +35,10 @@ export class ArticleCardComponent { readonly article = input.required<Article>()
   selector: 'tfg-product-card',
   template: `
     <article class="product-card" [id]="product().id">
+      <figure class="product-context-visual">
+        <img [src]="visual().src" alt="" aria-hidden="true" width="1536" height="1024" loading="lazy" decoding="async">
+        <figcaption>Editorial illustration · category context, not a product photo.</figcaption>
+      </figure>
       <p class="eyebrow">Researched recommendation</p>
       <h3>{{ product().name }}</h3>
       <p>{{ product().whyItFits }}</p>
@@ -51,6 +58,7 @@ export class ArticleCardComponent { readonly article = input.required<Article>()
 export class ProductCardComponent {
   readonly product = input.required<Product>();
   readonly articleSlug = input.required<string>();
+  readonly visual = input.required<VisualAsset>();
 }
 
 @Component({
@@ -316,6 +324,10 @@ export class BlogPage {
           <span>·</span><span>{{ evidenceMode }}</span>
           <span>·</span><span>Evidence {{ article.evidenceScore }}/100</span>
         </div>
+        <figure class="article-hero-visual">
+          <img [src]="article.visual.hero.src" [alt]="article.visual.hero.alt" width="1536" height="1024" fetchpriority="high" decoding="async">
+          <figcaption>{{ article.visual.hero.caption }} <span>Original Gift-Thread editorial illustration.</span></figcaption>
+        </figure>
         @if (article.affiliateDisclosure) {
           <aside class="disclosure"><strong>Affiliate disclosure:</strong> We may earn a commission when you purchase through links on this page. Recommendations are selected using our published research method.</aside>
         }
@@ -324,7 +336,7 @@ export class BlogPage {
           <section aria-labelledby="recommendations">
             <h2 id="recommendations">The recommendations</h2>
             <div class="product-list">
-              @for (product of article.products; track product.id) { <tfg-product-card [product]="product" [articleSlug]="article.slug" /> }
+              @for (product of article.products; track product.id) { <tfg-product-card [product]="product" [articleSlug]="article.slug" [visual]="productVisual(product.id)" /> }
             </div>
           </section>
         }
@@ -335,6 +347,10 @@ export class BlogPage {
             <div class="product-list">
               @for (pair of article.pairs; track pair.id) {
                 <article class="product-card pairing-product-card">
+                  <figure class="pairing-context-visual">
+                    <img [src]="pairVisual(pair.id).src" alt="" aria-hidden="true" width="1536" height="1024" loading="lazy" decoding="async">
+                    <figcaption>{{ pairVisual(pair.id).caption }}</figcaption>
+                  </figure>
                   <p class="eyebrow">Pair coherence {{ pair.coherenceScore }}/100</p>
                   <h3>{{ pair.name }}</h3>
                   <p><strong>{{ productName(pair.anchorProductId) }}</strong> + <strong>{{ productName(pair.companionProductId) }}</strong></p>
@@ -369,6 +385,16 @@ export class ArticlePage {
   readonly evidenceMode = this.article?.evidenceMode.replaceAll('_', ' ') ?? '';
   readonly documentedSections = this.article?.contentHtml.match(/<h[23]/g)?.length ?? 0;
   productName(productId: string) { return this.article?.products.find((product) => product.id === productId)?.name ?? productId; }
+  productVisual(productId: string): VisualAsset {
+    if (!this.article) throw new Error('Cannot resolve a product visual without an article');
+    const sceneId = this.article.visual.productSceneIds[productId];
+    return this.article.visual.scenes.find((scene) => scene.id === sceneId) ?? this.article.visual.hero;
+  }
+  pairVisual(pairId: string): VisualAsset {
+    if (!this.article) throw new Error('Cannot resolve a pair visual without an article');
+    const sceneId = this.article.visual.pairSceneIds[pairId];
+    return this.article.visual.scenes.find((scene) => scene.id === sceneId) ?? this.article.visual.hero;
+  }
 
   constructor() {
     if (!this.article) {
@@ -381,13 +407,16 @@ export class ArticlePage {
       description: this.article.description,
       path,
       type: 'article',
+      image: this.article.visual.hero.src,
       structuredData: {
         '@context': 'https://schema.org', '@type': 'Article', headline: this.article.title,
         description: this.article.description, datePublished: this.article.publishDate,
         dateModified: this.article.updatedDate,
         author: { '@type': 'Organization', name: 'Tips for Your Gifts Editorial Team' },
         publisher: { '@type': 'Organization', name: 'Tips for Your Gifts' },
-        mainEntityOfPage: `https://tipsforyourgifts.web.app${path}`, about: this.article.tags
+        mainEntityOfPage: `https://tipsforyourgifts.web.app${path}`,
+        image: `https://tipsforyourgifts.web.app${this.article.visual.hero.src}`,
+        about: this.article.tags
       }
     });
   }

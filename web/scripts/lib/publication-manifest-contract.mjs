@@ -36,6 +36,11 @@ const affiliateLinkEntrySchema = z.object({
   approvalPath: z.string().regex(/^affiliate\/approvals\/[a-z0-9]+(?:-[a-z0-9]+)*\.json$/),
   approvalSha256: sha256Schema
 }).strict();
+const visualAssetEntrySchema = z.object({
+  id: slugSchema,
+  path: z.string().regex(/^blog-images\/[a-z0-9]+(?:-[a-z0-9]+)*\/[a-z0-9]+(?:-[a-z0-9]+)*\.webp$/),
+  sha256: sha256Schema
+}).strict();
 const articleEntrySchema = z.object({
   articleSlug: slugSchema,
   title: z.string().min(12),
@@ -58,6 +63,7 @@ const articleEntrySchema = z.object({
   finalistCount: z.number().int().nonnegative(),
   productCount: z.number().int().nonnegative(),
   pairCount: z.number().int().nonnegative(),
+  visualAssetIds: z.array(slugSchema).min(1),
   affiliateLinkCount: z.number().int().nonnegative(),
   affiliateLinks: z.array(affiliateLinkEntrySchema),
   quality: z.object({
@@ -72,7 +78,7 @@ const articleEntrySchema = z.object({
 }).strict();
 
 export const publicationManifestSchema = z.object({
-  schemaVersion: z.literal('1.1.0'),
+  schemaVersion: z.literal('1.2.0'),
   manifestId: z.string().regex(/^publication-set-[a-f0-9]{16}$/),
   generatedAt: z.string().datetime(),
   status: z.literal('release_candidate'),
@@ -88,7 +94,17 @@ export const publicationManifestSchema = z.object({
     socialDrafts: z.number().int().nonnegative(),
     missionBoundArticles: z.number().int().nonnegative(),
     preMissionValidatedArticles: z.number().int().nonnegative(),
-    affiliateLinks: z.number().int().nonnegative()
+    affiliateLinks: z.number().int().nonnegative(),
+    visualAssets: z.number().int().positive()
+  }).strict(),
+  visualPosture: z.object({
+    styleVersion: z.literal('gift-thread-editorial-cartoon-v1.0'),
+    registryPath: z.literal('visuals/article-visuals.json'),
+    registrySha256: sha256Schema,
+    founderApproved: z.literal(true),
+    generator: z.literal('openai-built-in-imagegen'),
+    rightsPosture: z.literal('founder-approved-original-ai-generated'),
+    assets: z.array(visualAssetEntrySchema).min(1)
   }).strict(),
   affiliatePosture: z.object({
     registrySha256: sha256Schema,
@@ -123,6 +139,7 @@ export const publicationManifestSchema = z.object({
     affiliateLinks += article.affiliateLinkCount;
     if (article.affiliateLinkCount !== article.affiliateLinks.length) context.addIssue({ code: z.ZodIssueCode.custom, path: ['articles', index, 'affiliateLinkCount'], message: 'affiliate link count must match approval records' });
   }
+  const usedVisualIds = new Set(manifest.articles.flatMap((article) => article.visualAssetIds));
   const expectedCounts = {
     articles: manifest.articles.length,
     researchRuns: runIds.size,
@@ -131,16 +148,20 @@ export const publicationManifestSchema = z.object({
     socialDrafts,
     missionBoundArticles: missionBound,
     preMissionValidatedArticles: manifest.articles.length - missionBound,
-    affiliateLinks
+    affiliateLinks,
+    visualAssets: usedVisualIds.size
   };
   for (const [key, value] of Object.entries(expectedCounts)) {
     if (manifest.counts[key] !== value) context.addIssue({ code: z.ZodIssueCode.custom, path: ['counts', key], message: `expected ${value}` });
   }
   if (manifest.affiliatePosture.enabledProgramCount !== manifest.affiliatePosture.enabledProgramIds.length) context.addIssue({ code: z.ZodIssueCode.custom, path: ['affiliatePosture', 'enabledProgramCount'], message: 'enabled program count must match IDs' });
   if (manifest.affiliatePosture.liveAffiliateLinkCount !== affiliateLinks || manifest.counts.affiliateLinks !== affiliateLinks) context.addIssue({ code: z.ZodIssueCode.custom, path: ['affiliatePosture', 'liveAffiliateLinkCount'], message: 'affiliate link counts must match article evidence' });
+  const publishedVisualIds = new Set(manifest.visualPosture.assets.map((asset) => asset.id));
+  if (publishedVisualIds.size !== manifest.visualPosture.assets.length) context.addIssue({ code: z.ZodIssueCode.custom, path: ['visualPosture', 'assets'], message: 'visual asset IDs must be unique' });
+  if (publishedVisualIds.size !== usedVisualIds.size || [...usedVisualIds].some((id) => !publishedVisualIds.has(id))) context.addIssue({ code: z.ZodIssueCode.custom, path: ['visualPosture', 'assets'], message: 'visual posture must bind every and only released article asset' });
   const overlayEntries = manifest.articles.flatMap((article) => article.affiliateLinks.map((link) => ({ articleSlug: article.articleSlug, ...link })));
   if (manifest.affiliatePosture.approvedOverlaySetSha256 !== canonicalSha256(overlayEntries)) context.addIssue({ code: z.ZodIssueCode.custom, path: ['affiliatePosture', 'approvedOverlaySetSha256'], message: 'approved overlay digest must bind all paid-link approval records' });
-  const expectedContentSetSha256 = canonicalSha256({ articles: manifest.articles, affiliatePosture: manifest.affiliatePosture });
+  const expectedContentSetSha256 = canonicalSha256({ articles: manifest.articles, affiliatePosture: manifest.affiliatePosture, visualPosture: manifest.visualPosture });
   if (manifest.contentSetSha256 !== expectedContentSetSha256) context.addIssue({ code: z.ZodIssueCode.custom, path: ['contentSetSha256'], message: 'content set SHA-256 must bind the canonical article and affiliate posture' });
   if (manifest.manifestId !== `publication-set-${manifest.contentSetSha256.slice(0, 16)}`) context.addIssue({ code: z.ZodIssueCode.custom, path: ['manifestId'], message: 'manifest ID must bind the content set SHA-256' });
 });
@@ -183,6 +204,11 @@ function reviewedArticleSha256(raw) {
 
 export async function buildPublicationManifest(root) {
   const affiliateLinkState = await loadAffiliateLinkState(root);
+  const visualRegistryRaw = await fs.readFile(path.join(root, 'visuals', 'article-visuals.json'));
+  const visualRegistry = JSON.parse(visualRegistryRaw.toString('utf8'));
+  if (visualRegistry.status !== 'founder_approved' || visualRegistry.styleVersion !== 'gift-thread-editorial-cartoon-v1.0' || visualRegistry.generator !== 'openai-built-in-imagegen' || visualRegistry.rightsPosture !== 'founder-approved-original-ai-generated') throw new Error('Visual registry is not in the approved Gift-Thread release posture');
+  const visualAssetById = new Map(visualRegistry.assets.map((asset) => [asset.id, asset]));
+  const visualArticleBySlug = new Map(visualRegistry.articles.map((entry) => [entry.slug, entry]));
   const runRecords = await readJsonFiles(path.join(root, 'research', 'runs'));
   const reviewRecords = await readJsonFiles(path.join(root, 'research', 'reviews'));
   const missionRecords = await readJsonFiles(path.join(root, 'research', 'missions'));
@@ -212,6 +238,10 @@ export async function buildPublicationManifest(root) {
     const parsed = matter(articleRaw.toString());
     if (parsed.data.status !== 'publication_ready') continue;
     const slug = path.basename(name, '.md');
+    const visualEntry = visualArticleBySlug.get(slug);
+    if (!visualEntry) throw new Error(`${slug}: publication-ready article has no visual mapping`);
+    const visualAssetIds = [...new Set([visualEntry.heroId, ...Object.values(visualEntry.pairSceneIds ?? {})])].sort();
+    for (const assetId of visualAssetIds) if (!visualAssetById.has(assetId)) throw new Error(`${slug}: visual mapping references unknown asset ${assetId}`);
     const run = runById.get(parsed.data.researchRun);
     if (!run) throw new Error(`${slug}: publication-ready article has no research run`);
     if (run.data.status !== 'validated' || run.data.article.status !== 'publication_ready' || !run.data.qa?.passed || run.data.article.slug !== slug) throw new Error(`${slug}: research run is not publication ready`);
@@ -294,6 +324,7 @@ export async function buildPublicationManifest(root) {
       finalistCount: run.data.finalists.length,
       productCount,
       pairCount: Array.isArray(parsed.data.pairs) ? parsed.data.pairs.length : 0,
+      visualAssetIds,
       affiliateLinkCount,
       affiliateLinks,
       quality: {
@@ -322,9 +353,28 @@ export async function buildPublicationManifest(root) {
     liveAffiliateLinkCount: affiliateLinkCount,
     editorialRankingIndependent: true
   };
-  const contentSetSha256 = canonicalSha256({ articles, affiliatePosture });
+  const publishedVisualIds = [...new Set(articles.flatMap((article) => article.visualAssetIds))].sort();
+  const publishedVisualAssets = [];
+  for (const id of publishedVisualIds) {
+    const asset = visualAssetById.get(id);
+    const relativePath = asset.src.replace(/^\//, '');
+    const raw = await fs.readFile(path.join(root, 'public', relativePath));
+    const actualSha256 = sha256(raw);
+    if (actualSha256 !== asset.fileSha256) throw new Error(`${id}: visual file differs from approved registry checksum`);
+    publishedVisualAssets.push({ id, path: relativePath, sha256: actualSha256 });
+  }
+  const visualPosture = {
+    styleVersion: visualRegistry.styleVersion,
+    registryPath: 'visuals/article-visuals.json',
+    registrySha256: sha256(visualRegistryRaw),
+    founderApproved: true,
+    generator: visualRegistry.generator,
+    rightsPosture: visualRegistry.rightsPosture,
+    assets: publishedVisualAssets
+  };
+  const contentSetSha256 = canonicalSha256({ articles, affiliatePosture, visualPosture });
   const manifest = {
-    schemaVersion: '1.1.0',
+    schemaVersion: '1.2.0',
     manifestId: `publication-set-${contentSetSha256.slice(0, 16)}`,
     generatedAt: new Date(Math.max(...dates.filter(Boolean).map((value) => new Date(value).valueOf()))).toISOString(),
     status: 'release_candidate',
@@ -340,8 +390,10 @@ export async function buildPublicationManifest(root) {
       socialDrafts: articles.reduce((sum, article) => sum + (article.socialPack?.postCount ?? 0), 0),
       missionBoundArticles: articles.filter((article) => article.mission).length,
       preMissionValidatedArticles: articles.filter((article) => !article.mission).length,
-      affiliateLinks: affiliateLinkCount
+      affiliateLinks: affiliateLinkCount,
+      visualAssets: publishedVisualAssets.length
     },
+    visualPosture,
     affiliatePosture,
     articles
   };

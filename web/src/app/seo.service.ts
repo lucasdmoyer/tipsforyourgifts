@@ -8,6 +8,7 @@ interface SeoOptions {
   path: string;
   noindex?: boolean;
   type?: 'website' | 'article';
+  image?: string;
   structuredData?: Record<string, unknown>;
 }
 
@@ -22,7 +23,7 @@ export class SeoService {
   set(options: SeoOptions) {
     const fullTitle = options.title === this.siteName ? options.title : `${options.title} | ${this.siteName}`;
     const canonical = new URL(options.path, this.origin).toString();
-    const image = `${this.origin}/social-card.svg`;
+    const image = options.image ? new URL(options.image, this.origin).toString() : `${this.origin}/social-card.svg`;
 
     this.title.setTitle(fullTitle);
     this.meta.updateTag({ name: 'description', content: options.description });

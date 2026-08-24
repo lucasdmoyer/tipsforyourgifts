@@ -1,12 +1,12 @@
 {
-  "schemaVersion": "1.1.0",
-  "manifestId": "publication-set-c7ad466d0f6a012f",
+  "schemaVersion": "1.2.0",
+  "manifestId": "publication-set-1b54c563ae7a6065",
   "generatedAt": "2026-08-16T21:37:48.745Z",
   "status": "release_candidate",
   "projectId": "tipsforyourgifts",
   "siteId": "tipsforyourgifts",
   "publicBaseUrl": "https://tipsforyourgifts.web.app",
-  "contentSetSha256": "c7ad466d0f6a012fc0d24c78024736439636c3fd54ea7dd07da1a87f8871e722",
+  "contentSetSha256": "1b54c563ae7a606521abcc4f7853d38ff366cba343a50cef5d89e1657d194300",
   "counts": {
     "articles": 10,
     "researchRuns": 10,
@@ -15,7 +15,113 @@
     "socialDrafts": 60,
     "missionBoundArticles": 0,
     "preMissionValidatedArticles": 10,
-    "affiliateLinks": 0
+    "affiliateLinks": 0,
+    "visualAssets": 19
+  },
+  "visualPosture": {
+    "styleVersion": "gift-thread-editorial-cartoon-v1.0",
+    "registryPath": "visuals/article-visuals.json",
+    "registrySha256": "bd494c5e65de86388d5078aedaf989ad6205ecaae20a06c1e669f606b7b46f82",
+    "founderApproved": true,
+    "generator": "openai-built-in-imagegen",
+    "rightsPosture": "founder-approved-original-ai-generated",
+    "assets": [
+      {
+        "id": "family-one-photo-one-story",
+        "path": "blog-images/one-photo-one-story-gift-pairs/hero.webp",
+        "sha256": "5082090f12ba440c2c81da822b53abfff3328f95880706f72994bfdadd7632e3"
+      },
+      {
+        "id": "golf-friction-kit",
+        "path": "blog-images/gifts-for-a-golf-friend/hero.webp",
+        "sha256": "1aae9d8f37393aa774503ddd0f5d419ccf26dcd0e763096769fa959ea14d904a"
+      },
+      {
+        "id": "language-read-retell",
+        "path": "blog-images/language-learning-gifts-read-a-scene-say-it-aloud/hero.webp",
+        "sha256": "2654356edbb9e877dfdde1e56c9a98c9c4da0160af87595451580b7e54a93055"
+      },
+      {
+        "id": "miniature-paint-palette-recipe",
+        "path": "blog-images/miniature-painting-wet-palette-recipe-pairs/hero.webp",
+        "sha256": "2cd854cea40ace5fec60ff78baa2dee40d1ed46dcd2f3f1c2b06a51299c2dbd4"
+      },
+      {
+        "id": "night-sky-chart-red-light",
+        "path": "blog-images/night-sky-planisphere-red-light-gift-pairs/hero.webp",
+        "sha256": "a2c2f91a9b062b57333544fe3fba601efb3acfb2f261bc79011f6a635040df04"
+      },
+      {
+        "id": "puzzle-pause-sort-resume",
+        "path": "blog-images/puzzle-board-sorting-tray-gift-pairs/hero.webp",
+        "sha256": "739a10d160e17636c9578a925c660fd8a015b4dde1755e943eb68bcd6bce613f"
+      },
+      {
+        "id": "read-it-big-history",
+        "path": "blog-images/read-it-then-play-it-gift-pairs/hero.webp",
+        "sha256": "7239b3da693ecb57e0b042a9b88a563e0cf931f2b1570404ab433c0b399595bb"
+      },
+      {
+        "id": "read-it-bird-cognition",
+        "path": "blog-images/read-it-then-play-it-gift-pairs/bird-cognition-engine-loop.webp",
+        "sha256": "6d555d842167158d693f13ec90515a46005a1bebfb946341f0778288f9bc62d7"
+      },
+      {
+        "id": "read-it-feedback-loop",
+        "path": "blog-images/read-it-then-play-it-gift-pairs/feedback-loop-table.webp",
+        "sha256": "35c3610bf6b1893d7219f80ec3a0a083c718481d7f3d8c3777f994b1d3da9744"
+      },
+      {
+        "id": "read-it-fungal-network",
+        "path": "blog-images/read-it-then-play-it-gift-pairs/fungal-network-table.webp",
+        "sha256": "1ad26492de9d218d94aec329098f3f3bed9386b057d4ccbe9a09473f7e8cdee4"
+      },
+      {
+        "id": "read-it-language-context",
+        "path": "blog-images/read-it-then-play-it-gift-pairs/language-context-table.webp",
+        "sha256": "25f29a1f427a3aa3f98c25440825628bd56f233411fa87ca0644c1516ffd2332"
+      },
+      {
+        "id": "read-it-mars-constraints",
+        "path": "blog-images/read-it-then-play-it-gift-pairs/mars-constraint-counterpoint.webp",
+        "sha256": "3a58944cfade6456380c45952267bbc1025ffb1e4069a7594fac11deeb74fd6e"
+      },
+      {
+        "id": "read-it-park-story",
+        "path": "blog-images/read-it-then-play-it-gift-pairs/park-story-to-trail.webp",
+        "sha256": "f1a7956bbcf8838b49a7f41ed417fe0163956cb2e38b8827b2fdc53b65eb4465"
+      },
+      {
+        "id": "read-it-photo-walk",
+        "path": "blog-images/read-it-then-play-it-gift-pairs/technique-to-photo-walk.webp",
+        "sha256": "74a7fcde710386458d72a97da712d9510ca976bdbb81ea5f9c9b84dff1665108"
+      },
+      {
+        "id": "read-it-temperature-loop",
+        "path": "blog-images/read-it-then-play-it-gift-pairs/temperature-to-measurement.webp",
+        "sha256": "ba694eec5143d1e6e5a51c93f25c99921ef1a9c7f066557746f4673fc33d2f83"
+      },
+      {
+        "id": "read-it-writing-constraint",
+        "path": "blog-images/read-it-then-play-it-gift-pairs/constraint-to-draft.webp",
+        "sha256": "75969bf6778aa2c4fa72bdd6d57e010d53a3b1b39e16332a96617747f0be793a"
+      },
+      {
+        "id": "research-evidence-desk",
+        "path": "blog-images/how-we-research-gifts/hero.webp",
+        "sha256": "a460f2aba65233aa9bcdb48cd635d045f0ee7e69816e7aaf70770b12bcaa877e"
+      },
+      {
+        "id": "tree-walk-guide-loupe",
+        "path": "blog-images/neighborhood-tree-walk-field-guide-loupe-gift-pairs/hero.webp",
+        "sha256": "5120bda56fadfe1bafb2427c44bae91b1cd0f9797c3c0de334fc278078175b14"
+      },
+      {
+        "id": "useful-friction-five",
+        "path": "blog-images/useful-gifts-for-hard-to-shop-for-adults/hero.webp",
+        "sha256": "1e22103222125f2c606b605fa524ba43d9eb1762ac592b81e20748ff4ca5f40d"
+      }
+    ]
   },
   "affiliatePosture": {
     "registrySha256": "4028b58d56ac775b470f9a0a7cfc8297d3b7cc0c32972687676e2bb0403d08fd",
@@ -57,6 +163,9 @@
       "finalistCount": 5,
       "productCount": 5,
       "pairCount": 1,
+      "visualAssetIds": [
+        "golf-friction-kit"
+      ],
       "affiliateLinkCount": 0,
       "affiliateLinks": [],
       "quality": {
@@ -91,6 +200,9 @@
       "finalistCount": 0,
       "productCount": 0,
       "pairCount": 0,
+      "visualAssetIds": [
+        "research-evidence-desk"
+      ],
       "affiliateLinkCount": 0,
       "affiliateLinks": [],
       "quality": {
@@ -131,6 +243,9 @@
       "finalistCount": 5,
       "productCount": 5,
       "pairCount": 2,
+      "visualAssetIds": [
+        "language-read-retell"
+      ],
       "affiliateLinkCount": 0,
       "affiliateLinks": [],
       "quality": {
@@ -171,6 +286,9 @@
       "finalistCount": 5,
       "productCount": 5,
       "pairCount": 2,
+      "visualAssetIds": [
+        "miniature-paint-palette-recipe"
+      ],
       "affiliateLinkCount": 0,
       "affiliateLinks": [],
       "quality": {
@@ -211,6 +329,9 @@
       "finalistCount": 5,
       "productCount": 5,
       "pairCount": 2,
+      "visualAssetIds": [
+        "tree-walk-guide-loupe"
+      ],
       "affiliateLinkCount": 0,
       "affiliateLinks": [],
       "quality": {
@@ -251,6 +372,9 @@
       "finalistCount": 5,
       "productCount": 5,
       "pairCount": 2,
+      "visualAssetIds": [
+        "night-sky-chart-red-light"
+      ],
       "affiliateLinkCount": 0,
       "affiliateLinks": [],
       "quality": {
@@ -291,6 +415,9 @@
       "finalistCount": 5,
       "productCount": 5,
       "pairCount": 2,
+      "visualAssetIds": [
+        "family-one-photo-one-story"
+      ],
       "affiliateLinkCount": 0,
       "affiliateLinks": [],
       "quality": {
@@ -331,6 +458,9 @@
       "finalistCount": 5,
       "productCount": 5,
       "pairCount": 2,
+      "visualAssetIds": [
+        "puzzle-pause-sort-resume"
+      ],
       "affiliateLinkCount": 0,
       "affiliateLinks": [],
       "quality": {
@@ -371,6 +501,18 @@
       "finalistCount": 20,
       "productCount": 20,
       "pairCount": 10,
+      "visualAssetIds": [
+        "read-it-big-history",
+        "read-it-bird-cognition",
+        "read-it-feedback-loop",
+        "read-it-fungal-network",
+        "read-it-language-context",
+        "read-it-mars-constraints",
+        "read-it-park-story",
+        "read-it-photo-walk",
+        "read-it-temperature-loop",
+        "read-it-writing-constraint"
+      ],
       "affiliateLinkCount": 0,
       "affiliateLinks": [],
       "quality": {
@@ -411,6 +553,9 @@
       "finalistCount": 5,
       "productCount": 5,
       "pairCount": 0,
+      "visualAssetIds": [
+        "useful-friction-five"
+      ],
       "affiliateLinkCount": 0,
       "affiliateLinks": [],
       "quality": {
