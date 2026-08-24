@@ -1,0 +1,1715 @@
+{
+  "schemaVersion": "1.1.0",
+  "runId": "20260816-neighborhood-tree-walk-b8a44f32",
+  "ideaId": "founder-idea-005",
+  "ideaRevision": 2,
+  "ideaSha256": "b8a44f32ea9f39e1a6b9f72a8d6f6905b78a9c721964f6a2933a43a9555842fa",
+  "decisionLens": "gift_pairing",
+  "contentType": "pairing-guide",
+  "status": "validated",
+  "topic": "Eastern and central North American neighborhood tree-walk field-guide and hand-lens gift pairs",
+  "audience": "People buying for an adult in eastern or central North America who already points out neighborhood trees but has not adopted a tree-identification routine",
+  "occasion": "Birthday, retirement, housewarming, or an invitation to a first shared neighborhood walk",
+  "budgetBands": [
+    "Under $30",
+    "$30-$60",
+    "$60-$125"
+  ],
+  "riskClass": "medium",
+  "draftAuthor": "tree-walk-drafting-desk-20260816",
+  "startedAt": "2026-08-16T17:00:00.000Z",
+  "researchPasses": [
+    {
+      "pass": 1,
+      "materialNoveltyRate": 1,
+      "newCandidates": 14,
+      "newDecisionFactors": 7
+    },
+    {
+      "pass": 2,
+      "materialNoveltyRate": 0.34,
+      "newCandidates": 0,
+      "newDecisionFactors": 6
+    },
+    {
+      "pass": 3,
+      "materialNoveltyRate": 0.17,
+      "newCandidates": 0,
+      "newDecisionFactors": 4
+    },
+    {
+      "pass": 4,
+      "materialNoveltyRate": 0.08,
+      "newCandidates": 0,
+      "newDecisionFactors": 2
+    },
+    {
+      "pass": 5,
+      "materialNoveltyRate": 0.04,
+      "newCandidates": 0,
+      "newDecisionFactors": 1
+    }
+  ],
+  "sources": [
+    {
+      "id": "src-umn-neighborhood-id",
+      "url": "https://extension.umn.edu/news/what-tree-beginners-guide-tree-id-your-neighborhood",
+      "publisher": "University of Minnesota Extension",
+      "title": "What tree is that? A beginner's guide to tree ID in your neighborhood",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "professional-guidance",
+      "trustTier": "A",
+      "independenceGroup": "umn-extension"
+    },
+    {
+      "id": "src-penn-hand-lens",
+      "url": "https://extension.psu.edu/high-tunnel-vegetable-crops-designing-a-scouting-plan",
+      "publisher": "Penn State Extension",
+      "title": "High Tunnel Vegetable Crops: Designing a Scouting Plan",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "professional-guidance",
+      "trustTier": "A",
+      "independenceGroup": "penn-state-extension"
+    },
+    {
+      "id": "src-princeton-official",
+      "url": "https://press.princeton.edu/books/paperback/9780691145914/trees-of-eastern-north-america",
+      "publisher": "Princeton University Press",
+      "title": "Trees of Eastern North America",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "manufacturer",
+      "trustTier": "A",
+      "independenceGroup": "princeton-university-press"
+    },
+    {
+      "id": "src-princeton-cfn-review",
+      "url": "https://www.canadianfieldnaturalist.ca/index.php/cfn/article/download/1649/1652/6528",
+      "publisher": "The Canadian Field-Naturalist",
+      "title": "Review: Trees of Eastern North America",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "independent-review",
+      "trustTier": "A",
+      "independenceGroup": "canadian-field-naturalist"
+    },
+    {
+      "id": "src-princeton-ohio-review",
+      "url": "https://ohiobirds.org/wp-content/uploads/2015/11/14-10.pdf",
+      "publisher": "Ohio Ornithological Society",
+      "title": "Beyond Birds: Book Review - Trees of Eastern North America",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "independent-review",
+      "trustTier": "B",
+      "independenceGroup": "ohio-ornithological-society"
+    },
+    {
+      "id": "src-princeton-2014-catalog",
+      "url": "https://assets.press.princeton.edu/catalogs/S14NatHist.pdf",
+      "publisher": "Princeton University Press",
+      "title": "Spring 2014 Natural History catalog",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "publisher-archive",
+      "trustTier": "A",
+      "independenceGroup": "princeton-university-press"
+    },
+    {
+      "id": "src-peterson-official",
+      "url": "https://www.harpercollins.com/products/a-peterson-field-guide-to-eastern-trees-george-a-petridesjanet-wehr",
+      "publisher": "HarperCollins",
+      "title": "A Peterson Field Guide To Eastern Trees",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "manufacturer",
+      "trustTier": "A",
+      "independenceGroup": "harpercollins"
+    },
+    {
+      "id": "src-peterson-namethatplant",
+      "url": "https://namethatplant.net/books_pfget.shtml",
+      "publisher": "NameThatPlant.net",
+      "title": "Peterson Field Guide to Eastern Trees",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "independent-review",
+      "trustTier": "B",
+      "independenceGroup": "namethatplant"
+    },
+    {
+      "id": "src-peterson-unh-extension-review",
+      "url": "https://extension.unh.edu/sites/default/files/migrated_unmanaged_files/Resource000979_Rep1105.pdf",
+      "publisher": "University of New Hampshire Cooperative Extension",
+      "title": "Extension specialist's annotated exact-title assessment of A Field Guide to Eastern Trees",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "independent-review",
+      "trustTier": "B",
+      "independenceGroup": "unh-cooperative-extension-tree-id-publications"
+    },
+    {
+      "id": "src-peterson-mit-store",
+      "url": "https://mitpressbookstore.mit.edu/book/9780395904558",
+      "publisher": "MIT Press Bookstore",
+      "title": "A Peterson Field Guide To Eastern Trees product listing",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "retailer",
+      "trustTier": "B",
+      "independenceGroup": "mit-press-bookstore"
+    },
+    {
+      "id": "src-sibley-official",
+      "url": "https://www.penguinrandomhouse.com/books/166638/the-sibley-guide-to-trees-by-david-allen-sibley/",
+      "publisher": "Penguin Random House",
+      "title": "The Sibley Guide to Trees",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "manufacturer",
+      "trustTier": "A",
+      "independenceGroup": "penguin-random-house"
+    },
+    {
+      "id": "src-sibley-plant-science-review",
+      "url": "https://botany.org/userdata/IssueArchive/issues/originalfile/PSB_2009_55_4.pdf",
+      "publisher": "Botanical Society of America",
+      "title": "Plant Science Bulletin review of The Sibley Guide to Trees",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "independent-review",
+      "trustTier": "A",
+      "independenceGroup": "botanical-society-of-america"
+    },
+    {
+      "id": "src-sibley-dendroica-review",
+      "url": "https://dendroica.blogspot.com/2009/09/review-sibley-guide-to-trees.html",
+      "publisher": "Dendroica",
+      "title": "Review: The Sibley Guide to Trees",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "independent-review",
+      "trustTier": "B",
+      "independenceGroup": "dendroica"
+    },
+    {
+      "id": "src-audubon-official",
+      "url": "https://www.penguinrandomhouse.com/books/600056/national-audubon-society-trees-of-north-america-by-national-audubon-society/",
+      "publisher": "Penguin Random House",
+      "title": "National Audubon Society Trees of North America",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "manufacturer",
+      "trustTier": "A",
+      "independenceGroup": "penguin-random-house"
+    },
+    {
+      "id": "src-audubon-wellread-review",
+      "url": "https://www.wellreadnaturalist.com/2021/07/national-audubon-society-trees-of-north-america/",
+      "publisher": "The Well-read Naturalist",
+      "title": "National Audubon Society Trees of North America",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "independent-review",
+      "trustTier": "B",
+      "independenceGroup": "well-read-naturalist"
+    },
+    {
+      "id": "src-audubon-aba-review",
+      "url": "https://www.aba.org/can-photo-guides-do-it-all/",
+      "publisher": "American Birding Association",
+      "title": "Can Photo Guides Do It All?",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "independent-review",
+      "trustTier": "A",
+      "independenceGroup": "american-birding-association"
+    },
+    {
+      "id": "src-bausch-catalog",
+      "url": "https://docap.com/wp-content/uploads/2018/03/Bausch-Lomb-Catalogue.pdf",
+      "publisher": "Bausch + Lomb",
+      "title": "Bausch + Lomb Magnifiers catalog",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "manufacturer",
+      "trustTier": "A",
+      "independenceGroup": "bausch-lomb"
+    },
+    {
+      "id": "src-bausch-fisher",
+      "url": "https://www.fishersci.com/shop/products/bausch-lomb-hastings-triplet-magnifiers-4/12032b",
+      "publisher": "Fisher Scientific",
+      "title": "Bausch + Lomb Hastings Triplet Magnifier 10x product listing",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "retailer",
+      "trustTier": "B",
+      "independenceGroup": "fisher-scientific"
+    },
+    {
+      "id": "src-bausch-loupe-review",
+      "url": "https://loupe-magnifier.blogspot.com/2010/06/15.html",
+      "publisher": "Loupe-Magnifier Reviews",
+      "title": "Bausch and Lomb 10x Hastings Triplet Loupe review",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "independent-review",
+      "trustTier": "B",
+      "independenceGroup": "loupe-magnifier-reviews"
+    },
+    {
+      "id": "src-bausch-hodinkee-review",
+      "url": "https://www.hodinkee.com/articles/taking-a-closer-look-at-the-loupe-system",
+      "publisher": "Hodinkee",
+      "title": "Taking A Closer Look At The Loupe System",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "independent-review",
+      "trustTier": "B",
+      "independenceGroup": "hodinkee"
+    },
+    {
+      "id": "src-bausch-grainger",
+      "url": "https://www.grainger.ca/en/product/HASTINGS-TRIPLET-MAGNIFIER-40D/p/BLM816171",
+      "publisher": "Grainger Canada",
+      "title": "Bausch + Lomb Hastings Triplet Magnifier specification",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "retailer",
+      "trustTier": "B",
+      "independenceGroup": "grainger-canada"
+    },
+    {
+      "id": "src-carson-official",
+      "url": "https://www.carson.com/product-directory/magnifiers",
+      "publisher": "Carson Optical",
+      "title": "Carson magnifier product directory",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "manufacturer",
+      "trustTier": "A",
+      "independenceGroup": "carson-optical"
+    },
+    {
+      "id": "src-carson-bh",
+      "url": "https://www.bhphotovideo.com/c/product/437264-REG/Carson_SG_10_SureGrip_SG_10_Magnifier.html/overview",
+      "publisher": "B&H Photo Video",
+      "title": "Carson SureGrip SG-10 overview and reviews",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "retailer",
+      "trustTier": "B",
+      "independenceGroup": "bh-photo-video"
+    },
+    {
+      "id": "src-carson-staples",
+      "url": "https://www.staples.com/carson-optical-suregrip-2x-soft-grip-magnifier-with-11-5x-spot-lens-sg-10/product_208015",
+      "publisher": "Staples",
+      "title": "Carson SureGrip SG-10 specifications and customer reviews",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "retailer",
+      "trustTier": "B",
+      "independenceGroup": "staples"
+    },
+    {
+      "id": "src-nhbs-hand-lens-guide",
+      "url": "https://media.nhbs.com/equipment/NHBS%202015%20catalogue.pdf",
+      "publisher": "NHBS",
+      "title": "Choosing Your Hand Lens",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "professional-guidance",
+      "trustTier": "B",
+      "independenceGroup": "nhbs"
+    },
+    {
+      "id": "src-reddit-tree-guide-language",
+      "url": "https://www.reddit.com/r/treeidentification/comments/12vmuhx/",
+      "publisher": "Reddit r/treeidentification",
+      "title": "Public discussion about choosing a regional tree field guide",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "social-discussion",
+      "trustTier": "C",
+      "independenceGroup": "reddit-treeidentification"
+    },
+    {
+      "id": "src-reddit-hand-lens-language",
+      "url": "https://www.reddit.com/r/botany/comments/1sbr4uo/need_help_choosing_loupe_for_field_work/",
+      "publisher": "Reddit r/botany",
+      "title": "Public discussion about field-lens size, clarity, and handling",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "social-discussion",
+      "trustTier": "C",
+      "independenceGroup": "reddit-botany"
+    }
+  ],
+  "claims": [
+    {
+      "id": "claim-tree-noticing-friction",
+      "kind": "recipient_friction",
+      "text": "A defensible recipient signal is that the person already points out neighborhood leaves, bark, or silhouettes but still reaches for an unstructured search instead of a region-matched identification process.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-umn-neighborhood-id",
+        "src-reddit-tree-guide-language"
+      ]
+    },
+    {
+      "id": "claim-one-tree-ritual",
+      "kind": "recipient_friction",
+      "text": "Leaves, their twig arrangement and edge, bark, and whole-tree silhouette provide a manageable first set of neighborhood observations; the first outing can stop after one tree.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-umn-neighborhood-id",
+        "src-sibley-official"
+      ]
+    },
+    {
+      "id": "claim-no-collection-boundary",
+      "kind": "compatibility",
+      "text": "This beginner ritual does not require cutting or pulling material: the recipient can photograph key parts or examine a leaf or other part that has already fallen.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-sibley-official"
+      ]
+    },
+    {
+      "id": "claim-region-and-format-gate",
+      "kind": "compatibility",
+      "text": "The guide must include the recipient's location and match how they read visual evidence; eastern guides differ in geographic limits, page count, illustrations, photographs, keys, and range-map design.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": [
+        "src-princeton-official",
+        "src-peterson-official",
+        "src-sibley-official",
+        "src-reddit-tree-guide-language"
+      ]
+    },
+    {
+      "id": "claim-guide-research-burden",
+      "kind": "self_purchase_pattern",
+      "text": "Choosing among a broad continental reference, a full eastern reference, and a smaller eastern guide requires comparing region, organization, visual style, and carry size rather than buying the first title labeled 'trees.'",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-princeton-cfn-review",
+        "src-peterson-namethatplant",
+        "src-sibley-plant-science-review"
+      ]
+    },
+    {
+      "id": "claim-loupe-technique",
+      "kind": "compatibility",
+      "text": "A 10x loupe has a short working distance: extension guidance says to hold the lens close to the eye and move the head and lens close to the subject to focus.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": [
+        "src-penn-hand-lens"
+      ]
+    },
+    {
+      "id": "claim-loupe-optical-tradeoff",
+      "kind": "compatibility",
+      "text": "Triplet construction corrects more edge distortion and color error than simpler hand-lens designs, but magnification, field size, working distance, hand steadiness, and eye positioning still determine whether a loupe is comfortable for a specific recipient.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": [
+        "src-nhbs-hand-lens-guide",
+        "src-penn-hand-lens",
+        "src-reddit-hand-lens-language"
+      ]
+    },
+    {
+      "id": "claim-peterson-benefit",
+      "kind": "product_benefit",
+      "text": "The Peterson guide is explicitly scoped to the eastern United States and Canada including the Midwest, and its charted visual groupings, illustrations, descriptions, and range maps support field identification.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-peterson-official",
+        "src-peterson-namethatplant",
+        "src-peterson-unh-extension-review"
+      ]
+    },
+    {
+      "id": "claim-peterson-drawback",
+      "kind": "product_drawback",
+      "text": "The current listing is a 1998, 448-page edition with fewer covered species than newer comprehensive guides, and the publisher currently shows it out of stock even though another bookstore reports fulfillment; recheck edition and seller before gifting.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": [
+        "src-peterson-official",
+        "src-peterson-mit-store",
+        "src-princeton-official"
+      ]
+    },
+    {
+      "id": "claim-peterson-compatibility",
+      "kind": "compatibility",
+      "text": "Choose Peterson only when the recipient lives or regularly walks in its stated eastern-US, eastern-Canada, or Midwest scope and can comfortably use its illustrated key and print layout.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": [
+        "src-peterson-official",
+        "src-peterson-namethatplant"
+      ]
+    },
+    {
+      "id": "claim-princeton-benefit",
+      "kind": "product_benefit",
+      "text": "Princeton's current edition covers 825 native and naturalized species in the eastern United States and Canada as far west as the Great Plains, with paintings, quick-ID summaries, leaf and twig keys, and range maps.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-princeton-official",
+        "src-princeton-cfn-review",
+        "src-princeton-ohio-review"
+      ]
+    },
+    {
+      "id": "claim-princeton-drawback",
+      "kind": "product_drawback",
+      "text": "At 720 pages and 5.75 by 8.25 inches in the current publisher record, the Princeton guide asks more of a recipient's hand strength and bag space than a slim pocket reference; a prior publisher catalog listed 656 pages, so verify the exact physical edition.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": [
+        "src-princeton-official",
+        "src-princeton-2014-catalog",
+        "src-princeton-cfn-review"
+      ]
+    },
+    {
+      "id": "claim-princeton-compatibility",
+      "kind": "compatibility",
+      "text": "Choose Princeton only after confirming the address is east of or at the Great Plains boundary, the recipient wants dense illustrated coverage, and the physical volume is comfortable to carry or use at a bench.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": [
+        "src-princeton-official",
+        "src-princeton-cfn-review"
+      ]
+    },
+    {
+      "id": "claim-sibley-benefit",
+      "kind": "product_benefit",
+      "text": "Sibley's guide covers more than 600 North American tree species with more than 4,100 paintings and more than 500 maps, keeping text and illustrated identifying features together.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-sibley-official",
+        "src-sibley-plant-science-review",
+        "src-sibley-dendroica-review"
+      ]
+    },
+    {
+      "id": "claim-sibley-drawback",
+      "kind": "product_drawback",
+      "text": "Sibley is a 464-page, 6 by 9.5 inch continental hardcover rather than an east-only pocket guide, and an independent comparison calls it inconvenient to carry on field trips.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": [
+        "src-sibley-official",
+        "src-princeton-cfn-review"
+      ]
+    },
+    {
+      "id": "claim-sibley-compatibility",
+      "kind": "compatibility",
+      "text": "Choose Sibley only for an illustration-first reader who wants one North American reference beyond the immediate region and has already accepted its hardcover size and taxonomic organization.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": [
+        "src-sibley-official",
+        "src-sibley-dendroica-review",
+        "src-sibley-plant-science-review"
+      ]
+    },
+    {
+      "id": "claim-audubon-benefit",
+      "kind": "product_benefit",
+      "text": "The 2021 National Audubon Society Trees of North America covers more than 540 species with nearly 2,500 photographs, including bark, fruit, flowers, leaf shape, seasonal color, and range maps in a one-species-per-page visual system.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-audubon-official",
+        "src-audubon-wellread-review",
+        "src-audubon-aba-review"
+      ]
+    },
+    {
+      "id": "claim-audubon-drawback",
+      "kind": "product_drawback",
+      "text": "At 592 pages and 7 by 9.25 inches, Audubon is a broad continental photographic reference rather than a pocket guide; an independent review also notes that it omits a dichotomous key, so beginners must be comfortable navigating families, silhouettes, photographs, and the index.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": [
+        "src-audubon-official",
+        "src-audubon-wellread-review",
+        "src-audubon-aba-review"
+      ]
+    },
+    {
+      "id": "claim-audubon-compatibility",
+      "kind": "compatibility",
+      "text": "Choose Audubon only for a photo-first reader who explicitly wants continental breadth and can comfortably use a 592-page, 7 by 9.25 inch reference from a bench, car, or at home rather than expecting a pocket field guide.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": [
+        "src-audubon-official",
+        "src-audubon-wellread-review",
+        "src-audubon-aba-review"
+      ]
+    },
+    {
+      "id": "claim-bausch-benefit",
+      "kind": "product_benefit",
+      "text": "The Bausch + Lomb Hastings Triplet 10x uses three bonded glass lenses in a swing-away protective case, with a 15.8 millimeter lens and approximately one-inch focal distance.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-bausch-catalog",
+        "src-bausch-loupe-review",
+        "src-bausch-hodinkee-review"
+      ]
+    },
+    {
+      "id": "claim-bausch-drawback",
+      "kind": "product_drawback",
+      "text": "The 15.8 millimeter viewing lens and one-inch working distance demand close eye placement, coordinated hand movement, and a steady target; current seller availability also varies.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": [
+        "src-bausch-fisher",
+        "src-bausch-grainger",
+        "src-bausch-loupe-review",
+        "src-bausch-hodinkee-review",
+        "src-penn-hand-lens"
+      ]
+    },
+    {
+      "id": "claim-bausch-accessibility",
+      "kind": "compatibility",
+      "text": "The Bausch loupe is compatible only when the recipient can bring a 10x folding lens close to the eye and subject, focus at about one inch, manipulate the swing case, and see comfortably through a 15.8 millimeter aperture.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": [
+        "src-bausch-catalog",
+        "src-bausch-loupe-review",
+        "src-bausch-hodinkee-review",
+        "src-penn-hand-lens"
+      ]
+    },
+    {
+      "id": "claim-carson-benefit",
+      "kind": "product_benefit",
+      "text": "The Carson SG-10 combines a large 3.5-inch 2x glass main lens, an 11.5x spot lens, a soft-grip handle, and a pouch, giving a low-learning-curve wide view before fine inspection.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-carson-official",
+        "src-carson-bh",
+        "src-carson-staples"
+      ]
+    },
+    {
+      "id": "claim-carson-drawback",
+      "kind": "product_drawback",
+      "text": "The SG-10 is a full handheld magnifier rather than a pocket loupe, and its high-power view comes from a much smaller acrylic spot lens; it needs more bag room and does not provide triplet correction.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": [
+        "src-carson-official",
+        "src-carson-bh",
+        "src-carson-staples",
+        "src-nhbs-hand-lens-guide"
+      ]
+    },
+    {
+      "id": "claim-carson-accessibility",
+      "kind": "compatibility",
+      "text": "The Carson is the appropriate alternative only when a 3.5-inch main lens and soft handle are easier for the recipient than a folding loupe, while the recipient can still locate and focus through the small 11.5x spot lens.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": [
+        "src-carson-official",
+        "src-carson-bh",
+        "src-carson-staples"
+      ]
+    },
+    {
+      "id": "claim-duplicate-clutter-gate",
+      "kind": "duplicate_clutter",
+      "text": "A second guide or magnifier is useful only when it fixes a verified region, visual-format, optical, or handling mismatch; otherwise it duplicates a tool the recipient already trusts and adds carry clutter.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-reddit-tree-guide-language",
+        "src-reddit-hand-lens-language",
+        "src-princeton-cfn-review"
+      ]
+    },
+    {
+      "id": "claim-pair-peterson-bausch",
+      "kind": "pair_coherence",
+      "text": "Peterson supplies eastern and Midwest identification language while the Bausch loupe makes one fallen leaf edge, bud, or twig feature inspectable; each remains independently useful and the loop ends with one provisional identification.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-peterson-official",
+        "src-peterson-namethatplant",
+        "src-bausch-catalog",
+        "src-penn-hand-lens",
+        "src-umn-neighborhood-id"
+      ]
+    },
+    {
+      "id": "claim-pair-princeton-bausch",
+      "kind": "pair_coherence",
+      "text": "Princeton supplies comprehensive eastern-through-Great-Plains comparison art while the Bausch loupe makes one fine leaf, bud, or twig feature inspectable; the pair fits only when the recipient accepts both the guide's weight and the loupe's close-eye technique.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-princeton-official",
+        "src-princeton-cfn-review",
+        "src-bausch-catalog",
+        "src-bausch-loupe-review",
+        "src-bausch-hodinkee-review",
+        "src-umn-neighborhood-id"
+      ]
+    }
+  ],
+  "candidates": [
+    {
+      "id": "peterson-eastern-trees",
+      "name": "A Peterson Field Guide to Eastern Trees",
+      "editorialScore": 84,
+      "evidenceConfidence": 80,
+      "drawbacks": [
+        "The current listing is a 1998, 448-page edition with fewer covered species than newer comprehensive guides, and the publisher currently shows it out of stock even though another bookstore reports fulfillment; recheck edition and seller before gifting."
+      ],
+      "primarySourceIds": [
+        "src-peterson-official"
+      ],
+      "independentSourceIds": [
+        "src-peterson-namethatplant",
+        "src-peterson-unh-extension-review"
+      ],
+      "claimIds": [
+        "claim-peterson-benefit",
+        "claim-peterson-drawback",
+        "claim-peterson-compatibility"
+      ],
+      "evidenceMode": "desk_research",
+      "thoughtfulness": {
+        "observationPrompt": "Choose this only if they point out neighborhood trees in the eastern United States, eastern Canada, or Midwest and prefer a compact illustrated key over a dense comprehensive reference.",
+        "frictionClaimIds": [
+          "claim-tree-noticing-friction",
+          "claim-one-tree-ritual"
+        ],
+        "physicalGiftBoundary": "welcome_when_verified",
+        "selfPurchase": {
+          "reason": "research_burden",
+          "rationale": "The title choice requires comparing exact geographic scope, visual organization, age, and seller rather than buying a generic tree book.",
+          "basis": "editorial_inference",
+          "claimIds": [
+            "claim-guide-research-burden"
+          ]
+        },
+        "duplicateRisk": {
+          "level": "medium",
+          "preGiftCheck": "Confirm they do not already own and regularly carry a tree guide whose region and visual format work for them."
+        },
+        "clutterRisk": {
+          "level": "low",
+          "ownershipBurden": "A physical field guide still needs shelf or bag space and protection from rain.",
+          "mitigation": "Borrow or preview the layout first, then gift only this one guide and write the first walk location inside a removable card."
+        },
+        "compatibilityChecks": [
+          {
+            "dimension": "edition_or_region",
+            "status": "verified",
+            "requirement": "The recipient's regular walks fall in the eastern United States, eastern Canada, or Midwest scope printed by the publisher.",
+            "claimIds": [
+              "claim-peterson-compatibility"
+            ]
+          },
+          {
+            "dimension": "accessibility",
+            "status": "verified",
+            "requirement": "The recipient can comfortably navigate the illustrated key, range maps, and print layout after previewing or borrowing the edition.",
+            "claimIds": [
+              "claim-region-and-format-gate"
+            ]
+          }
+        ],
+        "score": {
+          "frictionSpecificity": 5,
+          "selfPurchaseLogic": 4,
+          "ownershipEase": 5,
+          "recipientSpecificity": 4,
+          "total": 18
+        }
+      }
+    },
+    {
+      "id": "princeton-eastern-north-america",
+      "name": "Trees of Eastern North America",
+      "editorialScore": 91,
+      "evidenceConfidence": 87,
+      "drawbacks": [
+        "At 720 pages and 5.75 by 8.25 inches in the current publisher record, the Princeton guide asks more of a recipient's hand strength and bag space than a slim pocket reference; a prior publisher catalog listed 656 pages, so verify the exact physical edition."
+      ],
+      "primarySourceIds": [
+        "src-princeton-official"
+      ],
+      "independentSourceIds": [
+        "src-princeton-cfn-review",
+        "src-princeton-ohio-review"
+      ],
+      "claimIds": [
+        "claim-princeton-benefit",
+        "claim-princeton-drawback",
+        "claim-princeton-compatibility"
+      ],
+      "evidenceMode": "desk_research",
+      "thoughtfulness": {
+        "observationPrompt": "Choose this when they pause over subtle bark, twig, fruit, and leaf differences east of the Great Plains and have asked for a deeply illustrated reference rather than a pocket checklist.",
+        "frictionClaimIds": [
+          "claim-tree-noticing-friction",
+          "claim-one-tree-ritual"
+        ],
+        "physicalGiftBoundary": "welcome_when_verified",
+        "selfPurchase": {
+          "reason": "small_luxury_deferral",
+          "rationale": "A comprehensive illustrated reference can remain deferred while free phone searches feel adequate, even when the reader would value a coherent physical comparison system.",
+          "basis": "editorial_inference",
+          "claimIds": [
+            "claim-guide-research-burden"
+          ]
+        },
+        "duplicateRisk": {
+          "level": "medium",
+          "preGiftCheck": "Confirm their existing guide does not already cover native and naturalized eastern species with a visual system they prefer."
+        },
+        "clutterRisk": {
+          "level": "medium",
+          "ownershipBurden": "The current 720-page volume needs meaningful bag space and may be better on a bench or back at home than in one hand while walking.",
+          "mitigation": "Test the physical edition in a library or shop and plan a short route with a bench or a small day bag."
+        },
+        "compatibilityChecks": [
+          {
+            "dimension": "edition_or_region",
+            "status": "verified",
+            "requirement": "The recipient's neighborhood lies in the eastern United States or Canada no farther west than the Great Plains scope stated by Princeton.",
+            "claimIds": [
+              "claim-princeton-compatibility"
+            ]
+          },
+          {
+            "dimension": "size_or_fit",
+            "status": "verified",
+            "requirement": "The recipient can comfortably carry or set down a 5.75 by 8.25 inch, 720-page physical guide during a short walk.",
+            "claimIds": [
+              "claim-princeton-drawback"
+            ]
+          }
+        ],
+        "score": {
+          "frictionSpecificity": 5,
+          "selfPurchaseLogic": 4,
+          "ownershipEase": 3,
+          "recipientSpecificity": 5,
+          "total": 17
+        }
+      }
+    },
+    {
+      "id": "sibley-guide-to-trees",
+      "name": "The Sibley Guide to Trees",
+      "editorialScore": 83,
+      "evidenceConfidence": 82,
+      "drawbacks": [
+        "Sibley is a 464-page, 6 by 9.5 inch continental hardcover rather than an east-only pocket guide, and an independent comparison calls it inconvenient to carry on field trips."
+      ],
+      "primarySourceIds": [
+        "src-sibley-official"
+      ],
+      "independentSourceIds": [
+        "src-sibley-plant-science-review",
+        "src-sibley-dendroica-review"
+      ],
+      "claimIds": [
+        "claim-sibley-benefit",
+        "claim-sibley-drawback",
+        "claim-sibley-compatibility"
+      ],
+      "evidenceMode": "desk_research",
+      "thoughtfulness": {
+        "observationPrompt": "Choose this only if they repeatedly compare illustrated plant parts, want one reference for travel beyond the eastern neighborhood, and are comfortable with a larger hardcover organized by taxonomy.",
+        "frictionClaimIds": [
+          "claim-tree-noticing-friction",
+          "claim-one-tree-ritual"
+        ],
+        "physicalGiftBoundary": "welcome_when_verified",
+        "selfPurchase": {
+          "reason": "research_burden",
+          "rationale": "The recipient must decide whether thousands of paintings and continental breadth outweigh a regionally narrower guide and easier field carry.",
+          "basis": "editorial_inference",
+          "claimIds": [
+            "claim-guide-research-burden"
+          ]
+        },
+        "duplicateRisk": {
+          "level": "high",
+          "preGiftCheck": "Confirm they want a continental illustrated reference and do not already own Sibley or another large North American tree guide."
+        },
+        "clutterRisk": {
+          "level": "medium",
+          "ownershipBurden": "The hardcover occupies more bag and shelf space than an east-only field guide and may stay home unless the recipient already carries reference books.",
+          "mitigation": "Preview the size and taxonomy-first layout; select it as an alternative guide, never as an automatic addition to Peterson or Princeton."
+        },
+        "compatibilityChecks": [
+          {
+            "dimension": "edition_or_region",
+            "status": "verified",
+            "requirement": "The recipient explicitly wants a North American reference broader than the eastern or central neighborhood where the first walk occurs.",
+            "claimIds": [
+              "claim-sibley-compatibility"
+            ]
+          },
+          {
+            "dimension": "accessibility",
+            "status": "verified",
+            "requirement": "The recipient can comfortably use a 6 by 9.5 inch hardcover and read dense illustrated comparisons organized by related tree groups.",
+            "claimIds": [
+              "claim-sibley-drawback",
+              "claim-region-and-format-gate"
+            ]
+          }
+        ],
+        "score": {
+          "frictionSpecificity": 4,
+          "selfPurchaseLogic": 4,
+          "ownershipEase": 3,
+          "recipientSpecificity": 5,
+          "total": 16
+        }
+      }
+    },
+    {
+      "id": "bausch-hastings-triplet-10x",
+      "name": "Bausch + Lomb Hastings Triplet Magnifier 10x",
+      "editorialScore": 86,
+      "evidenceConfidence": 80,
+      "drawbacks": [
+        "The 15.8 millimeter viewing lens and one-inch working distance demand close eye placement, coordinated hand movement, and a steady target; current seller availability also varies."
+      ],
+      "primarySourceIds": [
+        "src-bausch-catalog"
+      ],
+      "independentSourceIds": [
+        "src-bausch-loupe-review",
+        "src-bausch-hodinkee-review"
+      ],
+      "claimIds": [
+        "claim-bausch-benefit",
+        "claim-bausch-drawback",
+        "claim-bausch-accessibility"
+      ],
+      "evidenceMode": "desk_research",
+      "thoughtfulness": {
+        "observationPrompt": "Choose this only if they already bring small buds, twig scars, leaf hairs, or margins close for inspection and can focus a folding 10x lens about one inch from the subject.",
+        "frictionClaimIds": [
+          "claim-tree-noticing-friction",
+          "claim-one-tree-ritual"
+        ],
+        "physicalGiftBoundary": "welcome_when_verified",
+        "selfPurchase": {
+          "reason": "small_luxury_deferral",
+          "rationale": "A phone camera or cheap magnifier can seem adequate, leaving a corrected glass triplet deferred even when the recipient repeatedly examines fine plant features.",
+          "basis": "editorial_inference",
+          "claimIds": [
+            "claim-loupe-optical-tradeoff"
+          ]
+        },
+        "duplicateRisk": {
+          "level": "medium",
+          "preGiftCheck": "Confirm they do not already own a clear 10x hand lens they can focus comfortably and keep protected in the field."
+        },
+        "clutterRisk": {
+          "level": "low",
+          "ownershipBurden": "The small folding optic needs a protective pouch or lanyard and periodic lens cleaning, but no battery, account, or charging routine.",
+          "mitigation": "Keep it in its pouch with the chosen guide and include a removable card showing the close-eye focusing technique."
+        },
+        "compatibilityChecks": [
+          {
+            "dimension": "accessibility",
+            "status": "verified",
+            "requirement": "The recipient can hold a 15.8 millimeter lens close to the eye and subject, coordinate both hands, and focus at about one inch without discomfort.",
+            "claimIds": [
+              "claim-bausch-accessibility",
+              "claim-loupe-technique"
+            ]
+          },
+          {
+            "dimension": "power_or_battery",
+            "status": "not_applicable",
+            "requirement": "The non-illuminated folding loupe has no battery, charger, account, or app dependency for the planned daylight walk.",
+            "claimIds": [
+              "claim-bausch-benefit"
+            ]
+          }
+        ],
+        "score": {
+          "frictionSpecificity": 5,
+          "selfPurchaseLogic": 4,
+          "ownershipEase": 4,
+          "recipientSpecificity": 4,
+          "total": 17
+        }
+      }
+    },
+    {
+      "id": "carson-suregrip-sg10",
+      "name": "Carson SureGrip SG-10 Magnifier",
+      "editorialScore": 81,
+      "evidenceConfidence": 76,
+      "drawbacks": [
+        "The SG-10 is a full handheld magnifier rather than a pocket loupe, and its high-power view comes from a much smaller acrylic spot lens; it needs more bag room and does not provide triplet correction."
+      ],
+      "primarySourceIds": [
+        "src-carson-official"
+      ],
+      "independentSourceIds": [],
+      "claimIds": [
+        "claim-carson-benefit",
+        "claim-carson-drawback",
+        "claim-carson-accessibility"
+      ],
+      "evidenceMode": "desk_research",
+      "thoughtfulness": {
+        "observationPrompt": "Choose this only if a broad 2x view and soft full-size handle are easier for them than a folding eye loupe and they can still locate the small 11.5x spot lens.",
+        "frictionClaimIds": [
+          "claim-tree-noticing-friction",
+          "claim-one-tree-ritual"
+        ],
+        "physicalGiftBoundary": "welcome_when_verified",
+        "selfPurchase": {
+          "reason": "research_burden",
+          "rationale": "Separating a low-vision-style wide magnifier from a corrected botanical loupe requires matching hand grip, field size, fine-detail needs, and carrying habits.",
+          "basis": "editorial_inference",
+          "claimIds": [
+            "claim-loupe-optical-tradeoff"
+          ]
+        },
+        "duplicateRisk": {
+          "level": "medium",
+          "preGiftCheck": "Confirm they do not already own a comfortable handheld magnifier and that a full-size handle is welcome on neighborhood walks."
+        },
+        "clutterRisk": {
+          "level": "medium",
+          "ownershipBurden": "The 3.5-inch handheld tool needs more bag space than a folding loupe and must be kept in its pouch to protect the viewing surface.",
+          "mitigation": "Use it as the alternative to a folding loupe, keep it in a small day bag, and do not buy both observation tools."
+        },
+        "compatibilityChecks": [
+          {
+            "dimension": "accessibility",
+            "status": "verified",
+            "requirement": "The recipient prefers a soft handle and large 2x main view, can use the small 11.5x spot, and has previewed the weight and balance.",
+            "claimIds": [
+              "claim-carson-accessibility"
+            ]
+          },
+          {
+            "dimension": "space_or_storage",
+            "status": "verified",
+            "requirement": "Their normal walking bag can hold an 8.5 by 3.5 inch handheld magnifier in its pouch without displacing essentials.",
+            "claimIds": [
+              "claim-carson-drawback"
+            ]
+          }
+        ],
+        "score": {
+          "frictionSpecificity": 5,
+          "selfPurchaseLogic": 4,
+          "ownershipEase": 4,
+          "recipientSpecificity": 4,
+          "total": 17
+        }
+      }
+    },
+    {
+      "id": "native-trees-southeast",
+      "name": "Native Trees of the Southeast",
+      "editorialScore": 72,
+      "evidenceConfidence": 76,
+      "drawbacks": [
+        "Its southeastern native-only scope excludes many cultivated neighborhood trees and does not fit most of the central or northeastern brief."
+      ],
+      "primarySourceIds": [],
+      "independentSourceIds": [],
+      "claimIds": [],
+      "evidenceMode": "desk_research"
+    },
+    {
+      "id": "nwf-trees-north-america",
+      "name": "National Wildlife Federation Field Guide to Trees of North America",
+      "editorialScore": 70,
+      "evidenceConfidence": 71,
+      "drawbacks": [
+        "Its continental scope creates unnecessary search space for a recipient whose ritual is deliberately eastern or central and neighborhood-sized."
+      ],
+      "primarySourceIds": [],
+      "independentSourceIds": [],
+      "claimIds": [],
+      "evidenceMode": "desk_research"
+    },
+    {
+      "id": "audubon-trees-north-america",
+      "name": "National Audubon Society Trees of North America",
+      "editorialScore": 79,
+      "evidenceConfidence": 85,
+      "drawbacks": [
+        "At 592 pages and 7 by 9.25 inches, Audubon is a broad continental photographic reference rather than a pocket guide; an independent review also notes that it omits a dichotomous key."
+      ],
+      "primarySourceIds": [
+        "src-audubon-official"
+      ],
+      "independentSourceIds": [
+        "src-audubon-wellread-review",
+        "src-audubon-aba-review"
+      ],
+      "claimIds": [
+        "claim-audubon-benefit",
+        "claim-audubon-drawback",
+        "claim-audubon-compatibility"
+      ],
+      "evidenceMode": "desk_research",
+      "thoughtfulness": {
+        "observationPrompt": "Choose this only for a photo-first reader who wants a broad North American reference and already uses a bench, car, or home table for close comparison rather than expecting a pocket guide.",
+        "frictionClaimIds": [
+          "claim-tree-noticing-friction",
+          "claim-one-tree-ritual"
+        ],
+        "physicalGiftBoundary": "welcome_when_verified",
+        "selfPurchase": {
+          "reason": "research_burden",
+          "rationale": "The recipient must decide whether a photographic one-species-per-page system and continental breadth outweigh an eastern-only guide, a dichotomous key, and lighter carry.",
+          "basis": "editorial_inference",
+          "claimIds": [
+            "claim-guide-research-burden"
+          ]
+        },
+        "duplicateRisk": {
+          "level": "high",
+          "preGiftCheck": "Confirm they want a photo-first continental reference and do not already own Audubon, Sibley, or another large North American tree guide."
+        },
+        "clutterRisk": {
+          "level": "medium",
+          "ownershipBurden": "The 592-page, 7 by 9.25 inch reference needs meaningful bag, car, or shelf space and may stay home on a short neighborhood walk.",
+          "mitigation": "Preview the physical size and navigation system; choose it instead of another continental guide and plan to use it at a bench, car, or home table."
+        },
+        "compatibilityChecks": [
+          {
+            "dimension": "edition_or_region",
+            "status": "verified",
+            "requirement": "The recipient explicitly wants North American breadth beyond the eastern or central neighborhood where the first walk occurs.",
+            "claimIds": [
+              "claim-audubon-compatibility"
+            ]
+          },
+          {
+            "dimension": "accessibility",
+            "status": "verified",
+            "requirement": "The recipient can comfortably use a 592-page, 7 by 9.25 inch photo reference and navigate it without a dichotomous key.",
+            "claimIds": [
+              "claim-audubon-drawback",
+              "claim-region-and-format-gate"
+            ]
+          }
+        ],
+        "score": {
+          "frictionSpecificity": 4,
+          "selfPurchaseLogic": 4,
+          "ownershipEase": 3,
+          "recipientSpecificity": 5,
+          "total": 16
+        }
+      }
+    },
+    {
+      "id": "arbor-day-what-tree",
+      "name": "Arbor Day Foundation What Tree Is That? guide",
+      "editorialScore": 64,
+      "evidenceConfidence": 63,
+      "drawbacks": [
+        "Its simplified identification role does not provide the same depth, regional comparison, and independent product evidence as the finalist guides."
+      ],
+      "primarySourceIds": [],
+      "independentSourceIds": [],
+      "claimIds": [],
+      "evidenceMode": "desk_research"
+    },
+    {
+      "id": "umn-online-tree-guide",
+      "name": "University of Minnesota online Tree ID Guide",
+      "editorialScore": 61,
+      "evidenceConfidence": 83,
+      "drawbacks": [
+        "It is a useful authority but not the geography-appropriate physical gift required by the approved thesis."
+      ],
+      "primarySourceIds": [],
+      "independentSourceIds": [],
+      "claimIds": [
+        "claim-tree-noticing-friction"
+      ],
+      "evidenceMode": "desk_research"
+    },
+    {
+      "id": "belomo-triplet-10x",
+      "name": "BelOMO 10x Triplet Loupe",
+      "editorialScore": 65,
+      "evidenceConfidence": 72,
+      "drawbacks": [
+        "Current public discussion raises sourcing and sanctions-related availability concerns, while the heavier folding body and close-focus technique do not improve accessibility over the selected triplet."
+      ],
+      "primarySourceIds": [],
+      "independentSourceIds": [],
+      "claimIds": [
+        "claim-loupe-optical-tradeoff"
+      ],
+      "evidenceMode": "desk_research"
+    },
+    {
+      "id": "carson-lumiloupe-ll10",
+      "name": "Carson LumiLoupe LL-10",
+      "editorialScore": 67,
+      "evidenceConfidence": 68,
+      "drawbacks": [
+        "Its pre-focused stand format works best against a flat supported subject and is awkward for bark, attached twigs, or leaves moving on a branch."
+      ],
+      "primarySourceIds": [
+        "src-carson-official"
+      ],
+      "independentSourceIds": [],
+      "claimIds": [],
+      "evidenceMode": "desk_research"
+    },
+    {
+      "id": "carson-triview-tv15",
+      "name": "Carson TriView TV-15 Folding Loupe",
+      "editorialScore": 66,
+      "evidenceConfidence": 67,
+      "drawbacks": [
+        "Three magnification choices add decision friction without proving better botanical clarity or accessibility than one qualified 10x tool."
+      ],
+      "primarySourceIds": [
+        "src-carson-official"
+      ],
+      "independentSourceIds": [],
+      "claimIds": [],
+      "evidenceMode": "desk_research"
+    },
+    {
+      "id": "generic-led-triplet",
+      "name": "Generic illuminated 10x triplet loupe",
+      "editorialScore": 58,
+      "evidenceConfidence": 50,
+      "drawbacks": [
+        "Unresolved optical provenance plus battery, switch, and replacement-cell burden violate the low-friction requirement."
+      ],
+      "primarySourceIds": [],
+      "independentSourceIds": [],
+      "claimIds": [],
+      "evidenceMode": "desk_research"
+    }
+  ],
+  "finalists": [
+    {
+      "id": "peterson-eastern-trees",
+      "name": "A Peterson Field Guide to Eastern Trees",
+      "editorialScore": 84,
+      "evidenceConfidence": 80,
+      "drawbacks": [
+        "The current listing is a 1998, 448-page edition with fewer covered species than newer comprehensive guides, and the publisher currently shows it out of stock even though another bookstore reports fulfillment; recheck edition and seller before gifting."
+      ],
+      "primarySourceIds": [
+        "src-peterson-official"
+      ],
+      "independentSourceIds": [
+        "src-peterson-namethatplant",
+        "src-peterson-unh-extension-review"
+      ],
+      "claimIds": [
+        "claim-peterson-benefit",
+        "claim-peterson-drawback",
+        "claim-peterson-compatibility"
+      ],
+      "evidenceMode": "desk_research",
+      "thoughtfulness": {
+        "observationPrompt": "Choose this only if they point out neighborhood trees in the eastern United States, eastern Canada, or Midwest and prefer a compact illustrated key over a dense comprehensive reference.",
+        "frictionClaimIds": [
+          "claim-tree-noticing-friction",
+          "claim-one-tree-ritual"
+        ],
+        "physicalGiftBoundary": "welcome_when_verified",
+        "selfPurchase": {
+          "reason": "research_burden",
+          "rationale": "The title choice requires comparing exact geographic scope, visual organization, age, and seller rather than buying a generic tree book.",
+          "basis": "editorial_inference",
+          "claimIds": [
+            "claim-guide-research-burden"
+          ]
+        },
+        "duplicateRisk": {
+          "level": "medium",
+          "preGiftCheck": "Confirm they do not already own and regularly carry a tree guide whose region and visual format work for them."
+        },
+        "clutterRisk": {
+          "level": "low",
+          "ownershipBurden": "A physical field guide still needs shelf or bag space and protection from rain.",
+          "mitigation": "Borrow or preview the layout first, then gift only this one guide and write the first walk location inside a removable card."
+        },
+        "compatibilityChecks": [
+          {
+            "dimension": "edition_or_region",
+            "status": "verified",
+            "requirement": "The recipient's regular walks fall in the eastern United States, eastern Canada, or Midwest scope printed by the publisher.",
+            "claimIds": [
+              "claim-peterson-compatibility"
+            ]
+          },
+          {
+            "dimension": "accessibility",
+            "status": "verified",
+            "requirement": "The recipient can comfortably navigate the illustrated key, range maps, and print layout after previewing or borrowing the edition.",
+            "claimIds": [
+              "claim-region-and-format-gate"
+            ]
+          }
+        ],
+        "score": {
+          "frictionSpecificity": 5,
+          "selfPurchaseLogic": 4,
+          "ownershipEase": 5,
+          "recipientSpecificity": 4,
+          "total": 18
+        }
+      }
+    },
+    {
+      "id": "princeton-eastern-north-america",
+      "name": "Trees of Eastern North America",
+      "editorialScore": 91,
+      "evidenceConfidence": 87,
+      "drawbacks": [
+        "At 720 pages and 5.75 by 8.25 inches in the current publisher record, the Princeton guide asks more of a recipient's hand strength and bag space than a slim pocket reference; a prior publisher catalog listed 656 pages, so verify the exact physical edition."
+      ],
+      "primarySourceIds": [
+        "src-princeton-official"
+      ],
+      "independentSourceIds": [
+        "src-princeton-cfn-review",
+        "src-princeton-ohio-review"
+      ],
+      "claimIds": [
+        "claim-princeton-benefit",
+        "claim-princeton-drawback",
+        "claim-princeton-compatibility"
+      ],
+      "evidenceMode": "desk_research",
+      "thoughtfulness": {
+        "observationPrompt": "Choose this when they pause over subtle bark, twig, fruit, and leaf differences east of the Great Plains and have asked for a deeply illustrated reference rather than a pocket checklist.",
+        "frictionClaimIds": [
+          "claim-tree-noticing-friction",
+          "claim-one-tree-ritual"
+        ],
+        "physicalGiftBoundary": "welcome_when_verified",
+        "selfPurchase": {
+          "reason": "small_luxury_deferral",
+          "rationale": "A comprehensive illustrated reference can remain deferred while free phone searches feel adequate, even when the reader would value a coherent physical comparison system.",
+          "basis": "editorial_inference",
+          "claimIds": [
+            "claim-guide-research-burden"
+          ]
+        },
+        "duplicateRisk": {
+          "level": "medium",
+          "preGiftCheck": "Confirm their existing guide does not already cover native and naturalized eastern species with a visual system they prefer."
+        },
+        "clutterRisk": {
+          "level": "medium",
+          "ownershipBurden": "The current 720-page volume needs meaningful bag space and may be better on a bench or back at home than in one hand while walking.",
+          "mitigation": "Test the physical edition in a library or shop and plan a short route with a bench or a small day bag."
+        },
+        "compatibilityChecks": [
+          {
+            "dimension": "edition_or_region",
+            "status": "verified",
+            "requirement": "The recipient's neighborhood lies in the eastern United States or Canada no farther west than the Great Plains scope stated by Princeton.",
+            "claimIds": [
+              "claim-princeton-compatibility"
+            ]
+          },
+          {
+            "dimension": "size_or_fit",
+            "status": "verified",
+            "requirement": "The recipient can comfortably carry or set down a 5.75 by 8.25 inch, 720-page physical guide during a short walk.",
+            "claimIds": [
+              "claim-princeton-drawback"
+            ]
+          }
+        ],
+        "score": {
+          "frictionSpecificity": 5,
+          "selfPurchaseLogic": 4,
+          "ownershipEase": 3,
+          "recipientSpecificity": 5,
+          "total": 17
+        }
+      }
+    },
+    {
+      "id": "sibley-guide-to-trees",
+      "name": "The Sibley Guide to Trees",
+      "editorialScore": 83,
+      "evidenceConfidence": 82,
+      "drawbacks": [
+        "Sibley is a 464-page, 6 by 9.5 inch continental hardcover rather than an east-only pocket guide, and an independent comparison calls it inconvenient to carry on field trips."
+      ],
+      "primarySourceIds": [
+        "src-sibley-official"
+      ],
+      "independentSourceIds": [
+        "src-sibley-plant-science-review",
+        "src-sibley-dendroica-review"
+      ],
+      "claimIds": [
+        "claim-sibley-benefit",
+        "claim-sibley-drawback",
+        "claim-sibley-compatibility"
+      ],
+      "evidenceMode": "desk_research",
+      "thoughtfulness": {
+        "observationPrompt": "Choose this only if they repeatedly compare illustrated plant parts, want one reference for travel beyond the eastern neighborhood, and are comfortable with a larger hardcover organized by taxonomy.",
+        "frictionClaimIds": [
+          "claim-tree-noticing-friction",
+          "claim-one-tree-ritual"
+        ],
+        "physicalGiftBoundary": "welcome_when_verified",
+        "selfPurchase": {
+          "reason": "research_burden",
+          "rationale": "The recipient must decide whether thousands of paintings and continental breadth outweigh a regionally narrower guide and easier field carry.",
+          "basis": "editorial_inference",
+          "claimIds": [
+            "claim-guide-research-burden"
+          ]
+        },
+        "duplicateRisk": {
+          "level": "high",
+          "preGiftCheck": "Confirm they want a continental illustrated reference and do not already own Sibley or another large North American tree guide."
+        },
+        "clutterRisk": {
+          "level": "medium",
+          "ownershipBurden": "The hardcover occupies more bag and shelf space than an east-only field guide and may stay home unless the recipient already carries reference books.",
+          "mitigation": "Preview the size and taxonomy-first layout; select it as an alternative guide, never as an automatic addition to Peterson or Princeton."
+        },
+        "compatibilityChecks": [
+          {
+            "dimension": "edition_or_region",
+            "status": "verified",
+            "requirement": "The recipient explicitly wants a North American reference broader than the eastern or central neighborhood where the first walk occurs.",
+            "claimIds": [
+              "claim-sibley-compatibility"
+            ]
+          },
+          {
+            "dimension": "accessibility",
+            "status": "verified",
+            "requirement": "The recipient can comfortably use a 6 by 9.5 inch hardcover and read dense illustrated comparisons organized by related tree groups.",
+            "claimIds": [
+              "claim-sibley-drawback",
+              "claim-region-and-format-gate"
+            ]
+          }
+        ],
+        "score": {
+          "frictionSpecificity": 4,
+          "selfPurchaseLogic": 4,
+          "ownershipEase": 3,
+          "recipientSpecificity": 5,
+          "total": 16
+        }
+      }
+    },
+    {
+      "id": "bausch-hastings-triplet-10x",
+      "name": "Bausch + Lomb Hastings Triplet Magnifier 10x",
+      "editorialScore": 86,
+      "evidenceConfidence": 80,
+      "drawbacks": [
+        "The 15.8 millimeter viewing lens and one-inch working distance demand close eye placement, coordinated hand movement, and a steady target; current seller availability also varies."
+      ],
+      "primarySourceIds": [
+        "src-bausch-catalog"
+      ],
+      "independentSourceIds": [
+        "src-bausch-loupe-review",
+        "src-bausch-hodinkee-review"
+      ],
+      "claimIds": [
+        "claim-bausch-benefit",
+        "claim-bausch-drawback",
+        "claim-bausch-accessibility"
+      ],
+      "evidenceMode": "desk_research",
+      "thoughtfulness": {
+        "observationPrompt": "Choose this only if they already bring small buds, twig scars, leaf hairs, or margins close for inspection and can focus a folding 10x lens about one inch from the subject.",
+        "frictionClaimIds": [
+          "claim-tree-noticing-friction",
+          "claim-one-tree-ritual"
+        ],
+        "physicalGiftBoundary": "welcome_when_verified",
+        "selfPurchase": {
+          "reason": "small_luxury_deferral",
+          "rationale": "A phone camera or cheap magnifier can seem adequate, leaving a corrected glass triplet deferred even when the recipient repeatedly examines fine plant features.",
+          "basis": "editorial_inference",
+          "claimIds": [
+            "claim-loupe-optical-tradeoff"
+          ]
+        },
+        "duplicateRisk": {
+          "level": "medium",
+          "preGiftCheck": "Confirm they do not already own a clear 10x hand lens they can focus comfortably and keep protected in the field."
+        },
+        "clutterRisk": {
+          "level": "low",
+          "ownershipBurden": "The small folding optic needs a protective pouch or lanyard and periodic lens cleaning, but no battery, account, or charging routine.",
+          "mitigation": "Keep it in its pouch with the chosen guide and include a removable card showing the close-eye focusing technique."
+        },
+        "compatibilityChecks": [
+          {
+            "dimension": "accessibility",
+            "status": "verified",
+            "requirement": "The recipient can hold a 15.8 millimeter lens close to the eye and subject, coordinate both hands, and focus at about one inch without discomfort.",
+            "claimIds": [
+              "claim-bausch-accessibility",
+              "claim-loupe-technique"
+            ]
+          },
+          {
+            "dimension": "power_or_battery",
+            "status": "not_applicable",
+            "requirement": "The non-illuminated folding loupe has no battery, charger, account, or app dependency for the planned daylight walk.",
+            "claimIds": [
+              "claim-bausch-benefit"
+            ]
+          }
+        ],
+        "score": {
+          "frictionSpecificity": 5,
+          "selfPurchaseLogic": 4,
+          "ownershipEase": 4,
+          "recipientSpecificity": 4,
+          "total": 17
+        }
+      }
+    },
+    {
+      "id": "audubon-trees-north-america",
+      "name": "National Audubon Society Trees of North America",
+      "editorialScore": 79,
+      "evidenceConfidence": 85,
+      "drawbacks": [
+        "At 592 pages and 7 by 9.25 inches, Audubon is a broad continental photographic reference rather than a pocket guide; an independent review also notes that it omits a dichotomous key."
+      ],
+      "primarySourceIds": [
+        "src-audubon-official"
+      ],
+      "independentSourceIds": [
+        "src-audubon-wellread-review",
+        "src-audubon-aba-review"
+      ],
+      "claimIds": [
+        "claim-audubon-benefit",
+        "claim-audubon-drawback",
+        "claim-audubon-compatibility"
+      ],
+      "evidenceMode": "desk_research",
+      "thoughtfulness": {
+        "observationPrompt": "Choose this only for a photo-first reader who wants a broad North American reference and already uses a bench, car, or home table for close comparison rather than expecting a pocket guide.",
+        "frictionClaimIds": [
+          "claim-tree-noticing-friction",
+          "claim-one-tree-ritual"
+        ],
+        "physicalGiftBoundary": "welcome_when_verified",
+        "selfPurchase": {
+          "reason": "research_burden",
+          "rationale": "The recipient must decide whether a photographic one-species-per-page system and continental breadth outweigh an eastern-only guide, a dichotomous key, and lighter carry.",
+          "basis": "editorial_inference",
+          "claimIds": [
+            "claim-guide-research-burden"
+          ]
+        },
+        "duplicateRisk": {
+          "level": "high",
+          "preGiftCheck": "Confirm they want a photo-first continental reference and do not already own Audubon, Sibley, or another large North American tree guide."
+        },
+        "clutterRisk": {
+          "level": "medium",
+          "ownershipBurden": "The 592-page, 7 by 9.25 inch reference needs meaningful bag, car, or shelf space and may stay home on a short neighborhood walk.",
+          "mitigation": "Preview the physical size and navigation system; choose it instead of another continental guide and plan to use it at a bench, car, or home table."
+        },
+        "compatibilityChecks": [
+          {
+            "dimension": "edition_or_region",
+            "status": "verified",
+            "requirement": "The recipient explicitly wants North American breadth beyond the eastern or central neighborhood where the first walk occurs.",
+            "claimIds": [
+              "claim-audubon-compatibility"
+            ]
+          },
+          {
+            "dimension": "accessibility",
+            "status": "verified",
+            "requirement": "The recipient can comfortably use a 592-page, 7 by 9.25 inch photo reference and navigate it without a dichotomous key.",
+            "claimIds": [
+              "claim-audubon-drawback",
+              "claim-region-and-format-gate"
+            ]
+          }
+        ],
+        "score": {
+          "frictionSpecificity": 4,
+          "selfPurchaseLogic": 4,
+          "ownershipEase": 3,
+          "recipientSpecificity": 5,
+          "total": 16
+        }
+      }
+    }
+  ],
+  "pairs": [
+    {
+      "id": "compact-eastern-one-tree-pair",
+      "name": "The compact eastern one-tree pair",
+      "anchorCandidateId": "peterson-eastern-trees",
+      "companionCandidateId": "bausch-hastings-triplet-10x",
+      "recipientJob": "Name one neighborhood tree provisionally by moving from a whole-tree observation to one close leaf, bud, or twig feature and then checking the regional guide.",
+      "coherenceType": "observation_loop",
+      "whyTogether": "Peterson supplies a geographically bounded comparison system while the Bausch triplet reveals one small feature that the unaided eye may miss; this is the compact configuration, not an excuse to buy every guide and lens.",
+      "interactionMoment": "On one daylight walk, choose one familiar tree, note its silhouette and bark, inspect one already-fallen leaf or reachable twig feature without removing material, then use Peterson to make and mark one provisional identification.",
+      "compatibilityChecks": [
+        {
+          "dimension": "edition_or_region",
+          "status": "verified",
+          "requirement": "The walk is in the eastern United States, eastern Canada, or Midwest covered by Peterson, and the exact edition's visual key suits the recipient.",
+          "claimIds": [
+            "claim-peterson-compatibility",
+            "claim-region-and-format-gate"
+          ]
+        },
+        {
+          "dimension": "accessibility",
+          "status": "verified",
+          "requirement": "The recipient can use a 15.8 millimeter 10x lens close to the eye and subject, and can carry and read the selected Peterson edition.",
+          "claimIds": [
+            "claim-bausch-accessibility",
+            "claim-loupe-technique"
+          ]
+        }
+      ],
+      "duplicateRisk": "medium",
+      "clutterDelta": "neutral",
+      "preGiftCheck": "Confirm the exact neighborhood falls inside Peterson's scope, preview its print and illustration style, test a 10x close-eye loupe, and verify neither role is already covered by a trusted tool.",
+      "bundleDrawback": "Choose only Peterson when close-eye focusing is uncomfortable or fine details are not the friction; choose only the loupe when the recipient already has a region-matched guide they use.",
+      "claimIds": [
+        "claim-pair-peterson-bausch"
+      ],
+      "score": {
+        "sharedCuriosity": 19,
+        "complementaryRoles": 20,
+        "interactionLoop": 19,
+        "observableTrigger": 14,
+        "independentValue": 10,
+        "compatibility": 9,
+        "ownershipEase": 4,
+        "total": 95
+      }
+    },
+    {
+      "id": "illustrated-deep-dive-one-tree-pair",
+      "name": "The illustrated deep-dive one-tree pair",
+      "anchorCandidateId": "princeton-eastern-north-america",
+      "companionCandidateId": "bausch-hastings-triplet-10x",
+      "recipientJob": "Compare one eastern or central neighborhood tree against detailed illustrations after noting its whole form and then checking one fine leaf, bud, or twig feature through a corrected 10x loupe.",
+      "coherenceType": "observation_loop",
+      "whyTogether": "Princeton provides deep eastern-through-Great-Plains illustrated comparisons while the Bausch triplet reveals one small feature that the unaided eye may miss; this is the denser-reference alternative to the compact Peterson configuration.",
+      "interactionMoment": "Carry the guide and loupe in one small day bag, stop at one familiar tree near a bench, note bark and silhouette, inspect one already-fallen leaf or reachable feature through the loupe, then compare the complete evidence set against Princeton's quick-ID art and range map.",
+      "compatibilityChecks": [
+        {
+          "dimension": "edition_or_region",
+          "status": "verified",
+          "requirement": "The neighborhood is in the eastern United States or Canada as far west as the Great Plains and the recipient wants comprehensive illustrated coverage.",
+          "claimIds": [
+            "claim-princeton-compatibility"
+          ]
+        },
+        {
+          "dimension": "accessibility",
+          "status": "verified",
+          "requirement": "The recipient can carry and read the 720-page guide and can hold a 15.8 millimeter 10x lens close to the eye and subject without discomfort.",
+          "claimIds": [
+            "claim-princeton-drawback",
+            "claim-bausch-accessibility",
+            "claim-loupe-technique"
+          ]
+        },
+        {
+          "dimension": "space_or_storage",
+          "status": "verified",
+          "requirement": "A normal walking bag can hold the 5.75 by 8.25 inch guide plus the small loupe and protective pouch without creating an unwanted carrying job.",
+          "claimIds": [
+            "claim-princeton-drawback",
+            "claim-bausch-drawback"
+          ]
+        }
+      ],
+      "duplicateRisk": "medium",
+      "clutterDelta": "neutral",
+      "preGiftCheck": "Confirm the exact location is within Princeton's scope, preview the book's size and print, test the Bausch loupe's close-eye focus, and choose this denser-reference configuration instead of the compact Peterson pair.",
+      "bundleDrawback": "Choose only Princeton when close-eye focusing is uncomfortable or fine details are not the friction; choose only the loupe when the recipient already owns a current eastern guide whose visual organization works.",
+      "claimIds": [
+        "claim-pair-princeton-bausch"
+      ],
+      "score": {
+        "sharedCuriosity": 19,
+        "complementaryRoles": 19,
+        "interactionLoop": 18,
+        "observableTrigger": 14,
+        "independentValue": 10,
+        "compatibility": 9,
+        "ownershipEase": 3,
+        "total": 92
+      }
+    }
+  ],
+  "affiliateLinks": [],
+  "article": {
+    "slug": "neighborhood-tree-walk-field-guide-loupe-gift-pairs",
+    "editorialScore": 87,
+    "evidenceConfidence": 82,
+    "evidenceMode": "desk_research",
+    "status": "publication_ready"
+  },
+  "qa": {
+    "passed": true,
+    "reviewerRole": "independent-editor",
+    "reviewerId": "tree-walk-independent-editor-20260816-r2",
+    "receiptPath": "research/reviews/20260816-neighborhood-tree-walk-b8a44f32.qa.v1.json",
+    "blockers": [],
+    "warnings": []
+  },
+  "conflicts": [
+    {
+      "id": "conflict-princeton-page-count",
+      "summary": "Princeton's current product page lists 720 pages for ISBN 9780691145914, while its archived 2014 catalog lists 656 pages. The draft uses the current 720-page record and requires exact-edition verification."
+    },
+    {
+      "id": "conflict-peterson-availability",
+      "summary": "HarperCollins currently displays the Peterson guide as out of stock while the MIT Press Bookstore reports ordinary fulfillment. The draft makes no availability promise and requires a seller recheck."
+    },
+    {
+      "id": "conflict-carson-spot-power",
+      "summary": "Current Carson and retailer records specify an 11.5x SG-10 spot lens while older listings describe it as 10x. The draft uses the current 11.5x specification."
+    },
+    {
+      "id": "conflict-loupe-accessibility",
+      "summary": "Experienced public users praise corrected 10x triplets but also describe shallow depth of field and difficulty with shaky hands. The draft treats this as a mandatory handling check, not a universal recommendation."
+    }
+  ],
+  "completedAt": "2026-08-16T21:30:53.582Z"
+}

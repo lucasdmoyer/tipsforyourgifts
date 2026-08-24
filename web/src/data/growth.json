@@ -1,0 +1,194 @@
+{
+  "schemaVersion": "1.1.0",
+  "updatedAt": "2026-08-10T17:57:17.000Z",
+  "measurementPolicy": {
+    "aggregateOnly": true,
+    "unknownValuesAreNull": true,
+    "minimumReportingWindowDays": 7,
+    "founderApproverLogin": "lucasdmoyer",
+    "privacyReview": {
+      "decisionId": "privacy-measurement-20260816-v1",
+      "status": "approved",
+      "approvedBy": "lucasdmoyer",
+      "approvedAt": "2026-08-16T18:54:22.000Z",
+      "clientCollectionEnabled": false,
+      "consentRequiredBeforeClientCollection": true,
+      "approvedEventNames": [
+        "gift_finder_guide_open",
+        "guide_open",
+        "merchant_outbound_click"
+      ],
+      "baselineStatus": "awaiting_observed_export",
+      "baselineWindowStartedAt": null,
+      "decisionSummary": "Approve aggregate-only measurement using the existing bounded event labels. Keep client analytics disabled until a named consent-aware provider, consent behavior, public configuration evidence, and founder-gated connector activation are reviewed. Traffic, conversion, and revenue remain unknown until a complete observed export of at least seven days is imported."
+    },
+    "forbiddenFields": [
+      "userId",
+      "email",
+      "phone",
+      "ipAddress",
+      "cookieId",
+      "deviceId",
+      "preciseLocation",
+      "rawQuery"
+    ]
+  },
+  "connectors": [
+    {
+      "id": "search-console",
+      "name": "Google Search Console aggregate export",
+      "status": "not_connected",
+      "founderApproved": false,
+      "metrics": [
+        "searchImpressions",
+        "organicClicks"
+      ],
+      "sourceReference": null,
+      "collectionMethod": null,
+      "authenticationMode": null,
+      "credentialSecretNames": [],
+      "configurationEvidenceUrl": null,
+      "configuredAt": null,
+      "activatedAt": null,
+      "snapshotImportEnabled": false,
+      "automatedCollectionEnabled": false,
+      "nextGate": "Founder verifies the site property and approves aggregate Search Console export access."
+    },
+    {
+      "id": "web-analytics",
+      "name": "Consent-aware aggregate web analytics",
+      "status": "not_connected",
+      "founderApproved": false,
+      "metrics": [
+        "engagedSessions",
+        "outboundMerchantClicks"
+      ],
+      "sourceReference": null,
+      "collectionMethod": null,
+      "authenticationMode": null,
+      "credentialSecretNames": [],
+      "configurationEvidenceUrl": null,
+      "configuredAt": null,
+      "activatedAt": null,
+      "snapshotImportEnabled": false,
+      "automatedCollectionEnabled": false,
+      "nextGate": "Founder approves the privacy posture, consent behavior, and aggregate event definitions before analytics is enabled."
+    },
+    {
+      "id": "affiliate-reporting",
+      "name": "Approved affiliate-network aggregate export",
+      "status": "not_connected",
+      "founderApproved": false,
+      "metrics": [
+        "affiliateConversions",
+        "revenueUsd"
+      ],
+      "sourceReference": null,
+      "collectionMethod": null,
+      "authenticationMode": null,
+      "credentialSecretNames": [],
+      "configurationEvidenceUrl": null,
+      "configuredAt": null,
+      "activatedAt": null,
+      "snapshotImportEnabled": false,
+      "automatedCollectionEnabled": false,
+      "nextGate": "Founder approves one affiliate program, its terms, tracking identity, registered site, and reporting export."
+    },
+    {
+      "id": "social-reporting",
+      "name": "Official social-platform aggregate export",
+      "status": "not_connected",
+      "founderApproved": false,
+      "metrics": [
+        "socialImpressions",
+        "socialEngagements",
+        "ownedSiteClicks"
+      ],
+      "sourceReference": null,
+      "collectionMethod": null,
+      "authenticationMode": null,
+      "credentialSecretNames": [],
+      "configurationEvidenceUrl": null,
+      "configuredAt": null,
+      "activatedAt": null,
+      "snapshotImportEnabled": false,
+      "automatedCollectionEnabled": false,
+      "nextGate": "Founder approves an official account, rights-cleared creative, cadence, and API access."
+    }
+  ],
+  "snapshots": [],
+  "experiments": [
+    {
+      "id": "growth-exp-001",
+      "status": "proposed",
+      "founderDisposition": "proposed",
+      "title": "Pair or pile decision test",
+      "hypothesis": "A decision-first social concept explaining why two gifts interact will earn more qualified visits than a generic collage of the same products.",
+      "channel": "owned_social",
+      "targetArticleSlugs": [
+        "read-it-then-play-it-gift-pairs"
+      ],
+      "primaryMetric": "engagedSessions",
+      "secondaryMetrics": [
+        "ownedSiteClicks",
+        "outboundMerchantClicks"
+      ],
+      "decisionRule": "Run only after an approved account and aggregate analytics exist; keep the concept only if it produces a higher engaged-session rate across a comparable seven-day window without increasing misleading or unsupported product claims.",
+      "stopConditions": [
+        "Stop if the creative requires unlicensed product imagery or an unsupported experience claim.",
+        "Stop if the destination or tracking cannot be measured without collecting disallowed personal data."
+      ],
+      "sourceSnapshotIds": [],
+      "createdAt": "2026-08-03T07:45:00.000Z",
+      "nextReviewAt": "2026-08-10"
+    },
+    {
+      "id": "growth-exp-002",
+      "status": "proposed",
+      "founderDisposition": "proposed",
+      "title": "Observed golf friction carousel",
+      "hypothesis": "A carousel built around recognizable course-day workarounds will attract more qualified gift-planning visits than a headline centered on popular golf accessories.",
+      "channel": "pinterest",
+      "targetArticleSlugs": [
+        "gifts-for-a-golf-friend"
+      ],
+      "primaryMetric": "ownedSiteClicks",
+      "secondaryMetrics": [
+        "engagedSessions",
+        "outboundMerchantClicks"
+      ],
+      "decisionRule": "After the official account and aggregate reporting are approved, compare distinct creative concepts over the same reporting window; advance only the concept that improves qualified owned-site visits while preserving the article's recipient-fit and skip conditions.",
+      "stopConditions": [
+        "Stop if the concept becomes a generic product collage or implies that every golfer needs the same accessory.",
+        "Stop if source imagery, platform terms, or disclosure requirements are unresolved."
+      ],
+      "sourceSnapshotIds": [],
+      "createdAt": "2026-08-03T07:45:00.000Z",
+      "nextReviewAt": "2026-08-10"
+    },
+    {
+      "id": "growth-exp-003",
+      "status": "proposed",
+      "founderDisposition": "proposed",
+      "title": "Trust-to-guide internal path",
+      "hypothesis": "A clear path from the research standard to one relevant guide will help trust-motivated readers continue into a useful gift decision without weakening the standard page.",
+      "channel": "owned_site",
+      "targetArticleSlugs": [
+        "how-we-research-gifts",
+        "read-it-then-play-it-gift-pairs"
+      ],
+      "primaryMetric": "engagedSessions",
+      "secondaryMetrics": [
+        "outboundMerchantClicks"
+      ],
+      "decisionRule": "Establish a complete aggregate baseline first, then test one restrained contextual link for at least seven days; keep it only if downstream engagement improves without reducing completion of the research-standard page.",
+      "stopConditions": [
+        "Stop if the link reads like a sales interruption or obscures the evidence policy.",
+        "Stop if the analytics implementation cannot distinguish aggregate page progression without personal identifiers."
+      ],
+      "sourceSnapshotIds": [],
+      "createdAt": "2026-08-03T07:45:00.000Z",
+      "nextReviewAt": "2026-08-10"
+    }
+  ]
+}

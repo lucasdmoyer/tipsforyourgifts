@@ -1,0 +1,19 @@
+{
+  "schemaVersion": "1.0.0",
+  "receiptId": "20260803-useful-gifts-hard-to-shop-for-adults-ceca335c-qa",
+  "runId": "20260803-useful-gifts-hard-to-shop-for-adults-ceca335c",
+  "articleSlug": "useful-gifts-for-hard-to-shop-for-adults",
+  "reviewedAt": "2026-08-03T04:40:00.000Z",
+  "reviewerRole": "independent-editor",
+  "reviewerId": "evidence-red-team",
+  "workflowRunId": "local-codex-independent-evidence-review",
+  "verdict": "passed",
+  "evidenceSha256": "0ce404b6d42db0a807b03895fd74f1e478853c0d6f290751f7d37f34e8dbbadb",
+  "articleSha256": "c3d00b22df0ba9af629c0c2186f57a878adda62c0c6dbe21d5ded0c7c4e4b990",
+  "socialSha256": "7f6ec10e0b4052c6cbf360492a224749ffe76b9bf4c38c477c1e9939c61db617",
+  "blockers": [],
+  "warnings": [
+    "Recheck availability, return terms, and recall databases at the external release gate.",
+    "Keep all links non-affiliate until a founder-approved program is enabled."
+  ]
+}

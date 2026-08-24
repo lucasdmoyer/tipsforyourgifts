@@ -1,0 +1,1357 @@
+{
+  "schemaVersion": "1.1.0",
+  "runId": "20260803-gifts-for-golf-friend-53cb00a5",
+  "ideaId": "founder-idea-003",
+  "ideaRevision": 1,
+  "ideaSha256": "53cb00a5312612c6e1ba5711952b937feb01eed1cd666c69edcc157b75fefb51",
+  "decisionLens": "hybrid",
+  "contentType": "roundup",
+  "status": "validated",
+  "topic": "Thoughtful gifts for a golf friend that solve small course-day frictions",
+  "audience": "People buying for a committed golfer without guessing at major equipment",
+  "occasion": "Birthdays, holidays, host gifts, and golf trips",
+  "budgetBands": [
+    "Under $25",
+    "$25-$50",
+    "$75-$100"
+  ],
+  "riskClass": "medium",
+  "draftAuthor": "golf-recipient-friction-team-20260803",
+  "startedAt": "2026-08-03T06:35:00.000Z",
+  "researchPasses": [
+    {
+      "pass": 1,
+      "materialNoveltyRate": 1,
+      "newCandidates": 13,
+      "newDecisionFactors": 7
+    },
+    {
+      "pass": 2,
+      "materialNoveltyRate": 0.38,
+      "newCandidates": 0,
+      "newDecisionFactors": 4
+    },
+    {
+      "pass": 3,
+      "materialNoveltyRate": 0.17,
+      "newCandidates": 0,
+      "newDecisionFactors": 2
+    },
+    {
+      "pass": 4,
+      "materialNoveltyRate": 0.08,
+      "newCandidates": 0,
+      "newDecisionFactors": 1
+    },
+    {
+      "pass": 5,
+      "materialNoveltyRate": 0.05,
+      "newCandidates": 0,
+      "newDecisionFactors": 0
+    }
+  ],
+  "sources": [
+    {
+      "id": "src-social-golf-specificity",
+      "url": "https://www.reddit.com/r/golf/comments/18al1mc/",
+      "publisher": "Reddit r/golf",
+      "title": "Community discussion about preference-heavy golf gifts",
+      "accessedAt": "2026-08-03",
+      "sourceClass": "social-discussion",
+      "trustTier": "C",
+      "independenceGroup": "reddit-r-golf-specificity"
+    },
+    {
+      "id": "src-social-golfgear-thoughtful",
+      "url": "https://www.reddit.com/r/GolfGear/comments/1ue0h41/golf_accessories/",
+      "publisher": "Reddit r/GolfGear",
+      "title": "Current public discussion of thoughtful golf accessories",
+      "accessedAt": "2026-08-03",
+      "sourceClass": "social-discussion",
+      "trustTier": "C",
+      "independenceGroup": "reddit-r-golfgear-accessories"
+    },
+    {
+      "id": "src-social-worn-small-items",
+      "url": "https://www.reddit.com/r/GolfGear/comments/1rixgbs/best_gift_ideas_for_a_man_who_has_it_all/",
+      "publisher": "Reddit r/GolfGear",
+      "title": "Public discussion of worn small golf items and self-purchase gaps",
+      "accessedAt": "2026-08-03",
+      "sourceClass": "social-discussion",
+      "trustTier": "C",
+      "independenceGroup": "reddit-r-golfgear-worn-items"
+    },
+    {
+      "id": "src-social-brush-workaround",
+      "url": "https://www.reddit.com/r/golf/comments/keubo0/",
+      "publisher": "Reddit r/golf",
+      "title": "Public discussion of cleaning club grooves with a tee",
+      "accessedAt": "2026-08-03",
+      "sourceClass": "social-discussion",
+      "trustTier": "C",
+      "independenceGroup": "reddit-r-golf-brush-workaround"
+    },
+    {
+      "id": "src-social-rain-gloves",
+      "url": "https://www.reddit.com/r/golf/comments/1v6n1vr/rain_gloves_for_humid_conditions/",
+      "publisher": "Reddit r/golf",
+      "title": "Current public discussion of rain gloves in humid conditions",
+      "accessedAt": "2026-08-03",
+      "sourceClass": "social-discussion",
+      "trustTier": "C",
+      "independenceGroup": "reddit-r-golf-rain-gloves"
+    },
+    {
+      "id": "src-social-puttout",
+      "url": "https://www.reddit.com/r/golf/comments/104ie90/",
+      "publisher": "Reddit r/golf",
+      "title": "Gift-recipient discussion of the PuttOUT trainer",
+      "accessedAt": "2026-08-03",
+      "sourceClass": "social-discussion",
+      "trustTier": "C",
+      "independenceGroup": "reddit-r-golf-puttout"
+    },
+    {
+      "id": "src-minig-official",
+      "url": "https://grooveitbrush.com/products/mini-g",
+      "publisher": "Grooveit",
+      "title": "miniG magnetic golf brush",
+      "accessedAt": "2026-08-03",
+      "sourceClass": "manufacturer",
+      "trustTier": "A",
+      "independenceGroup": "grooveit"
+    },
+    {
+      "id": "src-minig-owner-reviews",
+      "url": "https://grooveitbrush.com/products/mini-g",
+      "publisher": "Grooveit customer reviews",
+      "title": "Current owner reports on the miniG product page",
+      "accessedAt": "2026-08-03",
+      "sourceClass": "manufacturer-customer-review",
+      "trustTier": "C",
+      "independenceGroup": "grooveit-customer-reviews"
+    },
+    {
+      "id": "src-minig-golf",
+      "url": "https://golf.com/gear/golf-accessories/grooveit-mini-favorite-golf-accesory/",
+      "publisher": "GOLF.com",
+      "title": "Hands-on coverage of the Grooveit miniG",
+      "accessedAt": "2026-08-03",
+      "sourceClass": "independent-review",
+      "trustTier": "B",
+      "independenceGroup": "golf-dot-com"
+    },
+    {
+      "id": "src-minig-skratch",
+      "url": "https://www.skratch.golf/gear-equipment/gear-equipment/2025-attest-golf-brush-mini-g-best-brush-grooveit",
+      "publisher": "Skratch",
+      "title": "Independent miniG golf brush review",
+      "accessedAt": "2026-08-03",
+      "sourceClass": "independent-review",
+      "trustTier": "B",
+      "independenceGroup": "skratch-golf"
+    },
+    {
+      "id": "src-towel-official",
+      "url": "https://www.clubglove.com/accessories/microfiber-caddie-towel/CG24MCDT-9.html",
+      "publisher": "Club Glove",
+      "title": "Microfiber Caddy Towel",
+      "accessedAt": "2026-08-03",
+      "sourceClass": "manufacturer",
+      "trustTier": "A",
+      "independenceGroup": "club-glove"
+    },
+    {
+      "id": "src-towel-thp",
+      "url": "https://www.thehackersparadise.com/club-glove-microfiber-caddy-towel-review/",
+      "publisher": "The Hackers Paradise",
+      "title": "Club Glove Microfiber Caddy Towel review",
+      "accessedAt": "2026-08-03",
+      "sourceClass": "independent-review",
+      "trustTier": "B",
+      "independenceGroup": "the-hackers-paradise"
+    },
+    {
+      "id": "src-towel-golfchannel",
+      "url": "https://www.golfchannel.com/news/article-equipment-insider-club-glove-caddy-towel-goes-above-and-beyond",
+      "publisher": "Golf Channel",
+      "title": "Club Glove Caddy Towel equipment coverage",
+      "accessedAt": "2026-08-03",
+      "sourceClass": "independent-review",
+      "trustTier": "B",
+      "independenceGroup": "golf-channel"
+    },
+    {
+      "id": "src-raingrip-official",
+      "url": "https://www.footjoy.com/men/golf-gloves/raingrip-pair/004RAI.html",
+      "publisher": "FootJoy",
+      "title": "RainGrip Pair",
+      "accessedAt": "2026-08-03",
+      "sourceClass": "manufacturer",
+      "trustTier": "A",
+      "independenceGroup": "footjoy"
+    },
+    {
+      "id": "src-raingrip-golfmonthly",
+      "url": "https://www.golfmonthly.com/reviews/apparel/footjoy-rain-grip-gloves-review",
+      "publisher": "Golf Monthly",
+      "title": "FootJoy RainGrip gloves review",
+      "accessedAt": "2026-08-03",
+      "sourceClass": "independent-review",
+      "trustTier": "B",
+      "independenceGroup": "golf-monthly-raingrip"
+    },
+    {
+      "id": "src-raingrip-ncg",
+      "url": "https://www.nationalclubgolfer.com/best-golf-deals/best-golf-rain-gloves/",
+      "publisher": "National Club Golfer",
+      "title": "Current comparison of golf rain gloves",
+      "accessedAt": "2026-08-03",
+      "sourceClass": "independent-review",
+      "trustTier": "B",
+      "independenceGroup": "national-club-golfer"
+    },
+    {
+      "id": "src-umbrella-official",
+      "url": "https://www.titleist.com/product/tour-double-canopy/26TATDC.html",
+      "publisher": "Titleist",
+      "title": "Tour Double Canopy umbrella",
+      "accessedAt": "2026-08-03",
+      "sourceClass": "manufacturer",
+      "trustTier": "A",
+      "independenceGroup": "titleist"
+    },
+    {
+      "id": "src-umbrella-mygolfspy",
+      "url": "https://mygolfspy.com/reviews/golf-accessories/titleist-tour-umbrella-review/",
+      "publisher": "MyGolfSpy",
+      "title": "Titleist Tour umbrella review",
+      "accessedAt": "2026-08-03",
+      "sourceClass": "independent-review",
+      "trustTier": "B",
+      "independenceGroup": "mygolfspy-umbrella"
+    },
+    {
+      "id": "src-umbrella-golfmonthly",
+      "url": "https://www.golfmonthly.com/best-golf-deals/best-golf-umbrellas-208617",
+      "publisher": "Golf Monthly",
+      "title": "Current comparison of golf umbrellas",
+      "accessedAt": "2026-08-03",
+      "sourceClass": "independent-review",
+      "trustTier": "B",
+      "independenceGroup": "golf-monthly-umbrella"
+    },
+    {
+      "id": "src-puttout-official",
+      "url": "https://puttout.golf/products/premium-pressure-putt-trainer",
+      "publisher": "PuttOUT",
+      "title": "Premium Pressure Putt Trainer",
+      "accessedAt": "2026-08-03",
+      "sourceClass": "manufacturer",
+      "trustTier": "A",
+      "independenceGroup": "puttout"
+    },
+    {
+      "id": "src-puttout-golfmonthly",
+      "url": "https://www.golfmonthly.com/reviews/accessories/puttout-premium-pressure-putt-trainer-review",
+      "publisher": "Golf Monthly",
+      "title": "PuttOUT Premium Pressure Putt Trainer review",
+      "accessedAt": "2026-08-03",
+      "sourceClass": "independent-review",
+      "trustTier": "B",
+      "independenceGroup": "golf-monthly-puttout"
+    },
+    {
+      "id": "src-puttout-mygolfspy",
+      "url": "https://mygolfspy.com/news-opinion/puttout-premium-pressure-putt-trainer/",
+      "publisher": "MyGolfSpy",
+      "title": "PuttOUT pressure trainer evaluation",
+      "accessedAt": "2026-08-03",
+      "sourceClass": "independent-review",
+      "trustTier": "B",
+      "independenceGroup": "mygolfspy-puttout"
+    },
+    {
+      "id": "src-cpsc-recalls",
+      "url": "https://www.cpsc.gov/Recalls",
+      "publisher": "U.S. Consumer Product Safety Commission",
+      "title": "Recall database",
+      "accessedAt": "2026-08-03",
+      "sourceClass": "safety-authority",
+      "trustTier": "A",
+      "independenceGroup": "cpsc"
+    },
+    {
+      "id": "src-titleist-policy",
+      "url": "https://www.titleist.com/faqs",
+      "publisher": "Titleist",
+      "title": "Returns and warranty FAQ",
+      "accessedAt": "2026-08-03",
+      "sourceClass": "merchant-policy",
+      "trustTier": "A",
+      "independenceGroup": "titleist-policy"
+    }
+  ],
+  "claims": [
+    {
+      "id": "claim-golf-preference-specificity",
+      "kind": "recipient_friction",
+      "text": "Public golfer discussions repeatedly warn that clubs, balls, apparel, and electronics are highly preference-dependent surprise gifts.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-social-golf-specificity",
+        "src-social-golfgear-thoughtful"
+      ]
+    },
+    {
+      "id": "claim-small-item-deferral",
+      "kind": "self_purchase_pattern",
+      "text": "Public discussions identify worn towels and other small accessories as items golfers may keep using after they are due for replacement.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-social-worn-small-items",
+        "src-social-brush-workaround"
+      ]
+    },
+    {
+      "id": "claim-dirty-groove-workaround",
+      "kind": "recipient_friction",
+      "text": "Golfers describe improvising with a tee when they need to remove dirt from club grooves during a round.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-social-brush-workaround"
+      ]
+    },
+    {
+      "id": "claim-worn-towel-friction",
+      "kind": "recipient_friction",
+      "text": "A visibly worn or undersized bag towel is a recipient-specific replacement signal rather than a reason to add another generic golf accessory.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-social-worn-small-items",
+        "src-towel-thp"
+      ]
+    },
+    {
+      "id": "claim-wet-grip-friction",
+      "kind": "recipient_friction",
+      "text": "Rain, humidity, and sweaty-hand conditions create a recurring grip problem for some golfers.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-social-rain-gloves",
+        "src-raingrip-golfmonthly"
+      ]
+    },
+    {
+      "id": "claim-weather-exposure-friction",
+      "kind": "recipient_friction",
+      "text": "Golfers who continue playing in exposed wet and windy conditions need coverage that ordinary compact umbrellas may not provide.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-umbrella-mygolfspy",
+        "src-umbrella-golfmonthly"
+      ]
+    },
+    {
+      "id": "claim-practice-setup-friction",
+      "kind": "recipient_friction",
+      "text": "A compact putting target can reduce setup burden for golfers who want a short home-practice routine.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-social-puttout",
+        "src-puttout-golfmonthly"
+      ]
+    },
+    {
+      "id": "claim-minig-benefit",
+      "kind": "product_benefit",
+      "text": "The Grooveit miniG is a compact dry brush with a magnetic bag attachment intended for cleaning golf-club grooves.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-minig-official",
+        "src-minig-golf",
+        "src-minig-skratch"
+      ]
+    },
+    {
+      "id": "claim-minig-drawback",
+      "kind": "product_drawback",
+      "text": "The miniG is small and dry-only, and current owner reviews on the product page include reports of magnet or handle separation, so durability is uncertain even though the manufacturer advertises a three-year warranty.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": [
+        "src-minig-official",
+        "src-minig-golf",
+        "src-minig-skratch",
+        "src-minig-owner-reviews"
+      ]
+    },
+    {
+      "id": "claim-minig-compatibility",
+      "kind": "compatibility",
+      "text": "The miniG is most appropriate when the recipient carries a golf bag and does not already have a preferred groove-cleaning setup.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-minig-official",
+        "src-social-golfgear-thoughtful"
+      ]
+    },
+    {
+      "id": "claim-towel-benefit",
+      "kind": "product_benefit",
+      "text": "The Club Glove Microfiber Caddy Towel provides a large microfiber surface for wiping clubs, balls, and moisture during a round.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-towel-official",
+        "src-towel-thp",
+        "src-towel-golfchannel"
+      ]
+    },
+    {
+      "id": "claim-towel-drawback",
+      "kind": "product_drawback",
+      "text": "The towel's generous size can feel bulky on a minimalist carry bag or to a golfer who prefers a small towel.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-towel-thp",
+        "src-towel-golfchannel"
+      ]
+    },
+    {
+      "id": "claim-towel-compatibility",
+      "kind": "compatibility",
+      "text": "The towel fit depends on whether the recipient values a large cleaning surface more than a light and compact carry setup.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-towel-official",
+        "src-towel-thp"
+      ]
+    },
+    {
+      "id": "claim-raingrip-benefit",
+      "kind": "product_benefit",
+      "text": "FootJoy RainGrip gloves are sold as a pair and are designed to support grip in wet or humid conditions.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-raingrip-official",
+        "src-raingrip-golfmonthly",
+        "src-raingrip-ncg"
+      ]
+    },
+    {
+      "id": "claim-raingrip-drawback",
+      "kind": "product_drawback",
+      "text": "RainGrip requires both the recipient's FootJoy fit profile (Regular Pair or Cadet Pair) and size (S through XL), and it trades some dry-weather feel for wet-condition function.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": [
+        "src-raingrip-official",
+        "src-raingrip-golfmonthly",
+        "src-raingrip-ncg"
+      ]
+    },
+    {
+      "id": "claim-raingrip-compatibility",
+      "kind": "compatibility",
+      "text": "A RainGrip gift requires the recipient's FootJoy fit profile (Regular Pair or Cadet Pair), size (S through XL), and a known habit of playing in rain, humidity, or sweaty conditions.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": [
+        "src-raingrip-official",
+        "src-social-rain-gloves"
+      ]
+    },
+    {
+      "id": "claim-umbrella-benefit",
+      "kind": "product_benefit",
+      "text": "The Titleist Tour Double Canopy is a full-size golf umbrella designed for wet and windy course conditions.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-umbrella-official",
+        "src-umbrella-mygolfspy",
+        "src-umbrella-golfmonthly"
+      ]
+    },
+    {
+      "id": "claim-umbrella-drawback",
+      "kind": "product_drawback",
+      "text": "The full-size umbrella is expensive, takes space, and may be awkward for a minimalist walker or unnecessary for a fair-weather golfer.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-umbrella-mygolfspy",
+        "src-umbrella-golfmonthly"
+      ]
+    },
+    {
+      "id": "claim-umbrella-compatibility",
+      "kind": "compatibility",
+      "text": "The umbrella fits best when the recipient regularly plays through poor weather and has a bag, cart, or storage routine for a full-size umbrella.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-umbrella-official",
+        "src-umbrella-golfmonthly"
+      ]
+    },
+    {
+      "id": "claim-puttout-benefit",
+      "kind": "product_benefit",
+      "text": "The PuttOUT Premium Pressure Putt Trainer is a compact target that returns good putts and offers a small perfect-putt target.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-puttout-official",
+        "src-puttout-golfmonthly",
+        "src-puttout-mygolfspy"
+      ]
+    },
+    {
+      "id": "claim-puttout-drawback",
+      "kind": "product_drawback",
+      "text": "The small perfect-putt target can frustrate users, and uneven or sloped carpet can reduce the usefulness of practice feedback.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-puttout-golfmonthly",
+        "src-puttout-mygolfspy"
+      ]
+    },
+    {
+      "id": "claim-puttout-compatibility",
+      "kind": "compatibility",
+      "text": "The trainer requires a recipient who welcomes putting practice and has a reasonably level indoor surface with enough space for a repeatable stroke.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-puttout-official",
+        "src-puttout-golfmonthly"
+      ]
+    },
+    {
+      "id": "claim-clean-club-pair",
+      "kind": "pair_coherence",
+      "text": "The miniG loosens debris from grooves while the Caddy Towel handles wiping and moisture, giving the two items distinct roles in one club-cleaning routine.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-minig-official",
+        "src-towel-official",
+        "src-minig-golf",
+        "src-towel-thp"
+      ]
+    }
+  ],
+  "candidates": [
+    {
+      "id": "grooveit-minig",
+      "name": "Grooveit miniG Dry Golf Brush",
+      "editorialScore": 82,
+      "evidenceConfidence": 78,
+      "drawbacks": [
+        "It is a small dry-only brush, and current owner reviews on the product page report some magnet or handle separation, so durability is uncertain."
+      ],
+      "primarySourceIds": [
+        "src-minig-official"
+      ],
+      "independentSourceIds": [
+        "src-minig-golf",
+        "src-minig-skratch"
+      ],
+      "claimIds": [
+        "claim-minig-benefit",
+        "claim-minig-drawback",
+        "claim-minig-compatibility"
+      ],
+      "evidenceMode": "desk_research",
+      "thoughtfulness": {
+        "observationPrompt": "Gift this only if you have seen them scrape dirt from grooves with a tee or complain that their current brush is awkward.",
+        "frictionClaimIds": [
+          "claim-dirty-groove-workaround"
+        ],
+        "physicalGiftBoundary": "welcome_when_verified",
+        "selfPurchase": {
+          "reason": "replacement_inertia",
+          "rationale": "The tee workaround is usable enough that a dedicated compact brush can remain an indefinitely postponed convenience.",
+          "basis": "social_demand",
+          "claimIds": [
+            "claim-small-item-deferral"
+          ]
+        },
+        "duplicateRisk": {
+          "level": "low",
+          "preGiftCheck": "Confirm they do not already carry a groove brush they prefer."
+        },
+        "clutterRisk": {
+          "level": "low",
+          "ownershipBurden": "It remains attached to the golf bag between rounds.",
+          "mitigation": "Choose it only for a bag-carrying golfer with a visible cleaning workaround."
+        },
+        "compatibilityChecks": [
+          {
+            "dimension": "skill_or_experience",
+            "status": "verified",
+            "requirement": "The recipient carries a golf bag and cleans club grooves during play.",
+            "claimIds": [
+              "claim-minig-compatibility"
+            ]
+          }
+        ],
+        "score": {
+          "frictionSpecificity": 5,
+          "selfPurchaseLogic": 5,
+          "ownershipEase": 5,
+          "recipientSpecificity": 4,
+          "total": 19
+        }
+      }
+    },
+    {
+      "id": "club-glove-caddy-towel",
+      "name": "Club Glove Microfiber Caddy Towel",
+      "editorialScore": 84,
+      "evidenceConfidence": 72,
+      "drawbacks": [
+        "Its generous size can feel bulky on a minimalist carry bag."
+      ],
+      "primarySourceIds": [
+        "src-towel-official"
+      ],
+      "independentSourceIds": [
+        "src-towel-thp",
+        "src-towel-golfchannel"
+      ],
+      "claimIds": [
+        "claim-towel-benefit",
+        "claim-towel-drawback",
+        "claim-towel-compatibility"
+      ],
+      "evidenceMode": "desk_research",
+      "thoughtfulness": {
+        "observationPrompt": "Gift this only if their bag towel is visibly worn, undersized for their routine, or repeatedly borrowed from someone else.",
+        "frictionClaimIds": [
+          "claim-worn-towel-friction"
+        ],
+        "physicalGiftBoundary": "welcome_when_verified",
+        "selfPurchase": {
+          "reason": "replacement_inertia",
+          "rationale": "A worn towel remains functional, so replacing it is easy to defer despite frequent use.",
+          "basis": "social_demand",
+          "claimIds": [
+            "claim-small-item-deferral"
+          ]
+        },
+        "duplicateRisk": {
+          "level": "medium",
+          "preGiftCheck": "Check the current towel's size and confirm they would welcome a larger replacement."
+        },
+        "clutterRisk": {
+          "level": "low",
+          "ownershipBurden": "It hangs on the existing golf bag and replaces a worn towel.",
+          "mitigation": "Frame it as a replacement and retire the old towel rather than adding another."
+        },
+        "compatibilityChecks": [
+          {
+            "dimension": "space_or_storage",
+            "status": "verified",
+            "requirement": "The recipient's bag setup can carry a full-size caddy towel without interfering with walking.",
+            "claimIds": [
+              "claim-towel-compatibility"
+            ]
+          }
+        ],
+        "score": {
+          "frictionSpecificity": 5,
+          "selfPurchaseLogic": 5,
+          "ownershipEase": 4,
+          "recipientSpecificity": 4,
+          "total": 18
+        }
+      }
+    },
+    {
+      "id": "footjoy-raingrip-pair",
+      "name": "FootJoy RainGrip Pair",
+      "editorialScore": 86,
+      "evidenceConfidence": 80,
+      "drawbacks": [
+        "The gift requires both the recipient's FootJoy fit profile (Regular Pair or Cadet Pair) and size (S through XL), and gives up some dry-weather feel."
+      ],
+      "primarySourceIds": [
+        "src-raingrip-official"
+      ],
+      "independentSourceIds": [
+        "src-raingrip-golfmonthly",
+        "src-raingrip-ncg"
+      ],
+      "claimIds": [
+        "claim-raingrip-benefit",
+        "claim-raingrip-drawback",
+        "claim-raingrip-compatibility"
+      ],
+      "evidenceMode": "desk_research",
+      "thoughtfulness": {
+        "observationPrompt": "Gift this only if you know their FootJoy fit profile and size and have seen them play through rain, humidity, or sweaty-hand conditions.",
+        "frictionClaimIds": [
+          "claim-wet-grip-friction"
+        ],
+        "physicalGiftBoundary": "welcome_when_verified",
+        "selfPurchase": {
+          "reason": "small_luxury_deferral",
+          "rationale": "A golfer may tolerate wet-weather grip problems when rain rounds are occasional rather than buying a dedicated pair.",
+          "basis": "social_demand",
+          "claimIds": [
+            "claim-wet-grip-friction"
+          ]
+        },
+        "duplicateRisk": {
+          "level": "medium",
+          "preGiftCheck": "Confirm the Regular Pair or Cadet Pair fit profile, the S-through-XL size, and that they do not already own a preferred rain-glove pair."
+        },
+        "clutterRisk": {
+          "level": "low",
+          "ownershipBurden": "The pair lives in the golf bag and is used only in wet or humid conditions.",
+          "mitigation": "Choose it only for a known all-weather golfer and include a gift receipt."
+        },
+        "compatibilityChecks": [
+          {
+            "dimension": "size_or_fit",
+            "status": "verified",
+            "requirement": "The giver knows both the recipient's FootJoy fit profile (Regular Pair or Cadet Pair) and size (S through XL).",
+            "claimIds": [
+              "claim-raingrip-compatibility"
+            ]
+          }
+        ],
+        "score": {
+          "frictionSpecificity": 5,
+          "selfPurchaseLogic": 4,
+          "ownershipEase": 4,
+          "recipientSpecificity": 4,
+          "total": 17
+        }
+      }
+    },
+    {
+      "id": "titleist-tour-double-canopy",
+      "name": "Titleist Tour Double Canopy Umbrella",
+      "editorialScore": 78,
+      "evidenceConfidence": 78,
+      "drawbacks": [
+        "It is large, expensive, and awkward for some minimalist walkers."
+      ],
+      "primarySourceIds": [
+        "src-umbrella-official"
+      ],
+      "independentSourceIds": [
+        "src-umbrella-mygolfspy",
+        "src-umbrella-golfmonthly"
+      ],
+      "claimIds": [
+        "claim-umbrella-benefit",
+        "claim-umbrella-drawback",
+        "claim-umbrella-compatibility"
+      ],
+      "evidenceMode": "desk_research",
+      "thoughtfulness": {
+        "observationPrompt": "Gift this only if they regularly play through poor weather and already carry or mount a full-size umbrella.",
+        "frictionClaimIds": [
+          "claim-weather-exposure-friction"
+        ],
+        "physicalGiftBoundary": "welcome_when_verified",
+        "selfPurchase": {
+          "reason": "replacement_inertia",
+          "rationale": "An older umbrella can remain barely serviceable, making a better weather setup easy to postpone.",
+          "basis": "editorial_inference",
+          "claimIds": []
+        },
+        "duplicateRisk": {
+          "level": "medium",
+          "preGiftCheck": "Inspect their current umbrella and confirm a full-size replacement fits the way they play."
+        },
+        "clutterRisk": {
+          "level": "medium",
+          "ownershipBurden": "It requires full-length storage in a vehicle, bag, locker, or home equipment area.",
+          "mitigation": "Buy only as a replacement for an all-weather golfer with a known storage routine."
+        },
+        "compatibilityChecks": [
+          {
+            "dimension": "space_or_storage",
+            "status": "verified",
+            "requirement": "The recipient uses a bag or push-cart setup that accommodates a full-size golf umbrella.",
+            "claimIds": [
+              "claim-umbrella-compatibility"
+            ]
+          }
+        ],
+        "score": {
+          "frictionSpecificity": 4,
+          "selfPurchaseLogic": 4,
+          "ownershipEase": 3,
+          "recipientSpecificity": 4,
+          "total": 15
+        }
+      }
+    },
+    {
+      "id": "puttout-pressure-putt-trainer",
+      "name": "PuttOUT Premium Pressure Putt Trainer",
+      "editorialScore": 86,
+      "evidenceConfidence": 81,
+      "drawbacks": [
+        "The tiny perfect-putt target can frustrate users, and an uneven carpet can distort feedback."
+      ],
+      "primarySourceIds": [
+        "src-puttout-official"
+      ],
+      "independentSourceIds": [
+        "src-puttout-golfmonthly",
+        "src-puttout-mygolfspy"
+      ],
+      "claimIds": [
+        "claim-puttout-benefit",
+        "claim-puttout-drawback",
+        "claim-puttout-compatibility"
+      ],
+      "evidenceMode": "desk_research",
+      "thoughtfulness": {
+        "observationPrompt": "Gift this only if they already say they want to practice putting and have a level indoor surface they will actually use.",
+        "frictionClaimIds": [
+          "claim-practice-setup-friction"
+        ],
+        "physicalGiftBoundary": "welcome_when_verified",
+        "selfPurchase": {
+          "reason": "small_luxury_deferral",
+          "rationale": "The golfer can keep intending to practice without buying a compact target that makes a short session easier to start.",
+          "basis": "social_demand",
+          "claimIds": [
+            "claim-practice-setup-friction"
+          ]
+        },
+        "duplicateRisk": {
+          "level": "medium",
+          "preGiftCheck": "Confirm they do not already own a putting target or mat they prefer."
+        },
+        "clutterRisk": {
+          "level": "low",
+          "ownershipBurden": "The trainer folds into a compact object but still needs clear floor space during use.",
+          "mitigation": "Confirm the practice surface and storage spot before buying."
+        },
+        "compatibilityChecks": [
+          {
+            "dimension": "space_or_storage",
+            "status": "verified",
+            "requirement": "The recipient has a reasonably level indoor surface and enough straight putting distance.",
+            "claimIds": [
+              "claim-puttout-compatibility"
+            ]
+          }
+        ],
+        "score": {
+          "frictionSpecificity": 4,
+          "selfPurchaseLogic": 4,
+          "ownershipEase": 4,
+          "recipientSpecificity": 4,
+          "total": 16
+        }
+      }
+    },
+    {
+      "id": "puttout-compact-putting-mirror",
+      "name": "PuttOUT Compact Putting Mirror",
+      "editorialScore": 79,
+      "evidenceConfidence": 74,
+      "drawbacks": [
+        "It overlaps the putting-trainer use case and is useful only to someone who welcomes alignment feedback."
+      ],
+      "primarySourceIds": [],
+      "independentSourceIds": [],
+      "claimIds": [],
+      "evidenceMode": "desk_research"
+    },
+    {
+      "id": "club-glove-stiff-arm",
+      "name": "Club Glove Stiff Arm",
+      "editorialScore": 82,
+      "evidenceConfidence": 75,
+      "drawbacks": [
+        "It is useful only for a known golf traveler using a compatible soft travel cover."
+      ],
+      "primarySourceIds": [],
+      "independentSourceIds": [],
+      "claimIds": [],
+      "evidenceMode": "desk_research"
+    },
+    {
+      "id": "igotcha-jawz-compact-10",
+      "name": "I GOTCHA Jawz Compact 10-foot Retriever",
+      "editorialScore": 76,
+      "evidenceConfidence": 70,
+      "drawbacks": [
+        "A ball retriever can feel unglamorous and telescoping shafts add a durability concern."
+      ],
+      "primarySourceIds": [],
+      "independentSourceIds": [],
+      "claimIds": [],
+      "evidenceMode": "desk_research"
+    },
+    {
+      "id": "orange-whip-original-trainer",
+      "name": "Orange Whip Original Trainer",
+      "editorialScore": 76,
+      "evidenceConfidence": 70,
+      "drawbacks": [
+        "It requires practice space and should fit the recipient's coaching or warmup plan."
+      ],
+      "primarySourceIds": [],
+      "independentSourceIds": [],
+      "claimIds": [],
+      "evidenceMode": "desk_research"
+    },
+    {
+      "id": "bushnell-tour-v7-shift",
+      "name": "Bushnell Tour V7 Shift Rangefinder",
+      "editorialScore": 80,
+      "evidenceConfidence": 83,
+      "drawbacks": [
+        "It is expensive, electronic, and highly likely to duplicate an existing preferred yardage system."
+      ],
+      "primarySourceIds": [],
+      "independentSourceIds": [],
+      "claimIds": [],
+      "evidenceMode": "desk_research"
+    },
+    {
+      "id": "titleist-players-s4-stand-bag",
+      "name": "Titleist Players S4 Stand Bag",
+      "editorialScore": 77,
+      "evidenceConfidence": 75,
+      "drawbacks": [
+        "Bag layout, carry style, weight, and brand preference make it a poor surprise gift."
+      ],
+      "primarySourceIds": [],
+      "independentSourceIds": [],
+      "claimIds": [],
+      "evidenceMode": "desk_research"
+    },
+    {
+      "id": "titleist-carry-bag",
+      "name": "Titleist Carry Bag",
+      "editorialScore": 76,
+      "evidenceConfidence": 70,
+      "drawbacks": [
+        "It fits a narrow range or short-round routine and bag style is personal."
+      ],
+      "primarySourceIds": [],
+      "independentSourceIds": [],
+      "claimIds": [],
+      "evidenceMode": "desk_research"
+    },
+    {
+      "id": "pitchfix-hybrid-2",
+      "name": "Pitchfix Hybrid 2.0",
+      "editorialScore": 73,
+      "evidenceConfidence": 65,
+      "drawbacks": [
+        "Current ordinary U.S. seller and independent evidence is too weak for qualification."
+      ],
+      "primarySourceIds": [],
+      "independentSourceIds": [],
+      "claimIds": [],
+      "evidenceMode": "desk_research"
+    }
+  ],
+  "finalists": [
+    {
+      "id": "grooveit-minig",
+      "name": "Grooveit miniG Dry Golf Brush",
+      "editorialScore": 82,
+      "evidenceConfidence": 78,
+      "drawbacks": [
+        "It is a small dry-only brush, and current owner reviews on the product page report some magnet or handle separation, so durability is uncertain."
+      ],
+      "primarySourceIds": [
+        "src-minig-official"
+      ],
+      "independentSourceIds": [
+        "src-minig-golf",
+        "src-minig-skratch"
+      ],
+      "claimIds": [
+        "claim-minig-benefit",
+        "claim-minig-drawback",
+        "claim-minig-compatibility"
+      ],
+      "evidenceMode": "desk_research",
+      "thoughtfulness": {
+        "observationPrompt": "Gift this only if you have seen them scrape dirt from grooves with a tee or complain that their current brush is awkward.",
+        "frictionClaimIds": [
+          "claim-dirty-groove-workaround"
+        ],
+        "physicalGiftBoundary": "welcome_when_verified",
+        "selfPurchase": {
+          "reason": "replacement_inertia",
+          "rationale": "The tee workaround is usable enough that a dedicated compact brush can remain an indefinitely postponed convenience.",
+          "basis": "social_demand",
+          "claimIds": [
+            "claim-small-item-deferral"
+          ]
+        },
+        "duplicateRisk": {
+          "level": "low",
+          "preGiftCheck": "Confirm they do not already carry a groove brush they prefer."
+        },
+        "clutterRisk": {
+          "level": "low",
+          "ownershipBurden": "It remains attached to the golf bag between rounds.",
+          "mitigation": "Choose it only for a bag-carrying golfer with a visible cleaning workaround."
+        },
+        "compatibilityChecks": [
+          {
+            "dimension": "skill_or_experience",
+            "status": "verified",
+            "requirement": "The recipient carries a golf bag and cleans club grooves during play.",
+            "claimIds": [
+              "claim-minig-compatibility"
+            ]
+          }
+        ],
+        "score": {
+          "frictionSpecificity": 5,
+          "selfPurchaseLogic": 5,
+          "ownershipEase": 5,
+          "recipientSpecificity": 4,
+          "total": 19
+        }
+      }
+    },
+    {
+      "id": "club-glove-caddy-towel",
+      "name": "Club Glove Microfiber Caddy Towel",
+      "editorialScore": 84,
+      "evidenceConfidence": 72,
+      "drawbacks": [
+        "Its generous size can feel bulky on a minimalist carry bag."
+      ],
+      "primarySourceIds": [
+        "src-towel-official"
+      ],
+      "independentSourceIds": [
+        "src-towel-thp",
+        "src-towel-golfchannel"
+      ],
+      "claimIds": [
+        "claim-towel-benefit",
+        "claim-towel-drawback",
+        "claim-towel-compatibility"
+      ],
+      "evidenceMode": "desk_research",
+      "thoughtfulness": {
+        "observationPrompt": "Gift this only if their bag towel is visibly worn, undersized for their routine, or repeatedly borrowed from someone else.",
+        "frictionClaimIds": [
+          "claim-worn-towel-friction"
+        ],
+        "physicalGiftBoundary": "welcome_when_verified",
+        "selfPurchase": {
+          "reason": "replacement_inertia",
+          "rationale": "A worn towel remains functional, so replacing it is easy to defer despite frequent use.",
+          "basis": "social_demand",
+          "claimIds": [
+            "claim-small-item-deferral"
+          ]
+        },
+        "duplicateRisk": {
+          "level": "medium",
+          "preGiftCheck": "Check the current towel's size and confirm they would welcome a larger replacement."
+        },
+        "clutterRisk": {
+          "level": "low",
+          "ownershipBurden": "It hangs on the existing golf bag and replaces a worn towel.",
+          "mitigation": "Frame it as a replacement and retire the old towel rather than adding another."
+        },
+        "compatibilityChecks": [
+          {
+            "dimension": "space_or_storage",
+            "status": "verified",
+            "requirement": "The recipient's bag setup can carry a full-size caddy towel without interfering with walking.",
+            "claimIds": [
+              "claim-towel-compatibility"
+            ]
+          }
+        ],
+        "score": {
+          "frictionSpecificity": 5,
+          "selfPurchaseLogic": 5,
+          "ownershipEase": 4,
+          "recipientSpecificity": 4,
+          "total": 18
+        }
+      }
+    },
+    {
+      "id": "footjoy-raingrip-pair",
+      "name": "FootJoy RainGrip Pair",
+      "editorialScore": 86,
+      "evidenceConfidence": 80,
+      "drawbacks": [
+        "The gift requires both the recipient's FootJoy fit profile (Regular Pair or Cadet Pair) and size (S through XL), and gives up some dry-weather feel."
+      ],
+      "primarySourceIds": [
+        "src-raingrip-official"
+      ],
+      "independentSourceIds": [
+        "src-raingrip-golfmonthly",
+        "src-raingrip-ncg"
+      ],
+      "claimIds": [
+        "claim-raingrip-benefit",
+        "claim-raingrip-drawback",
+        "claim-raingrip-compatibility"
+      ],
+      "evidenceMode": "desk_research",
+      "thoughtfulness": {
+        "observationPrompt": "Gift this only if you know their FootJoy fit profile and size and have seen them play through rain, humidity, or sweaty-hand conditions.",
+        "frictionClaimIds": [
+          "claim-wet-grip-friction"
+        ],
+        "physicalGiftBoundary": "welcome_when_verified",
+        "selfPurchase": {
+          "reason": "small_luxury_deferral",
+          "rationale": "A golfer may tolerate wet-weather grip problems when rain rounds are occasional rather than buying a dedicated pair.",
+          "basis": "social_demand",
+          "claimIds": [
+            "claim-wet-grip-friction"
+          ]
+        },
+        "duplicateRisk": {
+          "level": "medium",
+          "preGiftCheck": "Confirm the Regular Pair or Cadet Pair fit profile, the S-through-XL size, and that they do not already own a preferred rain-glove pair."
+        },
+        "clutterRisk": {
+          "level": "low",
+          "ownershipBurden": "The pair lives in the golf bag and is used only in wet or humid conditions.",
+          "mitigation": "Choose it only for a known all-weather golfer and include a gift receipt."
+        },
+        "compatibilityChecks": [
+          {
+            "dimension": "size_or_fit",
+            "status": "verified",
+            "requirement": "The giver knows both the recipient's FootJoy fit profile (Regular Pair or Cadet Pair) and size (S through XL).",
+            "claimIds": [
+              "claim-raingrip-compatibility"
+            ]
+          }
+        ],
+        "score": {
+          "frictionSpecificity": 5,
+          "selfPurchaseLogic": 4,
+          "ownershipEase": 4,
+          "recipientSpecificity": 4,
+          "total": 17
+        }
+      }
+    },
+    {
+      "id": "titleist-tour-double-canopy",
+      "name": "Titleist Tour Double Canopy Umbrella",
+      "editorialScore": 78,
+      "evidenceConfidence": 78,
+      "drawbacks": [
+        "It is large, expensive, and awkward for some minimalist walkers."
+      ],
+      "primarySourceIds": [
+        "src-umbrella-official"
+      ],
+      "independentSourceIds": [
+        "src-umbrella-mygolfspy",
+        "src-umbrella-golfmonthly"
+      ],
+      "claimIds": [
+        "claim-umbrella-benefit",
+        "claim-umbrella-drawback",
+        "claim-umbrella-compatibility"
+      ],
+      "evidenceMode": "desk_research",
+      "thoughtfulness": {
+        "observationPrompt": "Gift this only if they regularly play through poor weather and already carry or mount a full-size umbrella.",
+        "frictionClaimIds": [
+          "claim-weather-exposure-friction"
+        ],
+        "physicalGiftBoundary": "welcome_when_verified",
+        "selfPurchase": {
+          "reason": "replacement_inertia",
+          "rationale": "An older umbrella can remain barely serviceable, making a better weather setup easy to postpone.",
+          "basis": "editorial_inference",
+          "claimIds": []
+        },
+        "duplicateRisk": {
+          "level": "medium",
+          "preGiftCheck": "Inspect their current umbrella and confirm a full-size replacement fits the way they play."
+        },
+        "clutterRisk": {
+          "level": "medium",
+          "ownershipBurden": "It requires full-length storage in a vehicle, bag, locker, or home equipment area.",
+          "mitigation": "Buy only as a replacement for an all-weather golfer with a known storage routine."
+        },
+        "compatibilityChecks": [
+          {
+            "dimension": "space_or_storage",
+            "status": "verified",
+            "requirement": "The recipient uses a bag or push-cart setup that accommodates a full-size golf umbrella.",
+            "claimIds": [
+              "claim-umbrella-compatibility"
+            ]
+          }
+        ],
+        "score": {
+          "frictionSpecificity": 4,
+          "selfPurchaseLogic": 4,
+          "ownershipEase": 3,
+          "recipientSpecificity": 4,
+          "total": 15
+        }
+      }
+    },
+    {
+      "id": "puttout-pressure-putt-trainer",
+      "name": "PuttOUT Premium Pressure Putt Trainer",
+      "editorialScore": 86,
+      "evidenceConfidence": 81,
+      "drawbacks": [
+        "The tiny perfect-putt target can frustrate users, and an uneven carpet can distort feedback."
+      ],
+      "primarySourceIds": [
+        "src-puttout-official"
+      ],
+      "independentSourceIds": [
+        "src-puttout-golfmonthly",
+        "src-puttout-mygolfspy"
+      ],
+      "claimIds": [
+        "claim-puttout-benefit",
+        "claim-puttout-drawback",
+        "claim-puttout-compatibility"
+      ],
+      "evidenceMode": "desk_research",
+      "thoughtfulness": {
+        "observationPrompt": "Gift this only if they already say they want to practice putting and have a level indoor surface they will actually use.",
+        "frictionClaimIds": [
+          "claim-practice-setup-friction"
+        ],
+        "physicalGiftBoundary": "welcome_when_verified",
+        "selfPurchase": {
+          "reason": "small_luxury_deferral",
+          "rationale": "The golfer can keep intending to practice without buying a compact target that makes a short session easier to start.",
+          "basis": "social_demand",
+          "claimIds": [
+            "claim-practice-setup-friction"
+          ]
+        },
+        "duplicateRisk": {
+          "level": "medium",
+          "preGiftCheck": "Confirm they do not already own a putting target or mat they prefer."
+        },
+        "clutterRisk": {
+          "level": "low",
+          "ownershipBurden": "The trainer folds into a compact object but still needs clear floor space during use.",
+          "mitigation": "Confirm the practice surface and storage spot before buying."
+        },
+        "compatibilityChecks": [
+          {
+            "dimension": "space_or_storage",
+            "status": "verified",
+            "requirement": "The recipient has a reasonably level indoor surface and enough straight putting distance.",
+            "claimIds": [
+              "claim-puttout-compatibility"
+            ]
+          }
+        ],
+        "score": {
+          "frictionSpecificity": 4,
+          "selfPurchaseLogic": 4,
+          "ownershipEase": 4,
+          "recipientSpecificity": 4,
+          "total": 16
+        }
+      }
+    }
+  ],
+  "pairs": [
+    {
+      "id": "clean-club-course-kit",
+      "name": "The clean-club course kit",
+      "anchorCandidateId": "grooveit-minig",
+      "companionCandidateId": "club-glove-caddy-towel",
+      "recipientJob": "Keep grooves clear and handle dirt or moisture through one repeatable on-course cleaning routine.",
+      "coherenceType": "completes_task",
+      "whyTogether": "The brush dislodges debris from grooves while the towel wipes the club and handles moisture, so each item performs a different part of the same job.",
+      "interactionMoment": "Attach both to the bag and use the brush-then-wipe sequence before the next shot when a club is dirty.",
+      "compatibilityChecks": [
+        {
+          "dimension": "skill_or_experience",
+          "status": "verified",
+          "requirement": "The recipient carries a golf bag and already cleans clubs during a round.",
+          "claimIds": [
+            "claim-minig-compatibility"
+          ]
+        },
+        {
+          "dimension": "space_or_storage",
+          "status": "verified",
+          "requirement": "The bag setup can carry both a compact magnetic brush and a full-size towel.",
+          "claimIds": [
+            "claim-towel-compatibility"
+          ]
+        }
+      ],
+      "duplicateRisk": "medium",
+      "clutterDelta": "neutral",
+      "preGiftCheck": "Confirm their current brush and towel are missing, worn, or due to be replaced rather than duplicated.",
+      "bundleDrawback": "Choose only the brush if the recipient walks light, already has a preferred towel, or would find the larger towel bulky.",
+      "claimIds": [
+        "claim-clean-club-pair"
+      ],
+      "score": {
+        "sharedCuriosity": 12,
+        "complementaryRoles": 20,
+        "interactionLoop": 18,
+        "observableTrigger": 13,
+        "independentValue": 9,
+        "compatibility": 8,
+        "ownershipEase": 4,
+        "total": 84
+      }
+    }
+  ],
+  "affiliateLinks": [],
+  "article": {
+    "slug": "gifts-for-a-golf-friend",
+    "editorialScore": 85,
+    "evidenceConfidence": 80,
+    "evidenceMode": "desk_research",
+    "status": "publication_ready"
+  },
+  "qa": {
+    "passed": true,
+    "reviewerRole": "independent-editor",
+    "reviewerId": "golf-evidence-red-team",
+    "receiptPath": "research/reviews/20260803-gifts-for-golf-friend-53cb00a5.qa.v1.json",
+    "blockers": [],
+    "warnings": []
+  },
+  "completedAt": "2026-08-03T06:50:32.678Z"
+}

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#f8f3e8"/>
+  <rect x="84" y="72" width="1032" height="486" rx="42" fill="#fffdf8" stroke="#d9ddd4" stroke-width="3"/>
+  <circle cx="986" cy="164" r="68" fill="#f2b84b"/>
+  <path d="M986 102l15 47 47 15-47 15-15 47-15-47-47-15 47-15 15-47z" fill="#1f5b48"/>
+  <text x="140" y="210" font-family="Arial, sans-serif" font-size="34" font-weight="700" fill="#dc6f56">TIPS FOR YOUR GIFTS</text>
+  <text x="140" y="310" font-family="Arial, sans-serif" font-size="68" font-weight="800" fill="#18312b">Gifts worth giving.</text>
+  <text x="140" y="390" font-family="Arial, sans-serif" font-size="68" font-weight="800" fill="#18312b">Research worth trusting.</text>
+  <text x="140" y="470" font-family="Arial, sans-serif" font-size="28" fill="#49645d">Evidence-backed recommendations with honest tradeoffs.</text>
+</svg>

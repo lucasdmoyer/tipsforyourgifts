@@ -1,0 +1,139 @@
+{
+  "schemaVersion": "1.0.0",
+  "packId": "language-learning-gifts-read-a-scene-say-it-aloud-launch",
+  "articleSlug": "language-learning-gifts-read-a-scene-say-it-aloud",
+  "researchRun": "20260816-read-a-scene-say-it-aloud-c92b2f7e",
+  "status": "draft",
+  "createdAt": "2026-08-16T17:00:00.000Z",
+  "policy": {
+    "officialApiRequired": true,
+    "externalPublishingAuthorized": false,
+    "containsAffiliateLinks": false
+  },
+  "posts": [
+    {
+      "id": "language-gift-five-checks",
+      "platform": "pinterest",
+      "format": "vertical-checklist",
+      "status": "draft",
+      "angle": "Teach the level, variant, format, setting, and consent checks before naming a language-learning gift",
+      "headline": "Five checks before gifting a Spanish-learning book",
+      "copy": "Level. Spanish variant. Print or ebook. Solo or group. Welcome or pressure. If one answer is unknown, a generic 'learn Spanish' gift is still a guess. This guide narrows the fit to an adult high-A2 learner of European Spanish.",
+      "assetBrief": "Original vertical checklist with five typographic checks and a small read-to-speak arrow; no book covers, product photography, or logos.",
+      "altText": "Checklist for level, language variant, format, practice setting, and whether speaking practice is welcome.",
+      "destinationUrl": "https://tipsforyourgifts.web.app/blog/language-learning-gifts-read-a-scene-say-it-aloud",
+      "claimIds": [
+        "claim-high-a2-boundary",
+        "claim-language-material-clutter"
+      ],
+      "productIds": [
+        "101-conversations-simple-spanish",
+        "la-profe-de-espanol-a2"
+      ],
+      "pairIds": [],
+      "disclosureRequired": false,
+      "externalPostId": null
+    },
+    {
+      "id": "one-scene-one-die",
+      "platform": "instagram",
+      "format": "five-slide-carousel",
+      "status": "draft",
+      "angle": "Show a private sixty-second scene-to-speech loop using one dialogue and one image cue",
+      "headline": "Read one scene. Roll one image. Say one minute.",
+      "copy": "A thoughtful pair does two different jobs. The graded dialogue supplies familiar Castilian-Spanish words; one image die gives the learner a reason to recombine three of them aloud. Choose only the reader if improvisation would feel forced.",
+      "assetBrief": "Original five-slide diagram showing scene, three words, one die, sixty-second retelling, and the choose-only-the-reader fallback; no third-party art.",
+      "altText": "Five-step diagram for reading a dialogue and retelling it with one image prompt in sixty seconds.",
+      "destinationUrl": "https://tipsforyourgifts.web.app/blog/language-learning-gifts-read-a-scene-say-it-aloud",
+      "claimIds": [
+        "claim-dialogue-cubes-pair",
+        "claim-101-compatibility",
+        "claim-rory-compatibility"
+      ],
+      "productIds": [
+        "101-conversations-simple-spanish",
+        "rory-story-cubes-eco-blister"
+      ],
+      "pairIds": [
+        "dialogue-to-story-cubes-loop"
+      ],
+      "disclosureRequired": false,
+      "externalPostId": null
+    },
+    {
+      "id": "spanish-variant-stop-sign",
+      "platform": "pinterest",
+      "format": "buy-skip-card",
+      "status": "draft",
+      "angle": "Explain why European, Mexican, and other Spanish variants are compatibility facts rather than interchangeable decoration",
+      "headline": "The Spanish variant is part of the gift",
+      "copy": "European Spanish was a requirement in this research brief, not a quality ranking. Confirm Spain-set vocabulary and comfort with vosotros before gifting. If the learner prefers Mexican Spanish, choose a resource built for that goal instead.",
+      "assetBrief": "Original decision card with two neutral path arrows labeled Spain-set and another regional goal; no flags, stereotypes, product photography, or logos.",
+      "altText": "Decision card showing that the learner's intended Spanish variant determines which reader fits.",
+      "destinationUrl": "https://tipsforyourgifts.web.app/blog/language-learning-gifts-read-a-scene-say-it-aloud",
+      "claimIds": [
+        "claim-101-compatibility",
+        "claim-short-stories-compatibility",
+        "claim-language-material-clutter"
+      ],
+      "productIds": [
+        "101-conversations-simple-spanish",
+        "short-stories-spanish-beginners-v1"
+      ],
+      "pairIds": [],
+      "disclosureRequired": false,
+      "externalPostId": null
+    },
+    {
+      "id": "group-before-game",
+      "platform": "instagram",
+      "format": "four-slide-carousel",
+      "status": "draft",
+      "angle": "Make the existing trusted group the gating fact for a group-only speaking game",
+      "headline": "Do not gift the speaking game before the group exists",
+      "copy": "Dixit can turn one A2 scene into a short Spanish clue—but only with three to eight willing players who like creative games and agree not to turn the round into correction. If the group is hypothetical, choose the reader alone.",
+      "assetBrief": "Original four-slide group-fit flow with player count, consent, game preference, and choose-reader-alone exit; use typography and generic silhouettes only.",
+      "altText": "Flowchart checking for three to eight trusted players before pairing an A2 reader with a clue game.",
+      "destinationUrl": "https://tipsforyourgifts.web.app/blog/language-learning-gifts-read-a-scene-say-it-aloud",
+      "claimIds": [
+        "claim-la-profe-dixit-pair",
+        "claim-dixit-drawback",
+        "claim-dixit-compatibility"
+      ],
+      "productIds": [
+        "la-profe-de-espanol-a2",
+        "dixit-2021-refresh"
+      ],
+      "pairIds": [
+        "a2-mystery-to-dixit-loop"
+      ],
+      "disclosureRequired": false,
+      "externalPostId": null
+    },
+    {
+      "id": "practice-not-placement",
+      "platform": "tiktok",
+      "format": "thirty-second-script",
+      "status": "draft",
+      "angle": "Set the formal-assessment boundary while keeping the ritual useful and encouraging",
+      "headline": "A gift can invite practice. It cannot place or grade a learner.",
+      "copy": "A2 on a book cover is a compatibility clue, not proof of speaking level. Read one scene and say one low-pressure minute if that is welcome—but do not call the result fluency practice, pronunciation assessment, or exam preparation.",
+      "assetBrief": "Original thirty-second typographic script contrasting compatibility clue, optional practice invitation, and prohibited assessment claims; no product imagery.",
+      "altText": "Graphic explaining that a graded reader can support optional practice but cannot assess a learner's level or fluency.",
+      "destinationUrl": "https://tipsforyourgifts.web.app/blog/language-learning-gifts-read-a-scene-say-it-aloud",
+      "claimIds": [
+        "claim-high-a2-boundary",
+        "claim-practice-not-assessment"
+      ],
+      "productIds": [
+        "101-conversations-simple-spanish",
+        "rory-story-cubes-eco-blister"
+      ],
+      "pairIds": [
+        "dialogue-to-story-cubes-loop"
+      ],
+      "disclosureRequired": false,
+      "externalPostId": null
+    }
+  ]
+}

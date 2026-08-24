@@ -1,0 +1,95 @@
+{
+  "schemaVersion": "1.1.0",
+  "updatedAt": "2026-08-03T08:40:00.000Z",
+  "programs": [
+    {
+      "id": "bookshop-org-us-media",
+      "revision": 1,
+      "name": "Bookshop.org US media affiliate",
+      "status": "proposed",
+      "enabled": false,
+      "founderDisposition": "proposed",
+      "programHomepageUrl": "https://bookshop.org/affiliates/profile/introduction",
+      "termsUrl": "https://support.bookshop.org/en/support/solutions/articles/65000191390-can-you-explain-bookshop-org-s-affiliate-program-",
+      "sourceCheckedAt": "2026-08-03T08:40:00.000Z",
+      "sourceReviewExpiresAt": "2026-11-01",
+      "eligibleArticleSlugs": [
+        "read-it-then-play-it-gift-pairs"
+      ],
+      "editorialFit": "A focused first candidate for book anchors in evidence-backed pairs, with a storefront model that can support independent bookstores.",
+      "limitations": [
+        "It does not replace a general merchant program for non-book companions, so pair recommendations must remain independently useful with ordinary links.",
+        "Attribution, compensation, onboarding, disclosure, and product availability must be rechecked against current terms before activation."
+      ],
+      "allowedDomains": [],
+      "registeredSites": [],
+      "trackingParameterKeys": [],
+      "requiredDisclosure": null,
+      "account": {
+        "externalAccountEstablished": false,
+        "trackingIdentityConfigured": false,
+        "termsAcceptedByFounder": false,
+        "termsAcceptedAt": null,
+        "acceptanceEvidenceReference": null,
+        "reportingExportApproved": false
+      },
+      "priceFeedAuthorized": false,
+      "nextGate": "Lucas decides whether this mission-aligned book program is worth external enrollment; approval records the decision but does not accept terms or enable links."
+    },
+    {
+      "id": "amazon-associates-us",
+      "revision": 1,
+      "name": "Amazon Associates US",
+      "status": "proposed",
+      "enabled": false,
+      "founderDisposition": "proposed",
+      "programHomepageUrl": "https://affiliate-program.amazon.com/",
+      "termsUrl": "https://affiliate-program.amazon.com/help/operating/agreement",
+      "sourceCheckedAt": "2026-08-03T08:40:00.000Z",
+      "sourceReviewExpiresAt": "2026-11-01",
+      "eligibleArticleSlugs": [
+        "gifts-for-a-golf-friend",
+        "read-it-then-play-it-gift-pairs",
+        "useful-gifts-for-hard-to-shop-for-adults"
+      ],
+      "editorialFit": "A broad-catalog candidate that could cover books, games, golf accessories, and practical gifts without changing the editorial ranking.",
+      "limitations": [
+        "The agreement and incorporated program policies can change, so every link format, registered site, disclosure, and content-use rule needs a fresh activation review.",
+        "A broad catalog can create commission bias; the recommendation order and ordinary manufacturer alternatives must remain unchanged when paid tracking is removed."
+      ],
+      "allowedDomains": [],
+      "registeredSites": [],
+      "trackingParameterKeys": [],
+      "requiredDisclosure": null,
+      "account": {
+        "externalAccountEstablished": false,
+        "trackingIdentityConfigured": false,
+        "termsAcceptedByFounder": false,
+        "termsAcceptedAt": null,
+        "acceptanceEvidenceReference": null,
+        "reportingExportApproved": false
+      },
+      "priceFeedAuthorized": false,
+      "nextGate": "Lucas reviews the current agreement and operating burden before any external signup; no Special Link or disclosure is generated until the account is explicitly activated."
+    }
+  ],
+  "policy": {
+    "requireHttps": true,
+    "requireSponsoredRel": true,
+    "allowInventedTrackingParameters": false,
+    "allowExactPricesWithoutAuthorizedFeed": false,
+    "founderApproverLogin": "lucasdmoyer",
+    "proposalReviewValidityDays": 90,
+    "activationRequires": [
+      "founder approval",
+      "external account established by founder",
+      "current terms accepted by founder",
+      "registered production site",
+      "program-provided tracking identity",
+      "allowlisted destination domains",
+      "approved disclosure",
+      "reporting export decision"
+    ],
+    "defaultDisclosure": "We may earn a commission when you purchase through links on this page. Recommendations are selected using our published research method."
+  }
+}

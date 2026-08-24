@@ -1,0 +1,133 @@
+name: Proven automatic Firebase publication
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - "web/**"
+      - "firebase.json"
+      - ".firebaserc"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: firebase-auto-production
+  cancel-in-progress: false
+
+jobs:
+  policy_gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    outputs:
+      enabled: ${{ steps.policy.outputs.enabled }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24.14.0"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - run: npm ci --prefix web
+      - name: Validate and read the founder-controlled publication policy
+        id: policy
+        run: |
+          npm --prefix web run validate:publication
+          enabled="$(node -p "String(require('./web/config/publication-policy.json').automaticPromotion.enabled)")"
+          echo "enabled=$enabled" >> "$GITHUB_OUTPUT"
+
+  release:
+    needs: policy_gate
+    if: needs.policy_gate.outputs.enabled == 'true'
+    runs-on: ubuntu-latest
+    environment: production
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      deployments: read
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24.14.0"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - run: npm ci --prefix web
+      - name: Verify the exact current master SHA and all release gates
+        env:
+          RELEASE_SHA: ${{ github.sha }}
+        run: |
+          git fetch --no-tags origin master
+          test "$(git rev-parse HEAD)" = "$RELEASE_SHA"
+          test "$(git rev-parse origin/master)" = "$RELEASE_SHA"
+          npm audit --prefix web --omit=dev --audit-level=high
+          npm run validate
+          npm run build
+          npm run smoke
+      - name: Deploy the exact artifact to a temporary Firebase channel
+        id: preview
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_TIPSFORYOURGIFTS }}
+          projectId: tipsforyourgifts
+          channelId: auto-${{ github.run_id }}-${{ github.run_attempt }}
+          expires: 1d
+      - name: Smoke the exact-SHA preview before live mutation
+        env:
+          PREVIEW_URL: ${{ steps.preview.outputs.details_url }}
+        run: curl --fail --silent --show-error --location --max-time 30 "$PREVIEW_URL" | grep -F "Good gifts, minus the guesswork."
+      - uses: google-github-actions/auth@v3
+        with:
+          credentials_json: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_TIPSFORYOURGIFTS }}
+          project_id: tipsforyourgifts
+          create_credentials_file: true
+      - name: Clone the current live release to a 30-day rollback channel
+        env:
+          RELEASE_SHA: ${{ github.sha }}
+          RUN_ID: ${{ github.run_id }}
+          RUN_ATTEMPT: ${{ github.run_attempt }}
+        run: |
+          rollback_channel="rollback-${RELEASE_SHA:0:12}-$RUN_ID-$RUN_ATTEMPT"
+          npx --yes firebase-tools@15.26.0 hosting:channel:create "$rollback_channel" --expires 30d --site tipsforyourgifts --project tipsforyourgifts --non-interactive
+          npx --yes firebase-tools@15.26.0 hosting:clone tipsforyourgifts:live "tipsforyourgifts:$rollback_channel" --project tipsforyourgifts --non-interactive
+          npm --prefix web run publication:rollback-record -- --release-sha="$RELEASE_SHA" --target-channel="$rollback_channel" --output=../rollback-target.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: firebase-rollback-target-${{ github.run_id }}-${{ github.run_attempt }}
+          path: rollback-target.json
+          if-no-files-found: error
+          retention-days: 90
+      - name: Promote the same verified checkout to Firebase live
+        id: live
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_TIPSFORYOURGIFTS }}
+          projectId: tipsforyourgifts
+          channelId: live
+      - name: Read-only hosted smoke after automatic publication
+        run: curl --fail --silent --show-error --location --max-time 30 https://tipsforyourgifts.web.app | grep -F "Good gifts, minus the guesswork."
+      - name: Create the exact-SHA verified publication receipt
+        env:
+          RELEASE_SHA: ${{ github.sha }}
+          PREVIEW_URL: ${{ steps.preview.outputs.details_url }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_RUN_ID: ${{ github.run_id }}
+          GITHUB_RUN_ATTEMPT: ${{ github.run_attempt }}
+          GITHUB_ACTOR: ${{ github.actor }}
+          GITHUB_EVENT_NAME: ${{ github.event_name }}
+        run: npm --prefix web run publication:receipt -- --release-sha="$RELEASE_SHA" --mode=automatic_after_proven --source-workflow=firebase-auto-production --preview-url="$PREVIEW_URL" --rollback-target=../rollback-target.json --manifest=dist/publication-manifest.json --output=../publication-receipt.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: firebase-publication-receipt-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: publication-receipt.json
+          if-no-files-found: error
+          retention-days: 90

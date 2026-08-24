@@ -1,0 +1,83 @@
+name: Activate aggregate Search Console collection
+
+on:
+  workflow_dispatch:
+    inputs:
+      expected_growth_sha256:
+        description: "Exact configured growth registry SHA-256 visible in Studio"
+        required: true
+        type: string
+      confirmation:
+        description: "Type ACTIVATE-search-console"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: search-console-activate
+  cancel-in-progress: false
+
+jobs:
+  activate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    environment: growth-measurement
+    steps:
+      - name: Require repository-owner action-time decision
+        env:
+          ACTOR: ${{ github.actor }}
+          OWNER: ${{ github.repository_owner }}
+          CONFIRMATION: ${{ inputs.confirmation }}
+        run: |
+          test "$ACTOR" = "$OWNER" || { echo "Only the repository owner may activate growth measurement." >&2; exit 1; }
+          test "$CONFIRMATION" = "ACTIVATE-search-console" || { echo "Action-time confirmation does not match the Search Console connector." >&2; exit 1; }
+      - uses: actions/checkout@v5
+        with:
+          ref: master
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24.14.0"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - name: Record the protected read-only collection boundary
+        env:
+          EXPECTED_GROWTH_SHA256: ${{ inputs.expected_growth_sha256 }}
+          CONFIRMATION: ${{ inputs.confirmation }}
+          FOUNDER_LOGIN: ${{ github.actor }}
+        run: |
+          npm ci --prefix web
+          npm run validate
+          npm --prefix web run growth:search-console:activate -- --expected-growth-sha256="$EXPECTED_GROWTH_SHA256" --confirmation="$CONFIRMATION" --founder-login="$FOUNDER_LOGIN"
+          npm --prefix web run generate
+      - name: Prove activation calls no Google API and imports no snapshot
+        run: |
+          while IFS= read -r changed_path; do
+            case "$changed_path" in
+              web/src/data/growth.json|web/src/data/operations.json|web/src/app/generated/content.generated.ts|web/public/sitemap.xml) ;;
+              *) echo "Search Console activation changed forbidden path: $changed_path" >&2; exit 1 ;;
+            esac
+          done < <(git diff --name-only HEAD)
+          npm run validate
+          npm run build
+          npm run smoke
+          git diff --check
+      - name: Commit the activation branch
+        env:
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -c "codex/activate-search-console-$RUN_ID"
+          git add web/src/data/growth.json web/src/data/operations.json web/src/app/generated/content.generated.ts web/public/sitemap.xml
+          git commit -m "Activate aggregate Search Console collection"
+          git push origin "codex/activate-search-console-$RUN_ID"
+      - name: Open the activation pull request
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          gh pr create --base master --head "codex/activate-search-console-$RUN_ID" --title "Activate aggregate Search Console collection" --body "This protected founder action allows the scheduled collector to use the exact approved URL-prefix property, GitHub OIDC references, and read-only Search Console scope after this pull request merges. This workflow itself calls no Google API and imports no snapshot. The collector stores page-level aggregate clicks and impressions only, opens a gate-checked pull request, and cannot collect query text or personal identifiers."

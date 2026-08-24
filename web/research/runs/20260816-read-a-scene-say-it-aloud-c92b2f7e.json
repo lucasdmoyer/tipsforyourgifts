@@ -1,0 +1,1581 @@
+{
+  "schemaVersion": "1.1.0",
+  "runId": "20260816-read-a-scene-say-it-aloud-c92b2f7e",
+  "ideaId": "founder-idea-007",
+  "ideaRevision": 2,
+  "ideaSha256": "c92b2f7e8031b2196d9d35ad2689f2441164540bd2f34c146624503a1d23666e",
+  "decisionLens": "gift_pairing",
+  "contentType": "pairing-guide",
+  "status": "validated",
+  "topic": "Read a scene, say it aloud: gifts for an adult high-A2 learner of European Spanish",
+  "audience": "An adult high-A2 learner of European Spanish who understands short scenes but postpones low-pressure speaking",
+  "occasion": "Birthday, study-abroad preparation, graduation, or encouragement during a learning plateau",
+  "budgetBands": [
+    "$20-$40",
+    "$40-$65"
+  ],
+  "riskClass": "low",
+  "draftAuthor": "language-learning-gift-research-drafter-20260816",
+  "startedAt": "2026-08-16T15:00:00.000Z",
+  "researchPasses": [
+    {
+      "pass": 1,
+      "materialNoveltyRate": 1,
+      "newCandidates": 12,
+      "newDecisionFactors": 7
+    },
+    {
+      "pass": 2,
+      "materialNoveltyRate": 0.22,
+      "newCandidates": 0,
+      "newDecisionFactors": 4
+    },
+    {
+      "pass": 3,
+      "materialNoveltyRate": 0.08,
+      "newCandidates": 0,
+      "newDecisionFactors": 2
+    },
+    {
+      "pass": 4,
+      "materialNoveltyRate": 0.04,
+      "newCandidates": 0,
+      "newDecisionFactors": 1
+    }
+  ],
+  "sources": [
+    {
+      "id": "src-cefr-framework",
+      "url": "https://www.coe.int/en/web/portfolio/the-common-european-framework-of-reference-for-languages-learning-teaching-assessment-cefr-",
+      "publisher": "Council of Europe",
+      "title": "Common European Framework of Reference for Languages",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "language-standard",
+      "trustTier": "A",
+      "independenceGroup": "council-of-europe"
+    },
+    {
+      "id": "src-extensive-reading-meta",
+      "url": "https://link.springer.com/article/10.1007/s10648-025-10068-6",
+      "publisher": "Educational Psychology Review",
+      "title": "Learning a Language Through Reading: a meta-analysis",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "research-paper",
+      "trustTier": "A",
+      "independenceGroup": "sangers-van-der-sande-welie-dobber-van-steensel"
+    },
+    {
+      "id": "src-production-comprehension-study",
+      "url": "https://www.tandfonline.com/doi/abs/10.1076/call.11.2.153.5686",
+      "publisher": "Computer Assisted Language Learning",
+      "title": "The Relative Effectiveness of Production and Comprehension Practice in Second Language Acquisition",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "research-paper",
+      "trustTier": "B",
+      "independenceGroup": "dekeyser-sokalski"
+    },
+    {
+      "id": "src-social-output-friction",
+      "url": "https://www.reddit.com/r/languagelearning/comments/1e1xfkd/active_speaking_and_writing_skills_come_from/",
+      "publisher": "Reddit r/languagelearning",
+      "title": "Public discussion about input and active speaking practice",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "social-discussion",
+      "trustTier": "C",
+      "independenceGroup": "reddit-languagelearning-output"
+    },
+    {
+      "id": "src-social-speaking-anxiety",
+      "url": "https://www.reddit.com/r/languagelearning/comments/1h63ok3/how_do_you_deal_with_speaking_anxiety_when/",
+      "publisher": "Reddit r/languagelearning",
+      "title": "Public discussion about postponing speaking with a trusted partner",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "social-discussion",
+      "trustTier": "C",
+      "independenceGroup": "reddit-languagelearning-anxiety"
+    },
+    {
+      "id": "src-storylearning-catalog",
+      "url": "https://storylearning.com/books",
+      "publisher": "StoryLearning",
+      "title": "StoryLearning Spanish graded books catalog",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "manufacturer",
+      "trustTier": "A",
+      "independenceGroup": "storylearning-official"
+    },
+    {
+      "id": "src-101-goodreads",
+      "url": "https://www.goodreads.com/en/book/show/56675281-101-conversations-in-simple-spanish",
+      "publisher": "Goodreads",
+      "title": "101 Conversations in Simple Spanish reviews and edition details",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "independent-review",
+      "trustTier": "B",
+      "independenceGroup": "goodreads-101-simple-spanish"
+    },
+    {
+      "id": "src-101-storygraph",
+      "url": "https://beta.thestorygraph.com/book_reviews/623a7cc5-26e4-4431-9e41-d44ee47ea7a6",
+      "publisher": "The StoryGraph",
+      "title": "101 Conversations in Simple Spanish reader reviews",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "independent-review",
+      "trustTier": "C",
+      "independenceGroup": "storygraph-101-simple-spanish"
+    },
+    {
+      "id": "src-short-spanish-allbookstores",
+      "url": "https://www.allbookstores.com/Short-Stories-Spanish-Beginners-Richards/9781473683259",
+      "publisher": "AllBookstores",
+      "title": "Short Stories in Spanish for Beginners reviews",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "independent-review",
+      "trustTier": "B",
+      "independenceGroup": "allbookstores-short-spanish"
+    },
+    {
+      "id": "src-short-spanish-storygraph",
+      "url": "https://app.thestorygraph.com/book_reviews/cf359e49-bd4d-436f-84c4-fe86749a6ed1",
+      "publisher": "The StoryGraph",
+      "title": "Short Stories in Spanish for Beginners Volume 1 reviews",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "independent-review",
+      "trustTier": "C",
+      "independenceGroup": "storygraph-short-spanish"
+    },
+    {
+      "id": "src-la-profe-official",
+      "url": "https://1001reasonstolearnspanish.com/book/la-profe-de-espanol-2/",
+      "publisher": "1001 Reasons to Learn Spanish",
+      "title": "La profe de espanol official book page",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "manufacturer",
+      "trustTier": "A",
+      "independenceGroup": "juan-fernandez-official"
+    },
+    {
+      "id": "src-la-profe-goodreads",
+      "url": "https://www.goodreads.com/book/show/30799294",
+      "publisher": "Goodreads",
+      "title": "La profe de espanol reviews and edition details",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "independent-review",
+      "trustTier": "B",
+      "independenceGroup": "goodreads-la-profe"
+    },
+    {
+      "id": "src-la-profe-natively",
+      "url": "https://learnnatively.com/book/7352f024f0/",
+      "publisher": "Natively",
+      "title": "La profe de espanol graded-reader reviews",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "independent-review",
+      "trustTier": "C",
+      "independenceGroup": "natively-la-profe"
+    },
+    {
+      "id": "src-rory-official",
+      "url": "https://store.asmodee.com/products/rorys-story-cubes-eco-blister",
+      "publisher": "Asmodee USA",
+      "title": "Rory's Story Cubes Eco-Blister official product page",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "manufacturer",
+      "trustTier": "A",
+      "independenceGroup": "asmodee-rory-official"
+    },
+    {
+      "id": "src-rory-family-game-shelf",
+      "url": "https://familygameshelf.com/2022/05/17/rorys-story-cubes-review/",
+      "publisher": "Family Game Shelf",
+      "title": "Rory's Story Cubes review",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "independent-review",
+      "trustTier": "B",
+      "independenceGroup": "family-game-shelf-rory"
+    },
+    {
+      "id": "src-rory-zatu",
+      "url": "https://zatu.com/blogs/reviews/rorys-story-cubes",
+      "publisher": "Zatu Games",
+      "title": "Rory's Story Cubes review",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "independent-review",
+      "trustTier": "B",
+      "independenceGroup": "zatu-rory"
+    },
+    {
+      "id": "src-dixit-official",
+      "url": "https://store.asmodee.com/products/dixit-2021-refresh",
+      "publisher": "Asmodee USA",
+      "title": "Dixit 2021 Refresh official product page",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "manufacturer",
+      "trustTier": "A",
+      "independenceGroup": "asmodee-dixit-official"
+    },
+    {
+      "id": "src-dixit-bittech",
+      "url": "https://www.bit-tech.net/reviews/gaming/retro/dixit-review/1/",
+      "publisher": "bit-tech",
+      "title": "Dixit review",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "independent-review",
+      "trustTier": "B",
+      "independenceGroup": "bittech-dixit"
+    },
+    {
+      "id": "src-dixit-meeple-like-us",
+      "url": "https://www.meeplelikeus.co.uk/dixit/",
+      "publisher": "Meeple Like Us",
+      "title": "Dixit review and group-fit discussion",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "independent-review",
+      "trustTier": "B",
+      "independenceGroup": "meeple-like-us-dixit"
+    },
+    {
+      "id": "src-kloo-official",
+      "url": "https://kloogame.com/language-learning-game-faqs/",
+      "publisher": "KLOO Games",
+      "title": "KLOO language learning game FAQ",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "manufacturer",
+      "trustTier": "A",
+      "independenceGroup": "kloo-official"
+    },
+    {
+      "id": "src-paco-ardit-review",
+      "url": "https://www.alllanguageresources.com/paco-ardit-graded-readers/",
+      "publisher": "All Language Resources",
+      "title": "Paco Ardit Graded Readers review",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "independent-review",
+      "trustTier": "B",
+      "independenceGroup": "all-language-resources-paco-ardit"
+    },
+    {
+      "id": "src-spanish-reader-discussion",
+      "url": "https://www.reddit.com/r/Spanish/comments/z496lz/book_recommendations_for_a2_level/",
+      "publisher": "Reddit r/Spanish",
+      "title": "Public A2 Spanish graded-reader recommendations and fit discussion",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "social-discussion",
+      "trustTier": "C",
+      "independenceGroup": "reddit-spanish-a2-readers"
+    }
+  ],
+  "claims": [
+    {
+      "id": "claim-recognition-output-friction",
+      "kind": "recipient_friction",
+      "text": "Public learner discussions distinguish understanding familiar language from retrieving words for spontaneous speech and describe anxiety as a reason to postpone partner practice.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": [
+        "src-social-output-friction",
+        "src-social-speaking-anxiety"
+      ]
+    },
+    {
+      "id": "claim-high-a2-boundary",
+      "kind": "compatibility",
+      "text": "CEFR separates reception, production, and interaction, so a high-A2 reading fit does not establish high-A2 speaking performance or any formal assessment result.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": [
+        "src-cefr-framework"
+      ]
+    },
+    {
+      "id": "claim-graded-reader-evidence",
+      "kind": "product_benefit",
+      "text": "Recent meta-analytic evidence supports level-attuned, self-selected extensive reading while cautioning that study designs and implementation vary; it does not validate this gift ritual by itself.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": [
+        "src-extensive-reading-meta"
+      ]
+    },
+    {
+      "id": "claim-practice-not-assessment",
+      "kind": "compatibility",
+      "text": "A scene-to-speech activity is a practice prompt, not a CEFR placement test, pronunciation assessment, course, or claim of improved fluency.",
+      "risk": "high",
+      "status": "supported",
+      "sourceIds": [
+        "src-cefr-framework",
+        "src-production-comprehension-study"
+      ]
+    },
+    {
+      "id": "claim-reader-self-purchase-gap",
+      "kind": "self_purchase_pattern",
+      "text": "The gift can address research burden when the giver already knows the learner's exact level and European-Spanish preference; uncertainty about either fact is a stop condition, not a reason to guess.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": [
+        "src-storylearning-catalog",
+        "src-spanish-reader-discussion"
+      ]
+    },
+    {
+      "id": "claim-prompt-self-purchase-gap",
+      "kind": "self_purchase_pattern",
+      "text": "An open-ended prompt tool can be a deferred coordination purchase when the learner has already welcomed private or trusted-group speaking, but it is not thoughtful for someone who dislikes improvisation.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": [
+        "src-social-speaking-anxiety",
+        "src-rory-zatu",
+        "src-dixit-meeple-like-us"
+      ]
+    },
+    {
+      "id": "claim-101-benefit",
+      "kind": "product_benefit",
+      "text": "101 Conversations in Simple Spanish is cataloged at A2-B1 and organizes short dialogues into a continuing story with Castilian-Spanish context.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-storylearning-catalog",
+        "src-101-goodreads"
+      ]
+    },
+    {
+      "id": "claim-101-drawback",
+      "kind": "product_drawback",
+      "text": "Independent readers report that the plot can feel juvenile or uneven and that the material is not suitable for a true beginner.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-101-goodreads",
+        "src-101-storygraph"
+      ]
+    },
+    {
+      "id": "claim-101-compatibility",
+      "kind": "compatibility",
+      "text": "The print book suits a high-A2 adult who wants European Spanish; audio is a separate format and is optional for the five-minute read-to-speak ritual.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": [
+        "src-storylearning-catalog",
+        "src-101-goodreads"
+      ]
+    },
+    {
+      "id": "claim-short-stories-benefit",
+      "kind": "product_benefit",
+      "text": "Short Stories in Spanish for Beginners contains eight graded stories mapped by the publisher to A2-B1, with vocabulary and comprehension support reported by independent readers.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-storylearning-catalog",
+        "src-short-spanish-storygraph"
+      ]
+    },
+    {
+      "id": "claim-short-stories-drawback",
+      "kind": "product_drawback",
+      "text": "Independent reviews report European-Spanish vosotros usage, occasional errors, low-frequency words, and difficulty that can exceed the book's beginner label.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": [
+        "src-short-spanish-allbookstores",
+        "src-short-spanish-storygraph"
+      ]
+    },
+    {
+      "id": "claim-short-stories-compatibility",
+      "kind": "compatibility",
+      "text": "The first volume is a fit only after checking that the learner is comfortable with high-A2 to early-B1 text and specifically welcomes European Spanish; audio is not required for the print book.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": [
+        "src-storylearning-catalog",
+        "src-short-spanish-allbookstores"
+      ]
+    },
+    {
+      "id": "claim-la-profe-benefit",
+      "kind": "product_benefit",
+      "text": "La profe de espanol is an adult A2 graded story set in a Spanish language school, with short chapters, vocabulary support, and comprehension questions documented by the author and readers.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-la-profe-official",
+        "src-la-profe-natively"
+      ]
+    },
+    {
+      "id": "claim-la-profe-drawback",
+      "kind": "product_drawback",
+      "text": "Independent readers describe the story as short and report that its ending or plot can feel under-resolved, while some A2 learners find it easier than expected.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-la-profe-goodreads",
+        "src-la-profe-natively"
+      ]
+    },
+    {
+      "id": "claim-la-profe-compatibility",
+      "kind": "compatibility",
+      "text": "The official page identifies an A2 story by a Granada-born teacher and offers print and Kindle editions; no audio or subscription is required to use the print edition.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-la-profe-official",
+        "src-la-profe-goodreads"
+      ]
+    },
+    {
+      "id": "claim-rory-benefit",
+      "kind": "product_benefit",
+      "text": "Rory's Story Cubes uses nine image dice for open-ended storytelling and the current U.S. edition is specified for one to twelve players with a short play time.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-rory-official",
+        "src-rory-family-game-shelf"
+      ]
+    },
+    {
+      "id": "claim-rory-drawback",
+      "kind": "product_drawback",
+      "text": "The cubes provide very little structure; reviewers warn that they can become a distraction or fall flat when the recipient does not enjoy improvisation.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-rory-zatu",
+        "src-rory-family-game-shelf"
+      ]
+    },
+    {
+      "id": "claim-rory-compatibility",
+      "kind": "compatibility",
+      "text": "The physical cubes have pictorial prompts rather than language-specific text, work solo or with others, and require no audio, app, account, or subscription.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-rory-official",
+        "src-rory-zatu"
+      ]
+    },
+    {
+      "id": "claim-dixit-benefit",
+      "kind": "product_benefit",
+      "text": "Dixit asks each storyteller to give a word, phrase, or other clue for an image while other players match and identify the card, creating repeated short speaking turns.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-dixit-official",
+        "src-dixit-bittech"
+      ]
+    },
+    {
+      "id": "claim-dixit-drawback",
+      "kind": "product_drawback",
+      "text": "Dixit requires three to eight players and independent reviews warn that it depends heavily on group composition, comfort with ambiguity, and repeated creative clue-making.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": [
+        "src-dixit-bittech",
+        "src-dixit-meeple-like-us"
+      ]
+    },
+    {
+      "id": "claim-dixit-compatibility",
+      "kind": "compatibility",
+      "text": "The current U.S. base game supports three to eight players and uses image cards for clues, so the group can agree to speak European Spanish without an app, audio, account, or subscription.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": [
+        "src-dixit-official",
+        "src-dixit-meeple-like-us"
+      ]
+    },
+    {
+      "id": "claim-language-material-clutter",
+      "kind": "duplicate_clutter",
+      "text": "A duplicate reader, wrong Spanish variant, over-level text, or group-only game without a willing group creates study clutter rather than a usable ritual.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": [
+        "src-short-spanish-allbookstores",
+        "src-dixit-official",
+        "src-spanish-reader-discussion"
+      ]
+    },
+    {
+      "id": "claim-dialogue-cubes-pair",
+      "kind": "pair_coherence",
+      "text": "The dialogue reader supplies bounded Castilian-Spanish characters and phrases while Story Cubes supplies a new image cue; using three scene words in one sixty-second retelling gives the items different roles in one optional solo-or-partner loop.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": [
+        "src-storylearning-catalog",
+        "src-101-goodreads",
+        "src-rory-official",
+        "src-rory-zatu"
+      ]
+    },
+    {
+      "id": "claim-la-profe-dixit-pair",
+      "kind": "pair_coherence",
+      "text": "The A2 mystery supplies characters and a shared scene while Dixit supplies a visual clue round; the pair is coherent only for a willing three-to-eight-person group that agrees to use short European-Spanish clues.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": [
+        "src-la-profe-official",
+        "src-la-profe-natively",
+        "src-dixit-official",
+        "src-dixit-meeple-like-us"
+      ]
+    }
+  ],
+  "candidates": [
+    {
+      "id": "101-conversations-simple-spanish",
+      "name": "101 Conversations in Simple Spanish",
+      "editorialScore": 88,
+      "evidenceConfidence": 82,
+      "drawbacks": [
+        "The continuing mystery can feel juvenile or uneven, and the A2-B1 label does not make it suitable for a true beginner."
+      ],
+      "primarySourceIds": [
+        "src-storylearning-catalog"
+      ],
+      "independentSourceIds": [
+        "src-101-goodreads",
+        "src-101-storygraph"
+      ],
+      "claimIds": [
+        "claim-101-benefit",
+        "claim-101-drawback",
+        "claim-101-compatibility"
+      ],
+      "evidenceMode": "desk_research",
+      "thoughtfulness": {
+        "observationPrompt": "Choose this only if you know the adult learner reads around high A2, prefers European Spanish, and already likes dialogue or short mystery scenes.",
+        "frictionClaimIds": [
+          "claim-recognition-output-friction"
+        ],
+        "physicalGiftBoundary": "welcome_when_verified",
+        "selfPurchase": {
+          "reason": "research_burden",
+          "rationale": "A level- and variant-matched reader requires more checking than another generic Spanish book, which can keep the purchase on a someday list.",
+          "basis": "editorial_inference",
+          "claimIds": [
+            "claim-reader-self-purchase-gap"
+          ]
+        },
+        "duplicateRisk": {
+          "level": "medium",
+          "preGiftCheck": "Confirm they do not own this exact title in print, ebook, or audio and want Castilian rather than Latin American Spanish."
+        },
+        "clutterRisk": {
+          "level": "low",
+          "ownershipBurden": "One compact reader needs ordinary shelf or ebook-library space; optional audio is separate.",
+          "mitigation": "Gift only the preferred format and do not add audio unless the learner explicitly wants it."
+        },
+        "compatibilityChecks": [
+          {
+            "dimension": "skill_or_experience",
+            "status": "verified",
+            "requirement": "Recipient reads European Spanish at high A2 or early B1 and can follow short connected dialogue.",
+            "claimIds": [
+              "claim-101-compatibility",
+              "claim-high-a2-boundary"
+            ]
+          },
+          {
+            "dimension": "edition_or_region",
+            "status": "verified",
+            "requirement": "Recipient wants the Spain-set Castilian variant rather than a Mexican- or other Latin-American-specific reader.",
+            "claimIds": [
+              "claim-101-compatibility"
+            ]
+          },
+          {
+            "dimension": "subscription_or_account",
+            "status": "not_applicable",
+            "requirement": "The print book works without an account or subscription; audio is optional and separately sourced.",
+            "claimIds": [
+              "claim-101-compatibility"
+            ]
+          }
+        ],
+        "score": {
+          "frictionSpecificity": 5,
+          "selfPurchaseLogic": 4,
+          "ownershipEase": 5,
+          "recipientSpecificity": 5,
+          "total": 19
+        }
+      }
+    },
+    {
+      "id": "short-stories-spanish-beginners-v1",
+      "name": "Short Stories in Spanish for Beginners, Volume 1",
+      "editorialScore": 84,
+      "evidenceConfidence": 80,
+      "drawbacks": [
+        "Reviews report occasional errors and low-frequency vocabulary, and some learners find it harder than the beginner label suggests."
+      ],
+      "primarySourceIds": [
+        "src-storylearning-catalog"
+      ],
+      "independentSourceIds": [
+        "src-short-spanish-allbookstores",
+        "src-short-spanish-storygraph"
+      ],
+      "claimIds": [
+        "claim-short-stories-benefit",
+        "claim-short-stories-drawback",
+        "claim-short-stories-compatibility"
+      ],
+      "evidenceMode": "desk_research",
+      "thoughtfulness": {
+        "observationPrompt": "Choose this only if the learner has completed true-beginner material, enjoys varied fiction, and has said European-Spanish vosotros forms are welcome.",
+        "frictionClaimIds": [
+          "claim-recognition-output-friction"
+        ],
+        "physicalGiftBoundary": "welcome_when_verified",
+        "selfPurchase": {
+          "reason": "research_burden",
+          "rationale": "The broad beginner label hides meaningful level and variant checks that a thoughtful giver can resolve before purchase.",
+          "basis": "editorial_inference",
+          "claimIds": [
+            "claim-reader-self-purchase-gap"
+          ]
+        },
+        "duplicateRisk": {
+          "level": "medium",
+          "preGiftCheck": "Confirm the exact Volume 1 edition is not already in their print, Kindle, Audible, library, or Spotify rotation."
+        },
+        "clutterRisk": {
+          "level": "low",
+          "ownershipBurden": "The reader needs little physical space, but a mismatched level can turn it into discouraging shelf clutter.",
+          "mitigation": "Use a sample or table of contents to verify comfort before gifting and choose only one format."
+        },
+        "compatibilityChecks": [
+          {
+            "dimension": "skill_or_experience",
+            "status": "verified",
+            "requirement": "Recipient is a high-A2 or early-B1 reader rather than a first-week or true-beginner learner.",
+            "claimIds": [
+              "claim-short-stories-compatibility",
+              "claim-high-a2-boundary"
+            ]
+          },
+          {
+            "dimension": "edition_or_region",
+            "status": "verified",
+            "requirement": "Recipient welcomes European Spanish and vosotros instead of requiring a Latin-American-specific variant.",
+            "claimIds": [
+              "claim-short-stories-drawback",
+              "claim-short-stories-compatibility"
+            ]
+          },
+          {
+            "dimension": "subscription_or_account",
+            "status": "not_applicable",
+            "requirement": "The print edition works alone; any audiobook purchase or subscription is optional and outside this recommendation.",
+            "claimIds": [
+              "claim-short-stories-compatibility"
+            ]
+          }
+        ],
+        "score": {
+          "frictionSpecificity": 4,
+          "selfPurchaseLogic": 4,
+          "ownershipEase": 5,
+          "recipientSpecificity": 5,
+          "total": 18
+        }
+      }
+    },
+    {
+      "id": "la-profe-de-espanol-a2",
+      "name": "La profe de espanol",
+      "editorialScore": 87,
+      "evidenceConfidence": 83,
+      "drawbacks": [
+        "The short story and its ending can feel under-resolved, and some established A2 readers may find it easier than expected."
+      ],
+      "primarySourceIds": [
+        "src-la-profe-official"
+      ],
+      "independentSourceIds": [
+        "src-la-profe-goodreads",
+        "src-la-profe-natively"
+      ],
+      "claimIds": [
+        "claim-la-profe-benefit",
+        "claim-la-profe-drawback",
+        "claim-la-profe-compatibility"
+      ],
+      "evidenceMode": "desk_research",
+      "thoughtfulness": {
+        "observationPrompt": "Choose this if the adult learner is around A2, enjoys classroom humor and mysteries, and specifically wants Spain-set Spanish from a native Granada author.",
+        "frictionClaimIds": [
+          "claim-recognition-output-friction"
+        ],
+        "physicalGiftBoundary": "welcome_when_verified",
+        "selfPurchase": {
+          "reason": "small_luxury_deferral",
+          "rationale": "A short, inexpensive reader can remain postponed because it feels less essential than a course despite offering a bounded, finishable scene.",
+          "basis": "editorial_inference",
+          "claimIds": [
+            "claim-reader-self-purchase-gap"
+          ]
+        },
+        "duplicateRisk": {
+          "level": "medium",
+          "preGiftCheck": "Confirm the learner does not already own this exact title and has not completed it through a Kindle or library edition."
+        },
+        "clutterRisk": {
+          "level": "low",
+          "ownershipBurden": "It is a short print or Kindle reader with no required companion account, audio purchase, or ongoing subscription.",
+          "mitigation": "Choose the recipient's existing reading format and avoid adding a second copy or unrelated workbook."
+        },
+        "compatibilityChecks": [
+          {
+            "dimension": "skill_or_experience",
+            "status": "verified",
+            "requirement": "Recipient can read an adult A2 graded story and enjoys short chapters with vocabulary and comprehension support.",
+            "claimIds": [
+              "claim-la-profe-benefit",
+              "claim-la-profe-compatibility"
+            ]
+          },
+          {
+            "dimension": "edition_or_region",
+            "status": "verified",
+            "requirement": "Recipient wants Spain-set European Spanish rather than a Latin-American regional reader.",
+            "claimIds": [
+              "claim-la-profe-compatibility"
+            ]
+          },
+          {
+            "dimension": "subscription_or_account",
+            "status": "not_applicable",
+            "requirement": "The print edition requires no audio, app, account, or subscription for the proposed reading ritual.",
+            "claimIds": [
+              "claim-la-profe-compatibility"
+            ]
+          }
+        ],
+        "score": {
+          "frictionSpecificity": 5,
+          "selfPurchaseLogic": 4,
+          "ownershipEase": 5,
+          "recipientSpecificity": 5,
+          "total": 19
+        }
+      }
+    },
+    {
+      "id": "rory-story-cubes-eco-blister",
+      "name": "Rory's Story Cubes Eco-Blister",
+      "editorialScore": 85,
+      "evidenceConfidence": 81,
+      "drawbacks": [
+        "The open-ended symbols provide almost no structure and can feel childish, distracting, or awkward to a recipient who dislikes improvisation."
+      ],
+      "primarySourceIds": [
+        "src-rory-official"
+      ],
+      "independentSourceIds": [
+        "src-rory-family-game-shelf",
+        "src-rory-zatu"
+      ],
+      "claimIds": [
+        "claim-rory-benefit",
+        "claim-rory-drawback",
+        "claim-rory-compatibility"
+      ],
+      "evidenceMode": "desk_research",
+      "thoughtfulness": {
+        "observationPrompt": "Choose these only if the learner has said they want low-stakes speaking and already enjoys improvisation, storytelling, tabletop prompts, or playful constraints.",
+        "frictionClaimIds": [
+          "claim-recognition-output-friction"
+        ],
+        "physicalGiftBoundary": "welcome_when_verified",
+        "selfPurchase": {
+          "reason": "coordination_burden",
+          "rationale": "A prompt tool can feel awkward without a defined ritual, so the scene-to-speech card explains when to use it solo or with one trusted partner.",
+          "basis": "editorial_inference",
+          "claimIds": [
+            "claim-prompt-self-purchase-gap"
+          ]
+        },
+        "duplicateRisk": {
+          "level": "medium",
+          "preGiftCheck": "Confirm they do not own the Classic or Eco-Blister dice or another image-prompt system they already prefer."
+        },
+        "clutterRisk": {
+          "level": "low",
+          "ownershipBurden": "Nine dice store in one compact tin and require no batteries, screen, account, or recurring payment.",
+          "mitigation": "Include one written five-minute ritual and skip expansion sets until the base prompts prove welcome."
+        },
+        "compatibilityChecks": [
+          {
+            "dimension": "skill_or_experience",
+            "status": "verified",
+            "requirement": "Recipient welcomes improvised storytelling and can turn a simple image into one high-A2 Spanish sentence.",
+            "claimIds": [
+              "claim-rory-benefit",
+              "claim-rory-drawback"
+            ]
+          },
+          {
+            "dimension": "subscription_or_account",
+            "status": "not_applicable",
+            "requirement": "Physical image dice work offline with no app, audio, account, or subscription requirement.",
+            "claimIds": [
+              "claim-rory-compatibility"
+            ]
+          },
+          {
+            "dimension": "accessibility",
+            "status": "verified",
+            "requirement": "Recipient can comfortably see and handle illustrated dice or has a partner who can describe each image aloud.",
+            "claimIds": [
+              "claim-rory-compatibility"
+            ]
+          }
+        ],
+        "score": {
+          "frictionSpecificity": 5,
+          "selfPurchaseLogic": 4,
+          "ownershipEase": 5,
+          "recipientSpecificity": 4,
+          "total": 18
+        }
+      }
+    },
+    {
+      "id": "dixit-2021-refresh",
+      "name": "Dixit 2021 Refresh",
+      "editorialScore": 80,
+      "evidenceConfidence": 82,
+      "drawbacks": [
+        "It requires three to eight willing players, and the ambiguous image-clue format can create exactly the public-performance pressure this gift is meant to avoid."
+      ],
+      "primarySourceIds": [
+        "src-dixit-official"
+      ],
+      "independentSourceIds": [
+        "src-dixit-bittech",
+        "src-dixit-meeple-like-us"
+      ],
+      "claimIds": [
+        "claim-dixit-benefit",
+        "claim-dixit-drawback",
+        "claim-dixit-compatibility"
+      ],
+      "evidenceMode": "desk_research",
+      "thoughtfulness": {
+        "observationPrompt": "Choose this only if the learner already has a trusted group of three to eight people who enjoy imaginative games and will agree to use supportive Spanish clues.",
+        "frictionClaimIds": [
+          "claim-recognition-output-friction"
+        ],
+        "physicalGiftBoundary": "welcome_when_verified",
+        "selfPurchase": {
+          "reason": "coordination_burden",
+          "rationale": "The base game becomes useful only when a willing group and a language-practice agreement already exist, making coordination the real deferred cost.",
+          "basis": "recipient_observation_prompt",
+          "claimIds": [
+            "claim-prompt-self-purchase-gap"
+          ]
+        },
+        "duplicateRisk": {
+          "level": "high",
+          "preGiftCheck": "Confirm nobody in the intended group already owns a usable Dixit base game and that this is the current U.S. standalone edition, not an expansion."
+        },
+        "clutterRisk": {
+          "level": "medium",
+          "ownershipBurden": "A full game box needs shelf space and at least three willing players for the official loop.",
+          "mitigation": "Buy only for an existing group; otherwise choose the reader or compact Story Cubes alone."
+        },
+        "compatibilityChecks": [
+          {
+            "dimension": "skill_or_experience",
+            "status": "verified",
+            "requirement": "At least three trusted players enjoy creative clue games and agree to keep Spanish speaking supportive rather than corrective.",
+            "claimIds": [
+              "claim-dixit-drawback",
+              "claim-dixit-compatibility"
+            ]
+          },
+          {
+            "dimension": "edition_or_region",
+            "status": "verified",
+            "requirement": "Purchase the 2021 Refresh base game for the U.S. market rather than a cards-only expansion.",
+            "claimIds": [
+              "claim-dixit-compatibility"
+            ]
+          },
+          {
+            "dimension": "subscription_or_account",
+            "status": "not_applicable",
+            "requirement": "The physical game needs no app, audio, account, or subscription after purchase.",
+            "claimIds": [
+              "claim-dixit-compatibility"
+            ]
+          }
+        ],
+        "score": {
+          "frictionSpecificity": 4,
+          "selfPurchaseLogic": 5,
+          "ownershipEase": 3,
+          "recipientSpecificity": 5,
+          "total": 17
+        }
+      }
+    },
+    {
+      "id": "short-stories-spanish-beginners-v2",
+      "name": "Short Stories in Spanish for Beginners, Volume 2",
+      "editorialScore": 71,
+      "evidenceConfidence": 62,
+      "drawbacks": [
+        "The publisher spans A2-B2, which is too broad for a precise high-A2 surprise gift without sample-level verification."
+      ],
+      "primarySourceIds": [
+        "src-storylearning-catalog"
+      ],
+      "independentSourceIds": [],
+      "claimIds": [],
+      "evidenceMode": "desk_research"
+    },
+    {
+      "id": "101-conversations-intermediate-spanish",
+      "name": "101 Conversations in Intermediate Spanish",
+      "editorialScore": 69,
+      "evidenceConfidence": 67,
+      "drawbacks": [
+        "The B1-B2 catalog level overshoots a high-A2 learner and risks turning a low-pressure ritual into decoding work."
+      ],
+      "primarySourceIds": [
+        "src-storylearning-catalog"
+      ],
+      "independentSourceIds": [],
+      "claimIds": [],
+      "evidenceMode": "desk_research"
+    },
+    {
+      "id": "101-conversations-mexican-spanish",
+      "name": "101 Conversations in Mexican Spanish",
+      "editorialScore": 66,
+      "evidenceConfidence": 72,
+      "drawbacks": [
+        "The explicitly Mexican variant conflicts with this run's European-Spanish recipient definition."
+      ],
+      "primarySourceIds": [
+        "src-storylearning-catalog"
+      ],
+      "independentSourceIds": [],
+      "claimIds": [],
+      "evidenceMode": "desk_research"
+    },
+    {
+      "id": "paco-ardit-a2-collection",
+      "name": "Paco Ardit Spanish Novels A2 collection",
+      "editorialScore": 70,
+      "evidenceConfidence": 68,
+      "drawbacks": [
+        "Independent review questions the prose flow and the Argentine context does not match the selected European-Spanish variant."
+      ],
+      "primarySourceIds": [],
+      "independentSourceIds": [
+        "src-paco-ardit-review"
+      ],
+      "claimIds": [],
+      "evidenceMode": "desk_research"
+    },
+    {
+      "id": "kloo-spanish-card-system",
+      "name": "KLOO Spanish card system",
+      "editorialScore": 72,
+      "evidenceConfidence": 64,
+      "drawbacks": [
+        "The manufacturer supports solo and group play but does not provide a clear CEFR or regional-Spanish mapping for this high-A2 brief."
+      ],
+      "primarySourceIds": [
+        "src-kloo-official"
+      ],
+      "independentSourceIds": [],
+      "claimIds": [],
+      "evidenceMode": "desk_research"
+    },
+    {
+      "id": "dixit-odyssey-expansion",
+      "name": "Dixit Odyssey cards-only expansion",
+      "editorialScore": 58,
+      "evidenceConfidence": 60,
+      "drawbacks": [
+        "A cards-only expansion is not independently useful without compatible base-game components."
+      ],
+      "primarySourceIds": [],
+      "independentSourceIds": [
+        "src-dixit-meeple-like-us"
+      ],
+      "claimIds": [],
+      "evidenceMode": "desk_research"
+    },
+    {
+      "id": "native-spanish-novel-surprise",
+      "name": "An ungraded native Spanish novel",
+      "editorialScore": 52,
+      "evidenceConfidence": 71,
+      "drawbacks": [
+        "Without exact text sampling, a native novel creates unresolved level, dialect, length, and interest compatibility."
+      ],
+      "primarySourceIds": [],
+      "independentSourceIds": [
+        "src-spanish-reader-discussion"
+      ],
+      "claimIds": [],
+      "evidenceMode": "desk_research"
+    }
+  ],
+  "finalists": [
+    {
+      "id": "101-conversations-simple-spanish",
+      "name": "101 Conversations in Simple Spanish",
+      "editorialScore": 88,
+      "evidenceConfidence": 82,
+      "drawbacks": [
+        "The continuing mystery can feel juvenile or uneven, and the A2-B1 label does not make it suitable for a true beginner."
+      ],
+      "primarySourceIds": [
+        "src-storylearning-catalog"
+      ],
+      "independentSourceIds": [
+        "src-101-goodreads",
+        "src-101-storygraph"
+      ],
+      "claimIds": [
+        "claim-101-benefit",
+        "claim-101-drawback",
+        "claim-101-compatibility"
+      ],
+      "evidenceMode": "desk_research",
+      "thoughtfulness": {
+        "observationPrompt": "Choose this only if you know the adult learner reads around high A2, prefers European Spanish, and already likes dialogue or short mystery scenes.",
+        "frictionClaimIds": [
+          "claim-recognition-output-friction"
+        ],
+        "physicalGiftBoundary": "welcome_when_verified",
+        "selfPurchase": {
+          "reason": "research_burden",
+          "rationale": "A level- and variant-matched reader requires more checking than another generic Spanish book, which can keep the purchase on a someday list.",
+          "basis": "editorial_inference",
+          "claimIds": [
+            "claim-reader-self-purchase-gap"
+          ]
+        },
+        "duplicateRisk": {
+          "level": "medium",
+          "preGiftCheck": "Confirm they do not own this exact title in print, ebook, or audio and want Castilian rather than Latin American Spanish."
+        },
+        "clutterRisk": {
+          "level": "low",
+          "ownershipBurden": "One compact reader needs ordinary shelf or ebook-library space; optional audio is separate.",
+          "mitigation": "Gift only the preferred format and do not add audio unless the learner explicitly wants it."
+        },
+        "compatibilityChecks": [
+          {
+            "dimension": "skill_or_experience",
+            "status": "verified",
+            "requirement": "Recipient reads European Spanish at high A2 or early B1 and can follow short connected dialogue.",
+            "claimIds": [
+              "claim-101-compatibility",
+              "claim-high-a2-boundary"
+            ]
+          },
+          {
+            "dimension": "edition_or_region",
+            "status": "verified",
+            "requirement": "Recipient wants the Spain-set Castilian variant rather than a Mexican- or other Latin-American-specific reader.",
+            "claimIds": [
+              "claim-101-compatibility"
+            ]
+          },
+          {
+            "dimension": "subscription_or_account",
+            "status": "not_applicable",
+            "requirement": "The print book works without an account or subscription; audio is optional and separately sourced.",
+            "claimIds": [
+              "claim-101-compatibility"
+            ]
+          }
+        ],
+        "score": {
+          "frictionSpecificity": 5,
+          "selfPurchaseLogic": 4,
+          "ownershipEase": 5,
+          "recipientSpecificity": 5,
+          "total": 19
+        }
+      }
+    },
+    {
+      "id": "short-stories-spanish-beginners-v1",
+      "name": "Short Stories in Spanish for Beginners, Volume 1",
+      "editorialScore": 84,
+      "evidenceConfidence": 80,
+      "drawbacks": [
+        "Reviews report occasional errors and low-frequency vocabulary, and some learners find it harder than the beginner label suggests."
+      ],
+      "primarySourceIds": [
+        "src-storylearning-catalog"
+      ],
+      "independentSourceIds": [
+        "src-short-spanish-allbookstores",
+        "src-short-spanish-storygraph"
+      ],
+      "claimIds": [
+        "claim-short-stories-benefit",
+        "claim-short-stories-drawback",
+        "claim-short-stories-compatibility"
+      ],
+      "evidenceMode": "desk_research",
+      "thoughtfulness": {
+        "observationPrompt": "Choose this only if the learner has completed true-beginner material, enjoys varied fiction, and has said European-Spanish vosotros forms are welcome.",
+        "frictionClaimIds": [
+          "claim-recognition-output-friction"
+        ],
+        "physicalGiftBoundary": "welcome_when_verified",
+        "selfPurchase": {
+          "reason": "research_burden",
+          "rationale": "The broad beginner label hides meaningful level and variant checks that a thoughtful giver can resolve before purchase.",
+          "basis": "editorial_inference",
+          "claimIds": [
+            "claim-reader-self-purchase-gap"
+          ]
+        },
+        "duplicateRisk": {
+          "level": "medium",
+          "preGiftCheck": "Confirm the exact Volume 1 edition is not already in their print, Kindle, Audible, library, or Spotify rotation."
+        },
+        "clutterRisk": {
+          "level": "low",
+          "ownershipBurden": "The reader needs little physical space, but a mismatched level can turn it into discouraging shelf clutter.",
+          "mitigation": "Use a sample or table of contents to verify comfort before gifting and choose only one format."
+        },
+        "compatibilityChecks": [
+          {
+            "dimension": "skill_or_experience",
+            "status": "verified",
+            "requirement": "Recipient is a high-A2 or early-B1 reader rather than a first-week or true-beginner learner.",
+            "claimIds": [
+              "claim-short-stories-compatibility",
+              "claim-high-a2-boundary"
+            ]
+          },
+          {
+            "dimension": "edition_or_region",
+            "status": "verified",
+            "requirement": "Recipient welcomes European Spanish and vosotros instead of requiring a Latin-American-specific variant.",
+            "claimIds": [
+              "claim-short-stories-drawback",
+              "claim-short-stories-compatibility"
+            ]
+          },
+          {
+            "dimension": "subscription_or_account",
+            "status": "not_applicable",
+            "requirement": "The print edition works alone; any audiobook purchase or subscription is optional and outside this recommendation.",
+            "claimIds": [
+              "claim-short-stories-compatibility"
+            ]
+          }
+        ],
+        "score": {
+          "frictionSpecificity": 4,
+          "selfPurchaseLogic": 4,
+          "ownershipEase": 5,
+          "recipientSpecificity": 5,
+          "total": 18
+        }
+      }
+    },
+    {
+      "id": "la-profe-de-espanol-a2",
+      "name": "La profe de espanol",
+      "editorialScore": 87,
+      "evidenceConfidence": 83,
+      "drawbacks": [
+        "The short story and its ending can feel under-resolved, and some established A2 readers may find it easier than expected."
+      ],
+      "primarySourceIds": [
+        "src-la-profe-official"
+      ],
+      "independentSourceIds": [
+        "src-la-profe-goodreads",
+        "src-la-profe-natively"
+      ],
+      "claimIds": [
+        "claim-la-profe-benefit",
+        "claim-la-profe-drawback",
+        "claim-la-profe-compatibility"
+      ],
+      "evidenceMode": "desk_research",
+      "thoughtfulness": {
+        "observationPrompt": "Choose this if the adult learner is around A2, enjoys classroom humor and mysteries, and specifically wants Spain-set Spanish from a native Granada author.",
+        "frictionClaimIds": [
+          "claim-recognition-output-friction"
+        ],
+        "physicalGiftBoundary": "welcome_when_verified",
+        "selfPurchase": {
+          "reason": "small_luxury_deferral",
+          "rationale": "A short, inexpensive reader can remain postponed because it feels less essential than a course despite offering a bounded, finishable scene.",
+          "basis": "editorial_inference",
+          "claimIds": [
+            "claim-reader-self-purchase-gap"
+          ]
+        },
+        "duplicateRisk": {
+          "level": "medium",
+          "preGiftCheck": "Confirm the learner does not already own this exact title and has not completed it through a Kindle or library edition."
+        },
+        "clutterRisk": {
+          "level": "low",
+          "ownershipBurden": "It is a short print or Kindle reader with no required companion account, audio purchase, or ongoing subscription.",
+          "mitigation": "Choose the recipient's existing reading format and avoid adding a second copy or unrelated workbook."
+        },
+        "compatibilityChecks": [
+          {
+            "dimension": "skill_or_experience",
+            "status": "verified",
+            "requirement": "Recipient can read an adult A2 graded story and enjoys short chapters with vocabulary and comprehension support.",
+            "claimIds": [
+              "claim-la-profe-benefit",
+              "claim-la-profe-compatibility"
+            ]
+          },
+          {
+            "dimension": "edition_or_region",
+            "status": "verified",
+            "requirement": "Recipient wants Spain-set European Spanish rather than a Latin-American regional reader.",
+            "claimIds": [
+              "claim-la-profe-compatibility"
+            ]
+          },
+          {
+            "dimension": "subscription_or_account",
+            "status": "not_applicable",
+            "requirement": "The print edition requires no audio, app, account, or subscription for the proposed reading ritual.",
+            "claimIds": [
+              "claim-la-profe-compatibility"
+            ]
+          }
+        ],
+        "score": {
+          "frictionSpecificity": 5,
+          "selfPurchaseLogic": 4,
+          "ownershipEase": 5,
+          "recipientSpecificity": 5,
+          "total": 19
+        }
+      }
+    },
+    {
+      "id": "rory-story-cubes-eco-blister",
+      "name": "Rory's Story Cubes Eco-Blister",
+      "editorialScore": 85,
+      "evidenceConfidence": 81,
+      "drawbacks": [
+        "The open-ended symbols provide almost no structure and can feel childish, distracting, or awkward to a recipient who dislikes improvisation."
+      ],
+      "primarySourceIds": [
+        "src-rory-official"
+      ],
+      "independentSourceIds": [
+        "src-rory-family-game-shelf",
+        "src-rory-zatu"
+      ],
+      "claimIds": [
+        "claim-rory-benefit",
+        "claim-rory-drawback",
+        "claim-rory-compatibility"
+      ],
+      "evidenceMode": "desk_research",
+      "thoughtfulness": {
+        "observationPrompt": "Choose these only if the learner has said they want low-stakes speaking and already enjoys improvisation, storytelling, tabletop prompts, or playful constraints.",
+        "frictionClaimIds": [
+          "claim-recognition-output-friction"
+        ],
+        "physicalGiftBoundary": "welcome_when_verified",
+        "selfPurchase": {
+          "reason": "coordination_burden",
+          "rationale": "A prompt tool can feel awkward without a defined ritual, so the scene-to-speech card explains when to use it solo or with one trusted partner.",
+          "basis": "editorial_inference",
+          "claimIds": [
+            "claim-prompt-self-purchase-gap"
+          ]
+        },
+        "duplicateRisk": {
+          "level": "medium",
+          "preGiftCheck": "Confirm they do not own the Classic or Eco-Blister dice or another image-prompt system they already prefer."
+        },
+        "clutterRisk": {
+          "level": "low",
+          "ownershipBurden": "Nine dice store in one compact tin and require no batteries, screen, account, or recurring payment.",
+          "mitigation": "Include one written five-minute ritual and skip expansion sets until the base prompts prove welcome."
+        },
+        "compatibilityChecks": [
+          {
+            "dimension": "skill_or_experience",
+            "status": "verified",
+            "requirement": "Recipient welcomes improvised storytelling and can turn a simple image into one high-A2 Spanish sentence.",
+            "claimIds": [
+              "claim-rory-benefit",
+              "claim-rory-drawback"
+            ]
+          },
+          {
+            "dimension": "subscription_or_account",
+            "status": "not_applicable",
+            "requirement": "Physical image dice work offline with no app, audio, account, or subscription requirement.",
+            "claimIds": [
+              "claim-rory-compatibility"
+            ]
+          },
+          {
+            "dimension": "accessibility",
+            "status": "verified",
+            "requirement": "Recipient can comfortably see and handle illustrated dice or has a partner who can describe each image aloud.",
+            "claimIds": [
+              "claim-rory-compatibility"
+            ]
+          }
+        ],
+        "score": {
+          "frictionSpecificity": 5,
+          "selfPurchaseLogic": 4,
+          "ownershipEase": 5,
+          "recipientSpecificity": 4,
+          "total": 18
+        }
+      }
+    },
+    {
+      "id": "dixit-2021-refresh",
+      "name": "Dixit 2021 Refresh",
+      "editorialScore": 80,
+      "evidenceConfidence": 82,
+      "drawbacks": [
+        "It requires three to eight willing players, and the ambiguous image-clue format can create exactly the public-performance pressure this gift is meant to avoid."
+      ],
+      "primarySourceIds": [
+        "src-dixit-official"
+      ],
+      "independentSourceIds": [
+        "src-dixit-bittech",
+        "src-dixit-meeple-like-us"
+      ],
+      "claimIds": [
+        "claim-dixit-benefit",
+        "claim-dixit-drawback",
+        "claim-dixit-compatibility"
+      ],
+      "evidenceMode": "desk_research",
+      "thoughtfulness": {
+        "observationPrompt": "Choose this only if the learner already has a trusted group of three to eight people who enjoy imaginative games and will agree to use supportive Spanish clues.",
+        "frictionClaimIds": [
+          "claim-recognition-output-friction"
+        ],
+        "physicalGiftBoundary": "welcome_when_verified",
+        "selfPurchase": {
+          "reason": "coordination_burden",
+          "rationale": "The base game becomes useful only when a willing group and a language-practice agreement already exist, making coordination the real deferred cost.",
+          "basis": "recipient_observation_prompt",
+          "claimIds": [
+            "claim-prompt-self-purchase-gap"
+          ]
+        },
+        "duplicateRisk": {
+          "level": "high",
+          "preGiftCheck": "Confirm nobody in the intended group already owns a usable Dixit base game and that this is the current U.S. standalone edition, not an expansion."
+        },
+        "clutterRisk": {
+          "level": "medium",
+          "ownershipBurden": "A full game box needs shelf space and at least three willing players for the official loop.",
+          "mitigation": "Buy only for an existing group; otherwise choose the reader or compact Story Cubes alone."
+        },
+        "compatibilityChecks": [
+          {
+            "dimension": "skill_or_experience",
+            "status": "verified",
+            "requirement": "At least three trusted players enjoy creative clue games and agree to keep Spanish speaking supportive rather than corrective.",
+            "claimIds": [
+              "claim-dixit-drawback",
+              "claim-dixit-compatibility"
+            ]
+          },
+          {
+            "dimension": "edition_or_region",
+            "status": "verified",
+            "requirement": "Purchase the 2021 Refresh base game for the U.S. market rather than a cards-only expansion.",
+            "claimIds": [
+              "claim-dixit-compatibility"
+            ]
+          },
+          {
+            "dimension": "subscription_or_account",
+            "status": "not_applicable",
+            "requirement": "The physical game needs no app, audio, account, or subscription after purchase.",
+            "claimIds": [
+              "claim-dixit-compatibility"
+            ]
+          }
+        ],
+        "score": {
+          "frictionSpecificity": 4,
+          "selfPurchaseLogic": 5,
+          "ownershipEase": 3,
+          "recipientSpecificity": 5,
+          "total": 17
+        }
+      }
+    }
+  ],
+  "pairs": [
+    {
+      "id": "dialogue-to-story-cubes-loop",
+      "name": "The dialogue-to-story-cubes loop",
+      "anchorCandidateId": "101-conversations-simple-spanish",
+      "companionCandidateId": "rory-story-cubes-eco-blister",
+      "recipientJob": "Turn one understood Castilian-Spanish scene into one bounded minute of self-directed speech without requiring an audience.",
+      "coherenceType": "practice_loop",
+      "whyTogether": "The reader supplies level-controlled characters and phrases while the image dice create a reason to recombine three of those words into a new spoken version.",
+      "interactionMoment": "Read one short exchange, roll one image die, then retell the moment for sixty seconds using any three words from the page.",
+      "compatibilityChecks": [
+        {
+          "dimension": "skill_or_experience",
+          "status": "verified",
+          "requirement": "Recipient reads at high A2, welcomes European Spanish, and enjoys private or trusted-partner improvisation.",
+          "claimIds": [
+            "claim-101-compatibility",
+            "claim-rory-drawback"
+          ]
+        },
+        {
+          "dimension": "subscription_or_account",
+          "status": "not_applicable",
+          "requirement": "Both print book and physical dice work without audio, an app, an account, or a subscription.",
+          "claimIds": [
+            "claim-101-compatibility",
+            "claim-rory-compatibility"
+          ]
+        },
+        {
+          "dimension": "edition_or_region",
+          "status": "verified",
+          "requirement": "The reader is the simple Spain-set edition and the prompt tool is the standalone Eco-Blister set.",
+          "claimIds": [
+            "claim-101-compatibility",
+            "claim-rory-compatibility"
+          ]
+        }
+      ],
+      "duplicateRisk": "medium",
+      "clutterDelta": "neutral",
+      "preGiftCheck": "Confirm the learner owns neither item, wants Castilian Spanish, and will actually welcome a playful solo speaking prompt.",
+      "bundleDrawback": "Choose only the reader if improvisation feels childish, embarrassing, or like forced homework; the book remains independently useful.",
+      "claimIds": [
+        "claim-dialogue-cubes-pair"
+      ],
+      "score": {
+        "sharedCuriosity": 18,
+        "complementaryRoles": 20,
+        "interactionLoop": 19,
+        "observableTrigger": 14,
+        "independentValue": 10,
+        "compatibility": 9,
+        "ownershipEase": 5,
+        "total": 95
+      }
+    },
+    {
+      "id": "a2-mystery-to-dixit-loop",
+      "name": "The A2 mystery-to-Dixit loop",
+      "anchorCandidateId": "la-profe-de-espanol-a2",
+      "companionCandidateId": "dixit-2021-refresh",
+      "recipientJob": "Reuse one familiar A2 scene as a short clue in an existing trusted group's imaginative game night.",
+      "coherenceType": "practice_loop",
+      "whyTogether": "The graded mystery supplies shared characters and situations while Dixit supplies image-driven clue turns that can reuse the scene's vocabulary in a supportive group.",
+      "interactionMoment": "Read one short scene before game night, then give one Dixit clue in Spanish that borrows a character, action, or feeling from the page.",
+      "compatibilityChecks": [
+        {
+          "dimension": "skill_or_experience",
+          "status": "verified",
+          "requirement": "Recipient reads adult A2 Spanish and already has three to eight trusted players who welcome brief Spanish clues.",
+          "claimIds": [
+            "claim-la-profe-compatibility",
+            "claim-dixit-drawback",
+            "claim-dixit-compatibility"
+          ]
+        },
+        {
+          "dimension": "edition_or_region",
+          "status": "verified",
+          "requirement": "The reader uses Spain-set Spanish and the game is the 2021 Refresh standalone U.S. base edition.",
+          "claimIds": [
+            "claim-la-profe-compatibility",
+            "claim-dixit-compatibility"
+          ]
+        },
+        {
+          "dimension": "subscription_or_account",
+          "status": "not_applicable",
+          "requirement": "Neither physical item requires audio, an app, an account, or a subscription for this loop.",
+          "claimIds": [
+            "claim-la-profe-compatibility",
+            "claim-dixit-compatibility"
+          ]
+        }
+      ],
+      "duplicateRisk": "high",
+      "clutterDelta": "neutral",
+      "preGiftCheck": "Confirm the intended group does not already own Dixit, likes ambiguous clue games, and will treat Spanish turns as play rather than correction.",
+      "bundleDrawback": "Choose only La profe de espanol when group size, game ownership, creative comfort, or willingness to speak Spanish is uncertain.",
+      "claimIds": [
+        "claim-la-profe-dixit-pair"
+      ],
+      "score": {
+        "sharedCuriosity": 17,
+        "complementaryRoles": 19,
+        "interactionLoop": 18,
+        "observableTrigger": 13,
+        "independentValue": 10,
+        "compatibility": 8,
+        "ownershipEase": 3,
+        "total": 88
+      }
+    }
+  ],
+  "affiliateLinks": [],
+  "article": {
+    "slug": "language-learning-gifts-read-a-scene-say-it-aloud",
+    "editorialScore": 85,
+    "evidenceConfidence": 81,
+    "evidenceMode": "desk_research",
+    "status": "publication_ready"
+  },
+  "qa": {
+    "passed": true,
+    "reviewerRole": "independent-editor",
+    "reviewerId": "language-learning-independent-editor-20260816",
+    "receiptPath": "research/reviews/20260816-read-a-scene-say-it-aloud-c92b2f7e.qa.v1.json",
+    "blockers": [],
+    "warnings": []
+  },
+  "completedAt": "2026-08-16T19:06:52.591Z"
+}

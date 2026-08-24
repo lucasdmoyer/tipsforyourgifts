@@ -1,0 +1,264 @@
+{
+  "schemaVersion": "1.0.0",
+  "styleVersion": "gift-thread-editorial-cartoon-v1.0",
+  "status": "founder_approved",
+  "approvalEvidence": "Lucas approved the Gift-Thread style for all items, products, and articles and authorized deployment on 2026-08-23.",
+  "generator": "openai-built-in-imagegen",
+  "rightsPosture": "founder-approved-original-ai-generated",
+  "promptBookPath": "visuals/PROMPTS.md",
+  "sourcePathPattern": "visuals/sources/{assetId}.png",
+  "draftFilePathPattern": "visuals/drafts/{assetId}.webp",
+  "dimensions": {
+    "width": 1536,
+    "height": 1024,
+    "aspectRatio": "3:2"
+  },
+  "responsivePreviewPassed": true,
+  "responsiveEvidence": {
+    "testedAt": "2026-08-24T03:42:12Z",
+    "viewports": [
+      "1440x1000",
+      "390x844"
+    ],
+    "routes": [
+      "/blog",
+      "/blog/read-it-then-play-it-gift-pairs",
+      "/blog/one-photo-one-story-gift-pairs",
+      "/blog/gifts-for-a-golf-friend"
+    ],
+    "result": "passed",
+    "brokenPublicAssets": 0,
+    "horizontalOverflow": false,
+    "draftRoutesAndAssetsPubliclyReachable": false
+  },
+  "assets": [
+    {
+      "id": "golf-friction-kit",
+      "src": "/blog-images/gifts-for-a-golf-friend/hero.webp",
+      "alt": "A golfer cleans club grooves beside a golf bag with a towel, rain glove, umbrella, and putting gate linked by a saffron ribbon.",
+      "caption": "The strongest golf gifts solve a small course-day annoyance the recipient already works around.",
+      "sourceSha256": "51a196c65121ad3d246714fdc827f4b0a0330fe49d0dfda5dcbf89f63c98c8f9",
+      "fileSha256": "1aae9d8f37393aa774503ddd0f5d419ccf26dcd0e763096769fa959ea14d904a",
+      "promptSummary": "An adult golfer addresses observed groove-cleaning, towel, rain, and putting-practice frictions with generic category objects connected by the Gift-Thread ribbon."
+    },
+    {
+      "id": "research-evidence-desk",
+      "src": "/blog-images/how-we-research-gifts/hero.webp",
+      "alt": "An editor compares product cards, a source ledger, a drawback flag, and a recipient clue before choosing a gift.",
+      "caption": "A recipient clue becomes a recommendation only after sources, drawbacks, and product identity survive review.",
+      "sourceSha256": "076e79234fc0b221b0fe32f446c2b9d596911c419b7f36855fbc10289558b73b",
+      "fileSha256": "a460f2aba65233aa9bcdb48cd635d045f0ee7e69816e7aaf70770b12bcaa877e",
+      "promptSummary": "A rigorous gift editor moves from recipient clue through candidate comparison, source checking, drawback review, and recommendation."
+    },
+    {
+      "id": "fiber-art-pause-resume",
+      "src": "/blog-images/knitting-crochet-project-bag-row-counter-gift-pairs/hero.webp",
+      "alt": "A knitter places a work in progress in a project case while holding a row counter beside an abstract magnetic chart.",
+      "caption": "A useful fiber-art pair protects the maker's place so the next session starts with less reconstruction.",
+      "sourceSha256": "f0acd0497f3c18fc54fbc009183788c405d7f2d05e7322e172612811e0f27d69",
+      "fileSha256": "52898c63117d8482f81de54a2ec094494c07bc20827aaf8c03a1be73af21142c",
+      "promptSummary": "One adult maker uses a structured project case, mechanical row counter, and abstract magnetic chart in a mark-close-resume loop."
+    },
+    {
+      "id": "language-read-retell",
+      "src": "/blog-images/language-learning-gifts-read-a-scene-say-it-aloud/hero.webp",
+      "alt": "A language learner reads an illustrated scene aloud and arranges picture cards to retell it in their own words.",
+      "caption": "The pair works when a short scene becomes a low-pressure speaking prompt rather than another passive study item.",
+      "sourceSha256": "157b2222ff52398c8d548afb0475fad63734cb78752e67fcdcdd5730af401906",
+      "fileSha256": "2654356edbb9e877dfdde1e56c9a98c9c4da0160af87595451580b7e54a93055",
+      "promptSummary": "An adult learner reads a picture-led dialogue aloud and uses three original story cards to retell the scene."
+    },
+    {
+      "id": "miniature-paint-palette-recipe",
+      "src": "/blog-images/miniature-painting-wet-palette-recipe-pairs/hero.webp",
+      "alt": "A miniature painter matches wet-palette paint mixes to color swatches in a recipe notebook beside a generic figure.",
+      "caption": "The wet palette preserves the current session; the recipe notebook preserves the mix for the next one.",
+      "sourceSha256": "2d136c46f7cb471dac6b78aac4daf3b0982ba844de7c323105c87795dc760bb5",
+      "fileSha256": "2cd854cea40ace5fec60ff78baa2dee40d1ed46dcd2f3f1c2b06a51299c2dbd4",
+      "promptSummary": "An adult miniature painter connects a reusable wet palette, physical color-recipe swatches, and an original generic figure."
+    },
+    {
+      "id": "muddy-paw-rinse-dry",
+      "src": "/blog-images/muddy-paw-washer-drying-towel-gift-pairs/hero.webp",
+      "alt": "A dog owner calmly rinses one muddy paw in an entryway with a large drying towel ready beside them.",
+      "caption": "The thoughtful gift is the repeatable arrival routine: stable rinse, complete dry, and an easier clean-floor reset.",
+      "sourceSha256": "3e7c1af9dda7e503e4c008e2702b88bd96f0489a62b86bd91677ca7f962682a1",
+      "fileSha256": "1db4169d5dd88fe35f4330a7a27ddeb2e0a3886211311aa26f9a2331e238418f",
+      "promptSummary": "One adult and a relaxed dog demonstrate a stable manual paw-rinse and towel-dry entryway routine with generic objects."
+    },
+    {
+      "id": "tree-walk-guide-loupe",
+      "src": "/blog-images/neighborhood-tree-walk-field-guide-loupe-gift-pairs/hero.webp",
+      "alt": "A neighborhood walker compares a fallen leaf and twig with a field guide and hand loupe beside a street tree.",
+      "caption": "One tree, one walk, one careful observation turns two small tools into an ongoing neighborhood ritual.",
+      "sourceSha256": "08152c22c6cb988bd882128e82752d64defce264933b56c301fea5e2fc7208a3",
+      "fileSha256": "5120bda56fadfe1bafb2427c44bae91b1cd0f9797c3c0de334fc278078175b14",
+      "promptSummary": "An adult walker uses a regional field guide and 10x loupe to examine one fallen leaf and twig without asserting a species."
+    },
+    {
+      "id": "night-sky-chart-red-light",
+      "src": "/blog-images/night-sky-planisphere-red-light-gift-pairs/hero.webp",
+      "alt": "A backyard observer uses a rotating star chart and dim red flashlight to trace one constellation in a dark sky.",
+      "caption": "The pairing works when the chart narrows the search and the dim red light helps the observer stay with the sky.",
+      "sourceSha256": "a6bba71576bef5022d834791d8939ad531401f49bc3b3f0376ae72560ccd5661",
+      "fileSha256": "a2c2f91a9b062b57333544fe3fba601efb3acfb2f261bc79011f6a635040df04",
+      "promptSummary": "One adult uses a generic latitude-matched planisphere and dim red light to find a single abstract constellation safely outdoors."
+    },
+    {
+      "id": "family-one-photo-one-story",
+      "src": "/blog-images/one-photo-one-story-gift-pairs/hero.webp",
+      "alt": "Two generations share one anonymous family photo while one person records the story beside blank cards and an archival sleeve.",
+      "caption": "One protected photo and one recorded story make the gift a shared act, not an empty album assignment.",
+      "sourceSha256": "5b62bcd71b7ccc91318fb59bc2523d27bb3873647af4c885187eb6efb0e9cd1c",
+      "fileSha256": "5082090f12ba440c2c81da822b53abfff3328f95880706f72994bfdadd7632e3",
+      "promptSummary": "Two adults of different generations protect an anonymous vintage photo, talk, and record one memory on a blank card."
+    },
+    {
+      "id": "puzzle-pause-sort-resume",
+      "src": "/blog-images/puzzle-board-sorting-tray-gift-pairs/hero.webp",
+      "alt": "A puzzler slides a partly completed landscape puzzle into a portable board beside several color-sorting trays.",
+      "caption": "The board protects the in-progress picture; the trays protect the next session from a long restart.",
+      "sourceSha256": "541de65ddc57694f5391b258bef4652bdf61d16da1b363353387dec23999801b",
+      "fileSha256": "739a10d160e17636c9578a925c660fd8a015b4dde1755e943eb68bcd6bce613f",
+      "promptSummary": "One adult saves a generic jigsaw in a zippered board, sorts pieces into shallow trays, and reclaims the dining table."
+    },
+    {
+      "id": "read-it-big-history",
+      "src": "/blog-images/read-it-then-play-it-gift-pairs/hero.webp",
+      "alt": "A reader moves between an open history book and a laptop showing an original hexagonal world map, joined by a saffron ribbon.",
+      "caption": "The pair works when reading creates questions the recipient wants to test in a strategy game—and the game sends them back with better questions.",
+      "sourceSha256": "b1a002626fd04ee03e633ef5c51fae76e9e9288b8441572a038f64fbca257964",
+      "fileSha256": "7239b3da693ecb57e0b042a9b88a563e0cf931f2b1570404ab433c0b399595bb",
+      "promptSummary": "One adult moves between a generic big-history book and an original hex-map computer strategy scene linked by a saffron ribbon."
+    },
+    {
+      "id": "read-it-bird-cognition",
+      "src": "/blog-images/read-it-then-play-it-gift-pairs/bird-cognition-engine-loop.webp",
+      "alt": "A reader connects a bird-cognition book, an original habitat engine on a laptop, and a bird observed through the window.",
+      "caption": "Read one cognition story, notice how a game abstracts it, then look for the behavior outdoors.",
+      "sourceSha256": "698674579a5fda5d8906ee77a4a6afa957f22b9c089c37ee879f285554af89a9",
+      "fileSha256": "6d555d842167158d693f13ec90515a46005a1bebfb946341f0778288f9bc62d7",
+      "promptSummary": "An adult connects a generic bird-cognition book, original digital habitat engine, and neighborhood observation."
+    },
+    {
+      "id": "read-it-mars-constraints",
+      "src": "/blog-images/read-it-then-play-it-gift-pairs/mars-constraint-counterpoint.webp",
+      "alt": "A reader compares settlement constraints in a Mars book with an original card-focused engine tableau and resource cubes.",
+      "caption": "The book supplies the constraint; the tabletop model makes its omissions and optimistic shortcuts discussable.",
+      "sourceSha256": "458576e3199d3f5a437c005d90e258ac6f24781e8d658da8bb980dd16a99a478",
+      "fileSha256": "3a58944cfade6456380c45952267bbc1025ffb1e4069a7594fac11deeb74fd6e",
+      "promptSummary": "An adult compares a skeptical generic Mars-settlement book with an original card-focused engine tableau that avoids Ares Expedition trade dress."
+    },
+    {
+      "id": "read-it-feedback-loop",
+      "src": "/blog-images/read-it-then-play-it-gift-pairs/feedback-loop-table.webp",
+      "alt": "A reader draws a feedback loop beside a systems book and an original cooperative network board game.",
+      "caption": "Name the stock, flow, delay, and loop after play so the game becomes a discussion rather than a literal model.",
+      "sourceSha256": "f472573cb487df06d39f4093a7f28b51ab741bf63cae4d4d94a706a26153ac46",
+      "fileSha256": "35c3610bf6b1893d7219f80ec3a0a083c718481d7f3d8c3777f994b1d3da9744",
+      "promptSummary": "An adult links abstract systems diagrams with an original cooperative town-network board game and draws one loop."
+    },
+    {
+      "id": "read-it-language-context",
+      "src": "/blog-images/read-it-then-play-it-gift-pairs/language-context-table.webp",
+      "alt": "Four friends connect a book of speech-bubble diagrams with a word-association game represented by blank line cards.",
+      "caption": "A clue succeeds because of the particular people at the table—the same context the book helps them notice.",
+      "sourceSha256": "ea79b919f5647a8343d58c6eb88ea5b4475b981ddef65031cb5ff639bc16ad14",
+      "fileSha256": "25f29a1f427a3aa3f98c25440825628bd56f233411fa87ca0644c1516ffd2332",
+      "promptSummary": "Four adults connect abstract internet-language concepts with an original word-association game represented by blank line cards rather than Codenames art."
+    },
+    {
+      "id": "read-it-park-story",
+      "src": "/blog-images/read-it-then-play-it-gift-pairs/park-story-to-trail.webp",
+      "alt": "A reader links a parks memoir, an original route game, and a landscape photo that could prompt a real outing.",
+      "caption": "The useful ending is not a winning score—it is one saved trail, scheduled outing, or remembered photo.",
+      "sourceSha256": "be11268e54da341da1c7e14e6f2e93e8495193f197f2aa346a5ed7595fc7f368",
+      "fileSha256": "f1a7956bbcf8838b49a7f41ed417fe0163956cb2e38b8827b2fdc53b65eb4465",
+      "promptSummary": "An adult turns a generic park memoir and original route game into one future trail or revisited landscape photo."
+    },
+    {
+      "id": "read-it-writing-constraint",
+      "src": "/blog-images/read-it-then-play-it-gift-pairs/constraint-to-draft.webp",
+      "alt": "A writer pairs a craft book with exactly nine original picture-prompt cubes and begins a timed handwritten draft.",
+      "caption": "The book sets the craft objective; the cubes supply only enough constraint to help the pencil move.",
+      "sourceSha256": "aad1fd11f7b043971f277ef523728132482d9463be4f3558821f6e576e9b6630",
+      "fileSha256": "75969bf6778aa2c4fa72bdd6d57e010d53a3b1b39e16332a96617747f0be793a",
+      "promptSummary": "An adult combines a generic prose-craft book, exactly nine countable original picture cubes, a blank timer, and a handwritten draft."
+    },
+    {
+      "id": "read-it-photo-walk",
+      "src": "/blog-images/read-it-then-play-it-gift-pairs/technique-to-photo-walk.webp",
+      "alt": "A photographer holds a picture-led technique guide while framing an architectural reflection after rain.",
+      "caption": "One principle and one safe assignment turn a guide into a short practice-and-review loop.",
+      "sourceSha256": "1737799230b366e84fb094664485b91730b13cdc161d4dccbcacfc8baadea974",
+      "fileSha256": "74a7fcde710386458d72a97da712d9510ca976bdbb81ea5f9c9b84dff1665108",
+      "promptSummary": "One adult uses a generic technique guide, picture-only reflection assignment, and existing camera on a respectful photo walk."
+    },
+    {
+      "id": "read-it-fungal-network",
+      "src": "/blog-images/read-it-then-play-it-gift-pairs/fungal-network-table.webp",
+      "alt": "A reader traces roots and exchange paths between a fungal ecology book and an original forest network game.",
+      "caption": "The book supplies the living-system story; the game invites the recipient to name what its neat network leaves out.",
+      "sourceSha256": "8bed91293ae5f56714588741dfddd0bcd248a9ab6ee6e74e16872ab595347e14",
+      "fileSha256": "1ad26492de9d218d94aec329098f3f3bed9386b057d4ccbe9a09473f7e8cdee4",
+      "promptSummary": "An adult links a generic fungal-ecology book with an original tabletop forest network of trees, roots, and resource stones."
+    },
+    {
+      "id": "read-it-temperature-loop",
+      "src": "/blog-images/read-it-then-play-it-gift-pairs/temperature-to-measurement.webp",
+      "alt": "A home cook safely uses a compact blank-display folding probe thermometer beside a picture-led cooking science reference.",
+      "caption": "The reference explains the heat; the thermometer turns that concept into one careful observation.",
+      "sourceSha256": "cfa28df8a4ff44fc4dcd00e811454cc45c08be036af62bc2acf46e9d598ca3f0",
+      "fileSha256": "ba694eec5143d1e6e5a51c93f25c99921ef1a9c7f066557746f4673fc33d2f83",
+      "promptSummary": "One adult home cook safely connects an abstract cooking-science reference, a self-contained compact folding probe thermometer with no wire, and a blank note card."
+    },
+    {
+      "id": "useful-friction-five",
+      "src": "/blog-images/useful-gifts-for-hard-to-shop-for-adults/hero.webp",
+      "alt": "An adult holds a flashlight and precision bit set among a packing cube, thermometer, mouse, and loose hinge.",
+      "caption": "A useful gift earns its space by solving one friction the recipient already tolerates.",
+      "sourceSha256": "e3663ec496fbb2d3ca06ae92e94f0f394f7fc3cf7f239b0a41effb4b38d32d58",
+      "fileSha256": "1e22103222125f2c606b605fa524ba43d9eb1762ac592b81e20748ff4ca5f40d",
+      "promptSummary": "One adult considers five generic small-friction tools: packing cube, blank thermometer, quiet mouse, flashlight, and bit set."
+    },
+    {
+      "id": "vinyl-clean-dry-resleeve",
+      "src": "/blog-images/vinyl-record-cleaner-inner-sleeve-gift-pairs/hero.webp",
+      "alt": "Two hands safely clean a generic record by its edge and grooves beside a drying rack and plain inner sleeves.",
+      "caption": "The pair is useful when it creates a repeatable clean, fully dry, resleeve, and archive reset.",
+      "sourceSha256": "4f534a7b7a6e265773ab6d101863fde0c928cd2d4a64d518aafdb0e016113ca1",
+      "fileSha256": "26947853ca35c33f141e319082949843b384ebe80a451c4934928cd50eac4272",
+      "promptSummary": "Exactly two hands keep fingers on the record edge and the brush on grooves outside a center label protector while a second record dries."
+    }
+  ],
+  "articles": [
+    { "slug": "gifts-for-a-golf-friend", "heroId": "golf-friction-kit" },
+    { "slug": "how-we-research-gifts", "heroId": "research-evidence-desk" },
+    { "slug": "knitting-crochet-project-bag-row-counter-gift-pairs", "heroId": "fiber-art-pause-resume" },
+    { "slug": "language-learning-gifts-read-a-scene-say-it-aloud", "heroId": "language-read-retell" },
+    { "slug": "miniature-painting-wet-palette-recipe-pairs", "heroId": "miniature-paint-palette-recipe" },
+    { "slug": "muddy-paw-washer-drying-towel-gift-pairs", "heroId": "muddy-paw-rinse-dry" },
+    { "slug": "neighborhood-tree-walk-field-guide-loupe-gift-pairs", "heroId": "tree-walk-guide-loupe" },
+    { "slug": "night-sky-planisphere-red-light-gift-pairs", "heroId": "night-sky-chart-red-light" },
+    { "slug": "one-photo-one-story-gift-pairs", "heroId": "family-one-photo-one-story" },
+    { "slug": "puzzle-board-sorting-tray-gift-pairs", "heroId": "puzzle-pause-sort-resume" },
+    {
+      "slug": "read-it-then-play-it-gift-pairs",
+      "heroId": "read-it-big-history",
+      "pairSceneIds": {
+        "big-history-strategy-debate": "read-it-big-history",
+        "bird-cognition-engine-loop": "read-it-bird-cognition",
+        "mars-constraint-counterpoint": "read-it-mars-constraints",
+        "feedback-loop-table": "read-it-feedback-loop",
+        "language-context-table": "read-it-language-context",
+        "park-story-to-trail": "read-it-park-story",
+        "constraint-to-draft": "read-it-writing-constraint",
+        "technique-to-photo-walk": "read-it-photo-walk",
+        "fungal-network-table": "read-it-fungal-network",
+        "temperature-to-measurement": "read-it-temperature-loop"
+      }
+    },
+    { "slug": "useful-gifts-for-hard-to-shop-for-adults", "heroId": "useful-friction-five" },
+    { "slug": "vinyl-record-cleaner-inner-sleeve-gift-pairs", "heroId": "vinyl-clean-dry-resleeve" }
+  ]
+}

@@ -1,0 +1,114 @@
+name: Record verified Firebase live content
+
+on:
+  workflow_run:
+    workflows:
+      - Firebase production release
+      - Proven automatic Firebase publication
+    types: [completed]
+
+permissions:
+  actions: read
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: publication-live-state
+  cancel-in-progress: false
+
+jobs:
+  record:
+    if: github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Find one verified publication-receipt artifact
+        id: discover
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+          RELEASE_RUN_ID: ${{ github.event.workflow_run.id }}
+          RELEASE_WORKFLOW_NAME: ${{ github.event.workflow_run.name }}
+        run: |
+          receipt_count="$(gh api "repos/$REPOSITORY/actions/runs/$RELEASE_RUN_ID/artifacts" --jq '[.artifacts[] | select(.name | startswith("firebase-publication-receipt-"))] | length')"
+          test "$receipt_count" -le 1 || { echo "Release workflow emitted more than one publication receipt artifact." >&2; exit 1; }
+          if test "$receipt_count" -eq 0; then
+            echo "found=false" >> "$GITHUB_OUTPUT"
+            echo "The release workflow completed without a live receipt, so there is no live content state to record."
+            exit 0
+          fi
+          case "$RELEASE_WORKFLOW_NAME" in
+            "Firebase production release") source_workflow="firebase-production" ;;
+            "Proven automatic Firebase publication") source_workflow="firebase-auto-production" ;;
+            *) echo "Untrusted release workflow name." >&2; exit 1 ;;
+          esac
+          echo "found=true" >> "$GITHUB_OUTPUT"
+          echo "source_workflow=$source_workflow" >> "$GITHUB_OUTPUT"
+      - uses: actions/checkout@v5
+        if: steps.discover.outputs.found == 'true'
+        with:
+          ref: master
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        if: steps.discover.outputs.found == 'true'
+        with:
+          node-version: "24.14.0"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - uses: actions/download-artifact@v5
+        if: steps.discover.outputs.found == 'true'
+        with:
+          github-token: ${{ github.token }}
+          run-id: ${{ github.event.workflow_run.id }}
+          pattern: firebase-publication-receipt-*
+          path: verified-release-artifact
+          merge-multiple: true
+      - name: Validate and record the exact release receipt
+        if: steps.discover.outputs.found == 'true'
+        id: record
+        env:
+          RELEASE_RUN_ID: ${{ github.event.workflow_run.id }}
+          RELEASE_HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
+          EXPECTED_SOURCE_WORKFLOW: ${{ steps.discover.outputs.source_workflow }}
+        run: |
+          mapfile -t receipt_paths < <(find verified-release-artifact -type f -name publication-receipt.json -print)
+          test "${#receipt_paths[@]}" -eq 1 || { echo "Expected exactly one downloaded publication-receipt.json." >&2; exit 1; }
+          npm ci --prefix web
+          npm --prefix web run validate:live-publication
+          npm --prefix web run publication:live:record -- --receipt="${receipt_paths[0]}" --expected-workflow-run-id="$RELEASE_RUN_ID" --expected-release-sha="$RELEASE_HEAD_SHA" --expected-source-workflow="$EXPECTED_SOURCE_WORKFLOW"
+      - name: Prove the receipt-only synchronization patch
+        if: steps.discover.outputs.found == 'true' && steps.record.outputs.changed == 'true'
+        run: |
+          npm --prefix web run generate
+          git add -N .
+          while IFS= read -r changed_path; do
+            case "$changed_path" in
+              web/config/live-publication.json|web/releases/receipts/*.json|web/src/data/operations.json|web/src/app/generated/content.generated.ts) ;;
+              *) echo "Live-state synchronization changed forbidden path: $changed_path" >&2; exit 1 ;;
+            esac
+          done < <(git diff --name-only HEAD)
+          npm run validate
+          npm run build
+          npm run smoke
+          git diff --check
+      - name: Commit the durable live-state branch
+        if: steps.discover.outputs.found == 'true' && steps.record.outputs.changed == 'true'
+        env:
+          RUN_ID: ${{ github.run_id }}
+          RECEIPT_PATH: ${{ steps.record.outputs.receipt_path }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -c "codex/record-live-content-$RUN_ID"
+          git add web/config/live-publication.json "web/$RECEIPT_PATH" web/src/data/operations.json web/src/app/generated/content.generated.ts
+          git commit -m "Record verified Firebase live content"
+          git push origin "codex/record-live-content-$RUN_ID"
+      - name: Open and check-gate the receipt pull request
+        if: steps.discover.outputs.found == 'true' && steps.record.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ github.run_id }}
+          RECEIPT_ID: ${{ steps.record.outputs.receipt_id }}
+        run: |
+          pr_url="$(gh pr create --base master --head "codex/record-live-content-$RUN_ID" --title "Record verified Firebase live content" --body "This machine-authored patch persists the strict post-deploy receipt $RECEIPT_ID and updates the executive agenda. It records an already completed, smoke-verified release; it does not deploy, change Firebase, authorize another release, or alter editorial ranking. Auto-merge remains subject to required repository checks.")"
+          gh pr merge "$pr_url" --auto --squash

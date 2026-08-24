@@ -1,0 +1,16 @@
+{
+  "schemaVersion": "1.0.0",
+  "receiptId": "20260816-night-sky-ritual-a5594a7b-qa",
+  "runId": "20260816-night-sky-ritual-a5594a7b",
+  "articleSlug": "night-sky-planisphere-red-light-gift-pairs",
+  "reviewedAt": "2026-08-16T21:37:48.745Z",
+  "reviewerRole": "independent-editor",
+  "reviewerId": "night-sky-independent-editor-20260816-r2",
+  "workflowRunId": "local-independent-review",
+  "verdict": "passed",
+  "evidenceSha256": "a43582fa22602718f8bf59b6949a1eba338f32f16ee4187a7ef5e8411b926391",
+  "articleSha256": "b9f3be7a1828c4db74548fa6bc58f3d153ffd566018cfaba287fe24256ff3690",
+  "socialSha256": "aed719b0b7d129f5c958a607fdbd4981db3b462f5ff3cca35ec32d0f8d1a5f57",
+  "blockers": [],
+  "warnings": []
+}

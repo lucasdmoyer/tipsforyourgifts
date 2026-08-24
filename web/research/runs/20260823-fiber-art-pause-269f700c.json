@@ -1,0 +1,1407 @@
+{
+  "schemaVersion": "1.1.0",
+  "runId": "20260823-fiber-art-pause-269f700c",
+  "ideaId": "founder-idea-012",
+  "ideaRevision": 2,
+  "ideaSha256": "269f700c139d83f3f0f6c9e54e51252ff270764e506d9835d3987434010feddb",
+  "decisionLens": "gift_pairing",
+  "contentType": "pairing-guide",
+  "status": "drafted",
+  "topic": "Project-sized fiber-art containers paired with physical row or paper-pattern state trackers for easier restart",
+  "audience": "People buying for a knitter or crocheter who loses tools, pattern state, or the last completed row when a work in progress is paused",
+  "occasion": "Birthday, holiday, first sweater or blanket, craft retreat, or return to a paused hobby",
+  "budgetBands": [
+    "$20-$60",
+    "$60-$130"
+  ],
+  "riskClass": "medium",
+  "draftAuthor": "fiber-art-pause-drafting-research-desk",
+  "startedAt": "2026-08-23T20:15:00.000Z",
+  "researchPasses": [
+    {
+      "pass": 1,
+      "materialNoveltyRate": 1,
+      "newCandidates": 12,
+      "newDecisionFactors": 9
+    },
+    {
+      "pass": 2,
+      "materialNoveltyRate": 0.34,
+      "newCandidates": 0,
+      "newDecisionFactors": 5
+    },
+    {
+      "pass": 3,
+      "materialNoveltyRate": 0.16,
+      "newCandidates": 0,
+      "newDecisionFactors": 3
+    },
+    {
+      "pass": 4,
+      "materialNoveltyRate": 0.06,
+      "newCandidates": 0,
+      "newDecisionFactors": 1
+    },
+    {
+      "pass": 5,
+      "materialNoveltyRate": 0.03,
+      "newCandidates": 0,
+      "newDecisionFactors": 0
+    }
+  ],
+  "sources": [
+    {
+      "id": "src-row-count-discussion",
+      "url": "https://www.reddit.com/r/knitting/comments/oncaqj",
+      "publisher": "Reddit r/knitting",
+      "title": "Knitters compare paper tallies, physical counters, and repeated recounting",
+      "accessedAt": "2026-08-23",
+      "sourceClass": "social-discussion",
+      "trustTier": "C",
+      "independenceGroup": "reddit-knitting-row-count-2021"
+    },
+    {
+      "id": "src-wip-restart-discussion",
+      "url": "https://www.reddit.com/r/knitting/comments/ngfaqr",
+      "publisher": "Reddit r/knitting",
+      "title": "Knitters describe written project state as a way to resume paused work",
+      "accessedAt": "2026-08-23",
+      "sourceClass": "social-discussion",
+      "trustTier": "C",
+      "independenceGroup": "reddit-knitting-restart-2021"
+    },
+    {
+      "id": "src-counter-convention-discussion",
+      "url": "https://www.reddit.com/r/knitting/comments/vavxbe",
+      "publisher": "Reddit r/knitting",
+      "title": "Knitters discuss counter conventions, distraction, and forgotten clicks",
+      "accessedAt": "2026-08-23",
+      "sourceClass": "social-discussion",
+      "trustTier": "C",
+      "independenceGroup": "reddit-knitting-counter-conventions"
+    },
+    {
+      "id": "src-row-counter-reference",
+      "url": "https://en.wikipedia.org/wiki/Row_counter_%28hand_knitting%29",
+      "publisher": "Wikipedia",
+      "title": "Reference overview of physical row-counter formats and functions",
+      "accessedAt": "2026-08-23",
+      "sourceClass": "craft-reference",
+      "trustTier": "C",
+      "independenceGroup": "wikipedia-row-counter-reference"
+    },
+    {
+      "id": "src-spinoff-counter-feature",
+      "url": "https://files.spinoffmagazine.com/SO_Summer_2024.pdf",
+      "publisher": "Spin Off Magazine",
+      "title": "Fiber-arts trade feature including a physical knitting row counter",
+      "accessedAt": "2026-08-23",
+      "sourceClass": "trade-publication",
+      "trustTier": "B",
+      "independenceGroup": "spin-off-magazine"
+    },
+    {
+      "id": "src-della-train-official",
+      "url": "https://dellaq.com/products/makers-train-case-twilight",
+      "publisher": "della Q",
+      "title": "Maker's Train Case official dimensions, tray, magnetic lid, and yarn feeders",
+      "accessedAt": "2026-08-23",
+      "sourceClass": "manufacturer",
+      "trustTier": "A",
+      "independenceGroup": "della-q"
+    },
+    {
+      "id": "src-della-jimmybeans-review",
+      "url": "https://www.jimmybeansadmin.com/knitting/yarn/dellaQ/MakersTrainCaseReviews.asp?showLarge=true&specPCVID=103820",
+      "publisher": "Jimmy Beans Wool owner reviews",
+      "title": "della Q Maker's Train Case exact-product owner review corpus",
+      "accessedAt": "2026-08-23",
+      "sourceClass": "independent-review",
+      "trustTier": "B",
+      "independenceGroup": "jimmy-beans-train-case-buyers"
+    },
+    {
+      "id": "src-della-hethaakbeest-review",
+      "url": "https://hethaakbeest.be/review-della-q-traincase/",
+      "publisher": "Het Haakbeest",
+      "title": "della Q Train Case hands-on review",
+      "accessedAt": "2026-08-23",
+      "sourceClass": "independent-review",
+      "trustTier": "B",
+      "independenceGroup": "het-haakbeest"
+    },
+    {
+      "id": "src-artbin-official",
+      "url": "https://www.artbin.com/product-catalogs/2022-artbin-craft-catalog-9717ab-low-res.pdf",
+      "publisher": "ArtBin",
+      "title": "ArtBin Yarn Tote official catalogue specifications",
+      "accessedAt": "2026-08-23",
+      "sourceClass": "manufacturer",
+      "trustTier": "A",
+      "independenceGroup": "artbin"
+    },
+    {
+      "id": "src-artbin-underground-review",
+      "url": "https://undergroundcrafter.com/2018/12/07/artbin-yarn-tote-review/",
+      "publisher": "Underground Crafter",
+      "title": "ArtBin Yarn Tote six-month use review",
+      "accessedAt": "2026-08-23",
+      "sourceClass": "independent-review",
+      "trustTier": "B",
+      "independenceGroup": "underground-crafter"
+    },
+    {
+      "id": "src-artbin-woods-review",
+      "url": "https://stitchinginthewoods.mclarenfamilycrafts.com/artbin-yarn-tote-review/",
+      "publisher": "Stitching in the Woods",
+      "title": "Long-term ArtBin Yarn Tote owner review",
+      "accessedAt": "2026-08-23",
+      "sourceClass": "independent-review",
+      "trustTier": "B",
+      "independenceGroup": "stitching-in-the-woods"
+    },
+    {
+      "id": "src-clover-counter-official",
+      "url": "https://www.clovercatalog.com/OCTOBER%202025%20PRICELIST_PRINT%20Rev.pdf",
+      "publisher": "Clover",
+      "title": "Clover catalogue listing for Knitting Counter Kacha-Kacha item 336",
+      "accessedAt": "2026-08-23",
+      "sourceClass": "manufacturer",
+      "trustTier": "A",
+      "independenceGroup": "clover"
+    },
+    {
+      "id": "src-clover-walmart-review",
+      "url": "https://www.walmart.com/ip/10660884",
+      "publisher": "Walmart verified buyers",
+      "title": "Clover Mini Kacha-Kacha exact-product verified owner reviews",
+      "accessedAt": "2026-08-23",
+      "sourceClass": "independent-review",
+      "trustTier": "B",
+      "independenceGroup": "walmart-clover-counter-buyers"
+    },
+    {
+      "id": "src-clover-jimmybeans-review",
+      "url": "https://www.jimmybeansadmin.com/knitting/yarn/Clover/KnittingCounterReviews.asp?specPCVID=1062",
+      "publisher": "Jimmy Beans Wool owner reviews",
+      "title": "Clover Kacha-Kacha exact-product owner review corpus",
+      "accessedAt": "2026-08-23",
+      "sourceClass": "independent-review",
+      "trustTier": "B",
+      "independenceGroup": "jimmy-beans-clover-counter-buyers"
+    },
+    {
+      "id": "src-makers-board-official",
+      "url": "https://cocoknits.com/products/makers-board",
+      "publisher": "Cocoknits",
+      "title": "Maker's Board official dimensions, included magnets, materials, and care warning",
+      "accessedAt": "2026-08-23",
+      "sourceClass": "manufacturer",
+      "trustTier": "A",
+      "independenceGroup": "cocoknits-makers-board"
+    },
+    {
+      "id": "src-makers-board-knitty-review",
+      "url": "https://knitty.com/ISSUEw21/content.php/FEATw21CS.php",
+      "publisher": "Knitty",
+      "title": "Cocoknits Maker's Board hands-on editorial review",
+      "accessedAt": "2026-08-23",
+      "sourceClass": "independent-review",
+      "trustTier": "B",
+      "independenceGroup": "knitty"
+    },
+    {
+      "id": "src-makers-board-feefo-review",
+      "url": "https://www.feefo.com/en-US/reviews/yarn/products/cocoknits-maker-s-board?parentSku=30000100&timeFrame=YEAR",
+      "publisher": "Feefo verified buyers",
+      "title": "Cocoknits Maker's Board verified-purchase reviews",
+      "accessedAt": "2026-08-23",
+      "sourceClass": "independent-review",
+      "trustTier": "B",
+      "independenceGroup": "feefo-makers-board-buyers"
+    },
+    {
+      "id": "src-cocoknits-counter-official",
+      "url": "https://cocoknits.com/products/knitting-row-counter",
+      "publisher": "Cocoknits",
+      "title": "Cocoknits Knitting Row Counter official features and use instructions",
+      "accessedAt": "2026-08-23",
+      "sourceClass": "manufacturer",
+      "trustTier": "A",
+      "independenceGroup": "cocoknits-row-counter"
+    },
+    {
+      "id": "src-cocoknits-counter-little-review",
+      "url": "https://www.thelittleknittingcompany.co.uk/products/row-counter-premium",
+      "publisher": "The Little Knitting Company owner reviews",
+      "title": "Cocoknits Row Counter exact-product customer reviews",
+      "accessedAt": "2026-08-23",
+      "sourceClass": "independent-review",
+      "trustTier": "B",
+      "independenceGroup": "little-knitting-company-buyers"
+    },
+    {
+      "id": "src-cocoknits-counter-needle-review",
+      "url": "https://www.theneedlestore.com/products/cocoknits-row-counter",
+      "publisher": "The Needle Store owner reviews",
+      "title": "Cocoknits Row Counter exact-product owner review corpus",
+      "accessedAt": "2026-08-23",
+      "sourceClass": "independent-review",
+      "trustTier": "B",
+      "independenceGroup": "needle-store-counter-buyers"
+    }
+  ],
+  "claims": [
+    {
+      "id": "claim-fiber-restart-friction",
+      "kind": "recipient_friction",
+      "text": "Knitters describe losing row counts, pattern position, modifications, or project context when work is interrupted and later resumed.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-row-count-discussion",
+        "src-wip-restart-discussion",
+        "src-counter-convention-discussion"
+      ]
+    },
+    {
+      "id": "claim-fiber-self-purchase",
+      "kind": "self_purchase_pattern",
+      "text": "Scrap paper, memory, ordinary bags, and free digital counters are common substitutes, making purpose-built continuity tools easy to postpone despite repeated reconstruction work.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-row-count-discussion",
+        "src-wip-restart-discussion"
+      ]
+    },
+    {
+      "id": "claim-counter-convention",
+      "kind": "compatibility",
+      "text": "A physical counter is only unambiguous when the maker decides whether its number means the row just completed or the row to begin next.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": [
+        "src-counter-convention-discussion",
+        "src-row-counter-reference"
+      ]
+    },
+    {
+      "id": "claim-della-benefit",
+      "kind": "product_benefit",
+      "text": "The della Q Maker's Train Case is a 12-by-6-by-5-inch structured case with a removable notions tray, magnetic lid, and two yarn-feed openings for small projects.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": [
+        "src-della-train-official",
+        "src-della-jimmybeans-review",
+        "src-della-hethaakbeest-review"
+      ]
+    },
+    {
+      "id": "claim-della-drawback",
+      "kind": "product_drawback",
+      "text": "The structured case is comparatively heavy and capacity-limited, while owner reviews report mixed latch and hardware experiences across versions.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": [
+        "src-della-jimmybeans-review",
+        "src-della-hethaakbeest-review"
+      ]
+    },
+    {
+      "id": "claim-della-fit",
+      "kind": "compatibility",
+      "text": "The train case is best qualified for socks, hats, cowls, small garments, or similarly compact projects only after yarn volume and tool length are measured.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": [
+        "src-della-train-official",
+        "src-della-jimmybeans-review"
+      ]
+    },
+    {
+      "id": "claim-artbin-benefit",
+      "kind": "product_benefit",
+      "text": "The ArtBin Yarn Tote uses a flat base, a removable multi-skein insert, external pockets, yarn grommets, and a large open tote format suited to bigger multi-color work.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": [
+        "src-artbin-official",
+        "src-artbin-underground-review",
+        "src-artbin-woods-review"
+      ]
+    },
+    {
+      "id": "claim-artbin-drawback",
+      "kind": "product_drawback",
+      "text": "The Yarn Tote occupies substantial space, its magnetic snap closes only part of the top, and some users avoid the grommets because they can complicate working-yarn tension.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": [
+        "src-artbin-underground-review",
+        "src-artbin-woods-review"
+      ]
+    },
+    {
+      "id": "claim-artbin-fit",
+      "kind": "compatibility",
+      "text": "The Yarn Tote makes sense for a known blanket, afghan, or other larger multi-skein project and is excessive for one compact sock or hat project.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": [
+        "src-artbin-official",
+        "src-artbin-underground-review",
+        "src-artbin-woods-review"
+      ]
+    },
+    {
+      "id": "claim-clover-benefit",
+      "kind": "product_benefit",
+      "text": "The Clover Kacha-Kacha is a battery-free push-button counter that records a two-digit count and has a locking control for storage.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": [
+        "src-clover-counter-official",
+        "src-clover-walmart-review",
+        "src-clover-jimmybeans-review"
+      ]
+    },
+    {
+      "id": "claim-clover-drawback",
+      "kind": "product_drawback",
+      "text": "It tracks only a two-digit number, cannot explain what that number means, and remains vulnerable to user error when the maker forgets to click or uses an inconsistent convention.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": [
+        "src-clover-walmart-review",
+        "src-clover-jimmybeans-review",
+        "src-counter-convention-discussion"
+      ]
+    },
+    {
+      "id": "claim-makers-board-benefit",
+      "kind": "product_benefit",
+      "text": "The Cocoknits Maker's Board folds to 11 by 9 inches, props at adjustable angles, and uses included magnets to hold paper patterns, charts, and small metal tools.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": [
+        "src-makers-board-official",
+        "src-makers-board-knitty-review",
+        "src-makers-board-feefo-review"
+      ]
+    },
+    {
+      "id": "claim-makers-board-drawback",
+      "kind": "product_drawback",
+      "text": "The board is unnecessary for app-only patterns, full letter-size pages can overhang its 11-by-9-inch format, some pictured accessories cost extra, and the removable metal sheets have a sharp-edge warning.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": [
+        "src-makers-board-official",
+        "src-makers-board-knitty-review",
+        "src-makers-board-feefo-review"
+      ]
+    },
+    {
+      "id": "claim-cocoknits-counter-benefit",
+      "kind": "product_benefit",
+      "text": "The Cocoknits Knitting Row Counter combines magnified number windows, a broad push button, a storage lock, and a steel back that attaches to a magnetic surface.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": [
+        "src-cocoknits-counter-official",
+        "src-cocoknits-counter-little-review",
+        "src-cocoknits-counter-needle-review"
+      ]
+    },
+    {
+      "id": "claim-cocoknits-counter-drawback",
+      "kind": "product_drawback",
+      "text": "The counter still depends on a remembered click and chosen convention, and its magnetic attachment adds little when the recipient does not use a magnetic board or keeper.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": [
+        "src-cocoknits-counter-official",
+        "src-cocoknits-counter-little-review",
+        "src-counter-convention-discussion"
+      ]
+    },
+    {
+      "id": "claim-pair-della-clover",
+      "kind": "pair_coherence",
+      "text": "A measured train case preserves one compact project's physical state while a locked Kacha-Kacha preserves the selected row number, giving each item a separate restart job.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-della-train-official",
+        "src-clover-counter-official",
+        "src-wip-restart-discussion"
+      ]
+    },
+    {
+      "id": "claim-pair-artbin-board",
+      "kind": "pair_coherence",
+      "text": "The ArtBin tote contains the yarn and large work while the Maker's Board keeps a paper chart visible and marks the active instruction before both are put away together.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-artbin-official",
+        "src-makers-board-official",
+        "src-wip-restart-discussion"
+      ]
+    },
+    {
+      "id": "claim-fiber-duplicate-boundary",
+      "kind": "duplicate_clutter",
+      "text": "A new bag or tracker adds clutter when the recipient already has a trusted project-specific containment and state-marking system.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-wip-restart-discussion",
+        "src-counter-convention-discussion"
+      ]
+    }
+  ],
+  "conflicts": [
+    {
+      "id": "physical-versus-digital-tracker",
+      "summary": "Makers use paper, counters, stitch markers, and apps successfully; the article resolves the conflict by treating the recipient's demonstrated pattern format and restart habit as the compatibility gate."
+    }
+  ],
+  "candidates": [
+    {
+      "id": "della-q-makers-train-case",
+      "name": "della Q Maker's Train Case",
+      "editorialScore": 88,
+      "evidenceConfidence": 86,
+      "drawbacks": [
+        "The structured case is comparatively heavy and capacity-limited, while owner reviews report mixed latch and hardware experiences across versions."
+      ],
+      "primarySourceIds": [
+        "src-della-train-official"
+      ],
+      "independentSourceIds": [
+        "src-della-jimmybeans-review",
+        "src-della-hethaakbeest-review"
+      ],
+      "claimIds": [
+        "claim-della-benefit",
+        "claim-della-drawback",
+        "claim-della-fit"
+      ],
+      "evidenceMode": "desk_research",
+      "thoughtfulness": {
+        "observationPrompt": "Can you name one active sock, hat, cowl, or similarly compact project whose yarn, tools, and notes currently live in separate or open containers?",
+        "frictionClaimIds": [
+          "claim-fiber-restart-friction"
+        ],
+        "physicalGiftBoundary": "welcome_when_verified",
+        "selfPurchase": {
+          "reason": "small_luxury_deferral",
+          "rationale": "A structured case is an appealing workflow upgrade, but ordinary bags remain usable and the premium only makes sense for a known compact project.",
+          "basis": "recipient_observation_prompt",
+          "claimIds": [
+            "claim-fiber-self-purchase"
+          ]
+        },
+        "duplicateRisk": {
+          "level": "high",
+          "preGiftCheck": "Inventory the recipient's project bags and confirm no structured small-project case already has this job."
+        },
+        "clutterRisk": {
+          "level": "medium",
+          "ownershipBurden": "The structured case has a fixed footprint and more carry weight than a fold-flat project bag.",
+          "mitigation": "Assign it to one named compact project and one shelf or carry role before purchase."
+        },
+        "compatibilityChecks": [
+          {
+            "dimension": "size_or_fit",
+            "status": "verified",
+            "requirement": "Measure yarn volume, project dimensions, straight-needle or hook length, and notions against the 12-by-6-by-5-inch case.",
+            "claimIds": [
+              "claim-della-fit"
+            ]
+          },
+          {
+            "dimension": "space_or_storage",
+            "status": "verified",
+            "requirement": "Confirm the fixed case footprint, carry weight tolerance, storage shelf, and preferred yarn-feed behavior.",
+            "claimIds": [
+              "claim-della-drawback"
+            ]
+          }
+        ],
+        "score": {
+          "frictionSpecificity": 5,
+          "selfPurchaseLogic": 4,
+          "ownershipEase": 4,
+          "recipientSpecificity": 5,
+          "total": 18
+        }
+      }
+    },
+    {
+      "id": "artbin-yarn-tote-6821ag",
+      "name": "ArtBin Yarn Tote 6821AG",
+      "editorialScore": 86,
+      "evidenceConfidence": 87,
+      "drawbacks": [
+        "The Yarn Tote occupies substantial space, its magnetic snap closes only part of the top, and some users avoid the grommets because they can complicate working-yarn tension."
+      ],
+      "primarySourceIds": [
+        "src-artbin-official"
+      ],
+      "independentSourceIds": [
+        "src-artbin-underground-review",
+        "src-artbin-woods-review"
+      ],
+      "claimIds": [
+        "claim-artbin-benefit",
+        "claim-artbin-drawback",
+        "claim-artbin-fit"
+      ],
+      "evidenceMode": "desk_research",
+      "thoughtfulness": {
+        "observationPrompt": "Is there one active blanket, afghan, or multi-color project whose many skeins and growing fabric spill beyond the recipient's current container?",
+        "frictionClaimIds": [
+          "claim-fiber-restart-friction"
+        ],
+        "physicalGiftBoundary": "welcome_when_verified",
+        "selfPurchase": {
+          "reason": "research_burden",
+          "rationale": "The large tote solves a specific capacity problem but demands comparison of yarn volume, grommet behavior, closure, storage, and carry preference.",
+          "basis": "recipient_observation_prompt",
+          "claimIds": [
+            "claim-fiber-self-purchase"
+          ]
+        },
+        "duplicateRisk": {
+          "level": "high",
+          "preGiftCheck": "Confirm the recipient lacks a large flat-bottomed multi-skein project tote that already fits the named work."
+        },
+        "clutterRisk": {
+          "level": "medium",
+          "ownershipBurden": "The tote is too large to disappear into a drawer and its partial closure will not isolate a project from every pet or child.",
+          "mitigation": "Reserve it for a named large project and confirm a permanent storage location before purchase."
+        },
+        "compatibilityChecks": [
+          {
+            "dimension": "size_or_fit",
+            "status": "verified",
+            "requirement": "Match the multi-skein insert and main cavity to a known blanket or similarly large project rather than a generic yarn collection.",
+            "claimIds": [
+              "claim-artbin-fit"
+            ]
+          },
+          {
+            "dimension": "space_or_storage",
+            "status": "verified",
+            "requirement": "Confirm floor or shelf storage, carry tolerance, partial top closure, and whether the maker actually wants to feed yarn through grommets.",
+            "claimIds": [
+              "claim-artbin-drawback"
+            ]
+          }
+        ],
+        "score": {
+          "frictionSpecificity": 5,
+          "selfPurchaseLogic": 5,
+          "ownershipEase": 3,
+          "recipientSpecificity": 5,
+          "total": 18
+        }
+      }
+    },
+    {
+      "id": "clover-kacha-kacha-336",
+      "name": "Clover Knitting Counter Kacha-Kacha 336",
+      "editorialScore": 84,
+      "evidenceConfidence": 84,
+      "drawbacks": [
+        "It tracks only a two-digit number, cannot explain what that number means, and remains vulnerable to user error when the maker forgets to click or uses an inconsistent convention."
+      ],
+      "primarySourceIds": [
+        "src-clover-counter-official"
+      ],
+      "independentSourceIds": [
+        "src-clover-walmart-review",
+        "src-clover-jimmybeans-review"
+      ],
+      "claimIds": [
+        "claim-clover-benefit",
+        "claim-clover-drawback",
+        "claim-counter-convention"
+      ],
+      "evidenceMode": "desk_research",
+      "thoughtfulness": {
+        "observationPrompt": "Does the recipient currently make tally marks, repeatedly recount plain rows, or complain that a phone counter interrupts the making session?",
+        "frictionClaimIds": [
+          "claim-fiber-restart-friction"
+        ],
+        "physicalGiftBoundary": "welcome_when_verified",
+        "selfPurchase": {
+          "reason": "replacement_inertia",
+          "rationale": "Paper tallies and free apps work well enough to delay a small physical counter even when the maker prefers a one-click offline tool.",
+          "basis": "social_demand",
+          "claimIds": [
+            "claim-fiber-self-purchase"
+          ]
+        },
+        "duplicateRisk": {
+          "level": "high",
+          "preGiftCheck": "Check every active project bag for a counter and ask whether the maker prefers paper, app, stitch marker, or clicker."
+        },
+        "clutterRisk": {
+          "level": "low",
+          "ownershipBurden": "The small counter must stay with the correct project and be updated consistently to retain meaning.",
+          "mitigation": "Give it to one named project with a written start-versus-finish convention and store it inside that case."
+        },
+        "compatibilityChecks": [
+          {
+            "dimension": "accessibility",
+            "status": "verified",
+            "requirement": "Confirm the recipient can see the two-digit display, press the button, operate the lock, and prefers a physical clicker.",
+            "claimIds": [
+              "claim-clover-benefit",
+              "claim-clover-drawback"
+            ]
+          },
+          {
+            "dimension": "skill_or_experience",
+            "status": "verified",
+            "requirement": "Write down whether the displayed number means the completed row or the next row before the first use.",
+            "claimIds": [
+              "claim-counter-convention"
+            ]
+          }
+        ],
+        "score": {
+          "frictionSpecificity": 5,
+          "selfPurchaseLogic": 4,
+          "ownershipEase": 5,
+          "recipientSpecificity": 5,
+          "total": 19
+        }
+      }
+    },
+    {
+      "id": "cocoknits-makers-board",
+      "name": "Cocoknits Maker's Board",
+      "editorialScore": 85,
+      "evidenceConfidence": 84,
+      "drawbacks": [
+        "The board is unnecessary for app-only patterns, full letter-size pages can overhang its 11-by-9-inch format, some pictured accessories cost extra, and the removable metal sheets have a sharp-edge warning."
+      ],
+      "primarySourceIds": [
+        "src-makers-board-official"
+      ],
+      "independentSourceIds": [
+        "src-makers-board-knitty-review",
+        "src-makers-board-feefo-review"
+      ],
+      "claimIds": [
+        "claim-makers-board-benefit",
+        "claim-makers-board-drawback"
+      ],
+      "evidenceMode": "desk_research",
+      "thoughtfulness": {
+        "observationPrompt": "Does the maker prop up a printed chart, lose the current line, or repeatedly reposition loose pattern pages while working on a known project?",
+        "frictionClaimIds": [
+          "claim-fiber-restart-friction"
+        ],
+        "physicalGiftBoundary": "welcome_when_verified",
+        "selfPurchase": {
+          "reason": "small_luxury_deferral",
+          "rationale": "A clipboard or folded paper remains a workable substitute, so the magnetic board is a splurge only for a demonstrated paper-pattern habit.",
+          "basis": "recipient_observation_prompt",
+          "claimIds": [
+            "claim-fiber-self-purchase"
+          ]
+        },
+        "duplicateRisk": {
+          "level": "high",
+          "preGiftCheck": "Confirm the recipient does not already own a magnetic chart keeper, clipboard system, or tablet workflow they prefer."
+        },
+        "clutterRisk": {
+          "level": "low",
+          "ownershipBurden": "The board and magnets need a project bag that fits the folded 11-by-9-inch footprint and careful handling during washing.",
+          "mitigation": "Pair it only with a bag that fits and a paper chart whose working area sits within the board."
+        },
+        "compatibilityChecks": [
+          {
+            "dimension": "size_or_fit",
+            "status": "verified",
+            "requirement": "Measure the active paper chart against the folded 11-by-9-inch board and the intended project bag opening.",
+            "claimIds": [
+              "claim-makers-board-benefit",
+              "claim-makers-board-drawback"
+            ]
+          },
+          {
+            "dimension": "accessibility",
+            "status": "verified",
+            "requirement": "Confirm the magnet system, print size, propping angle, and metal-sheet care suit the recipient's vision and dexterity.",
+            "claimIds": [
+              "claim-makers-board-drawback"
+            ]
+          }
+        ],
+        "score": {
+          "frictionSpecificity": 5,
+          "selfPurchaseLogic": 4,
+          "ownershipEase": 4,
+          "recipientSpecificity": 5,
+          "total": 18
+        }
+      }
+    },
+    {
+      "id": "cocoknits-knitting-row-counter",
+      "name": "Cocoknits Knitting Row Counter",
+      "editorialScore": 82,
+      "evidenceConfidence": 81,
+      "drawbacks": [
+        "The counter still depends on a remembered click and chosen convention, and its magnetic attachment adds little when the recipient does not use a magnetic board or keeper."
+      ],
+      "primarySourceIds": [
+        "src-cocoknits-counter-official"
+      ],
+      "independentSourceIds": [
+        "src-cocoknits-counter-little-review",
+        "src-cocoknits-counter-needle-review"
+      ],
+      "claimIds": [
+        "claim-cocoknits-counter-benefit",
+        "claim-cocoknits-counter-drawback",
+        "claim-counter-convention"
+      ],
+      "evidenceMode": "desk_research",
+      "thoughtfulness": {
+        "observationPrompt": "Would magnified windows, a broad button, and magnetic parking solve a real visibility or storage problem in the recipient's current physical-counter routine?",
+        "frictionClaimIds": [
+          "claim-fiber-restart-friction"
+        ],
+        "physicalGiftBoundary": "welcome_when_verified",
+        "selfPurchase": {
+          "reason": "small_luxury_deferral",
+          "rationale": "The premium physical controls are useful only when they replace a disliked counter and connect to the recipient's existing magnetic or project-storage workflow.",
+          "basis": "recipient_observation_prompt",
+          "claimIds": [
+            "claim-fiber-self-purchase"
+          ]
+        },
+        "duplicateRisk": {
+          "level": "high",
+          "preGiftCheck": "Confirm the recipient wants a push counter and does not already own this model or an equivalent lockable counter."
+        },
+        "clutterRisk": {
+          "level": "low",
+          "ownershipBurden": "The counter must stay attached to a magnetic surface or contained with one project to avoid becoming a loose notion.",
+          "mitigation": "Use it only when a Maker's Board, Maker's Keep, magnetic lid, or dedicated notions pocket already exists."
+        },
+        "compatibilityChecks": [
+          {
+            "dimension": "accessibility",
+            "status": "verified",
+            "requirement": "Confirm magnified numbers and the broad button address the recipient's real vision or dexterity preference.",
+            "claimIds": [
+              "claim-cocoknits-counter-benefit"
+            ]
+          },
+          {
+            "dimension": "skill_or_experience",
+            "status": "verified",
+            "requirement": "Agree on a completed-row or next-row convention and verify that a remembered click is realistic for the recipient.",
+            "claimIds": [
+              "claim-cocoknits-counter-drawback",
+              "claim-counter-convention"
+            ]
+          }
+        ],
+        "score": {
+          "frictionSpecificity": 4,
+          "selfPurchaseLogic": 4,
+          "ownershipEase": 5,
+          "recipientSpecificity": 5,
+          "total": 18
+        }
+      }
+    },
+    {
+      "id": "generic-drawstring-project-bag",
+      "name": "Generic drawstring project bag",
+      "editorialScore": 71,
+      "evidenceConfidence": 72,
+      "drawbacks": [
+        "Without exact dimensions, lining, and closure construction it cannot be qualified for snag or tool fit."
+      ],
+      "primarySourceIds": [],
+      "independentSourceIds": [],
+      "claimIds": [],
+      "evidenceMode": "desk_research"
+    },
+    {
+      "id": "open-yarn-basket",
+      "name": "Open yarn basket",
+      "editorialScore": 65,
+      "evidenceConfidence": 72,
+      "drawbacks": [
+        "It does not preserve tools or pattern state and leaves yarn exposed to pets, dust, and snag points."
+      ],
+      "primarySourceIds": [],
+      "independentSourceIds": [],
+      "claimIds": [],
+      "evidenceMode": "desk_research"
+    },
+    {
+      "id": "phone-counter-app",
+      "name": "Phone row-counter app",
+      "editorialScore": 68,
+      "evidenceConfidence": 76,
+      "drawbacks": [
+        "It is not a physical gift and may add account, subscription, distraction, or device-access friction."
+      ],
+      "primarySourceIds": [],
+      "independentSourceIds": [],
+      "claimIds": [],
+      "evidenceMode": "desk_research"
+    },
+    {
+      "id": "needle-mounted-barrel-counter",
+      "name": "Needle-mounted barrel row counter",
+      "editorialScore": 70,
+      "evidenceConfidence": 72,
+      "drawbacks": [
+        "Needle diameter and straight-versus-circular technique compatibility make a surprise purchase unreliable."
+      ],
+      "primarySourceIds": [],
+      "independentSourceIds": [],
+      "claimIds": [],
+      "evidenceMode": "desk_research"
+    },
+    {
+      "id": "wearable-row-counter-ring",
+      "name": "Wearable row-counter ring",
+      "editorialScore": 69,
+      "evidenceConfidence": 69,
+      "drawbacks": [
+        "Ring size, hand preference, comfort, and display readability create avoidable gift-fit risk."
+      ],
+      "primarySourceIds": [],
+      "independentSourceIds": [],
+      "claimIds": [],
+      "evidenceMode": "desk_research"
+    },
+    {
+      "id": "generic-project-journal",
+      "name": "Generic knitting project journal",
+      "editorialScore": 66,
+      "evidenceConfidence": 68,
+      "drawbacks": [
+        "A blank log adds writing work and does not ensure the note remains physically attached to the active project."
+      ],
+      "primarySourceIds": [],
+      "independentSourceIds": [],
+      "claimIds": [],
+      "evidenceMode": "desk_research"
+    },
+    {
+      "id": "magnetic-cookie-sheet-diy",
+      "name": "Existing magnetic sheet or clipboard workaround",
+      "editorialScore": 73,
+      "evidenceConfidence": 74,
+      "drawbacks": [
+        "It may be awkward to carry, but it is the correct no-purchase answer when the maker already trusts it."
+      ],
+      "primarySourceIds": [],
+      "independentSourceIds": [],
+      "claimIds": [],
+      "evidenceMode": "desk_research"
+    }
+  ],
+  "finalists": [
+    {
+      "id": "della-q-makers-train-case",
+      "name": "della Q Maker's Train Case",
+      "editorialScore": 88,
+      "evidenceConfidence": 86,
+      "drawbacks": [
+        "The structured case is comparatively heavy and capacity-limited, while owner reviews report mixed latch and hardware experiences across versions."
+      ],
+      "primarySourceIds": [
+        "src-della-train-official"
+      ],
+      "independentSourceIds": [
+        "src-della-jimmybeans-review",
+        "src-della-hethaakbeest-review"
+      ],
+      "claimIds": [
+        "claim-della-benefit",
+        "claim-della-drawback",
+        "claim-della-fit"
+      ],
+      "evidenceMode": "desk_research",
+      "thoughtfulness": {
+        "observationPrompt": "Can you name one active sock, hat, cowl, or similarly compact project whose yarn, tools, and notes currently live in separate or open containers?",
+        "frictionClaimIds": [
+          "claim-fiber-restart-friction"
+        ],
+        "physicalGiftBoundary": "welcome_when_verified",
+        "selfPurchase": {
+          "reason": "small_luxury_deferral",
+          "rationale": "A structured case is an appealing workflow upgrade, but ordinary bags remain usable and the premium only makes sense for a known compact project.",
+          "basis": "recipient_observation_prompt",
+          "claimIds": [
+            "claim-fiber-self-purchase"
+          ]
+        },
+        "duplicateRisk": {
+          "level": "high",
+          "preGiftCheck": "Inventory the recipient's project bags and confirm no structured small-project case already has this job."
+        },
+        "clutterRisk": {
+          "level": "medium",
+          "ownershipBurden": "The structured case has a fixed footprint and more carry weight than a fold-flat project bag.",
+          "mitigation": "Assign it to one named compact project and one shelf or carry role before purchase."
+        },
+        "compatibilityChecks": [
+          {
+            "dimension": "size_or_fit",
+            "status": "verified",
+            "requirement": "Measure yarn volume, project dimensions, straight-needle or hook length, and notions against the 12-by-6-by-5-inch case.",
+            "claimIds": [
+              "claim-della-fit"
+            ]
+          },
+          {
+            "dimension": "space_or_storage",
+            "status": "verified",
+            "requirement": "Confirm the fixed case footprint, carry weight tolerance, storage shelf, and preferred yarn-feed behavior.",
+            "claimIds": [
+              "claim-della-drawback"
+            ]
+          }
+        ],
+        "score": {
+          "frictionSpecificity": 5,
+          "selfPurchaseLogic": 4,
+          "ownershipEase": 4,
+          "recipientSpecificity": 5,
+          "total": 18
+        }
+      }
+    },
+    {
+      "id": "artbin-yarn-tote-6821ag",
+      "name": "ArtBin Yarn Tote 6821AG",
+      "editorialScore": 86,
+      "evidenceConfidence": 87,
+      "drawbacks": [
+        "The Yarn Tote occupies substantial space, its magnetic snap closes only part of the top, and some users avoid the grommets because they can complicate working-yarn tension."
+      ],
+      "primarySourceIds": [
+        "src-artbin-official"
+      ],
+      "independentSourceIds": [
+        "src-artbin-underground-review",
+        "src-artbin-woods-review"
+      ],
+      "claimIds": [
+        "claim-artbin-benefit",
+        "claim-artbin-drawback",
+        "claim-artbin-fit"
+      ],
+      "evidenceMode": "desk_research",
+      "thoughtfulness": {
+        "observationPrompt": "Is there one active blanket, afghan, or multi-color project whose many skeins and growing fabric spill beyond the recipient's current container?",
+        "frictionClaimIds": [
+          "claim-fiber-restart-friction"
+        ],
+        "physicalGiftBoundary": "welcome_when_verified",
+        "selfPurchase": {
+          "reason": "research_burden",
+          "rationale": "The large tote solves a specific capacity problem but demands comparison of yarn volume, grommet behavior, closure, storage, and carry preference.",
+          "basis": "recipient_observation_prompt",
+          "claimIds": [
+            "claim-fiber-self-purchase"
+          ]
+        },
+        "duplicateRisk": {
+          "level": "high",
+          "preGiftCheck": "Confirm the recipient lacks a large flat-bottomed multi-skein project tote that already fits the named work."
+        },
+        "clutterRisk": {
+          "level": "medium",
+          "ownershipBurden": "The tote is too large to disappear into a drawer and its partial closure will not isolate a project from every pet or child.",
+          "mitigation": "Reserve it for a named large project and confirm a permanent storage location before purchase."
+        },
+        "compatibilityChecks": [
+          {
+            "dimension": "size_or_fit",
+            "status": "verified",
+            "requirement": "Match the multi-skein insert and main cavity to a known blanket or similarly large project rather than a generic yarn collection.",
+            "claimIds": [
+              "claim-artbin-fit"
+            ]
+          },
+          {
+            "dimension": "space_or_storage",
+            "status": "verified",
+            "requirement": "Confirm floor or shelf storage, carry tolerance, partial top closure, and whether the maker actually wants to feed yarn through grommets.",
+            "claimIds": [
+              "claim-artbin-drawback"
+            ]
+          }
+        ],
+        "score": {
+          "frictionSpecificity": 5,
+          "selfPurchaseLogic": 5,
+          "ownershipEase": 3,
+          "recipientSpecificity": 5,
+          "total": 18
+        }
+      }
+    },
+    {
+      "id": "clover-kacha-kacha-336",
+      "name": "Clover Knitting Counter Kacha-Kacha 336",
+      "editorialScore": 84,
+      "evidenceConfidence": 84,
+      "drawbacks": [
+        "It tracks only a two-digit number, cannot explain what that number means, and remains vulnerable to user error when the maker forgets to click or uses an inconsistent convention."
+      ],
+      "primarySourceIds": [
+        "src-clover-counter-official"
+      ],
+      "independentSourceIds": [
+        "src-clover-walmart-review",
+        "src-clover-jimmybeans-review"
+      ],
+      "claimIds": [
+        "claim-clover-benefit",
+        "claim-clover-drawback",
+        "claim-counter-convention"
+      ],
+      "evidenceMode": "desk_research",
+      "thoughtfulness": {
+        "observationPrompt": "Does the recipient currently make tally marks, repeatedly recount plain rows, or complain that a phone counter interrupts the making session?",
+        "frictionClaimIds": [
+          "claim-fiber-restart-friction"
+        ],
+        "physicalGiftBoundary": "welcome_when_verified",
+        "selfPurchase": {
+          "reason": "replacement_inertia",
+          "rationale": "Paper tallies and free apps work well enough to delay a small physical counter even when the maker prefers a one-click offline tool.",
+          "basis": "social_demand",
+          "claimIds": [
+            "claim-fiber-self-purchase"
+          ]
+        },
+        "duplicateRisk": {
+          "level": "high",
+          "preGiftCheck": "Check every active project bag for a counter and ask whether the maker prefers paper, app, stitch marker, or clicker."
+        },
+        "clutterRisk": {
+          "level": "low",
+          "ownershipBurden": "The small counter must stay with the correct project and be updated consistently to retain meaning.",
+          "mitigation": "Give it to one named project with a written start-versus-finish convention and store it inside that case."
+        },
+        "compatibilityChecks": [
+          {
+            "dimension": "accessibility",
+            "status": "verified",
+            "requirement": "Confirm the recipient can see the two-digit display, press the button, operate the lock, and prefers a physical clicker.",
+            "claimIds": [
+              "claim-clover-benefit",
+              "claim-clover-drawback"
+            ]
+          },
+          {
+            "dimension": "skill_or_experience",
+            "status": "verified",
+            "requirement": "Write down whether the displayed number means the completed row or the next row before the first use.",
+            "claimIds": [
+              "claim-counter-convention"
+            ]
+          }
+        ],
+        "score": {
+          "frictionSpecificity": 5,
+          "selfPurchaseLogic": 4,
+          "ownershipEase": 5,
+          "recipientSpecificity": 5,
+          "total": 19
+        }
+      }
+    },
+    {
+      "id": "cocoknits-makers-board",
+      "name": "Cocoknits Maker's Board",
+      "editorialScore": 85,
+      "evidenceConfidence": 84,
+      "drawbacks": [
+        "The board is unnecessary for app-only patterns, full letter-size pages can overhang its 11-by-9-inch format, some pictured accessories cost extra, and the removable metal sheets have a sharp-edge warning."
+      ],
+      "primarySourceIds": [
+        "src-makers-board-official"
+      ],
+      "independentSourceIds": [
+        "src-makers-board-knitty-review",
+        "src-makers-board-feefo-review"
+      ],
+      "claimIds": [
+        "claim-makers-board-benefit",
+        "claim-makers-board-drawback"
+      ],
+      "evidenceMode": "desk_research",
+      "thoughtfulness": {
+        "observationPrompt": "Does the maker prop up a printed chart, lose the current line, or repeatedly reposition loose pattern pages while working on a known project?",
+        "frictionClaimIds": [
+          "claim-fiber-restart-friction"
+        ],
+        "physicalGiftBoundary": "welcome_when_verified",
+        "selfPurchase": {
+          "reason": "small_luxury_deferral",
+          "rationale": "A clipboard or folded paper remains a workable substitute, so the magnetic board is a splurge only for a demonstrated paper-pattern habit.",
+          "basis": "recipient_observation_prompt",
+          "claimIds": [
+            "claim-fiber-self-purchase"
+          ]
+        },
+        "duplicateRisk": {
+          "level": "high",
+          "preGiftCheck": "Confirm the recipient does not already own a magnetic chart keeper, clipboard system, or tablet workflow they prefer."
+        },
+        "clutterRisk": {
+          "level": "low",
+          "ownershipBurden": "The board and magnets need a project bag that fits the folded 11-by-9-inch footprint and careful handling during washing.",
+          "mitigation": "Pair it only with a bag that fits and a paper chart whose working area sits within the board."
+        },
+        "compatibilityChecks": [
+          {
+            "dimension": "size_or_fit",
+            "status": "verified",
+            "requirement": "Measure the active paper chart against the folded 11-by-9-inch board and the intended project bag opening.",
+            "claimIds": [
+              "claim-makers-board-benefit",
+              "claim-makers-board-drawback"
+            ]
+          },
+          {
+            "dimension": "accessibility",
+            "status": "verified",
+            "requirement": "Confirm the magnet system, print size, propping angle, and metal-sheet care suit the recipient's vision and dexterity.",
+            "claimIds": [
+              "claim-makers-board-drawback"
+            ]
+          }
+        ],
+        "score": {
+          "frictionSpecificity": 5,
+          "selfPurchaseLogic": 4,
+          "ownershipEase": 4,
+          "recipientSpecificity": 5,
+          "total": 18
+        }
+      }
+    },
+    {
+      "id": "cocoknits-knitting-row-counter",
+      "name": "Cocoknits Knitting Row Counter",
+      "editorialScore": 82,
+      "evidenceConfidence": 81,
+      "drawbacks": [
+        "The counter still depends on a remembered click and chosen convention, and its magnetic attachment adds little when the recipient does not use a magnetic board or keeper."
+      ],
+      "primarySourceIds": [
+        "src-cocoknits-counter-official"
+      ],
+      "independentSourceIds": [
+        "src-cocoknits-counter-little-review",
+        "src-cocoknits-counter-needle-review"
+      ],
+      "claimIds": [
+        "claim-cocoknits-counter-benefit",
+        "claim-cocoknits-counter-drawback",
+        "claim-counter-convention"
+      ],
+      "evidenceMode": "desk_research",
+      "thoughtfulness": {
+        "observationPrompt": "Would magnified windows, a broad button, and magnetic parking solve a real visibility or storage problem in the recipient's current physical-counter routine?",
+        "frictionClaimIds": [
+          "claim-fiber-restart-friction"
+        ],
+        "physicalGiftBoundary": "welcome_when_verified",
+        "selfPurchase": {
+          "reason": "small_luxury_deferral",
+          "rationale": "The premium physical controls are useful only when they replace a disliked counter and connect to the recipient's existing magnetic or project-storage workflow.",
+          "basis": "recipient_observation_prompt",
+          "claimIds": [
+            "claim-fiber-self-purchase"
+          ]
+        },
+        "duplicateRisk": {
+          "level": "high",
+          "preGiftCheck": "Confirm the recipient wants a push counter and does not already own this model or an equivalent lockable counter."
+        },
+        "clutterRisk": {
+          "level": "low",
+          "ownershipBurden": "The counter must stay attached to a magnetic surface or contained with one project to avoid becoming a loose notion.",
+          "mitigation": "Use it only when a Maker's Board, Maker's Keep, magnetic lid, or dedicated notions pocket already exists."
+        },
+        "compatibilityChecks": [
+          {
+            "dimension": "accessibility",
+            "status": "verified",
+            "requirement": "Confirm magnified numbers and the broad button address the recipient's real vision or dexterity preference.",
+            "claimIds": [
+              "claim-cocoknits-counter-benefit"
+            ]
+          },
+          {
+            "dimension": "skill_or_experience",
+            "status": "verified",
+            "requirement": "Agree on a completed-row or next-row convention and verify that a remembered click is realistic for the recipient.",
+            "claimIds": [
+              "claim-cocoknits-counter-drawback",
+              "claim-counter-convention"
+            ]
+          }
+        ],
+        "score": {
+          "frictionSpecificity": 4,
+          "selfPurchaseLogic": 4,
+          "ownershipEase": 5,
+          "recipientSpecificity": 5,
+          "total": 18
+        }
+      }
+    }
+  ],
+  "pairs": [
+    {
+      "id": "compact-case-locked-count-loop",
+      "name": "The compact case and locked-count restart loop",
+      "anchorCandidateId": "della-q-makers-train-case",
+      "companionCandidateId": "clover-kacha-kacha-336",
+      "recipientJob": "Keep one compact work, its working yarn, tools, and a locked two-digit row state together through a pause.",
+      "coherenceType": "organizes",
+      "whyTogether": "The train case protects the physical work and notions while the Kacha-Kacha preserves the chosen row number; neither substitutes for the other and both can live with one compact project.",
+      "interactionMoment": "Finish or mark the current row, click the agreed completed-row count, lock the counter, place it in the tray, and close the measured project in the case.",
+      "compatibilityChecks": [
+        {
+          "dimension": "size_or_fit",
+          "status": "verified",
+          "requirement": "Confirm the full project, yarn, and longest required tool fit inside the 12-by-6-by-5-inch case without forcing the closure.",
+          "claimIds": [
+            "claim-della-fit"
+          ]
+        },
+        {
+          "dimension": "skill_or_experience",
+          "status": "verified",
+          "requirement": "Write the counter convention in the included journal or pattern margin so the locked number retains meaning.",
+          "claimIds": [
+            "claim-counter-convention"
+          ]
+        },
+        {
+          "dimension": "accessibility",
+          "status": "verified",
+          "requirement": "Confirm the recipient can comfortably carry the structured case and see, click, reset, and lock the counter.",
+          "claimIds": [
+            "claim-della-drawback",
+            "claim-clover-drawback"
+          ]
+        }
+      ],
+      "duplicateRisk": "high",
+      "clutterDelta": "reduces",
+      "preGiftCheck": "Name the compact project, measure it and its longest tool, inventory current bags and counters, and ask which row-number convention the maker uses.",
+      "bundleDrawback": "Buy only the case if the maker already trusts a tracker; buy only the counter if a fitted project bag already keeps everything together; skip both when the current system resumes cleanly.",
+      "claimIds": [
+        "claim-pair-della-clover"
+      ],
+      "score": {
+        "sharedCuriosity": 19,
+        "complementaryRoles": 20,
+        "interactionLoop": 20,
+        "observableTrigger": 15,
+        "independentValue": 9,
+        "compatibility": 9,
+        "ownershipEase": 4,
+        "total": 96
+      }
+    },
+    {
+      "id": "large-tote-paper-chart-loop",
+      "name": "The large-project tote and paper-chart restart loop",
+      "anchorCandidateId": "artbin-yarn-tote-6821ag",
+      "companionCandidateId": "cocoknits-makers-board",
+      "recipientJob": "Contain a growing multi-skein work while preserving the visible line and next instruction on its paper pattern or chart.",
+      "coherenceType": "organizes",
+      "whyTogether": "The Yarn Tote manages the large physical project and separated skeins while the Maker's Board keeps the paper decision state visible, marked, and stored with that work.",
+      "interactionMoment": "Move the chart marker to the next instruction, fold the board, return it beside the project, settle the working yarn without using unwanted grommets, and close the tote as far as the volume allows.",
+      "compatibilityChecks": [
+        {
+          "dimension": "size_or_fit",
+          "status": "verified",
+          "requirement": "Confirm the named multi-skein project needs the tote and that the folded 11-by-9-inch board fits without pressing on needles, hooks, or fabric.",
+          "claimIds": [
+            "claim-artbin-fit",
+            "claim-makers-board-benefit"
+          ]
+        },
+        {
+          "dimension": "accessibility",
+          "status": "verified",
+          "requirement": "Confirm paper chart use, readable print, useful magnetic marker contrast, and safe handling of the board's removable metal sheets.",
+          "claimIds": [
+            "claim-makers-board-drawback"
+          ]
+        },
+        {
+          "dimension": "space_or_storage",
+          "status": "verified",
+          "requirement": "Name permanent storage for the large tote and verify that its partial top closure is acceptable around pets or children.",
+          "claimIds": [
+            "claim-artbin-drawback"
+          ]
+        }
+      ],
+      "duplicateRisk": "high",
+      "clutterDelta": "reduces",
+      "preGiftCheck": "Name one large paper-pattern project, measure its yarn and chart, confirm the board fits inside, and inventory existing totes and chart holders.",
+      "bundleDrawback": "Buy only the tote when the maker uses an app or already tracks paper well; buy only the board when a fitted large-project container already exists; skip both for compact work.",
+      "claimIds": [
+        "claim-pair-artbin-board"
+      ],
+      "score": {
+        "sharedCuriosity": 19,
+        "complementaryRoles": 20,
+        "interactionLoop": 19,
+        "observableTrigger": 15,
+        "independentValue": 9,
+        "compatibility": 9,
+        "ownershipEase": 4,
+        "total": 95
+      }
+    }
+  ],
+  "affiliateLinks": [],
+  "article": {
+    "slug": "knitting-crochet-project-bag-row-counter-gift-pairs",
+    "editorialScore": 88,
+    "evidenceConfidence": 84,
+    "evidenceMode": "desk_research",
+    "status": "draft"
+  },
+  "qa": {
+    "passed": false,
+    "reviewerRole": "independent-editor",
+    "reviewerId": "pending-fiber-art-pause-independent-qa-desk",
+    "receiptPath": "research/reviews/20260823-fiber-art-pause-269f700c.qa.v1.json",
+    "blockers": [],
+    "warnings": []
+  }
+}

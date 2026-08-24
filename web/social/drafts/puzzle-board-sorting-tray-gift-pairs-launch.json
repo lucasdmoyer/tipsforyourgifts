@@ -1,0 +1,163 @@
+{
+  "schemaVersion": "1.0.0",
+  "packId": "puzzle-board-sorting-tray-gift-pairs-launch",
+  "articleSlug": "puzzle-board-sorting-tray-gift-pairs",
+  "researchRun": "20260816-puzzle-start-store-a30ab01a",
+  "status": "draft",
+  "createdAt": "2026-08-16T21:10:00.000Z",
+  "policy": {
+    "officialApiRequired": true,
+    "externalPublishingAuthorized": false,
+    "containsAffiliateLinks": false
+  },
+  "posts": [
+    {
+      "id": "puzzle-measure-the-finished-image",
+      "platform": "pinterest",
+      "format": "vertical-checklist",
+      "status": "draft",
+      "angle": "Replace piece-count shopping with a finished-dimension fit check",
+      "headline": "Never buy a puzzle board from piece count alone",
+      "copy": "A 1000-piece label does not prove fit. Check the finished width and height on two real puzzle boxes, then compare that rectangle with the board's usable area—not its outside dimensions.",
+      "assetBrief": "Original vertical measuring diagram with two generic puzzle boxes, finished-image arrows, a usable-board rectangle, and no brand logos or merchant imagery.",
+      "altText": "Checklist comparing a puzzle's finished width and height with a puzzle board's usable interior area.",
+      "destinationUrl": "https://tipsforyourgifts.web.app/blog/puzzle-board-sorting-tray-gift-pairs",
+      "claimIds": [
+        "claim-dimension-before-count"
+      ],
+      "productIds": [
+        "jumbo-portapuzzle-deluxe-1000",
+        "jumbo-portapuzzle-standard-1500"
+      ],
+      "pairIds": [],
+      "disclosureRequired": false,
+      "externalPostId": null
+    },
+    {
+      "id": "puzzle-name-tonights-storage",
+      "platform": "instagram",
+      "format": "five-slide-carousel",
+      "status": "draft",
+      "angle": "Make the named storage location the thoughtfulness test",
+      "headline": "The puzzle-board question that matters tonight",
+      "copy": "Where will the closed puzzle and sorted pieces live tonight? Name the flat case location, measure the route, reserve a tray shelf, and check the lift. If those answers are vague, the gift is still clutter.",
+      "assetBrief": "Five original illustrated slides: shared table, tape measure, flat under-bed outline, level tray shelf, and a final buy-or-skip decision; no product photography.",
+      "altText": "Carousel showing a puzzle case measured for flat under-bed storage and a sorting-tray stack assigned to a shelf.",
+      "destinationUrl": "https://tipsforyourgifts.web.app/blog/puzzle-board-sorting-tray-gift-pairs",
+      "claimIds": [
+        "claim-shared-table-friction",
+        "claim-self-purchase-gap",
+        "claim-pet-child-boundary"
+      ],
+      "productIds": [
+        "jumbo-portapuzzle-deluxe-1000"
+      ],
+      "pairIds": [],
+      "disclosureRequired": false,
+      "externalPostId": null
+    },
+    {
+      "id": "puzzle-two-kinds-of-progress",
+      "platform": "pinterest",
+      "format": "two-part-diagram",
+      "status": "draft",
+      "angle": "Separate preserving the image from preserving sorting decisions",
+      "headline": "A paused puzzle has two kinds of progress",
+      "copy": "The fitted case protects the assembled image. The tray stack protects the edge, color, and pattern groups that make tomorrow's restart easy. A thoughtful pair keeps both—without taking over the room.",
+      "assetBrief": "Original two-column diagram labeled Image progress and Sorting progress, converging on a clean shared table; use generic puzzle shapes only.",
+      "altText": "Diagram showing an unfinished puzzle in a closed flat case beside sorted pieces in a level lidded stack.",
+      "destinationUrl": "https://tipsforyourgifts.web.app/blog/puzzle-board-sorting-tray-gift-pairs",
+      "claimIds": [
+        "claim-pair-deluxe-buffalo",
+        "claim-restart-friction"
+      ],
+      "productIds": [
+        "jumbo-portapuzzle-deluxe-1000",
+        "buffalo-jigsaw-pro-trays-9212"
+      ],
+      "pairIds": [
+        "zip-case-lidded-seven-tray-loop"
+      ],
+      "disclosureRequired": false,
+      "externalPostId": null
+    },
+    {
+      "id": "puzzle-lid-versus-shallow-reach",
+      "platform": "instagram",
+      "format": "five-slide-carousel",
+      "status": "draft",
+      "angle": "Choose the tray companion by closure, contrast, and reach",
+      "headline": "Lidded stack or shallow trays? Ask three questions",
+      "copy": "Choose seven colored trays with a top lid when compact closed storage matters. Choose six shallow blue trays when easy scanning and reach matter more. In both cases, check contrast—and remember that neither stack is spill-proof.",
+      "assetBrief": "Original decision tree comparing a generic lidded colored stack with six shallow blue trays across lid, contrast, reach, and shelf behavior.",
+      "altText": "Decision tree comparing a top-lidded colored tray stack with shallow blue sorting trays for puzzle pieces.",
+      "destinationUrl": "https://tipsforyourgifts.web.app/blog/puzzle-board-sorting-tray-gift-pairs",
+      "claimIds": [
+        "claim-buffalo-trays-drawback",
+        "claim-ravensburger-sort-drawback",
+        "claim-ravensburger-sort-compatibility"
+      ],
+      "productIds": [
+        "buffalo-jigsaw-pro-trays-9212",
+        "ravensburger-sort-and-go-17934"
+      ],
+      "pairIds": [
+        "zip-case-lidded-seven-tray-loop",
+        "zip-case-shallow-six-tray-loop"
+      ],
+      "disclosureRequired": false,
+      "externalPostId": null
+    },
+    {
+      "id": "puzzle-flat-means-flat",
+      "platform": "tiktok",
+      "format": "thirty-second-script",
+      "status": "draft",
+      "angle": "Challenge vague portability with a flat-storage reality check",
+      "headline": "Portable does not automatically mean vertical storage",
+      "copy": "Hook: a handle is not permission to stand every unfinished puzzle on edge. Show the finished-size check, the case weight, and owner-reported loose-piece shift. End with the conservative rule: move carefully, then store flat in a measured place.",
+      "assetBrief": "Original unbranded storyboard: generic case handle, weight icon, pieces sliding toward an edge, and a final flat under-sofa placement; no simulated product test.",
+      "altText": "Short video storyboard explaining why a large puzzle case should be measured and stored flat despite portability language.",
+      "destinationUrl": "https://tipsforyourgifts.web.app/blog/puzzle-board-sorting-tray-gift-pairs",
+      "claimIds": [
+        "claim-deluxe-drawback",
+        "claim-standard1500-drawback"
+      ],
+      "productIds": [
+        "jumbo-portapuzzle-deluxe-1000",
+        "jumbo-portapuzzle-standard-1500"
+      ],
+      "pairIds": [],
+      "disclosureRequired": false,
+      "externalPostId": null
+    },
+    {
+      "id": "puzzle-buy-only-the-anchor",
+      "platform": "pinterest",
+      "format": "buy-skip-card",
+      "status": "draft",
+      "angle": "Make the anchor-only and skip choices as visible as the bundle",
+      "headline": "When this puzzle pair should be one gift—or none",
+      "copy": "Buy only the case if its included boards already sort enough. Buy only trays if a fitted storage surface already exists. Skip both when no flat location is named, the lift is uncomfortable, or another system already works.",
+      "assetBrief": "Original three-column card labeled Pair, One item, and Skip, with generic case and tray line icons plus dimension, storage, and duplicate checks.",
+      "altText": "Gift decision card showing when to buy a puzzle case and trays together, when to buy one item, and when to skip both.",
+      "destinationUrl": "https://tipsforyourgifts.web.app/blog/puzzle-board-sorting-tray-gift-pairs",
+      "claimIds": [
+        "claim-pair-deluxe-buffalo",
+        "claim-pair-deluxe-ravensburger",
+        "claim-pet-child-boundary"
+      ],
+      "productIds": [
+        "jumbo-portapuzzle-deluxe-1000",
+        "buffalo-jigsaw-pro-trays-9212",
+        "ravensburger-sort-and-go-17934"
+      ],
+      "pairIds": [
+        "zip-case-lidded-seven-tray-loop",
+        "zip-case-shallow-six-tray-loop"
+      ],
+      "disclosureRequired": false,
+      "externalPostId": null
+    }
+  ]
+}

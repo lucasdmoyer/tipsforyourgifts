@@ -1,0 +1,109 @@
+name: Approve one social draft
+
+on:
+  workflow_dispatch:
+    inputs:
+      post_id:
+        description: "Exact social post ID visible in Studio"
+        required: true
+        type: string
+      expected_pack_sha256:
+        description: "SHA-256 of the exact reviewed social pack"
+        required: true
+        type: string
+      media_asset_id:
+        description: "Exact approved media asset ID"
+        required: true
+        type: string
+      expected_media_record_sha256:
+        description: "SHA-256 of the exact approved media JSON record"
+        required: true
+        type: string
+      rights_evidence_url:
+        description: "HTTPS issue or pull-request URL recording original or licensed asset rights"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: social-approval-${{ inputs.post_id }}
+  cancel-in-progress: false
+
+jobs:
+  approve:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Require repository-owner decision
+        env:
+          ACTOR: ${{ github.actor }}
+          OWNER: ${{ github.repository_owner }}
+        run: |
+          test "$ACTOR" = "$OWNER" || { echo "Only the repository owner may approve a social draft." >&2; exit 1; }
+      - uses: actions/checkout@v5
+        with:
+          ref: master
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24.14.0"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - name: Validate and create one immutable approval receipt
+        env:
+          POST_ID: ${{ inputs.post_id }}
+          EXPECTED_PACK_SHA256: ${{ inputs.expected_pack_sha256 }}
+          MEDIA_ASSET_ID: ${{ inputs.media_asset_id }}
+          EXPECTED_MEDIA_RECORD_SHA256: ${{ inputs.expected_media_record_sha256 }}
+          RIGHTS_EVIDENCE_URL: ${{ inputs.rights_evidence_url }}
+          FOUNDER_LOGIN: ${{ github.actor }}
+        run: |
+          [[ "$POST_ID" =~ ^[a-z0-9]+(-[a-z0-9]+)*$ ]] || { echo "Invalid post ID." >&2; exit 1; }
+          [[ "$EXPECTED_PACK_SHA256" =~ ^[a-f0-9]{64}$ ]] || { echo "Invalid pack SHA-256." >&2; exit 1; }
+          [[ "$MEDIA_ASSET_ID" =~ ^[a-z0-9]+(-[a-z0-9]+)*$ ]] || { echo "Invalid media asset ID." >&2; exit 1; }
+          [[ "$EXPECTED_MEDIA_RECORD_SHA256" =~ ^[a-f0-9]{64}$ ]] || { echo "Invalid media record SHA-256." >&2; exit 1; }
+          [[ "$RIGHTS_EVIDENCE_URL" =~ ^https:// ]] || { echo "Rights evidence must use HTTPS." >&2; exit 1; }
+          npm ci --prefix web
+          npm run validate
+          npm --prefix web run social:approve -- --post-id="$POST_ID" --expected-pack-sha256="$EXPECTED_PACK_SHA256" --media-asset-id="$MEDIA_ASSET_ID" --expected-media-record-sha256="$EXPECTED_MEDIA_RECORD_SHA256" --rights-evidence-url="$RIGHTS_EVIDENCE_URL" --founder-login="$FOUNDER_LOGIN"
+          npm --prefix web run generate
+      - name: Prove the fail-closed approval patch
+        env:
+          POST_ID: ${{ inputs.post_id }}
+        run: |
+          git add -N .
+          while IFS= read -r changed_path; do
+            case "$changed_path" in
+              web/social/approvals/"$POST_ID".json|web/src/data/operations.json|web/src/app/generated/content.generated.ts|web/public/sitemap.xml) ;;
+              *) echo "Social approval changed forbidden path: $changed_path" >&2; exit 1 ;;
+            esac
+          done < <(git diff --name-only HEAD)
+          npm run validate
+          npm run build
+          npm run smoke
+          git diff --check
+      - name: Commit the founder-controlled approval branch
+        env:
+          RUN_ID: ${{ github.run_id }}
+          POST_ID: ${{ inputs.post_id }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -c "codex/approve-social-$RUN_ID"
+          git add "web/social/approvals/$POST_ID.json" web/src/data/operations.json web/src/app/generated/content.generated.ts web/public/sitemap.xml
+          git commit -m "Approve social draft $POST_ID"
+          git push origin "codex/approve-social-$RUN_ID"
+      - name: Open the approval pull request
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ github.run_id }}
+          POST_ID: ${{ inputs.post_id }}
+        run: |
+          gh pr create \
+            --base master \
+            --head "codex/approve-social-$RUN_ID" \
+            --title "Approve social draft $POST_ID" \
+            --body "This hash-bound receipt approves one exact draft, destination, disclosure decision, and rights-evidence reference. It does not publish externally. Official API publishing remains disabled until the channel registry, credential, cadence, and reporting controls are separately approved."

@@ -1,0 +1,92 @@
+name: Activate official social publishing boundary
+
+on:
+  workflow_dispatch:
+    inputs:
+      channel_id:
+        description: "Exact configured channel ID visible in Studio"
+        required: true
+        type: string
+      expected_config_sha256:
+        description: "Exact configured social-channel registry SHA-256 visible in Studio"
+        required: true
+        type: string
+      confirmation:
+        description: "Type ACTIVATE- followed by the exact channel ID"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: social-channel-activate-${{ inputs.channel_id }}
+  cancel-in-progress: false
+
+jobs:
+  activate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    environment: social-production
+    steps:
+      - name: Require repository-owner action-time decision
+        env:
+          ACTOR: ${{ github.actor }}
+          OWNER: ${{ github.repository_owner }}
+          CHANNEL_ID: ${{ inputs.channel_id }}
+          CONFIRMATION: ${{ inputs.confirmation }}
+        run: |
+          test "$ACTOR" = "$OWNER" || { echo "Only the repository owner may activate official social publishing." >&2; exit 1; }
+          test "$CONFIRMATION" = "ACTIVATE-$CHANNEL_ID" || { echo "Action-time confirmation does not match the exact channel." >&2; exit 1; }
+      - uses: actions/checkout@v5
+        with:
+          ref: master
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24.14.0"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - name: Record the protected publishing boundary
+        env:
+          CHANNEL_ID: ${{ inputs.channel_id }}
+          EXPECTED_CONFIG_SHA256: ${{ inputs.expected_config_sha256 }}
+          CONFIRMATION: ${{ inputs.confirmation }}
+          FOUNDER_LOGIN: ${{ github.actor }}
+        run: |
+          npm ci --prefix web
+          npm run validate
+          npm --prefix web run social:channel:activate -- --channel-id="$CHANNEL_ID" --expected-config-sha256="$EXPECTED_CONFIG_SHA256" --confirmation="$CONFIRMATION" --founder-login="$FOUNDER_LOGIN"
+          npm --prefix web run generate
+      - name: Prove activation does not publish
+        run: |
+          while IFS= read -r changed_path; do
+            case "$changed_path" in
+              web/config/social-channels.json|web/src/data/operations.json|web/src/app/generated/content.generated.ts|web/public/sitemap.xml) ;;
+              *) echo "Social channel activation changed forbidden path: $changed_path" >&2; exit 1 ;;
+            esac
+          done < <(git diff --name-only HEAD)
+          test -z "$(git status --short web/social/publications)" || { echo "Activation cannot create a publication receipt." >&2; exit 1; }
+          npm run validate
+          npm run build
+          npm run smoke
+          git diff --check
+      - name: Commit the activation branch
+        env:
+          RUN_ID: ${{ github.run_id }}
+          CHANNEL_ID: ${{ inputs.channel_id }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -c "codex/activate-social-channel-$RUN_ID"
+          git add web/config/social-channels.json web/src/data/operations.json web/src/app/generated/content.generated.ts web/public/sitemap.xml
+          git commit -m "Activate official $CHANNEL_ID publishing boundary"
+          git push origin "codex/activate-social-channel-$RUN_ID"
+      - name: Open the activation pull request
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ github.run_id }}
+          CHANNEL_ID: ${{ inputs.channel_id }}
+        run: |
+          gh pr create --base master --head "codex/activate-social-channel-$RUN_ID" --title "Activate official $CHANNEL_ID publishing boundary" --body "This protected founder action makes separately approved posts eligible for their per-post official-API workflow. It does not create an account, store a credential value, schedule a post, publish externally, remove per-post approval, or bypass the durable publication lock and receipt requirements."

@@ -1,0 +1,164 @@
+{
+  "schemaVersion": "1.0.0",
+  "packId": "night-sky-planisphere-red-light-gift-pairs-launch",
+  "articleSlug": "night-sky-planisphere-red-light-gift-pairs",
+  "researchRun": "20260816-night-sky-ritual-a5594a7b",
+  "status": "draft",
+  "createdAt": "2026-08-16T19:10:00.000Z",
+  "policy": {
+    "officialApiRequired": true,
+    "externalPublishingAuthorized": false,
+    "containsAffiliateLinks": false
+  },
+  "posts": [
+    {
+      "id": "night-sky-buy-by-coordinates",
+      "platform": "pinterest",
+      "format": "vertical-checklist",
+      "status": "draft",
+      "angle": "Make latitude verification the first gift decision",
+      "headline": "Do not buy a planisphere by state—buy it by coordinates",
+      "copy": "A planisphere matches a latitude band and hemisphere, not a vague region. Check the recipient's regular observing coordinate first. A wrong-band wheel is not almost right; it can put the horizon and star positions in the wrong place.",
+      "assetBrief": "Original vertical decision graphic with a globe, latitude bands, and stop signs for wrong hemisphere, below 20 north, and above 60 north; no map screenshots or product packaging.",
+      "altText": "Latitude checklist showing that a planisphere must match the observer's exact northern or southern latitude band.",
+      "destinationUrl": "https://tipsforyourgifts.web.app/blog/night-sky-planisphere-red-light-gift-pairs",
+      "claimIds": [
+        "claim-latitude-hemisphere-boundary",
+        "claim-night-sky-30-40-fit",
+        "claim-night-sky-40-50-fit"
+      ],
+      "productIds": [
+        "night-sky-30-40-large",
+        "night-sky-40-50-large"
+      ],
+      "pairIds": [],
+      "disclosureRequired": false,
+      "externalPostId": null
+    },
+    {
+      "id": "night-sky-one-pattern-ritual",
+      "platform": "instagram",
+      "format": "six-slide-carousel",
+      "status": "draft",
+      "angle": "Teach the complete One Pattern One Neighbor ritual",
+      "headline": "A first stargazing ritual that does not begin with a telescope",
+      "copy": "Set one latitude-correct wheel indoors and check the red light's lowest usable output before dark adaptation. Outside, find one familiar pattern, consult the chart only long enough to choose one neighbor, then switch the light off and look up.",
+      "assetBrief": "Six original illustrated slides: coordinate check, indoor wheel setting, safe dark spot, familiar pattern, dim red chart glance, and adjacent pattern; no product photos.",
+      "altText": "Carousel showing a beginner setting a star wheel, finding one familiar constellation pattern, and then locating one adjacent pattern with minimal red light.",
+      "destinationUrl": "https://tipsforyourgifts.web.app/blog/night-sky-planisphere-red-light-gift-pairs",
+      "claimIds": [
+        "claim-pair-30-40-rigel",
+        "claim-dim-red-boundary"
+      ],
+      "productIds": [
+        "night-sky-30-40-large",
+        "rigel-starlite-mini-red-only"
+      ],
+      "pairIds": [
+        "lower-midlatitude-one-pattern-pair"
+      ],
+      "disclosureRequired": false,
+      "externalPostId": null
+    },
+    {
+      "id": "night-sky-red-is-not-enough",
+      "platform": "pinterest",
+      "format": "decision-flow",
+      "status": "draft",
+      "angle": "Distinguish red color from genuinely useful low-end control",
+      "headline": "For stargazing, red is not enough—low-end control matters",
+      "copy": "Even red light can be too bright. Rigel documents two red LEDs and thumbwheel control for the Starlite Mini, but not startup position or minimum output; independent evidence conflicts on its lowest setting. Celestron documents adjustable output for 93588, not dim-start behavior. Check either light indoors, use the lowest readable red, and turn it off when it is not needed.",
+      "assetBrief": "Original three-step decision flow labeled Avoid white-first, Adjust to minimum readable red, and Turn it off, using generic beam icons with no brand designs.",
+      "altText": "Decision flow contrasting a white-first flashlight, adjustable low red light, and turning all light off while observing.",
+      "destinationUrl": "https://tipsforyourgifts.web.app/blog/night-sky-planisphere-red-light-gift-pairs",
+      "claimIds": [
+        "claim-dim-red-boundary",
+        "claim-rigel-benefit",
+        "claim-celestron-light-benefit"
+      ],
+      "productIds": [
+        "rigel-starlite-mini-red-only",
+        "celestron-93588-red-only"
+      ],
+      "pairIds": [],
+      "disclosureRequired": false,
+      "externalPostId": null
+    },
+    {
+      "id": "night-sky-planisphere-limits",
+      "platform": "pinterest",
+      "format": "split-card-series",
+      "status": "draft",
+      "angle": "Set honest expectations for what a planisphere can locate",
+      "headline": "What a planisphere can show—and what it cannot",
+      "copy": "A planisphere can orient fixed stars and constellation patterns for a date and time. It cannot tell you tonight's changing Moon or planet positions. That limit makes it a focused learning tool, not a complete sky-event service.",
+      "assetBrief": "Original split card with fixed star patterns on the Can side and moving Moon and planet icons on the Cannot side; no copied chart art.",
+      "altText": "Graphic explaining that a planisphere maps fixed stars and constellations but not the changing positions of the Moon and planets.",
+      "destinationUrl": "https://tipsforyourgifts.web.app/blog/night-sky-planisphere-red-light-gift-pairs",
+      "claimIds": [
+        "claim-planisphere-moving-object-boundary",
+        "claim-night-sky-benefit"
+      ],
+      "productIds": [
+        "night-sky-20-30-large",
+        "night-sky-30-40-large",
+        "night-sky-40-50-large"
+      ],
+      "pairIds": [],
+      "disclosureRequired": false,
+      "externalPostId": null
+    },
+    {
+      "id": "night-sky-buy-only-one",
+      "platform": "instagram",
+      "format": "four-slide-carousel",
+      "status": "draft",
+      "angle": "Make the anchor-only and skip decisions explicit",
+      "headline": "When this night-sky gift pair should be only one item",
+      "copy": "Buy only the correct planisphere if they already have a trusted red-only light with verified low-end output. Buy only the light if their analog guide already fits. Skip both if they prefer apps, need screen zoom or audio, or have not shown the observing habit.",
+      "assetBrief": "Four original slides labeled Pair, Guide only, Light only, and Skip, with generic wheel and flashlight line icons.",
+      "altText": "Carousel showing when to buy a planisphere and red light together, when to buy one item, and when to skip the gift.",
+      "destinationUrl": "https://tipsforyourgifts.web.app/blog/night-sky-planisphere-red-light-gift-pairs",
+      "claimIds": [
+        "claim-analog-preference-boundary",
+        "claim-duplicate-clutter-control",
+        "claim-pair-40-50-rigel"
+      ],
+      "productIds": [
+        "night-sky-40-50-large",
+        "rigel-starlite-mini-red-only"
+      ],
+      "pairIds": [
+        "upper-midlatitude-one-pattern-pair"
+      ],
+      "disclosureRequired": false,
+      "externalPostId": null
+    },
+    {
+      "id": "night-sky-thirty-second-script",
+      "platform": "tiktok",
+      "format": "thirty-second-script",
+      "status": "draft",
+      "angle": "Open with the phone-glare loop and reveal the low-commitment pair",
+      "headline": "The astronomy gift for someone who did not ask for a telescope",
+      "copy": "Hook: they point out one bright object, unlock a phone, and lose the larger pattern. Show the better sequence: verify latitude, set a paper wheel, check the red light's lowest usable output indoors, find one pattern and one neighbor outside, then turn the light off. End with: no telescope required.",
+      "assetBrief": "Original night-yard storyboard with a generic phone glow crossed out, latitude check, abstract star wheel, dim red pool of light, and two simple constellation patterns; no product packaging.",
+      "altText": "Short video storyboard replacing a glaring phone search with a latitude-correct star wheel and a dim red-only light.",
+      "destinationUrl": "https://tipsforyourgifts.web.app/blog/night-sky-planisphere-red-light-gift-pairs",
+      "claimIds": [
+        "claim-screen-glare-friction",
+        "claim-latitude-hemisphere-boundary",
+        "claim-rigel-benefit"
+      ],
+      "productIds": [
+        "night-sky-30-40-large",
+        "rigel-starlite-mini-red-only"
+      ],
+      "pairIds": [
+        "lower-midlatitude-one-pattern-pair"
+      ],
+      "disclosureRequired": false,
+      "externalPostId": null
+    }
+  ]
+}

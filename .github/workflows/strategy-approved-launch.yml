@@ -1,0 +1,102 @@
+name: Launch research after strategy approval
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - web/src/data/strategy.json
+
+permissions:
+  contents: read
+  actions: write
+
+concurrency:
+  group: strategy-approved-launch-${{ github.event.after }}
+  cancel-in-progress: false
+
+jobs:
+  classify_and_launch:
+    if: github.event.before != '0000000000000000000000000000000000000000'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24.14.0"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - name: Classify the exact strategy transition
+        id: transition
+        env:
+          BEFORE_SHA: ${{ github.event.before }}
+          AFTER_SHA: ${{ github.event.after }}
+          ACTOR: ${{ github.actor }}
+          OWNER: ${{ github.repository_owner }}
+        run: |
+          test "$(printf '%s' "$BEFORE_SHA" | grep -Ec '^[0-9a-f]{40}$')" -eq 1
+          test "$(printf '%s' "$AFTER_SHA" | grep -Ec '^[0-9a-f]{40}$')" -eq 1
+          git cat-file -e "$BEFORE_SHA^{commit}"
+          git cat-file -e "$AFTER_SHA^{commit}"
+          git merge-base --is-ancestor "$BEFORE_SHA" "$AFTER_SHA"
+          test "$(git rev-parse HEAD)" = "$AFTER_SHA"
+          if git cat-file -e "${BEFORE_SHA}:web/src/data/strategy.json" 2>/dev/null; then
+            git show "${BEFORE_SHA}:web/src/data/strategy.json" > strategy.before.json
+            git show "${AFTER_SHA}:web/src/data/strategy.json" > strategy.after.json
+            if ! node web/scripts/classify-strategy-change.mjs strategy.before.json strategy.after.json > strategy-transition.json; then
+              test "$ACTOR" = "$OWNER" || { echo "Only the repository owner may merge an already-completed strategy batch." >&2; exit 1; }
+              node web/scripts/verify-completed-strategy-batch.mjs strategy.before.json strategy.after.json > strategy-transition.json
+            fi
+          else
+            test "$ACTOR" = "$OWNER" || { echo "Only the repository owner may merge the initial governed strategy ledger." >&2; exit 1; }
+            printf '%s\n' '{"gate":"passed","changeType":"bootstrap","launchResearch":false}' > strategy-transition.json
+          fi
+          change_type="$(jq -r '.changeType' strategy-transition.json)"
+          launch_research="$(jq -r '.launchResearch' strategy-transition.json)"
+          idea_id="$(jq -r '.ideaId // ""' strategy-transition.json)"
+          idea_revision="$(jq -r '.ideaRevision // ""' strategy-transition.json)"
+          case "$change_type:$launch_research" in
+            approval:true|proposal:false|no_change:false|completed_batch:false|bootstrap:false) ;;
+            *) echo "Strategy classifier returned an invalid transition posture." >&2; exit 1 ;;
+          esac
+          if [ "$launch_research" = "true" ]; then
+            test "$(printf '%s' "$idea_id" | grep -Ec '^founder-idea-[0-9]{3}$')" -eq 1
+            test "$(printf '%s' "$idea_revision" | grep -Ec '^[1-9][0-9]*$')" -eq 1
+          fi
+          echo "change_type=$change_type" >> "$GITHUB_OUTPUT"
+          echo "launch_research=$launch_research" >> "$GITHUB_OUTPUT"
+          echo "idea_id=$idea_id" >> "$GITHUB_OUTPUT"
+          echo "idea_revision=$idea_revision" >> "$GITHUB_OUTPUT"
+      - name: Re-run every deterministic gate before dispatch
+        run: |
+          npm ci --prefix web
+          npm run validate
+          npm run build
+          npm run smoke
+      - uses: actions/upload-artifact@v4
+        with:
+          name: strategy-transition-${{ github.run_id }}
+          path: strategy-transition.json
+          if-no-files-found: error
+          retention-days: 30
+      - name: Dispatch the approved research mission
+        if: steps.transition.outputs.launch_research == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          IDEA_ID: ${{ steps.transition.outputs.idea_id }}
+        run: |
+          test -n "$IDEA_ID"
+          gh workflow run research-agent.yml --repo "$GITHUB_REPOSITORY" --ref master -f idea_id="$IDEA_ID"
+          echo "Founder approval merged; queued the hash-bound research mission for $IDEA_ID."
+      - name: Record a proposal-only transition
+        if: steps.transition.outputs.change_type == 'proposal'
+        run: echo "A strategy proposal merged. Founder research approval is still required; no research mission was dispatched."
+      - name: Record an already-completed founder batch
+        if: steps.transition.outputs.change_type == 'completed_batch'
+        run: echo "The repository owner merged two or three digest-bound, independently reviewed runs with their exact strategy approvals; no duplicate research mission was dispatched."
+      - name: Record the initial governed strategy ledger
+        if: steps.transition.outputs.change_type == 'bootstrap'
+        run: echo "The repository owner merged the initial validated strategy and research ledger; no duplicate research mission was dispatched."

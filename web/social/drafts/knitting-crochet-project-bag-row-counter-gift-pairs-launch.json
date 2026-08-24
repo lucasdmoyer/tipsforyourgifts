@@ -1,0 +1,163 @@
+{
+  "schemaVersion": "1.0.0",
+  "packId": "knitting-crochet-project-bag-row-counter-gift-pairs-launch",
+  "articleSlug": "knitting-crochet-project-bag-row-counter-gift-pairs",
+  "researchRun": "20260823-fiber-art-pause-269f700c",
+  "status": "draft",
+  "createdAt": "2026-08-23T21:20:00.000Z",
+  "policy": {
+    "officialApiRequired": true,
+    "externalPublishingAuthorized": false,
+    "containsAffiliateLinks": false
+  },
+  "posts": [
+    {
+      "id": "fiber-two-states",
+      "platform": "pinterest",
+      "format": "two-part-diagram",
+      "status": "draft",
+      "angle": "Separate physical project state from decision state",
+      "headline": "A paused knitting project has two states to protect",
+      "copy": "The bag keeps fabric, yarn, tools, and notions together. The counter or chart marker preserves the last completed row or next instruction. A thoughtful pair solves both restart jobs without guessing at yarn or needles.",
+      "assetBrief": "Original vertical two-column diagram labeled Physical state and Decision state, converging on a clean restart; generic yarn and chart icons only.",
+      "altText": "Diagram showing a project bag protecting yarn and tools while a counter or chart board preserves the next instruction.",
+      "destinationUrl": "https://tipsforyourgifts.web.app/blog/knitting-crochet-project-bag-row-counter-gift-pairs",
+      "claimIds": [
+        "claim-fiber-restart-friction",
+        "claim-pair-della-clover"
+      ],
+      "productIds": [
+        "della-q-makers-train-case",
+        "clover-kacha-kacha-336"
+      ],
+      "pairIds": [
+        "compact-case-locked-count-loop"
+      ],
+      "disclosureRequired": false,
+      "externalPostId": null
+    },
+    {
+      "id": "fiber-name-the-wip",
+      "platform": "instagram",
+      "format": "six-slide-carousel",
+      "status": "draft",
+      "angle": "Choose a container from one real project",
+      "headline": "Never gift a knitting bag before naming the project",
+      "copy": "Sock, hat, cowl, sweater, or blanket? Count active skeins, measure the longest tool, check closure needs, and name the storage place. The beautiful wrong-size bag is still the wrong bag.",
+      "assetBrief": "Six original slides comparing generic compact and large works by yarn volume, tool length, closure, carry, and storage; no branded imagery.",
+      "altText": "Carousel showing how project type, yarn volume, longest tool, closure, and storage determine fiber-art bag size.",
+      "destinationUrl": "https://tipsforyourgifts.web.app/blog/knitting-crochet-project-bag-row-counter-gift-pairs",
+      "claimIds": [
+        "claim-della-fit",
+        "claim-artbin-fit",
+        "claim-fiber-duplicate-boundary"
+      ],
+      "productIds": [
+        "della-q-makers-train-case",
+        "artbin-yarn-tote-6821ag"
+      ],
+      "pairIds": [],
+      "disclosureRequired": false,
+      "externalPostId": null
+    },
+    {
+      "id": "fiber-counter-convention",
+      "platform": "pinterest",
+      "format": "vertical-checklist",
+      "status": "draft",
+      "angle": "Turn a counter number into usable restart information",
+      "headline": "Does 27 mean finished—or next? Decide before clicking",
+      "copy": "A row counter stores a number, not its meaning. Write one rule: the display shows the row just completed, or the row to begin next. Lock it, keep it with the project, and use the same rule every session.",
+      "assetBrief": "Original vertical card with a large number 27, two labeled interpretation branches, a lock icon, and a project-bag icon.",
+      "altText": "Checklist explaining the completed-row versus next-row convention for a physical knitting counter.",
+      "destinationUrl": "https://tipsforyourgifts.web.app/blog/knitting-crochet-project-bag-row-counter-gift-pairs",
+      "claimIds": [
+        "claim-counter-convention",
+        "claim-clover-drawback"
+      ],
+      "productIds": [
+        "clover-kacha-kacha-336",
+        "cocoknits-knitting-row-counter"
+      ],
+      "pairIds": [],
+      "disclosureRequired": false,
+      "externalPostId": null
+    },
+    {
+      "id": "fiber-paper-versus-app",
+      "platform": "instagram",
+      "format": "five-slide-carousel",
+      "status": "draft",
+      "angle": "Route paper-pattern makers and app users differently",
+      "headline": "Chart board or no chart board? Watch the pattern habit",
+      "copy": "A magnetic board can preserve one paper chart line. It is clutter for an app-only maker. Check paper size, print readability, bag fit, magnet comfort, and whether a clipboard system already wins.",
+      "assetBrief": "Five original slides: paper chart, phone pattern, measurement overlay, existing clipboard, and buy-or-skip decision.",
+      "altText": "Carousel comparing a paper-chart workflow with an app-based knitting pattern workflow before gifting a magnetic board.",
+      "destinationUrl": "https://tipsforyourgifts.web.app/blog/knitting-crochet-project-bag-row-counter-gift-pairs",
+      "claimIds": [
+        "claim-makers-board-benefit",
+        "claim-makers-board-drawback"
+      ],
+      "productIds": [
+        "cocoknits-makers-board"
+      ],
+      "pairIds": [],
+      "disclosureRequired": false,
+      "externalPostId": null
+    },
+    {
+      "id": "fiber-pause-ritual",
+      "platform": "tiktok",
+      "format": "thirty-second-script",
+      "status": "draft",
+      "angle": "Demonstrate the mark-close-resume loop without pretending to test a product",
+      "headline": "The 20-second habit that saves a knitting restart",
+      "copy": "Hook: the bag cannot remember your row. Show a generic swatch reaching a clean stop, a counter being set to the agreed convention, a note added for one modification, and every tool closing with the work. End: protect the object and the decision.",
+      "assetBrief": "Original unbranded storyboard with generic swatch, click counter, note card, project bag, and next-session arrow; no product-performance simulation.",
+      "altText": "Short video storyboard showing a row marked, counter locked, tools contained, and a fiber-art project ready to resume.",
+      "destinationUrl": "https://tipsforyourgifts.web.app/blog/knitting-crochet-project-bag-row-counter-gift-pairs",
+      "claimIds": [
+        "claim-pair-della-clover",
+        "claim-fiber-restart-friction"
+      ],
+      "productIds": [
+        "della-q-makers-train-case",
+        "clover-kacha-kacha-336"
+      ],
+      "pairIds": [
+        "compact-case-locked-count-loop"
+      ],
+      "disclosureRequired": false,
+      "externalPostId": null
+    },
+    {
+      "id": "fiber-buy-one-or-skip",
+      "platform": "pinterest",
+      "format": "buy-skip-card",
+      "status": "draft",
+      "angle": "Make partial purchase and no-purchase branches visible",
+      "headline": "When this knitting gift pair should be one item—or none",
+      "copy": "Buy only the bag when tracking already works. Buy only the tracker when containment already works. Pair them only for one named project with both problems. Skip both when the current restart is already easy.",
+      "assetBrief": "Original three-column Pair, One item, and Skip card using generic project, bag, counter, and chart icons.",
+      "altText": "Decision card for buying a fiber-art project bag and tracker together, buying one, or skipping both.",
+      "destinationUrl": "https://tipsforyourgifts.web.app/blog/knitting-crochet-project-bag-row-counter-gift-pairs",
+      "claimIds": [
+        "claim-pair-della-clover",
+        "claim-pair-artbin-board",
+        "claim-fiber-duplicate-boundary"
+      ],
+      "productIds": [
+        "della-q-makers-train-case",
+        "clover-kacha-kacha-336",
+        "artbin-yarn-tote-6821ag",
+        "cocoknits-makers-board"
+      ],
+      "pairIds": [
+        "compact-case-locked-count-loop",
+        "large-tote-paper-chart-loop"
+      ],
+      "disclosureRequired": false,
+      "externalPostId": null
+    }
+  ]
+}

@@ -1,0 +1,125 @@
+name: Weekly executive growth review
+
+on:
+  schedule:
+    - cron: "17 14 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: weekly-growth-review
+  cancel-in-progress: false
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    outputs:
+      has_patch: ${{ steps.diff.outputs.has_patch }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24.14.0"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - name: Install and validate the trusted operating state
+        run: |
+          npm ci --prefix web
+          npm run validate
+          cp web/src/data/growth.json growth.base.json
+      - name: Let the growth team propose the next measured experiment
+        uses: openai/codex-action@v1
+        with:
+          openai-api-key: ${{ secrets.OPENAI_API_KEY }}
+          safety-strategy: drop-sudo
+          codex-args: --search
+          prompt: |
+            Act as the Tips for Your Gifts growth lead and executive analyst. Read docs/GROWTH_MEASUREMENT.md, web/src/data/growth.json, web/src/data/operations.json, web/src/data/strategy.json, and the publication-ready article metadata.
+
+            Use only aggregate snapshots already committed in growth.json. Never infer missing impressions, clicks, engagement, conversions, revenue, attribution, or causality. Treat null as unknown, not zero. Do not use private identifiers, raw queries, credentials, external dashboards, or browser sessions.
+
+            If there is no new complete aggregate snapshot that materially supports a decision, make no changes. Otherwise, create or revise only proposed experiments in web/src/data/growth.json. Every proposal must state a falsifiable hypothesis, one primary metric, a comparable reporting window, a decision rule, two stop conditions, the exact source snapshot IDs, and the affected publication-ready article slugs. Leave status and founderDisposition as proposed. Do not approve or start an experiment, change connector state, alter snapshots or measurement policy, modify strategy, post social content, enroll an affiliate, spend money, deploy, or touch any other file.
+      - name: Prove the AI patch stayed inside the proposal boundary
+        run: |
+          npm --prefix web run generate
+          node web/scripts/verify-growth-review-patch.mjs growth.base.json web/src/data/growth.json
+          rm -f growth.base.json
+          git add -N .
+          while IFS= read -r changed_path; do
+            case "$changed_path" in
+              web/src/data/growth.json|web/src/data/operations.json|web/src/app/generated/content.generated.ts|web/public/sitemap.xml) ;;
+              *) echo "Growth review changed forbidden path: $changed_path" >&2; exit 1 ;;
+            esac
+          done < <(git diff --name-only HEAD)
+          npm --prefix web run validate:growth
+      - name: Serialize the review proposal
+        id: diff
+        run: |
+          git diff --check
+          git diff --binary HEAD > growth-review.patch
+          if [ -s growth-review.patch ]; then
+            echo "has_patch=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_patch=false" >> "$GITHUB_OUTPUT"
+          fi
+      - uses: actions/upload-artifact@v4
+        if: steps.diff.outputs.has_patch == 'true'
+        with:
+          name: growth-review-patch-${{ github.run_id }}
+          path: growth-review.patch
+          if-no-files-found: error
+          retention-days: 7
+
+  open_pull_request:
+    needs: analyze
+    if: needs.analyze.outputs.has_patch == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/download-artifact@v4
+        with:
+          name: growth-review-patch-${{ github.run_id }}
+      - run: git apply --index growth-review.patch
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24.14.0"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - name: Re-run all gates without an AI credential
+        run: |
+          npm ci --prefix web
+          npm run validate
+          npm run build
+          npm run smoke
+          git diff --check --cached
+          git diff --exit-code
+      - name: Commit the founder-review proposal
+        env:
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -c "codex/growth-$RUN_ID"
+          git commit -m "Propose measured growth experiment $RUN_ID"
+          git push origin "codex/growth-$RUN_ID"
+      - name: Open the executive-review pull request
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          gh pr create \
+            --base master \
+            --head "codex/growth-$RUN_ID" \
+            --title "Weekly growth review $RUN_ID" \
+            --body "The AI growth team used only committed aggregate snapshots and proposed a bounded experiment. Review its hypothesis, baseline, decision rule, stop conditions, and privacy posture. Merge approves the proposal only; it does not publish social content, spend money, enroll an affiliate, or deploy production."

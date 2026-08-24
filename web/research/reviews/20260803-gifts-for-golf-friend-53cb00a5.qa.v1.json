@@ -1,0 +1,16 @@
+{
+  "schemaVersion": "1.0.0",
+  "receiptId": "20260803-gifts-for-golf-friend-53cb00a5-qa",
+  "runId": "20260803-gifts-for-golf-friend-53cb00a5",
+  "articleSlug": "gifts-for-a-golf-friend",
+  "reviewedAt": "2026-08-03T06:50:32.678Z",
+  "reviewerRole": "independent-editor",
+  "reviewerId": "golf-evidence-red-team",
+  "workflowRunId": "local-independent-review-20260803",
+  "verdict": "passed",
+  "evidenceSha256": "d796010abad0e399c201983c40a18f8fa0ec5ee2bc209ef077981e06978ca8e6",
+  "articleSha256": "18dea4ae288450d34100ed0f0af9b2b8c3f1f5d85b59c7ade7d160c8dfa54e38",
+  "socialSha256": "e429b8839bffc4de9dfc36cd00dd6d81bdc4f641c2a468061ad3160bb3473f1f",
+  "blockers": [],
+  "warnings": []
+}

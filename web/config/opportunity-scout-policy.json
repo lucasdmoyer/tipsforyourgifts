@@ -1,0 +1,21 @@
+{
+  "schemaVersion": "1.0.0",
+  "updatedAt": "2026-08-03T10:30:00.000Z",
+  "enabled": true,
+  "cadence": "weekly",
+  "maxOpenProposals": 5,
+  "minimumResearchPasses": 3,
+  "minimumSources": 10,
+  "minimumSourceClasses": 5,
+  "minimumPublicSocialOrCommunitySources": 2,
+  "minimumCandidates": 3,
+  "maximumCandidates": 7,
+  "minimumSignals": 6,
+  "minimumEvidenceConfidence": 70,
+  "minimumThoughtfulnessPotential": 80,
+  "diminishingReturnThreshold": 0.1,
+  "requiredConsecutiveLowNoveltyPasses": 2,
+  "geography": "United States",
+  "language": "English",
+  "socialEvidencePolicy": "public_only_no_personal_identifiers"
+}

@@ -1,0 +1,1651 @@
+{
+  "schemaVersion": "1.1.0",
+  "runId": "20260816-one-photo-one-story-4cf6dd3f",
+  "ideaId": "founder-idea-006",
+  "ideaRevision": 2,
+  "ideaSha256": "4cf6dd3ffa960a95c634777a4a03bce3556dd122d6a207dc34546178c35e951c",
+  "decisionLens": "gift_pairing",
+  "contentType": "pairing-guide",
+  "status": "validated",
+  "topic": "One-photo, one-story gift pairs for a willing family historian",
+  "audience": "People buying for a friend or relative who already tells family stories or identifies people in older photographs",
+  "occasion": "Milestone birthdays, retirement, family reunions, and quiet shared weekends",
+  "budgetBands": [
+    "Under $25",
+    "$25-$50",
+    "$50-$90"
+  ],
+  "riskClass": "medium",
+  "draftAuthor": "family-history-drafting-team-20260816",
+  "startedAt": "2026-08-16T13:00:00.000Z",
+  "researchPasses": [
+    {
+      "pass": 1,
+      "materialNoveltyRate": 1,
+      "newCandidates": 13,
+      "newDecisionFactors": 8
+    },
+    {
+      "pass": 2,
+      "materialNoveltyRate": 0.36,
+      "newCandidates": 0,
+      "newDecisionFactors": 5
+    },
+    {
+      "pass": 3,
+      "materialNoveltyRate": 0.18,
+      "newCandidates": 0,
+      "newDecisionFactors": 3
+    },
+    {
+      "pass": 4,
+      "materialNoveltyRate": 0.08,
+      "newCandidates": 0,
+      "newDecisionFactors": 1
+    },
+    {
+      "pass": 5,
+      "materialNoveltyRate": 0.04,
+      "newCandidates": 0,
+      "newDecisionFactors": 0
+    }
+  ],
+  "sources": [
+    {
+      "id": "src-storycorps-great-questions",
+      "url": "https://storycorps.org/participate/great-questions/",
+      "publisher": "StoryCorps",
+      "title": "Great Questions",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "professional-guidance",
+      "trustTier": "A",
+      "independenceGroup": "storycorps"
+    },
+    {
+      "id": "src-storycorps-conversation-tips",
+      "url": "https://storycorps.org/participate/tips-for-a-great-conversation/",
+      "publisher": "StoryCorps",
+      "title": "Tips for a Great Conversation",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "independent-review",
+      "trustTier": "A",
+      "independenceGroup": "storycorps"
+    },
+    {
+      "id": "src-oha-best-practices",
+      "url": "https://oralhistory.org/best-practices/",
+      "publisher": "Oral History Association",
+      "title": "Oral History Best Practices",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "professional-guidance",
+      "trustTier": "A",
+      "independenceGroup": "oral-history-association"
+    },
+    {
+      "id": "src-oha-informed-consent",
+      "url": "https://oralhistory.org/informed-consent/",
+      "publisher": "Oral History Association",
+      "title": "Informed Consent",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "professional-guidance",
+      "trustTier": "A",
+      "independenceGroup": "oral-history-association"
+    },
+    {
+      "id": "src-smithsonian-oral-history",
+      "url": "https://siarchives.si.edu/history/how-do-oral-history",
+      "publisher": "Smithsonian Institution Archives",
+      "title": "How to Do Oral History",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "independent-review",
+      "trustTier": "A",
+      "independenceGroup": "smithsonian"
+    },
+    {
+      "id": "src-loc-photo-care",
+      "url": "https://www.loc.gov/preservation/care/photo.html",
+      "publisher": "Library of Congress",
+      "title": "Care, Handling and Storage of Photographs",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "independent-review",
+      "trustTier": "A",
+      "independenceGroup": "library-of-congress"
+    },
+    {
+      "id": "src-loc-photo-leaflet",
+      "url": "https://www.loc.gov/preservation/care/photolea.html",
+      "publisher": "Library of Congress",
+      "title": "Information Leaflet on the Care, Handling, and Storage of Photographs",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "safety-authority",
+      "trustTier": "A",
+      "independenceGroup": "library-of-congress"
+    },
+    {
+      "id": "src-nedcc-photo-enclosures",
+      "url": "https://www.nedcc.org/free-resources/preservation-leaflets/5.-photographs/5.5-storage-enclosures-for-photographic-materials",
+      "publisher": "Northeast Document Conservation Center",
+      "title": "Storage Enclosures for Photographic Materials",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "independent-review",
+      "trustTier": "A",
+      "independenceGroup": "nedcc"
+    },
+    {
+      "id": "src-nedcc-family-collections",
+      "url": "https://www.nedcc.org/free-resources/preserving-private-and-family-collections/caring-for-private-and-family-collections",
+      "publisher": "Northeast Document Conservation Center",
+      "title": "Caring for Private and Family Collections",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "safety-authority",
+      "trustTier": "A",
+      "independenceGroup": "nedcc"
+    },
+    {
+      "id": "src-nara-photographs",
+      "url": "https://www.archives.gov/preservation/holdings-maintenance/photographs",
+      "publisher": "US National Archives",
+      "title": "Photographs: Holdings Maintenance",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "independent-review",
+      "trustTier": "A",
+      "independenceGroup": "national-archives"
+    },
+    {
+      "id": "src-nara-family-guidance",
+      "url": "https://www.archives.gov/preservation/holdings-maintenance/general-guidance.html",
+      "publisher": "US National Archives",
+      "title": "Family Archives: General Guidance",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "safety-authority",
+      "trustTier": "A",
+      "independenceGroup": "national-archives"
+    },
+    {
+      "id": "src-reddit-photo-labeling",
+      "url": "https://www.reddit.com/r/Archivists/comments/1sj7c5e/",
+      "publisher": "Reddit r/Archivists",
+      "title": "Public discussion about safely labeling family photographs",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "social-discussion",
+      "trustTier": "C",
+      "independenceGroup": "reddit-archivists-labeling"
+    },
+    {
+      "id": "src-reddit-photo-materials",
+      "url": "https://www.reddit.com/r/Archivists/comments/1sneepr/",
+      "publisher": "Reddit r/Archivists",
+      "title": "Public discussion about material claims for photo labeling",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "social-discussion",
+      "trustTier": "C",
+      "independenceGroup": "reddit-archivists-materials"
+    },
+    {
+      "id": "src-reddit-prompt-preference",
+      "url": "https://www.reddit.com/r/progressivemoms/comments/1t4z7y8/",
+      "publisher": "Reddit r/progressivemoms",
+      "title": "Public discussion comparing prompted family-memory gifts",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "social-discussion",
+      "trustTier": "C",
+      "independenceGroup": "reddit-prompt-preference"
+    },
+    {
+      "id": "src-whats-your-story-official",
+      "url": "https://www.chroniclebooks.com/products/whats-your-story-memory-sharing-game",
+      "publisher": "Chronicle Books",
+      "title": "What's Your Story? Memory Sharing Game",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "manufacturer",
+      "trustTier": "A",
+      "independenceGroup": "chronicle-books"
+    },
+    {
+      "id": "src-whats-your-story-retailer",
+      "url": "https://www.walmart.com/ip/2304831079",
+      "publisher": "Walmart",
+      "title": "What's Your Story? Memory Sharing Game product listing",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "retailer",
+      "trustTier": "C",
+      "independenceGroup": "walmart"
+    },
+    {
+      "id": "src-grandparent-cards-official",
+      "url": "https://www.penguinrandomhouse.com/books/723772/meaningful-conversations-with-my-grandparents-100-interactive-conversation-cards-for-families-by-korie-herold/",
+      "publisher": "Penguin Random House",
+      "title": "Meaningful Conversations with My Grandparents",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "manufacturer",
+      "trustTier": "A",
+      "independenceGroup": "penguin-random-house"
+    },
+    {
+      "id": "src-grandparent-cards-retailer",
+      "url": "https://store.familytreemagazine.com/products/meaningful-conversations-grandparents",
+      "publisher": "Family Tree Magazine Store",
+      "title": "Meaningful Conversations with My Grandparents product listing",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "retailer",
+      "trustTier": "C",
+      "independenceGroup": "family-tree-magazine"
+    },
+    {
+      "id": "src-caption-pocket-official",
+      "url": "https://www.archivalmethods.com/product/caption-pocket-4x6-photo-page",
+      "publisher": "Archival Methods",
+      "title": "Caption Pocket 4x6 Photo Page",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "manufacturer",
+      "trustTier": "A",
+      "independenceGroup": "archival-methods"
+    },
+    {
+      "id": "src-gaylord-envelopes-official",
+      "url": "https://www.gaylord.com/Preservation/Photo%2C-Print-%26-Art-Preservation/Envelopes%2C-Sleeves-%26-Protectors/Unbuffered-Paper-Photo-%26-Negative-Envelopes-%2825-Pack%29/p/AP",
+      "publisher": "Gaylord Archival",
+      "title": "Unbuffered Paper Photo and Negative Envelopes",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "manufacturer",
+      "trustTier": "A",
+      "independenceGroup": "gaylord-archival"
+    },
+    {
+      "id": "src-print-file-foldflap-official",
+      "url": "https://www.printfile.com/product/4x6-foldflap-bopp/",
+      "publisher": "Print File",
+      "title": "PFF46 4x6 Polypropylene FoldFlap Sleeves",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "manufacturer",
+      "trustTier": "A",
+      "independenceGroup": "print-file"
+    },
+    {
+      "id": "src-rememory-official",
+      "url": "https://thestorymatic.com/pages/storymatic-rememory-description",
+      "publisher": "Storymatic Studios",
+      "title": "Storymatic Rememory Description",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "manufacturer",
+      "trustTier": "A",
+      "independenceGroup": "storymatic"
+    },
+    {
+      "id": "src-rememory-review",
+      "url": "https://nathanbweller.com/review-rememory-storymatic-studios/",
+      "publisher": "Nathan B. Weller",
+      "title": "Rememory by Storymatic Studios: A Review",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "independent-review",
+      "trustTier": "B",
+      "independenceGroup": "nathan-weller"
+    },
+    {
+      "id": "src-rememory-retailer-warning",
+      "url": "https://www.alimed.com/products/storymatic-rememory",
+      "publisher": "AliMed",
+      "title": "Storymatic Rememory retailer listing and current warning",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "retailer",
+      "trustTier": "B",
+      "independenceGroup": "alimed"
+    },
+    {
+      "id": "src-tales-official",
+      "url": "https://tales.com/pages/life-story-card-game",
+      "publisher": "Tales.com",
+      "title": "Tales Life Story Card Game",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "manufacturer",
+      "trustTier": "B",
+      "independenceGroup": "tales"
+    },
+    {
+      "id": "src-generations-official",
+      "url": "https://talkingpointcards.com/products/generations-edition",
+      "publisher": "Talking Point Cards",
+      "title": "Generations Edition",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "manufacturer",
+      "trustTier": "B",
+      "independenceGroup": "talking-point-cards"
+    },
+    {
+      "id": "src-life-story-journal-retailer",
+      "url": "https://www.uncommongoods.com/product/my-life-story-so-far",
+      "publisher": "Uncommon Goods",
+      "title": "My Life Story So Far",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "retailer",
+      "trustTier": "B",
+      "independenceGroup": "uncommon-goods"
+    },
+    {
+      "id": "src-lifes-capsule-official",
+      "url": "https://lifescapsule.com/",
+      "publisher": "Life's Capsule",
+      "title": "Story Capsule",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "manufacturer",
+      "trustTier": "B",
+      "independenceGroup": "lifes-capsule"
+    },
+    {
+      "id": "src-side-loading-official",
+      "url": "https://www.archivalmethods.com/product/side-loading-print-sleeves",
+      "publisher": "Archival Methods",
+      "title": "Side Loading Print Sleeves",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "manufacturer",
+      "trustTier": "A",
+      "independenceGroup": "archival-methods"
+    },
+    {
+      "id": "src-university-pages-official",
+      "url": "https://www.universityproducts.com/polypropylene-photo-album-pages-4-x-6-in-style-a.html",
+      "publisher": "University Products",
+      "title": "Polypropylene Photo Album Pages 4x6",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "manufacturer",
+      "trustTier": "A",
+      "independenceGroup": "university-products"
+    },
+    {
+      "id": "src-gaylord-l-sleeves-official",
+      "url": "https://www.gaylord.com/Preservation/Archival-Envelopes%2C-Sleeves-%26-Protectors/Gaylord-Archival%26%23174%3B-4-mil-Archival-Polyester-L-Sleeves-%2810-Pack%29/p/HYB01268",
+      "publisher": "Gaylord Archival",
+      "title": "4 mil Archival Polyester L-Sleeves",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "manufacturer",
+      "trustTier": "A",
+      "independenceGroup": "gaylord-archival"
+    }
+  ],
+  "claims": [
+    {
+      "id": "claim-one-photo-friction",
+      "kind": "recipient_friction",
+      "text": "A familiar photograph can focus a family-history conversation, while unlabeled context creates a practical need to connect names and details to the image.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-smithsonian-oral-history",
+        "src-reddit-photo-labeling"
+      ]
+    },
+    {
+      "id": "claim-gentle-question-friction",
+      "kind": "recipient_friction",
+      "text": "Prepared open-ended questions can reduce blank-page friction, but the storyteller should be able to choose the topic and decline any question.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": [
+        "src-storycorps-great-questions",
+        "src-storycorps-conversation-tips",
+        "src-oha-informed-consent"
+      ]
+    },
+    {
+      "id": "claim-consent-and-privacy-boundary",
+      "kind": "compatibility",
+      "text": "A family-story session needs transparent purpose, ongoing consent, and agreement about recording, access, and use; no story should be shared beyond the storyteller's chosen boundary.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": [
+        "src-oha-best-practices",
+        "src-oha-informed-consent",
+        "src-smithsonian-oral-history"
+      ]
+    },
+    {
+      "id": "claim-sensitive-topic-compatibility",
+      "kind": "compatibility",
+      "text": "A giver should ask privately whether the exact photograph, person, and topic are welcome rather than infer grief, estrangement, conflict, identity, or another sensitive circumstance; skip that specific topic when the storyteller declines or hesitates.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": [
+        "src-oha-best-practices",
+        "src-oha-informed-consent",
+        "src-smithsonian-oral-history"
+      ]
+    },
+    {
+      "id": "claim-photo-original-boundary",
+      "kind": "compatibility",
+      "text": "Preservation authorities prefer labeling the housing material, advise against pressure-sensitive tape and adhesives on photographs, and recommend specialist advice for unusual or fragile materials.",
+      "risk": "high",
+      "status": "supported",
+      "sourceIds": [
+        "src-loc-photo-care",
+        "src-loc-photo-leaflet",
+        "src-nara-photographs"
+      ]
+    },
+    {
+      "id": "claim-pat-material-boundary",
+      "kind": "compatibility",
+      "text": "Photo enclosures should pass the Photographic Activity Test, and suitable clear plastics generally include uncoated polyester, polyethylene, or polypropylene rather than PVC.",
+      "risk": "high",
+      "status": "supported",
+      "sourceIds": [
+        "src-loc-photo-care",
+        "src-nedcc-photo-enclosures",
+        "src-nara-family-guidance"
+      ]
+    },
+    {
+      "id": "claim-plastic-exceptions",
+      "kind": "product_drawback",
+      "text": "Plastic enclosures are not universally appropriate: static can threaten flaking surfaces, high humidity can cause sticking, and nitrate or acetate negatives require different handling.",
+      "risk": "high",
+      "status": "supported",
+      "sourceIds": [
+        "src-loc-photo-care",
+        "src-loc-photo-leaflet",
+        "src-nedcc-photo-enclosures"
+      ]
+    },
+    {
+      "id": "claim-archive-supply-research-burden",
+      "kind": "self_purchase_pattern",
+      "text": "Choosing a safe enclosure requires checking the photograph's type, condition, size, storage environment, enclosure material, and PAT claim, creating a real research burden for a small task.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-loc-photo-care",
+        "src-nedcc-family-collections",
+        "src-reddit-photo-materials"
+      ]
+    },
+    {
+      "id": "claim-prompt-format-choice",
+      "kind": "self_purchase_pattern",
+      "text": "Prompt gifts vary from casual cards to large journals and app-based recording systems, so the giver must verify whether the recipient wants conversation, writing, or digital capture rather than assuming one format fits all.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-whats-your-story-official",
+        "src-life-story-journal-retailer",
+        "src-lifes-capsule-official",
+        "src-reddit-prompt-preference"
+      ]
+    },
+    {
+      "id": "claim-whats-your-story-benefit",
+      "kind": "product_benefit",
+      "text": "What's Your Story is a portable physical deck with 140 conversation starters covering memories for family, friends, or couples and does not require an account.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-whats-your-story-official",
+        "src-whats-your-story-retailer"
+      ]
+    },
+    {
+      "id": "claim-whats-your-story-drawback",
+      "kind": "product_drawback",
+      "text": "The deck includes emotionally loaded topics such as childhood heartbreak, so selecting a light question in advance is safer than drawing blindly for a sensitive family session.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": [
+        "src-whats-your-story-official",
+        "src-oha-informed-consent"
+      ]
+    },
+    {
+      "id": "claim-whats-your-story-compatibility",
+      "kind": "compatibility",
+      "text": "The deck fits only when the recipient welcomes an English-language, screen-free, open-ended conversation and can skip a prompt without pressure.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": [
+        "src-whats-your-story-official",
+        "src-storycorps-conversation-tips",
+        "src-smithsonian-oral-history"
+      ]
+    },
+    {
+      "id": "claim-grandparent-cards-benefit",
+      "kind": "product_benefit",
+      "text": "Meaningful Conversations with My Grandparents is a physical deck organized around memories, work, travel, relationships, values, and curiosities and can be used without its companion journals.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-grandparent-cards-official",
+        "src-grandparent-cards-retailer"
+      ]
+    },
+    {
+      "id": "claim-grandparent-cards-drawback",
+      "kind": "product_drawback",
+      "text": "The deck is explicitly grandparent-focused and includes reflective subjects such as regrets and relationship advice, which can be a poor fit when the relationship or topic is sensitive.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": [
+        "src-grandparent-cards-official",
+        "src-oha-informed-consent"
+      ]
+    },
+    {
+      "id": "claim-grandparent-cards-compatibility",
+      "kind": "compatibility",
+      "text": "The giver should confirm that the storyteller identifies with the grandparent framing, reads English comfortably, and wants the particular topic before using a card.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": [
+        "src-grandparent-cards-official",
+        "src-storycorps-conversation-tips",
+        "src-oha-best-practices"
+      ]
+    },
+    {
+      "id": "claim-caption-pocket-benefit",
+      "kind": "product_benefit",
+      "text": "Archival Methods Caption Pocket pages keep a written caption in a separate center pocket from the 4x6 photograph, use clear polypropylene photo pockets, and include PAT-passed caption stock.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-caption-pocket-official",
+        "src-loc-photo-care"
+      ]
+    },
+    {
+      "id": "claim-caption-pocket-drawback",
+      "kind": "product_drawback",
+      "text": "The page is limited to 4x6 prints, requires a compatible three-ring binder, and should not be used for a flaking, damp, unidentified, or otherwise fragile photograph without specialist advice.",
+      "risk": "high",
+      "status": "supported",
+      "sourceIds": [
+        "src-caption-pocket-official",
+        "src-loc-photo-care",
+        "src-nedcc-photo-enclosures"
+      ]
+    },
+    {
+      "id": "claim-caption-pocket-compatibility",
+      "kind": "compatibility",
+      "text": "Use the page only for a standard 4x6 print in stable condition and a controlled storage environment, with the caption on the supplied insert rather than the photograph.",
+      "risk": "high",
+      "status": "supported",
+      "sourceIds": [
+        "src-caption-pocket-official",
+        "src-loc-photo-care",
+        "src-nedcc-photo-enclosures"
+      ]
+    },
+    {
+      "id": "claim-gaylord-envelope-benefit",
+      "kind": "product_benefit",
+      "text": "Gaylord's unbuffered photo envelopes are acid-free, lignin-free, PAT-passed, sized for prints up to 4x6, use a non-adhesive flap, and provide exterior fields for date, subject, and place.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-gaylord-envelopes-official",
+        "src-nara-family-guidance"
+      ]
+    },
+    {
+      "id": "claim-gaylord-envelope-drawback",
+      "kind": "product_drawback",
+      "text": "An opaque paper envelope hides the image and requires removal for viewing; grouping many prints together can also make one-photo identification less precise and increase handling.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": [
+        "src-gaylord-envelopes-official",
+        "src-loc-photo-care",
+        "src-nara-photographs"
+      ]
+    },
+    {
+      "id": "claim-gaylord-envelope-compatibility",
+      "kind": "compatibility",
+      "text": "The envelope fits ordinary prints up to 4x6 when an opaque paper enclosure is appropriate; identify photo process and condition before housing rare, mounted, or unusual originals.",
+      "risk": "high",
+      "status": "supported",
+      "sourceIds": [
+        "src-gaylord-envelopes-official",
+        "src-loc-photo-care",
+        "src-nedcc-family-collections"
+      ]
+    },
+    {
+      "id": "claim-print-file-benefit",
+      "kind": "product_benefit",
+      "text": "Print File's PFF46 sleeve is a PAT-passed 4x6 polypropylene FoldFlap enclosure with a self-locking design intended to allow viewing without direct handling.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-print-file-foldflap-official",
+        "src-nara-photographs"
+      ]
+    },
+    {
+      "id": "claim-print-file-drawback",
+      "kind": "product_drawback",
+      "text": "The sleeve has no dedicated caption field, fits only a narrow print size, and clear plastic remains unsuitable for flaking surfaces, high-humidity storage, or some negatives.",
+      "risk": "high",
+      "status": "supported",
+      "sourceIds": [
+        "src-print-file-foldflap-official",
+        "src-loc-photo-care",
+        "src-nedcc-photo-enclosures"
+      ]
+    },
+    {
+      "id": "claim-print-file-compatibility",
+      "kind": "compatibility",
+      "text": "Use this sleeve only for a stable 4x6 print in an appropriate environment and keep its caption in a separate numbered list or other non-contact housing record.",
+      "risk": "high",
+      "status": "supported",
+      "sourceIds": [
+        "src-print-file-foldflap-official",
+        "src-loc-photo-care",
+        "src-reddit-photo-labeling"
+      ]
+    },
+    {
+      "id": "claim-one-photo-caption-page-pair",
+      "kind": "pair_coherence",
+      "text": "A general memory prompt deck starts one willing story while a separate caption pocket keeps consented names and context with one standard-size photograph without writing on the original.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": [
+        "src-whats-your-story-official",
+        "src-caption-pocket-official",
+        "src-smithsonian-oral-history",
+        "src-loc-photo-care"
+      ]
+    },
+    {
+      "id": "claim-grandparent-envelope-pair",
+      "kind": "pair_coherence",
+      "text": "A grandparent-specific prompt deck supplies a bounded conversation starter while a PAT-passed non-adhesive paper envelope provides exterior fields for the minimum context the storyteller chooses to attach.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": [
+        "src-grandparent-cards-official",
+        "src-gaylord-envelopes-official",
+        "src-oha-informed-consent",
+        "src-nara-family-guidance"
+      ]
+    }
+  ],
+  "candidates": [
+    {
+      "id": "whats-your-story-memory-game",
+      "name": "What's Your Story? Memory Sharing Game",
+      "editorialScore": 86,
+      "evidenceConfidence": 80,
+      "drawbacks": [
+        "The deck includes emotionally loaded topics such as childhood heartbreak, so choose one light question in advance and make skipping it effortless."
+      ],
+      "primarySourceIds": [
+        "src-whats-your-story-official"
+      ],
+      "independentSourceIds": [
+        "src-storycorps-conversation-tips",
+        "src-smithsonian-oral-history"
+      ],
+      "claimIds": [
+        "claim-whats-your-story-benefit",
+        "claim-whats-your-story-drawback",
+        "claim-whats-your-story-compatibility"
+      ],
+      "evidenceMode": "desk_research",
+      "thoughtfulness": {
+        "observationPrompt": "Choose this only when the recipient already volunteers family memories and would welcome a screen-free question beside one familiar photograph.",
+        "frictionClaimIds": [
+          "claim-gentle-question-friction",
+          "claim-one-photo-friction"
+        ],
+        "physicalGiftBoundary": "welcome_when_verified",
+        "selfPurchase": {
+          "reason": "research_burden",
+          "rationale": "The recipient may value conversation but postpone comparing prompt formats that range from a casual card to a full recording project.",
+          "basis": "editorial_inference",
+          "claimIds": [
+            "claim-prompt-format-choice"
+          ]
+        },
+        "duplicateRisk": {
+          "level": "medium",
+          "preGiftCheck": "Confirm they do not already own a conversation deck they like and prefer cards over a journal or app."
+        },
+        "clutterRisk": {
+          "level": "low",
+          "ownershipBurden": "The portable box can support a single short session and does not require completing a journal.",
+          "mitigation": "Present it as an optional shared activity, not as an assignment to preserve an entire life."
+        },
+        "compatibilityChecks": [
+          {
+            "dimension": "accessibility",
+            "status": "verified",
+            "requirement": "The storyteller reads English comfortably or the giver can read one chosen prompt aloud without taking control of the answer.",
+            "claimIds": [
+              "claim-whats-your-story-compatibility"
+            ]
+          },
+          {
+            "dimension": "skill_or_experience",
+            "status": "verified",
+            "requirement": "The storyteller has freely agreed to a brief conversation and can decline or replace the selected topic.",
+            "claimIds": [
+              "claim-consent-and-privacy-boundary"
+            ]
+          }
+        ],
+        "score": {
+          "frictionSpecificity": 5,
+          "selfPurchaseLogic": 4,
+          "ownershipEase": 5,
+          "recipientSpecificity": 5,
+          "total": 19
+        }
+      }
+    },
+    {
+      "id": "meaningful-conversations-grandparents",
+      "name": "Meaningful Conversations with My Grandparents",
+      "editorialScore": 84,
+      "evidenceConfidence": 79,
+      "drawbacks": [
+        "The grandparent framing and reflective subjects such as regrets or relationship advice can feel presumptive, so preview and agree on the topic first."
+      ],
+      "primarySourceIds": [
+        "src-grandparent-cards-official"
+      ],
+      "independentSourceIds": [
+        "src-storycorps-conversation-tips",
+        "src-smithsonian-oral-history"
+      ],
+      "claimIds": [
+        "claim-grandparent-cards-benefit",
+        "claim-grandparent-cards-drawback",
+        "claim-grandparent-cards-compatibility"
+      ],
+      "evidenceMode": "desk_research",
+      "thoughtfulness": {
+        "observationPrompt": "Choose this only for a grandparent who already enjoys telling specific stories and welcomes that family role as part of the gift.",
+        "frictionClaimIds": [
+          "claim-gentle-question-friction",
+          "claim-one-photo-friction"
+        ],
+        "physicalGiftBoundary": "welcome_when_verified",
+        "selfPurchase": {
+          "reason": "coordination_burden",
+          "rationale": "A willing storyteller may still postpone deciding who will ask, which topic is welcome, and how much context should be recorded.",
+          "basis": "editorial_inference",
+          "claimIds": [
+            "claim-prompt-format-choice"
+          ]
+        },
+        "duplicateRisk": {
+          "level": "medium",
+          "preGiftCheck": "Confirm the recipient welcomes grandparent-specific prompts and does not already own a deck or journal for the same role."
+        },
+        "clutterRisk": {
+          "level": "low",
+          "ownershipBurden": "The compact deck works as a standalone conversation aid and does not require buying its companion journals.",
+          "mitigation": "Choose one agreed topic and put the deck away after the first short story rather than working through it."
+        },
+        "compatibilityChecks": [
+          {
+            "dimension": "edition_or_region",
+            "status": "verified",
+            "requirement": "The English-language wording and grandparent framing match the storyteller's language, family role, and preferences.",
+            "claimIds": [
+              "claim-grandparent-cards-compatibility"
+            ]
+          },
+          {
+            "dimension": "skill_or_experience",
+            "status": "verified",
+            "requirement": "The recipient has agreed to the specific topic and can redirect, skip, or stop without needing to explain why.",
+            "claimIds": [
+              "claim-consent-and-privacy-boundary"
+            ]
+          }
+        ],
+        "score": {
+          "frictionSpecificity": 5,
+          "selfPurchaseLogic": 4,
+          "ownershipEase": 5,
+          "recipientSpecificity": 5,
+          "total": 19
+        }
+      }
+    },
+    {
+      "id": "archival-methods-caption-pocket-4x6",
+      "name": "Archival Methods Caption Pocket 4x6 Photo Pages",
+      "editorialScore": 91,
+      "evidenceConfidence": 90,
+      "drawbacks": [
+        "The pages fit 4x6 prints and require a compatible binder; plastic is not appropriate for flaking, damp, unidentified, or otherwise fragile photographs."
+      ],
+      "primarySourceIds": [
+        "src-caption-pocket-official"
+      ],
+      "independentSourceIds": [
+        "src-loc-photo-care",
+        "src-nedcc-photo-enclosures"
+      ],
+      "claimIds": [
+        "claim-caption-pocket-benefit",
+        "claim-caption-pocket-drawback",
+        "claim-caption-pocket-compatibility"
+      ],
+      "evidenceMode": "desk_research",
+      "thoughtfulness": {
+        "observationPrompt": "Choose this only when the recipient has stable 4x6 prints they consult often and wants captions visible beside—not attached to—the originals.",
+        "frictionClaimIds": [
+          "claim-one-photo-friction"
+        ],
+        "physicalGiftBoundary": "welcome_when_verified",
+        "selfPurchase": {
+          "reason": "research_burden",
+          "rationale": "Verifying PAT claims, plastic type, photograph condition, exact dimensions, and storage environment is substantial work for one small captioning task.",
+          "basis": "editorial_inference",
+          "claimIds": [
+            "claim-archive-supply-research-burden"
+          ]
+        },
+        "duplicateRisk": {
+          "level": "medium",
+          "preGiftCheck": "Measure one intended print, inspect its condition, and confirm the recipient wants binder pages rather than an envelope or box."
+        },
+        "clutterRisk": {
+          "level": "medium",
+          "ownershipBurden": "The pages need a compatible binder and a cool, dry, stable storage location away from damaging light.",
+          "mitigation": "Start with one page and one photograph; do not gift an empty archival project or require a collection-wide conversion."
+        },
+        "compatibilityChecks": [
+          {
+            "dimension": "size_or_fit",
+            "status": "verified",
+            "requirement": "The selected print is no larger than 4x6 and sits flat in the photo pocket without forcing or trimming.",
+            "claimIds": [
+              "claim-caption-pocket-compatibility"
+            ]
+          },
+          {
+            "dimension": "space_or_storage",
+            "status": "verified",
+            "requirement": "The recipient has a compatible binder and a stable, dry storage location; the print is not flaking, damp, or unidentified.",
+            "claimIds": [
+              "claim-caption-pocket-drawback",
+              "claim-plastic-exceptions"
+            ]
+          }
+        ],
+        "score": {
+          "frictionSpecificity": 5,
+          "selfPurchaseLogic": 5,
+          "ownershipEase": 4,
+          "recipientSpecificity": 5,
+          "total": 19
+        }
+      }
+    },
+    {
+      "id": "gaylord-unbuffered-photo-envelopes",
+      "name": "Gaylord Unbuffered Paper Photo and Negative Envelopes",
+      "editorialScore": 87,
+      "evidenceConfidence": 88,
+      "drawbacks": [
+        "The opaque envelope hides the image and requires removal for viewing; putting many photographs in one envelope weakens one-photo identification and increases handling."
+      ],
+      "primarySourceIds": [
+        "src-gaylord-envelopes-official"
+      ],
+      "independentSourceIds": [
+        "src-loc-photo-care",
+        "src-nara-photographs"
+      ],
+      "claimIds": [
+        "claim-gaylord-envelope-benefit",
+        "claim-gaylord-envelope-drawback",
+        "claim-gaylord-envelope-compatibility"
+      ],
+      "evidenceMode": "desk_research",
+      "thoughtfulness": {
+        "observationPrompt": "Choose this only for stable prints up to 4x6 when the recipient wants a pencil-friendly exterior record and does not need constant visual browsing.",
+        "frictionClaimIds": [
+          "claim-one-photo-friction"
+        ],
+        "physicalGiftBoundary": "welcome_when_verified",
+        "selfPurchase": {
+          "reason": "research_burden",
+          "rationale": "Paper type, buffering, PAT status, photograph process, dimensions, and viewing habits all need checking before a safe-looking envelope is actually suitable.",
+          "basis": "editorial_inference",
+          "claimIds": [
+            "claim-archive-supply-research-burden"
+          ]
+        },
+        "duplicateRisk": {
+          "level": "medium",
+          "preGiftCheck": "Confirm the selected print fits, is stable, and is not already housed in an appropriate labeled enclosure."
+        },
+        "clutterRisk": {
+          "level": "low",
+          "ownershipBurden": "One envelope can replace an unsafe loose-paper or sticky-note label and files with existing photo storage.",
+          "mitigation": "Use one envelope for one photograph or a tiny related set and record only the context the storyteller approves."
+        },
+        "compatibilityChecks": [
+          {
+            "dimension": "size_or_fit",
+            "status": "verified",
+            "requirement": "The chosen print is no larger than 4x6 and can be inserted without bending, rubbing, or crowding other materials.",
+            "claimIds": [
+              "claim-gaylord-envelope-compatibility"
+            ]
+          },
+          {
+            "dimension": "skill_or_experience",
+            "status": "verified",
+            "requirement": "The giver has identified the basic photo format and condition or will stop and seek a conservator for unusual or valuable originals.",
+            "claimIds": [
+              "claim-photo-original-boundary"
+            ]
+          }
+        ],
+        "score": {
+          "frictionSpecificity": 5,
+          "selfPurchaseLogic": 5,
+          "ownershipEase": 5,
+          "recipientSpecificity": 4,
+          "total": 19
+        }
+      }
+    },
+    {
+      "id": "print-file-4x6-foldflap-sleeves",
+      "name": "Print File PFF46 4x6 Polypropylene FoldFlap Sleeves",
+      "editorialScore": 88,
+      "evidenceConfidence": 87,
+      "drawbacks": [
+        "The fixed-size sleeve has no caption field, and clear plastic is unsuitable for flaking surfaces, high-humidity storage, or some negatives."
+      ],
+      "primarySourceIds": [
+        "src-print-file-foldflap-official"
+      ],
+      "independentSourceIds": [
+        "src-nedcc-photo-enclosures",
+        "src-nara-photographs"
+      ],
+      "claimIds": [
+        "claim-print-file-benefit",
+        "claim-print-file-drawback",
+        "claim-print-file-compatibility"
+      ],
+      "evidenceMode": "desk_research",
+      "thoughtfulness": {
+        "observationPrompt": "Choose this only for stable 4x6 prints that are handled often and when the recipient will maintain a separate numbered caption list.",
+        "frictionClaimIds": [
+          "claim-one-photo-friction"
+        ],
+        "physicalGiftBoundary": "welcome_when_verified",
+        "selfPurchase": {
+          "reason": "research_burden",
+          "rationale": "The low-cost sleeve still requires checking PAT status, exact size, print condition, humidity, and a separate caption system.",
+          "basis": "editorial_inference",
+          "claimIds": [
+            "claim-archive-supply-research-burden"
+          ]
+        },
+        "duplicateRisk": {
+          "level": "medium",
+          "preGiftCheck": "Confirm the print size, condition, handling frequency, and whether an existing sleeve or album already solves the problem."
+        },
+        "clutterRisk": {
+          "level": "low",
+          "ownershipBurden": "The sleeve protects one frequently viewed print but requires a small external index for its caption.",
+          "mitigation": "Number the sleeve and one paper list; do not place ordinary labels or loose non-archival notes against the photograph."
+        },
+        "compatibilityChecks": [
+          {
+            "dimension": "size_or_fit",
+            "status": "verified",
+            "requirement": "The selected item is a stable 4x6 print that fits without forcing and is not a negative or flaking photograph.",
+            "claimIds": [
+              "claim-print-file-compatibility"
+            ]
+          },
+          {
+            "dimension": "space_or_storage",
+            "status": "verified",
+            "requirement": "The storage area is cool, dry, and stable enough for a plastic enclosure, with a separate numbered caption record.",
+            "claimIds": [
+              "claim-print-file-drawback",
+              "claim-plastic-exceptions"
+            ]
+          }
+        ],
+        "score": {
+          "frictionSpecificity": 5,
+          "selfPurchaseLogic": 5,
+          "ownershipEase": 5,
+          "recipientSpecificity": 4,
+          "total": 19
+        }
+      }
+    },
+    {
+      "id": "storymatic-rememory",
+      "name": "Storymatic Rememory",
+      "editorialScore": 72,
+      "evidenceConfidence": 68,
+      "drawbacks": [
+        "An independent review found repetition in group play, and a current retailer listing displays a California Proposition 65 warning that needs resolution before recommendation."
+      ],
+      "primarySourceIds": [
+        "src-rememory-official"
+      ],
+      "independentSourceIds": [
+        "src-rememory-review"
+      ],
+      "claimIds": [],
+      "evidenceMode": "desk_research"
+    },
+    {
+      "id": "tales-life-story-card-game",
+      "name": "Tales Life Story Card Game",
+      "editorialScore": 70,
+      "evidenceConfidence": 62,
+      "drawbacks": [
+        "The product framing emphasizes capturing a whole life before it is too late and includes recording guidance, making it more likely to feel like a legacy assignment than a ten-minute invitation."
+      ],
+      "primarySourceIds": [
+        "src-tales-official"
+      ],
+      "independentSourceIds": [],
+      "claimIds": [],
+      "evidenceMode": "desk_research"
+    },
+    {
+      "id": "talking-point-generations",
+      "name": "Talking Point Cards Generations Edition",
+      "editorialScore": 68,
+      "evidenceConfidence": 60,
+      "drawbacks": [
+        "The 200-card all-ages group format and urgency-heavy marketing can create a larger performance than the one-story ritual, and exact independent evidence was insufficient."
+      ],
+      "primarySourceIds": [
+        "src-generations-official"
+      ],
+      "independentSourceIds": [],
+      "claimIds": [],
+      "evidenceMode": "desk_research"
+    },
+    {
+      "id": "my-life-story-so-far-journal",
+      "name": "My Life Story So Far Journal",
+      "editorialScore": 69,
+      "evidenceConfidence": 67,
+      "drawbacks": [
+        "A long guided journal creates handwriting and completion burden and can turn the gift into homework rather than one optional shared story."
+      ],
+      "primarySourceIds": [],
+      "independentSourceIds": [],
+      "claimIds": [
+        "claim-prompt-format-choice"
+      ],
+      "evidenceMode": "desk_research"
+    },
+    {
+      "id": "lifes-capsule-story-deck",
+      "name": "Life's Capsule Story Deck",
+      "editorialScore": 61,
+      "evidenceConfidence": 70,
+      "drawbacks": [
+        "The core preservation workflow requires scanning a QR code and saving the answer in an app, conflicting with the no-cloud and no-scanning mandate."
+      ],
+      "primarySourceIds": [
+        "src-lifes-capsule-official"
+      ],
+      "independentSourceIds": [],
+      "claimIds": [
+        "claim-prompt-format-choice"
+      ],
+      "evidenceMode": "desk_research"
+    },
+    {
+      "id": "archival-methods-side-loading-sleeves",
+      "name": "Archival Methods Side Loading Print Sleeves",
+      "editorialScore": 80,
+      "evidenceConfidence": 84,
+      "drawbacks": [
+        "The polyester sleeves offer no integrated caption field, come in format-specific sizes, and share the static and humidity limits of clear plastic enclosures."
+      ],
+      "primarySourceIds": [
+        "src-side-loading-official"
+      ],
+      "independentSourceIds": [
+        "src-loc-photo-care",
+        "src-nedcc-photo-enclosures"
+      ],
+      "claimIds": [
+        "claim-pat-material-boundary",
+        "claim-plastic-exceptions"
+      ],
+      "evidenceMode": "desk_research"
+    },
+    {
+      "id": "university-products-4x6-pages",
+      "name": "University Products Polypropylene Photo Album Pages 4x6",
+      "editorialScore": 76,
+      "evidenceConfidence": 75,
+      "drawbacks": [
+        "The pages require a standard three-ring binder and do not provide a dedicated caption pocket, so they need a separate documentation system."
+      ],
+      "primarySourceIds": [
+        "src-university-pages-official"
+      ],
+      "independentSourceIds": [
+        "src-loc-photo-care",
+        "src-nara-photographs"
+      ],
+      "claimIds": [
+        "claim-pat-material-boundary",
+        "claim-plastic-exceptions"
+      ],
+      "evidenceMode": "desk_research"
+    },
+    {
+      "id": "gaylord-polyester-l-sleeves",
+      "name": "Gaylord 4 mil Archival Polyester L-Sleeves",
+      "editorialScore": 78,
+      "evidenceConfidence": 82,
+      "drawbacks": [
+        "The premium sleeves have no caption field, and their electrostatic hold is a reason to exclude flaking or otherwise sensitive surfaces."
+      ],
+      "primarySourceIds": [
+        "src-gaylord-l-sleeves-official"
+      ],
+      "independentSourceIds": [
+        "src-loc-photo-care",
+        "src-nedcc-photo-enclosures"
+      ],
+      "claimIds": [
+        "claim-pat-material-boundary",
+        "claim-plastic-exceptions"
+      ],
+      "evidenceMode": "desk_research"
+    }
+  ],
+  "finalists": [
+    {
+      "id": "whats-your-story-memory-game",
+      "name": "What's Your Story? Memory Sharing Game",
+      "editorialScore": 86,
+      "evidenceConfidence": 80,
+      "drawbacks": [
+        "The deck includes emotionally loaded topics such as childhood heartbreak, so choose one light question in advance and make skipping it effortless."
+      ],
+      "primarySourceIds": [
+        "src-whats-your-story-official"
+      ],
+      "independentSourceIds": [
+        "src-storycorps-conversation-tips",
+        "src-smithsonian-oral-history"
+      ],
+      "claimIds": [
+        "claim-whats-your-story-benefit",
+        "claim-whats-your-story-drawback",
+        "claim-whats-your-story-compatibility"
+      ],
+      "evidenceMode": "desk_research",
+      "thoughtfulness": {
+        "observationPrompt": "Choose this only when the recipient already volunteers family memories and would welcome a screen-free question beside one familiar photograph.",
+        "frictionClaimIds": [
+          "claim-gentle-question-friction",
+          "claim-one-photo-friction"
+        ],
+        "physicalGiftBoundary": "welcome_when_verified",
+        "selfPurchase": {
+          "reason": "research_burden",
+          "rationale": "The recipient may value conversation but postpone comparing prompt formats that range from a casual card to a full recording project.",
+          "basis": "editorial_inference",
+          "claimIds": [
+            "claim-prompt-format-choice"
+          ]
+        },
+        "duplicateRisk": {
+          "level": "medium",
+          "preGiftCheck": "Confirm they do not already own a conversation deck they like and prefer cards over a journal or app."
+        },
+        "clutterRisk": {
+          "level": "low",
+          "ownershipBurden": "The portable box can support a single short session and does not require completing a journal.",
+          "mitigation": "Present it as an optional shared activity, not as an assignment to preserve an entire life."
+        },
+        "compatibilityChecks": [
+          {
+            "dimension": "accessibility",
+            "status": "verified",
+            "requirement": "The storyteller reads English comfortably or the giver can read one chosen prompt aloud without taking control of the answer.",
+            "claimIds": [
+              "claim-whats-your-story-compatibility"
+            ]
+          },
+          {
+            "dimension": "skill_or_experience",
+            "status": "verified",
+            "requirement": "The storyteller has freely agreed to a brief conversation and can decline or replace the selected topic.",
+            "claimIds": [
+              "claim-consent-and-privacy-boundary"
+            ]
+          }
+        ],
+        "score": {
+          "frictionSpecificity": 5,
+          "selfPurchaseLogic": 4,
+          "ownershipEase": 5,
+          "recipientSpecificity": 5,
+          "total": 19
+        }
+      }
+    },
+    {
+      "id": "meaningful-conversations-grandparents",
+      "name": "Meaningful Conversations with My Grandparents",
+      "editorialScore": 84,
+      "evidenceConfidence": 79,
+      "drawbacks": [
+        "The grandparent framing and reflective subjects such as regrets or relationship advice can feel presumptive, so preview and agree on the topic first."
+      ],
+      "primarySourceIds": [
+        "src-grandparent-cards-official"
+      ],
+      "independentSourceIds": [
+        "src-storycorps-conversation-tips",
+        "src-smithsonian-oral-history"
+      ],
+      "claimIds": [
+        "claim-grandparent-cards-benefit",
+        "claim-grandparent-cards-drawback",
+        "claim-grandparent-cards-compatibility"
+      ],
+      "evidenceMode": "desk_research",
+      "thoughtfulness": {
+        "observationPrompt": "Choose this only for a grandparent who already enjoys telling specific stories and welcomes that family role as part of the gift.",
+        "frictionClaimIds": [
+          "claim-gentle-question-friction",
+          "claim-one-photo-friction"
+        ],
+        "physicalGiftBoundary": "welcome_when_verified",
+        "selfPurchase": {
+          "reason": "coordination_burden",
+          "rationale": "A willing storyteller may still postpone deciding who will ask, which topic is welcome, and how much context should be recorded.",
+          "basis": "editorial_inference",
+          "claimIds": [
+            "claim-prompt-format-choice"
+          ]
+        },
+        "duplicateRisk": {
+          "level": "medium",
+          "preGiftCheck": "Confirm the recipient welcomes grandparent-specific prompts and does not already own a deck or journal for the same role."
+        },
+        "clutterRisk": {
+          "level": "low",
+          "ownershipBurden": "The compact deck works as a standalone conversation aid and does not require buying its companion journals.",
+          "mitigation": "Choose one agreed topic and put the deck away after the first short story rather than working through it."
+        },
+        "compatibilityChecks": [
+          {
+            "dimension": "edition_or_region",
+            "status": "verified",
+            "requirement": "The English-language wording and grandparent framing match the storyteller's language, family role, and preferences.",
+            "claimIds": [
+              "claim-grandparent-cards-compatibility"
+            ]
+          },
+          {
+            "dimension": "skill_or_experience",
+            "status": "verified",
+            "requirement": "The recipient has agreed to the specific topic and can redirect, skip, or stop without needing to explain why.",
+            "claimIds": [
+              "claim-consent-and-privacy-boundary"
+            ]
+          }
+        ],
+        "score": {
+          "frictionSpecificity": 5,
+          "selfPurchaseLogic": 4,
+          "ownershipEase": 5,
+          "recipientSpecificity": 5,
+          "total": 19
+        }
+      }
+    },
+    {
+      "id": "archival-methods-caption-pocket-4x6",
+      "name": "Archival Methods Caption Pocket 4x6 Photo Pages",
+      "editorialScore": 91,
+      "evidenceConfidence": 90,
+      "drawbacks": [
+        "The pages fit 4x6 prints and require a compatible binder; plastic is not appropriate for flaking, damp, unidentified, or otherwise fragile photographs."
+      ],
+      "primarySourceIds": [
+        "src-caption-pocket-official"
+      ],
+      "independentSourceIds": [
+        "src-loc-photo-care",
+        "src-nedcc-photo-enclosures"
+      ],
+      "claimIds": [
+        "claim-caption-pocket-benefit",
+        "claim-caption-pocket-drawback",
+        "claim-caption-pocket-compatibility"
+      ],
+      "evidenceMode": "desk_research",
+      "thoughtfulness": {
+        "observationPrompt": "Choose this only when the recipient has stable 4x6 prints they consult often and wants captions visible beside—not attached to—the originals.",
+        "frictionClaimIds": [
+          "claim-one-photo-friction"
+        ],
+        "physicalGiftBoundary": "welcome_when_verified",
+        "selfPurchase": {
+          "reason": "research_burden",
+          "rationale": "Verifying PAT claims, plastic type, photograph condition, exact dimensions, and storage environment is substantial work for one small captioning task.",
+          "basis": "editorial_inference",
+          "claimIds": [
+            "claim-archive-supply-research-burden"
+          ]
+        },
+        "duplicateRisk": {
+          "level": "medium",
+          "preGiftCheck": "Measure one intended print, inspect its condition, and confirm the recipient wants binder pages rather than an envelope or box."
+        },
+        "clutterRisk": {
+          "level": "medium",
+          "ownershipBurden": "The pages need a compatible binder and a cool, dry, stable storage location away from damaging light.",
+          "mitigation": "Start with one page and one photograph; do not gift an empty archival project or require a collection-wide conversion."
+        },
+        "compatibilityChecks": [
+          {
+            "dimension": "size_or_fit",
+            "status": "verified",
+            "requirement": "The selected print is no larger than 4x6 and sits flat in the photo pocket without forcing or trimming.",
+            "claimIds": [
+              "claim-caption-pocket-compatibility"
+            ]
+          },
+          {
+            "dimension": "space_or_storage",
+            "status": "verified",
+            "requirement": "The recipient has a compatible binder and a stable, dry storage location; the print is not flaking, damp, or unidentified.",
+            "claimIds": [
+              "claim-caption-pocket-drawback",
+              "claim-plastic-exceptions"
+            ]
+          }
+        ],
+        "score": {
+          "frictionSpecificity": 5,
+          "selfPurchaseLogic": 5,
+          "ownershipEase": 4,
+          "recipientSpecificity": 5,
+          "total": 19
+        }
+      }
+    },
+    {
+      "id": "gaylord-unbuffered-photo-envelopes",
+      "name": "Gaylord Unbuffered Paper Photo and Negative Envelopes",
+      "editorialScore": 87,
+      "evidenceConfidence": 88,
+      "drawbacks": [
+        "The opaque envelope hides the image and requires removal for viewing; putting many photographs in one envelope weakens one-photo identification and increases handling."
+      ],
+      "primarySourceIds": [
+        "src-gaylord-envelopes-official"
+      ],
+      "independentSourceIds": [
+        "src-loc-photo-care",
+        "src-nara-photographs"
+      ],
+      "claimIds": [
+        "claim-gaylord-envelope-benefit",
+        "claim-gaylord-envelope-drawback",
+        "claim-gaylord-envelope-compatibility"
+      ],
+      "evidenceMode": "desk_research",
+      "thoughtfulness": {
+        "observationPrompt": "Choose this only for stable prints up to 4x6 when the recipient wants a pencil-friendly exterior record and does not need constant visual browsing.",
+        "frictionClaimIds": [
+          "claim-one-photo-friction"
+        ],
+        "physicalGiftBoundary": "welcome_when_verified",
+        "selfPurchase": {
+          "reason": "research_burden",
+          "rationale": "Paper type, buffering, PAT status, photograph process, dimensions, and viewing habits all need checking before a safe-looking envelope is actually suitable.",
+          "basis": "editorial_inference",
+          "claimIds": [
+            "claim-archive-supply-research-burden"
+          ]
+        },
+        "duplicateRisk": {
+          "level": "medium",
+          "preGiftCheck": "Confirm the selected print fits, is stable, and is not already housed in an appropriate labeled enclosure."
+        },
+        "clutterRisk": {
+          "level": "low",
+          "ownershipBurden": "One envelope can replace an unsafe loose-paper or sticky-note label and files with existing photo storage.",
+          "mitigation": "Use one envelope for one photograph or a tiny related set and record only the context the storyteller approves."
+        },
+        "compatibilityChecks": [
+          {
+            "dimension": "size_or_fit",
+            "status": "verified",
+            "requirement": "The chosen print is no larger than 4x6 and can be inserted without bending, rubbing, or crowding other materials.",
+            "claimIds": [
+              "claim-gaylord-envelope-compatibility"
+            ]
+          },
+          {
+            "dimension": "skill_or_experience",
+            "status": "verified",
+            "requirement": "The giver has identified the basic photo format and condition or will stop and seek a conservator for unusual or valuable originals.",
+            "claimIds": [
+              "claim-photo-original-boundary"
+            ]
+          }
+        ],
+        "score": {
+          "frictionSpecificity": 5,
+          "selfPurchaseLogic": 5,
+          "ownershipEase": 5,
+          "recipientSpecificity": 4,
+          "total": 19
+        }
+      }
+    },
+    {
+      "id": "print-file-4x6-foldflap-sleeves",
+      "name": "Print File PFF46 4x6 Polypropylene FoldFlap Sleeves",
+      "editorialScore": 88,
+      "evidenceConfidence": 87,
+      "drawbacks": [
+        "The fixed-size sleeve has no caption field, and clear plastic is unsuitable for flaking surfaces, high-humidity storage, or some negatives."
+      ],
+      "primarySourceIds": [
+        "src-print-file-foldflap-official"
+      ],
+      "independentSourceIds": [
+        "src-nedcc-photo-enclosures",
+        "src-nara-photographs"
+      ],
+      "claimIds": [
+        "claim-print-file-benefit",
+        "claim-print-file-drawback",
+        "claim-print-file-compatibility"
+      ],
+      "evidenceMode": "desk_research",
+      "thoughtfulness": {
+        "observationPrompt": "Choose this only for stable 4x6 prints that are handled often and when the recipient will maintain a separate numbered caption list.",
+        "frictionClaimIds": [
+          "claim-one-photo-friction"
+        ],
+        "physicalGiftBoundary": "welcome_when_verified",
+        "selfPurchase": {
+          "reason": "research_burden",
+          "rationale": "The low-cost sleeve still requires checking PAT status, exact size, print condition, humidity, and a separate caption system.",
+          "basis": "editorial_inference",
+          "claimIds": [
+            "claim-archive-supply-research-burden"
+          ]
+        },
+        "duplicateRisk": {
+          "level": "medium",
+          "preGiftCheck": "Confirm the print size, condition, handling frequency, and whether an existing sleeve or album already solves the problem."
+        },
+        "clutterRisk": {
+          "level": "low",
+          "ownershipBurden": "The sleeve protects one frequently viewed print but requires a small external index for its caption.",
+          "mitigation": "Number the sleeve and one paper list; do not place ordinary labels or loose non-archival notes against the photograph."
+        },
+        "compatibilityChecks": [
+          {
+            "dimension": "size_or_fit",
+            "status": "verified",
+            "requirement": "The selected item is a stable 4x6 print that fits without forcing and is not a negative or flaking photograph.",
+            "claimIds": [
+              "claim-print-file-compatibility"
+            ]
+          },
+          {
+            "dimension": "space_or_storage",
+            "status": "verified",
+            "requirement": "The storage area is cool, dry, and stable enough for a plastic enclosure, with a separate numbered caption record.",
+            "claimIds": [
+              "claim-print-file-drawback",
+              "claim-plastic-exceptions"
+            ]
+          }
+        ],
+        "score": {
+          "frictionSpecificity": 5,
+          "selfPurchaseLogic": 5,
+          "ownershipEase": 5,
+          "recipientSpecificity": 4,
+          "total": 19
+        }
+      }
+    }
+  ],
+  "pairs": [
+    {
+      "id": "one-photo-caption-page-ritual",
+      "name": "The one-photo caption-page ritual",
+      "anchorCandidateId": "whats-your-story-memory-game",
+      "companionCandidateId": "archival-methods-caption-pocket-4x6",
+      "recipientJob": "Invite one freely chosen memory and keep its approved names and context visible beside one stable 4x6 photograph.",
+      "coherenceType": "completes_task",
+      "whyTogether": "The card deck lowers conversation-starting friction while the separate caption pocket keeps consented context beside a stable 4x6 print without writing on or attaching anything to the original.",
+      "interactionMoment": "Choose one ordinary photograph, let the storyteller approve one light prompt, write only the context they want kept on the separate caption insert, then stop after ten minutes.",
+      "compatibilityChecks": [
+        {
+          "dimension": "skill_or_experience",
+          "status": "verified",
+          "requirement": "The storyteller has agreed to a short conversation, the selected topic, and exactly who may read the resulting caption.",
+          "claimIds": [
+            "claim-consent-and-privacy-boundary",
+            "claim-whats-your-story-compatibility"
+          ]
+        },
+        {
+          "dimension": "size_or_fit",
+          "status": "verified",
+          "requirement": "The photograph is a stable 4x6 print that fits the page and is not flaking, damp, unusually valuable, or unidentified.",
+          "claimIds": [
+            "claim-caption-pocket-compatibility",
+            "claim-caption-pocket-drawback"
+          ]
+        }
+      ],
+      "duplicateRisk": "medium",
+      "clutterDelta": "neutral",
+      "preGiftCheck": "Confirm a willing storyteller, one stable 4x6 photograph, English reading comfort, a compatible binder, and no existing prompt or caption system they prefer.",
+      "bundleDrawback": "Choose only the prompt deck when the photograph's condition or format is uncertain; choose only the caption page when conversation already starts easily and the recipient dislikes prompt cards.",
+      "claimIds": [
+        "claim-one-photo-caption-page-pair"
+      ],
+      "score": {
+        "sharedCuriosity": 18,
+        "complementaryRoles": 20,
+        "interactionLoop": 19,
+        "observableTrigger": 14,
+        "independentValue": 10,
+        "compatibility": 9,
+        "ownershipEase": 4,
+        "total": 94
+      }
+    },
+    {
+      "id": "grandparent-story-envelope-ritual",
+      "name": "The grandparent story-envelope ritual",
+      "anchorCandidateId": "meaningful-conversations-grandparents",
+      "companionCandidateId": "gaylord-unbuffered-photo-envelopes",
+      "recipientJob": "Invite one welcome grandparent story and label the outside of one suitable paper enclosure with only the approved identifying context.",
+      "coherenceType": "completes_task",
+      "whyTogether": "The grandparent-focused deck supplies a bounded conversation starter while the PAT-passed non-adhesive envelope provides exterior fields for the date, subject, and place the storyteller chooses to preserve.",
+      "interactionMoment": "Preview one prompt together, choose one stable print up to 4x6, ask and listen without recording by default, then pencil only the approved date, subject, and place on the envelope exterior.",
+      "compatibilityChecks": [
+        {
+          "dimension": "accessibility",
+          "status": "verified",
+          "requirement": "The storyteller welcomes the grandparent framing, understands the chosen English prompt, and can redirect or stop without pressure.",
+          "claimIds": [
+            "claim-grandparent-cards-compatibility",
+            "claim-consent-and-privacy-boundary"
+          ]
+        },
+        {
+          "dimension": "size_or_fit",
+          "status": "verified",
+          "requirement": "The selected print is stable, no larger than 4x6, and suitable for an unbuffered paper enclosure after basic condition review.",
+          "claimIds": [
+            "claim-gaylord-envelope-compatibility",
+            "claim-photo-original-boundary"
+          ]
+        }
+      ],
+      "duplicateRisk": "medium",
+      "clutterDelta": "reduces",
+      "preGiftCheck": "Confirm the recipient welcomes grandparent prompts, the photograph fits and is stable, an opaque envelope suits viewing habits, and no current safe housing already does the job.",
+      "bundleDrawback": "Choose only the cards when the photograph needs professional assessment; choose only the envelope when the recipient already tells stories freely or would find a prompt deck performative.",
+      "claimIds": [
+        "claim-grandparent-envelope-pair"
+      ],
+      "score": {
+        "sharedCuriosity": 17,
+        "complementaryRoles": 20,
+        "interactionLoop": 19,
+        "observableTrigger": 14,
+        "independentValue": 10,
+        "compatibility": 9,
+        "ownershipEase": 4,
+        "total": 93
+      }
+    }
+  ],
+  "affiliateLinks": [],
+  "article": {
+    "slug": "one-photo-one-story-gift-pairs",
+    "editorialScore": 89,
+    "evidenceConfidence": 86,
+    "evidenceMode": "desk_research",
+    "status": "publication_ready"
+  },
+  "qa": {
+    "passed": true,
+    "reviewerRole": "independent-editor",
+    "reviewerId": "family-history-independent-editor-20260816",
+    "receiptPath": "research/reviews/20260816-one-photo-one-story-4cf6dd3f.qa.v1.json",
+    "blockers": [],
+    "warnings": []
+  },
+  "completedAt": "2026-08-16T19:11:08.635Z"
+}

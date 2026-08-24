@@ -1,0 +1,7 @@
+interface:
+  display_name: "Research Gift Opportunities"
+  short_description: "Research and publish evidence-backed gift guides"
+  default_prompt: "Use $research-gift-opportunities to turn my gift idea into a rigorously researched, publication-ready guide."
+
+policy:
+  allow_implicit_invocation: true

@@ -1,0 +1,572 @@
+{
+  "schemaVersion": "1.2.0",
+  "manifestId": "publication-set-1b54c563ae7a6065",
+  "generatedAt": "2026-08-16T21:37:48.745Z",
+  "status": "release_candidate",
+  "projectId": "tipsforyourgifts",
+  "siteId": "tipsforyourgifts",
+  "publicBaseUrl": "https://tipsforyourgifts.web.app",
+  "contentSetSha256": "1b54c563ae7a606521abcc4f7853d38ff366cba343a50cef5d89e1657d194300",
+  "counts": {
+    "articles": 10,
+    "researchRuns": 10,
+    "independentReviews": 10,
+    "socialLaunchPacks": 9,
+    "socialDrafts": 60,
+    "missionBoundArticles": 0,
+    "preMissionValidatedArticles": 10,
+    "affiliateLinks": 0,
+    "visualAssets": 19
+  },
+  "visualPosture": {
+    "styleVersion": "gift-thread-editorial-cartoon-v1.0",
+    "registryPath": "visuals/article-visuals.json",
+    "registrySha256": "bd494c5e65de86388d5078aedaf989ad6205ecaae20a06c1e669f606b7b46f82",
+    "founderApproved": true,
+    "generator": "openai-built-in-imagegen",
+    "rightsPosture": "founder-approved-original-ai-generated",
+    "assets": [
+      {
+        "id": "family-one-photo-one-story",
+        "path": "blog-images/one-photo-one-story-gift-pairs/hero.webp",
+        "sha256": "5082090f12ba440c2c81da822b53abfff3328f95880706f72994bfdadd7632e3"
+      },
+      {
+        "id": "golf-friction-kit",
+        "path": "blog-images/gifts-for-a-golf-friend/hero.webp",
+        "sha256": "1aae9d8f37393aa774503ddd0f5d419ccf26dcd0e763096769fa959ea14d904a"
+      },
+      {
+        "id": "language-read-retell",
+        "path": "blog-images/language-learning-gifts-read-a-scene-say-it-aloud/hero.webp",
+        "sha256": "2654356edbb9e877dfdde1e56c9a98c9c4da0160af87595451580b7e54a93055"
+      },
+      {
+        "id": "miniature-paint-palette-recipe",
+        "path": "blog-images/miniature-painting-wet-palette-recipe-pairs/hero.webp",
+        "sha256": "2cd854cea40ace5fec60ff78baa2dee40d1ed46dcd2f3f1c2b06a51299c2dbd4"
+      },
+      {
+        "id": "night-sky-chart-red-light",
+        "path": "blog-images/night-sky-planisphere-red-light-gift-pairs/hero.webp",
+        "sha256": "a2c2f91a9b062b57333544fe3fba601efb3acfb2f261bc79011f6a635040df04"
+      },
+      {
+        "id": "puzzle-pause-sort-resume",
+        "path": "blog-images/puzzle-board-sorting-tray-gift-pairs/hero.webp",
+        "sha256": "739a10d160e17636c9578a925c660fd8a015b4dde1755e943eb68bcd6bce613f"
+      },
+      {
+        "id": "read-it-big-history",
+        "path": "blog-images/read-it-then-play-it-gift-pairs/hero.webp",
+        "sha256": "7239b3da693ecb57e0b042a9b88a563e0cf931f2b1570404ab433c0b399595bb"
+      },
+      {
+        "id": "read-it-bird-cognition",
+        "path": "blog-images/read-it-then-play-it-gift-pairs/bird-cognition-engine-loop.webp",
+        "sha256": "6d555d842167158d693f13ec90515a46005a1bebfb946341f0778288f9bc62d7"
+      },
+      {
+        "id": "read-it-feedback-loop",
+        "path": "blog-images/read-it-then-play-it-gift-pairs/feedback-loop-table.webp",
+        "sha256": "35c3610bf6b1893d7219f80ec3a0a083c718481d7f3d8c3777f994b1d3da9744"
+      },
+      {
+        "id": "read-it-fungal-network",
+        "path": "blog-images/read-it-then-play-it-gift-pairs/fungal-network-table.webp",
+        "sha256": "1ad26492de9d218d94aec329098f3f3bed9386b057d4ccbe9a09473f7e8cdee4"
+      },
+      {
+        "id": "read-it-language-context",
+        "path": "blog-images/read-it-then-play-it-gift-pairs/language-context-table.webp",
+        "sha256": "25f29a1f427a3aa3f98c25440825628bd56f233411fa87ca0644c1516ffd2332"
+      },
+      {
+        "id": "read-it-mars-constraints",
+        "path": "blog-images/read-it-then-play-it-gift-pairs/mars-constraint-counterpoint.webp",
+        "sha256": "3a58944cfade6456380c45952267bbc1025ffb1e4069a7594fac11deeb74fd6e"
+      },
+      {
+        "id": "read-it-park-story",
+        "path": "blog-images/read-it-then-play-it-gift-pairs/park-story-to-trail.webp",
+        "sha256": "f1a7956bbcf8838b49a7f41ed417fe0163956cb2e38b8827b2fdc53b65eb4465"
+      },
+      {
+        "id": "read-it-photo-walk",
+        "path": "blog-images/read-it-then-play-it-gift-pairs/technique-to-photo-walk.webp",
+        "sha256": "74a7fcde710386458d72a97da712d9510ca976bdbb81ea5f9c9b84dff1665108"
+      },
+      {
+        "id": "read-it-temperature-loop",
+        "path": "blog-images/read-it-then-play-it-gift-pairs/temperature-to-measurement.webp",
+        "sha256": "ba694eec5143d1e6e5a51c93f25c99921ef1a9c7f066557746f4673fc33d2f83"
+      },
+      {
+        "id": "read-it-writing-constraint",
+        "path": "blog-images/read-it-then-play-it-gift-pairs/constraint-to-draft.webp",
+        "sha256": "75969bf6778aa2c4fa72bdd6d57e010d53a3b1b39e16332a96617747f0be793a"
+      },
+      {
+        "id": "research-evidence-desk",
+        "path": "blog-images/how-we-research-gifts/hero.webp",
+        "sha256": "a460f2aba65233aa9bcdb48cd635d045f0ee7e69816e7aaf70770b12bcaa877e"
+      },
+      {
+        "id": "tree-walk-guide-loupe",
+        "path": "blog-images/neighborhood-tree-walk-field-guide-loupe-gift-pairs/hero.webp",
+        "sha256": "5120bda56fadfe1bafb2427c44bae91b1cd0f9797c3c0de334fc278078175b14"
+      },
+      {
+        "id": "useful-friction-five",
+        "path": "blog-images/useful-gifts-for-hard-to-shop-for-adults/hero.webp",
+        "sha256": "1e22103222125f2c606b605fa524ba43d9eb1762ac592b81e20748ff4ca5f40d"
+      }
+    ]
+  },
+  "affiliatePosture": {
+    "registrySha256": "4028b58d56ac775b470f9a0a7cfc8297d3b7cc0c32972687676e2bb0403d08fd",
+    "approvedOverlaySetSha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "enabledProgramIds": [],
+    "enabledProgramCount": 0,
+    "candidateCount": 0,
+    "passedReviewCount": 0,
+    "founderApprovalCount": 0,
+    "liveAffiliateLinkCount": 0,
+    "editorialRankingIndependent": true
+  },
+  "articles": [
+    {
+      "articleSlug": "gifts-for-a-golf-friend",
+      "title": "Gifts for a Golf Friend Who Has Everything: Fix the Little Annoyances",
+      "route": "/blog/gifts-for-a-golf-friend",
+      "updatedAt": "2026-08-03T00:00:00.000Z",
+      "articlePath": "src/data/blog/gifts-for-a-golf-friend.md",
+      "articleSha256": "0fd9cd1ad0e197f718d2ba78f6424dea109ae43a29443dd892f5482c164a1e73",
+      "reviewedArticleSha256": "18dea4ae288450d34100ed0f0af9b2b8c3f1f5d85b59c7ade7d160c8dfa54e38",
+      "researchRunId": "20260803-gifts-for-golf-friend-53cb00a5",
+      "researchRunPath": "research/runs/20260803-gifts-for-golf-friend-53cb00a5.json",
+      "researchRunSha256": "0753f7bb37b7f12d39cf0d6aa4cd093e958d5351a9f3739a3c1f4439e8603f63",
+      "independentReviewPath": "research/reviews/20260803-gifts-for-golf-friend-53cb00a5.qa.v1.json",
+      "independentReviewSha256": "99278321a92d32fe284540095c4a98e3141b1b9532b8f45d23f30dba364e0733",
+      "reviewedEvidenceSha256": "d796010abad0e399c201983c40a18f8fa0ec5ee2bc209ef077981e06978ca8e6",
+      "mission": null,
+      "socialPack": {
+        "packId": "gifts-for-a-golf-friend-launch",
+        "path": "social/drafts/gifts-for-a-golf-friend-launch.json",
+        "sha256": "e429b8839bffc4de9dfc36cd00dd6d81bdc4f641c2a468061ad3160bb3473f1f",
+        "status": "draft",
+        "postCount": 7
+      },
+      "editorialScore": 85,
+      "evidenceConfidence": 80,
+      "evidenceMode": "desk_research",
+      "finalistCount": 5,
+      "productCount": 5,
+      "pairCount": 1,
+      "visualAssetIds": [
+        "golf-friction-kit"
+      ],
+      "affiliateLinkCount": 0,
+      "affiliateLinks": [],
+      "quality": {
+        "researchValidated": true,
+        "independentReviewPassed": true,
+        "articlePublicationReady": true,
+        "socialLaunchPackReviewed": true,
+        "affiliateRegistryEnforced": true,
+        "affiliateLinkApprovalEnforced": true,
+        "allArtifactsHashBound": true
+      }
+    },
+    {
+      "articleSlug": "how-we-research-gifts",
+      "title": "How we research gifts without pretending we tested them",
+      "route": "/blog/how-we-research-gifts",
+      "updatedAt": "2026-08-02T00:00:00.000Z",
+      "articlePath": "src/data/blog/how-we-research-gifts.md",
+      "articleSha256": "b17eb7767989998d88d39c2072830cd5412d548dcff4b44cc9784dd29458e5ad",
+      "reviewedArticleSha256": "9cb70d6fabae778577ef63dd13c241e3335d5badeaf7e184e07784b4b3fdee1a",
+      "researchRunId": "20260802-editorial-standard-6a5ce1b9",
+      "researchRunPath": "research/runs/20260802-editorial-standard-6a5ce1b9.json",
+      "researchRunSha256": "241809d74db84203e36b2890cef05cdfeb78d9c0c3dc9842b72d2372ca1ea831",
+      "independentReviewPath": "research/reviews/20260802-editorial-standard-6a5ce1b9.qa.v1.json",
+      "independentReviewSha256": "cbcc558f11f516c59247762608d83cfc183bfbfffac7af9b58cec5f1a30e3386",
+      "reviewedEvidenceSha256": "f871ef023df1df7b801e71b3b0603a2feb0aa26558548d736ab3dfe67f949ad1",
+      "mission": null,
+      "socialPack": null,
+      "editorialScore": 94,
+      "evidenceConfidence": 92,
+      "evidenceMode": "editorial_standard",
+      "finalistCount": 0,
+      "productCount": 0,
+      "pairCount": 0,
+      "visualAssetIds": [
+        "research-evidence-desk"
+      ],
+      "affiliateLinkCount": 0,
+      "affiliateLinks": [],
+      "quality": {
+        "researchValidated": true,
+        "independentReviewPassed": true,
+        "articlePublicationReady": true,
+        "socialLaunchPackReviewed": null,
+        "affiliateRegistryEnforced": true,
+        "affiliateLinkApprovalEnforced": true,
+        "allArtifactsHashBound": true
+      }
+    },
+    {
+      "articleSlug": "language-learning-gifts-read-a-scene-say-it-aloud",
+      "title": "Language-Learning Gifts for a High-A2 Spanish Learner: Read a Scene, Say It Aloud",
+      "route": "/blog/language-learning-gifts-read-a-scene-say-it-aloud",
+      "updatedAt": "2026-08-16T00:00:00.000Z",
+      "articlePath": "src/data/blog/language-learning-gifts-read-a-scene-say-it-aloud.md",
+      "articleSha256": "5ee952e1ce08a8cd12e2fbe17efa3ce8685b15dc31756935e25e5d8f18c4e0cb",
+      "reviewedArticleSha256": "c71c42f7b3f12e38dc1727ff3fa63dfce36995ca5c7ffae10973537a45e58217",
+      "researchRunId": "20260816-read-a-scene-say-it-aloud-c92b2f7e",
+      "researchRunPath": "research/runs/20260816-read-a-scene-say-it-aloud-c92b2f7e.json",
+      "researchRunSha256": "6d95b8e3b58f0762bff9b6af1370d2f1e57716ebd30079bc4636b65aff21a20e",
+      "independentReviewPath": "research/reviews/20260816-read-a-scene-say-it-aloud-c92b2f7e.qa.v1.json",
+      "independentReviewSha256": "a056c2460c06a2f61ddf86d5a200c064d92816d800dafa2c41a86b299eb3df37",
+      "reviewedEvidenceSha256": "7b28b9b4b14f98e49bbebd1984bb0dfaeb505e04d42dda45413f24f0f354b2e9",
+      "mission": null,
+      "socialPack": {
+        "packId": "language-learning-gifts-read-a-scene-say-it-aloud-launch",
+        "path": "social/drafts/language-learning-gifts-read-a-scene-say-it-aloud-launch.json",
+        "sha256": "329d182e6f05b355de1501da9074618dfc02eccf9a62f707162f3da23d666366",
+        "status": "draft",
+        "postCount": 5
+      },
+      "editorialScore": 85,
+      "evidenceConfidence": 81,
+      "evidenceMode": "desk_research",
+      "finalistCount": 5,
+      "productCount": 5,
+      "pairCount": 2,
+      "visualAssetIds": [
+        "language-read-retell"
+      ],
+      "affiliateLinkCount": 0,
+      "affiliateLinks": [],
+      "quality": {
+        "researchValidated": true,
+        "independentReviewPassed": true,
+        "articlePublicationReady": true,
+        "socialLaunchPackReviewed": true,
+        "affiliateRegistryEnforced": true,
+        "affiliateLinkApprovalEnforced": true,
+        "allArtifactsHashBound": true
+      }
+    },
+    {
+      "articleSlug": "miniature-painting-wet-palette-recipe-pairs",
+      "title": "Keep the Mix, Remember the Recipe: Gifts for a Miniature Painter",
+      "route": "/blog/miniature-painting-wet-palette-recipe-pairs",
+      "updatedAt": "2026-08-16T00:00:00.000Z",
+      "articlePath": "src/data/blog/miniature-painting-wet-palette-recipe-pairs.md",
+      "articleSha256": "db536f66fb1e9d87c5df036d72a140337c0f6e924ca541178d9fdadf258b987e",
+      "reviewedArticleSha256": "4f4ca5a178e30794587189a2a72ac7d95ac90d3b0f9571fdf1fe2f98d0df096a",
+      "researchRunId": "20260816-miniature-painting-recipe-pairs-08892218",
+      "researchRunPath": "research/runs/20260816-miniature-painting-recipe-pairs-08892218.json",
+      "researchRunSha256": "62bcbdb3dfb824650edc3db359e04afc23cd06ff861794cceb5f667420e33f5b",
+      "independentReviewPath": "research/reviews/20260816-miniature-painting-recipe-pairs-08892218.qa.v1.json",
+      "independentReviewSha256": "5ff967ef8ec69e93ea071a31d53493a8cdfdcd72912cefc1b56fd1a5b692e350",
+      "reviewedEvidenceSha256": "1ba5a4bde07a38626c64b3f8f9c3a94b3d3860fdf5ebe2dc2325e7858d17e6bf",
+      "mission": null,
+      "socialPack": {
+        "packId": "miniature-painting-wet-palette-recipe-pairs-launch",
+        "path": "social/drafts/miniature-painting-wet-palette-recipe-pairs-launch.json",
+        "sha256": "4d5b61897dfa40de20a1d57ff0f29f244d02eeb98c56887ca0600ebad17de81a",
+        "status": "draft",
+        "postCount": 6
+      },
+      "editorialScore": 85,
+      "evidenceConfidence": 80,
+      "evidenceMode": "desk_research",
+      "finalistCount": 5,
+      "productCount": 5,
+      "pairCount": 2,
+      "visualAssetIds": [
+        "miniature-paint-palette-recipe"
+      ],
+      "affiliateLinkCount": 0,
+      "affiliateLinks": [],
+      "quality": {
+        "researchValidated": true,
+        "independentReviewPassed": true,
+        "articlePublicationReady": true,
+        "socialLaunchPackReviewed": true,
+        "affiliateRegistryEnforced": true,
+        "affiliateLinkApprovalEnforced": true,
+        "allArtifactsHashBound": true
+      }
+    },
+    {
+      "articleSlug": "neighborhood-tree-walk-field-guide-loupe-gift-pairs",
+      "title": "One Tree, One Walk: Field-Guide and Loupe Gift Pairs",
+      "route": "/blog/neighborhood-tree-walk-field-guide-loupe-gift-pairs",
+      "updatedAt": "2026-08-16T00:00:00.000Z",
+      "articlePath": "src/data/blog/neighborhood-tree-walk-field-guide-loupe-gift-pairs.md",
+      "articleSha256": "bf37a56f7dfe417ca3e5709069a0a00237a905843bc99183c76a833e80249804",
+      "reviewedArticleSha256": "d1dd2c4cbf2a90f3139687ac8c6e3c35f7d2dccef5e6621137f1f9f6bd973791",
+      "researchRunId": "20260816-neighborhood-tree-walk-b8a44f32",
+      "researchRunPath": "research/runs/20260816-neighborhood-tree-walk-b8a44f32.json",
+      "researchRunSha256": "28ec27ee4e60bc74b01962d22c5e8891233eb561353e9b809302f8a8273d84a3",
+      "independentReviewPath": "research/reviews/20260816-neighborhood-tree-walk-b8a44f32.qa.v1.json",
+      "independentReviewSha256": "77ae8b59e8a84c9fd76bcfd2a66ddbea5f4aa382f175e739f6cfe8da268bba94",
+      "reviewedEvidenceSha256": "5052b2a4bd73ce47737cff29ee979c97a1c8aef1488a35a9d9e4ca8d966aed4a",
+      "mission": null,
+      "socialPack": {
+        "packId": "neighborhood-tree-walk-field-guide-loupe-gift-pairs-launch",
+        "path": "social/drafts/neighborhood-tree-walk-field-guide-loupe-gift-pairs-launch.json",
+        "sha256": "9721da0c38842fc79b7d971a01e9e873df78ccc5073bde3cdcb56cfa8ef20f45",
+        "status": "draft",
+        "postCount": 6
+      },
+      "editorialScore": 87,
+      "evidenceConfidence": 82,
+      "evidenceMode": "desk_research",
+      "finalistCount": 5,
+      "productCount": 5,
+      "pairCount": 2,
+      "visualAssetIds": [
+        "tree-walk-guide-loupe"
+      ],
+      "affiliateLinkCount": 0,
+      "affiliateLinks": [],
+      "quality": {
+        "researchValidated": true,
+        "independentReviewPassed": true,
+        "articlePublicationReady": true,
+        "socialLaunchPackReviewed": true,
+        "affiliateRegistryEnforced": true,
+        "affiliateLinkApprovalEnforced": true,
+        "allArtifactsHashBound": true
+      }
+    },
+    {
+      "articleSlug": "night-sky-planisphere-red-light-gift-pairs",
+      "title": "One Pattern, One Neighbor: A First Night-Sky Gift Ritual",
+      "route": "/blog/night-sky-planisphere-red-light-gift-pairs",
+      "updatedAt": "2026-08-16T00:00:00.000Z",
+      "articlePath": "src/data/blog/night-sky-planisphere-red-light-gift-pairs.md",
+      "articleSha256": "a1b34acfef90a392a42b722e9358775474904e6c8d584f4f525cbf462fa4a618",
+      "reviewedArticleSha256": "b9f3be7a1828c4db74548fa6bc58f3d153ffd566018cfaba287fe24256ff3690",
+      "researchRunId": "20260816-night-sky-ritual-a5594a7b",
+      "researchRunPath": "research/runs/20260816-night-sky-ritual-a5594a7b.json",
+      "researchRunSha256": "feefc36b562887c7ad5e15f2deff1b4a5075801908c95409e31835e2806c99da",
+      "independentReviewPath": "research/reviews/20260816-night-sky-ritual-a5594a7b.qa.v1.json",
+      "independentReviewSha256": "83337d53ab81907939e2691df6b31439bce1babc6d8bc1193026d6069c3fc3ce",
+      "reviewedEvidenceSha256": "a43582fa22602718f8bf59b6949a1eba338f32f16ee4187a7ef5e8411b926391",
+      "mission": null,
+      "socialPack": {
+        "packId": "night-sky-planisphere-red-light-gift-pairs-launch",
+        "path": "social/drafts/night-sky-planisphere-red-light-gift-pairs-launch.json",
+        "sha256": "aed719b0b7d129f5c958a607fdbd4981db3b462f5ff3cca35ec32d0f8d1a5f57",
+        "status": "draft",
+        "postCount": 6
+      },
+      "editorialScore": 85,
+      "evidenceConfidence": 80,
+      "evidenceMode": "desk_research",
+      "finalistCount": 5,
+      "productCount": 5,
+      "pairCount": 2,
+      "visualAssetIds": [
+        "night-sky-chart-red-light"
+      ],
+      "affiliateLinkCount": 0,
+      "affiliateLinks": [],
+      "quality": {
+        "researchValidated": true,
+        "independentReviewPassed": true,
+        "articlePublicationReady": true,
+        "socialLaunchPackReviewed": true,
+        "affiliateRegistryEnforced": true,
+        "affiliateLinkApprovalEnforced": true,
+        "allArtifactsHashBound": true
+      }
+    },
+    {
+      "articleSlug": "one-photo-one-story-gift-pairs",
+      "title": "One Photo, One Story: A Gift Pair for the Family Historian",
+      "route": "/blog/one-photo-one-story-gift-pairs",
+      "updatedAt": "2026-08-16T00:00:00.000Z",
+      "articlePath": "src/data/blog/one-photo-one-story-gift-pairs.md",
+      "articleSha256": "3d9fd52976566e360853d8185c47130b90aa60719cb8f8643f18facc2eb0d333",
+      "reviewedArticleSha256": "45cbe02dba6ce8f4d5fbbc4a26002d9f3f60a3a5050d57cd0d5c3cde64b49dce",
+      "researchRunId": "20260816-one-photo-one-story-4cf6dd3f",
+      "researchRunPath": "research/runs/20260816-one-photo-one-story-4cf6dd3f.json",
+      "researchRunSha256": "002e3d85c440a38d41cc55a873f0a1a00597e967bfd4c11eddd8df34e4dad263",
+      "independentReviewPath": "research/reviews/20260816-one-photo-one-story-4cf6dd3f.qa.v1.json",
+      "independentReviewSha256": "c22d1394fcdfb26ecf44d90945e1dfb156fc5e25781d995ffed8b29938a18a30",
+      "reviewedEvidenceSha256": "6bcdbf8768cb02a1dd146e8332ebcb3916dd669f464c4e5c8ae8bcfd0ecff7cc",
+      "mission": null,
+      "socialPack": {
+        "packId": "one-photo-one-story-gift-pairs-launch",
+        "path": "social/drafts/one-photo-one-story-gift-pairs-launch.json",
+        "sha256": "59d437f207fa0bdaf31ba7a5281be9d892f3a7e06e94750681b13878873db7aa",
+        "status": "draft",
+        "postCount": 7
+      },
+      "editorialScore": 89,
+      "evidenceConfidence": 86,
+      "evidenceMode": "desk_research",
+      "finalistCount": 5,
+      "productCount": 5,
+      "pairCount": 2,
+      "visualAssetIds": [
+        "family-one-photo-one-story"
+      ],
+      "affiliateLinkCount": 0,
+      "affiliateLinks": [],
+      "quality": {
+        "researchValidated": true,
+        "independentReviewPassed": true,
+        "articlePublicationReady": true,
+        "socialLaunchPackReviewed": true,
+        "affiliateRegistryEnforced": true,
+        "affiliateLinkApprovalEnforced": true,
+        "allArtifactsHashBound": true
+      }
+    },
+    {
+      "articleSlug": "puzzle-board-sorting-tray-gift-pairs",
+      "title": "Pause the Puzzle, Reclaim the Table: Start-and-Store Gift Pairs",
+      "route": "/blog/puzzle-board-sorting-tray-gift-pairs",
+      "updatedAt": "2026-08-16T00:00:00.000Z",
+      "articlePath": "src/data/blog/puzzle-board-sorting-tray-gift-pairs.md",
+      "articleSha256": "63bbb31ef3ea0afcf91b7d9a2c659f455ce51c9043ce267724caedc87f5a8c4d",
+      "reviewedArticleSha256": "ac2afe53ce062498bea3a02f0fbf2ac982e2d5328f0cabdcbfbae9326f5bd919",
+      "researchRunId": "20260816-puzzle-start-store-a30ab01a",
+      "researchRunPath": "research/runs/20260816-puzzle-start-store-a30ab01a.json",
+      "researchRunSha256": "831d70cda032be1f86d478c2a4c939f105448d54362471c006dbbb7e13caea26",
+      "independentReviewPath": "research/reviews/20260816-puzzle-start-store-a30ab01a.qa.v1.json",
+      "independentReviewSha256": "c245b1926c1e26f1ec4d0caf712e7a644705c9a5b7d1588f702419aa9c665135",
+      "reviewedEvidenceSha256": "7ed2e42ff779b3d46abe57e19a28b23ad936cefbad250c9b36e4eab7dd2fe38c",
+      "mission": null,
+      "socialPack": {
+        "packId": "puzzle-board-sorting-tray-gift-pairs-launch",
+        "path": "social/drafts/puzzle-board-sorting-tray-gift-pairs-launch.json",
+        "sha256": "8a2545ec9d202ebe2574b161f8b9b8a1e2f48ed3e7a3fb2d4a7ed4619a45277a",
+        "status": "draft",
+        "postCount": 6
+      },
+      "editorialScore": 88,
+      "evidenceConfidence": 84,
+      "evidenceMode": "desk_research",
+      "finalistCount": 5,
+      "productCount": 5,
+      "pairCount": 2,
+      "visualAssetIds": [
+        "puzzle-pause-sort-resume"
+      ],
+      "affiliateLinkCount": 0,
+      "affiliateLinks": [],
+      "quality": {
+        "researchValidated": true,
+        "independentReviewPassed": true,
+        "articlePublicationReady": true,
+        "socialLaunchPackReviewed": true,
+        "affiliateRegistryEnforced": true,
+        "affiliateLinkApprovalEnforced": true,
+        "allArtifactsHashBound": true
+      }
+    },
+    {
+      "articleSlug": "read-it-then-play-it-gift-pairs",
+      "title": "Read It, Then Use It: 10 Thoughtful Gift Pairs for Curious Adults",
+      "route": "/blog/read-it-then-play-it-gift-pairs",
+      "updatedAt": "2026-08-03T00:00:00.000Z",
+      "articlePath": "src/data/blog/read-it-then-play-it-gift-pairs.md",
+      "articleSha256": "6698c80345d04f25d61ca1bda0f4c6887449ac3e918bcc4281a9c21d6a85465f",
+      "reviewedArticleSha256": "78cc9615b3ac52c77400ccd4f88d0ebf87d8643c0b0f193aad1baf95d3025373",
+      "researchRunId": "20260803-read-it-then-play-it-c437f208",
+      "researchRunPath": "research/runs/20260803-read-it-then-play-it-c437f208.json",
+      "researchRunSha256": "230e47665b992a958b1cd4e4bf1ab2a843c270f7b37364fb39348a90cbb54959",
+      "independentReviewPath": "research/reviews/20260803-read-it-then-play-it-c437f208.qa.v1.json",
+      "independentReviewSha256": "94ea21bae7863497f0a1638f61549e6c320666a831516d7dededef2c2d7aad05",
+      "reviewedEvidenceSha256": "cdd6879be053c5ce94086cd1614190d0781d292aeb64e4dde5262e7af9c84909",
+      "mission": null,
+      "socialPack": {
+        "packId": "read-it-then-play-it-gift-pairs-launch",
+        "path": "social/drafts/read-it-then-play-it-gift-pairs-launch.json",
+        "sha256": "4eaa873b2855536a88b107757bc2123894b28d059cdf824c85017d6036436905",
+        "status": "draft",
+        "postCount": 10
+      },
+      "editorialScore": 88,
+      "evidenceConfidence": 84,
+      "evidenceMode": "desk_research",
+      "finalistCount": 20,
+      "productCount": 20,
+      "pairCount": 10,
+      "visualAssetIds": [
+        "read-it-big-history",
+        "read-it-bird-cognition",
+        "read-it-feedback-loop",
+        "read-it-fungal-network",
+        "read-it-language-context",
+        "read-it-mars-constraints",
+        "read-it-park-story",
+        "read-it-photo-walk",
+        "read-it-temperature-loop",
+        "read-it-writing-constraint"
+      ],
+      "affiliateLinkCount": 0,
+      "affiliateLinks": [],
+      "quality": {
+        "researchValidated": true,
+        "independentReviewPassed": true,
+        "articlePublicationReady": true,
+        "socialLaunchPackReviewed": true,
+        "affiliateRegistryEnforced": true,
+        "affiliateLinkApprovalEnforced": true,
+        "allArtifactsHashBound": true
+      }
+    },
+    {
+      "articleSlug": "useful-gifts-for-hard-to-shop-for-adults",
+      "title": "Useful Gifts for Hard-to-Shop-For Adults: 5 Picks That Earn Their Space",
+      "route": "/blog/useful-gifts-for-hard-to-shop-for-adults",
+      "updatedAt": "2026-08-03T00:00:00.000Z",
+      "articlePath": "src/data/blog/useful-gifts-for-hard-to-shop-for-adults.md",
+      "articleSha256": "bb89d9675b2bca127cf4073331f419f1636292bfd7fbcebbfb1a1c1cb3a064e9",
+      "reviewedArticleSha256": "c3d00b22df0ba9af629c0c2186f57a878adda62c0c6dbe21d5ded0c7c4e4b990",
+      "researchRunId": "20260803-useful-gifts-hard-to-shop-for-adults-ceca335c",
+      "researchRunPath": "research/runs/20260803-useful-gifts-hard-to-shop-for-adults-ceca335c.json",
+      "researchRunSha256": "e99406f96cf025d51b93760bda60156f92f034ecea5faa07085e2a504e473da8",
+      "independentReviewPath": "research/reviews/20260803-useful-gifts-hard-to-shop-for-adults-ceca335c.qa.v1.json",
+      "independentReviewSha256": "b25cecc5e7e352b670d938d051995939e8941e8d2a2cd72efc8cd1fee5b34428",
+      "reviewedEvidenceSha256": "0ce404b6d42db0a807b03895fd74f1e478853c0d6f290751f7d37f34e8dbbadb",
+      "mission": null,
+      "socialPack": {
+        "packId": "useful-gifts-for-hard-to-shop-for-adults-launch",
+        "path": "social/drafts/useful-gifts-for-hard-to-shop-for-adults-launch.json",
+        "sha256": "7f6ec10e0b4052c6cbf360492a224749ffe76b9bf4c38c477c1e9939c61db617",
+        "status": "draft",
+        "postCount": 7
+      },
+      "editorialScore": 86,
+      "evidenceConfidence": 85,
+      "evidenceMode": "desk_research",
+      "finalistCount": 5,
+      "productCount": 5,
+      "pairCount": 0,
+      "visualAssetIds": [
+        "useful-friction-five"
+      ],
+      "affiliateLinkCount": 0,
+      "affiliateLinks": [],
+      "quality": {
+        "researchValidated": true,
+        "independentReviewPassed": true,
+        "articlePublicationReady": true,
+        "socialLaunchPackReviewed": true,
+        "affiliateRegistryEnforced": true,
+        "affiliateLinkApprovalEnforced": true,
+        "allArtifactsHashBound": true
+      }
+    }
+  ]
+}

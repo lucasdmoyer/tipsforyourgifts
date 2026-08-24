@@ -1,0 +1,96 @@
+name: Executive content idea
+description: Give the AI editorial team a high-level gift or growth direction.
+title: "[Strategy] "
+labels: ["strategy"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Set the direction; the strategy council will turn an owner-authored issue into a proposed versioned brief. After a separate founder approval, the research workflow can turn it into an evidence bundle, draft, and reviewable pull request. Do not paste credentials, affiliate tracking IDs, private customer data, or unpublished contractual terms here.
+  - type: input
+    id: idea
+    attributes:
+      label: Strategic idea
+      description: What audience, gift problem, product category, or growth bet should the team investigate?
+      placeholder: Useful gifts for adults who say they want nothing
+    validations:
+      required: true
+  - type: input
+    id: audience
+    attributes:
+      label: Audience or recipient
+      placeholder: Adults buying for friends and relatives
+    validations:
+      required: true
+  - type: input
+    id: occasion
+    attributes:
+      label: Occasion and timing
+      placeholder: Evergreen birthdays and holidays
+    validations:
+      required: true
+  - type: input
+    id: budget
+    attributes:
+      label: Budget range
+      placeholder: $25-$100
+    validations:
+      required: true
+  - type: textarea
+    id: exclusions
+    attributes:
+      label: Exclusions and guardrails
+      description: Name categories, claims, merchants, geographies, or risks to exclude.
+      placeholder: Exclude ingestibles, health claims, personalized products, and products that require subscriptions.
+  - type: input
+    id: success
+    attributes:
+      label: Success metric
+      placeholder: Five defensible finalists and one Pinterest-ready evergreen guide
+    validations:
+      required: true
+  - type: textarea
+    id: observed_friction
+    attributes:
+      label: What have you noticed?
+      description: Name the recurring problem, workaround, worn item, phrase, or routine that makes this feel specific to the recipient.
+      placeholder: They clean club grooves with a tee and keep using the same worn towel because both still work well enough.
+    validations:
+      required: true
+  - type: textarea
+    id: self_purchase_gap
+    attributes:
+      label: Why would they not buy it for themselves?
+      description: Distinguish a postponed useful purchase from something the recipient simply does not want.
+      placeholder: They prioritize major hobby equipment and keep postponing small quality-of-life upgrades.
+    validations:
+      required: true
+  - type: textarea
+    id: proof_of_fit
+    attributes:
+      label: Recipient-fit signals
+      description: What would a giver need to know or observe before this idea is appropriate?
+      placeholder: I have seen the workaround; I know their platform, size, routine, or existing setup; it replaces rather than duplicates.
+    validations:
+      required: true
+  - type: textarea
+    id: pairing
+    attributes:
+      label: Optional gift pairing
+      description: If two items belong together, explain the shared story or ritual and the different role each item plays.
+      placeholder: Sapiens provides the macro-history lens; Civilization VI provides an interactive systems counterpoint.
+  - type: textarea
+    id: compatibility
+    attributes:
+      label: Compatibility and clutter checks
+      description: List fit, size, platform, region, ownership, storage, maintenance, account, or duplication questions the team must answer.
+      placeholder: Confirm they do not own either item, use a compatible platform, welcome the book's perspective, and have room for the gift.
+    validations:
+      required: true
+  - type: checkboxes
+    id: authority
+    attributes:
+      label: Authority boundary
+      options:
+        - label: I understand this issue authorizes only a proposed strategy brief. A separate founder approval is required before research, and neither step authorizes production deployment, account creation, paid spend, or social publishing.
+          required: true

@@ -2,12 +2,16 @@
   "name": "tipsforyourgifts",
   "version": "0.0.0",
   "scripts": {
-    "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
-    "test": "ng test",
-    "lint": "ng lint",
-    "e2e": "ng e2e"
+    "install:web": "npm --prefix web ci",
+    "dev": "npm --prefix web run dev",
+    "validate": "npm --prefix web run validate",
+    "build": "npm --prefix web run build",
+    "smoke": "npm --prefix web run smoke",
+    "legacy:start": "ng serve",
+    "legacy:build": "ng build --prod",
+    "legacy:test": "ng test",
+    "legacy:lint": "ng lint",
+    "legacy:e2e": "ng e2e"
   },
   "private": true,
   "dependencies": {

@@ -1,0 +1,190 @@
+{
+  "schemaVersion": "1.0.0",
+  "packId": "one-photo-one-story-gift-pairs-launch",
+  "articleSlug": "one-photo-one-story-gift-pairs",
+  "researchRun": "20260816-one-photo-one-story-4cf6dd3f",
+  "status": "draft",
+  "createdAt": "2026-08-16T15:30:00.000Z",
+  "policy": {
+    "officialApiRequired": true,
+    "externalPublishingAuthorized": false,
+    "containsAffiliateLinks": false
+  },
+  "posts": [
+    {
+      "id": "one-photo-ten-minute-ritual",
+      "platform": "pinterest",
+      "format": "two-step-map",
+      "status": "draft",
+      "angle": "Turn an overwhelming family archive into one consent-led ten-minute ritual",
+      "headline": "One photo. One willing story. Ten minutes."
+      ,"copy": "Skip the surprise scanning project. Choose one ordinary photograph, let the storyteller approve one light question, write only the context they want kept on a separate caption insert, then stop. The small finish line is the gift.",
+      "assetBrief": "Original vertical two-step map showing Ask with permission and Caption the enclosure, with a visible stop-after-ten-minutes boundary and no product imagery.",
+      "altText": "Two-step map for asking one approved family-story question and writing the consented caption on the photo enclosure.",
+      "destinationUrl": "https://tipsforyourgifts.web.app/blog/one-photo-one-story-gift-pairs",
+      "claimIds": [
+        "claim-one-photo-friction",
+        "claim-consent-and-privacy-boundary",
+        "claim-one-photo-caption-page-pair"
+      ],
+      "productIds": [
+        "whats-your-story-memory-game",
+        "archival-methods-caption-pocket-4x6"
+      ],
+      "pairIds": [
+        "one-photo-caption-page-ritual"
+      ],
+      "disclosureRequired": false,
+      "externalPostId": null
+    },
+    {
+      "id": "one-photo-permission-check",
+      "platform": "pinterest",
+      "format": "buy-skip-card",
+      "status": "draft",
+      "angle": "Make willingness and privacy more important than the product category",
+      "headline": "Buy the prompt cards only if this answer is yes",
+      "copy": "Ask privately whether the exact photograph, person, and topic are welcome; do not infer grief, estrangement, conflict, identity, or another sensitive circumstance. If they decline or hesitate, skip that specific topic. Consent is the fit check.",
+      "assetBrief": "Original split card with Ask first and Skip this topic columns, a single neutral photo outline, and no faces, family details, logos, or merchant assets.",
+      "altText": "Ask-or-skip checklist for confirming whether one exact family photograph, person, and topic are welcome.",
+      "destinationUrl": "https://tipsforyourgifts.web.app/blog/one-photo-one-story-gift-pairs",
+      "claimIds": [
+        "claim-gentle-question-friction",
+        "claim-sensitive-topic-compatibility",
+        "claim-whats-your-story-compatibility"
+      ],
+      "productIds": [
+        "whats-your-story-memory-game"
+      ],
+      "pairIds": [],
+      "disclosureRequired": false,
+      "externalPostId": null
+    },
+    {
+      "id": "one-photo-caption-not-original",
+      "platform": "pinterest",
+      "format": "two-part-diagram",
+      "status": "draft",
+      "angle": "Show the separate roles of a prompt and a photo-safe caption housing",
+      "headline": "Ask beside the photo. Label beside the photo."
+      ,"copy": "The prompt starts one willing story. The separate caption pocket keeps approved names and context beside one stable 4x6 print. Nothing sticks to the original, and either item remains useful by itself.",
+      "assetBrief": "Original two-part diagram with a question card on the left and a photo pocket plus separate caption strip on the right; use generic shapes only.",
+      "altText": "Diagram pairing one conversation prompt with a separate photo caption pocket while leaving the original photograph unmarked.",
+      "destinationUrl": "https://tipsforyourgifts.web.app/blog/one-photo-one-story-gift-pairs",
+      "claimIds": [
+        "claim-caption-pocket-benefit",
+        "claim-photo-original-boundary",
+        "claim-one-photo-caption-page-pair"
+      ],
+      "productIds": [
+        "whats-your-story-memory-game",
+        "archival-methods-caption-pocket-4x6"
+      ],
+      "pairIds": [
+        "one-photo-caption-page-ritual"
+      ],
+      "disclosureRequired": false,
+      "externalPostId": null
+    },
+    {
+      "id": "one-photo-archival-stop-signs",
+      "platform": "pinterest",
+      "format": "avoidance-list",
+      "status": "draft",
+      "angle": "Put photo-material exceptions ahead of the shopping recommendation",
+      "headline": "Photo clues that mean: stop and ask a conservator"
+      ,"copy": "Stop for flaking, damp, stuck, glass or metal, unusually valuable, or unidentified old film materials. A PAT claim does not make one sleeve right for every photograph. Condition and environment come first.",
+      "assetBrief": "Original caution list with abstract condition icons and a final seek-specialist panel; no damaged-photo imagery or restoration promises.",
+      "altText": "Caution list for flaking, damp, stuck, glass, metal, valuable, or unidentified photographic materials.",
+      "destinationUrl": "https://tipsforyourgifts.web.app/blog/one-photo-one-story-gift-pairs",
+      "claimIds": [
+        "claim-photo-original-boundary",
+        "claim-pat-material-boundary",
+        "claim-plastic-exceptions"
+      ],
+      "productIds": [
+        "print-file-4x6-foldflap-sleeves"
+      ],
+      "pairIds": [],
+      "disclosureRequired": false,
+      "externalPostId": null
+    },
+    {
+      "id": "one-photo-paper-or-clear",
+      "platform": "pinterest",
+      "format": "decision-flow",
+      "status": "draft",
+      "angle": "Match viewing behavior and photo condition to a caption-page, envelope, or stop decision",
+      "headline": "Clear page, paper envelope, or neither?"
+      ,"copy": "Stable 4x6 viewed often: consider a clear PAT-passed page with a separate caption. Stable 4x6 viewed rarely: a labeled paper envelope may fit. Flaking, damp, unusual, or unidentified: stop. Never choose by the word archival alone.",
+      "assetBrief": "Original vertical decision flow with stable-versus-sensitive first, viewing frequency second, and a conservator stop branch before any product path.",
+      "altText": "Decision flow choosing a clear caption page, paper envelope, or conservator based on photograph condition and viewing frequency.",
+      "destinationUrl": "https://tipsforyourgifts.web.app/blog/one-photo-one-story-gift-pairs",
+      "claimIds": [
+        "claim-caption-pocket-compatibility",
+        "claim-gaylord-envelope-compatibility",
+        "claim-plastic-exceptions"
+      ],
+      "productIds": [
+        "archival-methods-caption-pocket-4x6",
+        "gaylord-unbuffered-photo-envelopes"
+      ],
+      "pairIds": [],
+      "disclosureRequired": false,
+      "externalPostId": null
+    },
+    {
+      "id": "one-photo-instagram-carousel",
+      "platform": "instagram",
+      "format": "six-slide-carousel",
+      "status": "draft",
+      "angle": "Teach the full one-photo ritual without making preservation promises",
+      "headline": "A family-history gift that does not become homework"
+      ,"copy": "Six slides: notice the storyteller, ask permission, choose one ordinary photo, preview one light question, caption the enclosure, stop after ten minutes. No cloud account, scanning project, adhesive on the original, or demand to finish a life story.",
+      "assetBrief": "Six original typographic slides with simple line icons, one step per slide, a privacy badge, and no real family photos, names, logos, or merchant imagery.",
+      "altText": "Six-slide carousel explaining a consent-led one-photo family-story ritual with no scanning or writing on the original.",
+      "destinationUrl": "https://tipsforyourgifts.web.app/blog/one-photo-one-story-gift-pairs",
+      "claimIds": [
+        "claim-one-photo-friction",
+        "claim-gentle-question-friction",
+        "claim-photo-original-boundary",
+        "claim-grandparent-envelope-pair"
+      ],
+      "productIds": [
+        "meaningful-conversations-grandparents",
+        "gaylord-unbuffered-photo-envelopes"
+      ],
+      "pairIds": [
+        "grandparent-story-envelope-ritual"
+      ],
+      "disclosureRequired": false,
+      "externalPostId": null
+    },
+    {
+      "id": "one-photo-tiktok-script",
+      "platform": "tiktok",
+      "format": "thirty-second-script",
+      "status": "draft",
+      "angle": "Replace the giant memory-project reveal with a small invitation",
+      "headline": "Do not gift your family historian another project"
+      ,"copy": "Hook: the wrong gift says, document your entire life. Show one generic photo outline, one optional question card, and one separate caption. Voiceover: ask what they want remembered, keep only what they approve, leave the original untouched, and stop after one story.",
+      "assetBrief": "Original thirty-second storyboard using blank cards and a generic photo silhouette; no personal images, third-party product designs, logos, or hands-on claims.",
+      "altText": "Short video storyboard replacing a large family-history assignment with one approved story and a separate caption.",
+      "destinationUrl": "https://tipsforyourgifts.web.app/blog/one-photo-one-story-gift-pairs",
+      "claimIds": [
+        "claim-consent-and-privacy-boundary",
+        "claim-photo-original-boundary",
+        "claim-one-photo-caption-page-pair"
+      ],
+      "productIds": [
+        "whats-your-story-memory-game",
+        "archival-methods-caption-pocket-4x6"
+      ],
+      "pairIds": [
+        "one-photo-caption-page-ritual"
+      ],
+      "disclosureRequired": false,
+      "externalPostId": null
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+name: Content quality gate
+
+on:
+  pull_request:
+  push:
+    branches: [master]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: content-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24.14.0"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - name: Install web dependencies
+        run: npm ci --prefix web
+      - name: Audit production dependencies
+        run: npm audit --prefix web --omit=dev
+      - name: Validate research and content
+        run: npm run validate
+      - name: Build static site
+        run: npm run build
+      - name: Smoke built artifact
+        run: npm run smoke
+      - name: Check repository diff hygiene
+        run: |
+          git diff --check
+          git diff --exit-code
+      - uses: actions/upload-artifact@v4
+        with:
+          name: firebase-static-site-${{ github.sha }}
+          path: web/dist
+          if-no-files-found: error
+          retention-days: 14

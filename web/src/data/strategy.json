@@ -1,0 +1,628 @@
+{
+  "schemaVersion": "1.1.0",
+  "updatedAt": "2026-08-23T19:50:08.618Z",
+  "northStar": "Become the most trusted place to make a confident gift decision without wasting time or money.",
+  "currentBet": "Build three evergreen recipient-intent guides around routines shoppers can actually observe: clean and dry muddy paws at the door, preserve a fiber-art work in progress and its exact stopping point, and move a cleaned vinyl record into a fresh sleeve instead of returning it to dust.",
+  "thoughtfulnessFramework": {
+    "minimumPairCoherenceScore": 80,
+    "principles": [
+      {
+        "id": "notice-the-workaround",
+        "label": "Notice the workaround",
+        "question": "What recurring irritation do they tolerate, improvise around, or complain about?"
+      },
+      {
+        "id": "find-the-self-purchase-gap",
+        "label": "Find the self-purchase gap",
+        "question": "Why would they appreciate this but keep postponing the purchase themselves?"
+      },
+      {
+        "id": "prove-recipient-fit",
+        "label": "Prove recipient fit",
+        "question": "What behavior, phrase, worn item, or routine tells us this gift belongs to this person?"
+      },
+      {
+        "id": "make-the-pair-interact",
+        "label": "Make the pair interact",
+        "question": "Does each item deepen the same story, ritual, or experience in a different way?"
+      },
+      {
+        "id": "subtract-clutter",
+        "label": "Subtract clutter",
+        "question": "What preference, duplicate, maintenance burden, or compatibility issue would make us skip it?"
+      }
+    ]
+  },
+  "ideas": [
+    {
+      "id": "founder-idea-001",
+      "revision": 1,
+      "founderDisposition": "approved_for_research",
+      "ideaType": "editorial",
+      "thesisType": "recipient_friction",
+      "title": "Useful gifts for hard-to-shop-for people",
+      "audience": "Adults buying for friends or relatives who say they want nothing",
+      "occasion": "Evergreen birthdays and holidays",
+      "budget": "$25-$100",
+      "priority": "high",
+      "insight": "The best gift fixes a small problem the recipient already notices without creating a new obligation.",
+      "observedFriction": "They buy major wants immediately but continue using small awkward, worn, or incomplete parts of everyday routines.",
+      "selfPurchaseReluctance": "The upgrade feels too minor to prioritize even though it would be used often.",
+      "fitSignals": [
+        "They have mentioned the inconvenience more than once.",
+        "The gift replaces or improves something already in their routine."
+      ],
+      "avoidIf": [
+        "It requires a new account, subscription, storage habit, or maintenance routine.",
+        "They explicitly prefer no gift."
+      ],
+      "successMetric": "A defensible first guide with at least five qualified picks and a clear decision framework",
+      "deliverables": {
+        "minimumFinalists": 5,
+        "minimumQualifiedPairs": 0,
+        "minimumSocialAngles": 5
+      },
+      "researchBrief": "Research useful gifts for hard-to-shop-for adults, $25-$100, evergreen. Prioritize observed daily friction and easy ownership; exclude ingestibles, personalized products, subscriptions, and generic clutter."
+    },
+    {
+      "id": "founder-idea-002",
+      "revision": 1,
+      "founderDisposition": "approved_for_research",
+      "ideaType": "growth",
+      "thesisType": "growth_distribution",
+      "title": "Build the first Pinterest-native visual package",
+      "audience": "Gift planners looking for evergreen visual inspiration",
+      "occasion": "Evergreen",
+      "budget": "Organic only",
+      "priority": "medium",
+      "insight": "Decision tools and recipient clues are more saveable than another collage of products.",
+      "observedFriction": "Shoppers know who they are buying for but cannot translate that knowledge into a confident product decision.",
+      "selfPurchaseReluctance": "Not applicable to this growth idea; the value is a reusable decision aid.",
+      "fitSignals": [
+        "A visual answers one gift decision question without requiring the caption.",
+        "The Pin sends the reader to owned editorial content rather than a merchant."
+      ],
+      "avoidIf": [
+        "The creative repeats generic product imagery or thin affiliate copy.",
+        "The approved account, original asset rights, or official API is missing."
+      ],
+      "successMetric": "Five distinct Pin concepts that point to one useful owned article",
+      "deliverables": {
+        "minimumFinalists": 0,
+        "minimumQualifiedPairs": 0,
+        "minimumSocialAngles": 5
+      },
+      "researchBrief": "Create five original Pinterest concepts from one validated article. Each concept must teach a distinct decision rule, use rights-cleared original creative, and link only to the owned article."
+    },
+    {
+      "id": "founder-idea-003",
+      "revision": 1,
+      "founderDisposition": "approved_for_research",
+      "ideaType": "editorial",
+      "thesisType": "recipient_friction",
+      "title": "If you have a golf friend: solve the frictions they tolerate",
+      "audience": "People buying for a committed golfer without guessing at clubs, shoes, or swing technology",
+      "occasion": "Birthdays, holidays, host gifts, and golf trips",
+      "budget": "$20-$100",
+      "priority": "high",
+      "insight": "Golfers are highly particular about equipment, but the small course-day problems around cleaning, weather, worn consumables, and organization are easier to observe and easier to postpone fixing.",
+      "observedFriction": "They clean grooves with a tee, carry a worn towel, let a damp glove ride in the bag, replace small consumables late, or improvise storage during a round.",
+      "selfPurchaseReluctance": "Performance purchases get attention; modest quality-of-life accessories can feel optional until someone gives the right one.",
+      "fitSignals": [
+        "You have played with them or seen the exact workaround in their bag routine.",
+        "You know the accessory will not conflict with their club, ball, glove, apparel, or technology preferences."
+      ],
+      "avoidIf": [
+        "You are guessing at clubs, balls, gloves, shoes, grips, rangefinders, or wearable technology.",
+        "The gift adds a novelty accessory without solving a witnessed problem."
+      ],
+      "successMetric": "At least five researched gifts mapped to distinct golfer frictions, plus one useful two-item course-day pairing",
+      "deliverables": {
+        "minimumFinalists": 5,
+        "minimumQualifiedPairs": 1,
+        "minimumSocialAngles": 5
+      },
+      "researchBrief": "Research thoughtful gifts for a golf friend, $20-$100. Start from recurring course-day frictions and things golfers postpone buying for themselves. Avoid clubs, shoes, swing aids, balls, gloves, grips, and electronics unless exact compatibility is known. Include one coherent two-item pairing and a clear gift-card fallback."
+    },
+    {
+      "id": "founder-idea-004",
+      "revision": 1,
+      "founderDisposition": "approved_for_research",
+      "ideaType": "editorial",
+      "thesisType": "story_pairing",
+      "title": "Read it, then play it: gift pairs for curious adults",
+      "audience": "Curious adults who like to move between books, games, tools, observation, and debate",
+      "occasion": "Birthdays, holidays, graduation, and shared weekends",
+      "budget": "$25-$75",
+      "priority": "high",
+      "insight": "One gift offers a provocative macro-history lens; the other lets the recipient experiment with technology, culture, expansion, and tradeoffs through play.",
+      "observedFriction": "A history fan may want a new way to engage with big historical questions but default to consuming only books or only games.",
+      "selfPurchaseReluctance": "Each item is familiar enough to postpone, while the pairing creates a reason to experience them together and discuss where their models disagree.",
+      "fitSignals": [
+        "They enjoy argumentative big-history books rather than treating them as settled scholarship.",
+        "They already play turn-based strategy games on a confirmed compatible platform."
+      ],
+      "avoidIf": [
+        "They already own either item, dislike long nonfiction, or do not enjoy systems-heavy games.",
+        "The game platform, region, system requirements, account requirements, or edition is uncertain."
+      ],
+      "pairing": {
+        "unifyingIdea": "Understand how civilizations form, then experiment with the choices and systems that shape one.",
+        "itemRoles": [
+          {
+            "item": "Sapiens: A Brief History of Humankind",
+            "role": "The interpretive lens: a broad and debatable account of human development."
+          },
+          {
+            "item": "Sid Meier's Civilization VI",
+            "role": "The interactive counterpoint: a strategy sandbox about technology, culture, expansion, and competing priorities."
+          }
+        ],
+        "interactionMoment": "Include a short note inviting the recipient to compare one book claim with one decision from their first game.",
+        "compatibilityChecks": [
+          "Confirm the exact game platform, region, system compatibility, ownership, and preferred store before buying.",
+          "Confirm the recipient welcomes Sapiens as a conversation-starting argument rather than an unquestioned history text."
+        ],
+        "coherenceScore": 92,
+        "clutterRisk": "A duplicate book or incompatible game key destroys the pair; verify both before purchase and prefer a digital game only when the recipient's platform is known."
+      },
+      "successMetric": "Ten pair theses scoring at least 80 for coherence, with different item roles, independent value, a repeatable interaction, and exact compatibility questions",
+      "deliverables": {
+        "minimumFinalists": 10,
+        "minimumQualifiedPairs": 5,
+        "minimumSocialAngles": 5
+      },
+      "researchBrief": "Research a Read It, Then Play It guide for curious adults with at least ten coherent gift pairs. Use Sapiens plus Civilization VI as the founder example, while testing books paired with games, tools, field practice, or debate. Require each pair to share one curiosity, perform different jobs, create an interaction loop, remain useful separately, score at least 80 for coherence, and pass platform, accessibility, ownership, storage, and effort checks. Do not present games as validated history or science simulations."
+    },
+    {
+      "id": "founder-idea-005",
+      "revision": 2,
+      "founderDisposition": "approved_for_research",
+      "ideaType": "editorial",
+      "thesisType": "ritual_pairing",
+      "title": "Field guide + observation tool: turn curiosity into a weekend ritual",
+      "audience": "A friend who points out birds, trees, stars, rocks, or neighborhood architecture but has not formalized the hobby",
+      "occasion": "Birthday, retirement, housewarming, or a shared trip",
+      "budget": "$30-$125",
+      "priority": "medium",
+      "insight": "A reference gives the recipient a language for what they notice; one simple observation tool gives them a reason to go look again.",
+      "observedFriction": "They repeatedly notice and ask about the same part of the natural or built world but rely on ad hoc phone searches.",
+      "selfPurchaseReluctance": "They may not identify as a hobbyist yet, so neither half feels necessary on its own.",
+      "fitSignals": [
+        "They point things out during walks or trips without prompting.",
+        "You can narrow the subject and geography instead of buying a generic field guide."
+      ],
+      "avoidIf": [
+        "The reference does not match their geography, reading style, eyesight, or subject interest.",
+        "The observation tool is technical, fragile, heavy, or requires an account they did not ask for."
+      ],
+      "pairing": {
+        "unifyingIdea": "Name what you notice, then make noticing it part of a repeatable outing.",
+        "itemRoles": [
+          {
+            "item": "A geography-specific field reference",
+            "role": "The vocabulary and identification layer."
+          },
+          {
+            "item": "One low-friction observation tool",
+            "role": "The reason to take the curiosity outdoors and practice it."
+          }
+        ],
+        "interactionMoment": "Pair the items with an invitation to use them together on one specific walk, park visit, or trip.",
+        "compatibilityChecks": [
+          "Choose the exact subject and region from observed interest, not a broad demographic guess.",
+          "Check weight, portability, accessibility, required skill, and storage before selecting the tool."
+        ],
+        "coherenceScore": 86,
+        "clutterRisk": "A generic reference plus a fussy gadget creates two unused objects; both halves must support the same specific outing."
+      },
+      "successMetric": "One validated subject-specific pairing with a clear first outing and no account or maintenance burden",
+      "deliverables": {
+        "minimumFinalists": 2,
+        "minimumQualifiedPairs": 1,
+        "minimumSocialAngles": 5
+      },
+      "researchBrief": "Research a field-reference plus observation-tool pairing for one narrow interest and geography. Prove the recipient signal, define the first shared outing, and reject generic books or technical gadgets that add friction."
+    },
+    {
+      "id": "founder-idea-006",
+      "revision": 2,
+      "founderDisposition": "approved_for_research",
+      "ideaType": "editorial",
+      "thesisType": "ritual_pairing",
+      "title": "One photo, one story: help a family historian make memories findable",
+      "audience": "A friend or relative who regularly tells family stories, identifies people in old photographs, or worries that useful context will disappear",
+      "occasion": "Milestone birthday, retirement, family reunion, or a quiet shared weekend",
+      "budget": "$25-$90",
+      "priority": "high",
+      "insight": "The thoughtful gift is not a generic memory book; it is a low-pressure ritual that helps one known storyteller connect names and context to photographs the family already values.",
+      "observedFriction": "They tell the same valuable stories in conversation, while names, dates, relationships, and places remain scattered across text messages, loose notes, and unlabeled photographs.",
+      "selfPurchaseReluctance": "The task feels emotionally important but indefinitely postponable, and archival supplies feel too mundane to buy until there is a simple first session to use them.",
+      "fitSignals": [
+        "They already volunteer specific family stories or correct who appears in older photographs.",
+        "You can name a small, welcome set of photographs and one willing storyteller without turning the gift into a large preservation project."
+      ],
+      "avoidIf": [
+        "The family history involves active grief, estrangement, disputed identities, or privacy boundaries that make prompting intrusive.",
+        "The system requires cloud accounts, irreversible writing on originals, adhesive claims that are not independently verified, or a scanning workflow they did not request."
+      ],
+      "pairing": {
+        "unifyingIdea": "Invite one story, then preserve enough context that the next person can understand why the photograph matters.",
+        "itemRoles": [
+          {
+            "item": "A respectful oral-history prompt book or card set",
+            "role": "The conversation layer that turns a blank page into one specific, answerable story."
+          },
+          {
+            "item": "A reversible photo-safe labeling or sleeving system",
+            "role": "The archival layer that keeps names, dates, and relationships with the photograph without altering the original."
+          }
+        ],
+        "interactionMoment": "Choose one photograph, ask one prompt, and record only the names and context the storyteller wants attached to that image.",
+        "compatibilityChecks": [
+          "Confirm language, reading comfort, handwriting needs, family privacy, and whether prompts feel invitational rather than extractive.",
+          "Verify the exact material is reversible and appropriate for the photograph type; never write on or adhere an unverified product to an original."
+        ],
+        "coherenceScore": 90,
+        "clutterRisk": "A giant journal plus a complicated archive kit creates an obligation; both items must support a ten-minute first session and leave the originals unchanged."
+      },
+      "successMetric": "Two independently qualified low-pressure pair options, each supporting a ten-minute one-photo ritual with explicit privacy and material-safety boundaries",
+      "deliverables": {
+        "minimumFinalists": 4,
+        "minimumQualifiedPairs": 2,
+        "minimumSocialAngles": 5
+      },
+      "researchBrief": "Research low-pressure family-story gift pairs built around one photograph and one willing storyteller. Compare prompt formats and reversible photo-safe context systems; require independent material evidence, privacy and grief boundaries, independent usefulness, a ten-minute first ritual, and no mandatory cloud account, scanning project, or irreversible contact with originals."
+    },
+    {
+      "id": "founder-idea-007",
+      "revision": 2,
+      "founderDisposition": "approved_for_research",
+      "ideaType": "editorial",
+      "thesisType": "ritual_pairing",
+      "title": "Read a scene, say it aloud: a language-learning pair that creates practice",
+      "audience": "An adult language learner who keeps an app streak or vocabulary list but postpones low-stakes speaking practice",
+      "occasion": "Birthday, study-abroad preparation, graduation, or encouragement during a long learning plateau",
+      "budget": "$20-$65",
+      "priority": "medium",
+      "insight": "A short reader supplies understandable context while a small prompt tool turns the same scene into speech, so the pair creates a repeatable bridge from recognition to expression.",
+      "observedFriction": "They recognize vocabulary in an app or text but freeze when asked to form an unscripted sentence, and their saved words rarely return in a real conversation.",
+      "selfPurchaseReluctance": "Another reader can feel like homework and a speaking game can feel awkward alone; the pair makes each item explain when and how the other should be used.",
+      "fitSignals": [
+        "You know the exact language, approximate proficiency, dialect or regional preference, and whether they enjoy fiction or dialogue.",
+        "They have said they want more speaking confidence and would welcome a private or trusted-partner practice ritual."
+      ],
+      "avoidIf": [
+        "They want formal instruction, pronunciation assessment, or exam preparation that a gift cannot responsibly replace.",
+        "The reader level, script, dialect, audio access, group size, or prompt style is uncertain or makes practice embarrassing."
+      ],
+      "pairing": {
+        "unifyingIdea": "Understand one short scene, then reuse its words in a low-pressure conversation before moving on.",
+        "itemRoles": [
+          {
+            "item": "A proficiency-matched graded short-story reader",
+            "role": "The comprehension layer that supplies bounded vocabulary, characters, and a shared scene."
+          },
+          {
+            "item": "A level-appropriate conversation prompt deck or speaking game",
+            "role": "The expression layer that gives the learner a reason to recombine the scene's language aloud."
+          }
+        ],
+        "interactionMoment": "Read one short scene, choose one prompt connected to it, and speak for five minutes using any three words from the page.",
+        "compatibilityChecks": [
+          "Confirm CEFR or equivalent level, language variant, script, answer support, audio requirements, and whether the reader is usable without a subscription.",
+          "Confirm the prompt tool works with the recipient's preferred solo, partner, or small-group setting and does not claim to assess fluency."
+        ],
+        "coherenceScore": 88,
+        "clutterRisk": "A mismatched reader becomes discouraging and a generic party game never connects to study; both halves must share level, language variant, and a five-minute interaction."
+      },
+      "successMetric": "Two proficiency-specific pairs with a five-minute read-to-speak loop, independent usefulness, and verified language, level, and access compatibility",
+      "deliverables": {
+        "minimumFinalists": 4,
+        "minimumQualifiedPairs": 2,
+        "minimumSocialAngles": 5
+      },
+      "researchBrief": "Research graded-reader plus speaking-prompt pairs for one specific language and adult proficiency band. Require exact level and dialect evidence, independent usefulness, a five-minute scene-to-speech ritual, accessible answer support, and clear exclusions for formal assessment, mandatory subscriptions, public performance pressure, or mismatched scripts and group sizes."
+    },
+    {
+      "id": "founder-idea-008",
+      "revision": 2,
+      "founderDisposition": "approved_for_research",
+      "ideaType": "editorial",
+      "thesisType": "ritual_pairing",
+      "title": "Keep the mix, remember the recipe: a miniature-painting workflow pair",
+      "audience": "A tabletop miniature painter who repeatedly loses workable paint or cannot reproduce a successful custom color in the next session",
+      "occasion": "Birthday, campaign launch, hobby milestone, or completion of a first painted army",
+      "budget": "$25-$70",
+      "priority": "medium",
+      "insight": "The pair solves two witnessed workflow losses: one tool keeps an acrylic mix workable during the session, while the other preserves enough of the recipe to reproduce it later.",
+      "observedFriction": "They remix the same color by eye, photograph unlabeled paint blobs, or watch a useful acrylic blend dry before the miniature or matching unit is finished.",
+      "selfPurchaseReluctance": "New miniatures and paints feel more exciting than workflow tools, so a modest palette or record system stays on the someday list despite repeated frustration.",
+      "fitSignals": [
+        "You have seen them paint water-based acrylic miniatures at a dedicated desk or portable station.",
+        "They mix custom colors, paint related models across multiple sessions, and do not already have a trusted wet palette and recipe system."
+      ],
+      "avoidIf": [
+        "They primarily use oils, enamels, airbrush-only workflows, or manufacturer-standard colors that do not need a wet palette or written mix.",
+        "The palette is too large for the workspace, creates unwanted cleaning or mold risk, or the journal expects paint brands and notation they do not use."
+      ],
+      "pairing": {
+        "unifyingIdea": "Keep a useful acrylic mix alive today and leave a compact recipe that makes the same color possible next session.",
+        "itemRoles": [
+          {
+            "item": "A workspace-compatible wet palette for water-based acrylics",
+            "role": "The session layer that slows drying and keeps a small custom mix available while the painter works."
+          },
+          {
+            "item": "A paint-recipe journal or swatch record designed for miniature colors",
+            "role": "The continuity layer that records brands, ratios, layers, and a visible sample for the next model."
+          }
+        ],
+        "interactionMoment": "Mix one recurring army or character color on the palette, then log the exact paints, approximate ratio, and dried swatch before cleanup.",
+        "compatibilityChecks": [
+          "Confirm water-based acrylic use, palette dimensions, seal and storage needs, replacement-paper availability, cleaning routine, and safe drying between sessions.",
+          "Confirm the record format fits the recipient's paint brands, color-vision needs, handwriting preference, and desire to keep physical rather than app-based notes."
+        ],
+        "coherenceScore": 91,
+        "clutterRisk": "A large palette or fussy log adds more setup than it saves; choose compact tools only when the painter already mixes colors and wants repeatability."
+      },
+      "successMetric": "Two compact acrylic-compatible workflow pairs that reduce remixed-color waste without adding a burdensome cleaning, storage, or notation system",
+      "deliverables": {
+        "minimumFinalists": 4,
+        "minimumQualifiedPairs": 2,
+        "minimumSocialAngles": 5
+      },
+      "researchBrief": "Research compact wet-palette plus paint-recipe-record pairs for water-based acrylic miniature painters. Require exact workspace, paint-medium, replacement-supply, cleaning, seal, storage, mold-prevention, accessibility, and brand-notation checks; prove independent usefulness and one real mix-log interaction, and reject workflows that add more maintenance than they remove."
+    },
+    {
+      "id": "founder-idea-009",
+      "revision": 2,
+      "founderDisposition": "approved_for_research",
+      "ideaType": "editorial",
+      "thesisType": "ritual_pairing",
+      "title": "Step outside without the screen glare: a first night-sky ritual",
+      "audience": "A friend who regularly points out the moon, planets, meteor showers, or constellations but has not asked for a telescope",
+      "occasion": "Birthday, camping trip, housewarming, retirement, or a planned meteor-shower evening",
+      "budget": "$20-$60",
+      "priority": "medium",
+      "insight": "A location-appropriate sky reference helps the recipient know what to look for, while a simple red-light tool lets them read it outdoors without making a telescope-sized commitment.",
+      "observedFriction": "They step outside to identify something bright, then use a glaring phone search, lose their dark adaptation, and forget the larger pattern around what they saw.",
+      "selfPurchaseReluctance": "A telescope feels too serious and expensive, while a planisphere or red light feels too minor to prioritize even though both could support the habit they already show.",
+      "fitSignals": [
+        "They already choose to look at the night sky, mention specific events, or invite others outside without prompting.",
+        "You know the observing latitude or region and that they would enjoy a low-screen analog guide rather than another app."
+      ],
+      "avoidIf": [
+        "They need an accessible audio or large-print format, strongly prefer a phone app, or already own a trusted atlas and light.",
+        "The reference is wrong for the hemisphere or latitude, or the light activates bright white mode before red and defeats the intended ritual."
+      ],
+      "pairing": {
+        "unifyingIdea": "Find one visible pattern in a region-appropriate guide, then preserve night vision long enough to locate it outdoors.",
+        "itemRoles": [
+          {
+            "item": "A latitude-appropriate planisphere or current beginner sky atlas",
+            "role": "The orientation layer that turns one bright object into a larger seasonal pattern."
+          },
+          {
+            "item": "A dimmable red-light flashlight with direct red-mode access",
+            "role": "The field layer that illuminates the guide while minimizing disruptive white-light exposure."
+          }
+        ],
+        "interactionMoment": "Set the guide for one planned evening, choose one constellation or alignment, and use only the dim red mode while locating it outside.",
+        "compatibilityChecks": [
+          "Confirm hemisphere, latitude range, date handling, print size, symbol clarity, weather resistance, and whether the reference remains useful without an account.",
+          "Confirm direct red-mode activation, dimming behavior, battery type, accidental white-light risk, carry method, and any local dark-sky etiquette."
+        ],
+        "coherenceScore": 89,
+        "clutterRisk": "A wrong-latitude wheel or bright novelty flashlight becomes instant clutter; both items must support one named evening and remain simpler than a telescope or app stack."
+      },
+      "successMetric": "Two region-specific beginner pairs that support one planned observing evening with verified guide readability and direct low-output red-light operation",
+      "deliverables": {
+        "minimumFinalists": 4,
+        "minimumQualifiedPairs": 2,
+        "minimumSocialAngles": 5
+      },
+      "researchBrief": "Research beginner night-sky pairs built from a latitude-appropriate analog reference and a direct-access dim red light. Require exact hemisphere, latitude, date, readability, light-mode, battery, weather, carry, and dark-sky-etiquette checks; define one named observing evening, prove independent usefulness, and reject telescopes, bright novelty lights, wrong-region guides, or mandatory app accounts."
+    },
+    {
+      "id": "founder-idea-010",
+      "revision": 2,
+      "founderDisposition": "approved_for_research",
+      "ideaType": "editorial",
+      "thesisType": "ritual_pairing",
+      "title": "Pause the puzzle, reclaim the table: a start-and-store ritual",
+      "audience": "An adult jigsaw-puzzle fan who delays larger puzzles because a shared table cannot stay occupied between sessions",
+      "occasion": "Birthday, holiday, housewarming, retirement, or the start of a winter puzzle season",
+      "budget": "$35-$140",
+      "priority": "high",
+      "insight": "A size-compatible puzzle-storage surface protects an unfinished session while sorting trays preserve the decisions that make restarting easy.",
+      "observedFriction": "They keep a puzzle box unopened, balance an unfinished puzzle on cardboard, or rush to finish before the dining table is needed again.",
+      "selfPurchaseReluctance": "A new puzzle feels fun to buy; the bulky workflow tools that make one practical feel like boring infrastructure and require more comparison than the puzzle itself.",
+      "fitSignals": [
+        "They already enjoy jigsaws and have mentioned table space, pets, children, cleanup, or losing sorted groups between sessions.",
+        "You know their usual maximum piece count, finished puzzle dimensions, available storage orientation, and whether they prefer trays or loose sorting."
+      ],
+      "avoidIf": [
+        "They dislike large puzzles, already have a trusted storage system, or the real barrier is vision, dexterity, piece size, or interest rather than shared-table access.",
+        "The surface is too small, heavy, flexible, or awkward to store, or the trays add more floor and shelf clutter than they remove."
+      ],
+      "pairing": {
+        "unifyingIdea": "Preserve both the unfinished image and the sorting decisions, so a satisfying puzzle can pause without taking over a shared room.",
+        "itemRoles": [
+          {
+            "item": "A rigid board, closing case, or carefully qualified roll-up surface sized to the recipient's puzzles",
+            "role": "The continuity layer that keeps the assembled section together and makes the shared table recoverable."
+          },
+          {
+            "item": "Stackable or lidded sorting trays with useful contrast",
+            "role": "The restart layer that keeps edge pieces, colors, and patterns separated between sessions."
+          }
+        ],
+        "interactionMoment": "Sort one puzzle's edge and two major color groups, build on the storage surface, then close or move both systems before the table is needed.",
+        "compatibilityChecks": [
+          "Confirm finished puzzle dimensions rather than relying on piece count, plus usable interior dimensions, closure pressure, board weight, carrying orientation, and the exact place it will be stored.",
+          "Confirm tray capacity, lid or stacking behavior, piece size, surface contrast, reach, labeling preference, and whether separate trays help rather than fragment the recipient's process."
+        ],
+        "coherenceScore": 91,
+        "clutterRisk": "An oversized board plus a tower of trays can become more intrusive than the puzzle; the anchor must fit a named storage location and the companion must collapse, stack, or earn permanent shelf space."
+      },
+      "successMetric": "Two independently qualified start-sort-store pairs for common adult puzzle sizes, each with exact fit, weight, closure, storage, contrast, and clutter checks",
+      "deliverables": {
+        "minimumFinalists": 4,
+        "minimumQualifiedPairs": 2,
+        "minimumSocialAngles": 5
+      },
+      "researchBrief": "Research jigsaw-puzzle storage-surface plus sorting-tray pairs for adults who lose a shared table between sessions. Require exact finished-puzzle dimensions, usable surface area, closure or roll behavior, board weight, storage orientation, tray capacity, contrast, reach, pet and child realities, independent usefulness, and one start-sort-store interaction. Reject generic puzzle gifts, unsupported piece-count fit, bulky systems without a named storage location, and pairings that merely add accessories."
+    },
+    {
+      "id": "founder-idea-011",
+      "revision": 2,
+      "founderDisposition": "approved_for_research",
+      "ideaType": "editorial",
+      "thesisType": "ritual_pairing",
+      "title": "Rinse, dry, release: a muddy-paw arrival station",
+      "audience": "Someone buying for a dog household that keeps a towel, bowl, wipes, or another improvised cleanup system beside a muddy entrance",
+      "occasion": "Birthday, housewarming, new-dog welcome, holiday, or the start of a rainy season",
+      "budget": "$25-$70",
+      "priority": "high",
+      "insight": "The thoughtful gift is not novelty dog gear; it is a two-step station that removes loose mud with water, dries the paw before release, and fits both the dog and the doorway routine.",
+      "observedFriction": "After wet walks, the recipient blocks the doorway with an old towel, carries the dog toward a sink, or wipes repeatedly while damp grit still reaches the floor.",
+      "selfPurchaseReluctance": "They already own a bowl and old towels that technically work, so a purpose-built, correctly sized station feels like an unglamorous upgrade despite repeated use.",
+      "fitSignals": [
+        "You have watched the dog pause at the same entrance for a paw wipe after rain, snow, digging, or a muddy walk.",
+        "You can measure the widest paw, name the cleanup doorway, and confirm that the dog calmly accepts paw handling and water."
+      ],
+      "avoidIf": [
+        "The dog guards its feet, shows pain or skin injury, panics during handling, or needs veterinary or training guidance rather than a new tool.",
+        "The washer opening is unmeasured, the towel has no drying location, or a simple washable towel already solves the household's actual level of mud."
+      ],
+      "pairing": {
+        "unifyingIdea": "Remove the mud with a size-matched water-only wash, then absorb the remaining moisture before the dog crosses the clean side of the threshold.",
+        "itemRoles": [
+          {
+            "item": "A size-qualified manual paw-washing cup or compact water-rinse tool",
+            "role": "The rinse layer that loosens visible mud without a battery, subscription, or unrequested topical product."
+          },
+          {
+            "item": "A washable quick-dry towel with a controllable grip",
+            "role": "The dry layer that finishes each paw and stays assigned to the named entrance between walks."
+          }
+        ],
+        "interactionMoment": "Stage clean water and the dry towel before the walk, rinse one paw at a time on return, pat it dry, then release the dog across the clean side of the threshold.",
+        "compatibilityChecks": [
+          "Measure paw width against the exact opening and verify handling tolerance, water temperature, stable footing, dog size, and the ability to rinse the tool after use.",
+          "Confirm towel dimensions, hand-pocket preference, wash instructions, drying location, floor space, and whether an existing washable cloth makes the companion unnecessary."
+        ],
+        "coherenceScore": 93,
+        "clutterRisk": "A wrong-size cup or damp towel without a hook becomes doorway clutter; buy the pair only when both pieces fit one named entrance and one observed routine."
+      },
+      "successMetric": "Two independently qualified rinse-and-dry pairs with exact paw fit, handling, wash-care, drying-location, and simple-towel fallback checks",
+      "deliverables": {
+        "minimumFinalists": 5,
+        "minimumQualifiedPairs": 2,
+        "minimumSocialAngles": 5
+      },
+      "researchBrief": "Research manual paw-washer plus washable drying-towel pairs for dog households with an observed muddy-entry routine. Require exact paw-opening measurements, dog handling tolerance, water-only instructions, stable footing, tool cleaning, towel dimensions and care, entryway storage, independent usefulness, and one rinse-dry-release interaction. Exclude health claims, unrequested shampoos or wipes, powered devices, aversive handling, and any pair that a simple existing towel already replaces."
+    },
+    {
+      "id": "founder-idea-012",
+      "revision": 2,
+      "founderDisposition": "approved_for_research",
+      "ideaType": "editorial",
+      "thesisType": "ritual_pairing",
+      "title": "Mark the row, protect the work: a fiber-art pause ritual",
+      "audience": "Someone buying for a knitter or crocheter who keeps multiple works in progress and has to reconstruct the project, tools, or last completed row after a break",
+      "occasion": "Birthday, holiday, first sweater or blanket, craft retreat, or return to a paused hobby",
+      "budget": "$20-$130",
+      "priority": "high",
+      "insight": "A project container preserves the physical work while a lockable counter or pattern holder preserves the decision state, so the recipient can resume instead of recounting and searching.",
+      "observedFriction": "Loose yarn, needles or hooks, notions, and a folded pattern migrate between bags while row counts live on scraps of paper or in memory and disappear during a pause.",
+      "selfPurchaseReluctance": "Yarn and patterns feel like the creative purchase; storage and state-tracking tools feel like boring infrastructure and require project-specific sizing research.",
+      "fitSignals": [
+        "You have seen an active project stored in a shopping bag, open basket, or overloaded tote with its tools and pattern separated.",
+        "They mention losing their row, recounting repeats, forgetting modifications, or avoiding a project because resuming it takes too much reconstruction."
+      ],
+      "avoidIf": [
+        "They have one trusted bag-and-tracker system, work entirely from an app they prefer, or would read another organizational tool as criticism rather than support.",
+        "The container cannot fit the named project's yarn and needle or hook length, or the tracker does not match their paper, chart, counter, vision, or dexterity preference."
+      ],
+      "pairing": {
+        "unifyingIdea": "Keep the work, working yarn, and tools together, then leave an unambiguous physical marker for the exact place where the next session should begin.",
+        "itemRoles": [
+          {
+            "item": "A closure-safe project bag or case sized to one known work in progress",
+            "role": "The physical continuity layer that contains the fabric, yarn, needles or hooks, and core notions without snagging."
+          },
+          {
+            "item": "A lockable row counter or magnetic paper-pattern holder",
+            "role": "The decision continuity layer that preserves the last completed row, active chart line, or next instruction through storage."
+          }
+        ],
+        "interactionMoment": "Before putting the project away, finish or mark the current row, lock the counter or move the chart marker to the next instruction, and close every required tool with the work.",
+        "compatibilityChecks": [
+          "Confirm the named project's physical volume, yarn-ball count, straight-needle or hook length, closure snag risk, feeder behavior, carry style, and storage location.",
+          "Confirm paper versus digital pattern use, chart size, row-count convention, vision and dexterity needs, locking behavior, magnetic safety, and whether the tracker can remain with that project."
+        ],
+        "coherenceScore": 94,
+        "clutterRisk": "A premium bag in the wrong size or a tracker the recipient will not update adds two abandoned systems; both pieces must attach to one real work in progress and one pause habit."
+      },
+      "successMetric": "Two independently qualified contain-and-mark pairs for different project sizes, each with exact capacity, closure, snag, pattern, locking, accessibility, and duplicate checks",
+      "deliverables": {
+        "minimumFinalists": 5,
+        "minimumQualifiedPairs": 2,
+        "minimumSocialAngles": 5
+      },
+      "researchBrief": "Research project-container plus physical-state-tracker pairs for knitters or crocheters who lose momentum when a work in progress is paused. Require exact project capacity, yarn feed, closure and snag behavior, needle or hook fit, carry and storage, paper or chart format, count convention, lock behavior, vision and dexterity, independent usefulness, and one mark-close-resume interaction. Reject guessed yarn or tool preferences, mandatory apps or subscriptions, duplicate systems, and bags too large or small for the named project."
+    },
+    {
+      "id": "founder-idea-013",
+      "revision": 2,
+      "founderDisposition": "approved_for_research",
+      "ideaType": "editorial",
+      "thesisType": "ritual_pairing",
+      "title": "Clean once, re-sleeve clean: a used-record reset ritual",
+      "audience": "Someone buying for a vinyl collector who brings home used records, tolerates dusty paper sleeves, or postpones batch cleaning because the maintenance setup feels less exciting than the music",
+      "occasion": "Birthday, holiday, Record Store Day, collection milestone, or move into a dedicated listening space",
+      "budget": "$35-$110",
+      "priority": "high",
+      "insight": "The pair completes one maintenance job: a compatible manual cleaner removes loose contamination, while a fresh inner sleeve keeps the cleaned record from returning to the same dusty paper environment.",
+      "observedFriction": "Used purchases queue beside the turntable, records return to shedding paper inners after cleaning, or one-off wiping never becomes a repeatable receive-clean-rehouse routine.",
+      "selfPurchaseReluctance": "Collectors prioritize records and playback upgrades; a washer and replacement sleeves feel like maintenance overhead and demand unglamorous compatibility research.",
+      "fitSignals": [
+        "They buy used 12-inch vinyl, mention surface dust or paper debris, and have said they intend to clean or re-sleeve part of the collection.",
+        "You can confirm the record formats, available drying and storage space, current cleaning method, and willingness to perform a manual wet-cleaning routine."
+      ],
+      "avoidIf": [
+        "The collection includes shellac, lacquer, picture discs, unusual materials, damaged labels, or other records that the chosen fluid and process do not explicitly support.",
+        "They already own a trusted cleaner and sleeve stock, want ultrasonic or professional service, or lack a safe level workspace and drying location."
+      ],
+      "pairing": {
+        "unifyingIdea": "Give one compatible record a deliberate wet clean, let it dry completely, and move it into a fresh correctly sized inner sleeve rather than back into the contaminated original.",
+        "itemRoles": [
+          {
+            "item": "A manual wet-cleaning system qualified for the recipient's vinyl record formats",
+            "role": "The reset layer that provides a repeatable method for cleaning a newly acquired or visibly dusty record."
+          },
+          {
+            "item": "A correctly sized anti-static or archival-style replacement inner sleeve",
+            "role": "The keep-clean layer that separates the dry record from an abrasive, dusty, or shedding original paper inner."
+          }
+        ],
+        "interactionMoment": "Choose one compatible used record, follow the cleaner's exact dilution and handling instructions, allow it to dry fully, then date the old inner if it has artwork and store the record in a fresh sleeve.",
+        "compatibilityChecks": [
+          "Confirm 12-inch, 10-inch, or 7-inch vinyl support, fluid and water requirements, label exposure, drying method, level workspace, batch size, storage, and replacement-supply burden.",
+          "Confirm sleeve dimensions, jacket clearance, material disclosure, static and paper-dust priorities, artwork retention, pack size, and whether thicker sleeves fit the recipient's tight jackets."
+        ],
+        "coherenceScore": 95,
+        "clutterRisk": "A bulky bath or fifty sleeves without a planned first batch becomes maintenance clutter; size the system to one named queue and skip any medium the instructions do not support."
+      },
+      "successMetric": "Two independently qualified clean-dry-rehouse pairs at different effort levels, with exact format, fluid, label, drying, sleeve-fit, material, and existing-system checks",
+      "deliverables": {
+        "minimumFinalists": 5,
+        "minimumQualifiedPairs": 2,
+        "minimumSocialAngles": 5
+      },
+      "researchBrief": "Research manual vinyl-cleaning plus fresh-inner-sleeve pairs for collectors with an observed queue of used or dusty records. Require exact record-format and material support, fluid and water instructions, label and drying controls, level workspace, batch size, replacement supplies, sleeve material and dimensions, jacket clearance, artwork retention, independent usefulness, and one clean-dry-rehouse interaction. Exclude unsupported media, invented preservation or sound claims, powered systems, exact current prices, and any workflow the recipient did not ask to maintain."
+    }
+  ]
+}

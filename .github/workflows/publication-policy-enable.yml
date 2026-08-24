@@ -1,0 +1,91 @@
+name: Enable proven automatic publication
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  deployments: read
+  pull-requests: write
+
+concurrency:
+  group: publication-policy-enable
+  cancel-in-progress: false
+
+jobs:
+  prepare_policy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: master
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24.14.0"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - name: Verify founder authority and the current policy
+        env:
+          ACTOR: ${{ github.actor }}
+          OWNER: ${{ github.repository_owner }}
+        run: |
+          test "$ACTOR" = "$OWNER"
+          npm ci --prefix web
+          npm run validate
+      - name: Count successful founder-reviewed production deployments
+        id: evidence
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+        run: |
+          minimum="$(node -p "require('./web/config/publication-policy.json').automaticPromotion.minimumSuccessfulFounderReviewedReleases")"
+          declare -A successful_shas=()
+          mapfile -t deployments < <(gh api --paginate "repos/$REPOSITORY/deployments?environment=production&per_page=100" --jq '.[] | [.id, .sha] | @tsv')
+          for deployment in "${deployments[@]}"; do
+            IFS=$'\t' read -r deployment_id deployment_sha <<< "$deployment"
+            state="$(gh api "repos/$REPOSITORY/deployments/$deployment_id/statuses?per_page=1" --jq '.[0].state // ""')"
+            if [ "$state" = "success" ]; then successful_shas["$deployment_sha"]=1; fi
+          done
+          successful="${#successful_shas[@]}"
+          test "$successful" -ge "$minimum"
+          echo "successful=$successful" >> "$GITHUB_OUTPUT"
+      - name: Create the founder-controlled policy change
+        env:
+          SUCCESSFUL_RELEASES: ${{ steps.evidence.outputs.successful }}
+          APPROVED_BY: ${{ github.actor }}
+        run: |
+          node web/scripts/enable-publication-policy.mjs --successful-release-count="$SUCCESSFUL_RELEASES" --approved-by="$APPROVED_BY"
+          npm --prefix web run generate
+          while IFS= read -r changed_path; do
+            case "$changed_path" in
+              web/config/publication-policy.json|web/src/data/operations.json|web/src/app/generated/content.generated.ts|web/public/sitemap.xml) ;;
+              *) echo "Publication policy changed forbidden path: $changed_path" >&2; exit 1 ;;
+            esac
+          done < <(git diff --name-only HEAD)
+          npm run validate
+          npm run build
+          npm run smoke
+          git diff --check
+      - name: Commit the policy branch
+        env:
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -c "codex/auto-publish-$RUN_ID"
+          git add web/config/publication-policy.json web/src/data/operations.json web/src/app/generated/content.generated.ts web/public/sitemap.xml
+          git commit -m "Enable proven automatic publication"
+          git push origin "codex/auto-publish-$RUN_ID"
+      - name: Open the final founder-review pull request
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ github.run_id }}
+          SUCCESSFUL_RELEASES: ${{ steps.evidence.outputs.successful }}
+        run: |
+          gh pr create \
+            --base master \
+            --head "codex/auto-publish-$RUN_ID" \
+            --title "Enable automatic publication after proven releases" \
+            --body "GitHub recorded $SUCCESSFUL_RELEASES successful production deployments, meeting the policy minimum. Merge enables check-gated auto-merge for validated research PRs and exact-SHA Firebase preview-to-live promotion. Before merging, confirm branch protection, Firebase credentials, GitHub auto-merge, the production environment, rollback process, and incident response are configured."

@@ -1,0 +1,82 @@
+name: Approve strategy idea for research
+
+on:
+  workflow_dispatch:
+    inputs:
+      idea_id:
+        description: "Proposed strategy idea ID, for example founder-idea-005"
+        required: true
+        type: string
+      expected_revision:
+        description: "Exact proposed revision visible in Studio"
+        required: true
+        type: number
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: strategy-approval-${{ inputs.idea_id }}
+  cancel-in-progress: false
+
+jobs:
+  approve:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: master
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24.14.0"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - name: Validate the base and create the exact founder decision
+        id: decision
+        run: |
+          npm ci --prefix web
+          npm run validate
+          cp web/src/data/strategy.json "$RUNNER_TEMP/strategy.before.json"
+          npm --prefix web run strategy:approve -- --idea-id="${{ inputs.idea_id }}" --expected-revision="${{ inputs.expected_revision }}"
+          node web/scripts/classify-strategy-change.mjs "$RUNNER_TEMP/strategy.before.json" web/src/data/strategy.json > "$RUNNER_TEMP/strategy-transition.json"
+          test "$(jq -r '.changeType' "$RUNNER_TEMP/strategy-transition.json")" = "approval"
+          test "$(jq -r '.launchResearch' "$RUNNER_TEMP/strategy-transition.json")" = "true"
+          test "$(jq -r '.ideaId' "$RUNNER_TEMP/strategy-transition.json")" = "${{ inputs.idea_id }}"
+          npm --prefix web run generate
+      - name: Prove the deterministic decision patch
+        run: |
+          while IFS= read -r changed_path; do
+            case "$changed_path" in
+              web/src/data/strategy.json|web/src/data/operations.json|web/src/app/generated/content.generated.ts|web/public/sitemap.xml) ;;
+              *) echo "Strategy approval changed forbidden path: $changed_path" >&2; exit 1 ;;
+            esac
+          done < <(git diff --name-only HEAD)
+          npm run validate
+          npm run build
+          npm run smoke
+          git diff --check
+      - name: Commit the founder-controlled approval branch
+        env:
+          RUN_ID: ${{ github.run_id }}
+          IDEA_ID: ${{ inputs.idea_id }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -c "codex/approve-$RUN_ID"
+          git add web/src/data/strategy.json web/src/data/operations.json web/src/app/generated/content.generated.ts web/public/sitemap.xml
+          git commit -m "Approve $IDEA_ID for research"
+          git push origin "codex/approve-$RUN_ID"
+      - name: Open the approval pull request
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ github.run_id }}
+          IDEA_ID: ${{ inputs.idea_id }}
+        run: |
+          gh pr create \
+            --base master \
+            --head "codex/approve-$RUN_ID" \
+            --title "Approve $IDEA_ID for research" \
+            --body "This deterministic patch changes one proposed strategy idea to approved_for_research and advances its revision. Merge authorizes and automatically queues the hash-bound research workflow; it does not authorize publication, affiliate enrollment, social posting, spend, credentials, or production deployment."

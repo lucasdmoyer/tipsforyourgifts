@@ -1,0 +1,1716 @@
+{
+  "schemaVersion": "1.1.0",
+  "runId": "20260816-night-sky-ritual-a5594a7b",
+  "ideaId": "founder-idea-009",
+  "ideaRevision": 2,
+  "ideaSha256": "a5594a7b588791f40b1997a502f21b25730aecb6a365327ada6cc862c6c813f1",
+  "decisionLens": "gift_pairing",
+  "contentType": "pairing-guide",
+  "status": "validated",
+  "topic": "Latitude-appropriate analog planisphere and direct-access dim red-light pairs for a first night-sky ritual",
+  "audience": "US gift buyers shopping for a friend who already points out the Moon, planets, meteor showers, or constellations but has not asked for a telescope",
+  "occasion": "Birthday, camping trip, housewarming, retirement, or a planned meteor-shower evening",
+  "budgetBands": [
+    "$20-$40",
+    "$40-$60"
+  ],
+  "riskClass": "medium",
+  "draftAuthor": "night-sky-drafting-research-desk-20260816",
+  "startedAt": "2026-08-16T16:30:00.000Z",
+  "researchPasses": [
+    {
+      "pass": 1,
+      "materialNoveltyRate": 1,
+      "newCandidates": 14,
+      "newDecisionFactors": 7
+    },
+    {
+      "pass": 2,
+      "materialNoveltyRate": 0.38,
+      "newCandidates": 0,
+      "newDecisionFactors": 6
+    },
+    {
+      "pass": 3,
+      "materialNoveltyRate": 0.17,
+      "newCandidates": 0,
+      "newDecisionFactors": 4
+    },
+    {
+      "pass": 4,
+      "materialNoveltyRate": 0.08,
+      "newCandidates": 0,
+      "newDecisionFactors": 2
+    },
+    {
+      "pass": 5,
+      "materialNoveltyRate": 0.04,
+      "newCandidates": 0,
+      "newDecisionFactors": 0
+    },
+    {
+      "pass": 6,
+      "materialNoveltyRate": 0.06,
+      "newCandidates": 0,
+      "newDecisionFactors": 1
+    }
+  ],
+  "sources": [
+    {
+      "id": "src-chandler-family-official",
+      "url": "https://www.davidchandler.com/products/planispheres-star-charts/",
+      "publisher": "David Chandler Company",
+      "title": "The Night Sky planisphere design, sizes, latitude editions, and intended use",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "manufacturer",
+      "trustTier": "A",
+      "independenceGroup": "david-chandler"
+    },
+    {
+      "id": "src-chandler-20-30-official",
+      "url": "https://www.davidchandler.com/shop/the-night-sky-20-30/",
+      "publisher": "David Chandler Company",
+      "title": "The Night Sky 20 to 30 degrees north large plastic planisphere",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "manufacturer",
+      "trustTier": "A",
+      "independenceGroup": "david-chandler-20-30"
+    },
+    {
+      "id": "src-chandler-30-40-official",
+      "url": "https://www.davidchandler.com/shop/the-night-sky-30-40n-large-plastic-2/",
+      "publisher": "David Chandler Company",
+      "title": "The Night Sky 30 to 40 degrees north large plastic planisphere",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "manufacturer",
+      "trustTier": "A",
+      "independenceGroup": "david-chandler-30-40"
+    },
+    {
+      "id": "src-chandler-40-50-official",
+      "url": "https://www.davidchandler.com/shop/the-night-sky-40-50/",
+      "publisher": "David Chandler Company",
+      "title": "The Night Sky 40 to 50 degrees north large plastic planisphere",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "manufacturer",
+      "trustTier": "A",
+      "independenceGroup": "david-chandler-40-50"
+    },
+    {
+      "id": "src-chandler-selector-official",
+      "url": "https://www.davidchandler.com/latitude-selector/",
+      "publisher": "David Chandler Company",
+      "title": "Latitude selector for The Night Sky planisphere editions",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "manufacturer",
+      "trustTier": "A",
+      "independenceGroup": "david-chandler-selector"
+    },
+    {
+      "id": "src-chandler-instructions-official",
+      "url": "https://www.davidchandler.com/feature/how-to-use-the-night-sky-planisphere/",
+      "publisher": "David Chandler Company",
+      "title": "Quick guide for setting date, standard time, direction, and daylight saving adjustment",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "manufacturer",
+      "trustTier": "A",
+      "independenceGroup": "david-chandler-instructions"
+    },
+    {
+      "id": "src-chandler-plastic-official",
+      "url": "https://www.davidchandler.com/products/planispheres-star-charts/plastic-charts/",
+      "publisher": "David Chandler Company",
+      "title": "The Night Sky plastic chart construction and dimensions",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "manufacturer",
+      "trustTier": "A",
+      "independenceGroup": "david-chandler-plastic"
+    },
+    {
+      "id": "src-skyandtelescope-planisphere-review",
+      "url": "https://skyandtelescope.org/astronomy-resources/star-finding-with-a-planisphere/",
+      "publisher": "Sky and Telescope",
+      "title": "Learn constellations with a planisphere",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "independent-review",
+      "trustTier": "B",
+      "independenceGroup": "sky-and-telescope-planisphere"
+    },
+    {
+      "id": "src-bbc-planisphere-review",
+      "url": "https://www.skyatnightmagazine.com/advice/skills/how-to-use-a-planisphere",
+      "publisher": "BBC Sky at Night Magazine",
+      "title": "How to use a planisphere and five independently selected examples",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "independent-review",
+      "trustTier": "B",
+      "independenceGroup": "bbc-sky-at-night-planisphere"
+    },
+    {
+      "id": "src-cloudynights-night-sky-review",
+      "url": "https://www.cloudynights.com/articles/user-reviews/accessories/accessories1405754339/the-night-sky-original-2-sided-planisphere-r2259/",
+      "publisher": "Cloudy Nights User Reviews",
+      "title": "The Night Sky original two-sided planisphere owner review",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "independent-review",
+      "trustTier": "B",
+      "independenceGroup": "cloudy-nights-night-sky-review"
+    },
+    {
+      "id": "src-allbookstores-40-50-reviews",
+      "url": "https://www.allbookstores.com/The-Night-Sky-40%C2%B0-50%C2%B0/9780961320744",
+      "publisher": "AllBookstores customer review index",
+      "title": "The Night Sky 40 to 50 degrees north exact-edition reviews",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "independent-review",
+      "trustTier": "C",
+      "independenceGroup": "syndicated-night-sky-40-50-owners"
+    },
+    {
+      "id": "src-nps-dark-adaptation",
+      "url": "https://www.nps.gov/articles/dark-adaptation-of-the-human-eye-and-the-value-of-red-flashlights.htm",
+      "publisher": "US National Park Service",
+      "title": "Dark adaptation of the human eye and the value of dim red flashlights",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "astronomy-authority",
+      "trustTier": "A",
+      "independenceGroup": "us-national-park-service"
+    },
+    {
+      "id": "src-darksky-first-night",
+      "url": "https://darksky.org/news/the-night-sky-and-you-7/",
+      "publisher": "DarkSky International",
+      "title": "The Night Sky and You observing guidance",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "dark-sky-authority",
+      "trustTier": "A",
+      "independenceGroup": "darksky-international"
+    },
+    {
+      "id": "src-skyandtelescope-dark-adaptation",
+      "url": "https://skyandtelescope.org/stargazing-and-observing/secrets-of-deep-sky-observing/",
+      "publisher": "Sky and Telescope",
+      "title": "Deep-sky observing guidance on dark adaptation and dim red light",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "astronomy-authority",
+      "trustTier": "A",
+      "independenceGroup": "sky-and-telescope-dark-adaptation"
+    },
+    {
+      "id": "src-social-phone-friction",
+      "url": "https://www.reddit.com/r/telescopes/comments/eah3ne/using_phone_with_dark_adaptation_help/",
+      "publisher": "Reddit r/telescopes",
+      "title": "Observers discuss phone-screen leakage, paper charts, and convenience tradeoffs",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "social-discussion",
+      "trustTier": "C",
+      "independenceGroup": "reddit-phone-dark-adaptation"
+    },
+    {
+      "id": "src-social-planisphere-app-boundary",
+      "url": "https://www.cloudynights.com/forums/topic/900570-planisphere/",
+      "publisher": "Cloudy Nights Beginners Forum",
+      "title": "Beginners compare learning with planispheres and using phone apps",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "social-discussion",
+      "trustTier": "C",
+      "independenceGroup": "cloudy-nights-planisphere-app-preference"
+    },
+    {
+      "id": "src-social-gift-language",
+      "url": "https://www.reddit.com/r/askastronomy/comments/r66p2v/what_should_i_get_as_a_gift_for_someone_who_is/",
+      "publisher": "Reddit r/askastronomy",
+      "title": "Public astronomy gift discussion naming a planisphere as a modest beginner gift",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "social-discussion",
+      "trustTier": "C",
+      "independenceGroup": "reddit-astronomy-gift-language"
+    },
+    {
+      "id": "src-rigel-manual",
+      "url": "https://www.rigelsys.com/00%20downloads/Mini.pdf",
+      "publisher": "Rigel Systems",
+      "title": "Mini flashlight thumbwheel operation and 9-volt battery instructions",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "manufacturer",
+      "trustTier": "A",
+      "independenceGroup": "rigel-systems-manual"
+    },
+    {
+      "id": "src-rigel-product-page-official",
+      "url": "https://www.rigelsys.com/flashlight.html",
+      "publisher": "Rigel Systems",
+      "title": "Starlite Mini two-red-LED configuration, thumbwheel control, 9-volt power, and water-resistance boundary",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "manufacturer",
+      "trustTier": "A",
+      "independenceGroup": "rigel-systems-product-page"
+    },
+    {
+      "id": "src-astronomics-rigel-review",
+      "url": "https://astronomics.com/products/starlite-mini-compact-variable-brightness-red-led-astronomer-s-flashlight",
+      "publisher": "Astronomics",
+      "title": "Rigel Starlite Mini commercial retailer listing",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "retailer",
+      "trustTier": "C",
+      "independenceGroup": "astronomics-rigel-starlite-mini"
+    },
+    {
+      "id": "src-adorama-rigel-reviews",
+      "url": "https://www.adorama.com/atrsm.html",
+      "publisher": "Adorama customer reviews",
+      "title": "Rigel Starlite Mini exact-product owner reviews",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "independent-review",
+      "trustTier": "C",
+      "independenceGroup": "adorama-rigel-owners"
+    },
+    {
+      "id": "src-interstellarum-rigel-lab-review",
+      "url": "https://www.interstellarum.de/wp-content/uploads/2019/12/thema20081-30a.pdf",
+      "publisher": "interstellarum THEMA",
+      "title": "Independent red-astronomy-light comparison including the Rigel Starlite Mini",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "independent-review",
+      "trustTier": "B",
+      "independenceGroup": "interstellarum-rigel-lab"
+    },
+    {
+      "id": "src-celestron-light-official",
+      "url": "https://www.celestron.com/products/night-vision-flashlight",
+      "publisher": "Celestron",
+      "title": "Celestron Night Vision Flashlight 93588 specifications and current out-of-stock listing",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "manufacturer",
+      "trustTier": "A",
+      "independenceGroup": "celestron-night-vision-flashlight"
+    },
+    {
+      "id": "src-cloudynights-celestron-review",
+      "url": "https://www.cloudynights.com/articles/user-reviews/accessories/accessories1405754339/celestron-red-led-flashlight-r2293/",
+      "publisher": "Cloudy Nights User Reviews",
+      "title": "Celestron variable-brightness red LED flashlight review",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "independent-review",
+      "trustTier": "B",
+      "independenceGroup": "cloudy-nights-celestron-light-review"
+    },
+    {
+      "id": "src-adorama-celestron-reviews",
+      "url": "https://www.adorama.com/celestron-night-vision-astronomy-flashlight/p/cnfl",
+      "publisher": "Adorama customer reviews",
+      "title": "Celestron Night Vision Flashlight 93588 exact-product owner reviews",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "independent-review",
+      "trustTier": "C",
+      "independenceGroup": "adorama-celestron-light-owners"
+    },
+    {
+      "id": "src-night-reader-official",
+      "url": "https://www.davidchandler.com/shop/night-reader-pro/",
+      "publisher": "David Chandler Company",
+      "title": "Night Reader Pro dimmable red-only astronomy light specifications",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "manufacturer",
+      "trustTier": "A",
+      "independenceGroup": "david-chandler-night-reader"
+    },
+    {
+      "id": "src-guide-stars-official",
+      "url": "https://kenpress.com/Products.html",
+      "publisher": "Ken Press",
+      "title": "Guide to the Stars northern, southern, and equatorial planisphere specifications",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "manufacturer",
+      "trustTier": "A",
+      "independenceGroup": "ken-press"
+    },
+    {
+      "id": "src-celestron-sky-maps-official",
+      "url": "https://www.celestron.com/products/celestron-sky-maps",
+      "publisher": "Celestron",
+      "title": "Celestron Sky Maps book and glow planisphere specifications",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "manufacturer",
+      "trustTier": "A",
+      "independenceGroup": "celestron-sky-maps"
+    },
+    {
+      "id": "src-powertank-official",
+      "url": "https://www.celestron.com/products/powertank-glow-5000",
+      "publisher": "Celestron",
+      "title": "PowerTank Glow 5000 red-light and power-bank specifications",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "manufacturer",
+      "trustTier": "A",
+      "independenceGroup": "celestron-powertank-glow"
+    },
+    {
+      "id": "src-powertank-independent-review",
+      "url": "https://www.cloudynights.com/articles/astro-gear-today/reviews/accessories1701492819/red-light-and-power-all-in-one-celestron-powertank-glow-5000-r4330/",
+      "publisher": "Astro Gear Today via Cloudy Nights",
+      "title": "PowerTank Glow 5000 independent review and measured brightness settings",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "independent-review",
+      "trustTier": "B",
+      "independenceGroup": "astro-gear-today-powertank"
+    },
+    {
+      "id": "src-rigel-skylite-manual",
+      "url": "https://rigelsys.com/00%20downloads/Skylite.pdf",
+      "publisher": "Rigel Systems",
+      "title": "Rigel SkyLite red and white light operating instructions",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "manufacturer",
+      "trustTier": "A",
+      "independenceGroup": "rigel-skylite"
+    },
+    {
+      "id": "src-thermotorch-official",
+      "url": "https://www.celestron.com/products/celestron-elements-thermotorch-3-astro-red",
+      "publisher": "Celestron",
+      "title": "ThermoTorch 3 Astro Red light, warmer, and power-bank specifications",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "manufacturer",
+      "trustTier": "A",
+      "independenceGroup": "celestron-thermotorch"
+    },
+    {
+      "id": "src-celestron-headlamp-official",
+      "url": "https://www.celestron.com/products/night-vision-red-headlamp",
+      "publisher": "Celestron",
+      "title": "Celestron Night Vision Red Headlamp product page",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "manufacturer",
+      "trustTier": "A",
+      "independenceGroup": "celestron-red-headlamp"
+    }
+  ],
+  "claims": [
+    {
+      "id": "claim-screen-glare-friction",
+      "kind": "recipient_friction",
+      "text": "Public observing discussions repeatedly describe the friction of leaving a sky app for a bright lock screen or navigation control, while astronomy authorities warn that bright light interrupts dark adaptation.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-social-phone-friction",
+        "src-nps-dark-adaptation",
+        "src-skyandtelescope-dark-adaptation"
+      ]
+    },
+    {
+      "id": "claim-analog-preference-boundary",
+      "kind": "recipient_friction",
+      "text": "Observers disagree about paper versus apps: some value the analog overview and lack of screen glare, while others prefer an app's zoom and convenience, so an analog guide is welcome only after confirming that preference.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-social-phone-friction",
+        "src-social-planisphere-app-boundary"
+      ]
+    },
+    {
+      "id": "claim-self-purchase-research-burden",
+      "kind": "self_purchase_pattern",
+      "text": "Public gift and beginner discussions position a planisphere and small red light as modest accessories, while selecting the correct latitude edition and safe light behavior adds enough research burden for the purchase to remain deferred.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-social-gift-language",
+        "src-social-phone-friction",
+        "src-chandler-selector-official"
+      ]
+    },
+    {
+      "id": "claim-latitude-hemisphere-boundary",
+      "kind": "compatibility",
+      "text": "A planisphere must match the observing latitude and hemisphere; a wrong edition can show stars at incorrect positions or horizons, and the exact observing location matters more than a broad state label.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": [
+        "src-chandler-selector-official",
+        "src-bbc-planisphere-review",
+        "src-darksky-first-night"
+      ]
+    },
+    {
+      "id": "claim-time-setting-boundary",
+      "kind": "compatibility",
+      "text": "The Night Sky instructions use standard time and tell daylight-saving-time users to subtract one hour before aligning the date and time.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": [
+        "src-chandler-instructions-official"
+      ]
+    },
+    {
+      "id": "claim-planisphere-moving-object-boundary",
+      "kind": "compatibility",
+      "text": "Planispheres map stars and fixed deep-sky patterns but do not predict the changing positions of the Moon or planets, so the gift should be framed as constellation orientation rather than a complete event locator.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": [
+        "src-bbc-planisphere-review",
+        "src-guide-stars-official"
+      ]
+    },
+    {
+      "id": "claim-dim-red-boundary",
+      "kind": "compatibility",
+      "text": "Red light is not automatically harmless: the National Park Service and DarkSky International both emphasize that even red light should be kept dim, and no light is best when illumination is unnecessary.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": [
+        "src-nps-dark-adaptation",
+        "src-darksky-first-night",
+        "src-skyandtelescope-dark-adaptation"
+      ]
+    },
+    {
+      "id": "claim-night-sky-benefit",
+      "kind": "product_benefit",
+      "text": "The Night Sky large planisphere provides a two-sided, battery-free overview with separate latitude editions, bright-star emphasis, and date-and-time alignment for naked-eye constellation orientation.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-chandler-family-official",
+        "src-skyandtelescope-planisphere-review",
+        "src-bbc-planisphere-review"
+      ]
+    },
+    {
+      "id": "claim-night-sky-drawback",
+      "kind": "product_drawback",
+      "text": "The Night Sky remains a small flat projection with limited labels: independent reviews note a learning curve, limited detail, and readability constraints, while every flat sky map necessarily distorts part of the dome.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-skyandtelescope-planisphere-review",
+        "src-cloudynights-night-sky-review",
+        "src-allbookstores-40-50-reviews"
+      ]
+    },
+    {
+      "id": "claim-night-sky-material-conflict",
+      "kind": "product_drawback",
+      "text": "The current manufacturer construction page specifies durable plastic facing and no-corrosion brass rivets, but it does not publish a waterproof or immersion rating; the guide therefore does not call the product waterproof.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": [
+        "src-chandler-plastic-official"
+      ]
+    },
+    {
+      "id": "claim-night-sky-20-30-fit",
+      "kind": "compatibility",
+      "text": "The 20 to 30 degrees north large edition is the qualified narrow-latitude option for an observing site inside that northern band, not a substitute for the equatorial, southern, or 30-to-40-degree editions.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": [
+        "src-chandler-20-30-official",
+        "src-chandler-selector-official"
+      ]
+    },
+    {
+      "id": "claim-night-sky-30-40-fit",
+      "kind": "compatibility",
+      "text": "The 30 to 40 degrees north large edition is the qualified guide only for an observing site inside that northern latitude band.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": [
+        "src-chandler-30-40-official",
+        "src-chandler-selector-official",
+        "src-cloudynights-night-sky-review"
+      ]
+    },
+    {
+      "id": "claim-night-sky-40-50-fit",
+      "kind": "compatibility",
+      "text": "The 40 to 50 degrees north large edition is the qualified guide only for an observing site inside that northern latitude band.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": [
+        "src-chandler-40-50-official",
+        "src-chandler-selector-official",
+        "src-allbookstores-40-50-reviews"
+      ]
+    },
+    {
+      "id": "claim-rigel-benefit",
+      "kind": "product_benefit",
+      "text": "Rigel's current product page identifies the Starlite Mini as a two-red-LED light with a thumbwheel brightness control and a 9-volt battery; exact-product owner reviews describe a useful adjustable range for chart reading.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-rigel-product-page-official",
+        "src-adorama-rigel-reviews"
+      ]
+    },
+    {
+      "id": "claim-rigel-drawback",
+      "kind": "product_drawback",
+      "text": "Rigel says the Mini is not water resistant; exact-product owners describe an imperfect beam pattern and awkward mouth-held use, while a 2008 independent lab comparison found the tested Starlite Mini too bright at minimum for its stringent dark-adaptation standard.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": [
+        "src-rigel-product-page-official",
+        "src-adorama-rigel-reviews",
+        "src-interstellarum-rigel-lab-review"
+      ]
+    },
+    {
+      "id": "claim-rigel-compatibility",
+      "kind": "compatibility",
+      "text": "The Rigel Starlite Mini requires one replaceable 9-volt battery and dry carry. Its exact startup level is not documented in the Mini manual, and independent evidence conflicts about whether the lowest setting is dim enough, so low-end output must be checked indoors before dark adaptation.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": [
+        "src-rigel-manual",
+        "src-rigel-product-page-official",
+        "src-adorama-rigel-reviews",
+        "src-interstellarum-rigel-lab-review",
+        "src-nps-dark-adaptation"
+      ]
+    },
+    {
+      "id": "claim-celestron-light-benefit",
+      "kind": "product_benefit",
+      "text": "The Celestron Night Vision Flashlight 93588 is a dedicated two-red-LED light with a thumbwheel brightness control, square anti-roll body, lanyard, and replaceable 9-volt battery.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-celestron-light-official",
+        "src-cloudynights-celestron-review",
+        "src-adorama-celestron-reviews"
+      ]
+    },
+    {
+      "id": "claim-celestron-light-drawback",
+      "kind": "product_drawback",
+      "text": "Independent exact-product reviews flag one-handed use, uneven LED diffusion, light plastic construction, and mixed durability impressions; it also lacks a documented weather-resistance rating on the reviewed manufacturer page.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": [
+        "src-cloudynights-celestron-review",
+        "src-adorama-celestron-reviews",
+        "src-celestron-light-official"
+      ]
+    },
+    {
+      "id": "claim-celestron-light-compatibility",
+      "kind": "compatibility",
+      "text": "The Celestron 93588 requires one replaceable 9-volt battery; its official page showed out of stock during this research, so the buyer must recheck current stock, seller, return terms, and usable low-end thumbwheel control rather than assume availability or dim-start behavior.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": [
+        "src-celestron-light-official",
+        "src-adorama-celestron-reviews"
+      ]
+    },
+    {
+      "id": "claim-pair-30-40-rigel",
+      "kind": "pair_coherence",
+      "text": "For a verified 30-to-40-degree north observing site, the matching Night Sky edition supplies the seasonal orientation layer while the two-red-LED Rigel supplies adjustable direct chart light without requiring an app; the recipient must verify its low-end output indoors before dark adaptation.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-chandler-30-40-official",
+        "src-chandler-instructions-official",
+        "src-rigel-product-page-official",
+        "src-adorama-rigel-reviews",
+        "src-interstellarum-rigel-lab-review",
+        "src-darksky-first-night",
+        "src-nps-dark-adaptation"
+      ]
+    },
+    {
+      "id": "claim-pair-40-50-rigel",
+      "kind": "pair_coherence",
+      "text": "For a verified 40-to-50-degree north observing site, the matching Night Sky edition supplies the seasonal orientation layer while the two-red-LED Rigel supplies adjustable direct chart light without requiring an app; the recipient must verify its low-end output indoors before dark adaptation.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-chandler-40-50-official",
+        "src-chandler-instructions-official",
+        "src-rigel-product-page-official",
+        "src-adorama-rigel-reviews",
+        "src-interstellarum-rigel-lab-review",
+        "src-darksky-first-night",
+        "src-nps-dark-adaptation"
+      ]
+    },
+    {
+      "id": "claim-duplicate-clutter-control",
+      "kind": "duplicate_clutter",
+      "text": "A second planisphere, a wrong-latitude edition, or a bright multi-mode light duplicates equipment or creates clutter rather than improving a first observing ritual.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-chandler-selector-official",
+        "src-darksky-first-night",
+        "src-social-planisphere-app-boundary"
+      ]
+    }
+  ],
+  "candidates": [
+    {
+      "id": "night-sky-20-30-large",
+      "name": "The Night Sky 20 to 30 degrees north large planisphere",
+      "editorialScore": 78,
+      "evidenceConfidence": 74,
+      "drawbacks": [
+        "Its narrow northern latitude range fits comparatively few US observing sites, and its compact flat map cannot locate the moving Moon or planets."
+      ],
+      "primarySourceIds": [
+        "src-chandler-20-30-official"
+      ],
+      "independentSourceIds": [
+        "src-skyandtelescope-planisphere-review",
+        "src-bbc-planisphere-review",
+        "src-cloudynights-night-sky-review"
+      ],
+      "claimIds": [
+        "claim-night-sky-benefit",
+        "claim-night-sky-drawback",
+        "claim-night-sky-20-30-fit"
+      ],
+      "evidenceMode": "desk_research",
+      "thoughtfulness": {
+        "observationPrompt": "Choose this only after checking that their usual observing site is actually between 20 and 30 degrees north and that they prefer a physical overview to an app.",
+        "frictionClaimIds": [
+          "claim-screen-glare-friction",
+          "claim-analog-preference-boundary"
+        ],
+        "physicalGiftBoundary": "welcome_when_verified",
+        "selfPurchase": {
+          "reason": "research_burden",
+          "rationale": "The inexpensive guide is easy to defer because the buyer must first resolve latitude, hemisphere, format, and the limits of what a planisphere can show.",
+          "basis": "editorial_inference",
+          "claimIds": [
+            "claim-self-purchase-research-burden"
+          ]
+        },
+        "duplicateRisk": {
+          "level": "medium",
+          "preGiftCheck": "Confirm they do not already own a trusted planisphere or atlas for this exact latitude band."
+        },
+        "clutterRisk": {
+          "level": "medium",
+          "ownershipBurden": "The wheel needs dry, flat storage and becomes useless at a different hemisphere or substantially different latitude.",
+          "mitigation": "Verify the regular observing coordinates and store it flat with the red light after each outing."
+        },
+        "compatibilityChecks": [
+          {
+            "dimension": "edition_or_region",
+            "status": "verified",
+            "requirement": "The regular observing site is in the Northern Hemisphere between 20 and 30 degrees north.",
+            "claimIds": [
+              "claim-night-sky-20-30-fit",
+              "claim-latitude-hemisphere-boundary"
+            ]
+          },
+          {
+            "dimension": "accessibility",
+            "status": "verified",
+            "requirement": "The recipient can use a compact printed wheel and does not need audio guidance, screen zoom, or large print.",
+            "claimIds": [
+              "claim-night-sky-drawback",
+              "claim-analog-preference-boundary"
+            ]
+          }
+        ],
+        "score": {
+          "frictionSpecificity": 5,
+          "selfPurchaseLogic": 4,
+          "ownershipEase": 4,
+          "recipientSpecificity": 5,
+          "total": 18
+        }
+      }
+    },
+    {
+      "id": "night-sky-30-40-large",
+      "name": "The Night Sky 30 to 40 degrees north large planisphere",
+      "editorialScore": 87,
+      "evidenceConfidence": 84,
+      "drawbacks": [
+        "It is still a compact flat projection with limited labels, and it cannot locate the changing Moon or planets."
+      ],
+      "primarySourceIds": [
+        "src-chandler-30-40-official"
+      ],
+      "independentSourceIds": [
+        "src-skyandtelescope-planisphere-review",
+        "src-bbc-planisphere-review",
+        "src-cloudynights-night-sky-review"
+      ],
+      "claimIds": [
+        "claim-night-sky-benefit",
+        "claim-night-sky-drawback",
+        "claim-night-sky-30-40-fit",
+        "claim-time-setting-boundary"
+      ],
+      "evidenceMode": "desk_research",
+      "thoughtfulness": {
+        "observationPrompt": "Choose this only after checking that their regular observing site is actually between 30 and 40 degrees north and that they want to learn patterns without an app.",
+        "frictionClaimIds": [
+          "claim-screen-glare-friction",
+          "claim-analog-preference-boundary"
+        ],
+        "physicalGiftBoundary": "welcome_when_verified",
+        "selfPurchase": {
+          "reason": "research_burden",
+          "rationale": "A planisphere feels minor enough to postpone, yet choosing the correct latitude edition and learning its date-and-time convention still requires coordination.",
+          "basis": "editorial_inference",
+          "claimIds": [
+            "claim-self-purchase-research-burden"
+          ]
+        },
+        "duplicateRisk": {
+          "level": "medium",
+          "preGiftCheck": "Confirm they do not already own a trusted 30-to-40-degree planisphere or an analog atlas they prefer."
+        },
+        "clutterRisk": {
+          "level": "low",
+          "ownershipBurden": "The chart needs dry, flat storage and a one-hour daylight-saving adjustment when applicable.",
+          "mitigation": "Write the daylight-saving reminder on a removable gift note and keep the chart with the light."
+        },
+        "compatibilityChecks": [
+          {
+            "dimension": "edition_or_region",
+            "status": "verified",
+            "requirement": "The regular observing site is in the Northern Hemisphere between 30 and 40 degrees north.",
+            "claimIds": [
+              "claim-night-sky-30-40-fit",
+              "claim-latitude-hemisphere-boundary"
+            ]
+          },
+          {
+            "dimension": "accessibility",
+            "status": "verified",
+            "requirement": "The recipient can read an eight-inch map area and does not need audio, screen zoom, or current planet positions.",
+            "claimIds": [
+              "claim-night-sky-drawback",
+              "claim-planisphere-moving-object-boundary"
+            ]
+          }
+        ],
+        "score": {
+          "frictionSpecificity": 5,
+          "selfPurchaseLogic": 4,
+          "ownershipEase": 4,
+          "recipientSpecificity": 5,
+          "total": 18
+        }
+      }
+    },
+    {
+      "id": "night-sky-40-50-large",
+      "name": "The Night Sky 40 to 50 degrees north large planisphere",
+      "editorialScore": 86,
+      "evidenceConfidence": 83,
+      "drawbacks": [
+        "Independent exact-edition reviews disagree about whether its usable map area and label density are generous enough for a beginner."
+      ],
+      "primarySourceIds": [
+        "src-chandler-40-50-official"
+      ],
+      "independentSourceIds": [
+        "src-skyandtelescope-planisphere-review",
+        "src-bbc-planisphere-review",
+        "src-allbookstores-40-50-reviews"
+      ],
+      "claimIds": [
+        "claim-night-sky-benefit",
+        "claim-night-sky-drawback",
+        "claim-night-sky-40-50-fit",
+        "claim-night-sky-material-conflict"
+      ],
+      "evidenceMode": "desk_research",
+      "thoughtfulness": {
+        "observationPrompt": "Choose this only after checking that their regular observing site is actually between 40 and 50 degrees north and that the printed map is large enough for them.",
+        "frictionClaimIds": [
+          "claim-screen-glare-friction",
+          "claim-analog-preference-boundary"
+        ],
+        "physicalGiftBoundary": "welcome_when_verified",
+        "selfPurchase": {
+          "reason": "research_burden",
+          "rationale": "The buyer must resolve latitude, visual readability, and format, which can postpone a small analog tool even for someone who already looks up often.",
+          "basis": "editorial_inference",
+          "claimIds": [
+            "claim-self-purchase-research-burden"
+          ]
+        },
+        "duplicateRisk": {
+          "level": "medium",
+          "preGiftCheck": "Confirm they do not already own a trusted 40-to-50-degree planisphere and can comfortably read the map area."
+        },
+        "clutterRisk": {
+          "level": "low",
+          "ownershipBurden": "The chart needs dry, flat storage and cannot replace a current Moon or planet locator.",
+          "mitigation": "Frame the gift as a constellation guide and keep it protected from dew rather than promising a complete sky calendar."
+        },
+        "compatibilityChecks": [
+          {
+            "dimension": "edition_or_region",
+            "status": "verified",
+            "requirement": "The regular observing site is in the Northern Hemisphere between 40 and 50 degrees north.",
+            "claimIds": [
+              "claim-night-sky-40-50-fit",
+              "claim-latitude-hemisphere-boundary"
+            ]
+          },
+          {
+            "dimension": "accessibility",
+            "status": "verified",
+            "requirement": "The recipient can comfortably read its eight-inch map area without magnification or audio assistance.",
+            "claimIds": [
+              "claim-night-sky-drawback"
+            ]
+          }
+        ],
+        "score": {
+          "frictionSpecificity": 5,
+          "selfPurchaseLogic": 4,
+          "ownershipEase": 4,
+          "recipientSpecificity": 5,
+          "total": 18
+        }
+      }
+    },
+    {
+      "id": "rigel-starlite-mini-red-only",
+      "name": "Rigel Starlite Mini red-only variable-brightness flashlight",
+      "editorialScore": 82,
+      "evidenceConfidence": 78,
+      "drawbacks": [
+        "It uses a bulky 9-volt battery and is not water resistant; owner reports and a 2008 lab comparison also conflict on whether its lowest output is suitably dim."
+      ],
+      "primarySourceIds": [
+        "src-rigel-manual",
+        "src-rigel-product-page-official"
+      ],
+      "independentSourceIds": [
+        "src-adorama-rigel-reviews",
+        "src-interstellarum-rigel-lab-review"
+      ],
+      "claimIds": [
+        "claim-rigel-benefit",
+        "claim-rigel-drawback",
+        "claim-rigel-compatibility"
+      ],
+      "evidenceMode": "desk_research",
+      "thoughtfulness": {
+        "observationPrompt": "Choose this only if they read physical charts outdoors, want a two-red-LED thumbwheel light, and can verify the low-end output indoors before dark adaptation.",
+        "frictionClaimIds": [
+          "claim-screen-glare-friction"
+        ],
+        "physicalGiftBoundary": "welcome_when_verified",
+        "selfPurchase": {
+          "reason": "small_luxury_deferral",
+          "rationale": "A dedicated astronomy light can feel too minor to prioritize when a phone flashlight or generic headlamp already seems almost adequate.",
+          "basis": "editorial_inference",
+          "claimIds": [
+            "claim-self-purchase-research-burden"
+          ]
+        },
+        "duplicateRisk": {
+          "level": "medium",
+          "preGiftCheck": "Confirm they do not already own a trusted red-only light with a verified chart-reading level."
+        },
+        "clutterRisk": {
+          "level": "low",
+          "ownershipBurden": "The light requires a 9-volt battery, dry storage, and deliberate low-output use around other observers.",
+          "mitigation": "Include no spare electronics; keep it with the chart and check its lowest usable output indoors before every session."
+        },
+        "compatibilityChecks": [
+          {
+            "dimension": "power_or_battery",
+            "status": "verified",
+            "requirement": "The recipient accepts a replaceable 9-volt battery rather than requiring USB charging or common AA cells.",
+            "claimIds": [
+              "claim-rigel-compatibility"
+            ]
+          },
+          {
+            "dimension": "space_or_storage",
+            "status": "verified",
+            "requirement": "They can keep the non-water-resistant body dry and verify that its lowest usable output is appropriate indoors.",
+            "claimIds": [
+              "claim-rigel-drawback",
+              "claim-rigel-compatibility"
+            ]
+          }
+        ],
+        "score": {
+          "frictionSpecificity": 5,
+          "selfPurchaseLogic": 4,
+          "ownershipEase": 4,
+          "recipientSpecificity": 5,
+          "total": 18
+        }
+      }
+    },
+    {
+      "id": "celestron-93588-red-only",
+      "name": "Celestron Night Vision Flashlight 93588",
+      "editorialScore": 79,
+      "evidenceConfidence": 75,
+      "drawbacks": [
+        "Independent reviews report uneven diffusion, one-handed-use friction, and mixed build-quality impressions, and the reviewed product page provides no weather-resistance rating."
+      ],
+      "primarySourceIds": [
+        "src-celestron-light-official"
+      ],
+      "independentSourceIds": [
+        "src-cloudynights-celestron-review",
+        "src-adorama-celestron-reviews"
+      ],
+      "claimIds": [
+        "claim-celestron-light-benefit",
+        "claim-celestron-light-drawback",
+        "claim-celestron-light-compatibility"
+      ],
+      "evidenceMode": "desk_research",
+      "thoughtfulness": {
+        "observationPrompt": "Choose this only if they want a simple dedicated red thumbwheel light, accept one-handed use and a 9-volt battery, and can protect it from weather.",
+        "frictionClaimIds": [
+          "claim-screen-glare-friction"
+        ],
+        "physicalGiftBoundary": "welcome_when_verified",
+        "selfPurchase": {
+          "reason": "small_luxury_deferral",
+          "rationale": "The dedicated light solves a narrow chart-reading problem that is easy to postpone while a generic flashlight remains nearby.",
+          "basis": "editorial_inference",
+          "claimIds": [
+            "claim-self-purchase-research-burden"
+          ]
+        },
+        "duplicateRisk": {
+          "level": "medium",
+          "preGiftCheck": "Confirm they do not already own a dimmable red-only astronomy light or prefer a hands-free headlamp."
+        },
+        "clutterRisk": {
+          "level": "low",
+          "ownershipBurden": "The light requires a 9-volt battery, hand carrying, dry storage, and a current stock and return-term check.",
+          "mitigation": "Keep it as an unbundled alternative and recheck the exact seller, battery fit, and return terms before purchase."
+        },
+        "compatibilityChecks": [
+          {
+            "dimension": "power_or_battery",
+            "status": "verified",
+            "requirement": "The recipient accepts a replaceable 9-volt battery and the buyer confirms the exact battery fits before gifting.",
+            "claimIds": [
+              "claim-celestron-light-compatibility"
+            ]
+          },
+          {
+            "dimension": "accessibility",
+            "status": "verified",
+            "requirement": "The recipient can hold a handheld light while turning a planisphere and does not require hands-free illumination.",
+            "claimIds": [
+              "claim-celestron-light-drawback"
+            ]
+          }
+        ],
+        "score": {
+          "frictionSpecificity": 5,
+          "selfPurchaseLogic": 4,
+          "ownershipEase": 4,
+          "recipientSpecificity": 4,
+          "total": 17
+        }
+      }
+    },
+    {
+      "id": "night-sky-50-60-large",
+      "name": "The Night Sky 50 to 60 degrees north large planisphere",
+      "editorialScore": 74,
+      "evidenceConfidence": 67,
+      "drawbacks": [
+        "The search did not find two exact-edition independent reviews, and the latitude band fits only a limited portion of US observing sites."
+      ],
+      "primarySourceIds": [
+        "src-chandler-family-official"
+      ],
+      "independentSourceIds": [
+        "src-bbc-planisphere-review"
+      ],
+      "claimIds": [],
+      "evidenceMode": "desk_research"
+    },
+    {
+      "id": "night-sky-southern-large",
+      "name": "The Night Sky Southern Hemisphere large planisphere",
+      "editorialScore": 72,
+      "evidenceConfidence": 66,
+      "drawbacks": [
+        "It is wrong for Northern Hemisphere observing and the manufacturer specifies coverage beginning at 20 degrees south, leaving near-equatorial fit unresolved."
+      ],
+      "primarySourceIds": [
+        "src-chandler-family-official"
+      ],
+      "independentSourceIds": [
+        "src-bbc-planisphere-review"
+      ],
+      "claimIds": [],
+      "evidenceMode": "desk_research"
+    },
+    {
+      "id": "guide-to-stars-16-north",
+      "name": "Guide to the Stars 16-inch Northern Hemisphere planisphere",
+      "editorialScore": 77,
+      "evidenceConfidence": 68,
+      "drawbacks": [
+        "Its broad 30-to-60-degree north range trades local horizon precision for size, and two exact-product independent reviews were not found in this pass."
+      ],
+      "primarySourceIds": [
+        "src-guide-stars-official"
+      ],
+      "independentSourceIds": [
+        "src-skyandtelescope-planisphere-review"
+      ],
+      "claimIds": [],
+      "evidenceMode": "desk_research"
+    },
+    {
+      "id": "celestron-sky-maps",
+      "name": "Celestron Sky Maps with glow planisphere",
+      "editorialScore": 70,
+      "evidenceConfidence": 67,
+      "drawbacks": [
+        "Its published seasonal material is dated through 2029, it is Northern Hemisphere only, and Sky and Telescope warns that glow printing can blur star brightness differences."
+      ],
+      "primarySourceIds": [
+        "src-celestron-sky-maps-official"
+      ],
+      "independentSourceIds": [
+        "src-skyandtelescope-planisphere-review"
+      ],
+      "claimIds": [],
+      "evidenceMode": "desk_research"
+    },
+    {
+      "id": "night-reader-pro",
+      "name": "David Chandler Night Reader Pro",
+      "editorialScore": 80,
+      "evidenceConfidence": 66,
+      "drawbacks": [
+        "Its one-button programming includes timer, strobe, and SOS modes, and this pass did not find two rigorous independent exact-product reviews."
+      ],
+      "primarySourceIds": [
+        "src-night-reader-official"
+      ],
+      "independentSourceIds": [],
+      "claimIds": [],
+      "evidenceMode": "desk_research"
+    },
+    {
+      "id": "rigel-skylite-red-white",
+      "name": "Rigel SkyLite red and white variable-brightness flashlight",
+      "editorialScore": 73,
+      "evidenceConfidence": 72,
+      "drawbacks": [
+        "A white-light channel remains available on the same control, so it does not satisfy the red-only direct-access preference of this first-ritual brief."
+      ],
+      "primarySourceIds": [
+        "src-rigel-skylite-manual"
+      ],
+      "independentSourceIds": [],
+      "claimIds": [],
+      "evidenceMode": "desk_research"
+    },
+    {
+      "id": "celestron-powertank-glow-5000",
+      "name": "Celestron PowerTank Glow 5000",
+      "editorialScore": 67,
+      "evidenceConfidence": 80,
+      "drawbacks": [
+        "An independent review measured the lowest setting at 70 lumens, far above the near-minimum chart-reading posture emphasized by dark-sky authorities, and the power-bank role reintroduces phone dependence."
+      ],
+      "primarySourceIds": [
+        "src-powertank-official"
+      ],
+      "independentSourceIds": [
+        "src-powertank-independent-review"
+      ],
+      "claimIds": [],
+      "evidenceMode": "desk_research"
+    },
+    {
+      "id": "celestron-thermotorch-astro-red",
+      "name": "Celestron Elements ThermoTorch 3 Astro Red",
+      "editorialScore": 63,
+      "evidenceConfidence": 65,
+      "drawbacks": [
+        "The three-mode high-output light, warmer, and power-bank bundle is more complex and brighter than a simple chart-reading ritual needs."
+      ],
+      "primarySourceIds": [
+        "src-thermotorch-official"
+      ],
+      "independentSourceIds": [],
+      "claimIds": [],
+      "evidenceMode": "desk_research"
+    },
+    {
+      "id": "celestron-night-vision-red-headlamp",
+      "name": "Celestron Night Vision Red Headlamp",
+      "editorialScore": 69,
+      "evidenceConfidence": 63,
+      "drawbacks": [
+        "The research did not independently verify exact red-mode startup behavior, and a head-mounted beam can point at other observers when the wearer turns their head."
+      ],
+      "primarySourceIds": [
+        "src-celestron-headlamp-official"
+      ],
+      "independentSourceIds": [],
+      "claimIds": [],
+      "evidenceMode": "desk_research"
+    },
+    {
+      "id": "generic-red-filter-flashlight",
+      "name": "Generic white flashlight with red filter",
+      "editorialScore": 58,
+      "evidenceConfidence": 74,
+      "drawbacks": [
+        "Filter density, spectrum, fit, and startup brightness vary, so this is a practical fallback rather than a defensible gift recommendation."
+      ],
+      "primarySourceIds": [],
+      "independentSourceIds": [],
+      "claimIds": [],
+      "evidenceMode": "desk_research"
+    },
+    {
+      "id": "beginner-telescope-bundle",
+      "name": "Entry-level telescope bundle",
+      "editorialScore": 42,
+      "evidenceConfidence": 85,
+      "drawbacks": [
+        "A telescope exceeds the approved low-commitment ritual, introduces setup and storage burden, and ignores that the recipient has not asked for one."
+      ],
+      "primarySourceIds": [],
+      "independentSourceIds": [
+        "src-darksky-first-night",
+        "src-skyandtelescope-planisphere-review"
+      ],
+      "claimIds": [],
+      "evidenceMode": "desk_research"
+    }
+  ],
+  "finalists": [
+    {
+      "id": "night-sky-20-30-large",
+      "name": "The Night Sky 20 to 30 degrees north large planisphere",
+      "editorialScore": 78,
+      "evidenceConfidence": 74,
+      "drawbacks": [
+        "Its narrow northern latitude range fits comparatively few US observing sites, and its compact flat map cannot locate the moving Moon or planets."
+      ],
+      "primarySourceIds": [
+        "src-chandler-20-30-official"
+      ],
+      "independentSourceIds": [
+        "src-skyandtelescope-planisphere-review",
+        "src-bbc-planisphere-review",
+        "src-cloudynights-night-sky-review"
+      ],
+      "claimIds": [
+        "claim-night-sky-benefit",
+        "claim-night-sky-drawback",
+        "claim-night-sky-20-30-fit"
+      ],
+      "evidenceMode": "desk_research",
+      "thoughtfulness": {
+        "observationPrompt": "Choose this only after checking that their usual observing site is actually between 20 and 30 degrees north and that they prefer a physical overview to an app.",
+        "frictionClaimIds": [
+          "claim-screen-glare-friction",
+          "claim-analog-preference-boundary"
+        ],
+        "physicalGiftBoundary": "welcome_when_verified",
+        "selfPurchase": {
+          "reason": "research_burden",
+          "rationale": "The inexpensive guide is easy to defer because the buyer must first resolve latitude, hemisphere, format, and the limits of what a planisphere can show.",
+          "basis": "editorial_inference",
+          "claimIds": [
+            "claim-self-purchase-research-burden"
+          ]
+        },
+        "duplicateRisk": {
+          "level": "medium",
+          "preGiftCheck": "Confirm they do not already own a trusted planisphere or atlas for this exact latitude band."
+        },
+        "clutterRisk": {
+          "level": "medium",
+          "ownershipBurden": "The wheel needs dry, flat storage and becomes useless at a different hemisphere or substantially different latitude.",
+          "mitigation": "Verify the regular observing coordinates and store it flat with the red light after each outing."
+        },
+        "compatibilityChecks": [
+          {
+            "dimension": "edition_or_region",
+            "status": "verified",
+            "requirement": "The regular observing site is in the Northern Hemisphere between 20 and 30 degrees north.",
+            "claimIds": [
+              "claim-night-sky-20-30-fit",
+              "claim-latitude-hemisphere-boundary"
+            ]
+          },
+          {
+            "dimension": "accessibility",
+            "status": "verified",
+            "requirement": "The recipient can use a compact printed wheel and does not need audio guidance, screen zoom, or large print.",
+            "claimIds": [
+              "claim-night-sky-drawback",
+              "claim-analog-preference-boundary"
+            ]
+          }
+        ],
+        "score": {
+          "frictionSpecificity": 5,
+          "selfPurchaseLogic": 4,
+          "ownershipEase": 4,
+          "recipientSpecificity": 5,
+          "total": 18
+        }
+      }
+    },
+    {
+      "id": "night-sky-30-40-large",
+      "name": "The Night Sky 30 to 40 degrees north large planisphere",
+      "editorialScore": 87,
+      "evidenceConfidence": 84,
+      "drawbacks": [
+        "It is still a compact flat projection with limited labels, and it cannot locate the changing Moon or planets."
+      ],
+      "primarySourceIds": [
+        "src-chandler-30-40-official"
+      ],
+      "independentSourceIds": [
+        "src-skyandtelescope-planisphere-review",
+        "src-bbc-planisphere-review",
+        "src-cloudynights-night-sky-review"
+      ],
+      "claimIds": [
+        "claim-night-sky-benefit",
+        "claim-night-sky-drawback",
+        "claim-night-sky-30-40-fit",
+        "claim-time-setting-boundary"
+      ],
+      "evidenceMode": "desk_research",
+      "thoughtfulness": {
+        "observationPrompt": "Choose this only after checking that their regular observing site is actually between 30 and 40 degrees north and that they want to learn patterns without an app.",
+        "frictionClaimIds": [
+          "claim-screen-glare-friction",
+          "claim-analog-preference-boundary"
+        ],
+        "physicalGiftBoundary": "welcome_when_verified",
+        "selfPurchase": {
+          "reason": "research_burden",
+          "rationale": "A planisphere feels minor enough to postpone, yet choosing the correct latitude edition and learning its date-and-time convention still requires coordination.",
+          "basis": "editorial_inference",
+          "claimIds": [
+            "claim-self-purchase-research-burden"
+          ]
+        },
+        "duplicateRisk": {
+          "level": "medium",
+          "preGiftCheck": "Confirm they do not already own a trusted 30-to-40-degree planisphere or an analog atlas they prefer."
+        },
+        "clutterRisk": {
+          "level": "low",
+          "ownershipBurden": "The chart needs dry, flat storage and a one-hour daylight-saving adjustment when applicable.",
+          "mitigation": "Write the daylight-saving reminder on a removable gift note and keep the chart with the light."
+        },
+        "compatibilityChecks": [
+          {
+            "dimension": "edition_or_region",
+            "status": "verified",
+            "requirement": "The regular observing site is in the Northern Hemisphere between 30 and 40 degrees north.",
+            "claimIds": [
+              "claim-night-sky-30-40-fit",
+              "claim-latitude-hemisphere-boundary"
+            ]
+          },
+          {
+            "dimension": "accessibility",
+            "status": "verified",
+            "requirement": "The recipient can read an eight-inch map area and does not need audio, screen zoom, or current planet positions.",
+            "claimIds": [
+              "claim-night-sky-drawback",
+              "claim-planisphere-moving-object-boundary"
+            ]
+          }
+        ],
+        "score": {
+          "frictionSpecificity": 5,
+          "selfPurchaseLogic": 4,
+          "ownershipEase": 4,
+          "recipientSpecificity": 5,
+          "total": 18
+        }
+      }
+    },
+    {
+      "id": "night-sky-40-50-large",
+      "name": "The Night Sky 40 to 50 degrees north large planisphere",
+      "editorialScore": 86,
+      "evidenceConfidence": 83,
+      "drawbacks": [
+        "Independent exact-edition reviews disagree about whether its usable map area and label density are generous enough for a beginner."
+      ],
+      "primarySourceIds": [
+        "src-chandler-40-50-official"
+      ],
+      "independentSourceIds": [
+        "src-skyandtelescope-planisphere-review",
+        "src-bbc-planisphere-review",
+        "src-allbookstores-40-50-reviews"
+      ],
+      "claimIds": [
+        "claim-night-sky-benefit",
+        "claim-night-sky-drawback",
+        "claim-night-sky-40-50-fit",
+        "claim-night-sky-material-conflict"
+      ],
+      "evidenceMode": "desk_research",
+      "thoughtfulness": {
+        "observationPrompt": "Choose this only after checking that their regular observing site is actually between 40 and 50 degrees north and that the printed map is large enough for them.",
+        "frictionClaimIds": [
+          "claim-screen-glare-friction",
+          "claim-analog-preference-boundary"
+        ],
+        "physicalGiftBoundary": "welcome_when_verified",
+        "selfPurchase": {
+          "reason": "research_burden",
+          "rationale": "The buyer must resolve latitude, visual readability, and format, which can postpone a small analog tool even for someone who already looks up often.",
+          "basis": "editorial_inference",
+          "claimIds": [
+            "claim-self-purchase-research-burden"
+          ]
+        },
+        "duplicateRisk": {
+          "level": "medium",
+          "preGiftCheck": "Confirm they do not already own a trusted 40-to-50-degree planisphere and can comfortably read the map area."
+        },
+        "clutterRisk": {
+          "level": "low",
+          "ownershipBurden": "The chart needs dry, flat storage and cannot replace a current Moon or planet locator.",
+          "mitigation": "Frame the gift as a constellation guide and keep it protected from dew rather than promising a complete sky calendar."
+        },
+        "compatibilityChecks": [
+          {
+            "dimension": "edition_or_region",
+            "status": "verified",
+            "requirement": "The regular observing site is in the Northern Hemisphere between 40 and 50 degrees north.",
+            "claimIds": [
+              "claim-night-sky-40-50-fit",
+              "claim-latitude-hemisphere-boundary"
+            ]
+          },
+          {
+            "dimension": "accessibility",
+            "status": "verified",
+            "requirement": "The recipient can comfortably read its eight-inch map area without magnification or audio assistance.",
+            "claimIds": [
+              "claim-night-sky-drawback"
+            ]
+          }
+        ],
+        "score": {
+          "frictionSpecificity": 5,
+          "selfPurchaseLogic": 4,
+          "ownershipEase": 4,
+          "recipientSpecificity": 5,
+          "total": 18
+        }
+      }
+    },
+    {
+      "id": "rigel-starlite-mini-red-only",
+      "name": "Rigel Starlite Mini red-only variable-brightness flashlight",
+      "editorialScore": 82,
+      "evidenceConfidence": 78,
+      "drawbacks": [
+        "It uses a bulky 9-volt battery and is not water resistant; owner reports and a 2008 lab comparison also conflict on whether its lowest output is suitably dim."
+      ],
+      "primarySourceIds": [
+        "src-rigel-manual",
+        "src-rigel-product-page-official"
+      ],
+      "independentSourceIds": [
+        "src-adorama-rigel-reviews",
+        "src-interstellarum-rigel-lab-review"
+      ],
+      "claimIds": [
+        "claim-rigel-benefit",
+        "claim-rigel-drawback",
+        "claim-rigel-compatibility"
+      ],
+      "evidenceMode": "desk_research",
+      "thoughtfulness": {
+        "observationPrompt": "Choose this only if they read physical charts outdoors, want a two-red-LED thumbwheel light, and can verify the low-end output indoors before dark adaptation.",
+        "frictionClaimIds": [
+          "claim-screen-glare-friction"
+        ],
+        "physicalGiftBoundary": "welcome_when_verified",
+        "selfPurchase": {
+          "reason": "small_luxury_deferral",
+          "rationale": "A dedicated astronomy light can feel too minor to prioritize when a phone flashlight or generic headlamp already seems almost adequate.",
+          "basis": "editorial_inference",
+          "claimIds": [
+            "claim-self-purchase-research-burden"
+          ]
+        },
+        "duplicateRisk": {
+          "level": "medium",
+          "preGiftCheck": "Confirm they do not already own a trusted red-only light with a verified chart-reading level."
+        },
+        "clutterRisk": {
+          "level": "low",
+          "ownershipBurden": "The light requires a 9-volt battery, dry storage, and deliberate low-output use around other observers.",
+          "mitigation": "Include no spare electronics; keep it with the chart and check its lowest usable output indoors before every session."
+        },
+        "compatibilityChecks": [
+          {
+            "dimension": "power_or_battery",
+            "status": "verified",
+            "requirement": "The recipient accepts a replaceable 9-volt battery rather than requiring USB charging or common AA cells.",
+            "claimIds": [
+              "claim-rigel-compatibility"
+            ]
+          },
+          {
+            "dimension": "space_or_storage",
+            "status": "verified",
+            "requirement": "They can keep the non-water-resistant body dry and verify that its lowest usable output is appropriate indoors.",
+            "claimIds": [
+              "claim-rigel-drawback",
+              "claim-rigel-compatibility"
+            ]
+          }
+        ],
+        "score": {
+          "frictionSpecificity": 5,
+          "selfPurchaseLogic": 4,
+          "ownershipEase": 4,
+          "recipientSpecificity": 5,
+          "total": 18
+        }
+      }
+    },
+    {
+      "id": "celestron-93588-red-only",
+      "name": "Celestron Night Vision Flashlight 93588",
+      "editorialScore": 79,
+      "evidenceConfidence": 75,
+      "drawbacks": [
+        "Independent reviews report uneven diffusion, one-handed-use friction, and mixed build-quality impressions, and the reviewed product page provides no weather-resistance rating."
+      ],
+      "primarySourceIds": [
+        "src-celestron-light-official"
+      ],
+      "independentSourceIds": [
+        "src-cloudynights-celestron-review",
+        "src-adorama-celestron-reviews"
+      ],
+      "claimIds": [
+        "claim-celestron-light-benefit",
+        "claim-celestron-light-drawback",
+        "claim-celestron-light-compatibility"
+      ],
+      "evidenceMode": "desk_research",
+      "thoughtfulness": {
+        "observationPrompt": "Choose this only if they want a simple dedicated red thumbwheel light, accept one-handed use and a 9-volt battery, and can protect it from weather.",
+        "frictionClaimIds": [
+          "claim-screen-glare-friction"
+        ],
+        "physicalGiftBoundary": "welcome_when_verified",
+        "selfPurchase": {
+          "reason": "small_luxury_deferral",
+          "rationale": "The dedicated light solves a narrow chart-reading problem that is easy to postpone while a generic flashlight remains nearby.",
+          "basis": "editorial_inference",
+          "claimIds": [
+            "claim-self-purchase-research-burden"
+          ]
+        },
+        "duplicateRisk": {
+          "level": "medium",
+          "preGiftCheck": "Confirm they do not already own a dimmable red-only astronomy light or prefer a hands-free headlamp."
+        },
+        "clutterRisk": {
+          "level": "low",
+          "ownershipBurden": "The light requires a 9-volt battery, hand carrying, dry storage, and a current stock and return-term check.",
+          "mitigation": "Keep it as an unbundled alternative and recheck the exact seller, battery fit, and return terms before purchase."
+        },
+        "compatibilityChecks": [
+          {
+            "dimension": "power_or_battery",
+            "status": "verified",
+            "requirement": "The recipient accepts a replaceable 9-volt battery and the buyer confirms the exact battery fits before gifting.",
+            "claimIds": [
+              "claim-celestron-light-compatibility"
+            ]
+          },
+          {
+            "dimension": "accessibility",
+            "status": "verified",
+            "requirement": "The recipient can hold a handheld light while turning a planisphere and does not require hands-free illumination.",
+            "claimIds": [
+              "claim-celestron-light-drawback"
+            ]
+          }
+        ],
+        "score": {
+          "frictionSpecificity": 5,
+          "selfPurchaseLogic": 4,
+          "ownershipEase": 4,
+          "recipientSpecificity": 4,
+          "total": 17
+        }
+      }
+    }
+  ],
+  "pairs": [
+    {
+      "id": "lower-midlatitude-one-pattern-pair",
+      "name": "The 30-to-40-degree one-pattern configuration",
+      "anchorCandidateId": "night-sky-30-40-large",
+      "companionCandidateId": "rigel-starlite-mini-red-only",
+      "recipientJob": "Set one date and time for a 30-to-40-degree north site, identify one familiar pattern, then use a prechecked two-red-LED light at its lowest usable output to find one adjacent pattern outside.",
+      "coherenceType": "observation_loop",
+      "whyTogether": "The latitude-correct wheel answers what fixed-star pattern should be above the horizon, while the Rigel supplies adjustable direct red chart light; the pair qualifies only after its lowest usable output is checked indoors.",
+      "interactionMoment": "Before dark adaptation, set the wheel and check the Rigel's lowest usable output indoors; outside, find one familiar pattern, consult the chart briefly, then locate one neighbor.",
+      "compatibilityChecks": [
+        {
+          "dimension": "edition_or_region",
+          "status": "verified",
+          "requirement": "The observing location is in the Northern Hemisphere between 30 and 40 degrees north.",
+          "claimIds": [
+            "claim-night-sky-30-40-fit",
+            "claim-latitude-hemisphere-boundary"
+          ]
+        },
+        {
+          "dimension": "power_or_battery",
+          "status": "verified",
+          "requirement": "The recipient accepts a 9-volt two-red-LED light, can keep it dry, and verifies its lowest usable output indoors.",
+          "claimIds": [
+            "claim-rigel-compatibility",
+            "claim-rigel-drawback"
+          ]
+        },
+        {
+          "dimension": "accessibility",
+          "status": "verified",
+          "requirement": "The recipient can read the chart without audio or screen zoom and can operate a thumbwheel outdoors.",
+          "claimIds": [
+            "claim-night-sky-drawback",
+            "claim-rigel-benefit"
+          ]
+        }
+      ],
+      "duplicateRisk": "medium",
+      "clutterDelta": "neutral",
+      "preGiftCheck": "Confirm the exact observing latitude, analog preference, chart readability, existing guide, existing red light, and 9-volt battery acceptance.",
+      "bundleDrawback": "Buy only the planisphere if they already own a trusted red-only light with verified low-end output; buy only the Rigel if they already own the correct analog guide; skip both if they prefer apps.",
+      "claimIds": [
+        "claim-pair-30-40-rigel"
+      ],
+      "score": {
+        "sharedCuriosity": 19,
+        "complementaryRoles": 20,
+        "interactionLoop": 19,
+        "observableTrigger": 14,
+        "independentValue": 10,
+        "compatibility": 8,
+        "ownershipEase": 4,
+        "total": 94
+      }
+    },
+    {
+      "id": "upper-midlatitude-one-pattern-pair",
+      "name": "The 40-to-50-degree one-pattern configuration",
+      "anchorCandidateId": "night-sky-40-50-large",
+      "companionCandidateId": "rigel-starlite-mini-red-only",
+      "recipientJob": "Set one date and time for a 40-to-50-degree north site, identify one familiar pattern, then use a prechecked two-red-LED light at its lowest usable output to find one adjacent pattern outside.",
+      "coherenceType": "observation_loop",
+      "whyTogether": "The latitude-correct wheel supplies the northern-US seasonal orientation layer, while the Rigel supplies adjustable direct red chart light; the pair qualifies only after its lowest usable output is checked indoors.",
+      "interactionMoment": "Before dark adaptation, set the wheel and check the Rigel's lowest usable output indoors; outside, find one familiar pattern, consult the chart briefly, then locate one neighbor.",
+      "compatibilityChecks": [
+        {
+          "dimension": "edition_or_region",
+          "status": "verified",
+          "requirement": "The observing location is in the Northern Hemisphere between 40 and 50 degrees north.",
+          "claimIds": [
+            "claim-night-sky-40-50-fit",
+            "claim-latitude-hemisphere-boundary"
+          ]
+        },
+        {
+          "dimension": "power_or_battery",
+          "status": "verified",
+          "requirement": "The recipient accepts a 9-volt two-red-LED light, can keep it dry, and verifies its lowest usable output indoors.",
+          "claimIds": [
+            "claim-rigel-compatibility",
+            "claim-rigel-drawback"
+          ]
+        },
+        {
+          "dimension": "accessibility",
+          "status": "verified",
+          "requirement": "The recipient can read the chart's map area without magnification and can operate a thumbwheel outdoors.",
+          "claimIds": [
+            "claim-night-sky-drawback",
+            "claim-rigel-benefit"
+          ]
+        }
+      ],
+      "duplicateRisk": "medium",
+      "clutterDelta": "neutral",
+      "preGiftCheck": "Confirm the exact observing latitude, analog preference, chart readability, existing guide, existing red light, and 9-volt battery acceptance.",
+      "bundleDrawback": "Buy only the planisphere if they already own a trusted red-only light with verified low-end output; buy only the Rigel if they already own the correct analog guide; skip both if they prefer apps.",
+      "claimIds": [
+        "claim-pair-40-50-rigel"
+      ],
+      "score": {
+        "sharedCuriosity": 19,
+        "complementaryRoles": 20,
+        "interactionLoop": 19,
+        "observableTrigger": 14,
+        "independentValue": 10,
+        "compatibility": 8,
+        "ownershipEase": 4,
+        "total": 94
+      }
+    }
+  ],
+  "affiliateLinks": [],
+  "conflicts": [
+    {
+      "id": "conflict-rigel-mini-low-output",
+      "summary": "Later exact-product owner reviews describe a useful dimming range, while a 2008 independent lab comparison found its tested Starlite Mini too bright at minimum for a stringent dark-adaptation standard. The current manufacturer material does not document startup position or minimum output, so this guide requires an indoor low-end check and makes no dim-start claim."
+    },
+    {
+      "id": "conflict-celestron-93588-availability",
+      "summary": "Celestron's official page showed model 93588 out of stock during this research. That is a time-bound availability snapshot, not a promise that the product is discontinued or available elsewhere; any future recommendation must recheck the exact seller, stock, and return terms."
+    }
+  ],
+  "article": {
+    "slug": "night-sky-planisphere-red-light-gift-pairs",
+    "editorialScore": 85,
+    "evidenceConfidence": 80,
+    "evidenceMode": "desk_research",
+    "status": "publication_ready"
+  },
+  "qa": {
+    "passed": true,
+    "reviewerRole": "independent-editor",
+    "reviewerId": "night-sky-independent-editor-20260816-r2",
+    "receiptPath": "research/reviews/20260816-night-sky-ritual-a5594a7b.qa.v1.json",
+    "blockers": [],
+    "warnings": []
+  },
+  "completedAt": "2026-08-16T21:37:48.745Z"
+}

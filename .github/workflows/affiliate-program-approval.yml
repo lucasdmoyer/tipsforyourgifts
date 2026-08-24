@@ -1,0 +1,87 @@
+name: Approve affiliate program for external onboarding
+
+on:
+  workflow_dispatch:
+    inputs:
+      program_id:
+        description: "Exact proposed program ID visible in Studio"
+        required: true
+        type: string
+      expected_revision:
+        description: "Exact proposed revision visible in Studio"
+        required: true
+        type: number
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: affiliate-approval-${{ inputs.program_id }}
+  cancel-in-progress: false
+
+jobs:
+  approve:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Require repository-owner decision
+        env:
+          ACTOR: ${{ github.actor }}
+          OWNER: ${{ github.repository_owner }}
+        run: |
+          test "$ACTOR" = "$OWNER" || { echo "Only the repository owner may approve an affiliate candidate." >&2; exit 1; }
+      - uses: actions/checkout@v5
+        with:
+          ref: master
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24.14.0"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - name: Validate and record the exact founder decision
+        env:
+          PROGRAM_ID: ${{ inputs.program_id }}
+          EXPECTED_REVISION: ${{ inputs.expected_revision }}
+          FOUNDER_LOGIN: ${{ github.actor }}
+        run: |
+          [[ "$PROGRAM_ID" =~ ^[a-z0-9]+(-[a-z0-9]+)*$ ]] || { echo "Invalid program ID." >&2; exit 1; }
+          npm ci --prefix web
+          npm run validate
+          npm --prefix web run affiliate:approve -- --program-id="$PROGRAM_ID" --expected-revision="$EXPECTED_REVISION" --founder-login="$FOUNDER_LOGIN"
+          npm --prefix web run generate
+      - name: Prove the deterministic approval patch
+        run: |
+          while IFS= read -r changed_path; do
+            case "$changed_path" in
+              web/config/affiliate-programs.json|web/src/data/operations.json|web/src/app/generated/content.generated.ts|web/public/publication-manifest.json|web/public/sitemap.xml) ;;
+              *) echo "Affiliate approval changed forbidden path: $changed_path" >&2; exit 1 ;;
+            esac
+          done < <(git diff --name-only HEAD)
+          npm run validate
+          npm run build
+          npm run smoke
+          git diff --check
+      - name: Commit the founder-controlled approval branch
+        env:
+          RUN_ID: ${{ github.run_id }}
+          PROGRAM_ID: ${{ inputs.program_id }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -c "codex/approve-affiliate-$RUN_ID"
+          git add web/config/affiliate-programs.json web/src/data/operations.json web/src/app/generated/content.generated.ts web/public/publication-manifest.json web/public/sitemap.xml
+          git commit -m "Approve $PROGRAM_ID for external onboarding"
+          git push origin "codex/approve-affiliate-$RUN_ID"
+      - name: Open the approval pull request
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ github.run_id }}
+          PROGRAM_ID: ${{ inputs.program_id }}
+        run: |
+          gh pr create \
+            --base master \
+            --head "codex/approve-affiliate-$RUN_ID" \
+            --title "Approve $PROGRAM_ID for external onboarding" \
+            --body "This deterministic patch records founder interest in one public affiliate-program candidate. It does not create an account, accept terms, add a tracking identity, enable paid links, change rankings, or deploy. External enrollment and a separate audited activation review remain required."

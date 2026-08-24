@@ -1,0 +1,2020 @@
+{
+  "schemaVersion": "1.1.0",
+  "runId": "20260816-miniature-painting-recipe-pairs-08892218",
+  "ideaId": "founder-idea-008",
+  "ideaRevision": 2,
+  "ideaSha256": "088922183113dfc72db2bf15e4c1752c05e859fae64738b4cf3b265f48c06efe",
+  "decisionLens": "gift_pairing",
+  "contentType": "pairing-guide",
+  "status": "validated",
+  "topic": "Wet-palette and physical paint-recipe-record pairs for water-based acrylic miniature painters",
+  "audience": "People buying for a tabletop miniature painter who mixes conventional water-based acrylic colors across multiple sessions",
+  "occasion": "Birthday, campaign launch, hobby milestone, or completion of a first painted army",
+  "budgetBands": [
+    "$25-$45",
+    "$45-$70"
+  ],
+  "riskClass": "medium",
+  "draftAuthor": "miniature-painting-drafting-research-team",
+  "startedAt": "2026-08-16T13:30:00.000Z",
+  "researchPasses": [
+    {
+      "pass": 1,
+      "materialNoveltyRate": 1,
+      "newCandidates": 14,
+      "newDecisionFactors": 7
+    },
+    {
+      "pass": 2,
+      "materialNoveltyRate": 0.42,
+      "newCandidates": 0,
+      "newDecisionFactors": 5
+    },
+    {
+      "pass": 3,
+      "materialNoveltyRate": 0.19,
+      "newCandidates": 0,
+      "newDecisionFactors": 4
+    },
+    {
+      "pass": 4,
+      "materialNoveltyRate": 0.08,
+      "newCandidates": 0,
+      "newDecisionFactors": 1
+    },
+    {
+      "pass": 5,
+      "materialNoveltyRate": 0.04,
+      "newCandidates": 0,
+      "newDecisionFactors": 0
+    },
+    {
+      "pass": 6,
+      "materialNoveltyRate": 0.06,
+      "newCandidates": 1,
+      "newDecisionFactors": 1
+    },
+    {
+      "pass": 7,
+      "materialNoveltyRate": 0.05,
+      "newCandidates": 0,
+      "newDecisionFactors": 1
+    }
+  ],
+  "sources": [
+    {
+      "id": "src-community-tracking-2026",
+      "url": "https://www.reddit.com/r/minipainting/comments/1tq2m4e/onandoff_painters_do_you_track_your_painting_steps/",
+      "publisher": "Reddit r/minipainting",
+      "title": "On-and-off painters discuss tracking paint steps, ratios, and swatches",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "social-discussion",
+      "trustTier": "C",
+      "independenceGroup": "reddit-minipainting-tracking-2026"
+    },
+    {
+      "id": "src-community-recipe-book",
+      "url": "https://www.reddit.com/r/minipainting/comments/hhn0ue/does_anyone_else_have_a_recipe_book/",
+      "publisher": "Reddit r/minipainting",
+      "title": "Miniature painters discuss physical recipe books for consistent armies",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "social-discussion",
+      "trustTier": "C",
+      "independenceGroup": "reddit-minipainting-recipe-book"
+    },
+    {
+      "id": "src-community-palette-mixing-2026",
+      "url": "https://www.reddit.com/r/minipainting/comments/1t12auh/how_do_you_setup_your_paint_on_your_wet_palette/",
+      "publisher": "Reddit r/minipainting",
+      "title": "Miniature painters compare wet-palette mixing and reservoir routines",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "social-discussion",
+      "trustTier": "C",
+      "independenceGroup": "reddit-minipainting-palette-mixing-2026"
+    },
+    {
+      "id": "src-community-pro-acryl-2026",
+      "url": "https://www.reddit.com/r/minipainting/comments/1uq4pm3/redgrass_everlasting_studio_v2_xl_vs_game_envy/",
+      "publisher": "Reddit r/minipainting",
+      "title": "Current discussion of hydration sensitivity with thin Pro Acryl paint",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "social-discussion",
+      "trustTier": "C",
+      "independenceGroup": "reddit-minipainting-pro-acryl-2026"
+    },
+    {
+      "id": "src-rgg-painter-v2-official",
+      "url": "https://www.redgrasscreative.com/us/product/v2-wet-palette/?attribute_size=Painter+v2",
+      "publisher": "Redgrass Creative",
+      "title": "Everlasting Wet Palette Painter v2 product specifications",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "manufacturer",
+      "trustTier": "A",
+      "independenceGroup": "redgrass-creative"
+    },
+    {
+      "id": "src-rgg-care-official",
+      "url": "https://www.redgrasscreative.com/uk/setup-everlasting-wet-palette/",
+      "publisher": "Redgrass Creative",
+      "title": "Everlasting Wet Palette setup, paint compatibility, and care instructions",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "manufacturer-care",
+      "trustTier": "A",
+      "independenceGroup": "redgrass-creative-care"
+    },
+    {
+      "id": "src-rgg-tangible-review",
+      "url": "https://tangibleday.com/redgrassgames-everlasting-wet-palette-v2-review/",
+      "publisher": "Tangible Day",
+      "title": "Redgrass Games Everlasting Wet Palette v2 review",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "independent-review",
+      "trustTier": "B",
+      "independenceGroup": "tangible-day"
+    },
+    {
+      "id": "src-rgg-fauxhammer-review",
+      "url": "https://www.fauxhammer.com/news/redgrass-games-everlasting-wet-palette-painter-2-review/",
+      "publisher": "FauxHammer",
+      "title": "Redgrass Games Everlasting Wet Palette Painter 2 review",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "independent-review",
+      "trustTier": "B",
+      "independenceGroup": "fauxhammer-redgrass"
+    },
+    {
+      "id": "src-army-painter-official",
+      "url": "https://thearmypainter.com/products/tools-wet-palette-tl5051p",
+      "publisher": "The Army Painter",
+      "title": "The Army Painter Wet Palette product information and instructions",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "manufacturer",
+      "trustTier": "A",
+      "independenceGroup": "the-army-painter"
+    },
+    {
+      "id": "src-army-painter-speedpaint-care",
+      "url": "https://us.thearmypainter.com/blogs/explore/paint-like-a-pro-speedpaint-101",
+      "publisher": "The Army Painter",
+      "title": "Speedpaint 101 wet-palette compatibility guidance",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "manufacturer-care",
+      "trustTier": "A",
+      "independenceGroup": "the-army-painter-paint-guidance"
+    },
+    {
+      "id": "src-army-painter-tale-review",
+      "url": "https://taleofpainters.com/2021/01/review-the-army-painter-wet-palette/",
+      "publisher": "Tale of Painters",
+      "title": "Review of The Army Painter Wet Palette",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "independent-review",
+      "trustTier": "B",
+      "independenceGroup": "tale-of-painters"
+    },
+    {
+      "id": "src-army-painter-gallant-review",
+      "url": "https://www.gallantgoblin.com/lpp/reviews/army-painter-wet-palette-and-citadel-water-pot-review/",
+      "publisher": "The Gallant Goblin",
+      "title": "Army Painter Wet Palette hands-on review",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "independent-review",
+      "trustTier": "B",
+      "independenceGroup": "gallant-goblin"
+    },
+    {
+      "id": "src-game-envy-official",
+      "url": "https://gameenvy.net/product/exemplar-wet-palette/",
+      "publisher": "Game Envy Creations",
+      "title": "Exemplar PRO Wet Palette current product specifications",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "manufacturer",
+      "trustTier": "A",
+      "independenceGroup": "game-envy"
+    },
+    {
+      "id": "src-game-envy-fauxhammer-review",
+      "url": "https://www.fauxhammer.com/de/reviews/game-envy-creations-exemplar-premier-wet-palette-review/",
+      "publisher": "FauxHammer",
+      "title": "Game Envy Exemplar Premier Wet Palette review",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "independent-review",
+      "trustTier": "B",
+      "independenceGroup": "fauxhammer-game-envy"
+    },
+    {
+      "id": "src-game-envy-pcn-review",
+      "url": "https://professionalcasual.com/2023/12/18/reviewing-game-envys-exemplar-wet-palette-without-fear/",
+      "publisher": "The Professional Casual Network",
+      "title": "Reviewing Game Envy's Exemplar Wet Palette Without Fear",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "independent-review",
+      "trustTier": "B",
+      "independenceGroup": "professional-casual-network"
+    },
+    {
+      "id": "src-hg-diary-official",
+      "url": "https://www.jerrysartarama.com/painters-color-diary-travel-6x8-pad-oils-acrylics",
+      "publisher": "HG Art Concepts via Jerry's Artarama",
+      "title": "Painter's Travel Color Diary for oils and acrylics product specifications",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "manufacturer",
+      "trustTier": "A",
+      "independenceGroup": "hg-art-concepts-jerrys"
+    },
+    {
+      "id": "src-hg-artistic-gnome-review",
+      "url": "https://theartisticgnome.com/painters-color-diary-review/",
+      "publisher": "The Artistic Gnome",
+      "title": "Painter's Color Diary review",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "independent-review",
+      "trustTier": "B",
+      "independenceGroup": "artistic-gnome"
+    },
+    {
+      "id": "src-hg-walmart-reviews",
+      "url": "https://www.walmart.com/reviews/product/2156156991",
+      "publisher": "Walmart customer reviews",
+      "title": "Verified customer reviews for the HG Art Concepts Travel Painter's Color Diary",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "independent-review",
+      "trustTier": "C",
+      "independenceGroup": "walmart-syndicated-painter-diary-buyers"
+    },
+    {
+      "id": "src-strathmore-catalog",
+      "url": "https://www.strathmoreartist.com/files/content/product_literature/paper_use_guides/sap_fine_art_papers_guide.pdf",
+      "publisher": "Strathmore Artist Papers",
+      "title": "Strathmore fine art papers guide including Mixed Media Visual Journals",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "manufacturer",
+      "trustTier": "A",
+      "independenceGroup": "strathmore-artist-papers"
+    },
+    {
+      "id": "src-strathmore-magic-owl-review",
+      "url": "https://magicowlstudios.com/2019/11/15/trying-the-strathmore-mixed-media-visual-journal/",
+      "publisher": "Magic Owl Studios",
+      "title": "Trying the Strathmore Mixed Media Visual Journal",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "independent-review",
+      "trustTier": "B",
+      "independenceGroup": "magic-owl-studios"
+    },
+    {
+      "id": "src-strathmore-nature-studio-review",
+      "url": "https://www.naturestudio.com/my-sketchbook-review/",
+      "publisher": "Nature Studio",
+      "title": "Comparative sketchbook review including the Strathmore Mixed Media Visual Journal",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "independent-review",
+      "trustTier": "B",
+      "independenceGroup": "nature-studio"
+    },
+    {
+      "id": "src-strathmore-jasco-distributor",
+      "url": "https://www.jasco.com.au/products/strathmore-visual-diaries",
+      "publisher": "Jasco",
+      "title": "Strathmore Visual Journal dimensions and binding details",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "authorized-distributor",
+      "trustTier": "B",
+      "independenceGroup": "jasco-australia"
+    },
+    {
+      "id": "src-masterson-official",
+      "url": "https://mastersonart.com/products/masterson-sta-wet-handy-palette",
+      "publisher": "Masterson Art",
+      "title": "Sta-Wet Handy Palette product information",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "manufacturer",
+      "trustTier": "A",
+      "independenceGroup": "masterson-art"
+    },
+    {
+      "id": "src-masterson-tangible-review",
+      "url": "https://tangibleday.com/masterson-sta-wet-palette-for-miniature-painting-review/",
+      "publisher": "Tangible Day",
+      "title": "Masterson Sta-Wet Palette for miniature painting review",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "independent-review",
+      "trustTier": "B",
+      "independenceGroup": "tangible-day-masterson"
+    },
+    {
+      "id": "src-masterson-laurie-review",
+      "url": "https://www.youtube.com/watch?v=AG--s3ZIpmQ",
+      "publisher": "Laurie J. McNeil",
+      "title": "Masterson Sta-Wet Handy Palette review after first acrylic use",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "independent-review",
+      "trustTier": "B",
+      "independenceGroup": "laurie-mcneil-art-review"
+    },
+    {
+      "id": "src-stokes-journal-listing",
+      "url": "https://www.etsy.com/listing/1386919119/paint-journal-for-tabletop-miniatures",
+      "publisher": "Stokes Tabletop via Etsy",
+      "title": "Paint Journal for tabletop miniatures and other hobbies",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "marketplace-maker",
+      "trustTier": "B",
+      "independenceGroup": "stokes-tabletop"
+    },
+    {
+      "id": "src-siege-journal-official",
+      "url": "https://siegestudios.co.uk/product/siege-studios-painting-journal/",
+      "publisher": "Siege Studios",
+      "title": "Siege Studios Painting Journal product description",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "manufacturer",
+      "trustTier": "A",
+      "independenceGroup": "siege-studios"
+    },
+    {
+      "id": "src-siege-trustpilot-review",
+      "url": "https://ie.trustpilot.com/review/siegestudios.co.uk?page=4",
+      "publisher": "Trustpilot",
+      "title": "Verified customer review of the Siege Studios Painting Journal",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "independent-review",
+      "trustTier": "C",
+      "independenceGroup": "trustpilot-siege-customer"
+    },
+    {
+      "id": "src-siege-community-drawback",
+      "url": "https://www.reddit.com/r/Warhammer40k/comments/1o26cct/more_siege_studios_fallout/",
+      "publisher": "Reddit r/Warhammer40k",
+      "title": "Customer report about Painting Journal spine and fulfillment friction",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "social-discussion",
+      "trustTier": "C",
+      "independenceGroup": "reddit-siege-journal-customer"
+    },
+    {
+      "id": "src-lulu-journal-listing",
+      "url": "https://www.lulu.com/shop/bree-yosmanovich/miniature-painting-journal/paperback/product-65yd856.html",
+      "publisher": "Lulu",
+      "title": "Miniature Painting Journal by Bree Yosmanovich",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "print-on-demand-product",
+      "trustTier": "B",
+      "independenceGroup": "lulu-bree-yosmanovich"
+    },
+    {
+      "id": "src-canson-official",
+      "url": "https://us.canson.com/xl-mixed-media-usa",
+      "publisher": "Canson",
+      "title": "Canson XL Mixed Media paper specifications",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "manufacturer",
+      "trustTier": "A",
+      "independenceGroup": "canson"
+    },
+    {
+      "id": "src-canson-teoh-review",
+      "url": "https://www.youtube.com/watch?v=DOKjN3VkrVs",
+      "publisher": "Teoh Yi Chie",
+      "title": "Review of the Canson XL Mixed Media 300gsm pad; the reviewer explicitly says the 160gsm pad was not tested",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "independent-review",
+      "trustTier": "B",
+      "independenceGroup": "teoh-yi-chie-art-review"
+    },
+    {
+      "id": "src-zeta-hardcover-official",
+      "url": "https://stillmanandbirn.com/products_zeta_hardbound.php",
+      "publisher": "Stillman & Birn",
+      "title": "Zeta Hardcover Sketchbook item 900580 specifications",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "manufacturer",
+      "trustTier": "A",
+      "independenceGroup": "stillman-and-birn"
+    },
+    {
+      "id": "src-zeta-parka-a5-review",
+      "url": "https://www.parkablogs.com/index.php/content/review-stillman-birn-zeta-series-sketchbook",
+      "publisher": "Parka Blogs",
+      "title": "Review of the Stillman & Birn Zeta hardbound A5 sketchbook",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "independent-review",
+      "trustTier": "B",
+      "independenceGroup": "parka-blogs-zeta-review"
+    },
+    {
+      "id": "src-zeta-iris-5585-review",
+      "url": "https://iris-impressions.com/stillman-birn-zeta-series-art-journal-reviews/",
+      "publisher": "Iris Impressions",
+      "title": "Review of the Stillman & Birn Zeta 5.5 by 8.5 inch hardcover journal",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "independent-review",
+      "trustTier": "B",
+      "independenceGroup": "iris-impressions-zeta-review"
+    },
+    {
+      "id": "src-gsw-xl-official",
+      "url": "https://www.greenstuffworld.com/en/276-wet-palette?SubmitCurrency=1&id_currency=1",
+      "publisher": "Green Stuff World",
+      "title": "Acrylic Wet Palette XL reference 8435646501208ES and current XL refill listings",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "manufacturer",
+      "trustTier": "A",
+      "independenceGroup": "green-stuff-world"
+    },
+    {
+      "id": "src-gsw-tale-xl-review",
+      "url": "https://taleofpainters.com/2023/07/short-review-green-stuff-world-wet-palette/",
+      "publisher": "Tale of Painters",
+      "title": "Review of the Green Stuff World regular and XL wet palettes; review sample supplied by the manufacturer",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "independent-review",
+      "trustTier": "B",
+      "independenceGroup": "tale-of-painters-gsw"
+    },
+    {
+      "id": "src-gsw-xl-owner-review",
+      "url": "https://www.reddit.com/r/minipainting/comments/zxkz3j",
+      "publisher": "Reddit r/minipainting owner report",
+      "title": "One Green Stuff World Wet Palette XL owner reports hydropaper expansion and hydration friction",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "independent-review",
+      "trustTier": "C",
+      "independenceGroup": "reddit-gsw-xl-owner"
+    },
+    {
+      "id": "src-army-painter-xl-official",
+      "url": "https://us.thearmypainter.com/collections/painting-tools",
+      "publisher": "The Army Painter",
+      "title": "The Army Painter painting tools range including the Wargamers Edition Wet Palette",
+      "accessedAt": "2026-08-16",
+      "sourceClass": "manufacturer",
+      "trustTier": "A",
+      "independenceGroup": "the-army-painter-tools-range"
+    }
+  ],
+  "claims": [
+    {
+      "id": "claim-session-drying-friction",
+      "kind": "recipient_friction",
+      "text": "Miniature painters who mix conventional acrylic colors use wet palettes to keep a working reservoir available during a session instead of repeatedly rebuilding the mix.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-community-palette-mixing-2026",
+        "src-army-painter-official",
+        "src-rgg-painter-v2-official"
+      ]
+    },
+    {
+      "id": "claim-recipe-memory-friction",
+      "kind": "recipient_friction",
+      "text": "Public miniature-painting discussions describe lost ratios, unlabeled notes, and visibly different remixes when painters return to an army or project after a break.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-community-tracking-2026",
+        "src-community-recipe-book"
+      ]
+    },
+    {
+      "id": "claim-workflow-tool-deferral",
+      "kind": "self_purchase_pattern",
+      "text": "Painters describe recipe tracking as useful but tedious or easy to postpone, supporting a narrow coordination-burden case rather than an assumption that every painter wants a journal.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-community-tracking-2026",
+        "src-community-recipe-book"
+      ]
+    },
+    {
+      "id": "claim-acrylic-only-boundary",
+      "kind": "compatibility",
+      "text": "These wet-palette recommendations are for conventional water-based acrylic hobby paint; The Army Painter recommends a hard palette for Speedpaint, and Redgrass directs oil, pigment, heavy-body, and dry techniques to a glass palette.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": [
+        "src-army-painter-speedpaint-care",
+        "src-rgg-care-official"
+      ]
+    },
+    {
+      "id": "claim-thin-paint-hydration-risk",
+      "kind": "product_drawback",
+      "text": "Current public discussion reports that already-fluid paints can overhydrate on a wet palette, so the recipient must be willing to tune sponge saturation rather than assume one setup fits every acrylic line.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": [
+        "src-community-pro-acryl-2026",
+        "src-rgg-care-official"
+      ]
+    },
+    {
+      "id": "claim-cleaning-storage-burden",
+      "kind": "duplicate_clutter",
+      "text": "A sealed wet palette still requires rinsing, paper or membrane changes, and deliberate drying or cleaning; mold-resistant materials do not remove that ownership burden.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": [
+        "src-rgg-care-official",
+        "src-game-envy-pcn-review",
+        "src-army-painter-gallant-review"
+      ]
+    },
+    {
+      "id": "claim-rgg-benefit",
+      "kind": "product_benefit",
+      "text": "The Redgrass Painter v2 combines a medium workspace footprint, a sealed case, two hydration foams, and reusable membranes intended for miniature acrylic mixing.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-rgg-painter-v2-official",
+        "src-rgg-tangible-review",
+        "src-rgg-fauxhammer-review"
+      ]
+    },
+    {
+      "id": "claim-rgg-drawback",
+      "kind": "product_drawback",
+      "text": "The Painter v2 occupies more desk area than The Army Painter standard palette and its reusable surface creates a rinse-and-reuse task that disposable-sheet users may not welcome.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-rgg-painter-v2-official",
+        "src-rgg-tangible-review",
+        "src-rgg-fauxhammer-review"
+      ]
+    },
+    {
+      "id": "claim-rgg-compatibility",
+      "kind": "compatibility",
+      "text": "The Painter v2 needs a desk that can hold its 16.5 by 24 centimeter case and a recipient who uses conventional acrylic hobby paint and will follow the cleaning routine.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-rgg-painter-v2-official",
+        "src-rgg-care-official"
+      ]
+    },
+    {
+      "id": "claim-army-painter-benefit",
+      "kind": "product_benefit",
+      "text": "The Army Painter standard Wet Palette has a relatively compact 13.8 by 19.8 centimeter footprint, includes hydro sheets and foams, and adds brush-storage capacity.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-army-painter-official",
+        "src-army-painter-tale-review",
+        "src-army-painter-gallant-review"
+      ]
+    },
+    {
+      "id": "claim-army-painter-drawback",
+      "kind": "product_drawback",
+      "text": "The brush-storage insert is not optional in the closing stack according to an independent review, so it adds setup bulk when the recipient does not want to store brushes in the case.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-army-painter-official",
+        "src-army-painter-tale-review",
+        "src-army-painter-gallant-review"
+      ]
+    },
+    {
+      "id": "claim-army-painter-compatibility",
+      "kind": "compatibility",
+      "text": "The standard palette fits conventional miniature acrylic paint, but Speedpaint and similarly moisture-sensitive one-coat products should stay on the hard palette recommended by the paint manufacturer.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": [
+        "src-army-painter-official",
+        "src-army-painter-speedpaint-care"
+      ]
+    },
+    {
+      "id": "claim-masterson-benefit",
+      "kind": "product_benefit",
+      "text": "The Masterson Sta-Wet Handy Palette is a compact sealable sponge-and-paper system made for water-based acrylics, with replacement sponge and paper supplies available.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-masterson-official",
+        "src-masterson-tangible-review",
+        "src-masterson-laurie-review"
+      ]
+    },
+    {
+      "id": "claim-masterson-drawback",
+      "kind": "product_drawback",
+      "text": "The Handy Palette requires deliberate sponge and paper preparation, and its plain artist-tool design omits the brush storage and miniature-specific membranes offered by some hobby palettes.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-masterson-official",
+        "src-masterson-tangible-review",
+        "src-masterson-laurie-review"
+      ]
+    },
+    {
+      "id": "claim-masterson-compatibility",
+      "kind": "compatibility",
+      "text": "The 7 by 8.5 inch Handy Palette fits conventional water-based acrylic work when the recipient will prepare its proprietary paper and sponge according to the included instructions.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-masterson-official",
+        "src-masterson-tangible-review"
+      ]
+    },
+    {
+      "id": "claim-game-envy-benefit",
+      "kind": "product_benefit",
+      "text": "The current Exemplar PRO combines a broad 165 by 250 millimeter palette base, four lid locks, a gasket seal, and integrated tool storage.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-game-envy-official",
+        "src-game-envy-fauxhammer-review",
+        "src-game-envy-pcn-review"
+      ]
+    },
+    {
+      "id": "claim-game-envy-drawback",
+      "kind": "product_drawback",
+      "text": "Its overall footprint is larger than compact palettes, and the available independent reviews predate the current paper and sponge language, leaving current hydration performance less independently verified.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": [
+        "src-game-envy-official",
+        "src-game-envy-fauxhammer-review",
+        "src-game-envy-pcn-review"
+      ]
+    },
+    {
+      "id": "claim-game-envy-compatibility",
+      "kind": "compatibility",
+      "text": "The Exemplar PRO needs a workspace that can hold its 275 by 190 millimeter outer case and a painter willing to test hydration with their exact acrylic line.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": [
+        "src-game-envy-official",
+        "src-community-pro-acryl-2026"
+      ]
+    },
+    {
+      "id": "claim-hg-diary-benefit",
+      "kind": "product_benefit",
+      "text": "The HG Painter's Travel Color Diary supplies labeled swatch boxes on removable acrylic-compatible pages with glassine interleaving in a compact wire-bound format.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-hg-diary-official",
+        "src-hg-artistic-gnome-review",
+        "src-hg-walmart-reviews"
+      ]
+    },
+    {
+      "id": "claim-hg-diary-drawback",
+      "kind": "product_drawback",
+      "text": "The diary has only ten removable pages and its printed swatch fields are not a miniature-specific recipe template, so brand, ratio, model area, and layer order must be added by hand.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-hg-diary-official",
+        "src-hg-artistic-gnome-review",
+        "src-hg-walmart-reviews"
+      ]
+    },
+    {
+      "id": "claim-hg-diary-compatibility",
+      "kind": "compatibility",
+      "text": "The HG diary suits a painter who wants physical swatches and is comfortable inventing a compact notation for paint brand, approximate drop ratio, layer, and miniature area.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-hg-diary-official",
+        "src-community-tracking-2026"
+      ]
+    },
+    {
+      "id": "claim-strathmore-benefit",
+      "kind": "product_benefit",
+      "text": "The 5.5 by 8 inch Strathmore Mixed Media Visual Journal provides acrylic-compatible mixed-media paper and a wire binding that can lie flat beside a project.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-strathmore-catalog",
+        "src-strathmore-magic-owl-review",
+        "src-strathmore-nature-studio-review",
+        "src-strathmore-jasco-distributor"
+      ]
+    },
+    {
+      "id": "claim-strathmore-drawback",
+      "kind": "product_drawback",
+      "text": "The journal has no preprinted recipe fields, and independent tests report some buckling when the paper is heavily saturated, so each swatch should be small and allowed to dry.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-strathmore-magic-owl-review",
+        "src-strathmore-nature-studio-review"
+      ]
+    },
+    {
+      "id": "claim-strathmore-compatibility",
+      "kind": "compatibility",
+      "text": "The Visual Journal fits a recipient who prefers freeform handwriting and can keep one model area, paint brands, approximate ratio, layer order, and dried swatch together on each page.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-strathmore-catalog",
+        "src-community-tracking-2026"
+      ]
+    },
+    {
+      "id": "claim-canson-benefit",
+      "kind": "product_benefit",
+      "text": "The Canson XL Mixed Media 160gsm wire-bound pad uses acrylic-compatible paper with microperforated sheets that can become removable project-recipe cards.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-canson-official",
+        "src-strathmore-nature-studio-review"
+      ]
+    },
+    {
+      "id": "claim-canson-drawback",
+      "kind": "product_drawback",
+      "text": "The 160gsm paper can buckle under wet applications, and removable blank sheets need an intentional binder or folder plus a hand-built recipe layout to avoid becoming loose notes.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-canson-official",
+        "src-strathmore-nature-studio-review"
+      ]
+    },
+    {
+      "id": "claim-canson-compatibility",
+      "kind": "compatibility",
+      "text": "The Canson pad fits a painter who wants small acrylic swatches on removable cards and already has a folder or binder for keeping each recipe with its project.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-canson-official",
+        "src-community-tracking-2026"
+      ]
+    },
+    {
+      "id": "claim-gsw-xl-benefit",
+      "kind": "product_benefit",
+      "text": "The exact Green Stuff World Acrylic Wet Palette XL reference 8435646501208ES provides a 190 by 280 millimeter conventional-acrylic work surface, and the manufacturer currently lists matching XL hydro foams and hydropaper refills.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-gsw-xl-official",
+        "src-gsw-tale-xl-review"
+      ]
+    },
+    {
+      "id": "claim-gsw-xl-drawback",
+      "kind": "product_drawback",
+      "text": "The XL takes dedicated desk space; Tale of Painters notes that the case has no rubber seal and that the foam fit could be better, while one exact-XL owner reports that the supplied hydropaper expanded beyond the tray and behaved too hydrophobically for their workflow.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": [
+        "src-gsw-tale-xl-review",
+        "src-gsw-xl-owner-review"
+      ]
+    },
+    {
+      "id": "claim-gsw-xl-compatibility",
+      "kind": "compatibility",
+      "text": "This XL palette fits only when the recipient has room for a 190 by 280 millimeter station, uses conventional water-based acrylics, accepts disposable refill supplies, and is willing to test the first sheet before committing a valued mix.",
+      "risk": "medium",
+      "status": "supported",
+      "sourceIds": [
+        "src-gsw-xl-official",
+        "src-gsw-tale-xl-review",
+        "src-gsw-xl-owner-review"
+      ]
+    },
+    {
+      "id": "claim-pair-rgg-strathmore",
+      "kind": "pair_coherence",
+      "text": "The Redgrass Painter v2 and small lay-flat Strathmore journal form the roomier reusable configuration: the palette preserves a live conventional-acrylic mix while the journal records its brands, ratio, layer order, and dried reference for the next unit.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-rgg-painter-v2-official",
+        "src-strathmore-catalog",
+        "src-strathmore-jasco-distributor",
+        "src-community-tracking-2026"
+      ]
+    },
+    {
+      "id": "claim-pair-army-strathmore",
+      "kind": "pair_coherence",
+      "text": "The Army Painter palette and a small lay-flat Strathmore journal divide one compact-desk ritual into session hydration and a flexible project recipe that remains independently useful later.",
+      "risk": "low",
+      "status": "supported",
+      "sourceIds": [
+        "src-army-painter-official",
+        "src-strathmore-catalog",
+        "src-strathmore-jasco-distributor",
+        "src-community-recipe-book"
+      ]
+    }
+  ],
+  "candidates": [
+    {
+      "id": "redgrass-painter-v2",
+      "name": "Redgrass Everlasting Wet Palette Painter v2",
+      "editorialScore": 88,
+      "evidenceConfidence": 84,
+      "drawbacks": [
+        "It occupies more desk area than The Army Painter standard palette, and the reusable membrane is valuable only if the painter will rinse and reuse it."
+      ],
+      "primarySourceIds": [
+        "src-rgg-painter-v2-official"
+      ],
+      "independentSourceIds": [
+        "src-rgg-tangible-review",
+        "src-rgg-fauxhammer-review"
+      ],
+      "claimIds": [
+        "claim-rgg-benefit",
+        "claim-rgg-drawback",
+        "claim-rgg-compatibility"
+      ],
+      "evidenceMode": "desk_research",
+      "thoughtfulness": {
+        "observationPrompt": "Choose this only if you have seen them mix standard acrylic colors over long sessions and their desk can take a medium-size sealed palette.",
+        "frictionClaimIds": [
+          "claim-session-drying-friction"
+        ],
+        "physicalGiftBoundary": "welcome_when_verified",
+        "selfPurchase": {
+          "reason": "small_luxury_deferral",
+          "rationale": "A homemade or aging palette can remain workable enough that a better-sealed, reusable system stays behind new miniatures and paints on the hobby list.",
+          "basis": "editorial_inference",
+          "claimIds": [
+            "claim-workflow-tool-deferral"
+          ]
+        },
+        "duplicateRisk": {
+          "level": "medium",
+          "preGiftCheck": "Confirm they do not already own a trusted wet palette and that they want a reusable membrane rather than disposable paper."
+        },
+        "clutterRisk": {
+          "level": "medium",
+          "ownershipBurden": "The case, foam, and membranes need desk space, rinsing, and dry storage between longer gaps.",
+          "mitigation": "Measure the desk and confirm the recipient already uses a clean-and-reuse workflow before buying."
+        },
+        "compatibilityChecks": [
+          {
+            "dimension": "space_or_storage",
+            "status": "verified",
+            "requirement": "The painting station can hold a 16.5 by 24 centimeter palette without crowding the model or lamp.",
+            "claimIds": [
+              "claim-rgg-compatibility"
+            ]
+          },
+          {
+            "dimension": "skill_or_experience",
+            "status": "verified",
+            "requirement": "The recipient mixes conventional water-based acrylic hobby paint rather than relying mainly on oils, enamels, inks, or one-coat paints.",
+            "claimIds": [
+              "claim-acrylic-only-boundary"
+            ]
+          }
+        ],
+        "score": {
+          "frictionSpecificity": 5,
+          "selfPurchaseLogic": 4,
+          "ownershipEase": 4,
+          "recipientSpecificity": 5,
+          "total": 18
+        }
+      }
+    },
+    {
+      "id": "army-painter-wet-palette",
+      "name": "The Army Painter Wet Palette",
+      "editorialScore": 85,
+      "evidenceConfidence": 82,
+      "drawbacks": [
+        "The brush-storage insert is part of the closing stack, so it adds setup bulk for a painter who does not want brushes stored inside."
+      ],
+      "primarySourceIds": [
+        "src-army-painter-official"
+      ],
+      "independentSourceIds": [
+        "src-army-painter-tale-review",
+        "src-army-painter-gallant-review"
+      ],
+      "claimIds": [
+        "claim-army-painter-benefit",
+        "claim-army-painter-drawback",
+        "claim-army-painter-compatibility"
+      ],
+      "evidenceMode": "desk_research",
+      "thoughtfulness": {
+        "observationPrompt": "Choose this only if their painting area is compact, they use ordinary acrylics, and the included brush-storage layer would simplify rather than complicate setup.",
+        "frictionClaimIds": [
+          "claim-session-drying-friction"
+        ],
+        "physicalGiftBoundary": "welcome_when_verified",
+        "selfPurchase": {
+          "reason": "research_burden",
+          "rationale": "A small dedicated palette can remain unbought while the painter compares homemade systems, palette sizes, paper supplies, and brush storage.",
+          "basis": "editorial_inference",
+          "claimIds": [
+            "claim-workflow-tool-deferral"
+          ]
+        },
+        "duplicateRisk": {
+          "level": "medium",
+          "preGiftCheck": "Check for an existing wet palette and ask whether internal brush storage is useful in their actual desk or travel setup."
+        },
+        "clutterRisk": {
+          "level": "low",
+          "ownershipBurden": "The compact case still needs water changes, sheet replacement, rinsing, and drying between longer breaks.",
+          "mitigation": "Gift it only to someone who already cleans water-based acrylic tools after each project."
+        },
+        "compatibilityChecks": [
+          {
+            "dimension": "space_or_storage",
+            "status": "verified",
+            "requirement": "The painting station can hold the 13.8 by 19.8 centimeter palette and its removable brush-storage layer.",
+            "claimIds": [
+              "claim-army-painter-benefit"
+            ]
+          },
+          {
+            "dimension": "skill_or_experience",
+            "status": "verified",
+            "requirement": "The recipient uses conventional acrylic hobby paint and will keep Speedpaint or similar one-coat products on a hard palette.",
+            "claimIds": [
+              "claim-army-painter-compatibility"
+            ]
+          }
+        ],
+        "score": {
+          "frictionSpecificity": 5,
+          "selfPurchaseLogic": 4,
+          "ownershipEase": 5,
+          "recipientSpecificity": 4,
+          "total": 18
+        }
+      }
+    },
+    {
+      "id": "game-envy-exemplar-pro",
+      "name": "Game Envy Exemplar PRO Wet Palette",
+      "editorialScore": 72,
+      "evidenceConfidence": 64,
+      "drawbacks": [
+        "The independent reviews cover an earlier Exemplar configuration rather than the exact current PRO paper-and-sponge system, so the current product cannot qualify as a finalist."
+      ],
+      "primarySourceIds": [
+        "src-game-envy-official"
+      ],
+      "independentSourceIds": [
+        "src-game-envy-fauxhammer-review",
+        "src-game-envy-pcn-review"
+      ],
+      "claimIds": [
+        "claim-game-envy-benefit",
+        "claim-game-envy-drawback",
+        "claim-game-envy-compatibility"
+      ],
+      "evidenceMode": "desk_research",
+      "thoughtfulness": {
+        "observationPrompt": "Choose this only for a painter who repeatedly runs out of mixing room, wants latched storage, and has measured space for the wider case.",
+        "frictionClaimIds": [
+          "claim-session-drying-friction"
+        ],
+        "physicalGiftBoundary": "welcome_when_verified",
+        "selfPurchase": {
+          "reason": "small_luxury_deferral",
+          "rationale": "A larger palette is a workflow upgrade that can be deferred when a smaller palette still functions despite crowding custom mixes.",
+          "basis": "editorial_inference",
+          "claimIds": [
+            "claim-workflow-tool-deferral"
+          ]
+        },
+        "duplicateRisk": {
+          "level": "high",
+          "preGiftCheck": "Confirm their current palette is genuinely too small and that they want a latched case rather than another compact option."
+        },
+        "clutterRisk": {
+          "level": "medium",
+          "ownershipBurden": "The larger case and internal storage occupy more of a permanent or travel painting station.",
+          "mitigation": "Measure the clear desk area and confirm that the added mixing surface solves an observed crowding problem."
+        },
+        "compatibilityChecks": [
+          {
+            "dimension": "space_or_storage",
+            "status": "verified",
+            "requirement": "The desk or travel case can accommodate the current 275 by 190 millimeter outer footprint.",
+            "claimIds": [
+              "claim-game-envy-compatibility"
+            ]
+          },
+          {
+            "dimension": "skill_or_experience",
+            "status": "verified",
+            "requirement": "The painter is willing to tune sponge saturation for their exact conventional acrylic line instead of assuming every paint hydrates identically.",
+            "claimIds": [
+              "claim-thin-paint-hydration-risk"
+            ]
+          }
+        ],
+        "score": {
+          "frictionSpecificity": 4,
+          "selfPurchaseLogic": 4,
+          "ownershipEase": 3,
+          "recipientSpecificity": 5,
+          "total": 16
+        }
+      }
+    },
+    {
+      "id": "hg-travel-color-diary",
+      "name": "HG Art Concepts Painter's Travel Color Diary for Oils and Acrylics",
+      "editorialScore": 73,
+      "evidenceConfidence": 64,
+      "drawbacks": [
+        "The independent review located evaluates a differently specified diary and the syndicated buyer evidence does not establish an exact-product second review, so this version cannot qualify as a finalist."
+      ],
+      "primarySourceIds": [
+        "src-hg-diary-official"
+      ],
+      "independentSourceIds": [
+        "src-hg-artistic-gnome-review",
+        "src-hg-walmart-reviews"
+      ],
+      "claimIds": [
+        "claim-hg-diary-benefit",
+        "claim-hg-diary-drawback",
+        "claim-hg-diary-compatibility"
+      ],
+      "evidenceMode": "desk_research",
+      "thoughtfulness": {
+        "observationPrompt": "Choose this only if they already make custom acrylic mixes and have complained about photos or notes that omit the brand, ratio, model area, or dry color.",
+        "frictionClaimIds": [
+          "claim-recipe-memory-friction"
+        ],
+        "physicalGiftBoundary": "welcome_when_verified",
+        "selfPurchase": {
+          "reason": "coordination_burden",
+          "rationale": "The value comes from coordinating a dry swatch with brand and ratio notes, a useful discipline that painters may postpone even after losing a recipe.",
+          "basis": "social_demand",
+          "claimIds": [
+            "claim-workflow-tool-deferral"
+          ]
+        },
+        "duplicateRisk": {
+          "level": "medium",
+          "preGiftCheck": "Confirm they do not already keep an effective swatch binder, app, recipe notebook, or photo-and-label system."
+        },
+        "clutterRisk": {
+          "level": "low",
+          "ownershipBurden": "The compact diary must stay near the paint station and its removable pages must be returned after swatches dry.",
+          "mitigation": "Start with one recurring army color and use a four-field notation instead of trying to catalog every paint."
+        },
+        "compatibilityChecks": [
+          {
+            "dimension": "accessibility",
+            "status": "verified",
+            "requirement": "The painter is comfortable handwriting small brand and ratio labels or has someone who can prepare larger reusable field labels.",
+            "claimIds": [
+              "claim-hg-diary-compatibility"
+            ]
+          },
+          {
+            "dimension": "skill_or_experience",
+            "status": "verified",
+            "requirement": "The recipient mixes repeat colors and wants a physical dried swatch rather than an app-only record.",
+            "claimIds": [
+              "claim-recipe-memory-friction"
+            ]
+          }
+        ],
+        "score": {
+          "frictionSpecificity": 5,
+          "selfPurchaseLogic": 5,
+          "ownershipEase": 4,
+          "recipientSpecificity": 5,
+          "total": 19
+        }
+      }
+    },
+    {
+      "id": "strathmore-mixed-media-visual-journal",
+      "name": "Strathmore Mixed Media Visual Journal 5.5 x 8 inch",
+      "editorialScore": 80,
+      "evidenceConfidence": 76,
+      "drawbacks": [
+        "It has no preprinted recipe fields, and its paper can buckle when heavily saturated, so every notation layout and small dried swatch must be made by the painter."
+      ],
+      "primarySourceIds": [
+        "src-strathmore-catalog"
+      ],
+      "independentSourceIds": [
+        "src-strathmore-magic-owl-review",
+        "src-strathmore-nature-studio-review"
+      ],
+      "claimIds": [
+        "claim-strathmore-benefit",
+        "claim-strathmore-drawback",
+        "claim-strathmore-compatibility"
+      ],
+      "evidenceMode": "desk_research",
+      "thoughtfulness": {
+        "observationPrompt": "Choose this only if they prefer freeform physical notes and want one model area, recipe, layer order, and small dried swatch together on a page.",
+        "frictionClaimIds": [
+          "claim-recipe-memory-friction"
+        ],
+        "physicalGiftBoundary": "welcome_when_verified",
+        "selfPurchase": {
+          "reason": "coordination_burden",
+          "rationale": "A blank mixed-media journal removes software setup but still asks the painter to design and repeat a recipe format, a task easy to defer.",
+          "basis": "social_demand",
+          "claimIds": [
+            "claim-workflow-tool-deferral"
+          ]
+        },
+        "duplicateRisk": {
+          "level": "medium",
+          "preGiftCheck": "Confirm they do not already have a recipe notebook and that blank-page flexibility feels helpful rather than like homework."
+        },
+        "clutterRisk": {
+          "level": "low",
+          "ownershipBurden": "The journal must remain findable at the desk and each useful recipe requires consistent labeling.",
+          "mitigation": "Add a one-page key with fields for area, paints, ratio, layers, and dry swatch, then log only repeat colors."
+        },
+        "compatibilityChecks": [
+          {
+            "dimension": "accessibility",
+            "status": "verified",
+            "requirement": "The recipient can use a wire-bound blank page and a personally legible ratio notation without a printed miniature-specific template.",
+            "claimIds": [
+              "claim-strathmore-compatibility"
+            ]
+          },
+          {
+            "dimension": "skill_or_experience",
+            "status": "verified",
+            "requirement": "The painter wants physical acrylic swatches and will use only small samples rather than soaking the paper with large washes.",
+            "claimIds": [
+              "claim-strathmore-drawback"
+            ]
+          }
+        ],
+        "score": {
+          "frictionSpecificity": 5,
+          "selfPurchaseLogic": 4,
+          "ownershipEase": 4,
+          "recipientSpecificity": 4,
+          "total": 17
+        }
+      }
+    },
+    {
+      "id": "masterson-sta-wet-handy",
+      "name": "Masterson Sta-Wet Handy Palette",
+      "editorialScore": 82,
+      "evidenceConfidence": 78,
+      "drawbacks": [
+        "Its sponge and proprietary paper require deliberate preparation, and the plain case has no miniature-specific brush storage or reusable membrane."
+      ],
+      "primarySourceIds": [
+        "src-masterson-official"
+      ],
+      "independentSourceIds": [
+        "src-masterson-tangible-review",
+        "src-masterson-laurie-review"
+      ],
+      "claimIds": [
+        "claim-masterson-benefit",
+        "claim-masterson-drawback",
+        "claim-masterson-compatibility"
+      ],
+      "evidenceMode": "desk_research",
+      "thoughtfulness": {
+        "observationPrompt": "Choose this only if they use ordinary water-based acrylics, want a small no-frills palette, and will prepare the sponge and paper before painting.",
+        "frictionClaimIds": [
+          "claim-session-drying-friction"
+        ],
+        "physicalGiftBoundary": "welcome_when_verified",
+        "selfPurchase": {
+          "reason": "replacement_inertia",
+          "rationale": "A homemade palette can remain usable enough that a durable fitted case and refill system stays postponed despite repeated drying or leakage frustration.",
+          "basis": "editorial_inference",
+          "claimIds": [
+            "claim-workflow-tool-deferral"
+          ]
+        },
+        "duplicateRisk": {
+          "level": "medium",
+          "preGiftCheck": "Confirm they do not already have a wet palette and that a no-frills artist case fits their routine better than hobby-specific storage."
+        },
+        "clutterRisk": {
+          "level": "low",
+          "ownershipBurden": "The sponge, proprietary paper, and case need preparation, rinsing, and dry storage between longer breaks.",
+          "mitigation": "Gift it only to a painter who already cleans acrylic tools and prefers a simple compact system."
+        },
+        "compatibilityChecks": [
+          {
+            "dimension": "space_or_storage",
+            "status": "verified",
+            "requirement": "The desk or travel kit can hold the 7 by 8.5 inch case without crowding the miniature or lighting.",
+            "claimIds": [
+              "claim-masterson-compatibility"
+            ]
+          },
+          {
+            "dimension": "skill_or_experience",
+            "status": "verified",
+            "requirement": "The recipient uses conventional water-based acrylic paint and will follow the included sponge-and-paper preparation instructions.",
+            "claimIds": [
+              "claim-masterson-compatibility",
+              "claim-acrylic-only-boundary"
+            ]
+          }
+        ],
+        "score": {
+          "frictionSpecificity": 5,
+          "selfPurchaseLogic": 4,
+          "ownershipEase": 4,
+          "recipientSpecificity": 4,
+          "total": 17
+        }
+      }
+    },
+    {
+      "id": "redgrass-studio-xl-v2",
+      "name": "Redgrass Everlasting Wet Palette Studio XL v2",
+      "editorialScore": 72,
+      "evidenceConfidence": 79,
+      "drawbacks": [
+        "Its 30.5 by 20.5 centimeter footprint conflicts with the approved brief's compact-workflow requirement for many desks."
+      ],
+      "primarySourceIds": [
+        "src-rgg-painter-v2-official"
+      ],
+      "independentSourceIds": [
+        "src-rgg-tangible-review",
+        "src-rgg-fauxhammer-review"
+      ],
+      "claimIds": [
+        "claim-session-drying-friction",
+        "claim-cleaning-storage-burden"
+      ],
+      "evidenceMode": "desk_research"
+    },
+    {
+      "id": "green-stuff-world-wet-palette-xl",
+      "name": "Green Stuff World Acrylic Wet Palette XL (reference 8435646501208ES)",
+      "editorialScore": 77,
+      "evidenceConfidence": 74,
+      "drawbacks": [
+        "Its 190 by 280 millimeter surface is for a dedicated desk; Tale of Painters notes no rubber seal and imperfect foam fit, while one exact-XL owner reports the supplied hydropaper expanded beyond the tray and behaved too hydrophobically for their workflow."
+      ],
+      "primarySourceIds": [
+        "src-gsw-xl-official"
+      ],
+      "independentSourceIds": [
+        "src-gsw-tale-xl-review",
+        "src-gsw-xl-owner-review"
+      ],
+      "claimIds": [
+        "claim-gsw-xl-benefit",
+        "claim-gsw-xl-drawback",
+        "claim-gsw-xl-compatibility"
+      ],
+      "evidenceMode": "desk_research",
+      "thoughtfulness": {
+        "observationPrompt": "Choose this only if they batch-paint with many colors on a dedicated desk, use conventional water-based acrylics, and do not already have a trusted large wet palette.",
+        "frictionClaimIds": [
+          "claim-session-drying-friction"
+        ],
+        "physicalGiftBoundary": "welcome_when_verified",
+        "selfPurchase": {
+          "reason": "small_luxury_deferral",
+          "rationale": "A homemade or smaller palette can remain tolerable enough that a roomier dedicated mixing surface stays behind paints and miniatures on the hobby list.",
+          "basis": "editorial_inference",
+          "claimIds": [
+            "claim-workflow-tool-deferral"
+          ]
+        },
+        "duplicateRisk": {
+          "level": "high",
+          "preGiftCheck": "Confirm they do not already own a trusted wet palette and specifically want an XL station rather than a compact or reusable-membrane system."
+        },
+        "clutterRisk": {
+          "level": "high",
+          "ownershipBurden": "The 190 by 280 millimeter case, damp foam, disposable paper, refills, cleaning, and dry storage all claim permanent workspace and attention.",
+          "mitigation": "Gift it only after measuring the painting station and confirming the recipient accepts disposable refills and routine wet-palette care."
+        },
+        "compatibilityChecks": [
+          {
+            "dimension": "space_or_storage",
+            "status": "verified",
+            "requirement": "The dedicated painting station can keep a 190 by 280 millimeter palette accessible without crowding miniatures, lighting, or brush water.",
+            "claimIds": [
+              "claim-gsw-xl-compatibility"
+            ]
+          },
+          {
+            "dimension": "skill_or_experience",
+            "status": "verified",
+            "requirement": "The recipient uses conventional water-based acrylics, accepts disposable refills, and will test the first supplied sheet before committing a valued paint mix.",
+            "claimIds": [
+              "claim-gsw-xl-compatibility",
+              "claim-acrylic-only-boundary"
+            ]
+          }
+        ],
+        "score": {
+          "frictionSpecificity": 4,
+          "selfPurchaseLogic": 4,
+          "ownershipEase": 3,
+          "recipientSpecificity": 5,
+          "total": 16
+        }
+      }
+    },
+    {
+      "id": "army-painter-wargamers-edition",
+      "name": "The Army Painter Wargamers Edition Wet Palette",
+      "editorialScore": 71,
+      "evidenceConfidence": 61,
+      "drawbacks": [
+        "It expands the system beyond the compact standard palette, and the current exact configuration lacks two qualifying independent reviews in this run."
+      ],
+      "primarySourceIds": [
+        "src-army-painter-xl-official"
+      ],
+      "independentSourceIds": [],
+      "claimIds": [
+        "claim-session-drying-friction",
+        "claim-cleaning-storage-burden"
+      ],
+      "evidenceMode": "desk_research"
+    },
+    {
+      "id": "stokes-tabletop-paint-journal",
+      "name": "Stokes Tabletop Paint Journal",
+      "editorialScore": 74,
+      "evidenceConfidence": 66,
+      "drawbacks": [
+        "Its miniature-specific layout is promising, but product evidence and buyer feedback are concentrated on one marketplace listing rather than two independent review groups."
+      ],
+      "primarySourceIds": [
+        "src-stokes-journal-listing"
+      ],
+      "independentSourceIds": [],
+      "claimIds": [
+        "claim-recipe-memory-friction",
+        "claim-workflow-tool-deferral"
+      ],
+      "evidenceMode": "desk_research"
+    },
+    {
+      "id": "siege-studios-painting-journal",
+      "name": "Siege Studios Painting Journal",
+      "editorialScore": 68,
+      "evidenceConfidence": 71,
+      "drawbacks": [
+        "Independent reports conflict on quality, and one owner reports a rigid spine that springs closed while a paint swatch dries, directly undermining desk-side recipe logging."
+      ],
+      "primarySourceIds": [
+        "src-siege-journal-official"
+      ],
+      "independentSourceIds": [
+        "src-siege-trustpilot-review"
+      ],
+      "claimIds": [
+        "claim-recipe-memory-friction",
+        "claim-workflow-tool-deferral"
+      ],
+      "evidenceMode": "desk_research"
+    },
+    {
+      "id": "bree-yosmanovich-miniature-journal",
+      "name": "Miniature Painting Journal by Bree Yosmanovich",
+      "editorialScore": 66,
+      "evidenceConfidence": 54,
+      "drawbacks": [
+        "The print-on-demand listing describes a useful layout but this run found no two independent product reviews to verify paper behavior and desk usability."
+      ],
+      "primarySourceIds": [
+        "src-lulu-journal-listing"
+      ],
+      "independentSourceIds": [],
+      "claimIds": [
+        "claim-recipe-memory-friction",
+        "claim-workflow-tool-deferral"
+      ],
+      "evidenceMode": "desk_research"
+    },
+    {
+      "id": "canson-xl-mixed-media-pad",
+      "name": "Canson XL Mixed Media 160gsm Wire-Bound Pad",
+      "editorialScore": 71,
+      "evidenceConfidence": 64,
+      "drawbacks": [
+        "It is not finalist-qualified: the Teoh review tests the 300gsm variant and explicitly says the 160gsm pad was not tested, leaving only one exact independent review for the 160gsm product."
+      ],
+      "primarySourceIds": [
+        "src-canson-official"
+      ],
+      "independentSourceIds": [
+        "src-strathmore-nature-studio-review"
+      ],
+      "claimIds": [
+        "claim-canson-benefit",
+        "claim-canson-drawback",
+        "claim-canson-compatibility"
+      ],
+      "evidenceMode": "desk_research",
+      "thoughtfulness": {
+        "observationPrompt": "Choose this only if they want removable physical recipe cards, already use a binder or folder, and can keep each small dry swatch with its project.",
+        "frictionClaimIds": [
+          "claim-recipe-memory-friction"
+        ],
+        "physicalGiftBoundary": "welcome_when_verified",
+        "selfPurchase": {
+          "reason": "coordination_burden",
+          "rationale": "A removable-card system is inexpensive but requires choosing a layout and filing method, so it can stay postponed after repeated lost notes.",
+          "basis": "social_demand",
+          "claimIds": [
+            "claim-workflow-tool-deferral"
+          ]
+        },
+        "duplicateRisk": {
+          "level": "medium",
+          "preGiftCheck": "Confirm they do not already use swatch cards or a project binder and that removable sheets are preferable to a bound notebook."
+        },
+        "clutterRisk": {
+          "level": "medium",
+          "ownershipBurden": "Loose recipe cards need one named folder or binder and a repeated five-field layout to remain findable.",
+          "mitigation": "Include one labeled project folder and start with only the recipient's recurring army or character colors."
+        },
+        "compatibilityChecks": [
+          {
+            "dimension": "accessibility",
+            "status": "verified",
+            "requirement": "The recipient can handwrite a legible recipe or use prepared labels on each removable project card.",
+            "claimIds": [
+              "claim-canson-compatibility"
+            ]
+          },
+          {
+            "dimension": "skill_or_experience",
+            "status": "verified",
+            "requirement": "The painter wants small conventional-acrylic swatches and will avoid saturating the 160gsm paper with a large wet sample.",
+            "claimIds": [
+              "claim-canson-drawback"
+            ]
+          }
+        ],
+        "score": {
+          "frictionSpecificity": 5,
+          "selfPurchaseLogic": 4,
+          "ownershipEase": 3,
+          "recipientSpecificity": 4,
+          "total": 16
+        }
+      }
+    },
+    {
+      "id": "stillman-birn-zeta-900580",
+      "name": "Stillman & Birn Zeta Hardcover Sketchbook 5.5 x 8.5 inch (item 900580)",
+      "editorialScore": 69,
+      "evidenceConfidence": 64,
+      "drawbacks": [
+        "It is not finalist-qualified: neither exact-size independent review supports applying acrylic paint, and one reports that the smooth paper pills during repeated mixed-media brushwork."
+      ],
+      "primarySourceIds": [
+        "src-zeta-hardcover-official"
+      ],
+      "independentSourceIds": [
+        "src-zeta-parka-a5-review",
+        "src-zeta-iris-5585-review"
+      ],
+      "claimIds": [
+        "claim-recipe-memory-friction",
+        "claim-workflow-tool-deferral"
+      ],
+      "evidenceMode": "desk_research"
+    },
+    {
+      "id": "generic-phone-photo-log",
+      "name": "Phone photo and notes log",
+      "editorialScore": 64,
+      "evidenceConfidence": 76,
+      "drawbacks": [
+        "Public discussions show that photos and scattered notes can omit the model area, paint brand, ratio, or dried color and are not a physical gift."
+      ],
+      "primarySourceIds": [],
+      "independentSourceIds": [],
+      "claimIds": [
+        "claim-recipe-memory-friction",
+        "claim-workflow-tool-deferral"
+      ],
+      "evidenceMode": "desk_research"
+    },
+    {
+      "id": "blank-office-notebook",
+      "name": "Generic blank office notebook",
+      "editorialScore": 58,
+      "evidenceConfidence": 70,
+      "drawbacks": [
+        "Ordinary writing paper may not accept a useful acrylic swatch and offers no workflow advantage over the recipient's existing scattered notes."
+      ],
+      "primarySourceIds": [],
+      "independentSourceIds": [],
+      "claimIds": [
+        "claim-recipe-memory-friction",
+        "claim-workflow-tool-deferral"
+      ],
+      "evidenceMode": "desk_research"
+    }
+  ],
+  "finalists": [
+    {
+      "id": "redgrass-painter-v2",
+      "name": "Redgrass Everlasting Wet Palette Painter v2",
+      "editorialScore": 88,
+      "evidenceConfidence": 84,
+      "drawbacks": [
+        "It occupies more desk area than The Army Painter standard palette, and the reusable membrane is valuable only if the painter will rinse and reuse it."
+      ],
+      "primarySourceIds": [
+        "src-rgg-painter-v2-official"
+      ],
+      "independentSourceIds": [
+        "src-rgg-tangible-review",
+        "src-rgg-fauxhammer-review"
+      ],
+      "claimIds": [
+        "claim-rgg-benefit",
+        "claim-rgg-drawback",
+        "claim-rgg-compatibility"
+      ],
+      "evidenceMode": "desk_research",
+      "thoughtfulness": {
+        "observationPrompt": "Choose this only if you have seen them mix standard acrylic colors over long sessions and their desk can take a medium-size sealed palette.",
+        "frictionClaimIds": [
+          "claim-session-drying-friction"
+        ],
+        "physicalGiftBoundary": "welcome_when_verified",
+        "selfPurchase": {
+          "reason": "small_luxury_deferral",
+          "rationale": "A homemade or aging palette can remain workable enough that a better-sealed, reusable system stays behind new miniatures and paints on the hobby list.",
+          "basis": "editorial_inference",
+          "claimIds": [
+            "claim-workflow-tool-deferral"
+          ]
+        },
+        "duplicateRisk": {
+          "level": "medium",
+          "preGiftCheck": "Confirm they do not already own a trusted wet palette and that they want a reusable membrane rather than disposable paper."
+        },
+        "clutterRisk": {
+          "level": "medium",
+          "ownershipBurden": "The case, foam, and membranes need desk space, rinsing, and dry storage between longer gaps.",
+          "mitigation": "Measure the desk and confirm the recipient already uses a clean-and-reuse workflow before buying."
+        },
+        "compatibilityChecks": [
+          {
+            "dimension": "space_or_storage",
+            "status": "verified",
+            "requirement": "The painting station can hold a 16.5 by 24 centimeter palette without crowding the model or lamp.",
+            "claimIds": [
+              "claim-rgg-compatibility"
+            ]
+          },
+          {
+            "dimension": "skill_or_experience",
+            "status": "verified",
+            "requirement": "The recipient mixes conventional water-based acrylic hobby paint rather than relying mainly on oils, enamels, inks, or one-coat paints.",
+            "claimIds": [
+              "claim-acrylic-only-boundary"
+            ]
+          }
+        ],
+        "score": {
+          "frictionSpecificity": 5,
+          "selfPurchaseLogic": 4,
+          "ownershipEase": 4,
+          "recipientSpecificity": 5,
+          "total": 18
+        }
+      }
+    },
+    {
+      "id": "army-painter-wet-palette",
+      "name": "The Army Painter Wet Palette",
+      "editorialScore": 85,
+      "evidenceConfidence": 82,
+      "drawbacks": [
+        "The brush-storage insert is part of the closing stack, so it adds setup bulk for a painter who does not want brushes stored inside."
+      ],
+      "primarySourceIds": [
+        "src-army-painter-official"
+      ],
+      "independentSourceIds": [
+        "src-army-painter-tale-review",
+        "src-army-painter-gallant-review"
+      ],
+      "claimIds": [
+        "claim-army-painter-benefit",
+        "claim-army-painter-drawback",
+        "claim-army-painter-compatibility"
+      ],
+      "evidenceMode": "desk_research",
+      "thoughtfulness": {
+        "observationPrompt": "Choose this only if their painting area is compact, they use ordinary acrylics, and the included brush-storage layer would simplify rather than complicate setup.",
+        "frictionClaimIds": [
+          "claim-session-drying-friction"
+        ],
+        "physicalGiftBoundary": "welcome_when_verified",
+        "selfPurchase": {
+          "reason": "research_burden",
+          "rationale": "A small dedicated palette can remain unbought while the painter compares homemade systems, palette sizes, paper supplies, and brush storage.",
+          "basis": "editorial_inference",
+          "claimIds": [
+            "claim-workflow-tool-deferral"
+          ]
+        },
+        "duplicateRisk": {
+          "level": "medium",
+          "preGiftCheck": "Check for an existing wet palette and ask whether internal brush storage is useful in their actual desk or travel setup."
+        },
+        "clutterRisk": {
+          "level": "low",
+          "ownershipBurden": "The compact case still needs water changes, sheet replacement, rinsing, and drying between longer breaks.",
+          "mitigation": "Gift it only to someone who already cleans water-based acrylic tools after each project."
+        },
+        "compatibilityChecks": [
+          {
+            "dimension": "space_or_storage",
+            "status": "verified",
+            "requirement": "The painting station can hold the 13.8 by 19.8 centimeter palette and its removable brush-storage layer.",
+            "claimIds": [
+              "claim-army-painter-benefit"
+            ]
+          },
+          {
+            "dimension": "skill_or_experience",
+            "status": "verified",
+            "requirement": "The recipient uses conventional acrylic hobby paint and will keep Speedpaint or similar one-coat products on a hard palette.",
+            "claimIds": [
+              "claim-army-painter-compatibility"
+            ]
+          }
+        ],
+        "score": {
+          "frictionSpecificity": 5,
+          "selfPurchaseLogic": 4,
+          "ownershipEase": 5,
+          "recipientSpecificity": 4,
+          "total": 18
+        }
+      }
+    },
+    {
+      "id": "masterson-sta-wet-handy",
+      "name": "Masterson Sta-Wet Handy Palette",
+      "editorialScore": 82,
+      "evidenceConfidence": 78,
+      "drawbacks": [
+        "Its sponge and proprietary paper require deliberate preparation, and the plain case has no miniature-specific brush storage or reusable membrane."
+      ],
+      "primarySourceIds": [
+        "src-masterson-official"
+      ],
+      "independentSourceIds": [
+        "src-masterson-tangible-review",
+        "src-masterson-laurie-review"
+      ],
+      "claimIds": [
+        "claim-masterson-benefit",
+        "claim-masterson-drawback",
+        "claim-masterson-compatibility"
+      ],
+      "evidenceMode": "desk_research",
+      "thoughtfulness": {
+        "observationPrompt": "Choose this only if they use ordinary water-based acrylics, want a small no-frills palette, and will prepare the sponge and paper before painting.",
+        "frictionClaimIds": [
+          "claim-session-drying-friction"
+        ],
+        "physicalGiftBoundary": "welcome_when_verified",
+        "selfPurchase": {
+          "reason": "replacement_inertia",
+          "rationale": "A homemade palette can remain usable enough that a durable fitted case and refill system stays postponed despite repeated drying or leakage frustration.",
+          "basis": "editorial_inference",
+          "claimIds": [
+            "claim-workflow-tool-deferral"
+          ]
+        },
+        "duplicateRisk": {
+          "level": "medium",
+          "preGiftCheck": "Confirm they do not already have a wet palette and that a no-frills artist case fits their routine better than hobby-specific storage."
+        },
+        "clutterRisk": {
+          "level": "low",
+          "ownershipBurden": "The sponge, proprietary paper, and case need preparation, rinsing, and dry storage between longer breaks.",
+          "mitigation": "Gift it only to a painter who already cleans acrylic tools and prefers a simple compact system."
+        },
+        "compatibilityChecks": [
+          {
+            "dimension": "space_or_storage",
+            "status": "verified",
+            "requirement": "The desk or travel kit can hold the 7 by 8.5 inch case without crowding the miniature or lighting.",
+            "claimIds": [
+              "claim-masterson-compatibility"
+            ]
+          },
+          {
+            "dimension": "skill_or_experience",
+            "status": "verified",
+            "requirement": "The recipient uses conventional water-based acrylic paint and will follow the included sponge-and-paper preparation instructions.",
+            "claimIds": [
+              "claim-masterson-compatibility",
+              "claim-acrylic-only-boundary"
+            ]
+          }
+        ],
+        "score": {
+          "frictionSpecificity": 5,
+          "selfPurchaseLogic": 4,
+          "ownershipEase": 4,
+          "recipientSpecificity": 4,
+          "total": 17
+        }
+      }
+    },
+    {
+      "id": "strathmore-mixed-media-visual-journal",
+      "name": "Strathmore Mixed Media Visual Journal 5.5 x 8 inch",
+      "editorialScore": 80,
+      "evidenceConfidence": 76,
+      "drawbacks": [
+        "It has no preprinted recipe fields, and its paper can buckle when heavily saturated, so every notation layout and small dried swatch must be made by the painter."
+      ],
+      "primarySourceIds": [
+        "src-strathmore-catalog"
+      ],
+      "independentSourceIds": [
+        "src-strathmore-magic-owl-review",
+        "src-strathmore-nature-studio-review"
+      ],
+      "claimIds": [
+        "claim-strathmore-benefit",
+        "claim-strathmore-drawback",
+        "claim-strathmore-compatibility"
+      ],
+      "evidenceMode": "desk_research",
+      "thoughtfulness": {
+        "observationPrompt": "Choose this only if they prefer freeform physical notes and want one model area, recipe, layer order, and small dried swatch together on a page.",
+        "frictionClaimIds": [
+          "claim-recipe-memory-friction"
+        ],
+        "physicalGiftBoundary": "welcome_when_verified",
+        "selfPurchase": {
+          "reason": "coordination_burden",
+          "rationale": "A blank mixed-media journal removes software setup but still asks the painter to design and repeat a recipe format, a task easy to defer.",
+          "basis": "social_demand",
+          "claimIds": [
+            "claim-workflow-tool-deferral"
+          ]
+        },
+        "duplicateRisk": {
+          "level": "medium",
+          "preGiftCheck": "Confirm they do not already have a recipe notebook and that blank-page flexibility feels helpful rather than like homework."
+        },
+        "clutterRisk": {
+          "level": "low",
+          "ownershipBurden": "The journal must remain findable at the desk and each useful recipe requires consistent labeling.",
+          "mitigation": "Add a one-page key with fields for area, paints, ratio, layers, and dry swatch, then log only repeat colors."
+        },
+        "compatibilityChecks": [
+          {
+            "dimension": "accessibility",
+            "status": "verified",
+            "requirement": "The recipient can use a wire-bound blank page and a personally legible ratio notation without a printed miniature-specific template.",
+            "claimIds": [
+              "claim-strathmore-compatibility"
+            ]
+          },
+          {
+            "dimension": "skill_or_experience",
+            "status": "verified",
+            "requirement": "The painter wants physical acrylic swatches and will use only small samples rather than soaking the paper with large washes.",
+            "claimIds": [
+              "claim-strathmore-drawback"
+            ]
+          }
+        ],
+        "score": {
+          "frictionSpecificity": 5,
+          "selfPurchaseLogic": 4,
+          "ownershipEase": 4,
+          "recipientSpecificity": 4,
+          "total": 17
+        }
+      }
+    },
+    {
+      "id": "green-stuff-world-wet-palette-xl",
+      "name": "Green Stuff World Acrylic Wet Palette XL (reference 8435646501208ES)",
+      "editorialScore": 77,
+      "evidenceConfidence": 74,
+      "drawbacks": [
+        "Its 190 by 280 millimeter surface is for a dedicated desk; Tale of Painters notes no rubber seal and imperfect foam fit, while one exact-XL owner reports the supplied hydropaper expanded beyond the tray and behaved too hydrophobically for their workflow."
+      ],
+      "primarySourceIds": [
+        "src-gsw-xl-official"
+      ],
+      "independentSourceIds": [
+        "src-gsw-tale-xl-review",
+        "src-gsw-xl-owner-review"
+      ],
+      "claimIds": [
+        "claim-gsw-xl-benefit",
+        "claim-gsw-xl-drawback",
+        "claim-gsw-xl-compatibility"
+      ],
+      "evidenceMode": "desk_research",
+      "thoughtfulness": {
+        "observationPrompt": "Choose this only if they batch-paint with many colors on a dedicated desk, use conventional water-based acrylics, and do not already have a trusted large wet palette.",
+        "frictionClaimIds": [
+          "claim-session-drying-friction"
+        ],
+        "physicalGiftBoundary": "welcome_when_verified",
+        "selfPurchase": {
+          "reason": "small_luxury_deferral",
+          "rationale": "A homemade or smaller palette can remain tolerable enough that a roomier dedicated mixing surface stays behind paints and miniatures on the hobby list.",
+          "basis": "editorial_inference",
+          "claimIds": [
+            "claim-workflow-tool-deferral"
+          ]
+        },
+        "duplicateRisk": {
+          "level": "high",
+          "preGiftCheck": "Confirm they do not already own a trusted wet palette and specifically want an XL station rather than a compact or reusable-membrane system."
+        },
+        "clutterRisk": {
+          "level": "high",
+          "ownershipBurden": "The 190 by 280 millimeter case, damp foam, disposable paper, refills, cleaning, and dry storage all claim permanent workspace and attention.",
+          "mitigation": "Gift it only after measuring the painting station and confirming the recipient accepts disposable refills and routine wet-palette care."
+        },
+        "compatibilityChecks": [
+          {
+            "dimension": "space_or_storage",
+            "status": "verified",
+            "requirement": "The dedicated painting station can keep a 190 by 280 millimeter palette accessible without crowding miniatures, lighting, or brush water.",
+            "claimIds": [
+              "claim-gsw-xl-compatibility"
+            ]
+          },
+          {
+            "dimension": "skill_or_experience",
+            "status": "verified",
+            "requirement": "The recipient uses conventional water-based acrylics, accepts disposable refills, and will test the first supplied sheet before committing a valued paint mix.",
+            "claimIds": [
+              "claim-gsw-xl-compatibility",
+              "claim-acrylic-only-boundary"
+            ]
+          }
+        ],
+        "score": {
+          "frictionSpecificity": 4,
+          "selfPurchaseLogic": 4,
+          "ownershipEase": 3,
+          "recipientSpecificity": 5,
+          "total": 16
+        }
+      }
+    }
+  ],
+  "pairs": [
+    {
+      "id": "roomier-reusable-recipe-pair",
+      "name": "The roomier reusable-desk configuration",
+      "anchorCandidateId": "redgrass-painter-v2",
+      "companionCandidateId": "strathmore-mixed-media-visual-journal",
+      "recipientJob": "Use a roomier reusable palette for an active conventional-acrylic mix and preserve its ratio, layer order, and dried reference in one flexible project journal.",
+      "coherenceType": "observation_loop",
+      "whyTogether": "This is the roomier alternative configuration: the Redgrass reusable palette protects the live mix while the same qualified Strathmore journal records the observed result for the next unit; it is an alternative to, not an addition to, the compact Army Painter configuration.",
+      "interactionMoment": "Before cleanup, write the paint brands, approximate ratio, model area, and layer order on one Strathmore page, add one small swatch, then leave the page open until it dries.",
+      "compatibilityChecks": [
+        {
+          "dimension": "skill_or_experience",
+          "status": "verified",
+          "requirement": "The painter uses repeat conventional acrylic mixes and values freeform physical notes more than a preprinted or app-based recipe system.",
+          "claimIds": [
+            "claim-rgg-compatibility",
+            "claim-strathmore-compatibility"
+          ]
+        },
+        {
+          "dimension": "space_or_storage",
+          "status": "verified",
+          "requirement": "The painting station can keep the 16.5 by 24 centimeter palette and 5.5 by 8 inch journal flat and clear while a small acrylic swatch dries.",
+          "claimIds": [
+            "claim-rgg-benefit",
+            "claim-strathmore-benefit"
+          ]
+        }
+      ],
+      "duplicateRisk": "medium",
+      "clutterDelta": "neutral",
+      "preGiftCheck": "Confirm their desk fits the roomier Redgrass case, they want reusable membranes, and they prefer freeform physical notes; do not buy both palette configurations.",
+      "bundleDrawback": "Choose only the Redgrass palette if the painter will not maintain freeform notes, or choose only the journal if their existing wet palette already controls conventional acrylic mixes well.",
+      "claimIds": [
+        "claim-pair-rgg-strathmore"
+      ],
+      "score": {
+        "sharedCuriosity": 18,
+        "complementaryRoles": 20,
+        "interactionLoop": 18,
+        "observableTrigger": 14,
+        "independentValue": 10,
+        "compatibility": 9,
+        "ownershipEase": 3,
+        "total": 92
+      }
+    },
+    {
+      "id": "compact-desk-recipe-pair",
+      "name": "The compact brush-storage configuration",
+      "anchorCandidateId": "army-painter-wet-palette",
+      "companionCandidateId": "strathmore-mixed-media-visual-journal",
+      "recipientJob": "Use a smaller palette for an active acrylic mix and keep a flexible project page with the recipe, application order, and dried color reference.",
+      "coherenceType": "observation_loop",
+      "whyTogether": "This is the compact alternative configuration: The Army Painter palette addresses the drying mix while the same qualified Strathmore journal records the observed result and next-session steps; choose it instead of Redgrass when the smaller footprint and brush layer fit better.",
+      "interactionMoment": "At the end of a unit, write one model area and layer sequence, add the paint brands and approximate ratio, then place a small swatch on the same page and let it dry flat.",
+      "compatibilityChecks": [
+        {
+          "dimension": "skill_or_experience",
+          "status": "verified",
+          "requirement": "The painter mixes conventional water-based acrylics and values freeform project notes more than a preprinted or app-based recipe system.",
+          "claimIds": [
+            "claim-army-painter-compatibility",
+            "claim-strathmore-compatibility"
+          ]
+        },
+        {
+          "dimension": "space_or_storage",
+          "status": "verified",
+          "requirement": "The desk can keep the compact palette and 5.5 by 8 inch journal flat and clear while a small acrylic swatch dries.",
+          "claimIds": [
+            "claim-army-painter-benefit",
+            "claim-strathmore-benefit"
+          ]
+        }
+      ],
+      "duplicateRisk": "medium",
+      "clutterDelta": "neutral",
+      "preGiftCheck": "Confirm the smaller footprint and brush-storage layer are welcome and that a blank-page recipe key feels useful; do not buy both palette configurations.",
+      "bundleDrawback": "Choose only the palette if the painter will not maintain freeform notes, or choose only the journal if their existing wet palette already controls conventional acrylic mixes well.",
+      "claimIds": [
+        "claim-pair-army-strathmore"
+      ],
+      "score": {
+        "sharedCuriosity": 17,
+        "complementaryRoles": 20,
+        "interactionLoop": 18,
+        "observableTrigger": 14,
+        "independentValue": 10,
+        "compatibility": 9,
+        "ownershipEase": 4,
+        "total": 92
+      }
+    }
+  ],
+  "affiliateLinks": [],
+  "article": {
+    "slug": "miniature-painting-wet-palette-recipe-pairs",
+    "editorialScore": 85,
+    "evidenceConfidence": 80,
+    "evidenceMode": "desk_research",
+    "status": "publication_ready"
+  },
+  "qa": {
+    "passed": true,
+    "reviewerRole": "independent-editor",
+    "reviewerId": "miniature-painting-independent-editor-20260816",
+    "receiptPath": "research/reviews/20260816-miniature-painting-recipe-pairs-08892218.qa.v1.json",
+    "blockers": [],
+    "warnings": []
+  },
+  "completedAt": "2026-08-16T19:31:41.384Z"
+}

@@ -1,0 +1,16 @@
+{
+  "schemaVersion": "1.0.0",
+  "receiptId": "20260816-puzzle-start-store-a30ab01a-qa",
+  "runId": "20260816-puzzle-start-store-a30ab01a",
+  "articleSlug": "puzzle-board-sorting-tray-gift-pairs",
+  "reviewedAt": "2026-08-16T21:29:05.550Z",
+  "reviewerRole": "independent-editor",
+  "reviewerId": "puzzle-start-store-independent-qa-desk",
+  "workflowRunId": "local-independent-review",
+  "verdict": "passed",
+  "evidenceSha256": "7ed2e42ff779b3d46abe57e19a28b23ad936cefbad250c9b36e4eab7dd2fe38c",
+  "articleSha256": "ac2afe53ce062498bea3a02f0fbf2ac982e2d5328f0cabdcbfbae9326f5bd919",
+  "socialSha256": "8a2545ec9d202ebe2574b161f8b9b8a1e2f48ed3e7a3fb2d4a7ed4619a45277a",
+  "blockers": [],
+  "warnings": []
+}

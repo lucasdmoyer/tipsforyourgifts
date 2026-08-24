@@ -1,0 +1,110 @@
+name: Configure official social channel
+
+on:
+  workflow_dispatch:
+    inputs:
+      channel_id:
+        description: "pinterest, instagram, or tiktok"
+        required: true
+        type: string
+      expected_config_sha256:
+        description: "Exact social-channel registry SHA-256 visible in Studio"
+        required: true
+        type: string
+      official_account_reference:
+        description: "Non-secret official account handle or stable platform ID"
+        required: true
+        type: string
+      official_publication_target_id:
+        description: "Non-secret board, page, or publication-target ID"
+        required: true
+        type: string
+      max_posts_per_week:
+        description: "Founder-approved maximum weekly cadence, 1 through 7"
+        required: true
+        type: number
+      configuration_evidence_url:
+        description: "Credential-free HTTPS issue or PR recording account, API, rights, cadence, moderation, and reporting review"
+        required: true
+        type: string
+      confirmation:
+        description: "Type CONFIGURE- followed by the exact channel ID"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: social-channel-configure-${{ inputs.channel_id }}
+  cancel-in-progress: false
+
+jobs:
+  configure:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Require repository-owner decision
+        env:
+          ACTOR: ${{ github.actor }}
+          OWNER: ${{ github.repository_owner }}
+          CHANNEL_ID: ${{ inputs.channel_id }}
+          CONFIRMATION: ${{ inputs.confirmation }}
+        run: |
+          test "$ACTOR" = "$OWNER" || { echo "Only the repository owner may configure an official channel." >&2; exit 1; }
+          test "$CONFIRMATION" = "CONFIGURE-$CHANNEL_ID" || { echo "Action-time confirmation does not match the exact channel." >&2; exit 1; }
+      - uses: actions/checkout@v5
+        with:
+          ref: master
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24.14.0"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - name: Record the non-secret configured-channel boundary
+        env:
+          CHANNEL_ID: ${{ inputs.channel_id }}
+          EXPECTED_CONFIG_SHA256: ${{ inputs.expected_config_sha256 }}
+          OFFICIAL_ACCOUNT_REFERENCE: ${{ inputs.official_account_reference }}
+          OFFICIAL_PUBLICATION_TARGET_ID: ${{ inputs.official_publication_target_id }}
+          MAX_POSTS_PER_WEEK: ${{ inputs.max_posts_per_week }}
+          CONFIGURATION_EVIDENCE_URL: ${{ inputs.configuration_evidence_url }}
+          CONFIRMATION: ${{ inputs.confirmation }}
+          FOUNDER_LOGIN: ${{ github.actor }}
+        run: |
+          npm ci --prefix web
+          npm run validate
+          npm --prefix web run social:channel:configure -- --channel-id="$CHANNEL_ID" --expected-config-sha256="$EXPECTED_CONFIG_SHA256" --official-account-reference="$OFFICIAL_ACCOUNT_REFERENCE" --official-publication-target-id="$OFFICIAL_PUBLICATION_TARGET_ID" --max-posts-per-week="$MAX_POSTS_PER_WEEK" --configuration-evidence-url="$CONFIGURATION_EVIDENCE_URL" --confirmation="$CONFIRMATION" --founder-login="$FOUNDER_LOGIN"
+          npm --prefix web run generate
+      - name: Prove the bounded configuration patch
+        run: |
+          while IFS= read -r changed_path; do
+            case "$changed_path" in
+              web/config/social-channels.json|web/src/data/operations.json|web/src/app/generated/content.generated.ts|web/public/sitemap.xml) ;;
+              *) echo "Social channel configuration changed forbidden path: $changed_path" >&2; exit 1 ;;
+            esac
+          done < <(git diff --name-only HEAD)
+          npm run validate
+          npm run build
+          npm run smoke
+          git diff --check
+      - name: Commit the configuration branch
+        env:
+          RUN_ID: ${{ github.run_id }}
+          CHANNEL_ID: ${{ inputs.channel_id }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -c "codex/configure-social-channel-$RUN_ID"
+          git add web/config/social-channels.json web/src/data/operations.json web/src/app/generated/content.generated.ts web/public/sitemap.xml
+          git commit -m "Configure official $CHANNEL_ID channel"
+          git push origin "codex/configure-social-channel-$RUN_ID"
+      - name: Open the configuration pull request
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ github.run_id }}
+          CHANNEL_ID: ${{ inputs.channel_id }}
+        run: |
+          gh pr create --base master --head "codex/configure-social-channel-$RUN_ID" --title "Configure official $CHANNEL_ID channel" --body "This founder-dispatched patch records the official account reference, publication target, API adapter, secret name reference, evidence URL, and maximum cadence. It stores no credential value, enables no publishing, publishes no post, and makes no external platform change. Activation remains a separate protected decision."
