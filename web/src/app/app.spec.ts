@@ -14,8 +14,9 @@ describe('App', () => {
     fixture.detectChanges();
     const element = fixture.nativeElement as HTMLElement;
     expect(element.querySelector('.brand')?.textContent).toContain('Tips for Your Gifts');
-    expect(element.querySelectorAll('.nav-links a')).toHaveLength(5);
+    expect(element.querySelectorAll('.nav-links a')).toHaveLength(4);
     expect(element.querySelector('a[href="/gift-finder"]')?.textContent).toContain('Gift finder');
+    expect(element.querySelector('a[href="/studio"]')).toBeNull();
   });
 
   it('ships a founder-approved visual for every public article, product, and pair', () => {
@@ -37,18 +38,18 @@ describe('App', () => {
     }
   });
 
-  it('renders a fail-closed finder from reviewed guides only', () => {
+  it('renders a person-first finder from the publication-ready catalog', () => {
     const fixture = TestBed.createComponent(GiftFinderPage);
     fixture.detectChanges();
     const element = fixture.nativeElement as HTMLElement;
-    expect(element.textContent).toContain('Find the signal before the product.');
-    expect(element.textContent).toContain('No quiz result is a purchase instruction.');
+    expect(element.textContent).toContain('Who are they when no one is shopping for them?');
+    expect(element.textContent).toContain('Do not invent a new person for them.');
     expect(element.querySelectorAll('.finder-result').length).toBeGreaterThanOrEqual(3);
     const finderLinks = element.querySelectorAll<HTMLAnchorElement>('[data-event-name="gift_finder_guide_open"]');
     expect(finderLinks).toHaveLength(element.querySelectorAll('.finder-result').length);
     expect(finderLinks[0].dataset['guideSlug']).toBeTruthy();
     expect(finderLinks[0].dataset['resultRank']).toBe('1');
-    expect(element.textContent).toContain('Results are derived only from publication-ready articles');
+    expect(element.textContent).toContain('These are starting points, not personality predictions.');
     expect(element.querySelector('[data-event-name="merchant_outbound_click"]')).toBeNull();
   });
 
@@ -65,7 +66,10 @@ describe('App', () => {
     expect(image.src).toContain('/blog-images/');
     expect(image.alt).toBe('');
     expect(image.getAttribute('aria-hidden')).toBe('true');
-    expect(fixture.nativeElement.textContent).toContain('category context, not a product photo');
+    expect(fixture.nativeElement.textContent).toContain('shows the use, not the exact product');
+    expect(fixture.nativeElement.textContent).toContain('The thought behind it');
+    expect(fixture.nativeElement.textContent).not.toMatch(/Editorial \d+\/100/);
+    expect(fixture.nativeElement.textContent).not.toMatch(/Evidence \d+\/100/);
     expect(link.dataset['articleSlug']).toBe(article.slug);
     expect(link.dataset['productId']).toBe(article.products[0].id);
     expect(link.dataset['paidLink']).toBe(String(article.products[0].affiliate));

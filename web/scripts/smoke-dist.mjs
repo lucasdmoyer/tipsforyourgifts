@@ -7,10 +7,10 @@ import { buildPublicationManifest, parsePublicationManifest, sha256 } from './li
 const root = process.cwd();
 const dist = path.join(root, 'dist');
 const checks = [
-  ['home', 'index.html', ['Good gifts, minus the guesswork.', 'rel="canonical"', 'tfg-root']],
-  ['gift finder', 'gift-finder/index.html', ['Find the signal before the product.', 'Reviewed guide directions', 'No quiz result is a purchase instruction.', 'gift_finder_guide_open']],
-  ['blog index', 'blog/index.html', ['Every guide starts with a question.', 'How we research gifts']],
-  ['standards', 'standards/index.html', ['Trust is the product.', '12 candidate products']],
+  ['home', 'index.html', ['Good gifts, minus the guesswork.', 'THE REAL GIFT', 'Give them permission to enjoy it.', 'rel="canonical"', 'tfg-root']],
+  ['gift finder', 'gift-finder/index.html', ['Who are they when no one is shopping for them?', 'Places to begin', 'Do not invent a new person for them.', 'gift_finder_guide_open']],
+  ['blog index', 'blog/index.html', ['A gift starts before the shopping.', 'The Gift Hiding in Plain Sight']],
+  ['standards', 'standards/index.html', ['Buy the thing they would talk themselves out of.', 'A thoughtful gift says: I noticed the part of your life you keep putting second.']],
   ['studio', 'studio/index.html', ['Executive studio', 'Founder agenda', 'unknown until aggregate measurement', 'noindex,nofollow']],
   ['founder brief builder', 'studio/brief/index.html', ['Founder brief builder', 'Notice the gift before naming the product.', 'Complete the missing decisions', 'noindex,nofollow']],
   ['robots', 'robots.txt', ['Disallow: /studio', 'Sitemap:']],
@@ -101,10 +101,11 @@ for (const article of readyArticles) {
   let html;
   try { html = await fs.readFile(path.join(dist, relativePath), 'utf8'); }
   catch { failures.push(`${article.slug}: missing prerendered article`); continue; }
-  for (const marker of [article.title, article.researchRun, `Evidence ${article.evidenceScore}/100`, 'application/ld+json']) {
+  const readerTitle = article.slug === 'how-we-research-gifts' ? 'The Gift Hiding in Plain Sight' : article.title;
+  for (const marker of [readerTitle, 'The thought behind the gift', 'application/ld+json']) {
     if (!html.includes(marker)) failures.push(`${article.slug}: article HTML missing ${JSON.stringify(marker)}`);
   }
-  if (!blogIndex.includes(article.title)) failures.push(`${article.slug}: missing from blog index`);
+  if (!blogIndex.includes(readerTitle)) failures.push(`${article.slug}: missing from blog index`);
   if (!sitemap.includes(`/blog/${article.slug}`)) failures.push(`${article.slug}: missing from sitemap`);
   const products = Array.isArray(article.products) ? article.products : [];
   if (products.length > 0 && !giftsIndex.includes(article.title)) failures.push(`${article.slug}: roundup missing from gifts index`);
@@ -113,6 +114,36 @@ for (const article of readyArticles) {
     if (!html.includes(product.drawback)) failures.push(`${article.slug}: missing drawback for ${product.id}`);
   }
 }
+
+const readerFacingHtml = [
+  await fs.readFile(path.join(dist, 'index.html'), 'utf8'),
+  await fs.readFile(path.join(dist, 'gift-finder', 'index.html'), 'utf8'),
+  await fs.readFile(path.join(dist, 'gifts', 'index.html'), 'utf8'),
+  await fs.readFile(path.join(dist, 'blog', 'index.html'), 'utf8'),
+  await fs.readFile(path.join(dist, 'standards', 'index.html'), 'utf8'),
+  ...await Promise.all(readyArticles.map((article) => fs.readFile(path.join(dist, 'blog', article.slug, 'index.html'), 'utf8')))
+].join('\n');
+for (const marker of [
+  'Advice that earns the click.',
+  'minimum editorial score',
+  'The drafting agent cannot certify',
+  'Research run:',
+  'Pair coherence ',
+  'desk research',
+  'publication-ready',
+  'editorial review',
+  'qualified pair',
+  'independently qualified',
+  'conditionally qualified',
+  'What the research rejected',
+  'was demoted',
+  'independent editorial QA',
+  'This draft must'
+]) {
+  if (readerFacingHtml.includes(marker)) failures.push(`reader voice: public pages expose internal process copy ${JSON.stringify(marker)}`);
+}
+if (/(?:Editorial|Evidence) \d+\/100/.test(readerFacingHtml)) failures.push('reader voice: public pages expose internal numeric scoring');
+if (/(?:pair|pairing) (?:clears|scores)|\d+\/100 (?:coherence|for coherence)/i.test(readerFacingHtml)) failures.push('reader voice: public pages expose internal pairing scores');
 const jsNames = (await fs.readdir(dist)).filter((name) => name.endsWith('.js'));
 const publicJs = (await Promise.all(jsNames.map((name) => fs.readFile(path.join(dist, name), 'utf8')))).join('\n');
 for (const article of draftArticles) {
