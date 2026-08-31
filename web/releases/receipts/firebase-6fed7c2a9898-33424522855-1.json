@@ -1,0 +1,63 @@
+{
+  "schemaVersion": "1.0.0",
+  "receiptId": "firebase-6fed7c2a9898-33424522855-1",
+  "projectId": "tipsforyourgifts",
+  "hostingChannel": "live",
+  "releaseSha": "6fed7c2a9898eeb03f0ad78020c398c5c9b4cdd7",
+  "releaseMode": "founder_reviewed",
+  "sourceWorkflow": "firebase-production",
+  "preview": {
+    "url": "https://tipsforyourgifts--release-6fed7c2a9898-33424522855-1-hm4uqmws.web.app",
+    "verifiedAt": "2026-08-31T18:24:14.891Z"
+  },
+  "production": {
+    "url": "https://tipsforyourgifts.web.app/",
+    "verifiedAt": "2026-08-31T18:24:14.891Z"
+  },
+  "publicationManifest": {
+    "manifestId": "publication-set-0e33c0313ad4afec",
+    "path": "publication-manifest.json",
+    "sha256": "cf7a4bb1c1d9ffab1fc389958fa3800da11ad1507d8279d694f9f578771fd9f9",
+    "contentSetSha256": "0e33c0313ad4afeca7b72b10d0895f51f9f62895b51cabb36924efeced9a0ba5",
+    "articles": 10,
+    "independentReviews": 10,
+    "socialLaunchPacks": 9,
+    "socialDrafts": 60,
+    "missionBoundArticles": 0,
+    "affiliateLinks": 0
+  },
+  "rollbackTarget": {
+    "strategy": "firebase_channel_clone",
+    "projectId": "tipsforyourgifts",
+    "siteId": "tipsforyourgifts",
+    "sourceChannel": "live",
+    "targetChannel": "rollback-6fed7c2a9898-33424522855-1",
+    "protectsReleaseSha": "6fed7c2a9898eeb03f0ad78020c398c5c9b4cdd7",
+    "clonedAt": "2026-08-31T18:24:07.152Z",
+    "expiresAfter": "30d",
+    "firebaseToolsVersion": "15.26.0",
+    "rollbackCommand": "firebase hosting:clone tipsforyourgifts:rollback-6fed7c2a9898-33424522855-1 tipsforyourgifts:live --project tipsforyourgifts",
+    "status": "verified_clone"
+  },
+  "gates": {
+    "exactMasterSha": true,
+    "independentQaReceipt": true,
+    "deterministicValidation": true,
+    "staticBuild": true,
+    "builtArtifactSmoke": true,
+    "publicationManifestValidated": true,
+    "firebaseExactShaPreview": true,
+    "previewSmoke": true,
+    "rollbackTargetRecorded": true,
+    "productionSmoke": true
+  },
+  "workflow": {
+    "repository": "lucasdmoyer/tipsforyourgifts",
+    "runId": "33424522855",
+    "runAttempt": 1,
+    "actor": "lucasdmoyer",
+    "eventName": "workflow_dispatch"
+  },
+  "createdAt": "2026-08-31T18:24:14.891Z",
+  "status": "verified_success"
+}
