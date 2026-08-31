@@ -61,7 +61,7 @@ jobs:
           github-token: ${{ github.token }}
           run-id: ${{ github.event.workflow_run.id }}
           pattern: firebase-publication-receipt-*
-          path: verified-release-artifact
+          path: ${{ runner.temp }}/verified-release-artifact
           merge-multiple: true
       - name: Validate and record the exact release receipt
         if: steps.discover.outputs.found == 'true'
@@ -70,8 +70,9 @@ jobs:
           RELEASE_RUN_ID: ${{ github.event.workflow_run.id }}
           RELEASE_HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
           EXPECTED_SOURCE_WORKFLOW: ${{ steps.discover.outputs.source_workflow }}
+          RECEIPT_DOWNLOAD_DIR: ${{ runner.temp }}/verified-release-artifact
         run: |
-          mapfile -t receipt_paths < <(find verified-release-artifact -type f -name publication-receipt.json -print)
+          mapfile -t receipt_paths < <(find "$RECEIPT_DOWNLOAD_DIR" -type f -name publication-receipt.json -print)
           test "${#receipt_paths[@]}" -eq 1 || { echo "Expected exactly one downloaded publication-receipt.json." >&2; exit 1; }
           receipt_path="$(realpath "${receipt_paths[0]}")"
           npm ci --prefix web

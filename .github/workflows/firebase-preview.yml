@@ -19,6 +19,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
         with:
+          fetch-depth: 0
           persist-credentials: false
       - uses: actions/setup-node@v4
         with:
@@ -28,7 +29,24 @@ jobs:
       - run: npm ci --prefix web
       - run: npm run build
       - run: npm run smoke
+      - name: Detect a credential-free workflow-only review
+        id: scope
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          hosting_changed=false
+          while IFS= read -r changed_path; do
+            case "$changed_path" in
+              .github/workflows/firebase-preview.yml|.github/workflows/publication-live-state.yml|web/scripts/test-live-publication-gate.mjs) ;;
+              *) hosting_changed=true ;;
+            esac
+          done < <(git diff --name-only "$BASE_SHA" "$GITHUB_SHA")
+          echo "hosting_changed=$hosting_changed" >> "$GITHUB_OUTPUT"
+      - name: Pass workflow-only reviews without minting cloud credentials
+        if: steps.scope.outputs.hosting_changed == 'false'
+        run: test "${{ steps.scope.outputs.hosting_changed }}" = "false"
       - name: Refuse credentials outside the founder-approved PR boundary
+        if: steps.scope.outputs.hosting_changed == 'true'
         env:
           APPROVED_ACTOR: lucasdmoyer
           APPROVED_REF: refs/pull/6/merge
@@ -44,6 +62,7 @@ jobs:
           test "$PR_NUMBER" = "6"
       - id: google_auth
         name: Mint short-lived Google credentials through PR-6-only OIDC trust
+        if: steps.scope.outputs.hosting_changed == 'true'
         uses: google-github-actions/auth@v3
         with:
           project_id: tipsforyourgifts
@@ -53,6 +72,7 @@ jobs:
           export_environment_variables: true
       - name: Deploy exact PR artifact to a temporary Firebase channel
         id: firebase_preview
+        if: steps.scope.outputs.hosting_changed == 'true'
         env:
           CHANNEL_ID: pr-${{ github.event.number }}
         run: |
@@ -69,6 +89,7 @@ jobs:
           preview_url="$(node -e 'const fs = require("node:fs"); const data = JSON.parse(fs.readFileSync(process.argv[1], "utf8")); const suffix = `/channels/${process.env.CHANNEL_ID}`; const channel = data?.result?.channels?.find((entry) => entry.name?.endsWith(suffix)); if (!channel?.url) throw new Error(`Firebase preview URL missing for ${process.env.CHANNEL_ID}`); process.stdout.write(channel.url);' "$channel_file")"
           echo "preview_url=$preview_url" >> "$GITHUB_OUTPUT"
       - name: Smoke the hosted PR-6 preview
+        if: steps.scope.outputs.hosting_changed == 'true'
         env:
           PREVIEW_URL: ${{ steps.firebase_preview.outputs.preview_url }}
         run: curl --fail --silent --show-error --location --max-time 30 "$PREVIEW_URL" | grep -F "Good gifts, minus the guesswork."
