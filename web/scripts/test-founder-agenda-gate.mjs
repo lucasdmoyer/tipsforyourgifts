@@ -42,7 +42,10 @@ const baseInput = {
 };
 const base = buildFounderAgenda(baseInput);
 
-assert.equal(base.primaryDecisionId, 'review-release-candidate');
+const currentContentIsVerified = livePublication.status === 'verified_managed_content_release'
+  && livePublication.latestVerifiedContentRelease?.publicationManifest?.contentSetSha256 === publicationManifest.contentSetSha256;
+assert.equal(base.primaryDecisionId, currentContentIsVerified ? 'establish-measurement' : 'review-release-candidate');
+assert.equal(base.decisions.some((decision) => decision.id === 'review-release-candidate'), !currentContentIsVerified);
 assert.equal(base.profitabilityEvidence, 'unknown_until_aggregate_measurement');
 assert.deepEqual(base.decisions.map((decision) => decision.rank), base.decisions.map((_decision, index) => index + 1));
 const priorityWeight = { high: 3, medium: 2, low: 1 };
@@ -102,6 +105,16 @@ assert.match(linkApprovalDecision.action.url, /affiliate-link-approval\.yml$/);
 
 const clone = (value) => structuredClone(value);
 const fixtureInput = clone(baseInput);
+fixtureInput.livePublication = {
+  schemaVersion: livePublication.schemaVersion,
+  projectId: livePublication.projectId,
+  siteId: livePublication.siteId,
+  hostingChannel: livePublication.hostingChannel,
+  productionUrl: livePublication.productionUrl,
+  status: 'no_verified_managed_release',
+  updatedAt: null,
+  latestVerifiedContentRelease: null
+};
 for (const idea of fixtureInput.strategy.ideas) idea.founderDisposition = 'paused';
 fixtureInput.strategy.ideas[0].founderDisposition = 'proposed';
 fixtureInput.strategy.ideas[0].priority = 'high';
