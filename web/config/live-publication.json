@@ -4,7 +4,26 @@
   "siteId": "tipsforyourgifts",
   "hostingChannel": "live",
   "productionUrl": "https://tipsforyourgifts.web.app/",
-  "status": "no_verified_managed_release",
-  "updatedAt": null,
-  "latestVerifiedContentRelease": null
+  "status": "verified_managed_content_release",
+  "updatedAt": "2026-08-31T18:24:14.891Z",
+  "latestVerifiedContentRelease": {
+    "receiptId": "firebase-6fed7c2a9898-33424522855-1",
+    "receiptPath": "releases/receipts/firebase-6fed7c2a9898-33424522855-1.json",
+    "receiptSha256": "c8d02f502cc39c6317e488d95a40d09e993dea452f0a58f4168ec064982c5fac",
+    "releaseSha": "6fed7c2a9898eeb03f0ad78020c398c5c9b4cdd7",
+    "releaseMode": "founder_reviewed",
+    "sourceWorkflow": "firebase-production",
+    "workflowRunUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/runs/33424522855",
+    "createdAt": "2026-08-31T18:24:14.891Z",
+    "productionVerifiedAt": "2026-08-31T18:24:14.891Z",
+    "publicationManifest": {
+      "manifestId": "publication-set-0e33c0313ad4afec",
+      "sha256": "cf7a4bb1c1d9ffab1fc389958fa3800da11ad1507d8279d694f9f578771fd9f9",
+      "contentSetSha256": "0e33c0313ad4afeca7b72b10d0895f51f9f62895b51cabb36924efeced9a0ba5",
+      "articles": 10,
+      "independentReviews": 10,
+      "affiliateLinks": 0
+    },
+    "rollbackChannel": "rollback-6fed7c2a9898-33424522855-1"
+  }
 }

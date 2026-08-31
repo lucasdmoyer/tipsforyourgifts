@@ -1,43 +1,16 @@
 {
-  "generatedAt": "2026-08-31T02:37:56.648Z",
+  "generatedAt": "2026-08-31T18:24:14.891Z",
   "founderAgenda": {
     "schemaVersion": "1.0.0",
-    "generatedAt": "2026-08-31T02:37:56.648Z",
+    "generatedAt": "2026-08-31T18:24:14.891Z",
     "posture": "founder_decisions_required",
-    "primaryDecisionId": "review-release-candidate",
+    "primaryDecisionId": "establish-measurement",
     "profitabilityEvidence": "unknown_until_aggregate_measurement",
     "operatingPrinciple": "measure_before_scaling_and_rank_before_commission",
     "decisions": [
       {
-        "id": "review-release-candidate",
-        "rank": 1,
-        "priorityScore": 100,
-        "horizon": "now",
-        "category": "release",
-        "title": "Review the first accountable Angular release",
-        "recommendation": "Review publication-set-0e33c0313ad4afec as the first founder-controlled Firebase release candidate.",
-        "decisionQuestion": "Does this exact content set represent the site you want readers to see first?",
-        "rationale": "The research and release machinery cannot create traffic, trust, or revenue while the modern reviewed site remains only a local candidate.",
-        "evidence": [
-          "10 publication-ready articles are in the candidate set.",
-          "10 independent QA receipts are hash-bound to those articles.",
-          "60 reviewed social drafts are prepared for later distribution.",
-          "No managed Firebase content-release receipt is durably recorded in Git yet."
-        ],
-        "unlocks": "A protected exact-SHA preview and founder-reviewed Firebase release establish the owned destination for every later growth and affiliate action.",
-        "tradeoff": "The first release creates a public baseline and monitoring responsibility, while affiliate links and social publishing remain separately disabled.",
-        "guardrail": "Commit and review the exact candidate first; the workflow must still clone live, expose the preview, require founder approval, smoke production, and mint a manifest-bound receipt.",
-        "reversibility": "high",
-        "founderActionRequired": true,
-        "action": {
-          "label": "Open release workflow",
-          "url": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/firebase-production.yml",
-          "command": "gh workflow run firebase-production.yml -f release_sha=<approved-master-sha>"
-        }
-      },
-      {
         "id": "establish-measurement",
-        "rank": 2,
+        "rank": 1,
         "priorityScore": 85,
         "horizon": "next",
         "category": "measurement",
@@ -64,7 +37,7 @@
       },
       {
         "id": "configure-first-social-channel",
-        "rank": 3,
+        "rank": 2,
         "priorityScore": 75,
         "horizon": "next",
         "category": "distribution",
@@ -91,7 +64,7 @@
       },
       {
         "id": "choose-affiliate-pilot",
-        "rank": 4,
+        "rank": 3,
         "priorityScore": 65,
         "horizon": "later",
         "category": "monetization",
@@ -2628,18 +2601,18 @@
     "receiptRetentionDays": 90,
     "releaseEvidenceSource": "github_production_deployments_at_enable_time",
     "currentLive": {
-      "status": "no_verified_managed_release",
-      "updatedAt": null,
-      "receiptId": null,
-      "receiptSha256": null,
-      "receiptPath": null,
-      "releaseSha": null,
-      "workflowRunUrl": null,
-      "manifestId": null,
-      "contentSetSha256": null,
-      "articles": 0,
+      "status": "verified_managed_content_release",
+      "updatedAt": "2026-08-31T18:24:14.891Z",
+      "receiptId": "firebase-6fed7c2a9898-33424522855-1",
+      "receiptSha256": "c8d02f502cc39c6317e488d95a40d09e993dea452f0a58f4168ec064982c5fac",
+      "receiptPath": "releases/receipts/firebase-6fed7c2a9898-33424522855-1.json",
+      "releaseSha": "6fed7c2a9898eeb03f0ad78020c398c5c9b4cdd7",
+      "workflowRunUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/runs/33424522855",
+      "manifestId": "publication-set-0e33c0313ad4afec",
+      "contentSetSha256": "0e33c0313ad4afeca7b72b10d0895f51f9f62895b51cabb36924efeced9a0ba5",
+      "articles": 10,
       "affiliateLinks": 0,
-      "matchesCurrentCandidate": false
+      "matchesCurrentCandidate": true
     },
     "currentCandidate": {
       "status": "release_candidate",
