@@ -37,7 +37,7 @@ jobs:
           hosting_changed=false
           while IFS= read -r changed_path; do
             case "$changed_path" in
-              .github/workflows/firebase-preview.yml|.github/workflows/publication-live-state.yml|web/scripts/test-live-publication-gate.mjs) ;;
+              .github/workflows/firebase-preview.yml|web/scripts/test-founder-agenda-gate.mjs) ;;
               *) hosting_changed=true ;;
             esac
           done < <(git diff --name-only "$BASE_SHA" "$GITHUB_SHA")
