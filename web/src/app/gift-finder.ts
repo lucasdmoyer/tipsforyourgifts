@@ -26,11 +26,11 @@ function matchesShape(article: Article, shape: GiftShape) {
 }
 
 function matchReason(article: Article, signal: RecipientSignal) {
-  if (signal === 'golf_routine') return 'Start here when you have witnessed a course-day or golf-bag workaround and want to avoid guessing at performance equipment.';
-  if (signal === 'shared_curiosity') return 'Start here when two independently useful gifts could create one activity, discussion, experiment, or repeatable ritual.';
-  if (signal === 'observed_friction') return 'Start here when you can name the worn item, improvised fix, repeated complaint, or useful upgrade the recipient keeps postponing.';
-  if (article.pairs.length > 0) return 'A reviewed route for recipients whose known interests may support a compatible, independently useful pair.';
-  return 'A reviewed route for turning a recipient clue into a smaller, more defensible buying decision.';
+  if (signal === 'golf_routine') return 'Start here when you have witnessed the wet glove, dirty club, overstuffed bag, or other course-day annoyance they keep tolerating.';
+  if (signal === 'shared_curiosity') return 'Start here when one interest could become an activity, a conversation, an experiment, or a ritual you share.';
+  if (signal === 'observed_friction') return 'Start here when you can name the worn item, improvised fix, repeated complaint, or nicer version they keep postponing.';
+  if (article.pairs.length > 0) return 'Start here when two different gifts could create one moment they will remember.';
+  return 'Start here when a small, useful upgrade would tell them you have been paying attention.';
 }
 
 export function findGiftGuides(articles: readonly Article[], signal: RecipientSignal, shape: GiftShape): GiftFinderResult[] {

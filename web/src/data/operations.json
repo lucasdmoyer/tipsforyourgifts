@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-08-23T20:40:00.000Z",
+  "generatedAt": "2026-08-31T02:37:56.648Z",
   "founderAgenda": {
     "schemaVersion": "1.0.0",
-    "generatedAt": "2026-08-23T20:40:00.000Z",
+    "generatedAt": "2026-08-31T02:37:56.648Z",
     "posture": "founder_decisions_required",
     "primaryDecisionId": "review-release-candidate",
     "profitabilityEvidence": "unknown_until_aggregate_measurement",
@@ -15,7 +15,7 @@
         "horizon": "now",
         "category": "release",
         "title": "Review the first accountable Angular release",
-        "recommendation": "Review publication-set-1b54c563ae7a6065 as the first founder-controlled Firebase release candidate.",
+        "recommendation": "Review publication-set-0e33c0313ad4afec as the first founder-controlled Firebase release candidate.",
         "decisionQuestion": "Does this exact content set represent the site you want readers to see first?",
         "rationale": "The research and release machinery cannot create traffic, trust, or revenue while the modern reviewed site remains only a local candidate.",
         "evidence": [
@@ -2643,8 +2643,8 @@
     },
     "currentCandidate": {
       "status": "release_candidate",
-      "manifestId": "publication-set-1b54c563ae7a6065",
-      "contentSetSha256": "1b54c563ae7a606521abcc4f7853d38ff366cba343a50cef5d89e1657d194300",
+      "manifestId": "publication-set-0e33c0313ad4afec",
+      "contentSetSha256": "0e33c0313ad4afeca7b72b10d0895f51f9f62895b51cabb36924efeced9a0ba5",
       "articles": 10,
       "independentReviews": 10,
       "socialLaunchPacks": 9,

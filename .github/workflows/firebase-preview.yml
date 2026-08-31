@@ -31,7 +31,7 @@ jobs:
       - name: Refuse credentials outside the founder-approved PR boundary
         env:
           APPROVED_ACTOR: lucasdmoyer
-          APPROVED_REF: refs/pull/1/merge
+          APPROVED_REF: refs/pull/6/merge
           APPROVED_REPOSITORY: lucasdmoyer/tipsforyourgifts
           GITHUB_ACTOR_VALUE: ${{ github.actor }}
           GITHUB_REF_VALUE: ${{ github.ref }}
@@ -41,13 +41,13 @@ jobs:
           test "$GITHUB_REPOSITORY_VALUE" = "$APPROVED_REPOSITORY"
           test "$GITHUB_ACTOR_VALUE" = "$APPROVED_ACTOR"
           test "$GITHUB_REF_VALUE" = "$APPROVED_REF"
-          test "$PR_NUMBER" = "1"
+          test "$PR_NUMBER" = "6"
       - id: google_auth
-        name: Mint short-lived Google credentials through PR-1-only OIDC trust
+        name: Mint short-lived Google credentials through PR-6-only OIDC trust
         uses: google-github-actions/auth@v3
         with:
           project_id: tipsforyourgifts
-          workload_identity_provider: projects/647657919626/locations/global/workloadIdentityPools/tips-github/providers/github-pr-1
+          workload_identity_provider: projects/647657919626/locations/global/workloadIdentityPools/tips-github/providers/github-pr-6
           service_account: github-action-171694140@tipsforyourgifts.iam.gserviceaccount.com
           create_credentials_file: true
           export_environment_variables: true
@@ -56,7 +56,7 @@ jobs:
         env:
           CHANNEL_ID: pr-${{ github.event.number }}
         run: |
-          test "$CHANNEL_ID" = "pr-1"
+          test "$CHANNEL_ID" = "pr-6"
           npx --yes firebase-tools@15.26.0 hosting:channel:deploy "$CHANNEL_ID" \
             --expires 7d \
             --project tipsforyourgifts \
@@ -68,7 +68,7 @@ jobs:
             --json > "$channel_file"
           preview_url="$(node -e 'const fs = require("node:fs"); const data = JSON.parse(fs.readFileSync(process.argv[1], "utf8")); const suffix = `/channels/${process.env.CHANNEL_ID}`; const channel = data?.result?.channels?.find((entry) => entry.name?.endsWith(suffix)); if (!channel?.url) throw new Error(`Firebase preview URL missing for ${process.env.CHANNEL_ID}`); process.stdout.write(channel.url);' "$channel_file")"
           echo "preview_url=$preview_url" >> "$GITHUB_OUTPUT"
-      - name: Smoke the hosted PR-1 preview
+      - name: Smoke the hosted PR-6 preview
         env:
           PREVIEW_URL: ${{ steps.firebase_preview.outputs.preview_url }}
         run: curl --fail --silent --show-error --location --max-time 30 "$PREVIEW_URL" | grep -F "Good gifts, minus the guesswork."

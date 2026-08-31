@@ -84,7 +84,7 @@ jobs:
       - name: Smoke the exact-SHA release candidate
         env:
           PREVIEW_URL: ${{ steps.firebase_preview.outputs.preview_url }}
-        run: curl --fail --silent --show-error --location --max-time 30 "$PREVIEW_URL" | grep -F "Good gifts, minus the guesswork."
+        run: npm --prefix web run smoke:hosted -- "$PREVIEW_URL"
       - uses: actions/upload-artifact@v4
         with:
           name: ${{ steps.release.outputs.artifact_name }}
@@ -124,7 +124,7 @@ jobs:
           test "$(git rev-parse HEAD)" = "$RELEASE_SHA"
           test "$(git rev-parse origin/master)" = "$RELEASE_SHA"
           npm run smoke
-          curl --fail --silent --show-error --location --max-time 30 "$PREVIEW_URL" | grep -F "Good gifts, minus the guesswork."
+          npm --prefix web run smoke:hosted -- "$PREVIEW_URL"
       - id: google_auth
         name: Mint short-lived Google credentials for the protected live job
         uses: google-github-actions/auth@v3
@@ -153,7 +153,7 @@ jobs:
       - name: Deploy the verified exact SHA to Firebase Hosting
         run: npx --yes firebase-tools@15.26.0 deploy --only hosting --project tipsforyourgifts --non-interactive
       - name: Read-only hosted smoke after deployment
-        run: curl --fail --silent --show-error --location --max-time 30 https://tipsforyourgifts.web.app | grep -F "Good gifts, minus the guesswork."
+        run: npm --prefix web run smoke:hosted -- https://tipsforyourgifts.web.app
       - name: Create the exact-SHA verified publication receipt
         env:
           RELEASE_SHA: ${{ inputs.release_sha }}

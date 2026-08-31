@@ -1,55 +1,58 @@
 import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import type { Article, Product, StrategyIdea, VisualAsset } from './content.types';
+import type { Article, Product, ProductPair, StrategyIdea, VisualAsset } from './content.types';
 import { ContentService } from './content.service';
 import { assessFounderBrief, buildFounderBriefMarkdown, buildStrategyIssueUrl, EMPTY_FOUNDER_BRIEF, type FounderBriefDraft } from './founder-brief';
 import { findGiftGuides, type GiftShape, type RecipientSignal } from './gift-finder';
+import { readerBodyHtml, readerDescription, readerGiftIdea, readerLanguage, readerLead, readerTags, readerTitle } from './reader-copy';
 import { SeoService } from './seo.service';
 
 @Component({
   selector: 'tfg-article-card',
-  imports: [DatePipe, RouterLink],
+  imports: [RouterLink],
   template: `
     <article class="article-card">
-      <a class="article-card-visual" [routerLink]="['/blog', article().slug]" [attr.aria-label]="'Read ' + article().title">
+      <a class="article-card-visual" [routerLink]="['/blog', article().slug]" [attr.aria-label]="'Read ' + title(article())">
         <img [src]="article().visual.hero.src" [alt]="article().visual.hero.alt" width="1536" height="1024" loading="lazy" decoding="async">
       </a>
       <div class="meta">
-        <time [attr.datetime]="article().publishDate">{{ article().publishDate | date: 'MMM d, y': 'UTC' }}</time>
-        <span>·</span><span>{{ article().audience }}</span>
+        <span>{{ article().occasion }}</span><span>·</span><span>{{ article().priceBand }}</span>
       </div>
-      <h3><a [routerLink]="['/blog', article().slug]">{{ article().title }}</a></h3>
-      <p>{{ article().description }}</p>
+      <h3><a [routerLink]="['/blog', article().slug]">{{ title(article()) }}</a></h3>
+      <p>{{ description(article()) }}</p>
       <div>
-        @for (tag of article().tags.slice(0, 3); track tag) { <span class="tag">{{ tag }}</span> }
+        @for (tag of tags(article()).slice(0, 3); track tag) { <span class="tag">{{ tag }}</span> }
       </div>
-      <a class="read" [routerLink]="['/blog', article().slug]" data-event-name="guide_open" [attr.data-guide-slug]="article().slug">Read the guide →</a>
+      <a class="read" [routerLink]="['/blog', article().slug]" data-event-name="guide_open" [attr.data-guide-slug]="article().slug">Find the gift →</a>
     </article>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ArticleCardComponent { readonly article = input.required<Article>(); }
+export class ArticleCardComponent {
+  readonly article = input.required<Article>();
+  readonly description = readerDescription;
+  readonly tags = readerTags;
+  readonly title = readerTitle;
+}
 
 @Component({
   selector: 'tfg-product-card',
   template: `
     <article class="product-card" [id]="product().id">
       <figure class="product-context-visual">
-        <img [src]="visual().src" alt="" aria-hidden="true" width="1536" height="1024" loading="lazy" decoding="async">
-        <figcaption>Editorial illustration · category context, not a product photo.</figcaption>
+        <a [href]="product().url" target="_blank" [attr.rel]="product().affiliate ? 'sponsored noopener' : 'noopener'" [attr.aria-label]="'See ' + product().name + ' at ' + product().merchant">
+          <img [src]="visual().src" [alt]="visual().alt" width="1536" height="1024" loading="lazy" decoding="async">
+        </a>
+        <figcaption>Original illustration of the gift idea—not a product photo.</figcaption>
       </figure>
-      <p class="eyebrow">Researched recommendation</p>
-      <h3>{{ product().name }}</h3>
-      <p>{{ product().whyItFits }}</p>
-      <div class="scores" aria-label="Recommendation scores">
-        <span class="score">Editorial {{ product().editorialScore }}/100</span>
-        <span class="score">Evidence {{ product().evidenceConfidence }}/100</span>
-      </div>
-      <p class="drawback"><strong>Know before buying:</strong> {{ product().drawback }}</p>
-      <p class="quiet">Merchant: {{ product().merchant }} @if (product().priceBand) { · {{ product().priceBand }} }</p>
+      <p class="eyebrow">A gift to consider</p>
+      <h3><a [href]="product().url" target="_blank" [attr.rel]="product().affiliate ? 'sponsored noopener' : 'noopener'">{{ product().name }}</a></h3>
+      <p>{{ display(product().whyItFits) }}</p>
+      <p class="drawback"><strong>Before you buy:</strong> {{ display(product().drawback) }}</p>
+      <p class="quiet">From {{ product().merchant }} @if (product().priceBand) { · {{ product().priceBand }} }</p>
       <a class="button" [href]="product().url" target="_blank" [attr.rel]="product().affiliate ? 'sponsored noopener' : 'noopener'" data-event-name="merchant_outbound_click" [attr.data-article-slug]="articleSlug()" [attr.data-product-id]="product().id" [attr.data-paid-link]="product().affiliate">
-        Check with {{ product().merchant }}{{ product().affiliate ? ' (paid link)' : '' }}
+        See product details at {{ product().merchant }}{{ product().affiliate ? ' (paid link)' : '' }}
       </a>
     </article>
   `,
@@ -59,6 +62,67 @@ export class ProductCardComponent {
   readonly product = input.required<Product>();
   readonly articleSlug = input.required<string>();
   readonly visual = input.required<VisualAsset>();
+  readonly display = readerLanguage;
+}
+
+@Component({
+  selector: 'tfg-pair-card',
+  template: `
+    <article class="reader-pair-card" [id]="pair().id">
+      <p class="eyebrow">A thoughtful pair</p>
+      <h2>{{ pair().name }}</h2>
+      <div class="reader-pair-products">
+        @if (anchorProduct(); as product) {
+          <section class="reader-pair-product">
+            <a class="reader-pair-product-visual" [href]="product.url" target="_blank" [attr.rel]="product.affiliate ? 'sponsored noopener' : 'noopener'" [attr.aria-label]="'See ' + product.name + ' at ' + product.merchant">
+              <img [src]="productVisual(product.id).src" [alt]="productVisual(product.id).alt" width="1536" height="1024" loading="lazy" decoding="async">
+            </a>
+            <p class="pair-role">Start with</p>
+            <h3><a [href]="product.url" target="_blank" [attr.rel]="product.affiliate ? 'sponsored noopener' : 'noopener'">{{ product.name }}</a></h3>
+            <p>{{ display(product.whyItFits) }}</p>
+            <p class="product-caveat"><strong>Good to know:</strong> {{ display(product.drawback) }}</p>
+            <a class="read" [href]="product.url" target="_blank" [attr.rel]="product.affiliate ? 'sponsored noopener' : 'noopener'" data-event-name="merchant_outbound_click" [attr.data-article-slug]="article().slug" [attr.data-product-id]="product.id" [attr.data-paid-link]="product.affiliate">See product details at {{ product.merchant }} →</a>
+          </section>
+        }
+        @if (companionProduct(); as product) {
+          <section class="reader-pair-product">
+            <a class="reader-pair-product-visual" [href]="product.url" target="_blank" [attr.rel]="product.affiliate ? 'sponsored noopener' : 'noopener'" [attr.aria-label]="'See ' + product.name + ' at ' + product.merchant">
+              <img [src]="productVisual(product.id).src" [alt]="productVisual(product.id).alt" width="1536" height="1024" loading="lazy" decoding="async">
+            </a>
+            <p class="pair-role">Pair it with</p>
+            <h3><a [href]="product.url" target="_blank" [attr.rel]="product.affiliate ? 'sponsored noopener' : 'noopener'">{{ product.name }}</a></h3>
+            <p>{{ display(product.whyItFits) }}</p>
+            <p class="product-caveat"><strong>Good to know:</strong> {{ display(product.drawback) }}</p>
+            <a class="read" [href]="product.url" target="_blank" [attr.rel]="product.affiliate ? 'sponsored noopener' : 'noopener'" data-event-name="merchant_outbound_click" [attr.data-article-slug]="article().slug" [attr.data-product-id]="product.id" [attr.data-paid-link]="product.affiliate">See product details at {{ product.merchant }} →</a>
+          </section>
+        }
+      </div>
+      <p class="illustration-note">The pictures are original illustrations of the gift idea, not product photography. The links open the current product pages.</p>
+      <section class="why-good-gift">
+        <p class="eyebrow">Why this makes a good gift</p>
+        <p>{{ display(pair().whyTogether) }}</p>
+        <p><strong>The moment it creates:</strong> {{ display(pair().interactionMoment) }}</p>
+      </section>
+      <section class="before-you-buy">
+        <h3>Before you buy</h3>
+        <p>{{ display(pair().preGiftCheck) }}</p>
+        <p><strong>If one gift is enough:</strong> {{ display(pair().bundleDrawback) }}</p>
+      </section>
+    </article>
+  `,
+  changeDetection: ChangeDetectionStrategy.OnPush
+})
+export class PairCardComponent {
+  readonly article = input.required<Article>();
+  readonly pair = input.required<ProductPair>();
+  readonly display = readerLanguage;
+  anchorProduct() { return this.article().products.find((product) => product.id === this.pair().anchorProductId); }
+  companionProduct() { return this.article().products.find((product) => product.id === this.pair().companionProductId); }
+  productVisual(productId: string): VisualAsset {
+    const article = this.article();
+    const sceneId = article.visual.productSceneIds[productId];
+    return article.visual.scenes.find((scene) => scene.id === sceneId) ?? article.visual.hero;
+  }
 }
 
 @Component({
@@ -66,20 +130,20 @@ export class ProductCardComponent {
   template: `
     <section class="shell hero">
       <div>
-        <p class="eyebrow">Make the gift feel obvious</p>
+        <p class="eyebrow">The gifts people remember</p>
         <h1>Good gifts, minus the guesswork.</h1>
-        <p class="lede">We turn scattered reviews, product facts, real-world concerns, and budget tradeoffs into useful recommendations you can trust.</p>
+        <p class="lede">The best gifts are often the things someone would love, use, and never quite buy for themselves. We look for the little desire hiding behind “I’m fine”—and turn it into a gift that feels like you noticed.</p>
         <div class="actions">
-          <a class="button" routerLink="/gift-finder">Find a gift direction</a>
-          <a class="button secondary" routerLink="/gifts">Explore gift guides</a>
-          <a class="button secondary" routerLink="/standards">See how we research</a>
+          <a class="button" routerLink="/gift-finder">Find their gift</a>
+          <a class="button secondary" routerLink="/gifts">Browse every idea</a>
+          <a class="button secondary" routerLink="/standards">Our gift philosophy</a>
         </div>
       </div>
       <div class="gift-stack" aria-hidden="true">
         <div class="gift-card-visual">
-          <span class="visual-label">THE GIFT TEST</span>
-          <p class="visual-quote">Would we still recommend it with no commission attached?</p>
-          <div class="visual-meta"><span>Useful</span><span>Defensible</span><span>Delightful</span></div>
+          <span class="visual-label">THE REAL GIFT</span>
+          <p class="visual-quote">Not the thing they need. The thing they keep talking themselves out of.</p>
+          <div class="visual-meta"><span>Seen</span><span>Personal</span><span>A little indulgent</span></div>
         </div>
       </div>
     </section>
@@ -87,21 +151,21 @@ export class ProductCardComponent {
     <section class="section mint-section">
       <div class="shell">
         <div class="section-heading">
-          <div><p class="eyebrow">The standard</p><h2>Advice that earns the click.</h2></div>
-          <p>Every product must clear a minimum editorial score, cite current evidence, name at least one drawback, and remain worthy when the affiliate link is removed.</p>
+          <div><p class="eyebrow">The idea</p><h2>Give them permission to enjoy it.</h2></div>
+          <p>People are good at buying necessities. They are worse at buying the nicer version, the curious side project, or the small luxury with no practical excuse. That is where thoughtful gifts live.</p>
         </div>
         <div class="grid three">
-          <div class="panel"><span class="number">12+</span><h3>candidate products</h3><p>Roundups begin broad, then narrow through repeat research passes.</p></div>
-          <div class="panel"><span class="number">75</span><h3>minimum editorial score</h3><p>Commission never changes the ranking. Reader fit and evidence lead.</p></div>
-          <div class="panel"><span class="number">2×</span><h3>independent review</h3><p>The drafting agent cannot certify its own claims or compliance.</p></div>
+          <div class="panel"><span class="number">01</span><h3>Notice the almost</h3><p>The hobby they circle. The worn workaround. The better version they pick up, admire, and put back.</p></div>
+          <div class="panel"><span class="number">02</span><h3>Find the hesitation</h3><p>Too indulgent. Too niche. Too hard to compare. A gift removes the excuse without creating a burden.</p></div>
+          <div class="panel"><span class="number">03</span><h3>Make it personal</h3><p>The present should say, “I know why you will love this,” before the paper is even off.</p></div>
         </div>
       </div>
     </section>
 
     <section class="shell section">
       <div class="section-heading">
-        <div><p class="eyebrow">Fresh from the desk</p><h2>Guides with receipts.</h2></div>
-        <a routerLink="/blog">View every article →</a>
+        <div><p class="eyebrow">Things worth giving</p><h2>A good gift starts with a person.</h2></div>
+        <a routerLink="/blog">Read every story →</a>
       </div>
       <div class="grid three">
         @for (post of content.articles.slice(0, 3); track post.slug) { <tfg-article-card [article]="post" /> }
@@ -116,12 +180,12 @@ export class HomePage {
   constructor() {
     this.seo.set({
       title: 'Tips for Your Gifts',
-      description: 'Evidence-backed gift guides with honest tradeoffs, transparent affiliate disclosures, and no fake testing.',
+      description: 'Thoughtful gift ideas for the hobbies, small luxuries, and useful upgrades people rarely buy for themselves.',
       path: '/',
       structuredData: {
         '@context': 'https://schema.org', '@type': 'WebSite', name: 'Tips for Your Gifts',
         url: 'https://tipsforyourgifts.web.app',
-        description: 'Evidence-backed gift guides with honest tradeoffs and transparent affiliate disclosures.'
+        description: 'Thoughtful gift ideas for the hobbies, small luxuries, and useful upgrades people rarely buy for themselves.'
       }
     });
   }
@@ -133,51 +197,51 @@ export class HomePage {
     <section class="shell finder-hero">
       <div>
         <p class="eyebrow">Gift finder</p>
-        <h1>Find the signal before the product.</h1>
-        <p class="lede">Choose what you have actually noticed. We will route you to independently reviewed guide directions—not invent a personality profile or pretend a quiz knows the recipient.</p>
+        <h1>Who are they when no one is shopping for them?</h1>
+        <p class="lede">Think about what they do, what gets in their way, and what they keep meaning to try. The clue is usually already there. You just have to notice it.</p>
       </div>
       <aside class="panel finder-boundary">
-        <p class="eyebrow">The honest boundary</p>
-        <h2>No quiz result is a purchase instruction.</h2>
-        <p>Confirm ownership, compatibility, storage, maintenance, and whether the recipient welcomes a physical gift before buying anything.</p>
+        <p class="eyebrow">The only rule</p>
+        <h2>Do not invent a new person for them.</h2>
+        <p>The best surprise recognizes who they already are. Check what they own, what fits, and whether the gift makes their life better instead of merely fuller.</p>
       </aside>
     </section>
 
     <section class="shell finder-layout">
       <form class="panel finder-controls" (submit)="$event.preventDefault()">
-        <div><p class="eyebrow">1 · Recipient signal</p><h2>What have you observed?</h2></div>
+        <div><p class="eyebrow">1 · Start with them</p><h2>What have you noticed?</h2></div>
         <label>
           <span>Strongest clue</span>
           <select name="signal" [value]="signal" (change)="updateSignal($event)">
-            <option value="unsure">I need to narrow the clue first</option>
-            <option value="observed_friction">A workaround, worn item, or postponed upgrade</option>
-            <option value="golf_routine">A specific golf-bag or course-day friction</option>
-            <option value="shared_curiosity">Two interests that could become one activity</option>
+            <option value="unsure">Show me a few ways to think</option>
+            <option value="observed_friction">Something they tolerate instead of replacing</option>
+            <option value="golf_routine">A little annoyance in their golf routine</option>
+            <option value="shared_curiosity">An interest that could become an experience</option>
           </select>
         </label>
         <label>
           <span>Gift shape</span>
           <select name="shape" [value]="shape" (change)="updateShape($event)">
-            <option value="either">Show single gifts and thoughtful pairs</option>
-            <option value="single">Start with one independently useful item</option>
-            <option value="pair">Show only guides with qualified pairs</option>
+            <option value="either">One great thing or a pair with a story</option>
+            <option value="single">One thing they will actually use</option>
+            <option value="pair">Two gifts that create one moment</option>
           </select>
         </label>
         <div class="finder-checklist">
-          <strong>Before using a result, ask:</strong>
+          <strong>Before you buy, ask:</strong>
           <ul>
-            <li>Can I name the observed clue without guessing?</li>
-            <li>Have I checked duplicates, platform, size, edition, or routine fit?</li>
-            <li>Is the self-purchase gap delay or effort—not lack of interest?</li>
-            <li>Would the recipient welcome the ownership burden?</li>
+            <li>Have I actually seen them want, need, or postpone this?</li>
+            <li>Do I know the size, edition, platform, or version that fits?</li>
+            <li>Are they denying themselves a pleasure—or simply uninterested?</li>
+            <li>Will this become part of their life instead of part of their closet?</li>
           </ul>
         </div>
       </form>
 
       <div class="finder-results" aria-live="polite">
         <div class="section-heading finder-heading">
-          <div><p class="eyebrow">Reviewed guide directions</p><h2>{{ results.length }} evidence-backed route{{ results.length === 1 ? '' : 's' }}</h2></div>
-          <p>Results are derived only from publication-ready articles and their reviewed product sets.</p>
+          <div><p class="eyebrow">Places to begin</p><h2>{{ results.length }} gift idea{{ results.length === 1 ? '' : 's' }} for the person you know</h2></div>
+          <p>These are starting points, not personality predictions. Choose the one that sounds most like them.</p>
         </div>
         @if (results.length > 0) {
           <div class="finder-result-list">
@@ -185,22 +249,22 @@ export class HomePage {
               <article class="finder-result">
                 <div class="finder-result-rank" aria-hidden="true">0{{ rank + 1 }}</div>
                 <div>
-                  <p class="eyebrow">Evidence {{ result.article.evidenceScore }}/100 · {{ result.article.products.length }} researched options@if (result.article.pairs.length > 0) { · {{ result.article.pairs.length }} qualified pairs }</p>
+                  <p class="eyebrow">{{ result.article.priceBand }} · {{ result.article.products.length }} idea{{ result.article.products.length === 1 ? '' : 's' }}@if (result.article.pairs.length > 0) { · {{ result.article.pairs.length }} pairing{{ result.article.pairs.length === 1 ? '' : 's' }} }</p>
                   <h3>{{ result.article.title }}</h3>
                   <p class="finder-reason">{{ result.matchReason }}</p>
-                  <p>{{ result.article.description }}</p>
-                  <p class="quiet"><strong>Research-time budget:</strong> {{ result.article.priceBand }}. Recheck current totals, stock, delivery, and returns before purchase.</p>
-                  <a class="button" [routerLink]="['/blog', result.article.slug]" data-event-name="gift_finder_guide_open" [attr.data-guide-slug]="result.article.slug" [attr.data-result-rank]="rank + 1">Open the reviewed guide →</a>
+                  <p>{{ description(result.article) }}</p>
+                  <p class="quiet">Check the current price, fit, delivery, and return policy before making it theirs.</p>
+                  <a class="button" [routerLink]="['/blog', result.article.slug]" data-event-name="gift_finder_guide_open" [attr.data-guide-slug]="result.article.slug" [attr.data-result-rank]="rank + 1">See why it works →</a>
                 </div>
               </article>
             }
           </div>
         } @else {
           <div class="panel finder-empty">
-            <p class="eyebrow">Stop condition</p>
-            <h2>No reviewed guide fits both choices yet.</h2>
-            <p>Broaden the gift shape or use the research method to sharpen the recipient clue. We will not fill the gap with an unreviewed product list.</p>
-            <a class="button secondary" routerLink="/standards">Use the thoughtfulness test</a>
+            <p class="eyebrow">Try a wider clue</p>
+            <h2>Nothing here sounds enough like them yet.</h2>
+            <p>Change the gift shape or return to what you have noticed. A weak match does not become thoughtful because it comes in a nice box.</p>
+            <a class="button secondary" routerLink="/standards">Read our gift philosophy</a>
           </div>
         }
       </div>
@@ -209,13 +273,13 @@ export class HomePage {
     <section class="mint-section finder-method">
       <div class="shell section">
         <div class="section-heading">
-          <div><p class="eyebrow">Why this finder is different</p><h2>One clue. One useful next decision.</h2></div>
-          <p>It reduces a broad shopping problem without inventing personal knowledge or letting commission choose the result.</p>
+          <div><p class="eyebrow">A better way to shop</p><h2>One clue is usually enough.</h2></div>
+          <p>You do not need to know every product. You need to recognize the moment when a product becomes personal.</p>
         </div>
         <div class="grid three">
-          <article class="panel"><span class="number">01</span><h3>Notice</h3><p>Begin with a workaround, repeated phrase, worn object, known curiosity, or deferred small upgrade.</p></article>
-          <article class="panel"><span class="number">02</span><h3>Verify</h3><p>Check duplicates, compatibility, effort, storage, maintenance, and the recipient’s actual welcome.</p></article>
-          <article class="panel"><span class="number">03</span><h3>Choose</h3><p>Use a reviewed guide, keep the drawback visible, and walk away when the fit remains uncertain.</p></article>
+          <article class="panel"><span class="number">01</span><h3>Notice</h3><p>Begin with a workaround, a repeated phrase, a worn object, or the nicer version they keep postponing.</p></article>
+          <article class="panel"><span class="number">02</span><h3>Imagine</h3><p>Picture the first ten minutes after they open it. If no real moment appears, keep looking.</p></article>
+          <article class="panel"><span class="number">03</span><h3>Choose</h3><p>Make sure it fits their life, then give it without turning the present into an assignment.</p></article>
         </div>
       </div>
     </section>
@@ -227,6 +291,7 @@ export class GiftFinderPage {
   private readonly seo = inject(SeoService);
   signal: RecipientSignal = 'unsure';
   shape: GiftShape = 'either';
+  readonly description = readerDescription;
 
   get results() { return findGiftGuides(this.content.articles, this.signal, this.shape); }
 
@@ -234,13 +299,13 @@ export class GiftFinderPage {
     const guides = findGiftGuides(this.content.articles, 'unsure', 'either');
     this.seo.set({
       title: 'Thoughtful gift finder',
-      description: 'Turn an observed recipient clue into an evidence-backed gift-guide direction without fabricated personalization or commission-led ranking.',
+      description: 'Turn one thing you have noticed about someone into a gift that feels personal, useful, and just indulgent enough.',
       path: '/gift-finder',
       structuredData: {
         '@context': 'https://schema.org',
         '@type': 'WebPage',
         name: 'Tips for Your Gifts thoughtful gift finder',
-        description: 'A decision tool that routes observed recipient signals to independently reviewed gift guides.',
+        description: 'A gift finder built around the person you know and the little things they rarely buy for themselves.',
         mainEntity: {
           '@type': 'ItemList',
           numberOfItems: guides.length,
@@ -262,18 +327,18 @@ export class GiftFinderPage {
   template: `
     <section class="shell section">
       <p class="eyebrow">Gift guides</p>
-      <h1>Fewer lists. Better reasons.</h1>
-      <p class="lede">A guide only appears here after its product set, sources, drawbacks, merchant links, and disclosures pass validation.</p>
+      <h1>The things they will not buy themselves.</h1>
+      <p class="lede">A better tool for the hobby. A small luxury. The upgrade they keep postponing because the old one still works. Start there.</p>
       @if (guides.length > 0) {
         <div class="grid three spaced-grid">
           @for (post of guides; track post.slug) { <tfg-article-card [article]="post" /> }
         </div>
       } @else {
         <div class="panel empty-panel">
-          <p class="eyebrow">Research in progress</p>
-          <h2>The first product roundup is still at the evidence gate.</h2>
-          <p>That is intentional. We will not publish placeholder products, invented affiliate links, or merchant copy just to make this page look full.</p>
-          <a class="button" routerLink="/standards">Review the gate</a>
+          <p class="eyebrow">More ideas are coming</p>
+          <h2>We have not found the right one yet.</h2>
+          <p>A page full of generic gifts is easy. A gift that sounds like someone you love takes longer.</p>
+          <a class="button" routerLink="/standards">Read our gift philosophy</a>
         </div>
       }
     </section>
@@ -285,7 +350,7 @@ export class GiftsPage {
   readonly guides = this.content.articles.filter((article) => article.products.length > 0);
   private readonly seo = inject(SeoService);
   constructor() {
-    this.seo.set({ title: 'Gift guides', description: 'Gift recommendations selected with transparent evidence standards, independent quality review, and honest drawbacks.', path: '/gifts' });
+    this.seo.set({ title: 'Thoughtful gift guides', description: 'Gift ideas for the hobbies, useful upgrades, and small luxuries people keep postponing for themselves.', path: '/gifts' });
   }
 }
 
@@ -293,9 +358,9 @@ export class GiftsPage {
   imports: [ArticleCardComponent],
   template: `
     <section class="shell section">
-      <p class="eyebrow">The research journal</p>
-      <h1>Every guide starts with a question.</h1>
-      <p class="lede">We publish fewer, stronger pages: original analysis, dated evidence, honest drawbacks, and clear disclosure when a link may earn money.</p>
+      <p class="eyebrow">The gift journal</p>
+      <h1>A gift starts before the shopping.</h1>
+      <p class="lede">It starts when someone mentions the same annoyance twice. When they light up around a subject. When they choose the sensible version again. That is the part worth writing down.</p>
       <div class="grid three spaced-grid">
         @for (post of content.articles; track post.slug) { <tfg-article-card [article]="post" /> }
       </div>
@@ -307,71 +372,67 @@ export class BlogPage {
   readonly content = inject(ContentService);
   private readonly seo = inject(SeoService);
   constructor() {
-    this.seo.set({ title: 'Gift research journal', description: 'Browse evidence-backed gift guides, decision frameworks, and transparent research notes from Tips for Your Gifts.', path: '/blog' });
+    this.seo.set({ title: 'The gift journal', description: 'Stories and gift ideas built around the interests, rituals, and small indulgences that make people feel known.', path: '/blog' });
   }
 }
 
 @Component({
-  imports: [DatePipe, RouterLink, ProductCardComponent],
+  imports: [DatePipe, RouterLink, ProductCardComponent, PairCardComponent],
   template: `
     @if (article) {
       <article class="article-shell">
         <p class="eyebrow">{{ article.occasion }} · {{ article.priceBand }}</p>
-        <h1>{{ article.title }}</h1>
-        <p class="dek">{{ article.description }}</p>
+        <h1>{{ title(article) }}</h1>
+        <p class="dek">{{ description(article) }}</p>
         <div class="meta-row">
           <time [attr.datetime]="article.publishDate">Published {{ article.publishDate | date: 'MMMM d, y': 'UTC' }}</time>
-          <span>·</span><span>{{ evidenceMode }}</span>
-          <span>·</span><span>Evidence {{ article.evidenceScore }}/100</span>
+          <span>·</span><span>For {{ article.audience }}</span>
         </div>
         <figure class="article-hero-visual">
           <img [src]="article.visual.hero.src" [alt]="article.visual.hero.alt" width="1536" height="1024" fetchpriority="high" decoding="async">
-          <figcaption>{{ article.visual.hero.caption }} <span>Original Gift-Thread editorial illustration.</span></figcaption>
+          <figcaption>{{ display(article.visual.hero.caption) }} <span>Original illustration made for this guide.</span></figcaption>
         </figure>
+        <aside class="panel gift-premise">
+          <p class="eyebrow">Start with the person</p>
+          <h2>{{ lead(article) }}</h2>
+          <p>{{ giftIdea(article) }}</p>
+        </aside>
         @if (article.affiliateDisclosure) {
-          <aside class="disclosure"><strong>Affiliate disclosure:</strong> We may earn a commission when you purchase through links on this page. Recommendations are selected using our published research method.</aside>
-        }
-        <div class="prose" [innerHTML]="article.contentHtml"></div>
-        @if (article.products.length > 0) {
-          <section aria-labelledby="recommendations">
-            <h2 id="recommendations">The recommendations</h2>
-            <div class="product-list">
-              @for (product of article.products; track product.id) { <tfg-product-card [product]="product" [articleSlug]="article.slug" [visual]="productVisual(product.id)" /> }
-            </div>
-          </section>
+          <aside class="disclosure"><strong>Affiliate disclosure:</strong> We may earn a commission when you purchase through links on this page. That never changes who the gift is for or why it belongs here.</aside>
         }
         @if (article.pairs.length > 0) {
           <section aria-labelledby="pairings" class="article-pairings">
-            <p class="eyebrow">More than a bundle</p>
-            <h2 id="pairings">Gift pairs that make each other better</h2>
-            <div class="product-list">
+            <p class="eyebrow">Two products, one idea</p>
+            <h2 id="pairings">Gift pairings for this person</h2>
+            <div class="reader-pair-list">
               @for (pair of article.pairs; track pair.id) {
-                <article class="product-card pairing-product-card">
-                  <figure class="pairing-context-visual">
-                    <img [src]="pairVisual(pair.id).src" alt="" aria-hidden="true" width="1536" height="1024" loading="lazy" decoding="async">
-                    <figcaption>{{ pairVisual(pair.id).caption }}</figcaption>
-                  </figure>
-                  <p class="eyebrow">Pair coherence {{ pair.coherenceScore }}/100</p>
-                  <h3>{{ pair.name }}</h3>
-                  <p><strong>{{ productName(pair.anchorProductId) }}</strong> + <strong>{{ productName(pair.companionProductId) }}</strong></p>
-                  <p>{{ pair.whyTogether }}</p>
-                  <p><strong>Use them together:</strong> {{ pair.interactionMoment }}</p>
-                  <p><strong>Check before buying:</strong> {{ pair.preGiftCheck }}</p>
-                  <p class="drawback"><strong>When the pair is too much:</strong> {{ pair.bundleDrawback }}</p>
-                </article>
+                <tfg-pair-card [article]="article" [pair]="pair" />
               }
             </div>
           </section>
         }
-        <hr class="article-rule">
-        <p class="quiet">Research run: {{ article.researchRun }}. This identifier links the published page to its versioned source and quality report.</p>
-        <p class="quiet">This guide contains {{ documentedSections }} documented sections.</p>
+        @if (unpairedProducts().length > 0) {
+          <section aria-labelledby="recommendations" class="article-single-gifts">
+            <p class="eyebrow">One gift can be enough</p>
+            <h2 id="recommendations">Good gifts on their own</h2>
+            <div class="product-list">
+              @for (product of unpairedProducts(); track product.id) { <tfg-product-card [product]="product" [articleSlug]="article.slug" [visual]="productVisual(product.id)" /> }
+            </div>
+          </section>
+        }
+        @if (article.products.length === 0) {
+          <div class="prose article-explainer" [innerHTML]="body(article)"></div>
+        } @else {
+          <section class="article-explainer" aria-labelledby="why-this-idea-works">
+            <div class="prose" [innerHTML]="body(article)"></div>
+          </section>
+        }
       </article>
     } @else {
       <section class="shell section">
-        <p class="eyebrow">404</p><h1>That guide is hiding.</h1>
-        <p class="lede">It moved, retired, or never cleared the evidence gate.</p>
-        <a class="button" routerLink="/blog">Return to the journal</a>
+        <p class="eyebrow">404</p><h1>No present here.</h1>
+        <p class="lede">This idea wandered off, changed names, or was never quite right.</p>
+        <a class="button" routerLink="/blog">Find another idea</a>
       </section>
     }
   `,
@@ -382,20 +443,22 @@ export class ArticlePage {
   private readonly content = inject(ContentService);
   private readonly seo = inject(SeoService);
   readonly article = this.content.getArticle(this.route.snapshot.paramMap.get('slug'));
-  readonly evidenceMode = this.article?.evidenceMode.replaceAll('_', ' ') ?? '';
-  readonly documentedSections = this.article?.contentHtml.match(/<h[23]/g)?.length ?? 0;
-  productName(productId: string) { return this.article?.products.find((product) => product.id === productId)?.name ?? productId; }
+  readonly description = readerDescription;
+  readonly giftIdea = readerGiftIdea;
+  readonly lead = readerLead;
+  readonly title = readerTitle;
+  readonly body = readerBodyHtml;
+  readonly display = readerLanguage;
+  unpairedProducts() {
+    if (!this.article) return [];
+    const pairedIds = new Set(this.article.pairs.flatMap((pair) => [pair.anchorProductId, pair.companionProductId]));
+    return this.article.products.filter((product) => !pairedIds.has(product.id));
+  }
   productVisual(productId: string): VisualAsset {
     if (!this.article) throw new Error('Cannot resolve a product visual without an article');
     const sceneId = this.article.visual.productSceneIds[productId];
     return this.article.visual.scenes.find((scene) => scene.id === sceneId) ?? this.article.visual.hero;
   }
-  pairVisual(pairId: string): VisualAsset {
-    if (!this.article) throw new Error('Cannot resolve a pair visual without an article');
-    const sceneId = this.article.visual.pairSceneIds[pairId];
-    return this.article.visual.scenes.find((scene) => scene.id === sceneId) ?? this.article.visual.hero;
-  }
-
   constructor() {
     if (!this.article) {
       this.seo.set({ title: 'Guide not found', description: 'The requested gift guide could not be found.', path: this.route.snapshot.url.join('/'), noindex: true });
@@ -403,14 +466,14 @@ export class ArticlePage {
     }
     const path = `/blog/${this.article.slug}`;
     this.seo.set({
-      title: this.article.title,
-      description: this.article.description,
+      title: readerTitle(this.article),
+      description: readerDescription(this.article),
       path,
       type: 'article',
       image: this.article.visual.hero.src,
       structuredData: {
-        '@context': 'https://schema.org', '@type': 'Article', headline: this.article.title,
-        description: this.article.description, datePublished: this.article.publishDate,
+        '@context': 'https://schema.org', '@type': 'Article', headline: readerTitle(this.article),
+        description: readerDescription(this.article), datePublished: this.article.publishDate,
         dateModified: this.article.updatedDate,
         author: { '@type': 'Organization', name: 'Tips for Your Gifts Editorial Team' },
         publisher: { '@type': 'Organization', name: 'Tips for Your Gifts' },
@@ -425,25 +488,23 @@ export class ArticlePage {
 @Component({
   template: `
     <article class="article-shell">
-      <p class="eyebrow">The research standard</p>
-      <h1>Trust is the product.</h1>
-      <p class="dek">AI helps us search broadly and organize evidence. It does not get to invent experience, certify its own work, or trade a better commission for a better ranking.</p>
+      <p class="eyebrow">Our gift philosophy</p>
+      <h1>Buy the thing they would talk themselves out of.</h1>
+      <p class="dek">People buy what they need. Gifts are for the better version, the curious detour, and the small luxury that never survives a practical conversation with yourself.</p>
       <div class="prose">
-        <h2>What a serious roundup requires</h2>
-        <ul>
-          <li>At least 12 candidate products and five qualified finalists.</li>
-          <li>Five source classes: official product facts, seller policies, independent reviews, public consumer discussion, and relevant safety or recall authorities.</li>
-          <li>At least three research passes, ending only after two consecutive passes add little material information.</li>
-          <li>A documented benefit and drawback for every finalist.</li>
-          <li>An editorial score of at least 75 and evidence confidence of at least 70.</li>
-        </ul>
-        <h2>What we will never claim</h2>
-        <p>If we did not physically test a product, we do not say “we tested,” “we used,” or imply personal ownership. Desk research can still be useful, but it must be labeled honestly and connected to its dated sources.</p>
-        <h2>How affiliate links work</h2>
-        <p>Editorial ranking is completed before commission is considered. Paid links are a separate overlay: one exact candidate, one independent destination-and-product review, and one founder approval must all stay hash-bound to the unchanged editorial winner. If any link evidence drifts, we omit the paid tracking rather than inventing it.</p>
-        <h2>How publishing works</h2>
-        <p>The research agent creates a versioned evidence bundle and article draft. A separate quality role challenges the claims. Deterministic checks validate source coverage, scores, link policy, metadata, structured content, and the static build. Only then can the exact Git commit move to a Firebase preview and publication approval.</p>
-        <blockquote>A model finishing its response is not a publication event. Passing the evidence and release gates is.</blockquote>
+        <h2>People are good at buying what they need.</h2>
+        <p>They replace the empty toothpaste. They order the charging cable. They buy the ordinary pan because dinner still has to happen.</p>
+        <p>But the quieter wants are easy to postpone. The field guide for walks they already take. The nicer tool for a hobby they refuse to call serious. The small upgrade that would make every Saturday better, but feels too indulgent on a Tuesday.</p>
+        <blockquote>A thoughtful gift says: I noticed the part of your life you keep putting second.</blockquote>
+        <h2>Notice the almost.</h2>
+        <p>Listen for “I have been meaning to.” Look for the improvised fix that has become permanent. Pay attention to what they borrow, admire, save, or keep researching without buying.</p>
+        <p>The object is not the idea. The idea is that you saw the hesitation and understood what was underneath it.</p>
+        <h2>A little indulgence is the point.</h2>
+        <p>A gift does not need to be frivolous. It needs to cross a line the recipient will not cross alone: from good enough to genuinely enjoyable, from vague curiosity to a first real step, from someday to this weekend.</p>
+        <h2>When two gifts belong together.</h2>
+        <p>Do not make a gift basket just because two products share a color. One thing should open the door and the other should create a moment: read and play, remember and record, notice and look closer.</p>
+        <h2>Let the shopping disappear.</h2>
+        <p>By the time the gift reaches them, the comparisons, dead ends, and practical checks should be invisible. What remains is a simple feeling: this is for me.</p>
       </div>
     </article>
   `,
@@ -452,25 +513,25 @@ export class ArticlePage {
 export class StandardsPage {
   private readonly seo = inject(SeoService);
   constructor() {
-    this.seo.set({ title: 'Our research standards', description: 'The evidence, editorial, affiliate, and publication gates behind every Tips for Your Gifts recommendation.', path: '/standards', structuredData: { '@context': 'https://schema.org', '@type': 'WebPage', name: 'Tips for Your Gifts research standards' } });
+    this.seo.set({ title: 'Our gift philosophy', description: 'A better gift begins with what someone loves, postpones, and rarely gives themselves permission to enjoy.', path: '/standards', structuredData: { '@context': 'https://schema.org', '@type': 'WebPage', name: 'Tips for Your Gifts gift philosophy' } });
   }
 }
 
 @Component({
   template: `
     <article class="article-shell">
-      <p class="eyebrow">Disclosure</p><h1>How the business earns.</h1>
+      <p class="eyebrow">A simple disclosure</p><h1>The idea comes before the link.</h1>
       <div class="prose">
-        <p>Tips for Your Gifts may earn a commission when you purchase through certain links. When that applies, the article includes a clear disclosure before its recommendations and paid links are identified near the action.</p>
-        <p>Affiliate relationships do not determine which products qualify or how they rank. A product must meet the same evidence and editorial standard even when no paid link is available.</p>
+        <p>Tips for Your Gifts may eventually earn a commission from certain links. When a link is paid, we will say so plainly before you click it.</p>
+        <p>The person comes first, the gift idea comes second, and the link comes last. A commission never turns the wrong gift into the right one.</p>
         @if (content.operations.affiliate.activeOverlays > 0) {
-          <p>{{ content.operations.affiliate.activeOverlays }} independently reviewed and founder-approved paid {{ content.operations.affiliate.activeOverlays === 1 ? 'link is' : 'links are' }} active in the current generated candidate. Every paid action is labeled, uses a sponsored relationship, and remains subject to the separate Firebase preview and release gate.</p>
+          <p>{{ content.operations.affiliate.activeOverlays }} paid {{ content.operations.affiliate.activeOverlays === 1 ? 'link is' : 'links are' }} currently active. Each one is labeled where it appears.</p>
         } @else if (content.operations.affiliate.enabledPrograms > 0) {
-          <p>{{ content.operations.affiliate.enabledPrograms }} affiliate {{ content.operations.affiliate.enabledPrograms === 1 ? 'program is' : 'programs are' }} enabled, but no exact paid-link overlay is approved. Published recommendations therefore continue to use ordinary non-affiliate merchant links.</p>
+          <p>{{ content.operations.affiliate.enabledPrograms }} affiliate {{ content.operations.affiliate.enabledPrograms === 1 ? 'partnership is' : 'partnerships are' }} available, but the links on the site remain ordinary, unpaid links unless they are labeled otherwise.</p>
         } @else {
-          <p>No affiliate program is currently enabled in the automated registry. Until Lucas approves an account, tracking identifier, registered site, program terms, and disclosure language, published links must remain ordinary non-affiliate merchant links.</p>
+          <p>No affiliate partnership is active today. Every product destination is an ordinary, unpaid link.</p>
         }
-        <p>This page explains the editorial operating policy and is not legal advice.</p>
+        <p>That may change as the site grows. The way we talk about gifts will not.</p>
       </div>
     </article>
   `,
@@ -480,7 +541,7 @@ export class AffiliateDisclosurePage {
   readonly content = inject(ContentService);
   private readonly seo = inject(SeoService);
   constructor() {
-    this.seo.set({ title: 'Affiliate disclosure', description: 'How Tips for Your Gifts uses affiliate links while keeping editorial recommendations independent.', path: '/affiliate-disclosure' });
+    this.seo.set({ title: 'Affiliate disclosure', description: 'A plain-language explanation of paid links on Tips for Your Gifts.', path: '/affiliate-disclosure' });
   }
 }
 
@@ -1036,7 +1097,7 @@ export class FounderBriefPage {
 
 @Component({
   imports: [RouterLink],
-  template: `<section class="shell section"><p class="eyebrow">404</p><h1>That gift is hiding.</h1><p class="lede">The page moved, retired, or never cleared the evidence gate.</p><a class="button" routerLink="/">Return home</a></section>`,
+  template: `<section class="shell section"><p class="eyebrow">404</p><h1>No present here.</h1><p class="lede">This page wandered off. The person you are shopping for is still waiting.</p><a class="button" routerLink="/">Start again</a></section>`,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NotFoundPage {

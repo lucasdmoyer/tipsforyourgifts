@@ -7,15 +7,33 @@
   "topic": "Useful physical gifts for hard-to-shop-for adults that solve an observed recurring friction without adding random clutter",
   "audience": "United States adults buying for practical and picky friends or relatives who say they want nothing",
   "occasion": "Evergreen birthdays and holidays",
-  "budgetBands": ["$25-$50", "$50-$100"],
+  "budgetBands": [
+    "$25-$50",
+    "$50-$100"
+  ],
   "riskClass": "medium",
   "draftAuthor": "roundup-editorial-team",
   "startedAt": "2026-08-03T01:00:00.000Z",
-  "completedAt": "2026-08-03T04:30:00.000Z",
+  "completedAt": "2026-08-31T02:37:24.016Z",
   "researchPasses": [
-    { "pass": 1, "materialNoveltyRate": 1, "newCandidates": 12, "newDecisionFactors": 9 },
-    { "pass": 2, "materialNoveltyRate": 0.08, "newCandidates": 1, "newDecisionFactors": 2 },
-    { "pass": 3, "materialNoveltyRate": 0.04, "newCandidates": 0, "newDecisionFactors": 1 }
+    {
+      "pass": 1,
+      "materialNoveltyRate": 1,
+      "newCandidates": 12,
+      "newDecisionFactors": 9
+    },
+    {
+      "pass": 2,
+      "materialNoveltyRate": 0.08,
+      "newCandidates": 1,
+      "newDecisionFactors": 2
+    },
+    {
+      "pass": 3,
+      "materialNoveltyRate": 0.04,
+      "newCandidates": 0,
+      "newDecisionFactors": 1
+    }
   ],
   "sources": [
     {
@@ -90,7 +108,7 @@
     },
     {
       "id": "src-peak-official",
-      "url": "https://www.peakdesign.com/products/packing-cube",
+      "url": "https://www.peakdesign.com/products/packing-cube?Color=Charcoal&Size=Medium",
       "publisher": "Peak Design",
       "title": "Packing Cube",
       "accessedAt": "2026-08-03",
@@ -255,91 +273,136 @@
       "text": "Public gift discussions repeatedly favor solving an observed recurring inconvenience over buying a generic or trendy object.",
       "risk": "low",
       "status": "supported",
-      "sourceIds": ["src-social-have-everything", "src-social-useful"]
+      "sourceIds": [
+        "src-social-have-everything",
+        "src-social-useful"
+      ]
     },
     {
       "id": "claim-respect-no-gift",
       "text": "Some people who say they do not want a gift are expressing a real preference against more possessions, so no physical gift may be the better choice.",
       "risk": "low",
       "status": "supported",
-      "sourceIds": ["src-social-no-gift", "src-social-have-everything"]
+      "sourceIds": [
+        "src-social-no-gift",
+        "src-social-have-everything"
+      ]
     },
     {
       "id": "claim-peak-benefit",
       "text": "The Peak Design medium packing cube provides compression and internal separation for a frequent traveler with an existing packing routine.",
       "risk": "low",
       "status": "supported",
-      "sourceIds": ["src-peak-official", "src-peak-packhacker", "src-peak-travel-leisure"]
+      "sourceIds": [
+        "src-peak-official",
+        "src-peak-packhacker",
+        "src-peak-travel-leisure"
+      ]
     },
     {
       "id": "claim-peak-drawback",
       "text": "The quick-opening design can put strain on the zipper or mesh and is unnecessary for a recipient who already likes a packing system.",
       "risk": "low",
       "status": "supported",
-      "sourceIds": ["src-peak-packhacker", "src-peak-travel-leisure"]
+      "sourceIds": [
+        "src-peak-packhacker",
+        "src-peak-travel-leisure"
+      ]
     },
     {
       "id": "claim-thermopop-benefit",
       "text": "ThermoPop 2 is a compact instant-read thermometer with a readable rotating display and current independent performance support.",
       "risk": "medium",
       "status": "supported",
-      "sourceIds": ["src-thermopop-official", "src-thermopop-angrybbq", "src-thermopop-foodnetwork"]
+      "sourceIds": [
+        "src-thermopop-official",
+        "src-thermopop-angrybbq",
+        "src-thermopop-foodnetwork"
+      ]
     },
     {
       "id": "claim-thermopop-drawback",
       "text": "ThermoPop 2 is a spot-check tool rather than a leave-in probe, and its straight form is less compact than a folding thermometer.",
       "risk": "low",
       "status": "supported",
-      "sourceIds": ["src-thermopop-official", "src-thermopop-angrybbq"]
+      "sourceIds": [
+        "src-thermopop-official",
+        "src-thermopop-angrybbq"
+      ]
     },
     {
       "id": "claim-logitech-benefit",
       "text": "Pebble Mouse 2 M350s is portable, quiet, and able to switch among multiple Bluetooth devices.",
       "risk": "low",
       "status": "supported",
-      "sourceIds": ["src-logitech-official", "src-logitech-rtings", "src-logitech-imore"]
+      "sourceIds": [
+        "src-logitech-official",
+        "src-logitech-rtings",
+        "src-logitech-imore"
+      ]
     },
     {
       "id": "claim-logitech-drawback",
       "text": "The low-profile mouse may be uncomfortable for long sessions and does not include the compatible Logi Bolt receiver when sold by itself.",
       "risk": "low",
       "status": "supported",
-      "sourceIds": ["src-logitech-official", "src-logitech-rtings", "src-logitech-imore"]
+      "sourceIds": [
+        "src-logitech-official",
+        "src-logitech-rtings",
+        "src-logitech-imore"
+      ]
     },
     {
       "id": "claim-fenix-benefit",
       "text": "Fenix E12 V3 is a compact three-mode flashlight powered by a replaceable AA battery, making it suitable for a known everyday utility need.",
       "risk": "medium",
       "status": "supported",
-      "sourceIds": ["src-fenix-official", "src-fenix-1lumen", "src-fenix-outdoor-insight"]
+      "sourceIds": [
+        "src-fenix-official",
+        "src-fenix-1lumen",
+        "src-fenix-outdoor-insight"
+      ]
     },
     {
       "id": "claim-fenix-drawback",
       "text": "The output and beam tint will not satisfy every flashlight enthusiast, and it lacks built-in USB charging.",
       "risk": "low",
       "status": "supported",
-      "sourceIds": ["src-fenix-1lumen", "src-fenix-outdoor-insight"]
+      "sourceIds": [
+        "src-fenix-1lumen",
+        "src-fenix-outdoor-insight"
+      ]
     },
     {
       "id": "claim-ifixit-benefit",
       "text": "The iFixit Mako set organizes a broad selection of precision bits and a driver for small electronics and household repair tasks.",
       "risk": "medium",
       "status": "supported",
-      "sourceIds": ["src-ifixit-official", "src-ifixit-binaryfork", "src-ifixit-pcgamer"]
+      "sourceIds": [
+        "src-ifixit-official",
+        "src-ifixit-binaryfork",
+        "src-ifixit-pcgamer"
+      ]
     },
     {
       "id": "claim-ifixit-drawback",
       "text": "The precision driver is not a high-torque general-purpose screwdriver, and its shape may not reach every deep recessed fastener.",
       "risk": "medium",
       "status": "supported",
-      "sourceIds": ["src-ifixit-binaryfork", "src-ifixit-pcgamer"]
+      "sourceIds": [
+        "src-ifixit-binaryfork",
+        "src-ifixit-pcgamer"
+      ]
     },
     {
       "id": "claim-social-original",
       "text": "Pinterest recommends original useful content with clear titles and descriptions rather than repetitive distribution.",
       "risk": "low",
       "status": "supported",
-      "sourceIds": ["src-pinterest-audience", "src-pinterest-commercial"]
+      "sourceIds": [
+        "src-pinterest-audience",
+        "src-pinterest-commercial"
+      ]
     }
   ],
   "candidates": [
@@ -348,10 +411,20 @@
       "name": "Peak Design Packing Cube, Medium",
       "editorialScore": 86,
       "evidenceConfidence": 84,
-      "drawbacks": ["The quick-opening design can strain the zipper or mesh, and it adds little for someone who already likes a packing system."],
-      "primarySourceIds": ["src-peak-official"],
-      "independentSourceIds": ["src-peak-packhacker", "src-peak-travel-leisure"],
-      "claimIds": ["claim-peak-benefit", "claim-peak-drawback"],
+      "drawbacks": [
+        "The quick-opening design can strain the zipper or mesh, and it adds little for someone who already likes a packing system."
+      ],
+      "primarySourceIds": [
+        "src-peak-official"
+      ],
+      "independentSourceIds": [
+        "src-peak-packhacker",
+        "src-peak-travel-leisure"
+      ],
+      "claimIds": [
+        "claim-peak-benefit",
+        "claim-peak-drawback"
+      ],
       "evidenceMode": "desk_research"
     },
     {
@@ -359,10 +432,20 @@
       "name": "ThermoWorks ThermoPop 2",
       "editorialScore": 91,
       "evidenceConfidence": 92,
-      "drawbacks": ["It is a spot-check tool rather than a leave-in probe, and its straight body takes more drawer space than a folding thermometer."],
-      "primarySourceIds": ["src-thermopop-official"],
-      "independentSourceIds": ["src-thermopop-angrybbq", "src-thermopop-foodnetwork"],
-      "claimIds": ["claim-thermopop-benefit", "claim-thermopop-drawback"],
+      "drawbacks": [
+        "It is a spot-check tool rather than a leave-in probe, and its straight body takes more drawer space than a folding thermometer."
+      ],
+      "primarySourceIds": [
+        "src-thermopop-official"
+      ],
+      "independentSourceIds": [
+        "src-thermopop-angrybbq",
+        "src-thermopop-foodnetwork"
+      ],
+      "claimIds": [
+        "claim-thermopop-benefit",
+        "claim-thermopop-drawback"
+      ],
       "evidenceMode": "desk_research"
     },
     {
@@ -370,10 +453,20 @@
       "name": "Logitech Pebble Mouse 2 M350s",
       "editorialScore": 84,
       "evidenceConfidence": 87,
-      "drawbacks": ["Its low profile may be uncomfortable for long sessions, and a compatible Logi Bolt receiver is not included with the standalone mouse."],
-      "primarySourceIds": ["src-logitech-official"],
-      "independentSourceIds": ["src-logitech-rtings", "src-logitech-imore"],
-      "claimIds": ["claim-logitech-benefit", "claim-logitech-drawback"],
+      "drawbacks": [
+        "Its low profile may be uncomfortable for long sessions, and a compatible Logi Bolt receiver is not included with the standalone mouse."
+      ],
+      "primarySourceIds": [
+        "src-logitech-official"
+      ],
+      "independentSourceIds": [
+        "src-logitech-rtings",
+        "src-logitech-imore"
+      ],
+      "claimIds": [
+        "claim-logitech-benefit",
+        "claim-logitech-drawback"
+      ],
       "evidenceMode": "desk_research"
     },
     {
@@ -381,10 +474,20 @@
       "name": "Fenix E12 V3 Flashlight",
       "editorialScore": 81,
       "evidenceConfidence": 82,
-      "drawbacks": ["The beam tint and modest output are not for every enthusiast, and there is no built-in USB charging."],
-      "primarySourceIds": ["src-fenix-official"],
-      "independentSourceIds": ["src-fenix-1lumen", "src-fenix-outdoor-insight"],
-      "claimIds": ["claim-fenix-benefit", "claim-fenix-drawback"],
+      "drawbacks": [
+        "The beam tint and modest output are not for every enthusiast, and there is no built-in USB charging."
+      ],
+      "primarySourceIds": [
+        "src-fenix-official"
+      ],
+      "independentSourceIds": [
+        "src-fenix-1lumen",
+        "src-fenix-outdoor-insight"
+      ],
+      "claimIds": [
+        "claim-fenix-benefit",
+        "claim-fenix-drawback"
+      ],
       "evidenceMode": "desk_research"
     },
     {
@@ -392,10 +495,20 @@
       "name": "iFixit Mako Precision Bit Set",
       "editorialScore": 80,
       "evidenceConfidence": 78,
-      "drawbacks": ["It is a precision kit rather than a high-torque household screwdriver, and the driver may not reach every deep recessed fastener."],
-      "primarySourceIds": ["src-ifixit-official"],
-      "independentSourceIds": ["src-ifixit-binaryfork", "src-ifixit-pcgamer"],
-      "claimIds": ["claim-ifixit-benefit", "claim-ifixit-drawback"],
+      "drawbacks": [
+        "It is a precision kit rather than a high-torque household screwdriver, and the driver may not reach every deep recessed fastener."
+      ],
+      "primarySourceIds": [
+        "src-ifixit-official"
+      ],
+      "independentSourceIds": [
+        "src-ifixit-binaryfork",
+        "src-ifixit-pcgamer"
+      ],
+      "claimIds": [
+        "claim-ifixit-benefit",
+        "claim-ifixit-drawback"
+      ],
       "evidenceMode": "desk_research"
     },
     {
@@ -403,7 +516,9 @@
       "name": "Patagonia Black Hole Cube 3L",
       "editorialScore": 78,
       "evidenceConfidence": 78,
-      "drawbacks": ["It overlaps the selected packing cube and is relatively bulky for its small capacity."],
+      "drawbacks": [
+        "It overlaps the selected packing cube and is relatively bulky for its small capacity."
+      ],
       "primarySourceIds": [],
       "independentSourceIds": [],
       "claimIds": [],
@@ -414,7 +529,9 @@
       "name": "Zojirushi Stainless Mug SM-SHE48",
       "editorialScore": 74,
       "evidenceConfidence": 69,
-      "drawbacks": ["The narrow body and multi-part lid add cleaning work, and exact U.S. SKU availability needs a fresh check."],
+      "drawbacks": [
+        "The narrow body and multi-part lid add cleaning work, and exact U.S. SKU availability needs a fresh check."
+      ],
       "primarySourceIds": [],
       "independentSourceIds": [],
       "claimIds": [],
@@ -425,7 +542,9 @@
       "name": "Lodge 10.25-inch Cast Iron Skillet L8SK3",
       "editorialScore": 79,
       "evidenceConfidence": 82,
-      "drawbacks": ["It is heavy, the handle becomes hot, and it can rust if the recipient does not want the maintenance routine."],
+      "drawbacks": [
+        "It is heavy, the handle becomes hot, and it can rust if the recipient does not want the maintenance routine."
+      ],
       "primarySourceIds": [],
       "independentSourceIds": [],
       "claimIds": [],
@@ -436,7 +555,9 @@
       "name": "Rumpl Original Puffy Blanket",
       "editorialScore": 76,
       "evidenceConfidence": 78,
-      "drawbacks": ["It is bulky for minimalist travel and a poor fit for someone who dislikes synthetic fabric."],
+      "drawbacks": [
+        "It is bulky for minimalist travel and a poor fit for someone who dislikes synthetic fabric."
+      ],
       "primarySourceIds": [],
       "independentSourceIds": [],
       "claimIds": [],
@@ -447,7 +568,9 @@
       "name": "AeroPress Original Coffee Maker",
       "editorialScore": 75,
       "evidenceConfidence": 77,
-      "drawbacks": ["It makes small batches, uses recurring filters, and only fits a recipient with a known manual-coffee habit."],
+      "drawbacks": [
+        "It makes small batches, uses recurring filters, and only fits a recipient with a known manual-coffee habit."
+      ],
       "primarySourceIds": [],
       "independentSourceIds": [],
       "claimIds": [],
@@ -458,7 +581,9 @@
       "name": "OXO Good Grips 11-pound Food Scale",
       "editorialScore": 76,
       "evidenceConfidence": 75,
-      "drawbacks": ["It is a larger kitchen object and independent tests report small accuracy variance at fine measurements."],
+      "drawbacks": [
+        "It is a larger kitchen object and independent tests report small accuracy variance at fine measurements."
+      ],
       "primarySourceIds": [],
       "independentSourceIds": [],
       "claimIds": [],
@@ -469,7 +594,9 @@
       "name": "JBL Go 4 Portable Speaker",
       "editorialScore": 72,
       "evidenceConfidence": 80,
-      "drawbacks": ["Small-speaker bass and dynamics are limited, and the model is already being displaced by a newer generation."],
+      "drawbacks": [
+        "Small-speaker bass and dynamics are limited, and the model is already being displaced by a newer generation."
+      ],
       "primarySourceIds": [],
       "independentSourceIds": [],
       "claimIds": [],
@@ -480,7 +607,9 @@
       "name": "Owala FreeSip 24-ounce Bottle",
       "editorialScore": 70,
       "evidenceConfidence": 65,
-      "drawbacks": ["Color, cleaning, and drinking-spout preferences make it too personal for a default hard-to-shop-for recommendation."],
+      "drawbacks": [
+        "Color, cleaning, and drinking-spout preferences make it too personal for a default hard-to-shop-for recommendation."
+      ],
       "primarySourceIds": [],
       "independentSourceIds": [],
       "claimIds": [],
@@ -493,10 +622,20 @@
       "name": "Peak Design Packing Cube, Medium",
       "editorialScore": 86,
       "evidenceConfidence": 84,
-      "drawbacks": ["The quick-opening design can strain the zipper or mesh, and it adds little for someone who already likes a packing system."],
-      "primarySourceIds": ["src-peak-official"],
-      "independentSourceIds": ["src-peak-packhacker", "src-peak-travel-leisure"],
-      "claimIds": ["claim-peak-benefit", "claim-peak-drawback"],
+      "drawbacks": [
+        "The quick-opening design can strain the zipper or mesh, and it adds little for someone who already likes a packing system."
+      ],
+      "primarySourceIds": [
+        "src-peak-official"
+      ],
+      "independentSourceIds": [
+        "src-peak-packhacker",
+        "src-peak-travel-leisure"
+      ],
+      "claimIds": [
+        "claim-peak-benefit",
+        "claim-peak-drawback"
+      ],
       "evidenceMode": "desk_research"
     },
     {
@@ -504,10 +643,20 @@
       "name": "ThermoWorks ThermoPop 2",
       "editorialScore": 91,
       "evidenceConfidence": 92,
-      "drawbacks": ["It is a spot-check tool rather than a leave-in probe, and its straight body takes more drawer space than a folding thermometer."],
-      "primarySourceIds": ["src-thermopop-official"],
-      "independentSourceIds": ["src-thermopop-angrybbq", "src-thermopop-foodnetwork"],
-      "claimIds": ["claim-thermopop-benefit", "claim-thermopop-drawback"],
+      "drawbacks": [
+        "It is a spot-check tool rather than a leave-in probe, and its straight body takes more drawer space than a folding thermometer."
+      ],
+      "primarySourceIds": [
+        "src-thermopop-official"
+      ],
+      "independentSourceIds": [
+        "src-thermopop-angrybbq",
+        "src-thermopop-foodnetwork"
+      ],
+      "claimIds": [
+        "claim-thermopop-benefit",
+        "claim-thermopop-drawback"
+      ],
       "evidenceMode": "desk_research"
     },
     {
@@ -515,10 +664,20 @@
       "name": "Logitech Pebble Mouse 2 M350s",
       "editorialScore": 84,
       "evidenceConfidence": 87,
-      "drawbacks": ["Its low profile may be uncomfortable for long sessions, and a compatible Logi Bolt receiver is not included with the standalone mouse."],
-      "primarySourceIds": ["src-logitech-official"],
-      "independentSourceIds": ["src-logitech-rtings", "src-logitech-imore"],
-      "claimIds": ["claim-logitech-benefit", "claim-logitech-drawback"],
+      "drawbacks": [
+        "Its low profile may be uncomfortable for long sessions, and a compatible Logi Bolt receiver is not included with the standalone mouse."
+      ],
+      "primarySourceIds": [
+        "src-logitech-official"
+      ],
+      "independentSourceIds": [
+        "src-logitech-rtings",
+        "src-logitech-imore"
+      ],
+      "claimIds": [
+        "claim-logitech-benefit",
+        "claim-logitech-drawback"
+      ],
       "evidenceMode": "desk_research"
     },
     {
@@ -526,10 +685,20 @@
       "name": "Fenix E12 V3 Flashlight",
       "editorialScore": 81,
       "evidenceConfidence": 82,
-      "drawbacks": ["The beam tint and modest output are not for every enthusiast, and there is no built-in USB charging."],
-      "primarySourceIds": ["src-fenix-official"],
-      "independentSourceIds": ["src-fenix-1lumen", "src-fenix-outdoor-insight"],
-      "claimIds": ["claim-fenix-benefit", "claim-fenix-drawback"],
+      "drawbacks": [
+        "The beam tint and modest output are not for every enthusiast, and there is no built-in USB charging."
+      ],
+      "primarySourceIds": [
+        "src-fenix-official"
+      ],
+      "independentSourceIds": [
+        "src-fenix-1lumen",
+        "src-fenix-outdoor-insight"
+      ],
+      "claimIds": [
+        "claim-fenix-benefit",
+        "claim-fenix-drawback"
+      ],
       "evidenceMode": "desk_research"
     },
     {
@@ -537,10 +706,20 @@
       "name": "iFixit Mako Precision Bit Set",
       "editorialScore": 80,
       "evidenceConfidence": 78,
-      "drawbacks": ["It is a precision kit rather than a high-torque household screwdriver, and the driver may not reach every deep recessed fastener."],
-      "primarySourceIds": ["src-ifixit-official"],
-      "independentSourceIds": ["src-ifixit-binaryfork", "src-ifixit-pcgamer"],
-      "claimIds": ["claim-ifixit-benefit", "claim-ifixit-drawback"],
+      "drawbacks": [
+        "It is a precision kit rather than a high-torque household screwdriver, and the driver may not reach every deep recessed fastener."
+      ],
+      "primarySourceIds": [
+        "src-ifixit-official"
+      ],
+      "independentSourceIds": [
+        "src-ifixit-binaryfork",
+        "src-ifixit-pcgamer"
+      ],
+      "claimIds": [
+        "claim-ifixit-benefit",
+        "claim-ifixit-drawback"
+      ],
       "evidenceMode": "desk_research"
     }
   ],
@@ -555,12 +734,12 @@
   "qa": {
     "passed": true,
     "reviewerRole": "independent-editor",
-    "reviewerId": "evidence-red-team",
+    "reviewerId": "product-link-independent-editor-20260830",
     "receiptPath": "research/reviews/20260803-useful-gifts-hard-to-shop-for-adults-ceca335c.qa.v1.json",
     "blockers": [],
     "warnings": [
-      "Product availability, return terms, and recall databases are time-sensitive and should be rechecked immediately before an external release.",
-      "No affiliate program is enabled, so every product destination remains an ordinary non-affiliate manufacturer link."
+      "Recheck availability, return terms, and recall databases at the external release gate.",
+      "Keep all links non-affiliate until a founder-approved program is enabled."
     ]
   }
 }

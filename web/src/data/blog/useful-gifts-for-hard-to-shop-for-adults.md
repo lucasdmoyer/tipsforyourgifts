@@ -20,7 +20,7 @@ products:
   - id: peak-design-packing-cube-medium
     name: "Peak Design Packing Cube, Medium"
     merchant: "Peak Design"
-    url: "https://www.peakdesign.com/products/packing-cube"
+    url: "https://www.peakdesign.com/products/packing-cube?Color=Charcoal&Size=Medium"
     affiliate: false
     priceBand: "$25-$50"
     whyItFits: "For a frequent traveler whose bag is visibly chaotic, this is a compact replacement for loose pouches rather than a decorative extra."

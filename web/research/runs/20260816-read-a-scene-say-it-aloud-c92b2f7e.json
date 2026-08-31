@@ -1572,10 +1572,10 @@
   "qa": {
     "passed": true,
     "reviewerRole": "independent-editor",
-    "reviewerId": "language-learning-independent-editor-20260816",
+    "reviewerId": "product-link-independent-editor-20260830",
     "receiptPath": "research/reviews/20260816-read-a-scene-say-it-aloud-c92b2f7e.qa.v1.json",
     "blockers": [],
     "warnings": []
   },
-  "completedAt": "2026-08-16T19:06:52.591Z"
+  "completedAt": "2026-08-31T02:37:24.322Z"
 }
