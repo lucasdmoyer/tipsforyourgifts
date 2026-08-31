@@ -88,7 +88,7 @@ await expectFailure('article product absent from finalists', async (fixture) => 
 await expectFailure('tracking parameters on a non-affiliate link', async (fixture) => {
   const articlePath = path.join(fixture, 'src', 'data', 'blog', `${slug}.md`);
   const article = await fs.readFile(articlePath, 'utf8');
-  await fs.writeFile(articlePath, article.replace('https://www.peakdesign.com/products/packing-cube"', 'https://www.peakdesign.com/products/packing-cube?utm_source=unapproved"'));
+  await fs.writeFile(articlePath, article.replace('https://www.peakdesign.com/products/packing-cube?Color=Charcoal&Size=Medium"', 'https://www.peakdesign.com/products/packing-cube?Color=Charcoal&Size=Medium&utm_source=unapproved"'));
 });
 
 await expectFailure('social post linking away from owned content', async (fixture) => {

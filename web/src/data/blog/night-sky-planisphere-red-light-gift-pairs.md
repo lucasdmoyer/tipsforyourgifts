@@ -66,11 +66,11 @@ products:
   - id: rigel-starlite-mini-red-only
     name: "Rigel Starlite Mini red-only variable-brightness flashlight"
     merchant: "Rigel Systems"
-    url: "https://www.rigelsys.com/flashlight.html"
+    url: "https://www.rigelsys.com/mini%20flashlight.html"
     affiliate: false
     priceBand: "Under $30"
     whyItFits: "Its manufacturer-documented two-red-LED design and thumbwheel control fit chart reading without cycling through a white mode, provided its low-end output is checked indoors first."
-    drawback: "It uses a bulky 9-volt battery and is not water resistant; owner reports and a 2008 lab comparison also conflict on whether its lowest output is suitably dim."
+    drawback: "The order page is a model selector, so choose Deep Red/Red rather than Skylite. It also uses a bulky 9-volt battery, is not water resistant, and may still be too bright at its lowest setting."
     editorialScore: 82
     evidenceConfidence: 78
     claimIds:
@@ -98,7 +98,7 @@ pairs:
     companionProductId: rigel-starlite-mini-red-only
     whyTogether: "The latitude-correct wheel answers what fixed-star pattern should be above the horizon, while the Rigel supplies adjustable direct red chart light; the pair qualifies only after its lowest usable output is checked indoors."
     interactionMoment: "Before dark adaptation, set the wheel and check the Rigel's lowest usable output indoors; outside, find one familiar pattern, consult the chart briefly, then locate one neighbor."
-    preGiftCheck: "Confirm the exact observing latitude, analog preference, chart readability, existing guide, existing red light, and 9-volt battery acceptance."
+    preGiftCheck: "Confirm the exact observing latitude, analog preference, chart readability, existing guide, existing red light, 9-volt battery acceptance, and the Deep Red/Red—not Skylite—option at checkout."
     bundleDrawback: "Buy only the planisphere if they already own a trusted red-only light with verified low-end output; buy only the Rigel if they already own the correct analog guide; skip both if they prefer apps."
     coherenceScore: 94
     claimIds:
@@ -109,7 +109,7 @@ pairs:
     companionProductId: rigel-starlite-mini-red-only
     whyTogether: "The latitude-correct wheel supplies the northern-US seasonal orientation layer, while the Rigel supplies adjustable direct red chart light; the pair qualifies only after its lowest usable output is checked indoors."
     interactionMoment: "Before dark adaptation, set the wheel and check the Rigel's lowest usable output indoors; outside, find one familiar pattern, consult the chart briefly, then locate one neighbor."
-    preGiftCheck: "Confirm the exact observing latitude, analog preference, chart readability, existing guide, existing red light, and 9-volt battery acceptance."
+    preGiftCheck: "Confirm the exact observing latitude, analog preference, chart readability, existing guide, existing red light, 9-volt battery acceptance, and the Deep Red/Red—not Skylite—option at checkout."
     bundleDrawback: "Buy only the planisphere if they already own a trusted red-only light with verified low-end output; buy only the Rigel if they already own the correct analog guide; skip both if they prefer apps."
     coherenceScore: 94
     claimIds:
@@ -174,9 +174,9 @@ That is why this guide rejects a bright novelty light and any control that force
 
 Choose **The Night Sky 30°–40°N large planisphere** only when the regular observing coordinate is inside that band. Pair it with the **Rigel Starlite Mini red-only light**.
 
-The Mini instructions document push-thumbwheel operation and a replaceable 9-volt battery—nothing more about startup position or minimum output. Rigel's current product page documents the Starlite Mini's two red LEDs, thumbwheel brightness control, 9-volt power, and lack of water resistance. Independent evidence is mixed: exact-product owner reviews describe a useful adjustable range and an imperfect beam, while a 2008 lab comparison found the tested Mini too bright at minimum for its stringent dark-adaptation standard ([Rigel Starlite Mini instructions](https://www.rigelsys.com/00%20downloads/Mini.pdf), [Rigel product page](https://www.rigelsys.com/flashlight.html), [Adorama owner reviews](https://www.adorama.com/atrsm.html), [interstellarum comparison](https://www.interstellarum.de/wp-content/uploads/2019/12/thema20081-30a.pdf)).
+The Mini instructions document push-thumbwheel operation and a replaceable 9-volt battery—nothing more about startup position or minimum output. Rigel's current product page documents the Starlite Mini's two red LEDs, thumbwheel brightness control, 9-volt power, and lack of water resistance. Independent evidence is mixed: exact-product owner reviews describe a useful adjustable range and an imperfect beam, while a 2008 lab comparison found the tested Mini too bright at minimum for its stringent dark-adaptation standard ([Rigel Starlite Mini instructions](https://www.rigelsys.com/00%20downloads/Mini.pdf), [Rigel product page](https://www.rigelsys.com/mini%20flashlight.html), [Adorama owner reviews](https://www.adorama.com/atrsm.html), [interstellarum comparison](https://www.interstellarum.de/wp-content/uploads/2019/12/thema20081-30a.pdf)).
 
-Its direct red configuration is the point. Its drawbacks are equally concrete: it is not water resistant, and the current manufacturer material does not resolve the low-end conflict. Turn it on and check the lowest usable output indoors before dark adaptation; skip or return it if that level is still too bright.
+Its direct red configuration is the point. The current order page is a model selector, so choose Deep Red/Red and not Skylite. It is also not water resistant, and the manufacturer material does not resolve the low-end conflict. Turn it on and check the lowest usable output indoors before dark adaptation; skip or return it if that level is still too bright.
 
 ## Qualified pair two: 40°–50° north
 

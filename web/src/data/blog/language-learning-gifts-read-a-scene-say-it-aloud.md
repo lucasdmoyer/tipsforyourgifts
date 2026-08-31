@@ -21,8 +21,8 @@ affiliateDisclosure: false
 products:
   - id: 101-conversations-simple-spanish
     name: "101 Conversations in Simple Spanish"
-    merchant: "StoryLearning"
-    url: "https://storylearning.com/books"
+    merchant: "Barnes & Noble"
+    url: "https://www.barnesandnoble.com/w/101-conversations-in-simple-spanish-olly-richards/1143901111"
     affiliate: false
     priceBand: "Under $25"
     whyItFits: "For a high-A2 adult who prefers European Spanish and likes dialogue, the short Spain-set exchanges provide a bounded scene whose words can be reused aloud."
@@ -35,8 +35,8 @@ products:
       - claim-101-compatibility
   - id: short-stories-spanish-beginners-v1
     name: "Short Stories in Spanish for Beginners, Volume 1"
-    merchant: "StoryLearning"
-    url: "https://storylearning.com/books"
+    merchant: "Barnes & Noble"
+    url: "https://www.barnesandnoble.com/w/short-stories-in-spanish-for-beginners-olly-richards/1128247331"
     affiliate: false
     priceBand: "Under $25"
     whyItFits: "Eight varied A2-B1 stories give a fiction reader multiple short contexts, vocabulary support, and questions without committing them to one long native novel."
@@ -132,13 +132,13 @@ Recent meta-analytic evidence supports level-attuned, self-selected extensive re
 
 ## Best anchor: 101 Conversations in Simple Spanish
 
-StoryLearning catalogs **101 Conversations in Simple Spanish** at A2-B1. Its short dialogues form a continuing story, and independent listings identify a Spain setting and Castilian expressions ([StoryLearning](https://storylearning.com/books), [Goodreads](https://www.goodreads.com/en/book/show/56675281-101-conversations-in-simple-spanish), [The StoryGraph](https://beta.thestorygraph.com/book_reviews/623a7cc5-26e4-4431-9e41-d44ee47ea7a6)).
+StoryLearning catalogs **101 Conversations in Simple Spanish** at A2-B1. Its short dialogues form a continuing story, and independent listings identify a Spain setting and Castilian expressions ([Barnes & Noble](https://www.barnesandnoble.com/w/101-conversations-in-simple-spanish-olly-richards/1143901111), [Goodreads](https://www.goodreads.com/en/book/show/56675281-101-conversations-in-simple-spanish), [The StoryGraph](https://beta.thestorygraph.com/book_reviews/623a7cc5-26e4-4431-9e41-d44ee47ea7a6)).
 
 That makes it the clearest bridge from recognition to reuse: read one exchange, choose three phrases, and say one altered version aloud. The drawback is real. Reader reports describe a juvenile or uneven plot, and this is not a zero-experience beginner book. The audio edition is separate; the print book works without it.
 
 ## For a fiction reader: Short Stories in Spanish for Beginners, Volume 1
 
-The first **Short Stories in Spanish for Beginners** volume offers eight A2-B1 stories rather than one long plot. Reviewers support the vocabulary and comprehension scaffolding, but they also report occasional errors, unusual vocabulary, *vosotros*, and difficulty above what “beginner” might suggest ([StoryLearning](https://storylearning.com/books), [AllBookstores](https://www.allbookstores.com/Short-Stories-Spanish-Beginners-Richards/9781473683259), [The StoryGraph](https://app.thestorygraph.com/book_reviews/cf359e49-bd4d-436f-84c4-fe86749a6ed1)).
+The first **Short Stories in Spanish for Beginners** volume offers eight A2-B1 stories rather than one long plot. Reviewers support the vocabulary and comprehension scaffolding, but they also report occasional errors, unusual vocabulary, *vosotros*, and difficulty above what “beginner” might suggest ([Barnes & Noble](https://www.barnesandnoble.com/w/short-stories-in-spanish-for-beginners-olly-richards/1128247331), [AllBookstores](https://www.allbookstores.com/Short-Stories-Spanish-Beginners-Richards/9781473683259), [The StoryGraph](https://app.thestorygraph.com/book_reviews/cf359e49-bd4d-436f-84c4-fe86749a6ed1)).
 
 Choose it for someone who already likes varied fiction and welcomes European Spanish. Skip it if the title is doing all the compatibility work for you.
 

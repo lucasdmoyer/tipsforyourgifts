@@ -49,5 +49,7 @@ assert.match(manualWorkflow, /service_account: github-production@tipsforyourgift
 assert.doesNotMatch(manualWorkflow, /FIREBASE_SERVICE_ACCOUNT_TIPSFORYOURGIFTS/, 'founder-reviewed release must not depend on a long-lived service-account key');
 assert.match(manualWorkflow, /firebase-tools@15\.26\.0 deploy --only hosting --project tipsforyourgifts --non-interactive/, 'founder-reviewed live deployment must target only Hosting in the explicit project');
 assert.match(manualWorkflow, /hosting:channel:list[\s\S]*--site tipsforyourgifts[\s\S]*--project tipsforyourgifts/, 'founder-reviewed preview must resolve its exact Firebase site and project');
+assert.match(manualWorkflow, /npm --prefix web run smoke:hosted -- "\$PREVIEW_URL"/, 'founder-reviewed preview must smoke every public route');
+assert.match(manualWorkflow, /npm --prefix web run smoke:hosted -- https:\/\/tipsforyourgifts\.web\.app/, 'founder-reviewed production must smoke every public route');
 
-console.log(JSON.stringify({ publicationPolicyNegativeGateTests: 'passed', negativeChecks: 8, workflowReleaseChecks: 18 }, null, 2));
+console.log(JSON.stringify({ publicationPolicyNegativeGateTests: 'passed', negativeChecks: 8, workflowReleaseChecks: 20 }, null, 2));

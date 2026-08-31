@@ -78,7 +78,7 @@ products:
   - id: green-stuff-world-wet-palette-xl
     name: "Green Stuff World Acrylic Wet Palette XL (reference 8435646501208ES)"
     merchant: "Green Stuff World"
-    url: "https://www.greenstuffworld.com/en/276-wet-palette?SubmitCurrency=1&id_currency=1"
+    url: "https://www.greenstuffworld.com/en/wet-palette/1546-wet-palette-xl.html"
     affiliate: false
     priceBand: "$25-$70"
     whyItFits: "For a batch painter with a measured dedicated desk and many conventional-acrylic colors in play, this independently reviewed XL system is the qualified large-workspace alternative—not a third bundle."
@@ -184,7 +184,7 @@ Its tradeoff is preparation, not missing evidence: the sponge and proprietary pa
 
 ## The large-workspace unpaired alternative
 
-The exact **Green Stuff World Acrylic Wet Palette XL**, reference 8435646501208ES, qualifies only for a painter who has a measured, dedicated station and actually needs a 190 by 280 millimeter mixing surface. Green Stuff World's current range page identifies that model and matching XL hydro-foam and hydropaper replacements. Tale of Painters reviews both the regular and XL versions and reports that each includes two sponges and 50 sheets, while noting no rubber seal and a foam fit that could be better. That reviewer also discloses that Green Stuff World provided the review palettes, so the second independent source matters ([Green Stuff World](https://www.greenstuffworld.com/en/276-wet-palette?SubmitCurrency=1&id_currency=1), [Tale of Painters](https://taleofpainters.com/2023/07/short-review-green-stuff-world-wet-palette/)).
+The exact **Green Stuff World Acrylic Wet Palette XL**, reference 8435646501208ES, qualifies only for a painter who has a measured, dedicated station and actually needs a 190 by 280 millimeter mixing surface. Green Stuff World's current product page identifies that model and matching XL hydro-foam and hydropaper replacements. Tale of Painters reviews both the regular and XL versions and reports that each includes two sponges and 50 sheets, while noting no rubber seal and a foam fit that could be better. That reviewer also discloses that Green Stuff World provided the review palettes, so the second independent source matters ([Green Stuff World](https://www.greenstuffworld.com/en/wet-palette/1546-wet-palette-xl.html), [Tale of Painters](https://taleofpainters.com/2023/07/short-review-green-stuff-world-wet-palette/)).
 
 One exact-XL owner offers useful bounded counterevidence rather than a general verdict: they describe a sturdy case and satisfactory sponge, but report that the supplied hydropaper expanded beyond the tray and behaved too hydrophobically for their workflow ([owner report](https://www.reddit.com/r/minipainting/comments/zxkz3j)). Treat that as one person's product-specific experience, not a prevalence claim. Measure the desk, confirm ordinary water-based acrylic use, accept the disposable refill system, and test the first sheet before committing an important mix.
 

@@ -2,11 +2,12 @@ import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { App } from './app';
 import { ARTICLES, GROWTH, OPERATIONS, STRATEGY } from './generated/content.generated';
-import { FounderBriefPage, GiftFinderPage, ProductCardComponent, StudioPage } from './pages';
+import { FounderBriefPage, GiftFinderPage, PairCardComponent, ProductCardComponent, StudioPage } from './pages';
+import { readerLead } from './reader-copy';
 
 describe('App', () => {
   beforeEach(async () => {
-    await TestBed.configureTestingModule({ imports: [App, StudioPage, FounderBriefPage, GiftFinderPage, ProductCardComponent], providers: [provideRouter([])] }).compileComponents();
+    await TestBed.configureTestingModule({ imports: [App, StudioPage, FounderBriefPage, GiftFinderPage, ProductCardComponent, PairCardComponent], providers: [provideRouter([])] }).compileComponents();
   });
 
   it('renders the editorial brand and primary navigation', () => {
@@ -64,16 +65,38 @@ describe('App', () => {
     const image = fixture.nativeElement.querySelector('.product-context-visual img') as HTMLImageElement;
     const link = fixture.nativeElement.querySelector('[data-event-name="merchant_outbound_click"]') as HTMLAnchorElement;
     expect(image.src).toContain('/blog-images/');
-    expect(image.alt).toBe('');
-    expect(image.getAttribute('aria-hidden')).toBe('true');
-    expect(fixture.nativeElement.textContent).toContain('shows the use, not the exact product');
-    expect(fixture.nativeElement.textContent).toContain('The thought behind it');
+    expect(image.alt.length).toBeGreaterThan(40);
+    expect(image.getAttribute('aria-hidden')).toBeNull();
+    expect(fixture.nativeElement.textContent).toContain('not a product photo');
+    expect(fixture.nativeElement.textContent).toContain('A gift to consider');
     expect(fixture.nativeElement.textContent).not.toMatch(/Editorial \d+\/100/);
     expect(fixture.nativeElement.textContent).not.toMatch(/Evidence \d+\/100/);
     expect(link.dataset['articleSlug']).toBe(article.slug);
     expect(link.dataset['productId']).toBe(article.products[0].id);
     expect(link.dataset['paidLink']).toBe(String(article.products[0].affiliate));
     expect(link.href).toBe(article.products[0].url);
+  });
+
+  it('opens every article with the person and explains each product pairing plainly', () => {
+    for (const article of ARTICLES) {
+      expect(readerLead(article)).toMatch(/^If you know someone/);
+    }
+    const article = ARTICLES.find((candidate) => candidate.pairs.length > 0)!;
+    const pair = article.pairs[0];
+    const fixture = TestBed.createComponent(PairCardComponent);
+    fixture.componentRef.setInput('article', article);
+    fixture.componentRef.setInput('pair', pair);
+    fixture.detectChanges();
+    const element = fixture.nativeElement as HTMLElement;
+    const productLinks = element.querySelectorAll<HTMLAnchorElement>('[data-event-name="merchant_outbound_click"]');
+    expect(element.querySelectorAll('.reader-pair-product')).toHaveLength(2);
+    expect(element.querySelectorAll('.product-caveat')).toHaveLength(2);
+    expect(element.textContent).toContain(article.products.find((product) => product.id === pair.anchorProductId)!.name);
+    expect(element.textContent).toContain(article.products.find((product) => product.id === pair.companionProductId)!.name);
+    expect(element.textContent).toContain('Why this makes a good gift');
+    expect(element.textContent).toContain('Before you buy');
+    expect(productLinks).toHaveLength(2);
+    expect(Array.from(productLinks).every((link) => link.href.startsWith('http'))).toBe(true);
   });
 
   it('renders the aggregate-only growth and experiment controls', () => {

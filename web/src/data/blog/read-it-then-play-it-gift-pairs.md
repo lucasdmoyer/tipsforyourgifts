@@ -204,7 +204,7 @@ products:
   - id: rorys-story-cubes-classic
     name: "Rory’s Story Cubes Classic — magnetic-box English edition"
     merchant: "Story Cubes / Asmodee"
-    url: "https://www.storycubes.com/en/games/rorys-story-cubes-classic/"
+    url: "https://store.asmodee.com/products/rorys-story-cubes-box"
     affiliate: false
     priceBand: "$10-$20"
     whyItFits: "Nine visual dice create quick constraints that can activate a specific prose exercise without requiring setup or scoring."
@@ -232,7 +232,7 @@ products:
   - id: 52-assignments-street-photography
     name: "52 Assignments: Street Photography — activity journal"
     merchant: "Ammonite Press"
-    url: "https://www.ammonitepress.com/52-assignments/"
+    url: "https://www.ammonitepress.com/52-assignments-street-photography/"
     affiliate: false
     priceBand: "$10-$25"
     whyItFits: "A year of compact assignments converts photography principles into a recurring practice and review loop."
@@ -453,11 +453,11 @@ For the park lover with trip photos, an NPS passport, or recurring trail plans, 
 
 ## 7. Steering the Craft + Rory’s Story Cubes: optional constraints, not extra homework
 
-This pair also sits near the threshold. **Steering the Craft** supplies the real craft objective; three rolled icons merely lower blank-page friction. Roll, choose one Le Guin exercise, write for twenty minutes, and discard any constraint that does not help. Skip the dice if the recipient already has prompts, dislikes improvisation, or would read them as juvenile. The book alone is the stronger default ([Ursula K. Le Guin](https://www.ursulakleguin.com/steering-the-craft), [Kirkus](https://www.kirkusreviews.com/book-reviews/ursula-k-le-guin/steering-the-craft/), [Story Cubes](https://www.storycubes.com/en/games/rorys-story-cubes-classic/), [Family Game Shelf](https://familygameshelf.com/2022/05/17/rorys-story-cubes-review/)).
+This pair also sits near the threshold. **Steering the Craft** supplies the real craft objective; three rolled icons merely lower blank-page friction. Roll, choose one Le Guin exercise, write for twenty minutes, and discard any constraint that does not help. Skip the dice if the recipient already has prompts, dislikes improvisation, or would read them as juvenile. The book alone is the stronger default ([Ursula K. Le Guin](https://www.ursulakleguin.com/steering-the-craft), [Kirkus](https://www.kirkusreviews.com/book-reviews/ursula-k-le-guin/steering-the-craft/), [Story Cubes](https://store.asmodee.com/products/rorys-story-cubes-box), [Family Game Shelf](https://familygameshelf.com/2022/05/17/rorys-story-cubes-review/)).
 
 ## 8. Read This If You Want to Take Great Photographs + 52 Assignments: Street Photography
 
-For a beginner who already shares photos and asks how to improve, one item explains composition, exposure, light, and seeing; the other schedules a bounded practice. Read one technique, take a short photo walk, and review one image together. Confirm the revised 2023 guide, current U.S. stock, camera access, privacy, mobility, lawful locations, and comfort photographing in public. The guide alone is better if assignments would feel like judgment or homework ([Laurence King](https://us.laurenceking.com/products/read-this-if-you-want-to-take-great-photographs), [Photofocus](https://photofocus.com/reviews/book-review-read-this-if-you-want-to-take-great-photographs/), [Ammonite Press](https://www.ammonitepress.com/52-assignments/), [Northlight Images](https://www.northlight-images.co.uk/book-review-52-assignments-street-photography/)).
+For a beginner who already shares photos and asks how to improve, one item explains composition, exposure, light, and seeing; the other schedules a bounded practice. Read one technique, take a short photo walk, and review one image together. Confirm the revised 2023 guide, current U.S. stock, camera access, privacy, mobility, lawful locations, and comfort photographing in public. The guide alone is better if assignments would feel like judgment or homework ([Laurence King](https://us.laurenceking.com/products/read-this-if-you-want-to-take-great-photographs), [Photofocus](https://photofocus.com/reviews/book-review-read-this-if-you-want-to-take-great-photographs/), [Ammonite Press](https://www.ammonitepress.com/52-assignments-street-photography/), [Northlight Images](https://www.northlight-images.co.uk/book-review-52-assignments-street-photography/)).
 
 ## 9. Entangled Life + Undergrove: trace the exchange
 

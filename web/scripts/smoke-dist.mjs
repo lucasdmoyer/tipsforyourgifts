@@ -102,7 +102,7 @@ for (const article of readyArticles) {
   try { html = await fs.readFile(path.join(dist, relativePath), 'utf8'); }
   catch { failures.push(`${article.slug}: missing prerendered article`); continue; }
   const readerTitle = article.slug === 'how-we-research-gifts' ? 'The Gift Hiding in Plain Sight' : article.title;
-  for (const marker of [readerTitle, 'The thought behind the gift', 'application/ld+json']) {
+  for (const marker of [readerTitle, 'Start with the person', 'If you know someone', 'application/ld+json']) {
     if (!html.includes(marker)) failures.push(`${article.slug}: article HTML missing ${JSON.stringify(marker)}`);
   }
   if (!blogIndex.includes(readerTitle)) failures.push(`${article.slug}: missing from blog index`);
@@ -111,7 +111,21 @@ for (const article of readyArticles) {
   if (products.length > 0 && !giftsIndex.includes(article.title)) failures.push(`${article.slug}: roundup missing from gifts index`);
   for (const product of products) {
     if (!html.includes(escapeHtmlText(product.name))) failures.push(`${article.slug}: missing product ${product.id}`);
-    if (!html.includes(product.drawback)) failures.push(`${article.slug}: missing drawback for ${product.id}`);
+    if (!html.includes(`data-product-id="${product.id}"`)) failures.push(`${article.slug}: missing outbound marker for ${product.id}`);
+    if (!html.includes(escapeHtmlText(product.url))) failures.push(`${article.slug}: missing merchant link for ${product.id}`);
+  }
+  const pairs = Array.isArray(article.pairs) ? article.pairs : [];
+  if (pairs.length > 0) {
+    for (const marker of ['Why this makes a good gift', 'Before you buy', 'original illustrations of the gift idea']) {
+      if (!html.includes(marker)) failures.push(`${article.slug}: pairing layout missing ${JSON.stringify(marker)}`);
+    }
+    for (const pair of pairs) {
+      const anchor = products.find((product) => product.id === pair.anchorProductId);
+      const companion = products.find((product) => product.id === pair.companionProductId);
+      if (!anchor || !companion) failures.push(`${article.slug}: pair ${pair.id} does not resolve both products`);
+      if (anchor && !html.includes(escapeHtmlText(anchor.name))) failures.push(`${article.slug}: pair ${pair.id} missing anchor product`);
+      if (companion && !html.includes(escapeHtmlText(companion.name))) failures.push(`${article.slug}: pair ${pair.id} missing companion product`);
+    }
   }
 }
 
@@ -138,6 +152,13 @@ for (const marker of [
   'What the research rejected',
   'was demoted',
   'independent editorial QA',
+  'lowest-compatibility-burden',
+  'clears the product gate',
+  'qualifies as a pair',
+  'complete evidence set',
+  'whole evidence set',
+  'founder’s $75 ceiling',
+  'No affiliate program or paid tracking is enabled',
   'This draft must'
 ]) {
   if (readerFacingHtml.includes(marker)) failures.push(`reader voice: public pages expose internal process copy ${JSON.stringify(marker)}`);

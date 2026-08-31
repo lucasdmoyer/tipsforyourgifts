@@ -78,7 +78,8 @@
     "validate": "npm run validate:visuals && npm run validate:research && npm run validate:missions && npm run validate:opportunities && npm run validate:growth && npm run validate:affiliate && npm run validate:affiliate-links && npm run validate:social && npm run validate:publication && npm run validate:live-publication && npm run test:gate && npm run test:mission-gate && npm run test:mission-commands && npm run test:opportunity-gate && npm run test:opportunity-commands && npm run test:strategy-gate && npm run test:strategy-handoff && npm run test:growth-gate && npm run test:search-console-commands && npm run test:founder-agenda-gate && npm run test:affiliate-gate && npm run test:affiliate-commands && npm run test:affiliate-link-gate && npm run test:affiliate-link-commands && npm run test:social-gate && npm run test:social-channel-commands && npm run test:publication-gate && npm run test:publication-manifest-gate && npm run test:publication-receipt-gate && npm run test:live-publication-gate && npm run test",
     "build": "npm run validate:visuals && npm run validate:research && npm run validate:missions && npm run validate:opportunities && npm run validate:growth && npm run validate:affiliate && npm run validate:affiliate-links && npm run validate:social && npm run validate:publication && npm run validate:live-publication && npm run generate && npm run validate:manifest && ng build",
     "preview": "npx http-server dist -p 4300 -c-1",
-    "smoke": "node scripts/smoke-dist.mjs"
+    "smoke": "node scripts/smoke-dist.mjs",
+    "smoke:hosted": "node scripts/smoke-hosted.mjs"
   },
   "dependencies": {
     "@angular/common": "21.2.19",

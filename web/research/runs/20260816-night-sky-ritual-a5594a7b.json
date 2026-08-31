@@ -238,7 +238,7 @@
     },
     {
       "id": "src-rigel-product-page-official",
-      "url": "https://www.rigelsys.com/flashlight.html",
+      "url": "https://www.rigelsys.com/mini%20flashlight.html",
       "publisher": "Rigel Systems",
       "title": "Starlite Mini two-red-LED configuration, thumbwheel control, 9-volt power, and water-resistance boundary",
       "accessedAt": "2026-08-16",
@@ -563,7 +563,7 @@
     {
       "id": "claim-rigel-compatibility",
       "kind": "compatibility",
-      "text": "The Rigel Starlite Mini requires one replaceable 9-volt battery and dry carry. Its exact startup level is not documented in the Mini manual, and independent evidence conflicts about whether the lowest setting is dim enough, so low-end output must be checked indoors before dark adaptation.",
+      "text": "The Rigel Starlite Mini order page is a model selector, so the buyer must choose the Deep Red/Red option rather than Skylite. It requires one replaceable 9-volt battery and dry carry. Its exact startup level is not documented in the Mini manual, and evidence conflicts about whether the lowest setting is dim enough, so low-end output must be checked indoors before dark adaptation.",
       "risk": "medium",
       "status": "supported",
       "sourceIds": [
@@ -887,7 +887,7 @@
       "editorialScore": 82,
       "evidenceConfidence": 78,
       "drawbacks": [
-        "It uses a bulky 9-volt battery and is not water resistant; owner reports and a 2008 lab comparison also conflict on whether its lowest output is suitably dim."
+        "The order page is a model selector, so choose Deep Red/Red rather than Skylite. It also uses a bulky 9-volt battery, is not water resistant, and may still be too bright at its lowest setting."
       ],
       "primarySourceIds": [
         "src-rigel-manual",
@@ -1433,7 +1433,7 @@
       "editorialScore": 82,
       "evidenceConfidence": 78,
       "drawbacks": [
-        "It uses a bulky 9-volt battery and is not water resistant; owner reports and a 2008 lab comparison also conflict on whether its lowest output is suitably dim."
+        "The order page is a model selector, so choose Deep Red/Red rather than Skylite. It also uses a bulky 9-volt battery, is not water resistant, and may still be too bright at its lowest setting."
       ],
       "primarySourceIds": [
         "src-rigel-manual",
@@ -1595,7 +1595,7 @@
         {
           "dimension": "power_or_battery",
           "status": "verified",
-          "requirement": "The recipient accepts a 9-volt two-red-LED light, can keep it dry, and verifies its lowest usable output indoors.",
+          "requirement": "The buyer chooses the Deep Red/Red option rather than Skylite; the recipient accepts a 9-volt two-red-LED light, can keep it dry, and verifies its lowest usable output indoors.",
           "claimIds": [
             "claim-rigel-compatibility",
             "claim-rigel-drawback"
@@ -1613,7 +1613,7 @@
       ],
       "duplicateRisk": "medium",
       "clutterDelta": "neutral",
-      "preGiftCheck": "Confirm the exact observing latitude, analog preference, chart readability, existing guide, existing red light, and 9-volt battery acceptance.",
+      "preGiftCheck": "Confirm the exact observing latitude, analog preference, chart readability, existing guide, existing red light, 9-volt battery acceptance, and the Deep Red/Red—not Skylite—option at checkout.",
       "bundleDrawback": "Buy only the planisphere if they already own a trusted red-only light with verified low-end output; buy only the Rigel if they already own the correct analog guide; skip both if they prefer apps.",
       "claimIds": [
         "claim-pair-30-40-rigel"
@@ -1651,7 +1651,7 @@
         {
           "dimension": "power_or_battery",
           "status": "verified",
-          "requirement": "The recipient accepts a 9-volt two-red-LED light, can keep it dry, and verifies its lowest usable output indoors.",
+          "requirement": "The buyer chooses the Deep Red/Red option rather than Skylite; the recipient accepts a 9-volt two-red-LED light, can keep it dry, and verifies its lowest usable output indoors.",
           "claimIds": [
             "claim-rigel-compatibility",
             "claim-rigel-drawback"
@@ -1669,7 +1669,7 @@
       ],
       "duplicateRisk": "medium",
       "clutterDelta": "neutral",
-      "preGiftCheck": "Confirm the exact observing latitude, analog preference, chart readability, existing guide, existing red light, and 9-volt battery acceptance.",
+      "preGiftCheck": "Confirm the exact observing latitude, analog preference, chart readability, existing guide, existing red light, 9-volt battery acceptance, and the Deep Red/Red—not Skylite—option at checkout.",
       "bundleDrawback": "Buy only the planisphere if they already own a trusted red-only light with verified low-end output; buy only the Rigel if they already own the correct analog guide; skip both if they prefer apps.",
       "claimIds": [
         "claim-pair-40-50-rigel"
@@ -1707,10 +1707,10 @@
   "qa": {
     "passed": true,
     "reviewerRole": "independent-editor",
-    "reviewerId": "night-sky-independent-editor-20260816-r2",
+    "reviewerId": "product-link-independent-editor-20260830",
     "receiptPath": "research/reviews/20260816-night-sky-ritual-a5594a7b.qa.v1.json",
     "blockers": [],
     "warnings": []
   },
-  "completedAt": "2026-08-16T21:37:48.745Z"
+  "completedAt": "2026-08-31T02:37:56.648Z"
 }

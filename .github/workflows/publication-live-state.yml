@@ -73,9 +73,10 @@ jobs:
         run: |
           mapfile -t receipt_paths < <(find verified-release-artifact -type f -name publication-receipt.json -print)
           test "${#receipt_paths[@]}" -eq 1 || { echo "Expected exactly one downloaded publication-receipt.json." >&2; exit 1; }
+          receipt_path="$(realpath "${receipt_paths[0]}")"
           npm ci --prefix web
           npm --prefix web run validate:live-publication
-          npm --prefix web run publication:live:record -- --receipt="${receipt_paths[0]}" --expected-workflow-run-id="$RELEASE_RUN_ID" --expected-release-sha="$RELEASE_HEAD_SHA" --expected-source-workflow="$EXPECTED_SOURCE_WORKFLOW"
+          npm --prefix web run publication:live:record -- --receipt="$receipt_path" --expected-workflow-run-id="$RELEASE_RUN_ID" --expected-release-sha="$RELEASE_HEAD_SHA" --expected-source-workflow="$EXPECTED_SOURCE_WORKFLOW"
       - name: Prove the receipt-only synchronization patch
         if: steps.discover.outputs.found == 'true' && steps.record.outputs.changed == 'true'
         run: |
