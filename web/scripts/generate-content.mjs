@@ -70,6 +70,9 @@ for (const fileName of fileNames) {
     evidenceMode: data.evidenceMode,
     featured: Boolean(data.featured),
     affiliateDisclosure: Boolean(data.affiliateDisclosure),
+    readerFormat: data.readerFormat,
+    readerIntro: data.readerIntro,
+    specialtyLens: data.specialtyLens,
     products,
     pairs,
     visual: {

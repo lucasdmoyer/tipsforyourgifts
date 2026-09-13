@@ -30,6 +30,7 @@ async function makeFixture() {
   program.registeredSites = ['https://tipsforyourgifts.web.app/'];
   program.trackingParameterKeys = ['affiliate'];
   program.requiredDisclosure = registry.policy.defaultDisclosure;
+  program.sourceCheckedAt = '2026-08-05T09:00:00.000Z';
   program.account = {
     externalAccountEstablished: true,
     trackingIdentityConfigured: true,

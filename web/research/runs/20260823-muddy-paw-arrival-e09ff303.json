@@ -1262,12 +1262,12 @@
   "pairs": [
     {
       "id": "measured-rinse-pocketed-shammy-loop",
-      "name": "The measured rinse and chenille-shammy loop",
+      "name": "A paw-washing cup and a grippable drying towel",
       "anchorCandidateId": "dexas-mudbuster",
       "companionCandidateId": "soggy-doggy-super-shammy",
       "recipientJob": "Remove visible mud from four measured paws and dry them with controlled hand pockets before the dog crosses the clean threshold.",
       "coherenceType": "completes_task",
-      "whyTogether": "The MudBuster contains the water-and-bristle rinse while the Super Shammy provides the separate absorbent hand-pocket step the washer's own instructions still require.",
+      "whyTogether": "The MudBuster rinses heavy dirt from the paw. The Super Shammy gives the person a towel they can hold securely while drying the water left behind.",
       "interactionMoment": "Stage clean water and the towel before the walk; on return, rinse one calmly offered paw, pat it dry, and repeat before releasing the dog.",
       "compatibilityChecks": [
         {
@@ -1317,7 +1317,7 @@
     },
     {
       "id": "measured-rinse-low-pile-shammy-loop",
-      "name": "The measured rinse and low-pile-shammy loop",
+      "name": "A paw-washing cup and a smoother pocketed towel",
       "anchorCandidateId": "dexas-mudbuster",
       "companionCandidateId": "dirty-dog-shammy",
       "recipientJob": "Contain a heavy-mud rinse and finish each paw with a lower-pile pocketed towel that remains assigned to the doorway.",

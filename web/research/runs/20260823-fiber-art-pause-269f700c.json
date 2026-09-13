@@ -335,7 +335,7 @@
     {
       "id": "claim-artbin-drawback",
       "kind": "product_drawback",
-      "text": "The Yarn Tote occupies substantial space, its magnetic snap closes only part of the top, and some users avoid the grommets because they can complicate working-yarn tension.",
+      "text": "The Yarn Tote occupies substantial space, its magnetic snap closes only part of the top, and some users avoid the yarn-feed holes because they can change how freely the yarn moves.",
       "risk": "medium",
       "status": "supported",
       "sourceIds": [
@@ -547,7 +547,7 @@
       "editorialScore": 86,
       "evidenceConfidence": 87,
       "drawbacks": [
-        "The Yarn Tote occupies substantial space, its magnetic snap closes only part of the top, and some users avoid the grommets because they can complicate working-yarn tension."
+        "The Yarn Tote occupies substantial space, its magnetic snap closes only part of the top, and some users avoid the yarn-feed holes because they can change how freely the yarn moves."
       ],
       "primarySourceIds": [
         "src-artbin-official"
@@ -997,7 +997,7 @@
       "editorialScore": 86,
       "evidenceConfidence": 87,
       "drawbacks": [
-        "The Yarn Tote occupies substantial space, its magnetic snap closes only part of the top, and some users avoid the grommets because they can complicate working-yarn tension."
+        "The Yarn Tote occupies substantial space, its magnetic snap closes only part of the top, and some users avoid the yarn-feed holes because they can change how freely the yarn moves."
       ],
       "primarySourceIds": [
         "src-artbin-official"
@@ -1281,12 +1281,12 @@
   "pairs": [
     {
       "id": "compact-case-locked-count-loop",
-      "name": "The compact case and locked-count restart loop",
+      "name": "Keep a small project and its row number together",
       "anchorCandidateId": "della-q-makers-train-case",
       "companionCandidateId": "clover-kacha-kacha-336",
       "recipientJob": "Keep one compact work, its working yarn, tools, and a locked two-digit row state together through a pause.",
       "coherenceType": "organizes",
-      "whyTogether": "The train case protects the physical work and notions while the Kacha-Kacha preserves the chosen row number; neither substitutes for the other and both can live with one compact project.",
+      "whyTogether": "The train case keeps the project and its small tools together. The Kacha-Kacha counter keeps the chosen row number with the work. Each solves a different part of restarting one compact project.",
       "interactionMoment": "Finish or mark the current row, click the agreed completed-row count, lock the counter, place it in the tray, and close the measured project in the case.",
       "compatibilityChecks": [
         {
@@ -1335,13 +1335,13 @@
     },
     {
       "id": "large-tote-paper-chart-loop",
-      "name": "The large-project tote and paper-chart restart loop",
+      "name": "Keep a large project and its paper pattern together",
       "anchorCandidateId": "artbin-yarn-tote-6821ag",
       "companionCandidateId": "cocoknits-makers-board",
       "recipientJob": "Contain a growing multi-skein work while preserving the visible line and next instruction on its paper pattern or chart.",
       "coherenceType": "organizes",
-      "whyTogether": "The Yarn Tote manages the large physical project and separated skeins while the Maker's Board keeps the paper decision state visible, marked, and stored with that work.",
-      "interactionMoment": "Move the chart marker to the next instruction, fold the board, return it beside the project, settle the working yarn without using unwanted grommets, and close the tote as far as the volume allows.",
+      "whyTogether": "The Yarn Tote keeps a large project and several balls of yarn together. The Maker's Board keeps the correct line of the paper pattern visible and stored beside that project.",
+      "interactionMoment": "Move the chart marker to the next instruction, fold the board, put it beside the project, settle the working yarn without using unwanted yarn-feed holes, and close the tote as far as the project allows.",
       "compatibilityChecks": [
         {
           "dimension": "size_or_fit",

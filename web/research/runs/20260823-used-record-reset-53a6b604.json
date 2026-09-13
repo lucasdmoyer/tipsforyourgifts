@@ -8,7 +8,7 @@
   "contentType": "pairing-guide",
   "status": "drafted",
   "topic": "Manual vinyl-record cleaning systems paired with correctly sized fresh inner sleeves for a complete used-record reset",
-  "audience": "People buying for a vinyl collector who has a visible queue of used or dusty records and wants a repeatable clean-dry-rehouse routine",
+  "audience": "People buying for a vinyl collector who has a visible group of used or dusty records waiting to be cleaned and put into fresh sleeves",
   "occasion": "Birthday, holiday, Record Store Day, collection milestone, or move into a dedicated listening space",
   "budgetBands": [
     "$35-$70",
@@ -111,6 +111,16 @@
       "independenceGroup": "spin-clean"
     },
     {
+      "id": "src-spin-clean-product",
+      "url": "https://www.spinclean.com/store/Spin-Clean%C2%AE-Record-Washer-MKII-Complete-Kit-p14190723",
+      "publisher": "Spin-Clean",
+      "title": "Spin-Clean Vinyl Record Washer Complete Kit product page",
+      "accessedAt": "2026-09-06",
+      "sourceClass": "manufacturer",
+      "trustTier": "A",
+      "independenceGroup": "spin-clean"
+    },
+    {
       "id": "src-spin-clean-whathifi-review",
       "url": "https://www.whathifi.com/features/i-tested-3-vinyl-record-cleaning-systems-and-the-results-were-both-revelatory-and-depressing",
       "publisher": "What Hi-Fi?",
@@ -132,10 +142,10 @@
     },
     {
       "id": "src-groovewasher-official",
-      "url": "https://www.groovewasher.com/",
+      "url": "https://www.groovewasher.com/products/groovewasher-walnut-record-cleaning-kit",
       "publisher": "GrooveWasher",
-      "title": "GrooveWasher G2 fluid, pad, and damp-clean use guidance",
-      "accessedAt": "2026-08-23",
+      "title": "GrooveWasher Hardwood Record Cleaning Kit product, use, and safety guidance",
+      "accessedAt": "2026-09-06",
       "sourceClass": "manufacturer",
       "trustTier": "A",
       "independenceGroup": "groovewasher"
@@ -309,11 +319,12 @@
     {
       "id": "claim-spin-clean-benefit",
       "kind": "product_benefit",
-      "text": "The Spin-Clean Record Washer MkII uses a manual bath, adjustable roller positions for 12-, 10-, and 7-inch discs, brushes, concentrate, and reusable drying cloths for a batch-cleaning session.",
+      "text": "The Spin-Clean Vinyl Record Washer Complete Kit uses a manual bath, adjustable roller positions for several common vinyl sizes, brushes, concentrate, and reusable drying cloths for a batch-cleaning session.",
       "risk": "medium",
       "status": "supported",
       "sourceIds": [
         "src-spin-clean-official",
+        "src-spin-clean-product",
         "src-spin-clean-whathifi-review",
         "src-spin-clean-popmech-review"
       ]
@@ -363,6 +374,16 @@
         "src-groovewasher-official",
         "src-groovewasher-soundmatters-review",
         "src-groovewasher-soundstage-review"
+      ]
+    },
+    {
+      "id": "claim-groovewasher-label-safety",
+      "kind": "compatibility",
+      "text": "The GrooveWasher Hardwood Record Cleaning Kit fluid must be used exactly as directed, kept away from eyes, skin, clothing, and food, never swallowed, and stored where children and pets cannot reach it; the product page also carries a California Proposition 65 warning.",
+      "risk": "high",
+      "status": "supported",
+      "sourceIds": [
+        "src-groovewasher-official"
       ]
     },
     {
@@ -428,7 +449,7 @@
     {
       "id": "claim-diskeeper-drawback",
       "kind": "product_drawback",
-      "text": "The unsupported HDPE format is less rigid during jacket insertion than paper-backed alternatives, and exact-product owner discussions include both long use and past quality-control concerns, so each sleeve needs inspection.",
+      "text": "The thin plastic is less rigid than a paper-backed sleeve when someone slides it into a record jacket. Owner discussions include both long use and past quality-control concerns, so each sleeve needs inspection.",
       "risk": "medium",
       "status": "supported",
       "sourceIds": [
@@ -486,14 +507,15 @@
   "candidates": [
     {
       "id": "spin-clean-record-washer-mkii",
-      "name": "Spin-Clean Record Washer System MkII",
+      "name": "Spin-Clean Vinyl Record Washer Complete Kit",
       "editorialScore": 89,
       "evidenceConfidence": 90,
       "drawbacks": [
         "The system requires a level work area, distilled water and concentrate, prewashed cloths, careful label clearance, manual drying, brush rinsing and air drying, and basin cleanup after a session."
       ],
       "primarySourceIds": [
-        "src-spin-clean-official"
+        "src-spin-clean-official",
+        "src-spin-clean-product"
       ],
       "independentSourceIds": [
         "src-spin-clean-whathifi-review",
@@ -568,11 +590,11 @@
     },
     {
       "id": "groovewasher-g2-kit",
-      "name": "GrooveWasher G2 Record Cleaning Kit",
+      "name": "GrooveWasher Hardwood Record Cleaning Kit",
       "editorialScore": 87,
       "evidenceConfidence": 86,
       "drawbacks": [
-        "The G2 process is a light one-record clean that can require repeated passes on dirty used vinyl, needs pad maintenance and replacement fluid, and demands careful control around the label."
+        "The G2 process is a light one-record clean that can require repeated passes on dirty used vinyl, needs pad maintenance and replacement fluid, and demands careful control around the label. Its fluid also carries contact and swallowing warnings, and the product page carries a California Proposition 65 warning, so the recipient must read the label and product page."
       ],
       "primarySourceIds": [
         "src-groovewasher-official"
@@ -584,6 +606,7 @@
       "claimIds": [
         "claim-groovewasher-benefit",
         "claim-groovewasher-drawback",
+        "claim-groovewasher-label-safety",
         "claim-record-handling-boundary"
       ],
       "evidenceMode": "desk_research",
@@ -623,9 +646,10 @@
           {
             "dimension": "space_or_storage",
             "status": "verified",
-            "requirement": "Confirm a clean flat support, protected label area, air-dry time, pad-rinse path, and dust-free kit storage.",
+            "requirement": "Confirm a clean flat support, protected label area, air-dry time, pad-rinse path, and safe storage away from children, pets, and food.",
             "claimIds": [
-              "claim-groovewasher-drawback"
+              "claim-groovewasher-drawback",
+              "claim-groovewasher-label-safety"
             ]
           }
         ],
@@ -788,7 +812,7 @@
       "editorialScore": 78,
       "evidenceConfidence": 77,
       "drawbacks": [
-        "The unsupported HDPE format is less rigid during jacket insertion than paper-backed alternatives, and exact-product owner discussions include both long use and past quality-control concerns, so each sleeve needs inspection."
+        "The thin plastic is less rigid than a paper-backed sleeve when someone slides it into a record jacket. Owner discussions include both long use and past quality-control concerns, so each sleeve needs inspection."
       ],
       "primarySourceIds": [
         "src-diskeeper-official"
@@ -949,14 +973,15 @@
   "finalists": [
     {
       "id": "spin-clean-record-washer-mkii",
-      "name": "Spin-Clean Record Washer System MkII",
+      "name": "Spin-Clean Vinyl Record Washer Complete Kit",
       "editorialScore": 89,
       "evidenceConfidence": 90,
       "drawbacks": [
         "The system requires a level work area, distilled water and concentrate, prewashed cloths, careful label clearance, manual drying, brush rinsing and air drying, and basin cleanup after a session."
       ],
       "primarySourceIds": [
-        "src-spin-clean-official"
+        "src-spin-clean-official",
+        "src-spin-clean-product"
       ],
       "independentSourceIds": [
         "src-spin-clean-whathifi-review",
@@ -1031,11 +1056,11 @@
     },
     {
       "id": "groovewasher-g2-kit",
-      "name": "GrooveWasher G2 Record Cleaning Kit",
+      "name": "GrooveWasher Hardwood Record Cleaning Kit",
       "editorialScore": 87,
       "evidenceConfidence": 86,
       "drawbacks": [
-        "The G2 process is a light one-record clean that can require repeated passes on dirty used vinyl, needs pad maintenance and replacement fluid, and demands careful control around the label."
+        "The G2 process is a light one-record clean that can require repeated passes on dirty used vinyl, needs pad maintenance and replacement fluid, and demands careful control around the label. Its fluid also carries contact and swallowing warnings, and the product page carries a California Proposition 65 warning, so the recipient must read the label and product page."
       ],
       "primarySourceIds": [
         "src-groovewasher-official"
@@ -1047,6 +1072,7 @@
       "claimIds": [
         "claim-groovewasher-benefit",
         "claim-groovewasher-drawback",
+        "claim-groovewasher-label-safety",
         "claim-record-handling-boundary"
       ],
       "evidenceMode": "desk_research",
@@ -1086,9 +1112,10 @@
           {
             "dimension": "space_or_storage",
             "status": "verified",
-            "requirement": "Confirm a clean flat support, protected label area, air-dry time, pad-rinse path, and dust-free kit storage.",
+            "requirement": "Confirm a clean flat support, protected label area, air-dry time, pad-rinse path, and safe storage away from children, pets, and food.",
             "claimIds": [
-              "claim-groovewasher-drawback"
+              "claim-groovewasher-drawback",
+              "claim-groovewasher-label-safety"
             ]
           }
         ],
@@ -1251,7 +1278,7 @@
       "editorialScore": 78,
       "evidenceConfidence": 77,
       "drawbacks": [
-        "The unsupported HDPE format is less rigid during jacket insertion than paper-backed alternatives, and exact-product owner discussions include both long use and past quality-control concerns, so each sleeve needs inspection."
+        "The thin plastic is less rigid than a paper-backed sleeve when someone slides it into a record jacket. Owner discussions include both long use and past quality-control concerns, so each sleeve needs inspection."
       ],
       "primarySourceIds": [
         "src-diskeeper-official"
@@ -1321,13 +1348,13 @@
   "pairs": [
     {
       "id": "batch-wash-fresh-sleeve-loop",
-      "name": "The batch-wash and fresh-sleeve reset loop",
+      "name": "Clean a small batch, then give each record a fresh sleeve",
       "anchorCandidateId": "spin-clean-record-washer-mkii",
       "companionCandidateId": "mofi-original-master-sleeves",
       "recipientJob": "Clean and fully dry a planned batch of compatible standard LPs, then move each inspected record into a fresh correctly fitted inner sleeve.",
       "coherenceType": "protects",
-      "whyTogether": "The Spin-Clean performs the batch wash and dry workflow while the MoFi pack supplies the distinct rehousing step the washer's own instructions recommend after a record is completely dry.",
-      "interactionMoment": "Choose a small compatible batch, follow the official wash and cloth-dry sequence, inspect the record and one new sleeve, retain printed originals, then rehouse only when fully dry.",
+      "whyTogether": "The Spin-Clean washes a small group of compatible records. The MoFi sleeves give each fully dry record a clean place to go instead of returning it to the dusty paper sleeve it just left.",
+      "interactionMoment": "Choose a small group of compatible records, wash and dry them as directed, inspect each record and new sleeve, keep any printed original sleeve, then put the record away only when it is fully dry.",
       "compatibilityChecks": [
         {
           "dimension": "edition_or_region",
@@ -1377,13 +1404,13 @@
     },
     {
       "id": "one-record-clean-fresh-sleeve-loop",
-      "name": "The one-record clean and fresh-sleeve reset loop",
+      "name": "Clean one used record and give it a fresh sleeve",
       "anchorCandidateId": "groovewasher-g2-kit",
       "companionCandidateId": "big-fudge-premium-master-sleeves",
       "recipientJob": "Give one compatible used vinyl record a controlled damp clean and dry, then rehouse it in one inspected sleeve of the exact disc size.",
       "coherenceType": "protects",
-      "whyTogether": "The GrooveWasher supports the compact one-record cleaning step while the Big Fudge pack supplies a separately sized clean inner for the dry record instead of returning it to the old paper sleeve.",
-      "interactionMoment": "Protect the label, clean one supported record according to the G2 instructions, let it dry fully, inspect the correct-size sleeve, and retain any printed original beside it.",
+      "whyTogether": "The GrooveWasher cleans one compatible record without setting up a full washing bath. The Big Fudge pack provides a clean sleeve in the correct size once that record is fully dry.",
+      "interactionMoment": "Protect the label, clean one compatible record as directed, let it dry fully, inspect a new sleeve in the correct size, and keep any printed original sleeve beside it.",
       "compatibilityChecks": [
         {
           "dimension": "edition_or_region",

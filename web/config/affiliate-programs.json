@@ -1,18 +1,18 @@
 {
   "schemaVersion": "1.1.0",
-  "updatedAt": "2026-08-03T08:40:00.000Z",
+  "updatedAt": "2026-09-13T04:12:24.000Z",
   "programs": [
     {
       "id": "bookshop-org-us-media",
-      "revision": 1,
+      "revision": 2,
       "name": "Bookshop.org US media affiliate",
-      "status": "proposed",
+      "status": "founder_approved",
       "enabled": false,
-      "founderDisposition": "proposed",
+      "founderDisposition": "approved",
       "programHomepageUrl": "https://bookshop.org/affiliates/profile/introduction",
-      "termsUrl": "https://support.bookshop.org/en/support/solutions/articles/65000191390-can-you-explain-bookshop-org-s-affiliate-program-",
-      "sourceCheckedAt": "2026-08-03T08:40:00.000Z",
-      "sourceReviewExpiresAt": "2026-11-01",
+      "termsUrl": "https://bookshop.org/info/terms-of-use",
+      "sourceCheckedAt": "2026-09-13T04:12:24.000Z",
+      "sourceReviewExpiresAt": "2026-12-11",
       "eligibleArticleSlugs": [
         "read-it-then-play-it-gift-pairs"
       ],
@@ -34,7 +34,7 @@
         "reportingExportApproved": false
       },
       "priceFeedAuthorized": false,
-      "nextGate": "Lucas decides whether this mission-aligned book program is worth external enrollment; approval records the decision but does not accept terms or enable links."
+      "nextGate": "Lucas completes external enrollment and current terms review personally, then a separate audited configuration pull request may record registered sites, program-provided tracking, disclosure, and link allowlists."
     },
     {
       "id": "amazon-associates-us",
@@ -90,6 +90,6 @@
       "approved disclosure",
       "reporting export decision"
     ],
-    "defaultDisclosure": "We may earn a commission when you purchase through links on this page. Recommendations are selected using our published research method."
+    "defaultDisclosure": "Disclosure: We are a Bookshop.org affiliate and may earn a commission if you purchase through links on this page. Recommendations are selected independently."
   }
 }

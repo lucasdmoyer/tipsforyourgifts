@@ -26,6 +26,18 @@ export interface ProductPair {
   claimIds: string[];
 }
 
+export interface ReaderIntro {
+  lead: string;
+  giftIdea: string;
+  bodyPlacement: 'before-products';
+}
+
+export interface SpecialtyLens {
+  generalPurpose: string;
+  specialty: string;
+  signal: string;
+}
+
 export interface VisualAsset {
   id: string;
   src: string;
@@ -59,6 +71,9 @@ export interface Article {
   evidenceMode: 'desk_research' | 'hands_on' | 'editorial_standard';
   featured: boolean;
   affiliateDisclosure: boolean;
+  readerFormat?: 'recipient-specialty-v1';
+  readerIntro?: ReaderIntro;
+  specialtyLens?: SpecialtyLens;
   products: Product[];
   pairs: ProductPair[];
   visual: ArticleVisual;

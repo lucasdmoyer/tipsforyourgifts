@@ -5,7 +5,7 @@ import type { Article, Product, ProductPair, StrategyIdea, VisualAsset } from '.
 import { ContentService } from './content.service';
 import { assessFounderBrief, buildFounderBriefMarkdown, buildStrategyIssueUrl, EMPTY_FOUNDER_BRIEF, type FounderBriefDraft } from './founder-brief';
 import { findGiftGuides, type GiftShape, type RecipientSignal } from './gift-finder';
-import { readerBodyHtml, readerDescription, readerGiftIdea, readerLanguage, readerLead, readerTags, readerTitle } from './reader-copy';
+import { readerBodyComesFirst, readerBodyHtml, readerDescription, readerEvidenceHtml, readerGiftIdea, readerLanguage, readerLead, readerTags, readerTitle } from './reader-copy';
 import { SeoService } from './seo.service';
 
 @Component({
@@ -41,13 +41,11 @@ export class ArticleCardComponent {
   template: `
     <article class="product-card" [id]="product().id">
       <figure class="product-context-visual">
-        <a [href]="product().url" target="_blank" [attr.rel]="product().affiliate ? 'sponsored noopener' : 'noopener'" [attr.aria-label]="'See ' + product().name + ' at ' + product().merchant">
-          <img [src]="visual().src" [alt]="visual().alt" width="1536" height="1024" loading="lazy" decoding="async">
-        </a>
+        <img [src]="visual().src" [alt]="visual().alt" width="1536" height="1024" loading="lazy" decoding="async">
         <figcaption>Original illustration of the gift idea—not a product photo.</figcaption>
       </figure>
       <p class="eyebrow">A gift to consider</p>
-      <h3><a [href]="product().url" target="_blank" [attr.rel]="product().affiliate ? 'sponsored noopener' : 'noopener'">{{ product().name }}</a></h3>
+      <h3>{{ product().name }}</h3>
       <p>{{ display(product().whyItFits) }}</p>
       <p class="drawback"><strong>Before you buy:</strong> {{ display(product().drawback) }}</p>
       <p class="quiet">From {{ product().merchant }} @if (product().priceBand) { · {{ product().priceBand }} }</p>
@@ -71,35 +69,33 @@ export class ProductCardComponent {
     <article class="reader-pair-card" [id]="pair().id">
       <p class="eyebrow">A thoughtful pair</p>
       <h2>{{ pair().name }}</h2>
+      <figure class="pairing-context-visual">
+        <img [src]="pairVisual().src" [alt]="pairVisual().alt" width="1536" height="1024" loading="lazy" decoding="async">
+        <figcaption>{{ display(pairVisual().caption) }} Original illustration of the gift idea—not product photography.</figcaption>
+      </figure>
       <div class="reader-pair-products">
         @if (anchorProduct(); as product) {
           <section class="reader-pair-product">
-            <a class="reader-pair-product-visual" [href]="product.url" target="_blank" [attr.rel]="product.affiliate ? 'sponsored noopener' : 'noopener'" [attr.aria-label]="'See ' + product.name + ' at ' + product.merchant">
-              <img [src]="productVisual(product.id).src" [alt]="productVisual(product.id).alt" width="1536" height="1024" loading="lazy" decoding="async">
-            </a>
             <p class="pair-role">Start with</p>
-            <h3><a [href]="product.url" target="_blank" [attr.rel]="product.affiliate ? 'sponsored noopener' : 'noopener'">{{ product.name }}</a></h3>
+            <h3>{{ product.name }}</h3>
             <p>{{ display(product.whyItFits) }}</p>
             <p class="product-caveat"><strong>Good to know:</strong> {{ display(product.drawback) }}</p>
-            <a class="read" [href]="product.url" target="_blank" [attr.rel]="product.affiliate ? 'sponsored noopener' : 'noopener'" data-event-name="merchant_outbound_click" [attr.data-article-slug]="article().slug" [attr.data-product-id]="product.id" [attr.data-paid-link]="product.affiliate">See product details at {{ product.merchant }} →</a>
+            <a class="read" [href]="product.url" target="_blank" [attr.rel]="product.affiliate ? 'sponsored noopener' : 'noopener'" data-event-name="merchant_outbound_click" [attr.data-article-slug]="article().slug" [attr.data-product-id]="product.id" [attr.data-paid-link]="product.affiliate">See product details at {{ product.merchant }}{{ product.affiliate ? ' (paid link)' : '' }} →</a>
           </section>
         }
         @if (companionProduct(); as product) {
           <section class="reader-pair-product">
-            <a class="reader-pair-product-visual" [href]="product.url" target="_blank" [attr.rel]="product.affiliate ? 'sponsored noopener' : 'noopener'" [attr.aria-label]="'See ' + product.name + ' at ' + product.merchant">
-              <img [src]="productVisual(product.id).src" [alt]="productVisual(product.id).alt" width="1536" height="1024" loading="lazy" decoding="async">
-            </a>
             <p class="pair-role">Pair it with</p>
-            <h3><a [href]="product.url" target="_blank" [attr.rel]="product.affiliate ? 'sponsored noopener' : 'noopener'">{{ product.name }}</a></h3>
+            <h3>{{ product.name }}</h3>
             <p>{{ display(product.whyItFits) }}</p>
             <p class="product-caveat"><strong>Good to know:</strong> {{ display(product.drawback) }}</p>
-            <a class="read" [href]="product.url" target="_blank" [attr.rel]="product.affiliate ? 'sponsored noopener' : 'noopener'" data-event-name="merchant_outbound_click" [attr.data-article-slug]="article().slug" [attr.data-product-id]="product.id" [attr.data-paid-link]="product.affiliate">See product details at {{ product.merchant }} →</a>
+            <a class="read" [href]="product.url" target="_blank" [attr.rel]="product.affiliate ? 'sponsored noopener' : 'noopener'" data-event-name="merchant_outbound_click" [attr.data-article-slug]="article().slug" [attr.data-product-id]="product.id" [attr.data-paid-link]="product.affiliate">See product details at {{ product.merchant }}{{ product.affiliate ? ' (paid link)' : '' }} →</a>
           </section>
         }
       </div>
-      <p class="illustration-note">The pictures are original illustrations of the gift idea, not product photography. The links open the current product pages.</p>
-      <section class="why-good-gift">
-        <p class="eyebrow">Why this makes a good gift</p>
+      <p class="illustration-note">The links below open the current product pages.</p>
+      <section class="why-good-gift" [attr.aria-labelledby]="pair().id + '-why-good-gift'">
+        <h3 [id]="pair().id + '-why-good-gift'">Why this makes a good gift</h3>
         <p>{{ display(pair().whyTogether) }}</p>
         <p><strong>The moment it creates:</strong> {{ display(pair().interactionMoment) }}</p>
       </section>
@@ -118,9 +114,9 @@ export class PairCardComponent {
   readonly display = readerLanguage;
   anchorProduct() { return this.article().products.find((product) => product.id === this.pair().anchorProductId); }
   companionProduct() { return this.article().products.find((product) => product.id === this.pair().companionProductId); }
-  productVisual(productId: string): VisualAsset {
+  pairVisual(): VisualAsset {
     const article = this.article();
-    const sceneId = article.visual.productSceneIds[productId];
+    const sceneId = article.visual.pairSceneIds[this.pair().id];
     return article.visual.scenes.find((scene) => scene.id === sceneId) ?? article.visual.hero;
   }
 }
@@ -132,7 +128,7 @@ export class PairCardComponent {
       <div>
         <p class="eyebrow">The gifts people remember</p>
         <h1>Good gifts, minus the guesswork.</h1>
-        <p class="lede">The best gifts are often the things someone would love, use, and never quite buy for themselves. We look for the little desire hiding behind “I’m fine”—and turn it into a gift that feels like you noticed.</p>
+        <p class="lede">The best gifts are often the things someone would love, use, and never quite buy for themselves. Sometimes they already own the everyday version. The gift is the specialty extra made for the part they love most.</p>
         <div class="actions">
           <a class="button" routerLink="/gift-finder">Find their gift</a>
           <a class="button secondary" routerLink="/gifts">Browse every idea</a>
@@ -157,7 +153,7 @@ export class PairCardComponent {
         <div class="grid three">
           <div class="panel"><span class="number">01</span><h3>Notice the almost</h3><p>The hobby they circle. The worn workaround. The better version they pick up, admire, and put back.</p></div>
           <div class="panel"><span class="number">02</span><h3>Find the hesitation</h3><p>Too indulgent. Too niche. Too hard to compare. A gift removes the excuse without creating a burden.</p></div>
-          <div class="panel"><span class="number">03</span><h3>Make it personal</h3><p>The present should say, “I know why you will love this,” before the paper is even off.</p></div>
+          <div class="panel"><span class="number">03</span><h3>Add, do not erase</h3><p>Keep the useful thing they already trust. Give the specialty extra that makes one favorite part of their life better.</p></div>
         </div>
       </div>
     </section>
@@ -232,6 +228,7 @@ export class HomePage {
           <ul>
             <li>Have I actually seen them want, need, or postpone this?</li>
             <li>Do I know the size, edition, platform, or version that fits?</li>
+            <li>Does this add something special without replacing a general-purpose thing they already like?</li>
             <li>Are they denying themselves a pleasure—or simply uninterested?</li>
             <li>Will this become part of their life instead of part of their closet?</li>
           </ul>
@@ -400,6 +397,22 @@ export class BlogPage {
         @if (article.affiliateDisclosure) {
           <aside class="disclosure"><strong>Affiliate disclosure:</strong> We may earn a commission when you purchase through links on this page. That never changes who the gift is for or why it belongs here.</aside>
         }
+        @if (article.specialtyLens; as lens) {
+          <section class="specialty-lens" [attr.aria-labelledby]="article.slug + '-specialty-lens-title'">
+            <p class="eyebrow">The quick version</p>
+            <h2 [id]="article.slug + '-specialty-lens-title'">The gift may be the extra tool, not a replacement.</h2>
+            <div class="specialty-lens-grid">
+              <div><h3>What they may already use</h3><p>{{ lens.generalPurpose }}</p></div>
+              <div><h3>What this adds</h3><p>{{ lens.specialty }}</p></div>
+              <div><h3>The clue to look for</h3><p>{{ lens.signal }}</p></div>
+            </div>
+          </section>
+        }
+        @if (bodyComesFirst(article)) {
+          <section class="article-explainer" aria-label="A simple explanation of this gift idea">
+            <div class="prose" [innerHTML]="body(article)"></div>
+          </section>
+        }
         @if (article.pairs.length > 0) {
           <section aria-labelledby="pairings" class="article-pairings">
             <p class="eyebrow">Two products, one idea</p>
@@ -420,11 +433,18 @@ export class BlogPage {
             </div>
           </section>
         }
-        @if (article.products.length === 0) {
-          <div class="prose article-explainer" [innerHTML]="body(article)"></div>
-        } @else {
-          <section class="article-explainer" aria-labelledby="why-this-idea-works">
-            <div class="prose" [innerHTML]="body(article)"></div>
+        @if (!bodyComesFirst(article)) {
+          @if (article.products.length === 0) {
+            <div class="prose article-explainer" [innerHTML]="body(article)"></div>
+          } @else {
+            <section class="article-explainer" aria-label="Why this gift idea works">
+              <div class="prose" [innerHTML]="body(article)"></div>
+            </section>
+          }
+        }
+        @if (evidence(article)) {
+          <section class="article-evidence" aria-label="Sources behind this guide">
+            <div class="prose" [innerHTML]="evidence(article)"></div>
           </section>
         }
       </article>
@@ -448,6 +468,8 @@ export class ArticlePage {
   readonly lead = readerLead;
   readonly title = readerTitle;
   readonly body = readerBodyHtml;
+  readonly bodyComesFirst = readerBodyComesFirst;
+  readonly evidence = readerEvidenceHtml;
   readonly display = readerLanguage;
   unpairedProducts() {
     if (!this.article) return [];
@@ -501,6 +523,9 @@ export class ArticlePage {
         <p>The object is not the idea. The idea is that you saw the hesitation and understood what was underneath it.</p>
         <h2>A little indulgence is the point.</h2>
         <p>A gift does not need to be frivolous. It needs to cross a line the recipient will not cross alone: from good enough to genuinely enjoyable, from vague curiosity to a first real step, from someday to this weekend.</p>
+        <h2>The everyday thing can stay.</h2>
+        <p>Someone may already own a good general-purpose version: the phone app, the old towel, the plain palette, the ordinary storage box. That does not make the gift idea redundant.</p>
+        <p>Look for the specialty extra built for the exact moment they care about. It should do one narrow job better without asking them to throw away something that already works.</p>
         <h2>When two gifts belong together.</h2>
         <p>Do not make a gift basket just because two products share a color. One thing should open the door and the other should create a moment: read and play, remember and record, notice and look closer.</p>
         <h2>Let the shopping disappear.</h2>

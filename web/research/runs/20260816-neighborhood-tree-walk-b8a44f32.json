@@ -668,7 +668,7 @@
       "editorialScore": 84,
       "evidenceConfidence": 80,
       "drawbacks": [
-        "The current listing is a 1998, 448-page edition with fewer covered species than newer comprehensive guides, and the publisher currently shows it out of stock even though another bookstore reports fulfillment; recheck edition and seller before gifting."
+        "This is an older 1998 edition with 448 pages and fewer species than newer, larger guides. The publisher showed it out of stock during our research while another bookseller listed it, so recheck the exact edition and seller before ordering."
       ],
       "primarySourceIds": [
         "src-peterson-official"
@@ -740,7 +740,7 @@
       "editorialScore": 91,
       "evidenceConfidence": 87,
       "drawbacks": [
-        "At 720 pages and 5.75 by 8.25 inches in the current publisher record, the Princeton guide asks more of a recipient's hand strength and bag space than a slim pocket reference; a prior publisher catalog listed 656 pages, so verify the exact physical edition."
+        "The current publisher page lists 720 pages and a 5.75 by 8.25 inch size, so this is a substantial book to carry. An older catalog listed 656 pages for the same ISBN; verify the physical edition and make sure its weight and print are comfortable."
       ],
       "primarySourceIds": [
         "src-princeton-official"
@@ -812,7 +812,7 @@
       "editorialScore": 83,
       "evidenceConfidence": 82,
       "drawbacks": [
-        "Sibley is a 464-page, 6 by 9.5 inch continental hardcover rather than an east-only pocket guide, and an independent comparison calls it inconvenient to carry on field trips."
+        "This is a 464-page, 6 by 9.5 inch hardcover covering all of North America, not a small eastern field guide. An independent comparison found it inconvenient to carry on field trips."
       ],
       "primarySourceIds": [
         "src-sibley-official"
@@ -885,7 +885,7 @@
       "editorialScore": 86,
       "evidenceConfidence": 80,
       "drawbacks": [
-        "The 15.8 millimeter viewing lens and one-inch working distance demand close eye placement, coordinated hand movement, and a steady target; current seller availability also varies."
+        "The viewing lens is only 15.8 millimeters wide and focuses about one inch from the subject. It requires close eye placement, steady hands, and coordinated movement, and current seller availability varies."
       ],
       "primarySourceIds": [
         "src-bausch-catalog"
@@ -1053,7 +1053,7 @@
       "editorialScore": 79,
       "evidenceConfidence": 85,
       "drawbacks": [
-        "At 592 pages and 7 by 9.25 inches, Audubon is a broad continental photographic reference rather than a pocket guide; an independent review also notes that it omits a dichotomous key."
+        "At 592 pages and 7 by 9.25 inches, this is not a pocket guide. It covers all of North America, and an independent review notes that it does not include a step-by-step either-or identification key."
       ],
       "primarySourceIds": [
         "src-audubon-official"
@@ -1214,7 +1214,7 @@
       "editorialScore": 84,
       "evidenceConfidence": 80,
       "drawbacks": [
-        "The current listing is a 1998, 448-page edition with fewer covered species than newer comprehensive guides, and the publisher currently shows it out of stock even though another bookstore reports fulfillment; recheck edition and seller before gifting."
+        "This is an older 1998 edition with 448 pages and fewer species than newer, larger guides. The publisher showed it out of stock during our research while another bookseller listed it, so recheck the exact edition and seller before ordering."
       ],
       "primarySourceIds": [
         "src-peterson-official"
@@ -1286,7 +1286,7 @@
       "editorialScore": 91,
       "evidenceConfidence": 87,
       "drawbacks": [
-        "At 720 pages and 5.75 by 8.25 inches in the current publisher record, the Princeton guide asks more of a recipient's hand strength and bag space than a slim pocket reference; a prior publisher catalog listed 656 pages, so verify the exact physical edition."
+        "The current publisher page lists 720 pages and a 5.75 by 8.25 inch size, so this is a substantial book to carry. An older catalog listed 656 pages for the same ISBN; verify the physical edition and make sure its weight and print are comfortable."
       ],
       "primarySourceIds": [
         "src-princeton-official"
@@ -1358,7 +1358,7 @@
       "editorialScore": 83,
       "evidenceConfidence": 82,
       "drawbacks": [
-        "Sibley is a 464-page, 6 by 9.5 inch continental hardcover rather than an east-only pocket guide, and an independent comparison calls it inconvenient to carry on field trips."
+        "This is a 464-page, 6 by 9.5 inch hardcover covering all of North America, not a small eastern field guide. An independent comparison found it inconvenient to carry on field trips."
       ],
       "primarySourceIds": [
         "src-sibley-official"
@@ -1431,7 +1431,7 @@
       "editorialScore": 86,
       "evidenceConfidence": 80,
       "drawbacks": [
-        "The 15.8 millimeter viewing lens and one-inch working distance demand close eye placement, coordinated hand movement, and a steady target; current seller availability also varies."
+        "The viewing lens is only 15.8 millimeters wide and focuses about one inch from the subject. It requires close eye placement, steady hands, and coordinated movement, and current seller availability varies."
       ],
       "primarySourceIds": [
         "src-bausch-catalog"
@@ -1504,7 +1504,7 @@
       "editorialScore": 79,
       "evidenceConfidence": 85,
       "drawbacks": [
-        "At 592 pages and 7 by 9.25 inches, Audubon is a broad continental photographic reference rather than a pocket guide; an independent review also notes that it omits a dichotomous key."
+        "At 592 pages and 7 by 9.25 inches, this is not a pocket guide. It covers all of North America, and an independent review notes that it does not include a step-by-step either-or identification key."
       ],
       "primarySourceIds": [
         "src-audubon-official"
@@ -1575,13 +1575,13 @@
   "pairs": [
     {
       "id": "compact-eastern-one-tree-pair",
-      "name": "The compact eastern one-tree pair",
+      "name": "A smaller eastern guide and a close-up lens",
       "anchorCandidateId": "peterson-eastern-trees",
       "companionCandidateId": "bausch-hastings-triplet-10x",
       "recipientJob": "Name one neighborhood tree provisionally by moving from a whole-tree observation to one close leaf, bud, or twig feature and then checking the regional guide.",
       "coherenceType": "observation_loop",
-      "whyTogether": "Peterson supplies a geographically bounded comparison system while the Bausch triplet reveals one small feature that the unaided eye may miss; this is the compact configuration, not an excuse to buy every guide and lens.",
-      "interactionMoment": "On one daylight walk, choose one familiar tree, note its silhouette and bark, inspect one already-fallen leaf or reachable twig feature without removing material, then use Peterson to make and mark one provisional identification.",
+      "whyTogether": "The Peterson guide helps narrow down a tree by its region and overall appearance. The magnifier helps them see one tiny feature, such as a leaf edge or bud. Together they turn an ordinary walk into one simple identification attempt.",
+      "interactionMoment": "On a daylight walk, choose one familiar tree, notice its shape and bark, examine one fallen leaf or an easy-to-reach feature without cutting anything, then use the guide to make one tentative identification.",
       "compatibilityChecks": [
         {
           "dimension": "edition_or_region",
@@ -1604,8 +1604,8 @@
       ],
       "duplicateRisk": "medium",
       "clutterDelta": "neutral",
-      "preGiftCheck": "Confirm the exact neighborhood falls inside Peterson's scope, preview its print and illustration style, test a 10x close-eye loupe, and verify neither role is already covered by a trusted tool.",
-      "bundleDrawback": "Choose only Peterson when close-eye focusing is uncomfortable or fine details are not the friction; choose only the loupe when the recipient already has a region-matched guide they use.",
+      "preGiftCheck": "Make sure their usual walks are in Peterson's eastern-US, eastern-Canada, or Midwest range. Preview the book's print and pictures, let them try a similar 10x lens close to the eye, and check that they do not already own either tool.",
+      "bundleDrawback": "Give only the guide if close-up focusing is uncomfortable or tiny details are not the problem. Give only the magnifier if they already use a regional tree guide they like.",
       "claimIds": [
         "claim-pair-peterson-bausch"
       ],
@@ -1622,13 +1622,13 @@
     },
     {
       "id": "illustrated-deep-dive-one-tree-pair",
-      "name": "The illustrated deep-dive one-tree pair",
+      "name": "A deeper eastern guide and a close-up lens",
       "anchorCandidateId": "princeton-eastern-north-america",
       "companionCandidateId": "bausch-hastings-triplet-10x",
       "recipientJob": "Compare one eastern or central neighborhood tree against detailed illustrations after noting its whole form and then checking one fine leaf, bud, or twig feature through a corrected 10x loupe.",
       "coherenceType": "observation_loop",
-      "whyTogether": "Princeton provides deep eastern-through-Great-Plains illustrated comparisons while the Bausch triplet reveals one small feature that the unaided eye may miss; this is the denser-reference alternative to the compact Peterson configuration.",
-      "interactionMoment": "Carry the guide and loupe in one small day bag, stop at one familiar tree near a bench, note bark and silhouette, inspect one already-fallen leaf or reachable feature through the loupe, then compare the complete evidence set against Princeton's quick-ID art and range map.",
+      "whyTogether": "The Princeton guide provides detailed pictures and range maps for many eastern and central trees. The magnifier helps reveal one small leaf, bud, or twig feature. Choose this pair instead of the Peterson pair when the recipient wants more detail and can carry the larger book.",
+      "interactionMoment": "Bring the guide and lens in a small bag, stop near one familiar tree, notice its shape and bark, examine one fallen leaf or reachable feature, then compare what you saw with the guide's pictures and range map.",
       "compatibilityChecks": [
         {
           "dimension": "edition_or_region",
@@ -1660,8 +1660,8 @@
       ],
       "duplicateRisk": "medium",
       "clutterDelta": "neutral",
-      "preGiftCheck": "Confirm the exact location is within Princeton's scope, preview the book's size and print, test the Bausch loupe's close-eye focus, and choose this denser-reference configuration instead of the compact Peterson pair.",
-      "bundleDrawback": "Choose only Princeton when close-eye focusing is uncomfortable or fine details are not the friction; choose only the loupe when the recipient already owns a current eastern guide whose visual organization works.",
+      "preGiftCheck": "Confirm the walking location is in the eastern United States or Canada as far west as the Great Plains. Preview the book's size and print, test close-eye focusing with a similar 10x lens, and choose this pair instead of the smaller Peterson pair.",
+      "bundleDrawback": "Give only the guide if the magnifier would be uncomfortable or left at home. Give only the magnifier if they already own an eastern tree guide whose pictures and organization work for them.",
       "claimIds": [
         "claim-pair-princeton-bausch"
       ],
@@ -1688,7 +1688,7 @@
   "qa": {
     "passed": true,
     "reviewerRole": "independent-editor",
-    "reviewerId": "tree-walk-independent-editor-20260816-r2",
+    "reviewerId": "codex-popper-independent-editor-20260906",
     "receiptPath": "research/reviews/20260816-neighborhood-tree-walk-b8a44f32.qa.v1.json",
     "blockers": [],
     "warnings": []
@@ -1711,5 +1711,5 @@
       "summary": "Experienced public users praise corrected 10x triplets but also describe shallow depth of field and difficulty with shaky hands. The draft treats this as a mandatory handling check, not a universal recommendation."
     }
   ],
-  "completedAt": "2026-08-16T21:30:53.582Z"
+  "completedAt": "2026-09-07T04:31:51.540Z"
 }

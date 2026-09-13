@@ -24,6 +24,7 @@ const registry = JSON.parse(await fs.readFile(path.join(webRoot, 'config', 'affi
 const program = registry.programs.find((entry) => entry.id === programId);
 program.revision = 2; program.status = 'enabled'; program.enabled = true; program.founderDisposition = 'approved';
 program.allowedDomains = ['bookshop.org']; program.registeredSites = ['https://tipsforyourgifts.web.app/']; program.trackingParameterKeys = ['affiliate']; program.requiredDisclosure = registry.policy.defaultDisclosure;
+program.sourceCheckedAt = '2026-08-05T09:00:00.000Z';
 program.account = { externalAccountEstablished: true, trackingIdentityConfigured: true, termsAcceptedByFounder: true, termsAcceptedAt: '2026-08-05T10:00:00.000Z', acceptanceEvidenceReference: 'https://github.com/lucasdmoyer/tipsforyourgifts/issues/42', reportingExportApproved: false };
 registry.updatedAt = '2026-08-05T10:00:00.000Z';
 await fs.writeFile(path.join(root, 'config', 'affiliate-programs.json'), `${JSON.stringify(registry, null, 2)}\n`);

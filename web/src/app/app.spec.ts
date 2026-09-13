@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
-import { provideRouter } from '@angular/router';
+import { provideRouter, Router } from '@angular/router';
 import { App } from './app';
 import { ARTICLES, GROWTH, OPERATIONS, STRATEGY } from './generated/content.generated';
-import { FounderBriefPage, GiftFinderPage, PairCardComponent, ProductCardComponent, StudioPage } from './pages';
-import { readerLead } from './reader-copy';
+import { ArticlePage, FounderBriefPage, GiftFinderPage, PairCardComponent, ProductCardComponent, StudioPage } from './pages';
+import { readerBodyComesFirst, readerBodyHtml, readerEvidenceHtml, readerLanguage, readerLead } from './reader-copy';
 
 describe('App', () => {
   beforeEach(async () => {
-    await TestBed.configureTestingModule({ imports: [App, StudioPage, FounderBriefPage, GiftFinderPage, ProductCardComponent, PairCardComponent], providers: [provideRouter([])] }).compileComponents();
+    await TestBed.configureTestingModule({ imports: [App, ArticlePage, StudioPage, FounderBriefPage, GiftFinderPage, ProductCardComponent, PairCardComponent], providers: [provideRouter([{ path: 'blog/:slug', component: ArticlePage }])] }).compileComponents();
   });
 
   it('renders the editorial brand and primary navigation', () => {
@@ -75,28 +75,165 @@ describe('App', () => {
     expect(link.dataset['productId']).toBe(article.products[0].id);
     expect(link.dataset['paidLink']).toBe(String(article.products[0].affiliate));
     expect(link.href).toBe(article.products[0].url);
+    expect(fixture.nativeElement.querySelectorAll('a')).toHaveLength(1);
   });
 
   it('opens every article with the person and explains each product pairing plainly', () => {
     for (const article of ARTICLES) {
       expect(readerLead(article)).toMatch(/^If you know someone/);
     }
+    for (const article of ARTICLES) {
+      for (const pair of article.pairs) {
+        const fixture = TestBed.createComponent(PairCardComponent);
+        fixture.componentRef.setInput('article', article);
+        fixture.componentRef.setInput('pair', pair);
+        fixture.detectChanges();
+        const element = fixture.nativeElement as HTMLElement;
+        const anchor = article.products.find((product) => product.id === pair.anchorProductId)!;
+        const companion = article.products.find((product) => product.id === pair.companionProductId)!;
+        const productLinks = element.querySelectorAll<HTMLAnchorElement>('[data-event-name="merchant_outbound_click"]');
+        const pairImages = element.querySelectorAll<HTMLImageElement>('.pairing-context-visual img');
+        expect(element.querySelectorAll('.reader-pair-product')).toHaveLength(2);
+        expect(element.querySelectorAll('.product-caveat')).toHaveLength(2);
+        expect(element.textContent).toContain(anchor.name);
+        expect(element.textContent).toContain(companion.name);
+        expect(element.textContent).toContain('Why this makes a good gift');
+        expect(element.querySelector('.why-good-gift')?.getAttribute('aria-labelledby')).toBe(`${pair.id}-why-good-gift`);
+        expect(element.textContent).toContain('Before you buy');
+        expect(pairImages).toHaveLength(1);
+        expect(pairImages[0].src).toContain('/blog-images/');
+        expect((pairImages[0].getAttribute('alt') ?? '').length).toBeGreaterThan(40);
+        expect(element.querySelector('.pairing-context-visual figcaption')?.textContent).toContain('not product photography');
+        expect(Array.from(productLinks).map((link) => link.href)).toEqual([anchor.url, companion.url]);
+        expect(element.querySelectorAll('a')).toHaveLength(2);
+      }
+    }
+  });
+
+  it('plainly labels a paid link inside a product pairing', () => {
     const article = ARTICLES.find((candidate) => candidate.pairs.length > 0)!;
     const pair = article.pairs[0];
+    const paidArticle = {
+      ...article,
+      affiliateDisclosure: true,
+      products: article.products.map((product) => product.id === pair.anchorProductId ? { ...product, affiliate: true } : product)
+    };
     const fixture = TestBed.createComponent(PairCardComponent);
-    fixture.componentRef.setInput('article', article);
+    fixture.componentRef.setInput('article', paidArticle);
     fixture.componentRef.setInput('pair', pair);
     fixture.detectChanges();
     const element = fixture.nativeElement as HTMLElement;
-    const productLinks = element.querySelectorAll<HTMLAnchorElement>('[data-event-name="merchant_outbound_click"]');
-    expect(element.querySelectorAll('.reader-pair-product')).toHaveLength(2);
-    expect(element.querySelectorAll('.product-caveat')).toHaveLength(2);
-    expect(element.textContent).toContain(article.products.find((product) => product.id === pair.anchorProductId)!.name);
-    expect(element.textContent).toContain(article.products.find((product) => product.id === pair.companionProductId)!.name);
-    expect(element.textContent).toContain('Why this makes a good gift');
-    expect(element.textContent).toContain('Before you buy');
-    expect(productLinks).toHaveLength(2);
-    expect(Array.from(productLinks).every((link) => link.href.startsWith('http'))).toBe(true);
+    const links = element.querySelectorAll<HTMLAnchorElement>('[data-event-name="merchant_outbound_click"]');
+    expect(links[0].textContent).toContain('(paid link)');
+    expect(links[0].rel).toContain('sponsored');
+    expect(links[0].rel).toContain('noopener');
+    expect(links[0].dataset['paidLink']).toBe('true');
+    expect(links[1].textContent).not.toContain('(paid link)');
+  });
+
+  it('renders the explanation before the visual shopping choices', async () => {
+    const fixture = TestBed.createComponent(App);
+    fixture.detectChanges();
+    await TestBed.inject(Router).navigateByUrl('/blog/miniature-painting-wet-palette-recipe-pairs');
+    await fixture.whenStable();
+    fixture.detectChanges();
+    const shell = fixture.nativeElement.querySelector('.article-shell') as HTMLElement;
+    const specialtyLens = shell.querySelector('.specialty-lens') as HTMLElement;
+    const explainer = shell.querySelector('.article-explainer') as HTMLElement;
+    const pairings = shell.querySelector('.article-pairings') as HTMLElement;
+    expect(specialtyLens).toBeTruthy();
+    expect(specialtyLens.textContent).toContain('What they may already use');
+    expect(specialtyLens.textContent).toContain('What this adds');
+    expect(specialtyLens.textContent).toContain('The clue to look for');
+    expect(explainer).toBeTruthy();
+    expect(pairings).toBeTruthy();
+    expect(Array.from(shell.children).indexOf(specialtyLens)).toBeLessThan(Array.from(shell.children).indexOf(explainer));
+    expect(Array.from(shell.children).indexOf(explainer)).toBeLessThan(Array.from(shell.children).indexOf(pairings));
+  });
+
+  it('places a plain disclosure before a paid recommendation', async () => {
+    const article = ARTICLES.find((candidate) => candidate.pairs.length > 0)!;
+    const product = article.products.find((candidate) => candidate.id === article.pairs[0].anchorProductId)!;
+    const originalDisclosure = article.affiliateDisclosure;
+    const originalAffiliate = product.affiliate;
+    article.affiliateDisclosure = true;
+    product.affiliate = true;
+    try {
+      const fixture = TestBed.createComponent(App);
+      fixture.detectChanges();
+      await TestBed.inject(Router).navigateByUrl(`/blog/${article.slug}`);
+      await fixture.whenStable();
+      fixture.detectChanges();
+      const shell = fixture.nativeElement.querySelector('.article-shell') as HTMLElement;
+      const disclosure = shell.querySelector('.disclosure') as HTMLElement;
+      const recommendations = shell.querySelector('.article-pairings, .article-single-gifts') as HTMLElement;
+      const paidLink = shell.querySelector<HTMLAnchorElement>('[data-paid-link="true"]')!;
+      expect(disclosure.textContent).toContain('We may earn a commission');
+      expect(Array.from(shell.children).indexOf(disclosure)).toBeLessThan(Array.from(shell.children).indexOf(recommendations));
+      expect(paidLink.textContent).toContain('(paid link)');
+      expect(paidLink.rel).toContain('sponsored');
+      expect(paidLink.rel).toContain('noopener');
+    } finally {
+      article.affiliateDisclosure = originalDisclosure;
+      product.affiliate = originalAffiliate;
+    }
+  });
+
+  it('teaches an unfamiliar buyer what the miniature-painting gift is before presenting the products', () => {
+    const article = ARTICLES.find((candidate) => candidate.slug === 'miniature-painting-wet-palette-recipe-pairs')!;
+    const body = readerBodyHtml(article);
+    expect(readerBodyComesFirst(article)).toBe(true);
+    expect(body).toContain('What this gift actually is');
+    expect(body).toContain('How it fits into their real life');
+    expect(body).toContain('What they may already have');
+    expect(body).toContain('What the specialty gift adds');
+    expect(body).toContain('regular water-based acrylic');
+    expect(body).toContain('We did not physically test these products');
+    expect(body).not.toContain('strongest researched anchor');
+    expect(body).not.toContain('qualified');
+    expect(body).not.toContain('preserves the mix');
+    expect(article.visual.hero.caption).toBe('The wet palette helps paint stay workable during the session; the notebook records the mix for next time.');
+    expect(article.products.map((product) => product.whyItFits).join(' ')).not.toMatch(/keeps? regular acrylic paint moist/i);
+  });
+
+  it('explains every gift guide in plain language before presenting shopping choices', () => {
+    const giftGuides = ARTICLES.filter((article) => article.products.length > 0);
+    expect(giftGuides.length).toBeGreaterThanOrEqual(8);
+    for (const article of giftGuides) {
+      const body = readerBodyHtml(article);
+      expect(article.readerFormat).toBe('recipient-specialty-v1');
+      expect(article.readerIntro?.lead).toMatch(/^If you know someone/);
+      expect(article.readerIntro?.bodyPlacement).toBe('before-products');
+      expect(article.specialtyLens?.generalPurpose).toMatch(/^They may already/);
+      expect(article.specialtyLens?.specialty.length).toBeGreaterThanOrEqual(50);
+      expect(article.specialtyLens?.signal).toMatch(/^Look for/);
+      expect(readerBodyComesFirst(article)).toBe(true);
+      for (const heading of ['What this gift actually is', 'How it fits into their real life', 'What they may already have', 'What the specialty gift adds', 'Why this feels thoughtful', 'Before you order']) {
+        expect(body.match(new RegExp(heading, 'g'))).toHaveLength(1);
+      }
+      expect(body).toMatch(/one gift (?:is|can be) enough/i);
+      expect(body).not.toMatch(/coherence gate|editorial score|evidence score|candidate products|finalists?/i);
+      for (const product of article.products) {
+        expect(product.whyItFits.length).toBeGreaterThanOrEqual(80);
+        expect(product.whyItFits).toMatch(/^What it is:/);
+      }
+    }
+    const golf = giftGuides.find((article) => article.slug === 'gifts-for-a-golf-friend')!;
+    expect(readerBodyHtml(golf)).toContain('<p>If you know someone');
+    const readAndPlay = giftGuides.find((article) => article.slug === 'read-it-then-play-it-gift-pairs')!;
+    expect(readerBodyHtml(readAndPlay)).not.toContain('Four pairs we left out');
+    const readAndPlayEvidence = readerEvidenceHtml(readAndPlay);
+    expect(readAndPlayEvidence).toContain('Sources behind the pairings');
+    expect(readAndPlayEvidence).toContain('target="_blank" rel="noopener"');
+    for (const product of readAndPlay.products) expect(readAndPlayEvidence).not.toContain(product.url);
+    const productUrls = new Set(readAndPlay.products.map((product) => product.url.replaceAll('&amp;', '&')));
+    const expectedSourceUrls = [...new Set([...readAndPlay.contentHtml.matchAll(/<a\b[^>]*\bhref=(?:"|')(https:[^"']+)(?:"|')[^>]*>/gi)]
+      .map((match) => match[1].replaceAll('&amp;', '&'))
+      .filter((url) => !productUrls.has(url)))];
+    const renderedSourceUrls = [...readAndPlayEvidence.matchAll(/<a\b[^>]*\bhref=(?:"|')(https:[^"']+)(?:"|')[^>]*>/gi)]
+      .map((match) => match[1].replaceAll('&amp;', '&'));
+    expect(renderedSourceUrls).toEqual(expectedSourceUrls);
+    expect(readerLanguage('advice from a qualified conservator')).toBe('advice from a qualified conservator');
   });
 
   it('renders the aggregate-only growth and experiment controls', () => {

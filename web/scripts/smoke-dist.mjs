@@ -116,7 +116,7 @@ for (const article of readyArticles) {
   }
   const pairs = Array.isArray(article.pairs) ? article.pairs : [];
   if (pairs.length > 0) {
-    for (const marker of ['Why this makes a good gift', 'Before you buy', 'original illustrations of the gift idea']) {
+    for (const marker of ['Why this makes a good gift', 'Before you buy', 'Original illustration of the gift idea—not product photography.']) {
       if (!html.includes(marker)) failures.push(`${article.slug}: pairing layout missing ${JSON.stringify(marker)}`);
     }
     for (const pair of pairs) {
