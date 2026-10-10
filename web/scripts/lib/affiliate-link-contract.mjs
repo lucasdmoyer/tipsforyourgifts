@@ -202,7 +202,6 @@ function validateCandidate(candidate, candidateRecord, programsById, sources, fo
   const program = programsById.get(candidate.programId);
   if (!program?.enabled || program.status !== 'enabled') throw new Error(`${candidate.candidateId}: affiliate program is not enabled`);
   if (program.revision !== candidate.programRevision) throw new Error(`${candidate.candidateId}: affiliate program revision changed`);
-  if (!program.eligibleArticleSlugs.includes(candidate.articleSlug)) throw new Error(`${candidate.candidateId}: article is not eligible for this affiliate program`);
   const article = sources.articles.get(candidate.articleSlug);
   if (!article || article.data.status !== 'publication_ready') throw new Error(`${candidate.candidateId}: article is not publication ready`);
   if (candidate.source.articlePath !== `src/data/blog/${article.name}` || candidate.source.articleSha256 !== article.sha256) throw new Error(`${candidate.candidateId}: source article hash changed`);

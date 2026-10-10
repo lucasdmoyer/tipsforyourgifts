@@ -178,6 +178,16 @@ await assert.rejects(() => candidateFor(excludedProductRoot, {
   productIdentityEvidenceUrl: 'https://store.2k.com/en/game/buy-civilization-6'
 }), /product is not eligible for this affiliate program/);
 
+const broadCoverageRoot = await makeFixture();
+const broadCoverageRegistryPath = path.join(broadCoverageRoot, 'config', 'affiliate-programs.json');
+const broadCoverageRegistry = JSON.parse(await fs.readFile(broadCoverageRegistryPath, 'utf8'));
+const broadCoverageProgram = broadCoverageRegistry.programs.find((entry) => entry.id === programId);
+broadCoverageProgram.eligibleArticleSlugs = [];
+broadCoverageProgram.productSelection = { mode: 'all_publication_ready_products', eligibleProductIds: [] };
+await fs.writeFile(broadCoverageRegistryPath, `${JSON.stringify(broadCoverageRegistry, null, 2)}\n`);
+const broadCoverageCandidate = await candidateFor(broadCoverageRoot);
+assert.equal(broadCoverageCandidate.productId, productId, 'all-publication-ready coverage must not require a manual article allowlist');
+
 const disabledRoot = await makeFixture();
 const disabledRegistryPath = path.join(disabledRoot, 'config', 'affiliate-programs.json');
 const disabledRegistry = JSON.parse(await fs.readFile(disabledRegistryPath, 'utf8'));
@@ -187,4 +197,4 @@ disabledProgram.enabled = false;
 await fs.writeFile(disabledRegistryPath, `${JSON.stringify(disabledRegistry, null, 2)}\n`);
 await assert.rejects(() => candidateFor(disabledRoot), /program is not enabled/);
 
-console.log(JSON.stringify({ affiliateLinkGateTests: 'passed', checks: 8, approvedOverlays: cleanState.counts.activeOverlays, sourceEditorialArtifactsMutated: false }, null, 2));
+console.log(JSON.stringify({ affiliateLinkGateTests: 'passed', checks: 9, broadPublicationCoverage: 'passed', approvedOverlays: cleanState.counts.activeOverlays, sourceEditorialArtifactsMutated: false }, null, 2));
