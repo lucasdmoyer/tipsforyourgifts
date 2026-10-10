@@ -10,6 +10,40 @@ const slugSchema = z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/);
 const httpsUrlSchema = z.string().url().refine((value) => value.startsWith('https://'), 'must use HTTPS');
 const safeIdentitySchema = z.string().regex(/^[A-Za-z0-9][A-Za-z0-9._-]{2,79}$/);
 
+export const affiliateLinkBatchInputSchema = z.object({
+  schemaVersion: z.literal('1.0.0'),
+  exportId: slugSchema,
+  source: z.literal('founder_attested_partner_export'),
+  exportedAt: z.string().datetime(),
+  programId: slugSchema,
+  expectedProgramRevision: z.number().int().positive(),
+  records: z.array(z.object({
+    articleSlug: slugSchema,
+    productId: slugSchema,
+    candidateRevision: z.number().int().positive(),
+    expectedArticleSha256: sha256Schema,
+    paidUrl: httpsUrlSchema,
+    productIdentityEvidenceUrl: httpsUrlSchema
+  }).strict()).min(1).max(250)
+}).strict().superRefine((input, context) => {
+  const productKeys = input.records.map((record) => `${record.articleSlug}:${record.productId}`);
+  if (new Set(productKeys).size !== productKeys.length) context.addIssue({ code: z.ZodIssueCode.custom, path: ['records'], message: 'one batch cannot contain duplicate article-product keys' });
+});
+
+export const affiliateLinkBatchManifestSchema = z.object({
+  schemaVersion: z.literal('1.0.0'),
+  batchId: slugSchema,
+  status: z.literal('imported'),
+  programId: slugSchema,
+  programRevision: z.number().int().positive(),
+  importedAt: z.string().datetime(),
+  importedBy: safeIdentitySchema,
+  sourceArtifactPath: z.string().regex(/^affiliate\/source-artifacts\/[a-z0-9]+(?:-[a-z0-9]+)*\.json$/),
+  sourceArtifactSha256: sha256Schema,
+  candidateIds: z.array(slugSchema).min(1).max(250),
+  candidateSha256: z.record(slugSchema, sha256Schema)
+}).strict();
+
 const sourceSchema = z.object({
   articlePath: z.string().regex(/^src\/data\/blog\/[a-z0-9]+(?:-[a-z0-9]+)*\.md$/),
   articleSha256: sha256Schema,
@@ -22,7 +56,7 @@ const sourceSchema = z.object({
 }).strict();
 
 export const affiliateLinkCandidateSchema = z.object({
-  schemaVersion: z.literal('1.0.0'),
+  schemaVersion: z.literal('1.1.0'),
   candidateId: slugSchema,
   status: z.literal('candidate'),
   articleSlug: slugSchema,
@@ -32,6 +66,12 @@ export const affiliateLinkCandidateSchema = z.object({
   candidateRevision: z.number().int().positive(),
   createdAt: z.string().datetime(),
   createdBy: safeIdentitySchema,
+  origin: z.object({
+    source: z.enum(['founder_supplied', 'founder_attested_partner_export']),
+    referenceId: slugSchema.nullable(),
+    sourceArtifactPath: z.string().regex(/^affiliate\/source-artifacts\/[a-z0-9]+(?:-[a-z0-9]+)*\.json$/).nullable(),
+    sourceSha256: sha256Schema.nullable()
+  }).strict(),
   source: sourceSchema,
   destination: z.object({
     paidUrl: httpsUrlSchema,
@@ -44,7 +84,15 @@ export const affiliateLinkCandidateSchema = z.object({
     productCopyUnchanged: z.literal(true),
     priceOrAvailabilityClaimAdded: z.literal(false)
   }).strict()
-}).strict();
+}).strict().superRefine((candidate, context) => {
+  const attested = candidate.origin.source !== 'founder_supplied';
+  if (attested && (!candidate.origin.referenceId || !candidate.origin.sourceArtifactPath || !candidate.origin.sourceSha256)) {
+    context.addIssue({ code: z.ZodIssueCode.custom, path: ['origin'], message: 'founder-attested partner exports require a reference ID, source artifact path, and source SHA-256' });
+  }
+  if (!attested && (candidate.origin.referenceId !== null || candidate.origin.sourceArtifactPath !== null || candidate.origin.sourceSha256 !== null)) {
+    context.addIssue({ code: z.ZodIssueCode.custom, path: ['origin'], message: 'founder-supplied candidates cannot claim an automated source artifact' });
+  }
+});
 
 const reviewCheckSchema = z.object({
   candidateHashBound: z.boolean(),
@@ -54,6 +102,7 @@ const reviewCheckSchema = z.object({
   destinationHttps: z.boolean(),
   finalDomainAllowed: z.boolean(),
   trackingKeysApproved: z.boolean(),
+  trackingIdentityMatched: z.boolean(),
   trackingPreserved: z.boolean(),
   editorialRankingUntouched: z.boolean(),
   disclosureWillRender: z.boolean(),
@@ -62,7 +111,7 @@ const reviewCheckSchema = z.object({
 }).strict();
 
 export const affiliateLinkReviewSchema = z.object({
-  schemaVersion: z.literal('1.0.0'),
+  schemaVersion: z.literal('1.2.0'),
   reviewId: slugSchema,
   candidateId: slugSchema,
   candidatePath: z.string().regex(/^affiliate\/candidates\/[a-z0-9]+(?:-[a-z0-9]+)*\.json$/),
@@ -77,6 +126,11 @@ export const affiliateLinkReviewSchema = z.object({
     verifiedAt: z.string().datetime().nullable()
   }).strict(),
   productIdentityEvidenceUrl: httpsUrlSchema,
+  trackingIdentityEvidence: z.object({
+    method: z.enum(['owner_gated_single_link_intake', 'founder_attested_partner_export']),
+    referencePath: z.string().regex(/^affiliate\/(?:candidates|source-artifacts)\/[a-z0-9]+(?:-[a-z0-9]+)*\.json$/),
+    sha256: sha256Schema
+  }).strict(),
   checks: reviewCheckSchema,
   blockers: z.array(z.string().min(12)).max(20)
 }).strict().superRefine((review, context) => {
@@ -187,10 +241,12 @@ async function loadRepositorySources(root) {
   }
   const runs = await readJsonRecords(root, 'research/runs', z.record(z.string(), z.unknown()));
   const reviews = await readJsonRecords(root, 'research/reviews', z.record(z.string(), z.unknown()));
+  const affiliateSourceArtifacts = await readJsonRecords(root, 'affiliate/source-artifacts', affiliateLinkBatchInputSchema);
   return {
     articles,
     runsById: new Map(runs.map((record) => [record.data.runId, record])),
-    reviewsByPath: new Map(reviews.map((record) => [record.path, record]))
+    reviewsByPath: new Map(reviews.map((record) => [record.path, record])),
+    affiliateSourceArtifactsByPath: new Map(affiliateSourceArtifacts.map((record) => [record.path, record]))
   };
 }
 
@@ -198,7 +254,7 @@ function validateCandidate(candidate, candidateRecord, programsById, sources, fo
   const expectedId = `affiliate-link-${candidate.articleSlug}-${candidate.productId}-${candidate.programId}-v${candidate.candidateRevision}`;
   if (candidate.candidateId !== expectedId) throw new Error(`${candidate.candidateId}: candidate ID must be ${expectedId}`);
   if (candidateRecord.name !== `${candidate.candidateId}.json`) throw new Error(`${candidate.candidateId}: candidate filename must match candidate ID`);
-  if (candidate.createdBy !== founderLogin) throw new Error(`${candidate.candidateId}: only the configured founder may supply a program-issued paid URL`);
+  if (candidate.createdBy !== founderLogin) throw new Error(`${candidate.candidateId}: paid URL intake must identify the configured founder`);
   const program = programsById.get(candidate.programId);
   if (!program?.enabled || program.status !== 'enabled') throw new Error(`${candidate.candidateId}: affiliate program is not enabled`);
   if (program.revision !== candidate.programRevision) throw new Error(`${candidate.candidateId}: affiliate program revision changed`);
@@ -219,6 +275,17 @@ function validateCandidate(candidate, candidateRecord, programsById, sources, fo
   if (product.affiliate) throw new Error(`${candidate.candidateId}: overlay candidates require an ordinary source link`);
   if (candidate.source.ordinaryUrl !== product.url) throw new Error(`${candidate.candidateId}: ordinary product URL changed`);
   if (candidate.source.productEditorialSha256 !== productEditorialSha256(product)) throw new Error(`${candidate.candidateId}: editorial product fields changed`);
+  if (candidate.origin.source === 'founder_attested_partner_export') {
+    const sourceArtifact = sources.affiliateSourceArtifactsByPath.get(candidate.origin.sourceArtifactPath);
+    if (!sourceArtifact || sourceArtifact.sha256 !== candidate.origin.sourceSha256) throw new Error(`${candidate.candidateId}: founder-attested source artifact hash binding failed`);
+    if (sourceArtifact.data.exportId !== candidate.origin.referenceId || sourceArtifact.data.programId !== candidate.programId || sourceArtifact.data.expectedProgramRevision !== candidate.programRevision) {
+      throw new Error(`${candidate.candidateId}: founder-attested source artifact identity changed`);
+    }
+    const sourceRecord = sourceArtifact.data.records.find((entry) => entry.articleSlug === candidate.articleSlug && entry.productId === candidate.productId && entry.candidateRevision === candidate.candidateRevision);
+    if (!sourceRecord || sourceRecord.expectedArticleSha256 !== candidate.source.articleSha256 || sourceRecord.paidUrl !== candidate.destination.paidUrl || sourceRecord.productIdentityEvidenceUrl !== candidate.destination.productIdentityEvidenceUrl) {
+      throw new Error(`${candidate.candidateId}: founder-attested source artifact does not contain the exact candidate`);
+    }
+  }
   const paidUrl = assertSafePublicHttpsUrl(candidate.destination.paidUrl, `${candidate.candidateId} paid URL`);
   const evidenceUrl = assertSafePublicHttpsUrl(candidate.destination.productIdentityEvidenceUrl, `${candidate.candidateId} evidence URL`);
   if (candidate.destination.productIdentityEvidenceUrl !== product.url) throw new Error(`${candidate.candidateId}: product identity evidence must equal the ordinary editorial product URL`);
@@ -262,7 +329,7 @@ export async function buildCandidateFromRepository(root, input) {
   if (!Number.isInteger(input.candidateRevision) || input.candidateRevision < 1) throw new Error('candidate revision must be a positive integer');
   const candidateId = `affiliate-link-${input.articleSlug}-${input.productId}-${input.programId}-v${input.candidateRevision}`;
   const candidate = affiliateLinkCandidateSchema.parse({
-    schemaVersion: '1.0.0',
+    schemaVersion: '1.1.0',
     candidateId,
     status: 'candidate',
     articleSlug: input.articleSlug,
@@ -272,6 +339,7 @@ export async function buildCandidateFromRepository(root, input) {
     candidateRevision: input.candidateRevision,
     createdAt: input.createdAt,
     createdBy: input.createdBy,
+    origin: input.origin ?? { source: 'founder_supplied', referenceId: null, sourceArtifactPath: null, sourceSha256: null },
     source: {
       articlePath: `src/data/blog/${article.name}`,
       articleSha256: article.sha256,
@@ -308,6 +376,7 @@ export async function loadAffiliateLinkState(root, options = {}) {
   const candidates = await readJsonRecords(root, 'affiliate/candidates', affiliateLinkCandidateSchema);
   const reviews = await readJsonRecords(root, 'affiliate/reviews', affiliateLinkReviewSchema);
   const approvals = await readJsonRecords(root, 'affiliate/approvals', affiliateLinkApprovalSchema);
+  const batches = await readJsonRecords(root, 'affiliate/batches', affiliateLinkBatchManifestSchema);
   const candidateById = new Map();
   const candidateRevisionKeys = new Set();
   for (const record of candidates) {
@@ -318,6 +387,35 @@ export async function loadAffiliateLinkState(root, options = {}) {
     candidateRevisionKeys.add(revisionKey);
     candidateById.set(record.data.candidateId, record);
   }
+  const batchedCandidateIds = new Set();
+  for (const record of batches) {
+    const batch = record.data;
+    if (record.name !== `${batch.batchId}.json`) throw new Error(`${batch.batchId}: affiliate batch filename must match batch ID`);
+    if (batch.importedBy !== affiliate.policy.founderApproverLogin) throw new Error(`${batch.batchId}: affiliate batch importer must match the configured founder`);
+    const sourceArtifact = sources.affiliateSourceArtifactsByPath.get(batch.sourceArtifactPath);
+    if (!sourceArtifact || sourceArtifact.sha256 !== batch.sourceArtifactSha256 || sourceArtifact.data.exportId !== batch.batchId) throw new Error(`${batch.batchId}: source artifact binding failed`);
+    if (batch.programId !== sourceArtifact.data.programId || batch.programRevision !== sourceArtifact.data.expectedProgramRevision) throw new Error(`${batch.batchId}: batch program binding does not match the source artifact`);
+    if (batch.candidateIds.length !== Object.keys(batch.candidateSha256).length || new Set(batch.candidateIds).size !== batch.candidateIds.length) throw new Error(`${batch.batchId}: candidate manifest is incomplete or duplicated`);
+    const expectedCandidateIds = sourceArtifact.data.records.map((sourceRecord) => `affiliate-link-${sourceRecord.articleSlug}-${sourceRecord.productId}-${sourceArtifact.data.programId}-v${sourceRecord.candidateRevision}`).sort();
+    const manifestedCandidateIds = [...batch.candidateIds].sort();
+    const manifestedCandidateHashIds = Object.keys(batch.candidateSha256).sort();
+    if (JSON.stringify(manifestedCandidateIds) !== JSON.stringify(expectedCandidateIds) || JSON.stringify(manifestedCandidateHashIds) !== JSON.stringify(expectedCandidateIds)) {
+      throw new Error(`${batch.batchId}: completion manifest must contain the exact source-artifact candidate set`);
+    }
+    for (const candidateId of batch.candidateIds) {
+      if (batchedCandidateIds.has(candidateId)) throw new Error(`${candidateId}: candidate cannot belong to more than one affiliate batch`);
+      const candidateRecord = candidateById.get(candidateId);
+      if (!candidateRecord || batch.candidateSha256[candidateId] !== candidateRecord.sha256) throw new Error(`${batch.batchId}: candidate hash binding failed for ${candidateId}`);
+      if (candidateRecord.data.origin.source !== 'founder_attested_partner_export' || candidateRecord.data.origin.referenceId !== batch.batchId || candidateRecord.data.origin.sourceArtifactPath !== batch.sourceArtifactPath || candidateRecord.data.origin.sourceSha256 !== batch.sourceArtifactSha256) {
+        throw new Error(`${batch.batchId}: candidate provenance binding failed for ${candidateId}`);
+      }
+      if (candidateRecord.data.programId !== batch.programId || candidateRecord.data.programRevision !== batch.programRevision) throw new Error(`${batch.batchId}: candidate program binding failed for ${candidateId}`);
+      batchedCandidateIds.add(candidateId);
+    }
+  }
+  for (const record of candidates) {
+    if (record.data.origin.source === 'founder_attested_partner_export' && !batchedCandidateIds.has(record.data.candidateId)) throw new Error(`${record.data.candidateId}: founder-attested candidate requires a completed batch manifest`);
+  }
   const reviewByCandidate = new Map();
   for (const record of reviews) {
     const review = record.data;
@@ -327,6 +425,10 @@ export async function loadAffiliateLinkState(root, options = {}) {
     if (!candidateRecord || review.candidatePath !== candidateRecord.path || review.candidateSha256 !== candidateRecord.sha256) throw new Error(`${review.reviewId}: candidate hash binding failed`);
     if (review.reviewerId === candidateRecord.data.createdBy) throw new Error(`${review.reviewId}: candidate creator cannot independently review the same link`);
     if (review.productIdentityEvidenceUrl !== candidateRecord.data.destination.productIdentityEvidenceUrl) throw new Error(`${review.reviewId}: product identity evidence changed`);
+    const expectedTrackingIdentityEvidence = candidateRecord.data.origin.source === 'founder_attested_partner_export'
+      ? { method: 'founder_attested_partner_export', referencePath: candidateRecord.data.origin.sourceArtifactPath, sha256: candidateRecord.data.origin.sourceSha256 }
+      : { method: 'owner_gated_single_link_intake', referencePath: candidateRecord.path, sha256: candidateRecord.sha256 };
+    if (JSON.stringify(review.trackingIdentityEvidence) !== JSON.stringify(expectedTrackingIdentityEvidence)) throw new Error(`${review.reviewId}: tracking identity evidence is not bound to the trusted intake artifact`);
     if (review.verdict === 'passed') {
       const resolved = assertSafePublicHttpsUrl(review.destination.resolvedUrl, `${review.reviewId} resolved URL`);
       if (resolved.hostname.toLowerCase() !== review.destination.resolvedHostname) throw new Error(`${review.reviewId}: resolved hostname does not match URL`);
@@ -377,11 +479,13 @@ export async function loadAffiliateLinkState(root, options = {}) {
     registrySha256: sha256(affiliateRaw),
     affiliate,
     candidates,
+    batches,
     reviews,
     approvals,
     overlays,
     counts: {
       candidates: candidates.length,
+      batches: batches.length,
       passedReviews: reviews.filter((record) => record.data.verdict === 'passed').length,
       failedReviews: reviews.filter((record) => record.data.verdict === 'failed').length,
       approvals: approvals.length,

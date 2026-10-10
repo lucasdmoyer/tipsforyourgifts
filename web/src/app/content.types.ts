@@ -299,6 +299,10 @@ export interface Operations {
       destinationHostname: string;
       createdAt: string;
       createdBy: string;
+      originSource: 'founder_supplied' | 'founder_attested_partner_export';
+      originReferenceId: string | null;
+      originSourceArtifactPath: string | null;
+      originSourceSha256: string | null;
       stage: 'independent_review_required' | 'review_failed' | 'founder_approval_required' | 'approved_overlay';
       reviewVerdict: 'passed' | 'failed' | null;
       reviewPath: string | null;

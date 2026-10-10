@@ -74,7 +74,7 @@ async function writeJson(root, relative, value) {
 async function addReviewAndApproval(root, candidate, overrides = {}) {
   const candidateRaw = await writeJson(root, `affiliate/candidates/${candidate.candidateId}.json`, candidate);
   const review = {
-    schemaVersion: '1.0.0',
+    schemaVersion: '1.2.0',
     reviewId: `${candidate.candidateId}-review`,
     candidateId: candidate.candidateId,
     candidatePath: `affiliate/candidates/${candidate.candidateId}.json`,
@@ -89,6 +89,11 @@ async function addReviewAndApproval(root, candidate, overrides = {}) {
       verifiedAt: '2026-08-06T11:00:00.000Z'
     },
     productIdentityEvidenceUrl: candidate.destination.productIdentityEvidenceUrl,
+    trackingIdentityEvidence: {
+      method: 'owner_gated_single_link_intake',
+      referencePath: `affiliate/candidates/${candidate.candidateId}.json`,
+      sha256: sha256(candidateRaw)
+    },
     checks: {
       candidateHashBound: true,
       programEnabledAtReview: true,
@@ -97,6 +102,7 @@ async function addReviewAndApproval(root, candidate, overrides = {}) {
       destinationHttps: true,
       finalDomainAllowed: true,
       trackingKeysApproved: true,
+      trackingIdentityMatched: true,
       trackingPreserved: true,
       editorialRankingUntouched: true,
       disclosureWillRender: true,
@@ -134,6 +140,7 @@ async function addReviewAndApproval(root, candidate, overrides = {}) {
 
 const cleanRoot = await makeFixture();
 const cleanCandidate = await candidateFor(cleanRoot);
+assert.deepEqual(cleanCandidate.origin, { source: 'founder_supplied', referenceId: null, sourceArtifactPath: null, sourceSha256: null });
 await addReviewAndApproval(cleanRoot, cleanCandidate);
 const cleanState = await loadAffiliateLinkState(cleanRoot, { asOfDate: '2026-08-10' });
 assert.equal(cleanState.counts.activeOverlays, 1);
@@ -143,6 +150,19 @@ assert.equal(sourceArticle.products[0].affiliate, false, 'source article must re
 assert.equal(renderedArticle.products[0].affiliate, true);
 assert.equal(renderedArticle.products[0].affiliateProgram, programId);
 assert.equal(renderedArticle.affiliateDisclosure, true);
+
+const falseFounderRoot = await makeFixture();
+await assert.rejects(() => candidateFor(falseFounderRoot, { createdBy: 'affiliate-bot' }), /paid URL intake must identify the configured founder/);
+
+const inventedOfficialRoot = await makeFixture();
+await assert.rejects(() => candidateFor(inventedOfficialRoot, {
+  origin: { source: 'official_partner_export', referenceId: 'bookshop-export-1', sourceArtifactPath: 'affiliate/source-artifacts/bookshop-export-1.json', sourceSha256: 'a'.repeat(64) }
+}), /Invalid option/);
+
+const unboundAutomatedRoot = await makeFixture();
+await assert.rejects(() => candidateFor(unboundAutomatedRoot, {
+  origin: { source: 'founder_attested_partner_export', referenceId: 'bookshop-export-1', sourceArtifactPath: null, sourceSha256: null }
+}), /founder-attested partner exports require a reference ID, source artifact path, and source SHA-256/);
 
 const pendingRoot = await makeFixture();
 const pendingCandidate = await candidateFor(pendingRoot);
@@ -159,6 +179,11 @@ const selfReviewRoot = await makeFixture();
 const selfReviewCandidate = await candidateFor(selfReviewRoot);
 await addReviewAndApproval(selfReviewRoot, selfReviewCandidate, { review: { reviewerId: selfReviewCandidate.createdBy } });
 await assert.rejects(() => loadAffiliateLinkState(selfReviewRoot, { asOfDate: '2026-08-10' }), /cannot independently review/);
+
+const unboundTrackingIdentityRoot = await makeFixture();
+const unboundTrackingIdentityCandidate = await candidateFor(unboundTrackingIdentityRoot);
+await addReviewAndApproval(unboundTrackingIdentityRoot, unboundTrackingIdentityCandidate, { review: { trackingIdentityEvidence: { method: 'owner_gated_single_link_intake', referencePath: `affiliate/candidates/${unboundTrackingIdentityCandidate.candidateId}.json`, sha256: 'a'.repeat(64) } } });
+await assert.rejects(() => loadAffiliateLinkState(unboundTrackingIdentityRoot, { asOfDate: '2026-08-10' }), /tracking identity evidence is not bound/);
 
 const staleProgramRoot = await makeFixture();
 const staleProgramCandidate = await candidateFor(staleProgramRoot);
@@ -197,4 +222,4 @@ disabledProgram.enabled = false;
 await fs.writeFile(disabledRegistryPath, `${JSON.stringify(disabledRegistry, null, 2)}\n`);
 await assert.rejects(() => candidateFor(disabledRoot), /program is not enabled/);
 
-console.log(JSON.stringify({ affiliateLinkGateTests: 'passed', checks: 9, broadPublicationCoverage: 'passed', approvedOverlays: cleanState.counts.activeOverlays, sourceEditorialArtifactsMutated: false }, null, 2));
+console.log(JSON.stringify({ affiliateLinkGateTests: 'passed', checks: 13, founderAttestedProvenance: 'passed', trackingIdentityEvidenceBinding: 'passed', broadPublicationCoverage: 'passed', approvedOverlays: cleanState.counts.activeOverlays, sourceEditorialArtifactsMutated: false }, null, 2));

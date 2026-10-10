@@ -803,10 +803,10 @@ export class AffiliateDisclosurePage {
             <div class="connector-list">
               @for (candidate of content.operations.affiliate.linkQueue; track candidate.candidateId) {
                 <div class="connector-row">
-                  <div><strong>{{ candidate.productId }}</strong><p>{{ candidate.articleSlug }} · {{ candidate.destinationHostname }} · candidate v{{ candidate.candidateRevision }}</p></div>
+                  <div><strong>{{ candidate.productId }}</strong><p>{{ candidate.articleSlug }} · {{ candidate.destinationHostname }} · candidate v{{ candidate.candidateRevision }}</p><p class="quiet">Source: {{ displayStatus(candidate.originSource) }}{{ candidate.originReferenceId ? ' · ' + candidate.originReferenceId : '' }}</p></div>
                   <span class="status" [class.blocked_on_account]="candidate.stage === 'review_failed'">{{ displayStatus(candidate.stage) }}</span>
                   <p class="connector-gate"><strong>Next gate:</strong> {{ candidate.nextGate }}</p>
-                  <details><summary>Exact candidate digest</summary><div class="command">{{ candidate.candidateSha256 }}</div></details>
+                  <details><summary>Exact candidate and source digests</summary><div class="command">candidate: {{ candidate.candidateSha256 }}<br>source artifact: {{ candidate.originSourceArtifactPath ?? 'founder supplied in the action-time workflow' }}<br>source sha256: {{ candidate.originSourceSha256 ?? 'not applicable' }}</div></details>
                 </div>
               }
             </div>

@@ -45,6 +45,8 @@
     "affiliate:approve": "node scripts/approve-affiliate-program.mjs",
     "affiliate:activate": "node scripts/activate-affiliate-program.mjs",
     "affiliate:link:candidate": "node scripts/create-affiliate-link-candidate.mjs",
+    "affiliate:link:batch-candidate": "node scripts/create-affiliate-link-batch.mjs",
+    "affiliate:link:batch:prepare": "node scripts/prepare-affiliate-link-batch.mjs",
     "affiliate:link:review": "node scripts/review-affiliate-link.mjs",
     "affiliate:link:approve": "node scripts/approve-affiliate-link.mjs",
     "social:media:approve": "node scripts/create-social-media-approval.mjs",

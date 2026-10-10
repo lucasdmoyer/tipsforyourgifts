@@ -23,9 +23,11 @@ if (!['passed', 'failed'].includes(verdict)) throw new Error('verdict must be pa
 let destination = { httpStatus: null, resolvedUrl: null, resolvedHostname: null, verifiedAt: null };
 let trackingPreserved = false;
 let productIdentityMatched = args['product-identity-matched'] === 'true';
+let trackingIdentityMatched = args['tracking-identity-matched'] === 'true';
 const blockers = [];
 if (verdict === 'passed') {
   if (!productIdentityMatched) throw new Error('passing review requires --product-identity-matched=true after independent page inspection');
+  if (!trackingIdentityMatched) throw new Error('passing review requires --tracking-identity-matched=true after comparing the paid URL with the activated partner account or its founder-attested export');
   const response = await fetch(candidate.destination.paidUrl, { redirect: 'follow', signal: AbortSignal.timeout(30_000), headers: { 'user-agent': 'TipsForYourGifts-AffiliateLinkVerifier/1.0' } });
   const resolved = new URL(response.url);
   const paid = new URL(candidate.destination.paidUrl);
@@ -37,10 +39,14 @@ if (verdict === 'passed') {
   if (!args.blocker || args.blocker.length < 12) throw new Error('failed review requires a specific --blocker argument');
   blockers.push(args.blocker);
   productIdentityMatched = false;
+  trackingIdentityMatched = false;
 }
 const passed = verdict === 'passed';
+const trackingIdentityEvidence = candidate.origin.source === 'founder_attested_partner_export'
+  ? { method: 'founder_attested_partner_export', referencePath: candidate.origin.sourceArtifactPath, sha256: candidate.origin.sourceSha256 }
+  : { method: 'owner_gated_single_link_intake', referencePath: `affiliate/candidates/${candidateId}.json`, sha256: sha256(candidateRaw) };
 const review = affiliateLinkReviewSchema.parse({
-  schemaVersion: '1.0.0',
+  schemaVersion: '1.2.0',
   reviewId: `${candidateId}-review`,
   candidateId,
   candidatePath: `affiliate/candidates/${candidateId}.json`,
@@ -50,6 +56,7 @@ const review = affiliateLinkReviewSchema.parse({
   verdict,
   destination,
   productIdentityEvidenceUrl: candidate.destination.productIdentityEvidenceUrl,
+  trackingIdentityEvidence,
   checks: {
     candidateHashBound: true,
     programEnabledAtReview: passed,
@@ -58,6 +65,7 @@ const review = affiliateLinkReviewSchema.parse({
     destinationHttps: passed,
     finalDomainAllowed: passed,
     trackingKeysApproved: passed,
+    trackingIdentityMatched,
     trackingPreserved,
     editorialRankingUntouched: passed,
     disclosureWillRender: passed,
