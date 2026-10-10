@@ -1,6 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import process from 'node:process';
+import matter from 'gray-matter';
 import { validateAffiliateModel } from './lib/affiliate-contract.mjs';
 
 const root = process.cwd();
@@ -20,7 +21,15 @@ const publishedSlugs = new Set([
   'useful-gifts-for-hard-to-shop-for-adults',
   'vinyl-record-cleaner-inner-sleeve-gift-pairs'
 ]);
-const options = { publishedSlugs, asOfDate: '2026-08-03' };
+const blogDir = path.join(root, 'src', 'data', 'blog');
+const publishedProductsByArticle = new Map();
+for (const name of (await fs.readdir(blogDir)).filter((entry) => entry.endsWith('.md'))) {
+  const article = matter(await fs.readFile(path.join(blogDir, name), 'utf8')).data;
+  if (article.status === 'publication_ready') {
+    publishedProductsByArticle.set(path.basename(name, '.md'), new Set((article.products ?? []).map((product) => product.id)));
+  }
+}
+const options = { publishedSlugs, publishedProductsByArticle, asOfDate: '2026-08-03' };
 
 function copy(value) { return structuredClone(value); }
 function programWithStatus(model, status) {
@@ -53,6 +62,10 @@ expectFailure('rejects duplicate priorities', (model) => { model.programs[1].pri
 expectFailure('rejects priority gaps', (model) => { model.programs[4].priority = 99; }, 'program priorities must be contiguous');
 expectFailure('rejects unsorted priorities', (model) => { [model.programs[0], model.programs[1]] = [model.programs[1], model.programs[0]]; }, 'registry order must be ascending');
 expectFailure('rejects duplicate eligible articles', (model) => { model.programs[0].eligibleArticleSlugs.push(model.programs[0].eligibleArticleSlugs[0]); }, 'eligible article slugs cannot contain duplicates');
+expectFailure('rejects duplicate eligible products', (model) => { model.programs[0].productSelection.eligibleProductIds.push(model.programs[0].productSelection.eligibleProductIds[0]); }, 'eligible product ids cannot contain duplicates');
+expectFailure('rejects unknown eligible products', (model) => { model.programs[0].productSelection.eligibleProductIds = ['invented-product']; }, 'unknown eligible product');
+expectFailure('rejects product outside configured articles', (model) => { model.programs[0].productSelection.eligibleProductIds = ['grooveit-minig']; }, 'unknown eligible product');
+expectFailure('all-article selection rejects explicit product IDs', (model) => { model.programs[1].productSelection.eligibleProductIds = ['grooveit-minig']; }, 'expected array to have <=0 items');
 expectFailure('rejects unknown articles', (model) => { model.programs[0].eligibleArticleSlugs = ['invented-guide']; }, 'unknown publication-ready article');
 expectFailure('proposals cannot contain tracking setup', (model) => { programWithStatus(model, 'proposed').trackingParameterKeys = ['tag']; }, 'cannot contain activation evidence');
 expectFailure('enabled flag must match status', (model) => { programWithStatus(model, 'proposed').enabled = true; }, 'enabled flag must exactly match');
@@ -83,4 +96,4 @@ expectFailure('enabled terms review expires', (model) => {
   program.sourceReviewExpiresAt = '2026-08-02';
 }, 'terms review has expired');
 
-console.log(JSON.stringify({ affiliateNegativeGateTests: 'passed', checks: 12, founderApprovedDisabledCheck: 'passed' }, null, 2));
+console.log(JSON.stringify({ affiliateNegativeGateTests: 'passed', checks: 16, founderApprovedDisabledCheck: 'passed' }, null, 2));

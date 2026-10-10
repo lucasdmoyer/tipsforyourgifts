@@ -245,6 +245,10 @@ export interface Operations {
     publicationReadyProductLinksCataloged: number;
     publicationReadyPaidLinksVerified: number;
     publicationReadyOrdinaryLinks: number;
+    productsAssignedToPartnerResearch: number;
+    productsWithoutPartnerResearch: number;
+    productCoverageArtifactPath: string;
+    productCoverageDefinition: string;
     linkCandidates: number;
     linkReviewsPassed: number;
     linkApprovals: number;
@@ -281,6 +285,9 @@ export interface Operations {
       status: 'proposed' | 'founder_approved' | 'enabled' | 'paused' | 'rejected';
       founderDisposition: 'proposed' | 'approved' | 'paused' | 'rejected';
       eligibleArticleSlugs: string[];
+      productSelectionMode: 'explicit_products' | 'all_products_in_eligible_articles';
+      productResearchCandidates: number;
+      verifiedPaidLinks: number;
       editorialFit: string;
       limitations: string[];
       sourceCheckedAt: string;

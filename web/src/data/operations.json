@@ -15,7 +15,7 @@
         "horizon": "now",
         "category": "release",
         "title": "Review the first accountable Angular release",
-        "recommendation": "Review publication-set-1884012f5c9d1000 as the first founder-controlled Firebase release candidate.",
+        "recommendation": "Review publication-set-a021fd070762e1d7 as the first founder-controlled Firebase release candidate.",
         "decisionQuestion": "Does this exact content set represent the site you want readers to see first?",
         "rationale": "The research and release machinery cannot create traffic, trust, or revenue while the modern reviewed site remains only a local candidate.",
         "evidence": [
@@ -176,6 +176,10 @@
     "publicationReadyProductLinksCataloged": 60,
     "publicationReadyPaidLinksVerified": 0,
     "publicationReadyOrdinaryLinks": 60,
+    "productsAssignedToPartnerResearch": 60,
+    "productsWithoutPartnerResearch": 0,
+    "productCoverageArtifactPath": "/affiliate-product-coverage.json",
+    "productCoverageDefinition": "Program assignments are research queues only. They do not assert exact-product availability, account acceptance, tracking validity, or commission eligibility.",
     "linkCandidates": 0,
     "linkReviewsPassed": 0,
     "linkApprovals": 0,
@@ -194,6 +198,9 @@
         "eligibleArticleSlugs": [
           "read-it-then-play-it-gift-pairs"
         ],
+        "productSelectionMode": "explicit_products",
+        "productResearchCandidates": 10,
+        "verifiedPaidLinks": 0,
         "editorialFit": "A focused first candidate for book anchors in evidence-backed pairs, with a storefront model that can support independent bookstores.",
         "limitations": [
           "It does not replace a general merchant program for non-book companions, so pair recommendations must remain independently useful with ordinary links.",
@@ -224,6 +231,9 @@
           "read-it-then-play-it-gift-pairs",
           "useful-gifts-for-hard-to-shop-for-adults"
         ],
+        "productSelectionMode": "all_products_in_eligible_articles",
+        "productResearchCandidates": 60,
+        "verifiedPaidLinks": 0,
         "editorialFit": "A broad-catalog candidate that could cover books, games, golf accessories, and practical gifts without changing the editorial ranking.",
         "limitations": [
           "The agreement and incorporated program policies can change, so every link format, registered site, disclosure, and content-use rule needs a fresh activation review.",
@@ -254,6 +264,9 @@
           "read-it-then-play-it-gift-pairs",
           "useful-gifts-for-hard-to-shop-for-adults"
         ],
+        "productSelectionMode": "all_products_in_eligible_articles",
+        "productResearchCandidates": 60,
+        "verifiedPaidLinks": 0,
         "editorialFit": "A family-friendly US retailer alternative with a broad catalog and Impact-provided tracking can give readers a second exact-product destination without changing the recommendation order.",
         "limitations": [
           "The official FAQ describes a seven-day last-click window, while the official homepage advertises commissions up to eight percent; exact rates and product eligibility remain program-controlled and must not be promised in articles.",
@@ -284,6 +297,9 @@
           "read-it-then-play-it-gift-pairs",
           "useful-gifts-for-hard-to-shop-for-adults"
         ],
+        "productSelectionMode": "all_products_in_eligible_articles",
+        "productResearchCandidates": 60,
+        "verifiedPaidLinks": 0,
         "editorialFit": "A second large US catalog could improve exact-product availability for practical gifts while the ordinary manufacturer link remains the stable editorial source and fallback.",
         "limitations": [
           "Application eligibility currently requires majority age, US residence, an active Walmart or Sam's Club account, nonemployee status, and at least one public social account; payout readiness separately requires a US bank account and Impact identity verification.",
@@ -315,6 +331,9 @@
           "read-it-then-play-it-gift-pairs",
           "useful-gifts-for-hard-to-shop-for-adults"
         ],
+        "productSelectionMode": "all_products_in_eligible_articles",
+        "productResearchCandidates": 60,
+        "verifiedPaidLinks": 0,
         "editorialFit": "A marketplace contingency can help with discontinued or hard-to-find exact editions when a stable primary retailer is unavailable, without pretending a volatile listing is the canonical product source.",
         "limitations": [
           "Listings, sellers, condition, shipping, and availability can change quickly, so an eBay destination needs a fresh exact-item check and should not replace a stable manufacturer or specialist link by default.",
@@ -2749,8 +2768,8 @@
     },
     "currentCandidate": {
       "status": "release_candidate",
-      "manifestId": "publication-set-1884012f5c9d1000",
-      "contentSetSha256": "1884012f5c9d100080d61cfb9de720e704b9dfff240f46c3286ab38e2c951b7c",
+      "manifestId": "publication-set-a021fd070762e1d7",
+      "contentSetSha256": "a021fd070762e1d79a2e3a6aad80d8383bdff61ca4fce5b10a501900996c5a31",
       "articles": 10,
       "independentReviews": 10,
       "socialLaunchPacks": 9,

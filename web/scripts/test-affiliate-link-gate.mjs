@@ -172,6 +172,12 @@ await assert.rejects(() => loadAffiliateLinkState(staleProgramRoot, { asOfDate: 
 const unapprovedTrackingRoot = await makeFixture();
 await assert.rejects(() => candidateFor(unapprovedTrackingRoot, { paidUrl: 'https://bookshop.org/p/books/sapiens/123?affiliate=test-fixture-only&utm_source=invented' }), /tracking-like parameter utm_source is not declared and approved/);
 
+const excludedProductRoot = await makeFixture();
+await assert.rejects(() => candidateFor(excludedProductRoot, {
+  productId: 'civilization-vi-windows-steam',
+  productIdentityEvidenceUrl: 'https://store.2k.com/en/game/buy-civilization-6'
+}), /product is not eligible for this affiliate program/);
+
 const disabledRoot = await makeFixture();
 const disabledRegistryPath = path.join(disabledRoot, 'config', 'affiliate-programs.json');
 const disabledRegistry = JSON.parse(await fs.readFile(disabledRegistryPath, 'utf8'));
@@ -181,4 +187,4 @@ disabledProgram.enabled = false;
 await fs.writeFile(disabledRegistryPath, `${JSON.stringify(disabledRegistry, null, 2)}\n`);
 await assert.rejects(() => candidateFor(disabledRoot), /program is not enabled/);
 
-console.log(JSON.stringify({ affiliateLinkGateTests: 'passed', checks: 7, approvedOverlays: cleanState.counts.activeOverlays, sourceEditorialArtifactsMutated: false }, null, 2));
+console.log(JSON.stringify({ affiliateLinkGateTests: 'passed', checks: 8, approvedOverlays: cleanState.counts.activeOverlays, sourceEditorialArtifactsMutated: false }, null, 2));

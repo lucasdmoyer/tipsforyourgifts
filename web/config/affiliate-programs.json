@@ -18,6 +18,21 @@
       "eligibleArticleSlugs": [
         "read-it-then-play-it-gift-pairs"
       ],
+      "productSelection": {
+        "mode": "explicit_products",
+        "eligibleProductIds": [
+          "sapiens-us-paperback",
+          "genius-of-birds-paperback",
+          "a-city-on-mars-paperback",
+          "thinking-in-systems-paperback",
+          "because-internet-paperback",
+          "leave-only-footprints-paperback",
+          "steering-the-craft-2015",
+          "read-this-great-photographs-2023",
+          "entangled-life-paperback",
+          "the-food-lab-hardcover"
+        ]
+      },
       "editorialFit": "A focused first candidate for book anchors in evidence-backed pairs, with a storefront model that can support independent bookstores.",
       "limitations": [
         "It does not replace a general merchant program for non-book companions, so pair recommendations must remain independently useful with ordinary links.",
@@ -62,6 +77,10 @@
         "read-it-then-play-it-gift-pairs",
         "useful-gifts-for-hard-to-shop-for-adults"
       ],
+      "productSelection": {
+        "mode": "all_products_in_eligible_articles",
+        "eligibleProductIds": []
+      },
       "editorialFit": "A broad-catalog candidate that could cover books, games, golf accessories, and practical gifts without changing the editorial ranking.",
       "limitations": [
         "The agreement and incorporated program policies can change, so every link format, registered site, disclosure, and content-use rule needs a fresh activation review.",
@@ -106,6 +125,10 @@
         "read-it-then-play-it-gift-pairs",
         "useful-gifts-for-hard-to-shop-for-adults"
       ],
+      "productSelection": {
+        "mode": "all_products_in_eligible_articles",
+        "eligibleProductIds": []
+      },
       "editorialFit": "A family-friendly US retailer alternative with a broad catalog and Impact-provided tracking can give readers a second exact-product destination without changing the recommendation order.",
       "limitations": [
         "The official FAQ describes a seven-day last-click window, while the official homepage advertises commissions up to eight percent; exact rates and product eligibility remain program-controlled and must not be promised in articles.",
@@ -150,6 +173,10 @@
         "read-it-then-play-it-gift-pairs",
         "useful-gifts-for-hard-to-shop-for-adults"
       ],
+      "productSelection": {
+        "mode": "all_products_in_eligible_articles",
+        "eligibleProductIds": []
+      },
       "editorialFit": "A second large US catalog could improve exact-product availability for practical gifts while the ordinary manufacturer link remains the stable editorial source and fallback.",
       "limitations": [
         "Application eligibility currently requires majority age, US residence, an active Walmart or Sam's Club account, nonemployee status, and at least one public social account; payout readiness separately requires a US bank account and Impact identity verification.",
@@ -195,6 +222,10 @@
         "read-it-then-play-it-gift-pairs",
         "useful-gifts-for-hard-to-shop-for-adults"
       ],
+      "productSelection": {
+        "mode": "all_products_in_eligible_articles",
+        "eligibleProductIds": []
+      },
       "editorialFit": "A marketplace contingency can help with discontinued or hard-to-find exact editions when a stable primary retailer is unavailable, without pretending a volatile listing is the canonical product source.",
       "limitations": [
         "Listings, sellers, condition, shipping, and availability can change quickly, so an eBay destination needs a fresh exact-item check and should not replace a stable manufacturer or specialist link by default.",

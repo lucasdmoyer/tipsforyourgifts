@@ -335,6 +335,9 @@ describe('App', () => {
     expect(element.textContent).toContain(`${OPERATIONS.affiliate.proposedPrograms} programs proposed. ${OPERATIONS.affiliate.activeOverlays} paid links active.`);
     expect(element.textContent).toContain(`${OPERATIONS.affiliate.publicationReadyProductLinksCataloged} publication-ready product links cataloged`);
     expect(element.textContent).toContain(`${OPERATIONS.affiliate.publicationReadyOrdinaryLinks} ordinary links`);
+    expect(element.textContent).toContain(`${OPERATIONS.affiliate.productsAssignedToPartnerResearch}/${OPERATIONS.affiliate.publicationReadyProductLinksCataloged} assigned to partner research`);
+    expect(element.textContent).toContain(`${OPERATIONS.affiliate.productsWithoutPartnerResearch} research gaps`);
+    expect(element.querySelector(`a[href="${OPERATIONS.affiliate.productCoverageArtifactPath}"]`)).not.toBeNull();
     expect(element.textContent).toContain(`${OPERATIONS.affiliate.linkCandidates} exact candidates · ${OPERATIONS.affiliate.linkReviewsPassed} clean independent reviews · ${OPERATIONS.affiliate.linkApprovals} founder approvals.`);
     expect(element.textContent).toContain(`${OPERATIONS.social.channelsActive}/${OPERATIONS.social.channelsTotal} channels active.`);
     expect(element.textContent).toContain(`Open the ${OPERATIONS.social.queue.length}-post approval queue`);

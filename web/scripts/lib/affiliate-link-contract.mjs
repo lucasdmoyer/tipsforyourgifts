@@ -3,7 +3,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import matter from 'gray-matter';
 import { z } from 'zod';
-import { affiliateSchema, validateAffiliateModel } from './affiliate-contract.mjs';
+import { affiliateSchema, programSelectsProduct, validateAffiliateModel } from './affiliate-contract.mjs';
 
 const sha256Schema = z.string().regex(/^[a-f0-9]{64}$/);
 const slugSchema = z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/);
@@ -216,6 +216,7 @@ function validateCandidate(candidate, candidateRecord, programsById, sources, fo
   if (candidate.source.independentReviewPath !== review.path || candidate.source.independentReviewSha256 !== review.sha256) throw new Error(`${candidate.candidateId}: source independent review hash changed`);
   const product = (article.data.products ?? []).find((entry) => entry.id === candidate.productId);
   if (!product) throw new Error(`${candidate.candidateId}: source product no longer exists`);
+  if (!programSelectsProduct(program, candidate.articleSlug, candidate.productId)) throw new Error(`${candidate.candidateId}: product is not eligible for this affiliate program`);
   if (product.affiliate) throw new Error(`${candidate.candidateId}: overlay candidates require an ordinary source link`);
   if (candidate.source.ordinaryUrl !== product.url) throw new Error(`${candidate.candidateId}: ordinary product URL changed`);
   if (candidate.source.productEditorialSha256 !== productEditorialSha256(product)) throw new Error(`${candidate.candidateId}: editorial product fields changed`);

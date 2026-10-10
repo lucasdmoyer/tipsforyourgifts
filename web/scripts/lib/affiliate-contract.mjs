@@ -13,6 +13,17 @@ const accountSchema = z.object({
   reportingExportApproved: z.boolean()
 }).strict();
 
+const productSelectionSchema = z.discriminatedUnion('mode', [
+  z.object({
+    mode: z.literal('explicit_products'),
+    eligibleProductIds: z.array(slug).min(1)
+  }).strict(),
+  z.object({
+    mode: z.literal('all_products_in_eligible_articles'),
+    eligibleProductIds: z.array(slug).length(0)
+  }).strict()
+]);
+
 const programSchema = z.object({
   id: slug,
   revision: z.number().int().positive(),
@@ -27,6 +38,7 @@ const programSchema = z.object({
   sourceCheckedAt: z.string().datetime(),
   sourceReviewExpiresAt: isoDate,
   eligibleArticleSlugs: z.array(slug).min(1),
+  productSelection: productSelectionSchema,
   editorialFit: z.string().min(80),
   limitations: z.array(z.string().min(40)).min(2),
   allowedDomains: z.array(z.string().regex(/^[a-z0-9.-]+$/)).default([]),
@@ -54,6 +66,12 @@ export const affiliateSchema = z.object({
   }).strict()
 }).strict();
 
+export function programSelectsProduct(program, articleSlug, productId) {
+  if (!program.eligibleArticleSlugs.includes(articleSlug)) return false;
+  return program.productSelection.mode === 'all_products_in_eligible_articles' ||
+    program.productSelection.eligibleProductIds.includes(productId);
+}
+
 export function validateAffiliateModel(input, options = {}) {
   const issues = [];
   let model;
@@ -79,10 +97,21 @@ export function validateAffiliateModel(input, options = {}) {
     if (new Set(program.eligibleArticleSlugs).size !== program.eligibleArticleSlugs.length) {
       issues.push(`${program.id}: eligible article slugs cannot contain duplicates`);
     }
+    if (new Set(program.productSelection.eligibleProductIds).size !== program.productSelection.eligibleProductIds.length) {
+      issues.push(`${program.id}: eligible product IDs cannot contain duplicates`);
+    }
     if (program.sourceCheckedAt > model.updatedAt) issues.push(`${program.id}: source check occurs after registry update`);
     if (program.sourceReviewExpiresAt < program.sourceCheckedAt.slice(0, 10)) issues.push(`${program.id}: source review expiry precedes source check`);
     for (const articleSlug of program.eligibleArticleSlugs) {
       if (publishedSlugs.size > 0 && !publishedSlugs.has(articleSlug)) issues.push(`${program.id}: unknown publication-ready article ${articleSlug}`);
+    }
+    const publishedProductsByArticle = options.publishedProductsByArticle ?? new Map();
+    if (publishedProductsByArticle.size > 0 && program.productSelection.mode === 'explicit_products') {
+      for (const productId of program.productSelection.eligibleProductIds) {
+        const matchingArticles = program.eligibleArticleSlugs.filter((articleSlug) => publishedProductsByArticle.get(articleSlug)?.has(productId));
+        if (matchingArticles.length === 0) issues.push(`${program.id}: unknown eligible product ${productId} in configured publication-ready articles`);
+        if (matchingArticles.length > 1) issues.push(`${program.id}: eligible product ${productId} is ambiguous across configured articles`);
+      }
     }
 
     const account = program.account;

@@ -3,6 +3,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import process from 'node:process';
 import matter from 'gray-matter';
+import { affiliateCoverageSchema } from './lib/affiliate-coverage-contract.mjs';
 import { buildFounderAgenda } from './lib/founder-agenda-contract.mjs';
 import { loadAffiliateLinkState } from './lib/affiliate-link-contract.mjs';
 
@@ -21,6 +22,7 @@ const socialPublicationDir = path.join(root, 'social', 'publications');
 const strategyPath = path.join(root, 'src', 'data', 'strategy.json');
 const growthPath = path.join(root, 'src', 'data', 'growth.json');
 const affiliatePath = path.join(root, 'config', 'affiliate-programs.json');
+const affiliateCoveragePath = path.join(root, 'public', 'affiliate-product-coverage.json');
 const socialChannelsPath = path.join(root, 'config', 'social-channels.json');
 const livePublicationPath = path.join(root, 'config', 'live-publication.json');
 const publicationPolicyPath = path.join(root, 'config', 'publication-policy.json');
@@ -71,6 +73,7 @@ const growthRaw = await fs.readFile(growthPath);
 const growth = JSON.parse(growthRaw.toString('utf8'));
 const growthSha256 = createHash('sha256').update(growthRaw).digest('hex');
 const affiliate = JSON.parse(await fs.readFile(affiliatePath, 'utf8'));
+const affiliateCoverage = affiliateCoverageSchema.parse(JSON.parse(await fs.readFile(affiliateCoveragePath, 'utf8')));
 const affiliateLinkState = await loadAffiliateLinkState(root);
 const socialChannelsRaw = await fs.readFile(socialChannelsPath);
 const socialChannels = JSON.parse(socialChannelsRaw.toString('utf8'));
@@ -87,12 +90,12 @@ const affiliateProgramsEnabled = affiliate.programs.filter((program) => program.
 const affiliateProgramsProposed = affiliate.programs.filter((program) => program.status === 'proposed').length;
 const affiliateProgramsFounderApproved = affiliate.programs.filter((program) => program.status === 'founder_approved').length;
 const affiliateLinksLive = affiliateLinkState.counts.activeOverlays;
-const publicationReadyProductLinksCataloged = articles
-  .filter((article) => article.status === 'publication_ready')
-  .flatMap((article) => article.products ?? [])
-  .filter((product) => typeof product.url === 'string' && product.url.startsWith('https://')).length;
-const publicationReadyPaidLinksVerified = affiliateLinkState.counts.activeOverlays;
+const publicationReadyProductLinksCataloged = affiliateCoverage.counts.publicationReadyProductLinksCataloged;
+const publicationReadyPaidLinksVerified = affiliateCoverage.counts.productsWithVerifiedPaidDestination;
 const publicationReadyOrdinaryLinks = Math.max(0, publicationReadyProductLinksCataloged - publicationReadyPaidLinksVerified);
+const productsAssignedToPartnerResearch = affiliateCoverage.counts.productsAssignedToPartnerResearch;
+const productsWithoutPartnerResearch = affiliateCoverage.counts.productsWithoutPartnerResearch;
+const affiliateCoverageByProgram = new Map(affiliateCoverage.programs.map((program) => [program.programId, program]));
 const affiliateReviewByCandidate = new Map(affiliateLinkState.reviews.map((record) => [record.data.candidateId, record]));
 const affiliateApprovalByCandidate = new Map(affiliateLinkState.approvals.map((record) => [record.data.candidateId, record]));
 const affiliateLinkQueue = affiliateLinkState.candidates.map((record) => {
@@ -364,6 +367,10 @@ const operations = {
     publicationReadyProductLinksCataloged,
     publicationReadyPaidLinksVerified,
     publicationReadyOrdinaryLinks,
+    productsAssignedToPartnerResearch,
+    productsWithoutPartnerResearch,
+    productCoverageArtifactPath: '/affiliate-product-coverage.json',
+    productCoverageDefinition: affiliateCoverage.definition,
     linkCandidates: affiliateLinkState.counts.candidates,
     linkReviewsPassed: affiliateLinkState.counts.passedReviews,
     linkApprovals: affiliateLinkState.counts.approvals,
@@ -379,6 +386,9 @@ const operations = {
       status: program.status,
       founderDisposition: program.founderDisposition,
       eligibleArticleSlugs: program.eligibleArticleSlugs,
+      productSelectionMode: program.productSelection.mode,
+      productResearchCandidates: affiliateCoverageByProgram.get(program.id)?.productResearchCandidates ?? 0,
+      verifiedPaidLinks: affiliateCoverageByProgram.get(program.id)?.verifiedPaidLinks ?? 0,
       editorialFit: program.editorialFit,
       limitations: program.limitations,
       sourceCheckedAt: program.sourceCheckedAt,
