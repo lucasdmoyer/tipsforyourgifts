@@ -2,7 +2,10 @@ import { z } from 'zod';
 
 const slug = z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/);
 const isoDate = z.string().regex(/^\d{4}-\d{2}-\d{2}$/);
-const httpsUrl = z.string().url().refine((value) => value.startsWith('https://'), 'must use HTTPS');
+const httpsUrl = z.string().url().refine((value) => {
+  const url = new URL(value);
+  return url.protocol === 'https:' && !url.username && !url.password && !url.search && !url.hash;
+}, 'must use credential-free HTTPS without userinfo, query, or fragment');
 
 const accountSchema = z.object({
   externalAccountEstablished: z.boolean(),
@@ -126,6 +129,7 @@ export function validateAffiliateModel(input, options = {}) {
     }
     if (program.status === 'founder_approved') {
       if (program.enabled || program.founderDisposition !== 'approved') issues.push(`${program.id}: founder-approved program must remain disabled with approved disposition`);
+      if (activationFieldsPresent) issues.push(`${program.id}: founder-approved program cannot contain unreviewed activation evidence or tracking configuration`);
     }
     if (program.status === 'rejected' && (program.enabled || program.founderDisposition !== 'rejected')) {
       issues.push(`${program.id}: rejected program must be disabled and rejected`);

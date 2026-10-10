@@ -180,6 +180,15 @@
     "productsWithoutPartnerResearch": 0,
     "productCoverageArtifactPath": "/affiliate-product-coverage.json",
     "productCoverageDefinition": "Program assignments are research queues only. They do not assert exact-product availability, account acceptance, tracking validity, or commission eligibility.",
+    "enrollmentReadinessArtifactPath": "/affiliate-enrollment-readiness.json",
+    "enrollmentReadinessDefinition": "Application packets contain public site facts, non-sensitive positioning, and labels for portal-only founder inputs. They do not create accounts, accept terms, submit forms, assert acceptance, store credentials, or authorize paid links.",
+    "publicApplicationPacketsReady": 5,
+    "externalEnrollmentAllowedByRegistry": 1,
+    "externalSubmissionRequiresActionTimeApproval": true,
+    "awaitingFounderProgramApproval": 4,
+    "externallyEnrolledPrograms": 0,
+    "siteApplicationDescription": "Tips for Your Gifts helps shoppers choose thoughtful gifts by explaining what a product is, how it fits the recipient's real life, what they may already own, and what a specialty addition contributes. Recommendations are researched and ranked without regard to commission.",
+    "sensitiveDataPolicy": "Account credentials, legal identity, tax details, payout details, and private contact information are entered only in the partner portal by Lucas and are never stored in Git.",
     "linkCandidates": 0,
     "linkReviewsPassed": 0,
     "linkApprovals": 0,
@@ -201,6 +210,25 @@
         "productSelectionMode": "explicit_products",
         "productResearchCandidates": 10,
         "verifiedPaidLinks": 0,
+        "enrollmentStage": "external_enrollment_required",
+        "publicApplicationPacketReady": true,
+        "externalEnrollmentAllowedByRegistry": true,
+        "externalSubmissionStillRequiresActionTimeApproval": true,
+        "applicationPositioning": "Lead with the reviewed book anchors and the publication's independent, explanation-first editorial approach. Do not imply that Bookshop covers the non-book companion products.",
+        "userOnlyInputs": [
+          "account_login",
+          "operator_identity_contact",
+          "tax_profile_if_requested",
+          "payout_profile_if_requested"
+        ],
+        "specialRequirements": [
+          "Bookshop must verify the external account before any tracking identity is recorded.",
+          "Only the ten explicitly scoped book products may enter exact-link review during the narrow pilot."
+        ],
+        "stopConditions": [
+          "Stop if the portal requests a claim about traffic, revenue, or first-hand product testing that the publication cannot substantiate.",
+          "Stop if the exact edition or Bookshop-issued paid destination cannot be independently verified."
+        ],
         "editorialFit": "A focused first candidate for book anchors in evidence-backed pairs, with a storefront model that can support independent bookstores.",
         "limitations": [
           "It does not replace a general merchant program for non-book companions, so pair recommendations must remain independently useful with ordinary links.",
@@ -234,6 +262,25 @@
         "productSelectionMode": "all_products_in_eligible_articles",
         "productResearchCandidates": 60,
         "verifiedPaidLinks": 0,
+        "enrollmentStage": "founder_approval_required",
+        "publicApplicationPacketReady": true,
+        "externalEnrollmentAllowedByRegistry": false,
+        "externalSubmissionStillRequiresActionTimeApproval": true,
+        "applicationPositioning": "Describe the owned editorial website and its commission-independent rankings. Do not promise broad coverage until exact products and Amazon-issued Special Links are verified one at a time.",
+        "userOnlyInputs": [
+          "account_login",
+          "operator_identity_contact",
+          "tax_profile_if_requested",
+          "payout_profile_if_requested"
+        ],
+        "specialRequirements": [
+          "The current operating agreement and incorporated program policies require a fresh founder review before signup.",
+          "Only program-provided link formats may enter the exact-link lane after account acceptance."
+        ],
+        "stopConditions": [
+          "Stop if a requested content, pricing, or availability claim cannot be supported by an authorized current source.",
+          "Stop if enrollment would require changing editorial rankings or removing ordinary manufacturer fallbacks."
+        ],
         "editorialFit": "A broad-catalog candidate that could cover books, games, golf accessories, and practical gifts without changing the editorial ranking.",
         "limitations": [
           "The agreement and incorporated program policies can change, so every link format, registered site, disclosure, and content-use rule needs a fresh activation review.",
@@ -267,6 +314,25 @@
         "productSelectionMode": "all_products_in_eligible_articles",
         "productResearchCandidates": 60,
         "verifiedPaidLinks": 0,
+        "enrollmentStage": "founder_approval_required",
+        "publicApplicationPacketReady": true,
+        "externalEnrollmentAllowedByRegistry": false,
+        "externalSubmissionStillRequiresActionTimeApproval": true,
+        "applicationPositioning": "Position Target as a possible exact-product retailer alternative for family-friendly shopping, never as a substitute for the editorially selected product.",
+        "userOnlyInputs": [
+          "account_login",
+          "operator_identity_contact",
+          "tax_profile_if_requested",
+          "payout_profile_if_requested"
+        ],
+        "specialRequirements": [
+          "The operative member agreement must be retrieved from the partner portal and reviewed before acceptance.",
+          "Marketplace substitutions and near matches cannot be represented as the reviewed product."
+        ],
+        "stopConditions": [
+          "Stop if the operative member contract is unavailable for complete founder review before acceptance.",
+          "Stop if the partner portal cannot produce an exact-product destination with a stable disclosure path."
+        ],
         "editorialFit": "A family-friendly US retailer alternative with a broad catalog and Impact-provided tracking can give readers a second exact-product destination without changing the recommendation order.",
         "limitations": [
           "The official FAQ describes a seven-day last-click window, while the official homepage advertises commissions up to eight percent; exact rates and product eligibility remain program-controlled and must not be promised in articles.",
@@ -300,6 +366,26 @@
         "productSelectionMode": "all_products_in_eligible_articles",
         "productResearchCandidates": 60,
         "verifiedPaidLinks": 0,
+        "enrollmentStage": "founder_approval_required",
+        "publicApplicationPacketReady": true,
+        "externalEnrollmentAllowedByRegistry": false,
+        "externalSubmissionStillRequiresActionTimeApproval": true,
+        "applicationPositioning": "Describe the owned publication and its practical gift coverage without claiming an active social audience or creator performance that has not been measured.",
+        "userOnlyInputs": [
+          "account_login",
+          "operator_identity_contact",
+          "public_social_account_selection",
+          "tax_profile_if_requested",
+          "payout_profile_if_requested"
+        ],
+        "specialRequirements": [
+          "Lucas must confirm applicant eligibility, select a truthful public social account, and review the current arbitration and disclosure terms.",
+          "Member-only payout terms and Impact identity verification remain separate from editorial approval."
+        ],
+        "stopConditions": [
+          "Stop if the application would require presenting a dormant or unrelated social account as an active publication channel.",
+          "Stop if required disclosure, exact-product eligibility, or member payout terms cannot be captured for review."
+        ],
         "editorialFit": "A second large US catalog could improve exact-product availability for practical gifts while the ordinary manufacturer link remains the stable editorial source and fallback.",
         "limitations": [
           "Application eligibility currently requires majority age, US residence, an active Walmart or Sam's Club account, nonemployee status, and at least one public social account; payout readiness separately requires a US bank account and Impact identity verification.",
@@ -334,6 +420,26 @@
         "productSelectionMode": "all_products_in_eligible_articles",
         "productResearchCandidates": 60,
         "verifiedPaidLinks": 0,
+        "enrollmentStage": "founder_approval_required",
+        "publicApplicationPacketReady": true,
+        "externalEnrollmentAllowedByRegistry": false,
+        "externalSubmissionStillRequiresActionTimeApproval": true,
+        "applicationPositioning": "Position eBay only as a contingency for exact discontinued or hard-to-find products. Stable manufacturer or specialist destinations remain preferred.",
+        "userOnlyInputs": [
+          "account_login",
+          "operator_identity_contact",
+          "tax_profile_if_requested",
+          "payout_profile_if_requested",
+          "ai_tools_written_approval_request"
+        ],
+        "specialRequirements": [
+          "Written eBay approval for promotion through generative-AI tools is required before this AI-assisted publication may activate EPN.",
+          "Every volatile listing needs a fresh seller, condition, shipping, and exact-item check."
+        ],
+        "stopConditions": [
+          "Stop until eBay grants the required written AI-tools approval from the registered account.",
+          "Stop if a volatile listing would be presented as a stable canonical product destination."
+        ],
         "editorialFit": "A marketplace contingency can help with discontinued or hard-to-find exact editions when a stable primary retailer is unavailable, without pretending a volatile listing is the canonical product source.",
         "limitations": [
           "Listings, sellers, condition, shipping, and availability can change quickly, so an eBay destination needs a fresh exact-item check and should not replace a stable manufacturer or specialist link by default.",

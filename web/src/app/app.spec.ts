@@ -338,6 +338,14 @@ describe('App', () => {
     expect(element.textContent).toContain(`${OPERATIONS.affiliate.productsAssignedToPartnerResearch}/${OPERATIONS.affiliate.publicationReadyProductLinksCataloged} assigned to partner research`);
     expect(element.textContent).toContain(`${OPERATIONS.affiliate.productsWithoutPartnerResearch} research gaps`);
     expect(element.querySelector(`a[href="${OPERATIONS.affiliate.productCoverageArtifactPath}"]`)).not.toBeNull();
+    expect(element.textContent).toContain(`${OPERATIONS.affiliate.publicApplicationPacketsReady} public application packets ready`);
+    expect(element.textContent).toContain(`${OPERATIONS.affiliate.externalEnrollmentAllowedByRegistry} eligible for external enrollment planning`);
+    expect(element.textContent).toContain(`${OPERATIONS.affiliate.awaitingFounderProgramApproval} awaiting program approval`);
+    expect(element.textContent).toContain('Every portal submission still requires action-time approval.');
+    expect(element.textContent).toContain('portal submission requires action-time approval');
+    expect(element.querySelector(`a[href="${OPERATIONS.affiliate.enrollmentReadinessArtifactPath}"]`)).not.toBeNull();
+    expect(element.textContent).toContain(OPERATIONS.affiliate.siteApplicationDescription);
+    expect(element.textContent).toContain(OPERATIONS.affiliate.sensitiveDataPolicy);
     expect(element.textContent).toContain(`${OPERATIONS.affiliate.linkCandidates} exact candidates · ${OPERATIONS.affiliate.linkReviewsPassed} clean independent reviews · ${OPERATIONS.affiliate.linkApprovals} founder approvals.`);
     expect(element.textContent).toContain(`${OPERATIONS.social.channelsActive}/${OPERATIONS.social.channelsTotal} channels active.`);
     expect(element.textContent).toContain(`Open the ${OPERATIONS.social.queue.length}-post approval queue`);

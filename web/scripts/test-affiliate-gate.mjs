@@ -68,6 +68,7 @@ expectFailure('rejects product outside configured articles', (model) => { model.
 expectFailure('all-article selection rejects explicit product IDs', (model) => { model.programs[1].productSelection.eligibleProductIds = ['grooveit-minig']; }, 'expected array to have <=0 items');
 expectFailure('rejects unknown articles', (model) => { model.programs[0].eligibleArticleSlugs = ['invented-guide']; }, 'unknown publication-ready article');
 expectFailure('proposals cannot contain tracking setup', (model) => { programWithStatus(model, 'proposed').trackingParameterKeys = ['tag']; }, 'cannot contain activation evidence');
+expectFailure('founder-approved programs cannot contain tracking setup', (model) => { programWithStatus(model, 'founder_approved').trackingParameterKeys = ['tag']; }, 'cannot contain unreviewed activation evidence');
 expectFailure('enabled flag must match status', (model) => { programWithStatus(model, 'proposed').enabled = true; }, 'enabled flag must exactly match');
 expectFailure('enabled requires account', (model) => {
   const program = programWithStatus(model, 'founder_approved');
@@ -96,4 +97,4 @@ expectFailure('enabled terms review expires', (model) => {
   program.sourceReviewExpiresAt = '2026-08-02';
 }, 'terms review has expired');
 
-console.log(JSON.stringify({ affiliateNegativeGateTests: 'passed', checks: 16, founderApprovedDisabledCheck: 'passed' }, null, 2));
+console.log(JSON.stringify({ affiliateNegativeGateTests: 'passed', checks: 17, founderApprovedDisabledCheck: 'passed' }, null, 2));
