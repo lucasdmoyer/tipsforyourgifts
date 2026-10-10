@@ -87,6 +87,12 @@ const affiliateProgramsEnabled = affiliate.programs.filter((program) => program.
 const affiliateProgramsProposed = affiliate.programs.filter((program) => program.status === 'proposed').length;
 const affiliateProgramsFounderApproved = affiliate.programs.filter((program) => program.status === 'founder_approved').length;
 const affiliateLinksLive = affiliateLinkState.counts.activeOverlays;
+const publicationReadyProductLinksCataloged = articles
+  .filter((article) => article.status === 'publication_ready')
+  .flatMap((article) => article.products ?? [])
+  .filter((product) => typeof product.url === 'string' && product.url.startsWith('https://')).length;
+const publicationReadyPaidLinksVerified = affiliateLinkState.counts.activeOverlays;
+const publicationReadyOrdinaryLinks = Math.max(0, publicationReadyProductLinksCataloged - publicationReadyPaidLinksVerified);
 const affiliateReviewByCandidate = new Map(affiliateLinkState.reviews.map((record) => [record.data.candidateId, record]));
 const affiliateApprovalByCandidate = new Map(affiliateLinkState.approvals.map((record) => [record.data.candidateId, record]));
 const affiliateLinkQueue = affiliateLinkState.candidates.map((record) => {
@@ -355,15 +361,20 @@ const operations = {
     proposedPrograms: affiliateProgramsProposed,
     founderApprovedPrograms: affiliateProgramsFounderApproved,
     enabledPrograms: affiliateProgramsEnabled,
+    publicationReadyProductLinksCataloged,
+    publicationReadyPaidLinksVerified,
+    publicationReadyOrdinaryLinks,
     linkCandidates: affiliateLinkState.counts.candidates,
     linkReviewsPassed: affiliateLinkState.counts.passedReviews,
     linkApprovals: affiliateLinkState.counts.approvals,
     activeOverlays: affiliateLinkState.counts.activeOverlays,
     approvedOverlaySetSha256: publicationManifest.affiliatePosture.approvedOverlaySetSha256,
     linkQueue: affiliateLinkQueue,
-    programs: affiliate.programs.map((program) => ({
+    programs: [...affiliate.programs].sort((left, right) => left.priority - right.priority).map((program) => ({
       id: program.id,
       revision: program.revision,
+      priority: program.priority,
+      coverageRole: program.coverageRole,
       name: program.name,
       status: program.status,
       founderDisposition: program.founderDisposition,

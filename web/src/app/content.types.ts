@@ -242,6 +242,9 @@ export interface Operations {
     proposedPrograms: number;
     founderApprovedPrograms: number;
     enabledPrograms: number;
+    publicationReadyProductLinksCataloged: number;
+    publicationReadyPaidLinksVerified: number;
+    publicationReadyOrdinaryLinks: number;
     linkCandidates: number;
     linkReviewsPassed: number;
     linkApprovals: number;
@@ -272,6 +275,8 @@ export interface Operations {
     programs: Array<{
       id: string;
       revision: number;
+      priority: number;
+      coverageRole: 'category_specialist' | 'broad_catalog' | 'retailer_alternative' | 'marketplace_contingency';
       name: string;
       status: 'proposed' | 'founder_approved' | 'enabled' | 'paused' | 'rejected';
       founderDisposition: 'proposed' | 'approved' | 'paused' | 'rejected';

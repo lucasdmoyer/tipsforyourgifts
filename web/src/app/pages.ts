@@ -747,17 +747,18 @@ export class AffiliateDisclosurePage {
         <div class="panel">
           <p class="eyebrow">Affiliate decision queue</p>
           <h2>{{ content.operations.affiliate.proposedPrograms }} programs proposed. {{ content.operations.affiliate.activeOverlays }} paid links active.</h2>
+          <p><strong>{{ content.operations.affiliate.publicationReadyProductLinksCataloged }}</strong> publication-ready product links cataloged · <strong>{{ content.operations.affiliate.publicationReadyPaidLinksVerified }}</strong> verified paid links · <strong>{{ content.operations.affiliate.publicationReadyOrdinaryLinks }}</strong> ordinary links.</p>
           <p><strong>{{ content.operations.affiliate.linkCandidates }}</strong> exact candidates · <strong>{{ content.operations.affiliate.linkReviewsPassed }}</strong> clean independent reviews · <strong>{{ content.operations.affiliate.linkApprovals }}</strong> founder approvals.</p>
           <p><a href="https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/affiliate-program-approval.yml" target="_blank" rel="noopener">Program onboarding approval</a> · <a href="https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/affiliate-program-activate.yml" target="_blank" rel="noopener">Program activation</a> · <a href="https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/affiliate-link-candidate.yml" target="_blank" rel="noopener">Exact-link candidate</a> · <a href="https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/affiliate-link-review.yml" target="_blank" rel="noopener">Independent link review</a> · <a href="https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/affiliate-link-approval.yml" target="_blank" rel="noopener">Founder link approval</a></p>
           <details><summary>Exact approved-overlay digest</summary><div class="command">{{ content.operations.affiliate.approvedOverlaySetSha256 }}</div></details>
           <div class="connector-list">
             @for (program of content.operations.affiliate.programs; track program.id) {
               <div class="connector-row">
-                <div><strong>{{ program.name }}</strong><p>Revision {{ program.revision }} · review expires {{ program.sourceReviewExpiresAt }}</p></div>
+                <div><strong>{{ program.name }}</strong><p>Priority {{ program.priority }} · {{ displayStatus(program.coverageRole) }} · {{ program.eligibleArticleSlugs.length }} article candidates</p><p>Revision {{ program.revision }} · review expires {{ program.sourceReviewExpiresAt }}</p></div>
                 <span class="status" [class.blocked_on_account]="program.status === 'proposed'">{{ displayStatus(program.status) }}</span>
                 <p class="connector-gate">{{ program.editorialFit }}</p>
                 <p class="connector-gate"><strong>Next gate:</strong> {{ program.nextGate }}</p>
-                <p class="connector-gate"><a [href]="program.programHomepageUrl" target="_blank" rel="noopener">Official program page</a> · <a [href]="program.termsUrl" target="_blank" rel="noopener">Current terms source</a></p>
+                <p class="connector-gate"><a [href]="program.programHomepageUrl" target="_blank" rel="noopener">Official program page</a> · <a [href]="program.termsUrl" target="_blank" rel="noopener">Terms or policy source</a></p>
               </div>
             }
           </div>

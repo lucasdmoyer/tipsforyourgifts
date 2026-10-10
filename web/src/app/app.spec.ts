@@ -333,6 +333,8 @@ describe('App', () => {
     fixture.detectChanges();
     const element = fixture.nativeElement as HTMLElement;
     expect(element.textContent).toContain(`${OPERATIONS.affiliate.proposedPrograms} programs proposed. ${OPERATIONS.affiliate.activeOverlays} paid links active.`);
+    expect(element.textContent).toContain(`${OPERATIONS.affiliate.publicationReadyProductLinksCataloged} publication-ready product links cataloged`);
+    expect(element.textContent).toContain(`${OPERATIONS.affiliate.publicationReadyOrdinaryLinks} ordinary links`);
     expect(element.textContent).toContain(`${OPERATIONS.affiliate.linkCandidates} exact candidates · ${OPERATIONS.affiliate.linkReviewsPassed} clean independent reviews · ${OPERATIONS.affiliate.linkApprovals} founder approvals.`);
     expect(element.textContent).toContain(`${OPERATIONS.social.channelsActive}/${OPERATIONS.social.channelsTotal} channels active.`);
     expect(element.textContent).toContain(`Open the ${OPERATIONS.social.queue.length}-post approval queue`);

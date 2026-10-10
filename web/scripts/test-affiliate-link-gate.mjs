@@ -21,6 +21,10 @@ async function makeFixture() {
   await fs.cp(path.join(webRoot, 'research', 'runs'), path.join(root, 'research', 'runs'), { recursive: true });
   await fs.cp(path.join(webRoot, 'research', 'reviews'), path.join(root, 'research', 'reviews'), { recursive: true });
   const registry = JSON.parse(await fs.readFile(path.join(webRoot, 'config', 'affiliate-programs.json'), 'utf8'));
+  for (const entry of registry.programs) {
+    entry.sourceCheckedAt = '2026-08-05T09:00:00.000Z';
+    entry.sourceReviewExpiresAt = '2026-11-03';
+  }
   const program = registry.programs.find((entry) => entry.id === programId);
   program.revision = 2;
   program.status = 'enabled';
@@ -30,7 +34,6 @@ async function makeFixture() {
   program.registeredSites = ['https://tipsforyourgifts.web.app/'];
   program.trackingParameterKeys = ['affiliate'];
   program.requiredDisclosure = registry.policy.defaultDisclosure;
-  program.sourceCheckedAt = '2026-08-05T09:00:00.000Z';
   program.account = {
     externalAccountEstablished: true,
     trackingIdentityConfigured: true,

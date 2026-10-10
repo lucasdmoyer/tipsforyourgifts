@@ -16,6 +16,8 @@ const accountSchema = z.object({
 const programSchema = z.object({
   id: slug,
   revision: z.number().int().positive(),
+  priority: z.number().int().positive(),
+  coverageRole: z.enum(['category_specialist', 'broad_catalog', 'retailer_alternative', 'marketplace_contingency']),
   name: z.string().min(8),
   status: z.enum(['proposed', 'founder_approved', 'enabled', 'paused', 'rejected']),
   enabled: z.boolean(),
@@ -63,10 +65,20 @@ export function validateAffiliateModel(input, options = {}) {
   }
 
   const ids = new Set();
+  const priorities = new Set();
   const publishedSlugs = options.publishedSlugs ?? new Set();
-  for (const program of model.programs) {
+  for (const [programIndex, program] of model.programs.entries()) {
     if (ids.has(program.id)) issues.push(`${program.id}: duplicate program ID`);
     ids.add(program.id);
+    if (priorities.has(program.priority)) issues.push(`${program.id}: duplicate program priority ${program.priority}`);
+    priorities.add(program.priority);
+    const expectedPriority = programIndex + 1;
+    if (program.priority !== expectedPriority) {
+      issues.push(`${program.id}: program priorities must be contiguous and registry order must be ascending; expected ${expectedPriority}, received ${program.priority}`);
+    }
+    if (new Set(program.eligibleArticleSlugs).size !== program.eligibleArticleSlugs.length) {
+      issues.push(`${program.id}: eligible article slugs cannot contain duplicates`);
+    }
     if (program.sourceCheckedAt > model.updatedAt) issues.push(`${program.id}: source check occurs after registry update`);
     if (program.sourceReviewExpiresAt < program.sourceCheckedAt.slice(0, 10)) issues.push(`${program.id}: source review expiry precedes source check`);
     for (const articleSlug of program.eligibleArticleSlugs) {

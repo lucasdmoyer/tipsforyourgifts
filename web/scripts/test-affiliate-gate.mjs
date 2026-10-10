@@ -8,8 +8,17 @@ const base = JSON.parse(await fs.readFile(path.join(root, 'config', 'affiliate-p
 const publishedSlugs = new Set([
   'gifts-for-a-golf-friend',
   'how-we-research-gifts',
+  'knitting-crochet-project-bag-row-counter-gift-pairs',
+  'language-learning-gifts-read-a-scene-say-it-aloud',
+  'miniature-painting-wet-palette-recipe-pairs',
+  'muddy-paw-washer-drying-towel-gift-pairs',
+  'neighborhood-tree-walk-field-guide-loupe-gift-pairs',
+  'night-sky-planisphere-red-light-gift-pairs',
+  'one-photo-one-story-gift-pairs',
+  'puzzle-board-sorting-tray-gift-pairs',
   'read-it-then-play-it-gift-pairs',
-  'useful-gifts-for-hard-to-shop-for-adults'
+  'useful-gifts-for-hard-to-shop-for-adults',
+  'vinyl-record-cleaner-inner-sleeve-gift-pairs'
 ]);
 const options = { publishedSlugs, asOfDate: '2026-08-03' };
 
@@ -40,6 +49,10 @@ const approvedCandidateIssues = validateAffiliateModel(approvedCandidate, option
 if (approvedCandidateIssues.length > 0) throw new Error(`founder-approved disabled candidate should pass: ${approvedCandidateIssues.join('; ')}`);
 
 expectFailure('rejects duplicate IDs', (model) => { model.programs.push(copy(model.programs[0])); }, 'duplicate program id');
+expectFailure('rejects duplicate priorities', (model) => { model.programs[1].priority = model.programs[0].priority; }, 'duplicate program priority');
+expectFailure('rejects priority gaps', (model) => { model.programs[4].priority = 99; }, 'program priorities must be contiguous');
+expectFailure('rejects unsorted priorities', (model) => { [model.programs[0], model.programs[1]] = [model.programs[1], model.programs[0]]; }, 'registry order must be ascending');
+expectFailure('rejects duplicate eligible articles', (model) => { model.programs[0].eligibleArticleSlugs.push(model.programs[0].eligibleArticleSlugs[0]); }, 'eligible article slugs cannot contain duplicates');
 expectFailure('rejects unknown articles', (model) => { model.programs[0].eligibleArticleSlugs = ['invented-guide']; }, 'unknown publication-ready article');
 expectFailure('proposals cannot contain tracking setup', (model) => { programWithStatus(model, 'proposed').trackingParameterKeys = ['tag']; }, 'cannot contain activation evidence');
 expectFailure('enabled flag must match status', (model) => { programWithStatus(model, 'proposed').enabled = true; }, 'enabled flag must exactly match');
@@ -70,4 +83,4 @@ expectFailure('enabled terms review expires', (model) => {
   program.sourceReviewExpiresAt = '2026-08-02';
 }, 'terms review has expired');
 
-console.log(JSON.stringify({ affiliateNegativeGateTests: 'passed', checks: 8, founderApprovedDisabledCheck: 'passed' }, null, 2));
+console.log(JSON.stringify({ affiliateNegativeGateTests: 'passed', checks: 12, founderApprovedDisabledCheck: 'passed' }, null, 2));

@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-09-13T04:15:50.749Z",
+  "generatedAt": "2026-10-10T16:25:37.000Z",
   "founderAgenda": {
     "schemaVersion": "1.0.0",
-    "generatedAt": "2026-09-13T04:15:50.749Z",
+    "generatedAt": "2026-10-10T16:25:37.000Z",
     "posture": "founder_decisions_required",
     "primaryDecisionId": "review-release-candidate",
     "profitabilityEvidence": "unknown_until_aggregate_measurement",
@@ -15,7 +15,7 @@
         "horizon": "now",
         "category": "release",
         "title": "Review the first accountable Angular release",
-        "recommendation": "Review publication-set-21e3952baa0419da as the first founder-controlled Firebase release candidate.",
+        "recommendation": "Review publication-set-1884012f5c9d1000 as the first founder-controlled Firebase release candidate.",
         "decisionQuestion": "Does this exact content set represent the site you want readers to see first?",
         "rationale": "The research and release machinery cannot create traffic, trust, or revenue while the modern reviewed site remains only a local candidate.",
         "evidence": [
@@ -100,10 +100,10 @@
         "decisionQuestion": "Has every external enrollment and current-terms requirement been completed and recorded for this exact revision?",
         "rationale": "A narrow pilot can test operational fit with less commission pressure than enabling the broadest catalog before traffic and conversion evidence exist.",
         "evidence": [
-          "1 affiliate programs await founder review and 1 await external activation evidence.",
+          "4 affiliate programs await founder review and 1 await external activation evidence.",
           "0 programs and 0 tracked links are enabled.",
           "Bookshop.org US media affiliate currently maps to 1 publication-ready article.",
-          "Its public terms review expires 2026-12-11."
+          "Its public terms review expires 2027-01-08."
         ],
         "unlocks": "A passing activation PR enables only contract-validated paid-link candidates; every destination and disclosure remains separately reviewable.",
         "tradeoff": "Enrollment and reporting add compliance work, while a narrow program covers fewer products and cannot monetize every companion in a pair.",
@@ -113,7 +113,7 @@
         "action": {
           "label": "Open activation handoff",
           "url": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/affiliate-program-activate.yml",
-          "command": "gh workflow run affiliate-program-activate.yml -f program_id=bookshop-org-us-media -f expected_revision=2 -f confirmation=ACTIVATE-bookshop-org-us-media"
+          "command": "gh workflow run affiliate-program-activate.yml -f program_id=bookshop-org-us-media -f expected_revision=3 -f confirmation=ACTIVATE-bookshop-org-us-media"
         }
       }
     ]
@@ -123,7 +123,7 @@
   "publicationReadyPosts": 10,
   "draftPosts": 3,
   "affiliateProgramsEnabled": 0,
-  "affiliateProgramsProposed": 1,
+  "affiliateProgramsProposed": 4,
   "affiliateProgramsFounderApproved": 1,
   "affiliateLinksLive": 0,
   "socialDrafts": 78,
@@ -170,9 +170,12 @@
     "queue": []
   },
   "affiliate": {
-    "proposedPrograms": 1,
+    "proposedPrograms": 4,
     "founderApprovedPrograms": 1,
     "enabledPrograms": 0,
+    "publicationReadyProductLinksCataloged": 60,
+    "publicationReadyPaidLinksVerified": 0,
+    "publicationReadyOrdinaryLinks": 60,
     "linkCandidates": 0,
     "linkReviewsPassed": 0,
     "linkApprovals": 0,
@@ -182,7 +185,9 @@
     "programs": [
       {
         "id": "bookshop-org-us-media",
-        "revision": 2,
+        "revision": 3,
+        "priority": 1,
+        "coverageRole": "category_specialist",
         "name": "Bookshop.org US media affiliate",
         "status": "founder_approved",
         "founderDisposition": "approved",
@@ -194,20 +199,28 @@
           "It does not replace a general merchant program for non-book companions, so pair recommendations must remain independently useful with ordinary links.",
           "Attribution, compensation, onboarding, disclosure, and product availability must be rechecked against current terms before activation."
         ],
-        "sourceCheckedAt": "2026-09-13T04:12:24.000Z",
-        "sourceReviewExpiresAt": "2026-12-11",
+        "sourceCheckedAt": "2026-10-10T16:25:37.000Z",
+        "sourceReviewExpiresAt": "2027-01-08",
         "programHomepageUrl": "https://bookshop.org/affiliates/profile/introduction",
         "termsUrl": "https://bookshop.org/info/terms-of-use",
-        "nextGate": "Lucas completes external enrollment and current terms review personally, then a separate audited configuration pull request may record registered sites, program-provided tracking, disclosure, and link allowlists."
+        "nextGate": "Authenticate the Bookshop account, submit the prepared profile for verification, and record only Bookshop-issued tracking after acceptance; account status remains unverified until external evidence is captured."
       },
       {
         "id": "amazon-associates-us",
-        "revision": 1,
+        "revision": 2,
+        "priority": 2,
+        "coverageRole": "broad_catalog",
         "name": "Amazon Associates US",
         "status": "proposed",
         "founderDisposition": "proposed",
         "eligibleArticleSlugs": [
           "gifts-for-a-golf-friend",
+          "language-learning-gifts-read-a-scene-say-it-aloud",
+          "miniature-painting-wet-palette-recipe-pairs",
+          "neighborhood-tree-walk-field-guide-loupe-gift-pairs",
+          "night-sky-planisphere-red-light-gift-pairs",
+          "one-photo-one-story-gift-pairs",
+          "puzzle-board-sorting-tray-gift-pairs",
           "read-it-then-play-it-gift-pairs",
           "useful-gifts-for-hard-to-shop-for-adults"
         ],
@@ -216,11 +229,104 @@
           "The agreement and incorporated program policies can change, so every link format, registered site, disclosure, and content-use rule needs a fresh activation review.",
           "A broad catalog can create commission bias; the recommendation order and ordinary manufacturer alternatives must remain unchanged when paid tracking is removed."
         ],
-        "sourceCheckedAt": "2026-08-03T08:40:00.000Z",
-        "sourceReviewExpiresAt": "2026-11-01",
+        "sourceCheckedAt": "2026-10-10T16:25:37.000Z",
+        "sourceReviewExpiresAt": "2027-01-08",
         "programHomepageUrl": "https://affiliate-program.amazon.com/",
         "termsUrl": "https://affiliate-program.amazon.com/help/operating/agreement",
-        "nextGate": "Lucas reviews the current agreement and operating burden before any external signup; no Special Link or disclosure is generated until the account is explicitly activated."
+        "nextGate": "Lucas reviews and approves the current operating agreement before signup; after acceptance, exact product availability and Amazon-provided Special Links must be checked one recommendation at a time."
+      },
+      {
+        "id": "target-partners-us",
+        "revision": 1,
+        "priority": 3,
+        "coverageRole": "retailer_alternative",
+        "name": "Target Partners US",
+        "status": "proposed",
+        "founderDisposition": "proposed",
+        "eligibleArticleSlugs": [
+          "gifts-for-a-golf-friend",
+          "language-learning-gifts-read-a-scene-say-it-aloud",
+          "miniature-painting-wet-palette-recipe-pairs",
+          "neighborhood-tree-walk-field-guide-loupe-gift-pairs",
+          "night-sky-planisphere-red-light-gift-pairs",
+          "one-photo-one-story-gift-pairs",
+          "puzzle-board-sorting-tray-gift-pairs",
+          "read-it-then-play-it-gift-pairs",
+          "useful-gifts-for-hard-to-shop-for-adults"
+        ],
+        "editorialFit": "A family-friendly US retailer alternative with a broad catalog and Impact-provided tracking can give readers a second exact-product destination without changing the recommendation order.",
+        "limitations": [
+          "The official FAQ describes a seven-day last-click window, while the official homepage advertises commissions up to eight percent; exact rates and product eligibility remain program-controlled and must not be promised in articles.",
+          "Only exact products actually available at Target may receive links; near matches, marketplace substitutes, and commission differences cannot change editorial selection or product naming."
+        ],
+        "sourceCheckedAt": "2026-10-10T16:25:37.000Z",
+        "sourceReviewExpiresAt": "2027-01-08",
+        "programHomepageUrl": "https://partners.target.com/",
+        "termsUrl": "https://partners.target.com/faqs",
+        "nextGate": "Retrieve and review the operative Target affiliate contract from Impact because the public pages expose program details but not the member agreement; acceptance, registered-site evidence, exact tracked links, disclosures, and reporting access remain separate activation gates."
+      },
+      {
+        "id": "walmart-creator-us",
+        "revision": 1,
+        "priority": 4,
+        "coverageRole": "retailer_alternative",
+        "name": "Walmart Creator US",
+        "status": "proposed",
+        "founderDisposition": "proposed",
+        "eligibleArticleSlugs": [
+          "gifts-for-a-golf-friend",
+          "language-learning-gifts-read-a-scene-say-it-aloud",
+          "miniature-painting-wet-palette-recipe-pairs",
+          "neighborhood-tree-walk-field-guide-loupe-gift-pairs",
+          "night-sky-planisphere-red-light-gift-pairs",
+          "one-photo-one-story-gift-pairs",
+          "puzzle-board-sorting-tray-gift-pairs",
+          "read-it-then-play-it-gift-pairs",
+          "useful-gifts-for-hard-to-shop-for-adults"
+        ],
+        "editorialFit": "A second large US catalog could improve exact-product availability for practical gifts while the ordinary manufacturer link remains the stable editorial source and fallback.",
+        "limitations": [
+          "Application eligibility currently requires majority age, US residence, an active Walmart or Sam's Club account, nonemployee status, and at least one public social account; payout readiness separately requires a US bank account and Impact identity verification.",
+          "Walmart controls qualifying products and may review each website or social placement; no link may be created until the exact item and supplied Qualifying Link are verified in an accepted account.",
+          "Member-only payout terms control live commission rates and attribution windows and may change without notice; activation must capture those terms and the required #WalmartPartner or paid-link disclosure."
+        ],
+        "sourceCheckedAt": "2026-10-10T16:25:37.000Z",
+        "sourceReviewExpiresAt": "2027-01-08",
+        "programHomepageUrl": "https://creator.walmart.com/",
+        "termsUrl": "https://creator.walmart.com/terms",
+        "nextGate": "Keep enrollment paused until Lucas approves applicant eligibility, public-social-account review, arbitration terms, and the exact Walmart disclosure pattern; after acceptance, separately capture current member payout terms, Impact identity verification, bank readiness, live commission rates, and attribution windows."
+      },
+      {
+        "id": "ebay-partner-network-us",
+        "revision": 1,
+        "priority": 5,
+        "coverageRole": "marketplace_contingency",
+        "name": "eBay Partner Network US",
+        "status": "proposed",
+        "founderDisposition": "proposed",
+        "eligibleArticleSlugs": [
+          "gifts-for-a-golf-friend",
+          "language-learning-gifts-read-a-scene-say-it-aloud",
+          "miniature-painting-wet-palette-recipe-pairs",
+          "neighborhood-tree-walk-field-guide-loupe-gift-pairs",
+          "night-sky-planisphere-red-light-gift-pairs",
+          "one-photo-one-story-gift-pairs",
+          "puzzle-board-sorting-tray-gift-pairs",
+          "read-it-then-play-it-gift-pairs",
+          "useful-gifts-for-hard-to-shop-for-adults"
+        ],
+        "editorialFit": "A marketplace contingency can help with discontinued or hard-to-find exact editions when a stable primary retailer is unavailable, without pretending a volatile listing is the canonical product source.",
+        "limitations": [
+          "Listings, sellers, condition, shipping, and availability can change quickly, so an eBay destination needs a fresh exact-item check and should not replace a stable manufacturer or specialist link by default.",
+          "The current rate card describes a twenty-four-hour Buy It Now window, or a bid within twenty-four hours followed by a win within ten days; category rates may be low or zero and eBay can change terms on short notice.",
+          "Applicants must meet age and account-standing requirements, and every placement needs the current eBay disclosure rather than a generic assumption about marketplace links.",
+          "eBay classifies promotion through generative-AI tools as a special business model requiring prior written approval, so this AI-assisted publication cannot activate EPN without that written approval."
+        ],
+        "sourceCheckedAt": "2026-10-10T16:25:37.000Z",
+        "sourceReviewExpiresAt": "2027-01-08",
+        "programHomepageUrl": "https://partnernetwork.ebay.com/",
+        "termsUrl": "https://partnernetwork.ebay.com/page/network-agreement",
+        "nextGate": "Before application, review the current network agreement, eligibility rules, and program-specific disclosure; after EPN account acceptance but before activation or promotional use, submit the AI Tools request from the registered email and obtain eBay's written approval for this AI-assisted promotion model."
       }
     ]
   },
@@ -2643,8 +2749,8 @@
     },
     "currentCandidate": {
       "status": "release_candidate",
-      "manifestId": "publication-set-21e3952baa0419da",
-      "contentSetSha256": "21e3952baa0419da5daec6102f77673c6c5a63d14d3d0532b4587ec583becd1e",
+      "manifestId": "publication-set-1884012f5c9d1000",
+      "contentSetSha256": "1884012f5c9d100080d61cfb9de720e704b9dfff240f46c3286ab38e2c951b7c",
       "articles": 10,
       "independentReviews": 10,
       "socialLaunchPacks": 9,
@@ -2762,7 +2868,7 @@
   "alerts": [
     "Production Firebase rules have not been verified from this checkout.",
     "No affiliate program is enabled; links must remain non-affiliate.",
-    "1 affiliate program candidate awaits founder review; approval does not enroll or enable tracking.",
+    "4 affiliate program candidates await founder review; approval does not enroll or enable tracking.",
     "78 social launch drafts await approved media, content approval, and official API access.",
     "1 original social creative candidate is locally verified but not rights-approved, released, or published.",
     "Growth measurement is not connected; traffic, conversions, and revenue remain unknown rather than zero.",
