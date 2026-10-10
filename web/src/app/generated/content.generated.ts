@@ -2219,6 +2219,167 @@ export const OPERATIONS: Operations = {
   "proposedIdeas": 0,
   "pairingIdeas": 10,
   "recipientFrictionIdeas": 2,
+  "editorialReview": {
+    "schemaVersion": "1.0.0",
+    "counts": {
+      "pendingBundles": 3,
+      "founderSafetyReviewsRequired": 3,
+      "independentReviewsRequired": 3,
+      "highRiskClaims": 7
+    },
+    "queue": [
+      {
+        "runId": "20260823-fiber-art-pause-269f700c",
+        "ideaId": "founder-idea-012",
+        "articleSlug": "knitting-crochet-project-bag-row-counter-gift-pairs",
+        "status": "qa_failed",
+        "reviewerId": "independent-evidence-audit-20261010",
+        "blockers": [
+          "The repaired evidence bundle and reader article require a fresh independent review; the drafting research desk cannot certify its own work.",
+          "Founder review is required for the qualified small-magnet safety boundary before publication; the cited CPSC guidance is general and is not an exact-product finding or recall for the Maker's Board."
+        ],
+        "warnings": [
+          "The Cocoknits counter has mixed owner reliability reports and remains a lower-scored alternative rather than a bundle anchor.",
+          "Clover's Mini item 3118 and standard item 336 are distinct variants; recheck the exact item, stock, and fulfillment timing before promotion.",
+          "Maker's Board owner reports conflict on value, stitching, durability, and magnetic-cable interaction. The stitching anecdotes do not establish a defect rate; product and pair scores were reduced, and the recipient's chart, tools, and return options require a pre-gift check."
+        ],
+        "highRiskClaims": [
+          {
+            "id": "claim-makers-board-magnet-boundary",
+            "text": "Cocoknits lists nine loose included magnets: four PLA-covered round magnets, two small uncovered round magnets, and three strong uncovered rectangular magnets. CPSC's general guidance for small magnets in non-toy products says to keep them away from young children or anyone likely to swallow them, inspect for missing pieces, and seek immediate medical attention if ingestion is suspected; that guidance is not an exact-product finding or recall for the Maker's Board.",
+            "sourceIds": [
+              "src-makers-board-official",
+              "src-cpsc-small-magnet-guidance"
+            ]
+          }
+        ],
+        "founderSafetyReviewRequired": true,
+        "independentReviewRequired": true,
+        "sourcePaths": {
+          "run": "research/runs/20260823-fiber-art-pause-269f700c.json",
+          "article": "src/data/blog/knitting-crochet-project-bag-row-counter-gift-pairs.md",
+          "social": "social/drafts/knitting-crochet-project-bag-row-counter-gift-pairs-launch.json"
+        },
+        "sourceSha256": {
+          "run": "afc512957357b2d01226bda0b3104057b616e3c2a28ab7b7f615044efa20880a",
+          "article": "ec08428c406968b7719359b1d6fc26fff109ecefca5bfa8efc92a0a00b2ea9b4",
+          "social": "d72f7f6a657b352a8569640ecce7449950f625b341b4c9e756a063dc5a0ee682"
+        },
+        "nextGate": "Lucas reviews the exact high-risk claim language and reader-facing safety boundary; a separate independent editor then issues a new hash-bound receipt."
+      },
+      {
+        "runId": "20260823-muddy-paw-arrival-e09ff303",
+        "ideaId": "founder-idea-011",
+        "articleSlug": "muddy-paw-washer-drying-towel-gift-pairs",
+        "status": "qa_failed",
+        "reviewerId": "pending-independent-review",
+        "blockers": [
+          "Lucas must review and approve the final plain-language safety wording for warm—not hot—water, no force, and stopping for pain, injury, guarding, panic, or resistance.",
+          "Fresh independent editorial review is required because the drafting desk changed sources, safety claims, finalists, scores, pairs, article copy, and social copy."
+        ],
+        "warnings": [
+          "Dexas publishes small through 2 inches and medium from 2.5 inches; the over-2-to-under-2.5-inch gap is preserved as ask Dexas or skip, and marketplace evidence does not close it.",
+          "The HubPages mat account is owner-purchased but appears on a platform that may compensate product-link content; it is used only as subjective experience.",
+          "The Absorber replacement uses one exact-product independent retailer corpus and one same-brand, same-size PVA product-line retailer corpus; the latter is not treated as dog-use evidence."
+        ],
+        "highRiskClaims": [
+          {
+            "id": "claim-mudbuster-fit",
+            "text": "Dexas publishes small for paws up to 2 inches wide, medium for 2.5 to 3.5 inches, and large for paws above 3.5 inches. A paw over 2 but under 2.5 inches falls in a published gap: ask Dexas or skip the cup, and do not use marketplace reviews to invent a fit.",
+            "sourceIds": [
+              "src-mudbuster-official"
+            ]
+          },
+          {
+            "id": "claim-mudbuster-drawback",
+            "text": "The cup leaves the paw wet, adds a cup-cleaning step, and has conflicting buyer reports about fit and dog acceptance. The maker’s 2-to-2.5-inch sizing gap remains unresolved by those reviews.",
+            "sourceIds": [
+              "src-mudbuster-official",
+              "src-mudbuster-chewy-reviews",
+              "src-mudbuster-walmart-reviews"
+            ]
+          },
+          {
+            "id": "claim-warm-water-boundary",
+            "text": "Use warm, not hot or cold, water for the rinse and keep the dog on a dry, non-slip surface.",
+            "sourceIds": [
+              "src-water-temperature-petmd",
+              "src-stable-footing-guide"
+            ]
+          },
+          {
+            "id": "claim-no-force-stop-boundary",
+            "text": "Never force a paw into a washer. Stop if the dog freezes, pulls away, guards the paw, growls, panics, or otherwise resists; stop for limping, bleeding, a wound, or other signs of pain or injury and ask a veterinarian.",
+            "sourceIds": [
+              "src-handling-akc",
+              "src-paw-injury-vca"
+            ]
+          },
+          {
+            "id": "claim-owner-resistance-conflict",
+            "text": "MudBuster buyer reports conflict: some dogs participate easily, while others merely tolerate or reject the cup. The guide therefore requires an already comfortable handling routine and a no-force stop rule.",
+            "sourceIds": [
+              "src-mudbuster-chewy-reviews",
+              "src-mudbuster-walmart-reviews",
+              "src-handling-akc"
+            ]
+          }
+        ],
+        "founderSafetyReviewRequired": true,
+        "independentReviewRequired": true,
+        "sourcePaths": {
+          "run": "research/runs/20260823-muddy-paw-arrival-e09ff303.json",
+          "article": "src/data/blog/muddy-paw-washer-drying-towel-gift-pairs.md",
+          "social": "social/drafts/muddy-paw-washer-drying-towel-gift-pairs-launch.json"
+        },
+        "sourceSha256": {
+          "run": "2066fb06e5a42933cb80b3aa84047377c105360829afbd55d24ce3baea531742",
+          "article": "2a5a2f877e5cc56cf5d5fad663e983a02794e46f70e859a2fcbdb669bed36ed8",
+          "social": "91545c599b5c982e81111bbae224d9947b3f8adc33c19caccdb5e132444dad82"
+        },
+        "nextGate": "Lucas reviews the exact high-risk claim language and reader-facing safety boundary; a separate independent editor then issues a new hash-bound receipt."
+      },
+      {
+        "runId": "20260823-used-record-reset-53a6b604",
+        "ideaId": "founder-idea-013",
+        "articleSlug": "vinyl-record-cleaner-inner-sleeve-gift-pairs",
+        "status": "qa_failed",
+        "reviewerId": "independent-evidence-audit-20261010",
+        "blockers": [
+          "Founder review is required for the qualified current GrooveWasher G2 product-label safety boundary before promotion or publication.",
+          "The repaired bundle has not received a fresh independent review after exact-product source replacement, shopping-link refresh, claim-role separation, and score changes."
+        ],
+        "warnings": [
+          "Sound Matters remains in the source ledger only as a Tier-D conflict record and is not used in any scored claim or finalist source set.",
+          "The Big Fudge manufacturer page was marked sold out during review; the reader link uses the exact 12-inch 50-count product at Binaural Records and availability still requires a pre-publication recheck.",
+          "Every product link remains ordinary and unpaid; no affiliate tracking was added."
+        ],
+        "highRiskClaims": [
+          {
+            "id": "claim-groovewasher-g2-label-boundary",
+            "text": "GrooveWasher's current G2 label says the fluid is for hard surfaces only, can cause eye irritation, should be kept away from eyes, skin, clothing, and food, must not be swallowed, and includes exposure-specific first-aid directions; this manufacturer-label summary requires founder review before publication.",
+            "sourceIds": [
+              "src-groovewasher-official",
+              "src-groovewasher-g2-label"
+            ]
+          }
+        ],
+        "founderSafetyReviewRequired": true,
+        "independentReviewRequired": true,
+        "sourcePaths": {
+          "run": "research/runs/20260823-used-record-reset-53a6b604.json",
+          "article": "src/data/blog/vinyl-record-cleaner-inner-sleeve-gift-pairs.md",
+          "social": "social/drafts/vinyl-record-cleaner-inner-sleeve-gift-pairs-launch.json"
+        },
+        "sourceSha256": {
+          "run": "5c0982692b4a3e078530ce90ed3afff2982e9a20b71df972ed32f5fa08783599",
+          "article": "c15ea7a3362ea193b9cb7fff587e42c750b4216b451aa9e97ee97786fc909f56",
+          "social": "fe56464843b6f49fe43406d17df490f6fe74344d7ad26765d8c6659f16ec7637"
+        },
+        "nextGate": "Lucas reviews the exact high-risk claim language and reader-facing safety boundary; a separate independent editor then issues a new hash-bound receipt."
+      }
+    ]
+  },
   "researchMissions": {
     "total": 0,
     "active": 0,
@@ -5044,7 +5205,8 @@ export const OPERATIONS: Operations = {
     "1 original social creative candidate is locally verified but not rights-approved, released, or published.",
     "Growth measurement is not connected; traffic, conversions, and revenue remain unknown rather than zero.",
     "3 growth experiments await founder review and an aggregate baseline.",
-    "Production promotion remains founder-reviewed; automatic release requires 10 verified successful releases and a separate founder approval."
+    "Production promotion remains founder-reviewed; automatic release requires 10 verified successful releases and a separate founder approval.",
+    "3 article bundles remain blocked in the editorial decision queue; none can self-certify or publish."
   ]
 };
 

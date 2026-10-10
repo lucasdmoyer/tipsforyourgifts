@@ -168,6 +168,30 @@ export interface Operations {
   proposedIdeas: number;
   pairingIdeas: number;
   recipientFrictionIdeas: number;
+  editorialReview: {
+    schemaVersion: '1.0.0';
+    counts: {
+      pendingBundles: number;
+      founderSafetyReviewsRequired: number;
+      independentReviewsRequired: number;
+      highRiskClaims: number;
+    };
+    queue: Array<{
+      runId: string;
+      ideaId: string;
+      articleSlug: string;
+      status: 'drafted' | 'qa_failed';
+      reviewerId: string;
+      blockers: string[];
+      warnings: string[];
+      highRiskClaims: Array<{ id: string; text: string; sourceIds: string[] }>;
+      founderSafetyReviewRequired: boolean;
+      independentReviewRequired: true;
+      sourcePaths: { run: string; article: string; social: string | null };
+      sourceSha256: { run: string; article: string; social: string | null };
+      nextGate: string;
+    }>;
+  };
   researchMissions: {
     total: number;
     active: number;

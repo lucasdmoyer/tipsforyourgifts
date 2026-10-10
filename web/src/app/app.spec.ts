@@ -297,6 +297,32 @@ describe('App', () => {
     expect(element.textContent).toContain('proposal workflow');
   });
 
+  it('renders the exact editorial decision queue without self-approval', () => {
+    const fixture = TestBed.createComponent(StudioPage);
+    fixture.detectChanges();
+    const element = fixture.nativeElement as HTMLElement;
+    const editorial = OPERATIONS.editorialReview;
+    expect(element.textContent).toContain('Editorial decision queue');
+    expect(element.textContent).toContain(`${editorial.counts.pendingBundles} exact bundle`);
+    expect(element.textContent).toContain(`${editorial.counts.founderSafetyReviewsRequired} safety review`);
+    expect(element.textContent).toContain(`${editorial.counts.independentReviewsRequired} fresh review`);
+    expect(element.textContent).toContain('Nothing in this queue can publish itself.');
+    expect(element.querySelectorAll('.editorial-review-card')).toHaveLength(editorial.queue.length);
+    for (const review of editorial.queue) {
+      expect(review.independentReviewRequired).toBe(true);
+      expect(review.sourceSha256.run).toMatch(/^[a-f0-9]{64}$/);
+      expect(review.sourceSha256.article).toMatch(/^[a-f0-9]{64}$/);
+      expect(element.textContent).toContain(review.articleSlug);
+      expect(element.textContent).toContain(review.sourceSha256.run);
+      expect(element.textContent).toContain(review.sourceSha256.article);
+      for (const blocker of review.blockers) expect(element.textContent).toContain(blocker);
+      for (const claim of review.highRiskClaims) {
+        expect(element.textContent).toContain(claim.id);
+        expect(element.textContent).toContain(claim.text);
+      }
+    }
+  });
+
   it('renders a ranked evidence-backed founder agenda', () => {
     const fixture = TestBed.createComponent(StudioPage);
     fixture.detectChanges();

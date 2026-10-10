@@ -738,6 +738,38 @@ export class AffiliateDisclosurePage {
         }
       </div>
     </section>
+    <section class="shell compact-section editorial-decision-queue">
+      <div class="section-heading">
+        <div><p class="eyebrow">Editorial decision queue</p><h2>{{ content.operations.editorialReview.counts.pendingBundles }} exact bundle{{ content.operations.editorialReview.counts.pendingBundles === 1 ? '' : 's' }} need a decision.</h2></div>
+        <p>Agents can prepare the work. Lucas approves sensitive reader language. A separate editor certifies the exact files. Nothing in this queue can publish itself.</p>
+      </div>
+      <div class="grid two mission-summary">
+        <div class="panel"><p class="eyebrow">Founder boundary</p><h2>{{ content.operations.editorialReview.counts.founderSafetyReviewsRequired }} safety review{{ content.operations.editorialReview.counts.founderSafetyReviewsRequired === 1 ? '' : 's' }} required.</h2><p>{{ content.operations.editorialReview.counts.highRiskClaims }} high-risk claims are shown below in full, with their source bindings.</p></div>
+        <div class="panel"><p class="eyebrow">Independent boundary</p><h2>{{ content.operations.editorialReview.counts.independentReviewsRequired }} fresh review{{ content.operations.editorialReview.counts.independentReviewsRequired === 1 ? '' : 's' }} required.</h2><p>The drafting desk cannot approve its own revisions. Every receipt must bind the exact run, article, and social hashes.</p></div>
+      </div>
+      @if (content.operations.editorialReview.queue.length > 0) {
+        <div class="experiment-grid editorial-review-grid">
+          @for (review of content.operations.editorialReview.queue; track review.runId) {
+            <article class="experiment-card editorial-review-card">
+              <div class="experiment-header"><p class="eyebrow">{{ review.ideaId }} · {{ review.articleSlug }}</p><span class="status blocked_on_account">{{ displayStatus(review.status) }}</span></div>
+              <h3>{{ review.founderSafetyReviewRequired ? 'Founder language review, then independent QA' : 'Independent QA required' }}</h3>
+              <p><strong>Blocking decisions:</strong></p><ul>@for (blocker of review.blockers; track blocker) { <li>{{ blocker }}</li> }</ul>
+              @if (review.highRiskClaims.length > 0) {
+                <details open><summary>Exact high-risk claims</summary>
+                  @for (claim of review.highRiskClaims; track claim.id) {
+                    <div class="editorial-claim"><p><strong>{{ claim.id }}</strong></p><p>{{ claim.text }}</p><p class="quiet">Sources: {{ claim.sourceIds.join(', ') }}</p></div>
+                  }
+                </details>
+              }
+              <p><strong>Next gate:</strong> {{ review.nextGate }}</p>
+              <details><summary>Warnings and exact file identity</summary><ul>@for (warning of review.warnings; track warning) { <li>{{ warning }}</li> }</ul><div class="command">run: {{ review.sourcePaths.run }}<br>run sha256: {{ review.sourceSha256.run }}<br>article: {{ review.sourcePaths.article }}<br>article sha256: {{ review.sourceSha256.article }}<br>social: {{ review.sourcePaths.social ?? 'none' }}<br>social sha256: {{ review.sourceSha256.social ?? 'none' }}</div></details>
+            </article>
+          }
+        </div>
+      } @else {
+        <div class="panel"><p class="eyebrow">Queue clear</p><h2>No draft bundle is waiting on founder or independent review.</h2></div>
+      }
+    </section>
     <section class="shell compact-section">
       <div class="section-heading">
         <div><p class="eyebrow">Monetization and distribution</p><h2>Proposals move. Authority does not leak.</h2></div>
