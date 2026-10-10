@@ -46,6 +46,10 @@ jobs:
         run: |
           npm ci --prefix web
           npm run validate
+      - name: Verify autonomous agent credential
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: node web/scripts/require-openai-api-key.mjs
       - name: Run the isolated affiliate evidence editor
         uses: openai/codex-action@v1
         with:

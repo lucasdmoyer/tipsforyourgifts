@@ -6,7 +6,7 @@
   "ideaSha256": "269f700c139d83f3f0f6c9e54e51252ff270764e506d9835d3987434010feddb",
   "decisionLens": "gift_pairing",
   "contentType": "pairing-guide",
-  "status": "drafted",
+  "status": "qa_failed",
   "topic": "Project-sized fiber-art containers paired with physical row or paper-pattern state trackers for easier restart",
   "audience": "People buying for a knitter or crocheter who loses tools, pattern state, or the last completed row when a work in progress is paused",
   "occasion": "Birthday, holiday, first sweater or blanket, craft retreat, or return to a paused hobby",
@@ -1399,9 +1399,17 @@
   "qa": {
     "passed": false,
     "reviewerRole": "independent-editor",
-    "reviewerId": "pending-fiber-art-pause-independent-qa-desk",
+    "reviewerId": "independent-evidence-audit-20261010",
     "receiptPath": "research/reviews/20260823-fiber-art-pause-269f700c.qa.v1.json",
-    "blockers": [],
-    "warnings": []
+    "blockers": [
+      "Clover SKU 336 is credited with a locking feature documented for a different counter, so the candidate and compact pair require requalification and rescoring.",
+      "ArtBin, Maker's Board, and della Q do not yet have two clean independent sources after affiliate, free-sample, and seller conflicts are applied.",
+      "The ArtBin manufacturer source does not establish exact product 6821AG.",
+      "The della Q case alone exceeds the approved 130 dollar budget ceiling at audit time.",
+      "The social pack's 20-second performance claim is unsupported."
+    ],
+    "warnings": [
+      "Correct the article's link-transparency sentence after the evidence set is rebuilt."
+    ]
   }
 }
