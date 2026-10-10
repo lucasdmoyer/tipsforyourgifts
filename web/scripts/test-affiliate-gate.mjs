@@ -66,6 +66,8 @@ expectFailure('rejects duplicate eligible products', (model) => { model.programs
 expectFailure('rejects unknown eligible products', (model) => { model.programs[0].productSelection.eligibleProductIds = ['invented-product']; }, 'unknown eligible product');
 expectFailure('rejects product outside configured articles', (model) => { model.programs[0].productSelection.eligibleProductIds = ['grooveit-minig']; }, 'unknown eligible product');
 expectFailure('all-article selection rejects explicit product IDs', (model) => { model.programs[1].productSelection.eligibleProductIds = ['grooveit-minig']; }, 'expected array to have <=0 items');
+expectFailure('automatic publication coverage rejects a manual article allowlist', (model) => { model.programs[1].eligibleArticleSlugs = ['gifts-for-a-golf-friend']; }, 'cannot carry a manual article allowlist');
+expectFailure('explicit selection requires an article scope', (model) => { model.programs[0].eligibleArticleSlugs = []; }, 'requires at least one eligible article');
 expectFailure('rejects unknown articles', (model) => { model.programs[0].eligibleArticleSlugs = ['invented-guide']; }, 'unknown publication-ready article');
 expectFailure('proposals cannot contain tracking setup', (model) => { programWithStatus(model, 'proposed').trackingParameterKeys = ['tag']; }, 'cannot contain activation evidence');
 expectFailure('founder-approved programs cannot contain tracking setup', (model) => { programWithStatus(model, 'founder_approved').trackingParameterKeys = ['tag']; }, 'cannot contain unreviewed activation evidence');
@@ -97,4 +99,4 @@ expectFailure('enabled terms review expires', (model) => {
   program.sourceReviewExpiresAt = '2026-08-02';
 }, 'terms review has expired');
 
-console.log(JSON.stringify({ affiliateNegativeGateTests: 'passed', checks: 17, founderApprovedDisabledCheck: 'passed' }, null, 2));
+console.log(JSON.stringify({ affiliateNegativeGateTests: 'passed', checks: 19, founderApprovedDisabledCheck: 'passed' }, null, 2));

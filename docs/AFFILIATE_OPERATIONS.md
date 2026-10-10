@@ -6,7 +6,7 @@ Affiliate revenue can fund the publication only if commission never changes whic
 
 ## Current decision queue
 
-Five public candidates are recorded and disabled. All 60 publication-ready products are assigned to at least one partner-research queue, but assignment is not a claim that the exact item is sold, eligible, or paid by that partner:
+Five public candidates are recorded and disabled. Every current publication-ready product is assigned to at least one partner-research queue, and the four broad-catalog programs automatically inherit future publication-ready products without a manual article allowlist. Assignment is not a claim that the exact item is sold, eligible, or paid by that partner:
 
 - [Bookshop.org US media affiliate](https://bookshop.org/affiliates/profile/introduction) is the narrower first candidate for book anchors and can align with the publication's interest in independent bookstores. It does not solve merchant coverage for every companion product; [the official program explanation](https://support.bookshop.org/en/support/solutions/articles/65000191390-can-you-explain-bookshop-org-s-affiliate-program-) remains the activation source.
 - [Amazon Associates US](https://affiliate-program.amazon.com/) is the broader-catalog candidate. Its [operating agreement](https://affiliate-program.amazon.com/help/operating/agreement) requires program-provided link formats and current compliance review, and broad coverage raises a stronger editorial-bias risk.

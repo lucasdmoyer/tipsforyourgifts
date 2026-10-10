@@ -10,7 +10,7 @@ const programCoverageSchema = z.object({
   programRevision: z.number().int().positive(),
   priority: z.number().int().positive(),
   status: z.enum(['proposed', 'founder_approved', 'enabled', 'paused', 'rejected']),
-  selectionMode: z.enum(['explicit_products', 'all_products_in_eligible_articles']),
+  selectionMode: z.enum(['explicit_products', 'all_products_in_eligible_articles', 'all_publication_ready_products']),
   eligibleArticleCount: z.number().int().nonnegative(),
   productResearchCandidates: z.number().int().nonnegative(),
   verifiedPaidLinks: z.number().int().nonnegative()
@@ -106,16 +106,19 @@ export function buildAffiliateCoverage({ affiliate, registrySha256, articles, ov
         status: overlay ? 'verified_paid_link' : candidateProgramIds.length > 0 ? 'ordinary_link_research_assigned' : 'research_gap'
       };
     });
-  const programCoverage = sortedPrograms.map((program) => ({
-    programId: program.id,
-    programRevision: program.revision,
-    priority: program.priority,
-    status: program.status,
-    selectionMode: program.productSelection.mode,
-    eligibleArticleCount: program.eligibleArticleSlugs.length,
-    productResearchCandidates: products.filter((product) => product.candidateProgramIds.includes(program.id)).length,
-    verifiedPaidLinks: products.filter((product) => product.verifiedPaidProgramId === program.id).length
-  }));
+  const programCoverage = sortedPrograms.map((program) => {
+    const selectedProducts = products.filter((product) => product.candidateProgramIds.includes(program.id));
+    return {
+      programId: program.id,
+      programRevision: program.revision,
+      priority: program.priority,
+      status: program.status,
+      selectionMode: program.productSelection.mode,
+      eligibleArticleCount: new Set(selectedProducts.map((product) => product.articleSlug)).size,
+      productResearchCandidates: selectedProducts.length,
+      verifiedPaidLinks: products.filter((product) => product.verifiedPaidProgramId === program.id).length
+    };
+  });
   const assigned = products.filter((product) => product.candidateProgramIds.length > 0).length;
   const paid = products.filter((product) => product.verifiedPaidProgramId !== null).length;
   return affiliateCoverageSchema.parse({

@@ -1,7 +1,7 @@
 {
   "schemaVersion": "1.0.0",
-  "registryUpdatedAt": "2026-10-10T16:25:37.000Z",
-  "planUpdatedAt": "2026-10-10T17:05:00.000Z",
+  "registryUpdatedAt": "2026-10-10T18:00:00.000Z",
+  "planUpdatedAt": "2026-10-10T18:00:00.000Z",
   "definition": "Application packets contain public site facts, non-sensitive positioning, and labels for portal-only founder inputs. They do not create accounts, accept terms, submit forms, assert acceptance, store credentials, or authorize paid links.",
   "siteProfile": {
     "siteName": "Tips for Your Gifts",
@@ -144,7 +144,7 @@
     },
     {
       "programId": "amazon-associates-us",
-      "programRevision": 2,
+      "programRevision": 3,
       "applicationPositioning": "Describe the owned editorial website and its commission-independent rankings. Do not promise broad coverage until exact products and Amazon-issued Special Links are verified one at a time.",
       "userOnlyInputs": [
         "account_login",
@@ -246,7 +246,7 @@
     },
     {
       "programId": "target-partners-us",
-      "programRevision": 1,
+      "programRevision": 2,
       "applicationPositioning": "Position Target as a possible exact-product retailer alternative for family-friendly shopping, never as a substitute for the editorially selected product.",
       "userOnlyInputs": [
         "account_login",
@@ -348,7 +348,7 @@
     },
     {
       "programId": "walmart-creator-us",
-      "programRevision": 1,
+      "programRevision": 2,
       "applicationPositioning": "Describe the owned publication and its practical gift coverage without claiming an active social audience or creator performance that has not been measured.",
       "userOnlyInputs": [
         "account_login",
@@ -452,7 +452,7 @@
     },
     {
       "programId": "ebay-partner-network-us",
-      "programRevision": 1,
+      "programRevision": 2,
       "applicationPositioning": "Position eBay only as a contingency for exact discontinued or hard-to-find products. Stable manufacturer or specialist destinations remain preferred.",
       "userOnlyInputs": [
         "account_login",

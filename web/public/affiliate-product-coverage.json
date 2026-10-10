@@ -1,7 +1,7 @@
 {
   "schemaVersion": "1.0.0",
-  "registrySha256": "cb0df2151d3da21c0843f6a16a61342b7d7e4c2f133309ac77dbb4ed2bb4c4de",
-  "registryUpdatedAt": "2026-10-10T16:25:37.000Z",
+  "registrySha256": "37d70d043c0822ec8db3ffd7d45ed7c67af989f65e17f35e2becc8dfb12d8f61",
+  "registryUpdatedAt": "2026-10-10T18:00:00.000Z",
   "definition": "Program assignments are research queues only. They do not assert exact-product availability, account acceptance, tracking validity, or commission eligibility.",
   "counts": {
     "publicationReadyProductLinksCataloged": 60,
@@ -22,40 +22,40 @@
     },
     {
       "programId": "amazon-associates-us",
-      "programRevision": 2,
+      "programRevision": 3,
       "priority": 2,
       "status": "proposed",
-      "selectionMode": "all_products_in_eligible_articles",
+      "selectionMode": "all_publication_ready_products",
       "eligibleArticleCount": 9,
       "productResearchCandidates": 60,
       "verifiedPaidLinks": 0
     },
     {
       "programId": "target-partners-us",
-      "programRevision": 1,
+      "programRevision": 2,
       "priority": 3,
       "status": "proposed",
-      "selectionMode": "all_products_in_eligible_articles",
+      "selectionMode": "all_publication_ready_products",
       "eligibleArticleCount": 9,
       "productResearchCandidates": 60,
       "verifiedPaidLinks": 0
     },
     {
       "programId": "walmart-creator-us",
-      "programRevision": 1,
+      "programRevision": 2,
       "priority": 4,
       "status": "proposed",
-      "selectionMode": "all_products_in_eligible_articles",
+      "selectionMode": "all_publication_ready_products",
       "eligibleArticleCount": 9,
       "productResearchCandidates": 60,
       "verifiedPaidLinks": 0
     },
     {
       "programId": "ebay-partner-network-us",
-      "programRevision": 1,
+      "programRevision": 2,
       "priority": 5,
       "status": "proposed",
-      "selectionMode": "all_products_in_eligible_articles",
+      "selectionMode": "all_publication_ready_products",
       "eligibleArticleCount": 9,
       "productResearchCandidates": 60,
       "verifiedPaidLinks": 0

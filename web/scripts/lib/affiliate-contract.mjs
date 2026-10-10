@@ -24,6 +24,10 @@ const productSelectionSchema = z.discriminatedUnion('mode', [
   z.object({
     mode: z.literal('all_products_in_eligible_articles'),
     eligibleProductIds: z.array(slug).length(0)
+  }).strict(),
+  z.object({
+    mode: z.literal('all_publication_ready_products'),
+    eligibleProductIds: z.array(slug).length(0)
   }).strict()
 ]);
 
@@ -40,7 +44,7 @@ const programSchema = z.object({
   termsUrl: httpsUrl,
   sourceCheckedAt: z.string().datetime(),
   sourceReviewExpiresAt: isoDate,
-  eligibleArticleSlugs: z.array(slug).min(1),
+  eligibleArticleSlugs: z.array(slug),
   productSelection: productSelectionSchema,
   editorialFit: z.string().min(80),
   limitations: z.array(z.string().min(40)).min(2),
@@ -70,6 +74,7 @@ export const affiliateSchema = z.object({
 }).strict();
 
 export function programSelectsProduct(program, articleSlug, productId) {
+  if (program.productSelection.mode === 'all_publication_ready_products') return true;
   if (!program.eligibleArticleSlugs.includes(articleSlug)) return false;
   return program.productSelection.mode === 'all_products_in_eligible_articles' ||
     program.productSelection.eligibleProductIds.includes(productId);
@@ -102,6 +107,12 @@ export function validateAffiliateModel(input, options = {}) {
     }
     if (new Set(program.productSelection.eligibleProductIds).size !== program.productSelection.eligibleProductIds.length) {
       issues.push(`${program.id}: eligible product IDs cannot contain duplicates`);
+    }
+    if (program.productSelection.mode === 'all_publication_ready_products' && program.eligibleArticleSlugs.length > 0) {
+      issues.push(`${program.id}: automatic publication-ready coverage cannot carry a manual article allowlist`);
+    }
+    if (program.productSelection.mode !== 'all_publication_ready_products' && program.eligibleArticleSlugs.length === 0) {
+      issues.push(`${program.id}: configured product selection requires at least one eligible article`);
     }
     if (program.sourceCheckedAt > model.updatedAt) issues.push(`${program.id}: source check occurs after registry update`);
     if (program.sourceReviewExpiresAt < program.sourceCheckedAt.slice(0, 10)) issues.push(`${program.id}: source review expiry precedes source check`);

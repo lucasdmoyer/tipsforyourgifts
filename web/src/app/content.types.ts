@@ -294,7 +294,7 @@ export interface Operations {
       status: 'proposed' | 'founder_approved' | 'enabled' | 'paused' | 'rejected';
       founderDisposition: 'proposed' | 'approved' | 'paused' | 'rejected';
       eligibleArticleSlugs: string[];
-      productSelectionMode: 'explicit_products' | 'all_products_in_eligible_articles';
+      productSelectionMode: 'explicit_products' | 'all_products_in_eligible_articles' | 'all_publication_ready_products';
       productResearchCandidates: number;
       verifiedPaidLinks: number;
       enrollmentStage: 'founder_approval_required' | 'external_enrollment_required' | 'activation_evidence_required' | 'exact_link_research' | 'paused' | 'rejected';

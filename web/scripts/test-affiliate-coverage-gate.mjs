@@ -2,10 +2,11 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import process from 'node:process';
-import { affiliateCoverageSchema } from './lib/affiliate-coverage-contract.mjs';
+import { affiliateCoverageSchema, buildAffiliateCoverage } from './lib/affiliate-coverage-contract.mjs';
 
 const root = process.cwd();
 const base = JSON.parse(await fs.readFile(path.join(root, 'public', 'affiliate-product-coverage.json'), 'utf8'));
+const affiliate = JSON.parse(await fs.readFile(path.join(root, 'config', 'affiliate-programs.json'), 'utf8'));
 affiliateCoverageSchema.parse(base);
 
 function expectFailure(label, mutate) {
@@ -28,4 +29,23 @@ expectFailure('rejects false per-program paid totals', (coverage) => { coverage.
 expectFailure('rejects paid program outside product candidates', (coverage) => { coverage.products[0].verifiedPaidProgramId = 'bookshop-org-us-media'; coverage.products[0].status = 'verified_paid_link'; });
 expectFailure('rejects candidate order outside registry priority', (coverage) => { coverage.products[0].candidateProgramIds.reverse(); coverage.products[0].preferredResearchProgramId = coverage.products[0].candidateProgramIds[0]; });
 
-console.log(JSON.stringify({ affiliateCoverageGateTests: 'passed', checks: 13, sourceEditorialArtifactsMutated: false }, null, 2));
+const futureCoverage = buildAffiliateCoverage({
+  affiliate,
+  registrySha256: base.registrySha256,
+  articles: [{
+    slug: 'future-publication-ready-guide',
+    status: 'publication_ready',
+    products: [{ id: 'future-specialty-gift', name: 'Future specialty gift', url: 'https://example.com/future-specialty-gift' }]
+  }],
+  overlays: new Map()
+});
+const futureProduct = futureCoverage.products[0];
+assert.deepEqual(
+  futureProduct.candidateProgramIds,
+  ['amazon-associates-us', 'target-partners-us', 'walmart-creator-us', 'ebay-partner-network-us'],
+  'future publication-ready products must enter every broad partner-research queue without a registry edit'
+);
+assert.equal(futureProduct.preferredResearchProgramId, 'amazon-associates-us');
+assert.equal(futureProduct.status, 'ordinary_link_research_assigned');
+
+console.log(JSON.stringify({ affiliateCoverageGateTests: 'passed', checks: 14, futurePublicationCoverage: 'automatic', sourceEditorialArtifactsMutated: false }, null, 2));

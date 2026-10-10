@@ -1,12 +1,12 @@
 {
   "schemaVersion": "1.2.0",
-  "manifestId": "publication-set-a021fd070762e1d7",
+  "manifestId": "publication-set-4da3c51599c94f5b",
   "generatedAt": "2026-09-13T04:15:50.749Z",
   "status": "release_candidate",
   "projectId": "tipsforyourgifts",
   "siteId": "tipsforyourgifts",
   "publicBaseUrl": "https://tipsforyourgifts.web.app",
-  "contentSetSha256": "a021fd070762e1d79a2e3a6aad80d8383bdff61ca4fce5b10a501900996c5a31",
+  "contentSetSha256": "4da3c51599c94f5bc4ce1c49ec9f02738e4cc1d0aa9ec2958e9ce8a514ca69a5",
   "counts": {
     "articles": 10,
     "researchRuns": 10,
@@ -124,7 +124,7 @@
     ]
   },
   "affiliatePosture": {
-    "registrySha256": "cb0df2151d3da21c0843f6a16a61342b7d7e4c2f133309ac77dbb4ed2bb4c4de",
+    "registrySha256": "37d70d043c0822ec8db3ffd7d45ed7c67af989f65e17f35e2becc8dfb12d8f61",
     "approvedOverlaySetSha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
     "enabledProgramIds": [],
     "enabledProgramCount": 0,

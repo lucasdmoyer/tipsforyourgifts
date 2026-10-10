@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.1.0",
-  "updatedAt": "2026-10-10T16:25:37.000Z",
+  "updatedAt": "2026-10-10T18:00:00.000Z",
   "programs": [
     {
       "id": "bookshop-org-us-media",
@@ -55,7 +55,7 @@
     },
     {
       "id": "amazon-associates-us",
-      "revision": 2,
+      "revision": 3,
       "priority": 2,
       "coverageRole": "broad_catalog",
       "name": "Amazon Associates US",
@@ -66,19 +66,9 @@
       "termsUrl": "https://affiliate-program.amazon.com/help/operating/agreement",
       "sourceCheckedAt": "2026-10-10T16:25:37.000Z",
       "sourceReviewExpiresAt": "2027-01-08",
-      "eligibleArticleSlugs": [
-        "gifts-for-a-golf-friend",
-        "language-learning-gifts-read-a-scene-say-it-aloud",
-        "miniature-painting-wet-palette-recipe-pairs",
-        "neighborhood-tree-walk-field-guide-loupe-gift-pairs",
-        "night-sky-planisphere-red-light-gift-pairs",
-        "one-photo-one-story-gift-pairs",
-        "puzzle-board-sorting-tray-gift-pairs",
-        "read-it-then-play-it-gift-pairs",
-        "useful-gifts-for-hard-to-shop-for-adults"
-      ],
+      "eligibleArticleSlugs": [],
       "productSelection": {
-        "mode": "all_products_in_eligible_articles",
+        "mode": "all_publication_ready_products",
         "eligibleProductIds": []
       },
       "editorialFit": "A broad-catalog candidate that could cover books, games, golf accessories, and practical gifts without changing the editorial ranking.",
@@ -103,7 +93,7 @@
     },
     {
       "id": "target-partners-us",
-      "revision": 1,
+      "revision": 2,
       "priority": 3,
       "coverageRole": "retailer_alternative",
       "name": "Target Partners US",
@@ -114,19 +104,9 @@
       "termsUrl": "https://partners.target.com/faqs",
       "sourceCheckedAt": "2026-10-10T16:25:37.000Z",
       "sourceReviewExpiresAt": "2027-01-08",
-      "eligibleArticleSlugs": [
-        "gifts-for-a-golf-friend",
-        "language-learning-gifts-read-a-scene-say-it-aloud",
-        "miniature-painting-wet-palette-recipe-pairs",
-        "neighborhood-tree-walk-field-guide-loupe-gift-pairs",
-        "night-sky-planisphere-red-light-gift-pairs",
-        "one-photo-one-story-gift-pairs",
-        "puzzle-board-sorting-tray-gift-pairs",
-        "read-it-then-play-it-gift-pairs",
-        "useful-gifts-for-hard-to-shop-for-adults"
-      ],
+      "eligibleArticleSlugs": [],
       "productSelection": {
-        "mode": "all_products_in_eligible_articles",
+        "mode": "all_publication_ready_products",
         "eligibleProductIds": []
       },
       "editorialFit": "A family-friendly US retailer alternative with a broad catalog and Impact-provided tracking can give readers a second exact-product destination without changing the recommendation order.",
@@ -151,7 +131,7 @@
     },
     {
       "id": "walmart-creator-us",
-      "revision": 1,
+      "revision": 2,
       "priority": 4,
       "coverageRole": "retailer_alternative",
       "name": "Walmart Creator US",
@@ -162,19 +142,9 @@
       "termsUrl": "https://creator.walmart.com/terms",
       "sourceCheckedAt": "2026-10-10T16:25:37.000Z",
       "sourceReviewExpiresAt": "2027-01-08",
-      "eligibleArticleSlugs": [
-        "gifts-for-a-golf-friend",
-        "language-learning-gifts-read-a-scene-say-it-aloud",
-        "miniature-painting-wet-palette-recipe-pairs",
-        "neighborhood-tree-walk-field-guide-loupe-gift-pairs",
-        "night-sky-planisphere-red-light-gift-pairs",
-        "one-photo-one-story-gift-pairs",
-        "puzzle-board-sorting-tray-gift-pairs",
-        "read-it-then-play-it-gift-pairs",
-        "useful-gifts-for-hard-to-shop-for-adults"
-      ],
+      "eligibleArticleSlugs": [],
       "productSelection": {
-        "mode": "all_products_in_eligible_articles",
+        "mode": "all_publication_ready_products",
         "eligibleProductIds": []
       },
       "editorialFit": "A second large US catalog could improve exact-product availability for practical gifts while the ordinary manufacturer link remains the stable editorial source and fallback.",
@@ -200,7 +170,7 @@
     },
     {
       "id": "ebay-partner-network-us",
-      "revision": 1,
+      "revision": 2,
       "priority": 5,
       "coverageRole": "marketplace_contingency",
       "name": "eBay Partner Network US",
@@ -211,19 +181,9 @@
       "termsUrl": "https://partnernetwork.ebay.com/page/network-agreement",
       "sourceCheckedAt": "2026-10-10T16:25:37.000Z",
       "sourceReviewExpiresAt": "2027-01-08",
-      "eligibleArticleSlugs": [
-        "gifts-for-a-golf-friend",
-        "language-learning-gifts-read-a-scene-say-it-aloud",
-        "miniature-painting-wet-palette-recipe-pairs",
-        "neighborhood-tree-walk-field-guide-loupe-gift-pairs",
-        "night-sky-planisphere-red-light-gift-pairs",
-        "one-photo-one-story-gift-pairs",
-        "puzzle-board-sorting-tray-gift-pairs",
-        "read-it-then-play-it-gift-pairs",
-        "useful-gifts-for-hard-to-shop-for-adults"
-      ],
+      "eligibleArticleSlugs": [],
       "productSelection": {
-        "mode": "all_products_in_eligible_articles",
+        "mode": "all_publication_ready_products",
         "eligibleProductIds": []
       },
       "editorialFit": "A marketplace contingency can help with discontinued or hard-to-find exact editions when a stable primary retailer is unavailable, without pretending a volatile listing is the canonical product source.",
