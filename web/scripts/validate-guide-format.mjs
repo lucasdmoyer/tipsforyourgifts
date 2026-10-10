@@ -1,7 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import process from 'node:process';
-import matter from 'gray-matter';
+import matter from './lib/front-matter.mjs';
 
 const blogDir = path.join(process.cwd(), 'src', 'data', 'blog');
 const files = (await fs.readdir(blogDir)).filter((name) => name.endsWith('.md')).sort();

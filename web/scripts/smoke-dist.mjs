@@ -1,7 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import process from 'node:process';
-import matter from 'gray-matter';
+import matter from './lib/front-matter.mjs';
 import { affiliateEnrollmentReadinessSchema, buildAffiliateEnrollmentReadiness } from './lib/affiliate-enrollment-contract.mjs';
 import { buildPublicationManifest, parsePublicationManifest, sha256 } from './lib/publication-manifest-contract.mjs';
 

@@ -1,7 +1,7 @@
 import crypto from 'node:crypto';
 import fs from 'node:fs/promises';
 import path from 'node:path';
-import matter from 'gray-matter';
+import matter from './front-matter.mjs';
 import { z } from 'zod';
 import { affiliateSchema, programSelectsProduct, validateAffiliateModel } from './affiliate-contract.mjs';
 

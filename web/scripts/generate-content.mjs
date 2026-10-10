@@ -1,7 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import process from 'node:process';
-import matter from 'gray-matter';
+import matter from './lib/front-matter.mjs';
 import { marked } from 'marked';
 import { applyAffiliateLinkOverlays, loadAffiliateLinkState } from './lib/affiliate-link-contract.mjs';
 
