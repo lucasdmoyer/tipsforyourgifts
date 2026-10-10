@@ -26,6 +26,18 @@ export interface ProductPair {
   claimIds: string[];
 }
 
+export interface ReaderIntro {
+  lead: string;
+  giftIdea: string;
+  bodyPlacement: 'before-products';
+}
+
+export interface SpecialtyLens {
+  generalPurpose: string;
+  specialty: string;
+  signal: string;
+}
+
 export interface VisualAsset {
   id: string;
   src: string;
@@ -59,6 +71,9 @@ export interface Article {
   evidenceMode: 'desk_research' | 'hands_on' | 'editorial_standard';
   featured: boolean;
   affiliateDisclosure: boolean;
+  readerFormat?: 'recipient-specialty-v1';
+  readerIntro?: ReaderIntro;
+  specialtyLens?: SpecialtyLens;
   products: Product[];
   pairs: ProductPair[];
   visual: ArticleVisual;
@@ -153,6 +168,30 @@ export interface Operations {
   proposedIdeas: number;
   pairingIdeas: number;
   recipientFrictionIdeas: number;
+  editorialReview: {
+    schemaVersion: '1.0.0';
+    counts: {
+      pendingBundles: number;
+      founderSafetyReviewsRequired: number;
+      independentReviewsRequired: number;
+      highRiskClaims: number;
+    };
+    queue: Array<{
+      runId: string;
+      ideaId: string;
+      articleSlug: string;
+      status: 'drafted' | 'qa_failed';
+      reviewerId: string;
+      blockers: string[];
+      warnings: string[];
+      highRiskClaims: Array<{ id: string; text: string; sourceIds: string[] }>;
+      founderSafetyReviewRequired: boolean;
+      independentReviewRequired: true;
+      sourcePaths: { run: string; article: string; social: string | null };
+      sourceSha256: { run: string; article: string; social: string | null };
+      nextGate: string;
+    }>;
+  };
   researchMissions: {
     total: number;
     active: number;
@@ -227,6 +266,22 @@ export interface Operations {
     proposedPrograms: number;
     founderApprovedPrograms: number;
     enabledPrograms: number;
+    publicationReadyProductLinksCataloged: number;
+    publicationReadyPaidLinksVerified: number;
+    publicationReadyOrdinaryLinks: number;
+    productsAssignedToPartnerResearch: number;
+    productsWithoutPartnerResearch: number;
+    productCoverageArtifactPath: string;
+    productCoverageDefinition: string;
+    enrollmentReadinessArtifactPath: string;
+    enrollmentReadinessDefinition: string;
+    publicApplicationPacketsReady: number;
+    externalEnrollmentAllowedByRegistry: number;
+    externalSubmissionRequiresActionTimeApproval: true;
+    awaitingFounderProgramApproval: number;
+    externallyEnrolledPrograms: number;
+    siteApplicationDescription: string;
+    sensitiveDataPolicy: string;
     linkCandidates: number;
     linkReviewsPassed: number;
     linkApprovals: number;
@@ -244,6 +299,10 @@ export interface Operations {
       destinationHostname: string;
       createdAt: string;
       createdBy: string;
+      originSource: 'founder_supplied' | 'founder_attested_partner_export';
+      originReferenceId: string | null;
+      originSourceArtifactPath: string | null;
+      originSourceSha256: string | null;
       stage: 'independent_review_required' | 'review_failed' | 'founder_approval_required' | 'approved_overlay';
       reviewVerdict: 'passed' | 'failed' | null;
       reviewPath: string | null;
@@ -257,10 +316,23 @@ export interface Operations {
     programs: Array<{
       id: string;
       revision: number;
+      priority: number;
+      coverageRole: 'category_specialist' | 'broad_catalog' | 'retailer_alternative' | 'marketplace_contingency';
       name: string;
       status: 'proposed' | 'founder_approved' | 'enabled' | 'paused' | 'rejected';
       founderDisposition: 'proposed' | 'approved' | 'paused' | 'rejected';
       eligibleArticleSlugs: string[];
+      productSelectionMode: 'explicit_products' | 'all_products_in_eligible_articles' | 'all_publication_ready_products';
+      productResearchCandidates: number;
+      verifiedPaidLinks: number;
+      enrollmentStage: 'founder_approval_required' | 'external_enrollment_required' | 'activation_evidence_required' | 'exact_link_research' | 'paused' | 'rejected';
+      publicApplicationPacketReady: boolean;
+      externalEnrollmentAllowedByRegistry: boolean;
+      externalSubmissionStillRequiresActionTimeApproval: true;
+      applicationPositioning: string;
+      userOnlyInputs: Array<'account_login' | 'operator_identity_contact' | 'tax_profile_if_requested' | 'payout_profile_if_requested' | 'public_social_account_selection' | 'ai_tools_written_approval_request'>;
+      specialRequirements: string[];
+      stopConditions: string[];
       editorialFit: string;
       limitations: string[];
       sourceCheckedAt: string;

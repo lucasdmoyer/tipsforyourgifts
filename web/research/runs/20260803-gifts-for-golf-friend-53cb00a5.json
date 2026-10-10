@@ -563,7 +563,7 @@
       "editorialScore": 82,
       "evidenceConfidence": 78,
       "drawbacks": [
-        "It is a small dry-only brush, and current owner reviews on the product page report some magnet or handle separation, so durability is uncertain."
+        "This small brush does not hold water. Some current owner reviews also report that the magnet or handle separated, so its durability is uncertain."
       ],
       "primarySourceIds": [
         "src-minig-official"
@@ -626,7 +626,7 @@
       "editorialScore": 84,
       "evidenceConfidence": 72,
       "drawbacks": [
-        "Its generous size can feel bulky on a minimalist carry bag."
+        "This is a large towel, so it may feel bulky to someone who carries a small, light golf bag."
       ],
       "primarySourceIds": [
         "src-towel-official"
@@ -689,7 +689,7 @@
       "editorialScore": 86,
       "evidenceConfidence": 80,
       "drawbacks": [
-        "The gift requires both the recipient's FootJoy fit profile (Regular Pair or Cadet Pair) and size (S through XL), and gives up some dry-weather feel."
+        "You need to know both their FootJoy fit (Regular Pair or Cadet Pair) and their size (S through XL). The gloves also give up some feel in dry weather."
       ],
       "primarySourceIds": [
         "src-raingrip-official"
@@ -752,7 +752,7 @@
       "editorialScore": 78,
       "evidenceConfidence": 78,
       "drawbacks": [
-        "It is large, expensive, and awkward for some minimalist walkers."
+        "This umbrella is large and expensive, and it may be awkward for someone who walks the course with very little gear."
       ],
       "primarySourceIds": [
         "src-umbrella-official"
@@ -813,7 +813,7 @@
       "editorialScore": 86,
       "evidenceConfidence": 81,
       "drawbacks": [
-        "The tiny perfect-putt target can frustrate users, and an uneven carpet can distort feedback."
+        "The tiny perfect-putt target can be frustrating, and an uneven carpet can make the feedback less accurate."
       ],
       "primarySourceIds": [
         "src-puttout-official"
@@ -982,7 +982,7 @@
       "editorialScore": 82,
       "evidenceConfidence": 78,
       "drawbacks": [
-        "It is a small dry-only brush, and current owner reviews on the product page report some magnet or handle separation, so durability is uncertain."
+        "This small brush does not hold water. Some current owner reviews also report that the magnet or handle separated, so its durability is uncertain."
       ],
       "primarySourceIds": [
         "src-minig-official"
@@ -1045,7 +1045,7 @@
       "editorialScore": 84,
       "evidenceConfidence": 72,
       "drawbacks": [
-        "Its generous size can feel bulky on a minimalist carry bag."
+        "This is a large towel, so it may feel bulky to someone who carries a small, light golf bag."
       ],
       "primarySourceIds": [
         "src-towel-official"
@@ -1108,7 +1108,7 @@
       "editorialScore": 86,
       "evidenceConfidence": 80,
       "drawbacks": [
-        "The gift requires both the recipient's FootJoy fit profile (Regular Pair or Cadet Pair) and size (S through XL), and gives up some dry-weather feel."
+        "You need to know both their FootJoy fit (Regular Pair or Cadet Pair) and their size (S through XL). The gloves also give up some feel in dry weather."
       ],
       "primarySourceIds": [
         "src-raingrip-official"
@@ -1171,7 +1171,7 @@
       "editorialScore": 78,
       "evidenceConfidence": 78,
       "drawbacks": [
-        "It is large, expensive, and awkward for some minimalist walkers."
+        "This umbrella is large and expensive, and it may be awkward for someone who walks the course with very little gear."
       ],
       "primarySourceIds": [
         "src-umbrella-official"
@@ -1232,7 +1232,7 @@
       "editorialScore": 86,
       "evidenceConfidence": 81,
       "drawbacks": [
-        "The tiny perfect-putt target can frustrate users, and an uneven carpet can distort feedback."
+        "The tiny perfect-putt target can be frustrating, and an uneven carpet can make the feedback less accurate."
       ],
       "primarySourceIds": [
         "src-puttout-official"
@@ -1293,13 +1293,13 @@
   "pairs": [
     {
       "id": "clean-club-course-kit",
-      "name": "The clean-club course kit",
+      "name": "Golf-club brush and towel",
       "anchorCandidateId": "grooveit-minig",
       "companionCandidateId": "club-glove-caddy-towel",
       "recipientJob": "Keep grooves clear and handle dirt or moisture through one repeatable on-course cleaning routine.",
       "coherenceType": "completes_task",
-      "whyTogether": "The brush dislodges debris from grooves while the towel wipes the club and handles moisture, so each item performs a different part of the same job.",
-      "interactionMoment": "Attach both to the bag and use the brush-then-wipe sequence before the next shot when a club is dirty.",
+      "whyTogether": "The brush loosens dirt from the club grooves, and the towel wipes the club clean and dry. Together they finish one small job.",
+      "interactionMoment": "They can attach both to the golf bag, brush a dirty club, and wipe it before the next shot.",
       "compatibilityChecks": [
         {
           "dimension": "skill_or_experience",
@@ -1320,8 +1320,8 @@
       ],
       "duplicateRisk": "medium",
       "clutterDelta": "neutral",
-      "preGiftCheck": "Confirm their current brush and towel are missing, worn, or due to be replaced rather than duplicated.",
-      "bundleDrawback": "Choose only the brush if the recipient walks light, already has a preferred towel, or would find the larger towel bulky.",
+      "preGiftCheck": "Look at their golf bag first. Buy the pair only if their brush and towel are missing, worn out, or ready to be replaced.",
+      "bundleDrawback": "Choose only the brush if they already like their towel, carry a very light bag, or would find a large towel bulky.",
       "claimIds": [
         "claim-clean-club-pair"
       ],
@@ -1348,10 +1348,10 @@
   "qa": {
     "passed": true,
     "reviewerRole": "independent-editor",
-    "reviewerId": "golf-evidence-red-team",
+    "reviewerId": "codex-release-audit-independent-editor-20260906",
     "receiptPath": "research/reviews/20260803-gifts-for-golf-friend-53cb00a5.qa.v1.json",
     "blockers": [],
     "warnings": []
   },
-  "completedAt": "2026-08-03T06:50:32.678Z"
+  "completedAt": "2026-09-07T04:34:27.754Z"
 }

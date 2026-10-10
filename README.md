@@ -47,6 +47,7 @@ The first ten content releases retain founder review. After GitHub records ten s
 - Research mission receipts: `web/research/missions/`
 - Articles: `web/src/data/blog/`
 - Affiliate registry: `web/config/affiliate-programs.json`
+- Affiliate enrollment plans and generated readiness ledger: `web/config/affiliate-enrollment-plans.json` and `web/public/affiliate-enrollment-readiness.json`
 - Exact paid-link candidates, independent reviews, and founder approvals: `web/affiliate/candidates/`, `web/affiliate/reviews/`, and `web/affiliate/approvals/`
 - Official social-channel registry: `web/config/social-channels.json`
 - Versioned original creative candidates: `web/social/candidates/` and `web/public/social-media/`

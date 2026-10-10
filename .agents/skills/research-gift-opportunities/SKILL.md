@@ -23,7 +23,7 @@ Resolve or reasonably infer the audience, occasion, target publish window, budge
 8. Give every schema 1.1 finalist a thoughtfulness scorecard: observation prompt, friction evidence, welcomed physical-gift boundary, defensible self-purchase gap, duplicate and clutter risk, ownership burden, compatibility checks, and score `>= 15/20` with no component below 3.
 9. For gift pairs, require two independently qualified items with different roles, one interaction loop, an observable recipient trigger, independent usefulness, resolved compatibility, and coherence `>= 80/100`. Name why the recipient may prefer only the anchor.
 10. Use only founder-enabled affiliate programs. Never invent tracking parameters, exact prices, availability, ratings, quotes, reviews, or image rights. Omit paid tracking when validation is unavailable.
-11. Draft `web/src/data/blog/<slug>.md`. Use `desk_research` unless hands-on evidence is documented. Never imply first-hand use without that evidence.
+11. Draft `web/src/data/blog/<slug>.md` in the reader format below. Use `desk_research` unless hands-on evidence is documented. Never imply first-hand use without that evidence.
 12. Have a separate independent-editor role challenge the bundle. The drafter cannot set its own QA pass.
 13. Save `web/research/runs/<run_id>.json` using [the artifact contract](references/artifact-contract.md).
 14. Run `npm run validate`, `npm run build`, and `npm run smoke` from the repository root. Fix only evidence, content, and build issues within the run.
@@ -36,6 +36,15 @@ Resolve or reasonably infer the audience, occasion, target publish window, budge
 - Tier-D sources such as snippets, generic aggregators, affiliate listicles, and AI summaries may discover leads but cannot substantiate claims.
 - Stop after minimum coverage and two consecutive passes each add less than 10 percent material novelty.
 - Require founder review for sensitive categories, safety claims, children, ingestibles, health, electrical products, recalls, sponsored or free products, and changed affiliate terms.
+
+## Reader format
+
+- Set `readerFormat: recipient-specialty-v1`, make `readerIntro.lead` begin with “If you know someone”, and put the explanation before the products.
+- Explain the idea for a shopper who knows the recipient but does not know the hobby. Every product `whyItFits` begins `What it is:` and then says what the object does, where it fits into real life, and why this particular person might enjoy it.
+- Include exactly one H2 for each of: `What this gift actually is`; `How it fits into their real life`; `What they may already have`; `What the specialty gift adds`; `Why this feels thoughtful`; `Before you order`.
+- Treat an existing general-purpose item as useful context, not a reason to replace it. The specialty gift should add a narrower job, ritual, or point of view. When the idea is conceptual rather than a tool upgrade, explain that the thoughtful connection is the specialty addition.
+- Say plainly that one gift can be enough. A pair must earn its place through one shared moment, not through bundle size.
+- Keep research process, internal scores, candidates, and QA language out of reader-facing prose. Preserve evidence links and practical drawbacks without making the reader decipher the workflow.
 
 ## Completion contract
 

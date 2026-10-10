@@ -4,7 +4,7 @@
 
 - Protect `master`; require content quality and Firebase preview checks.
 - Create the GitHub `production` environment and require Lucas as a reviewer for the first ten releases.
-- Add `OPENAI_API_KEY` as a repository secret for the read-only research job.
+- Add `OPENAI_API_KEY` as a repository secret for the read-only strategy, research, independent-review, opportunity, growth, and affiliate-evidence jobs. Every Codex step runs the reviewed presence-only preflight immediately before model execution; a missing secret now fails with an actionable message before the model action starts and never prints a secret value.
 - Confirm owner-authored `[Strategy]` issues can run the strategy-intake workflow and that non-owner issues cannot access the AI job.
 - Confirm `/studio/brief` blocks incomplete or credential-like drafts, opens the exact owner-authored GitHub issue for review, and grants no research or publication authority by itself.
 - Require review on strategy proposal and strategy approval pull requests; the AI proposal job must never set `approved_for_research`.

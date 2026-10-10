@@ -43,12 +43,13 @@
       "status": "draft",
       "angle": "Put record material identification before cleaning",
       "headline": "Before wet cleaning a record, identify the medium",
-      "copy": "Modern vinyl is not shellac, lacquer, a picture disc, or an unknown specialty material. Check exact instructions, label stability, record size, and a clean work surface. Uncertain medium means stop—not experiment.",
+      "copy": "Before using a wet-cleaning kit, confirm the record is standard vinyl and the product instructions cover its size and material. Check the label, work surface, and drying space. If anything is uncertain, ask the collector which routine they trust.",
       "assetBrief": "Six original slides with generic disc silhouettes, material question marks, label warning, edge handling, instruction manual, and stop card.",
       "altText": "Carousel reminding collectors to identify record material, label condition, size, and instructions before wet cleaning.",
       "destinationUrl": "https://tipsforyourgifts.web.app/blog/vinyl-record-cleaner-inner-sleeve-gift-pairs",
       "claimIds": [
         "claim-record-handling-boundary",
+        "claim-groovewasher-g2-label-boundary",
         "claim-spin-clean-fit"
       ],
       "productIds": [
@@ -66,7 +67,7 @@
       "status": "draft",
       "angle": "Choose a cleaner by real queue size and maintenance tolerance",
       "headline": "Batch bath or one-record pad? Count the queue first",
-      "copy": "Choose a manual bath for a named compatible batch with water, drying, and cleanup space. Choose a pad-and-mist ritual for one compatible arrival at a time. Skip both when the collector wants professional or powered cleaning.",
+      "copy": "Choose a manual bath for a named compatible batch with water, drying, and cleanup space. Choose a pad-and-mist ritual for one compatible arrival only after reading the current product directions and fluid label. Skip both when the collector wants professional or powered cleaning.",
       "assetBrief": "Original branching flowchart from one record versus small batch to compact pad versus basin, ending in space and maintenance checks.",
       "altText": "Decision flow comparing a batch record-cleaning bath with a one-record pad workflow.",
       "destinationUrl": "https://tipsforyourgifts.web.app/blog/vinyl-record-cleaner-inner-sleeve-gift-pairs",
@@ -74,7 +75,8 @@
         "claim-spin-clean-benefit",
         "claim-spin-clean-drawback",
         "claim-groovewasher-benefit",
-        "claim-groovewasher-drawback"
+        "claim-groovewasher-drawback",
+        "claim-groovewasher-g2-label-boundary"
       ],
       "productIds": [
         "spin-clean-record-washer-mkii",
@@ -91,7 +93,7 @@
       "status": "draft",
       "angle": "Choose sleeve support and thickness by the real jacket",
       "headline": "The best inner sleeve still has to fit the jacket",
-      "copy": "Confirm 12 versus 7 inches, inspect for debris or creases, test the tightest representative jacket, and compare supported versus thin HDPE handling. Never transfer a full batch from the package alone.",
+      "copy": "Confirm the sleeve matches the record size, inspect for debris or creases, test the tightest representative jacket, and compare supported versus thin HDPE handling. Never transfer a full batch from the package alone.",
       "assetBrief": "Five original slides with size ruler, inspection light, tight jacket, supported sleeve, thin sleeve, and sample-first rule.",
       "altText": "Carousel showing record size, sleeve inspection, jacket clearance, and supported-versus-thin inner-sleeve checks.",
       "destinationUrl": "https://tipsforyourgifts.web.app/blog/vinyl-record-cleaner-inner-sleeve-gift-pairs",
@@ -146,6 +148,7 @@
       "claimIds": [
         "claim-pair-spin-mofi",
         "claim-pair-groove-bigfudge",
+        "claim-groovewasher-g2-label-boundary",
         "claim-record-handling-boundary"
       ],
       "productIds": [

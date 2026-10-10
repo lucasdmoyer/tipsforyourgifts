@@ -1,21 +1,38 @@
 {
   "schemaVersion": "1.1.0",
-  "updatedAt": "2026-08-03T08:40:00.000Z",
+  "updatedAt": "2026-10-10T18:00:00.000Z",
   "programs": [
     {
       "id": "bookshop-org-us-media",
-      "revision": 1,
+      "revision": 3,
+      "priority": 1,
+      "coverageRole": "category_specialist",
       "name": "Bookshop.org US media affiliate",
-      "status": "proposed",
+      "status": "founder_approved",
       "enabled": false,
-      "founderDisposition": "proposed",
+      "founderDisposition": "approved",
       "programHomepageUrl": "https://bookshop.org/affiliates/profile/introduction",
-      "termsUrl": "https://support.bookshop.org/en/support/solutions/articles/65000191390-can-you-explain-bookshop-org-s-affiliate-program-",
-      "sourceCheckedAt": "2026-08-03T08:40:00.000Z",
-      "sourceReviewExpiresAt": "2026-11-01",
+      "termsUrl": "https://bookshop.org/info/terms-of-use",
+      "sourceCheckedAt": "2026-10-10T16:25:37.000Z",
+      "sourceReviewExpiresAt": "2027-01-08",
       "eligibleArticleSlugs": [
         "read-it-then-play-it-gift-pairs"
       ],
+      "productSelection": {
+        "mode": "explicit_products",
+        "eligibleProductIds": [
+          "sapiens-us-paperback",
+          "genius-of-birds-paperback",
+          "a-city-on-mars-paperback",
+          "thinking-in-systems-paperback",
+          "because-internet-paperback",
+          "leave-only-footprints-paperback",
+          "steering-the-craft-2015",
+          "read-this-great-photographs-2023",
+          "entangled-life-paperback",
+          "the-food-lab-hardcover"
+        ]
+      },
       "editorialFit": "A focused first candidate for book anchors in evidence-backed pairs, with a storefront model that can support independent bookstores.",
       "limitations": [
         "It does not replace a general merchant program for non-book companions, so pair recommendations must remain independently useful with ordinary links.",
@@ -34,24 +51,26 @@
         "reportingExportApproved": false
       },
       "priceFeedAuthorized": false,
-      "nextGate": "Lucas decides whether this mission-aligned book program is worth external enrollment; approval records the decision but does not accept terms or enable links."
+      "nextGate": "Authenticate the Bookshop account, submit the prepared profile for verification, and record only Bookshop-issued tracking after acceptance; account status remains unverified until external evidence is captured."
     },
     {
       "id": "amazon-associates-us",
-      "revision": 1,
+      "revision": 3,
+      "priority": 2,
+      "coverageRole": "broad_catalog",
       "name": "Amazon Associates US",
       "status": "proposed",
       "enabled": false,
       "founderDisposition": "proposed",
       "programHomepageUrl": "https://affiliate-program.amazon.com/",
       "termsUrl": "https://affiliate-program.amazon.com/help/operating/agreement",
-      "sourceCheckedAt": "2026-08-03T08:40:00.000Z",
-      "sourceReviewExpiresAt": "2026-11-01",
-      "eligibleArticleSlugs": [
-        "gifts-for-a-golf-friend",
-        "read-it-then-play-it-gift-pairs",
-        "useful-gifts-for-hard-to-shop-for-adults"
-      ],
+      "sourceCheckedAt": "2026-10-10T16:25:37.000Z",
+      "sourceReviewExpiresAt": "2027-01-08",
+      "eligibleArticleSlugs": [],
+      "productSelection": {
+        "mode": "all_publication_ready_products",
+        "eligibleProductIds": []
+      },
       "editorialFit": "A broad-catalog candidate that could cover books, games, golf accessories, and practical gifts without changing the editorial ranking.",
       "limitations": [
         "The agreement and incorporated program policies can change, so every link format, registered site, disclosure, and content-use rule needs a fresh activation review.",
@@ -70,7 +89,124 @@
         "reportingExportApproved": false
       },
       "priceFeedAuthorized": false,
-      "nextGate": "Lucas reviews the current agreement and operating burden before any external signup; no Special Link or disclosure is generated until the account is explicitly activated."
+      "nextGate": "Lucas reviews and approves the current operating agreement before signup; after acceptance, exact product availability and Amazon-provided Special Links must be checked one recommendation at a time."
+    },
+    {
+      "id": "target-partners-us",
+      "revision": 2,
+      "priority": 3,
+      "coverageRole": "retailer_alternative",
+      "name": "Target Partners US",
+      "status": "proposed",
+      "enabled": false,
+      "founderDisposition": "proposed",
+      "programHomepageUrl": "https://partners.target.com/",
+      "termsUrl": "https://partners.target.com/faqs",
+      "sourceCheckedAt": "2026-10-10T16:25:37.000Z",
+      "sourceReviewExpiresAt": "2027-01-08",
+      "eligibleArticleSlugs": [],
+      "productSelection": {
+        "mode": "all_publication_ready_products",
+        "eligibleProductIds": []
+      },
+      "editorialFit": "A family-friendly US retailer alternative with a broad catalog and Impact-provided tracking can give readers a second exact-product destination without changing the recommendation order.",
+      "limitations": [
+        "The official FAQ describes a seven-day last-click window, while the official homepage advertises commissions up to eight percent; exact rates and product eligibility remain program-controlled and must not be promised in articles.",
+        "Only exact products actually available at Target may receive links; near matches, marketplace substitutes, and commission differences cannot change editorial selection or product naming."
+      ],
+      "allowedDomains": [],
+      "registeredSites": [],
+      "trackingParameterKeys": [],
+      "requiredDisclosure": null,
+      "account": {
+        "externalAccountEstablished": false,
+        "trackingIdentityConfigured": false,
+        "termsAcceptedByFounder": false,
+        "termsAcceptedAt": null,
+        "acceptanceEvidenceReference": null,
+        "reportingExportApproved": false
+      },
+      "priceFeedAuthorized": false,
+      "nextGate": "Retrieve and review the operative Target affiliate contract from Impact because the public pages expose program details but not the member agreement; acceptance, registered-site evidence, exact tracked links, disclosures, and reporting access remain separate activation gates."
+    },
+    {
+      "id": "walmart-creator-us",
+      "revision": 2,
+      "priority": 4,
+      "coverageRole": "retailer_alternative",
+      "name": "Walmart Creator US",
+      "status": "proposed",
+      "enabled": false,
+      "founderDisposition": "proposed",
+      "programHomepageUrl": "https://creator.walmart.com/",
+      "termsUrl": "https://creator.walmart.com/terms",
+      "sourceCheckedAt": "2026-10-10T16:25:37.000Z",
+      "sourceReviewExpiresAt": "2027-01-08",
+      "eligibleArticleSlugs": [],
+      "productSelection": {
+        "mode": "all_publication_ready_products",
+        "eligibleProductIds": []
+      },
+      "editorialFit": "A second large US catalog could improve exact-product availability for practical gifts while the ordinary manufacturer link remains the stable editorial source and fallback.",
+      "limitations": [
+        "Application eligibility currently requires majority age, US residence, an active Walmart or Sam's Club account, nonemployee status, and at least one public social account; payout readiness separately requires a US bank account and Impact identity verification.",
+        "Walmart controls qualifying products and may review each website or social placement; no link may be created until the exact item and supplied Qualifying Link are verified in an accepted account.",
+        "Member-only payout terms control live commission rates and attribution windows and may change without notice; activation must capture those terms and the required #WalmartPartner or paid-link disclosure."
+      ],
+      "allowedDomains": [],
+      "registeredSites": [],
+      "trackingParameterKeys": [],
+      "requiredDisclosure": null,
+      "account": {
+        "externalAccountEstablished": false,
+        "trackingIdentityConfigured": false,
+        "termsAcceptedByFounder": false,
+        "termsAcceptedAt": null,
+        "acceptanceEvidenceReference": null,
+        "reportingExportApproved": false
+      },
+      "priceFeedAuthorized": false,
+      "nextGate": "Keep enrollment paused until Lucas approves applicant eligibility, public-social-account review, arbitration terms, and the exact Walmart disclosure pattern; after acceptance, separately capture current member payout terms, Impact identity verification, bank readiness, live commission rates, and attribution windows."
+    },
+    {
+      "id": "ebay-partner-network-us",
+      "revision": 2,
+      "priority": 5,
+      "coverageRole": "marketplace_contingency",
+      "name": "eBay Partner Network US",
+      "status": "proposed",
+      "enabled": false,
+      "founderDisposition": "proposed",
+      "programHomepageUrl": "https://partnernetwork.ebay.com/",
+      "termsUrl": "https://partnernetwork.ebay.com/page/network-agreement",
+      "sourceCheckedAt": "2026-10-10T16:25:37.000Z",
+      "sourceReviewExpiresAt": "2027-01-08",
+      "eligibleArticleSlugs": [],
+      "productSelection": {
+        "mode": "all_publication_ready_products",
+        "eligibleProductIds": []
+      },
+      "editorialFit": "A marketplace contingency can help with discontinued or hard-to-find exact editions when a stable primary retailer is unavailable, without pretending a volatile listing is the canonical product source.",
+      "limitations": [
+        "Listings, sellers, condition, shipping, and availability can change quickly, so an eBay destination needs a fresh exact-item check and should not replace a stable manufacturer or specialist link by default.",
+        "The current rate card describes a twenty-four-hour Buy It Now window, or a bid within twenty-four hours followed by a win within ten days; category rates may be low or zero and eBay can change terms on short notice.",
+        "Applicants must meet age and account-standing requirements, and every placement needs the current eBay disclosure rather than a generic assumption about marketplace links.",
+        "eBay classifies promotion through generative-AI tools as a special business model requiring prior written approval, so this AI-assisted publication cannot activate EPN without that written approval."
+      ],
+      "allowedDomains": [],
+      "registeredSites": [],
+      "trackingParameterKeys": [],
+      "requiredDisclosure": null,
+      "account": {
+        "externalAccountEstablished": false,
+        "trackingIdentityConfigured": false,
+        "termsAcceptedByFounder": false,
+        "termsAcceptedAt": null,
+        "acceptanceEvidenceReference": null,
+        "reportingExportApproved": false
+      },
+      "priceFeedAuthorized": false,
+      "nextGate": "Before application, review the current network agreement, eligibility rules, and program-specific disclosure; after EPN account acceptance but before activation or promotional use, submit the AI Tools request from the registered email and obtain eBay's written approval for this AI-assisted promotion model."
     }
   ],
   "policy": {
@@ -90,6 +226,6 @@
       "approved disclosure",
       "reporting export decision"
     ],
-    "defaultDisclosure": "We may earn a commission when you purchase through links on this page. Recommendations are selected using our published research method."
+    "defaultDisclosure": "Disclosure: We may earn a commission if you purchase through a paid link on this page. Recommendations are selected independently."
   }
 }

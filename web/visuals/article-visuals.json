@@ -44,11 +44,11 @@
     {
       "id": "research-evidence-desk",
       "src": "/blog-images/how-we-research-gifts/hero.webp",
-      "alt": "An editor compares product cards, a source ledger, a drawback flag, and a recipient clue before choosing a gift.",
-      "caption": "A recipient clue becomes a recommendation only after sources, drawbacks, and product identity survive review.",
-      "sourceSha256": "076e79234fc0b221b0fe32f446c2b9d596911c419b7f36855fbc10289558b73b",
-      "fileSha256": "a460f2aba65233aa9bcdb48cd635d045f0ee7e69816e7aaf70770b12bcaa877e",
-      "promptSummary": "A rigorous gift editor moves from recipient clue through candidate comparison, source checking, drawback review, and recommendation."
+      "alt": "One adult paints a small fantasy figure on a plain tile palette while a friend holds a reminder card beside a wrapped gift linked by a saffron ribbon.",
+      "caption": "The gift often starts with one small thing you noticed weeks before you began shopping.",
+      "sourceSha256": "9b8ba6cfa13b414e4b2618acd34159f9673de2b4678ad7251d5ff1c42466bf38",
+      "fileSha256": "67fff6a45e7da5767a0deed03e2e06d0b994209008d4dbe5b9abb06b79e38922",
+      "promptSummary": "One adult notices a loved one's ordinary miniature-painting setup, holds onto the clue, and turns it into a modest specialty gift."
     },
     {
       "id": "fiber-art-pause-resume",
@@ -72,7 +72,7 @@
       "id": "miniature-paint-palette-recipe",
       "src": "/blog-images/miniature-painting-wet-palette-recipe-pairs/hero.webp",
       "alt": "A miniature painter matches wet-palette paint mixes to color swatches in a recipe notebook beside a generic figure.",
-      "caption": "The wet palette preserves the current session; the recipe notebook preserves the mix for the next one.",
+      "caption": "The wet palette helps paint stay workable during the session; the notebook records the mix for next time.",
       "sourceSha256": "2d136c46f7cb471dac6b78aac4daf3b0982ba844de7c323105c87795dc760bb5",
       "fileSha256": "2cd854cea40ace5fec60ff78baa2dee40d1ed46dcd2f3f1c2b06a51299c2dbd4",
       "promptSummary": "An adult miniature painter connects a reusable wet palette, physical color-recipe swatches, and an original generic figure."

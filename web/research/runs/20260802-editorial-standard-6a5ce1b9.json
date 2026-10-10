@@ -7,15 +7,32 @@
   "topic": "Tips for Your Gifts editorial research and affiliate standards",
   "audience": "Thoughtful gift buyers",
   "occasion": "Every occasion",
-  "budgetBands": ["all"],
+  "budgetBands": [
+    "all"
+  ],
   "riskClass": "low",
   "draftAuthor": "editorial-writer",
   "startedAt": "2026-08-02T20:00:00.000Z",
-  "completedAt": "2026-08-02T22:00:00.000Z",
+  "completedAt": "2026-09-07T04:34:28.443Z",
   "researchPasses": [
-    { "pass": 1, "materialNoveltyRate": 1, "newCandidates": 0, "newDecisionFactors": 8 },
-    { "pass": 2, "materialNoveltyRate": 0.08, "newCandidates": 0, "newDecisionFactors": 1 },
-    { "pass": 3, "materialNoveltyRate": 0, "newCandidates": 0, "newDecisionFactors": 0 }
+    {
+      "pass": 1,
+      "materialNoveltyRate": 1,
+      "newCandidates": 0,
+      "newDecisionFactors": 8
+    },
+    {
+      "pass": 2,
+      "materialNoveltyRate": 0.08,
+      "newCandidates": 0,
+      "newDecisionFactors": 1
+    },
+    {
+      "pass": 3,
+      "materialNoveltyRate": 0,
+      "newCandidates": 0,
+      "newDecisionFactors": 0
+    }
   ],
   "sources": [
     {
@@ -105,28 +122,36 @@
       "text": "Material affiliate relationships should be clearly and conspicuously disclosed near the endorsement.",
       "risk": "medium",
       "status": "supported",
-      "sourceIds": ["src-ftc-endorsements"]
+      "sourceIds": [
+        "src-ftc-endorsements"
+      ]
     },
     {
       "id": "claim-no-fake-reviews",
       "text": "False or fake reviews and testimonials, including AI-generated examples, are prohibited by the FTC consumer review rule.",
       "risk": "high",
       "status": "supported",
-      "sourceIds": ["src-ftc-reviews"]
+      "sourceIds": [
+        "src-ftc-reviews"
+      ]
     },
     {
       "id": "claim-ai-value",
       "text": "Scaled AI content without added user value can violate Google spam policies.",
       "risk": "medium",
       "status": "supported",
-      "sourceIds": ["src-google-ai"]
+      "sourceIds": [
+        "src-google-ai"
+      ]
     },
     {
       "id": "claim-sponsored-rel",
       "text": "Paid outbound links should use the sponsored relationship value.",
       "risk": "low",
       "status": "supported",
-      "sourceIds": ["src-google-links"]
+      "sourceIds": [
+        "src-google-links"
+      ]
     }
   ],
   "candidates": [],
@@ -142,7 +167,7 @@
   "qa": {
     "passed": true,
     "reviewerRole": "independent-editor",
-    "reviewerId": "standards-red-team",
+    "reviewerId": "codex-release-audit-independent-editor-20260906",
     "receiptPath": "research/reviews/20260802-editorial-standard-6a5ce1b9.qa.v1.json",
     "blockers": [],
     "warnings": []

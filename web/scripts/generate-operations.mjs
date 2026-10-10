@@ -2,7 +2,10 @@ import { createHash } from 'node:crypto';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import process from 'node:process';
-import matter from 'gray-matter';
+import matter from './lib/front-matter.mjs';
+import { affiliateCoverageSchema } from './lib/affiliate-coverage-contract.mjs';
+import { affiliateEnrollmentReadinessSchema, buildAffiliateEnrollmentReadiness } from './lib/affiliate-enrollment-contract.mjs';
+import { buildEditorialReviewQueue } from './lib/editorial-review-queue-contract.mjs';
 import { buildFounderAgenda } from './lib/founder-agenda-contract.mjs';
 import { loadAffiliateLinkState } from './lib/affiliate-link-contract.mjs';
 
@@ -21,6 +24,9 @@ const socialPublicationDir = path.join(root, 'social', 'publications');
 const strategyPath = path.join(root, 'src', 'data', 'strategy.json');
 const growthPath = path.join(root, 'src', 'data', 'growth.json');
 const affiliatePath = path.join(root, 'config', 'affiliate-programs.json');
+const affiliateCoveragePath = path.join(root, 'public', 'affiliate-product-coverage.json');
+const affiliateEnrollmentPath = path.join(root, 'public', 'affiliate-enrollment-readiness.json');
+const affiliateEnrollmentPlanPath = path.join(root, 'config', 'affiliate-enrollment-plans.json');
 const socialChannelsPath = path.join(root, 'config', 'social-channels.json');
 const livePublicationPath = path.join(root, 'config', 'live-publication.json');
 const publicationPolicyPath = path.join(root, 'config', 'publication-policy.json');
@@ -28,14 +34,22 @@ const opportunityPolicyPath = path.join(root, 'config', 'opportunity-scout-polic
 const publicationManifestPath = path.join(root, 'public', 'publication-manifest.json');
 const outputPath = path.join(root, 'src', 'data', 'operations.json');
 
-const runNames = (await fs.readdir(runsDir)).filter((name) => name.endsWith('.json'));
-const runs = await Promise.all(runNames.map(async (name) => JSON.parse(await fs.readFile(path.join(runsDir, name), 'utf8'))));
-const articleNames = (await fs.readdir(blogDir)).filter((name) => name.endsWith('.md'));
-const articles = await Promise.all(articleNames.map(async (name) => matter(await fs.readFile(path.join(blogDir, name), 'utf8')).data));
-const socialNames = (await fs.readdir(socialDir)).filter((name) => name.endsWith('.json'));
+const runNames = (await fs.readdir(runsDir)).filter((name) => name.endsWith('.json')).sort();
+const runRecords = await Promise.all(runNames.map(async (name) => {
+  const raw = await fs.readFile(path.join(runsDir, name));
+  return { name, data: JSON.parse(raw), sha256: createHash('sha256').update(raw).digest('hex') };
+}));
+const runs = runRecords.map((record) => record.data);
+const articleNames = (await fs.readdir(blogDir)).filter((name) => name.endsWith('.md')).sort();
+const articleRecords = await Promise.all(articleNames.map(async (name) => {
+  const raw = await fs.readFile(path.join(blogDir, name));
+  return { name, data: matter(raw.toString('utf8')).data, sha256: createHash('sha256').update(raw).digest('hex') };
+}));
+const articles = articleRecords.map((record) => record.data);
+const socialNames = (await fs.readdir(socialDir)).filter((name) => name.endsWith('.json')).sort();
 const socialPacks = await Promise.all(socialNames.map(async (name) => {
   const raw = await fs.readFile(path.join(socialDir, name));
-  return { ...JSON.parse(raw), sha256: createHash('sha256').update(raw).digest('hex') };
+  return { ...JSON.parse(raw), name, sha256: createHash('sha256').update(raw).digest('hex') };
 }));
 let socialApprovalNames = [];
 try { socialApprovalNames = (await fs.readdir(socialApprovalDir)).filter((name) => name.endsWith('.json')); } catch {}
@@ -71,6 +85,11 @@ const growthRaw = await fs.readFile(growthPath);
 const growth = JSON.parse(growthRaw.toString('utf8'));
 const growthSha256 = createHash('sha256').update(growthRaw).digest('hex');
 const affiliate = JSON.parse(await fs.readFile(affiliatePath, 'utf8'));
+const affiliateCoverage = affiliateCoverageSchema.parse(JSON.parse(await fs.readFile(affiliateCoveragePath, 'utf8')));
+const affiliateEnrollment = affiliateEnrollmentReadinessSchema.parse(JSON.parse(await fs.readFile(affiliateEnrollmentPath, 'utf8')));
+const affiliateEnrollmentPlan = JSON.parse(await fs.readFile(affiliateEnrollmentPlanPath, 'utf8'));
+const expectedAffiliateEnrollment = buildAffiliateEnrollmentReadiness({ affiliate, coverage: affiliateCoverage, plan: affiliateEnrollmentPlan });
+if (JSON.stringify(affiliateEnrollment) !== JSON.stringify(expectedAffiliateEnrollment)) throw new Error('affiliate enrollment readiness is stale or differs from registry, coverage, or plan sources');
 const affiliateLinkState = await loadAffiliateLinkState(root);
 const socialChannelsRaw = await fs.readFile(socialChannelsPath);
 const socialChannels = JSON.parse(socialChannelsRaw.toString('utf8'));
@@ -87,6 +106,13 @@ const affiliateProgramsEnabled = affiliate.programs.filter((program) => program.
 const affiliateProgramsProposed = affiliate.programs.filter((program) => program.status === 'proposed').length;
 const affiliateProgramsFounderApproved = affiliate.programs.filter((program) => program.status === 'founder_approved').length;
 const affiliateLinksLive = affiliateLinkState.counts.activeOverlays;
+const publicationReadyProductLinksCataloged = affiliateCoverage.counts.publicationReadyProductLinksCataloged;
+const publicationReadyPaidLinksVerified = affiliateCoverage.counts.productsWithVerifiedPaidDestination;
+const publicationReadyOrdinaryLinks = Math.max(0, publicationReadyProductLinksCataloged - publicationReadyPaidLinksVerified);
+const productsAssignedToPartnerResearch = affiliateCoverage.counts.productsAssignedToPartnerResearch;
+const productsWithoutPartnerResearch = affiliateCoverage.counts.productsWithoutPartnerResearch;
+const affiliateCoverageByProgram = new Map(affiliateCoverage.programs.map((program) => [program.programId, program]));
+const affiliateEnrollmentByProgram = new Map(affiliateEnrollment.programs.map((program) => [program.programId, program]));
 const affiliateReviewByCandidate = new Map(affiliateLinkState.reviews.map((record) => [record.data.candidateId, record]));
 const affiliateApprovalByCandidate = new Map(affiliateLinkState.approvals.map((record) => [record.data.candidateId, record]));
 const affiliateLinkQueue = affiliateLinkState.candidates.map((record) => {
@@ -105,6 +131,10 @@ const affiliateLinkQueue = affiliateLinkState.candidates.map((record) => {
     destinationHostname: record.data.destination.hostname,
     createdAt: record.data.createdAt,
     createdBy: record.data.createdBy,
+    originSource: record.data.origin.source,
+    originReferenceId: record.data.origin.referenceId,
+    originSourceArtifactPath: record.data.origin.sourceArtifactPath,
+    originSourceSha256: record.data.origin.sourceSha256,
     stage,
     reviewVerdict: review?.data.verdict ?? null,
     reviewPath: review?.path ?? null,
@@ -122,6 +152,24 @@ const affiliateLinkQueue = affiliateLinkState.candidates.map((record) => {
           : 'Run the isolated affiliate evidence editor against this exact candidate SHA-256.'
   };
 });
+const articleRecordByRun = new Map(articleRecords.map((record) => [record.data.researchRun, record]));
+const socialPackByRun = new Map(socialPacks.map((record) => [record.researchRun, record]));
+const editorialReviewQueue = buildEditorialReviewQueue(runRecords
+  .filter((record) => ['drafted', 'qa_failed'].includes(record.data.status))
+  .map((record) => {
+    const articleRecord = articleRecordByRun.get(record.data.runId);
+    if (!articleRecord) throw new Error(`${record.data.runId}: editorial review queue cannot find its article`);
+    const socialPack = socialPackByRun.get(record.data.runId);
+    return {
+      run: record.data,
+      runPath: `research/runs/${record.name}`,
+      runSha256: record.sha256,
+      articlePath: `src/data/blog/${articleRecord.name}`,
+      articleSha256: articleRecord.sha256,
+      socialPath: socialPack ? `social/drafts/${socialPack.name}` : null,
+      socialSha256: socialPack?.sha256 ?? null
+    };
+  }));
 const socialPublished = socialPublications.length;
 const socialApproved = socialApprovals.filter((approval) => approval.status === 'approved' && !publicationByPost.has(approval.postId)).length;
 const socialDrafts = socialPosts.length - socialApprovals.length;
@@ -204,6 +252,7 @@ if (!publicationPolicy.automaticPromotion.enabled) {
 if (ideaCount > 0) alerts.push(`${ideaCount} founder-approved thoughtful-gift idea${ideaCount === 1 ? ' is' : 's are'} ready to start through the research workflow.`);
 if (activeResearchMissions > 0) alerts.push(`${activeResearchMissions} research mission${activeResearchMissions === 1 ? ' is' : 's are'} active; do not start another mission for the same idea.`);
 if (completedResearchMissions > 0) alerts.push(`${completedResearchMissions} research mission${completedResearchMissions === 1 ? ' has' : 's have'} a hash-bound completion receipt and release handoff.`);
+if (editorialReviewQueue.counts.pendingBundles > 0) alerts.push(`${editorialReviewQueue.counts.pendingBundles} article bundle${editorialReviewQueue.counts.pendingBundles === 1 ? '' : 's'} remain blocked in the editorial decision queue; none can self-certify or publish.`);
 
 const sourceDates = [
   strategy.updatedAt,
@@ -272,6 +321,7 @@ const operations = {
   proposedIdeas,
   pairingIdeas,
   recipientFrictionIdeas,
+  editorialReview: editorialReviewQueue,
   researchMissions: {
     total: researchMissions.length,
     active: activeResearchMissions,
@@ -355,19 +405,48 @@ const operations = {
     proposedPrograms: affiliateProgramsProposed,
     founderApprovedPrograms: affiliateProgramsFounderApproved,
     enabledPrograms: affiliateProgramsEnabled,
+    publicationReadyProductLinksCataloged,
+    publicationReadyPaidLinksVerified,
+    publicationReadyOrdinaryLinks,
+    productsAssignedToPartnerResearch,
+    productsWithoutPartnerResearch,
+    productCoverageArtifactPath: '/affiliate-product-coverage.json',
+    productCoverageDefinition: affiliateCoverage.definition,
+    enrollmentReadinessArtifactPath: '/affiliate-enrollment-readiness.json',
+    enrollmentReadinessDefinition: affiliateEnrollment.definition,
+    publicApplicationPacketsReady: affiliateEnrollment.counts.publicApplicationPacketsReady,
+    externalEnrollmentAllowedByRegistry: affiliateEnrollment.counts.externalEnrollmentAllowedByRegistry,
+    externalSubmissionRequiresActionTimeApproval: true,
+    awaitingFounderProgramApproval: affiliateEnrollment.counts.awaitingFounderProgramApproval,
+    externallyEnrolledPrograms: affiliateEnrollment.counts.externallyEnrolled,
+    siteApplicationDescription: affiliateEnrollment.siteProfile.applicationDescription,
+    sensitiveDataPolicy: affiliateEnrollment.siteProfile.sensitiveDataPolicy,
     linkCandidates: affiliateLinkState.counts.candidates,
     linkReviewsPassed: affiliateLinkState.counts.passedReviews,
     linkApprovals: affiliateLinkState.counts.approvals,
     activeOverlays: affiliateLinkState.counts.activeOverlays,
     approvedOverlaySetSha256: publicationManifest.affiliatePosture.approvedOverlaySetSha256,
     linkQueue: affiliateLinkQueue,
-    programs: affiliate.programs.map((program) => ({
+    programs: [...affiliate.programs].sort((left, right) => left.priority - right.priority).map((program) => ({
       id: program.id,
       revision: program.revision,
+      priority: program.priority,
+      coverageRole: program.coverageRole,
       name: program.name,
       status: program.status,
       founderDisposition: program.founderDisposition,
       eligibleArticleSlugs: program.eligibleArticleSlugs,
+      productSelectionMode: program.productSelection.mode,
+      productResearchCandidates: affiliateCoverageByProgram.get(program.id)?.productResearchCandidates ?? 0,
+      verifiedPaidLinks: affiliateCoverageByProgram.get(program.id)?.verifiedPaidLinks ?? 0,
+      enrollmentStage: affiliateEnrollmentByProgram.get(program.id)?.stage ?? 'founder_approval_required',
+      publicApplicationPacketReady: affiliateEnrollmentByProgram.get(program.id)?.publicApplicationPacketReady ?? false,
+      externalEnrollmentAllowedByRegistry: affiliateEnrollmentByProgram.get(program.id)?.externalEnrollmentAllowedByRegistry ?? false,
+      externalSubmissionStillRequiresActionTimeApproval: affiliateEnrollmentByProgram.get(program.id)?.externalSubmissionStillRequiresActionTimeApproval ?? true,
+      applicationPositioning: affiliateEnrollmentByProgram.get(program.id)?.applicationPositioning ?? '',
+      userOnlyInputs: affiliateEnrollmentByProgram.get(program.id)?.userOnlyInputs ?? [],
+      specialRequirements: affiliateEnrollmentByProgram.get(program.id)?.specialRequirements ?? [],
+      stopConditions: affiliateEnrollmentByProgram.get(program.id)?.stopConditions ?? [],
       editorialFit: program.editorialFit,
       limitations: program.limitations,
       sourceCheckedAt: program.sourceCheckedAt,

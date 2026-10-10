@@ -3,17 +3,14 @@
   "receiptId": "20260803-useful-gifts-hard-to-shop-for-adults-ceca335c-qa",
   "runId": "20260803-useful-gifts-hard-to-shop-for-adults-ceca335c",
   "articleSlug": "useful-gifts-for-hard-to-shop-for-adults",
-  "reviewedAt": "2026-08-31T02:37:24.016Z",
+  "reviewedAt": "2026-09-07T04:49:28.813Z",
   "reviewerRole": "independent-editor",
-  "reviewerId": "product-link-independent-editor-20260830",
-  "workflowRunId": "local-product-link-review-20260830",
+  "reviewerId": "codex-parfit-independent-editor-20260906",
+  "workflowRunId": "local-recipient-specialty-copy-review-20260906",
   "verdict": "passed",
-  "evidenceSha256": "a07adc84179acd593190f938bf464a9bb6ec01f0a17e32f4b11d2e9bb920c2b7",
-  "articleSha256": "747cf3828aaacee1363d8ac33658f529f7e1e74871549160715d2ae5a5eb9bb3",
+  "evidenceSha256": "d2e2ab1623ab6cb3e7d50a158886b949b180a3ae2cdd793d1bd1a2de1a393bf8",
+  "articleSha256": "be2d83199f624a2391ed1ed8cbf3c4e57db2e76885c625e06590832a47607e9c",
   "socialSha256": "7f6ec10e0b4052c6cbf360492a224749ffe76b9bf4c38c477c1e9939c61db617",
   "blockers": [],
-  "warnings": [
-    "Recheck availability, return terms, and recall databases at the external release gate.",
-    "Keep all links non-affiliate until a founder-approved program is enabled."
-  ]
+  "warnings": []
 }

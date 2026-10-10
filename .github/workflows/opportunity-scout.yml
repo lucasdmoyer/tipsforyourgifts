@@ -66,6 +66,11 @@ jobs:
           path: ${{ steps.scout.outputs.mission_path }}
           if-no-files-found: error
           retention-days: 30
+      - name: Verify autonomous agent credential
+        if: steps.scout.outputs.should_scout == 'true'
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: node web/scripts/require-openai-api-key.mjs
       - name: Run the autonomous public opportunity desk
         if: steps.scout.outputs.should_scout == 'true'
         uses: openai/codex-action@v1
@@ -169,6 +174,10 @@ jobs:
           npm run validate
           source_patch_sha="$(git diff --binary HEAD -- "$MISSION_PATH" "web/research/opportunities/$MISSION_ID.json" web/src/data/strategy.json | shasum -a 256 | cut -d ' ' -f 1)"
           echo "source_patch_sha=$source_patch_sha" >> "$GITHUB_OUTPUT"
+      - name: Verify autonomous agent credential
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: node web/scripts/require-openai-api-key.mjs
       - name: Run an independent opportunity red team
         uses: openai/codex-action@v1
         with:

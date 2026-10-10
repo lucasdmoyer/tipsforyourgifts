@@ -6,18 +6,23 @@ Affiliate revenue can fund the publication only if commission never changes whic
 
 ## Current decision queue
 
-Two public candidates are recorded but disabled:
+Five public candidates are recorded and disabled. Every current publication-ready product is assigned to at least one partner-research queue, and the four broad-catalog programs automatically inherit future publication-ready products without a manual article allowlist. Assignment is not a claim that the exact item is sold, eligible, or paid by that partner:
 
 - [Bookshop.org US media affiliate](https://bookshop.org/affiliates/profile/introduction) is the narrower first candidate for book anchors and can align with the publication's interest in independent bookstores. It does not solve merchant coverage for every companion product; [the official program explanation](https://support.bookshop.org/en/support/solutions/articles/65000191390-can-you-explain-bookshop-org-s-affiliate-program-) remains the activation source.
 - [Amazon Associates US](https://affiliate-program.amazon.com/) is the broader-catalog candidate. Its [operating agreement](https://affiliate-program.amazon.com/help/operating/agreement) requires program-provided link formats and current compliance review, and broad coverage raises a stronger editorial-bias risk.
+- [Target Partners US](https://partners.target.com/) is a retailer-alternative candidate. The operative member contract still needs portal-level review before acceptance, and near matches cannot replace the reviewed product.
+- [Walmart Creator US](https://creator.walmart.com/) is a broad-retailer alternative whose current eligibility, public-social-account, identity, payout, arbitration, and disclosure requirements remain founder-only onboarding decisions.
+- [eBay Partner Network US](https://partnernetwork.ebay.com/) is a marketplace contingency for exact hard-to-find items. It remains paused from activation unless eBay supplies the required written approval for this AI-assisted promotion model.
 
 The registry records no expected revenue, invented tracking identity, exact price, or account claim. Public terms change; the source-review expiry is a mandatory recheck point, not a guarantee.
+
+`web/config/affiliate-enrollment-plans.json` contains one revision-bound, non-sensitive application packet for every registry program. The generated `web/public/affiliate-enrollment-readiness.json` artifact separates reusable public site facts from labels for credentials, identity, tax, payout, social-account, or written-approval work that Lucas must complete inside the partner portal. It stores no private values, accepts no terms, and cannot submit a form. The current ledger has five complete public packets, one program eligible for external-enrollment planning subject to fresh action-time approval, four awaiting program approval, zero externally verified accounts, and zero enabled programs.
 
 ### 2026-08-16 Bookshop.org pilot evaluation
 
 Bookshop.org remains the preferred first narrow pilot, but its decision state is `evidence_hold_until_baseline_and_onboarding`. The current official program page says media publications and bloggers may apply, that an account goes through verification, and that the affiliate shares program-generated links. The current official support material says non-bookstore attribution lasts 48 hours, uses last-touch attribution, and requires disclosure whenever a commission-bearing link is used. Bookshop.org also exposes affiliate reporting, but the repository will accept only an aggregate founder export.
 
-The pilot stays limited to one already-qualified book anchor in one reviewed guide. It must not change product scores, pair scores, placement, copy, or the non-book companion link. Success means a separately observed improvement in aggregate affiliate conversion or revenue after a complete pre-pilot traffic baseline; ordinary engagement must not deteriorate. Stop the pilot if the recommendation no longer works without the paid link, the exact edition cannot be verified, disclosure or sponsored-link behavior fails, or reporting requires customer-level data.
+The enrollment scope stays limited to ten already-qualified book anchors in one reviewed guide. The first live paid-link pilot must still begin with one independently reviewed anchor, then expand one exact link at a time only after each link passes the same review and preview gates. It must not change product scores, pair scores, placement, copy, or the non-book companion link. Success means a separately observed improvement in aggregate affiliate conversion or revenue after a complete pre-pilot traffic baseline; ordinary engagement must not deteriorate. Stop the pilot if the recommendation no longer works without the paid link, the exact edition cannot be verified, disclosure or sponsored-link behavior fails, or reporting requires customer-level data.
 
 No account, terms acceptance, tracking identity, affiliate URL, or commission is recorded by this evaluation. The program remains disabled until all external onboarding evidence exists and the baseline gate has been satisfied. An ordinary merchant link is not an affiliate link and must never be described as one.
 
@@ -79,4 +84,4 @@ The public publication manifest records every active overlay's candidate, indepe
 
 ## Current link posture
 
-The committed registry currently has no enabled program, no exact link candidates, no independent link receipts, no founder link approvals, and no active overlays. The workflows are dormant and create no account, credential, tracking identity, affiliate URL, external post, Firebase preview, or production deployment on their own.
+The committed registry currently has no enabled program, no exact link candidates, no independent link receipts, no founder link approvals, and no active overlays. Five application packets are prepared, but only Bookshop is founder-approved for external enrollment. The workflows and packets create no account, credential, tracking identity, affiliate URL, external post, Firebase preview, or production deployment on their own.
