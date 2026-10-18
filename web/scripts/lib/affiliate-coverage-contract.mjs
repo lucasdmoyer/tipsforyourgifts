@@ -9,7 +9,7 @@ const programCoverageSchema = z.object({
   programId: slug,
   programRevision: z.number().int().positive(),
   priority: z.number().int().positive(),
-  status: z.enum(['proposed', 'founder_approved', 'enabled', 'paused', 'rejected']),
+  status: z.enum(['proposed', 'founder_approved', 'externally_verified', 'enabled', 'paused', 'rejected']),
   selectionMode: z.enum(['explicit_products', 'all_products_in_eligible_articles', 'all_publication_ready_products']),
   eligibleArticleCount: z.number().int().nonnegative(),
   productResearchCandidates: z.number().int().nonnegative(),

@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "registryUpdatedAt": "2026-10-10T18:00:00.000Z",
+  "registryUpdatedAt": "2026-10-18T23:50:38.000Z",
   "planUpdatedAt": "2026-10-10T18:00:00.000Z",
   "definition": "Application packets contain public site facts, non-sensitive positioning, and labels for portal-only founder inputs. They do not create accounts, accept terms, submit forms, assert acceptance, store credentials, or authorize paid links.",
   "siteProfile": {
@@ -82,7 +82,7 @@
     "publicApplicationPacketsReady": 5,
     "externalEnrollmentAllowedByRegistry": 1,
     "awaitingFounderProgramApproval": 4,
-    "externallyEnrolled": 0,
+    "externallyEnrolled": 1,
     "enabledPrograms": 0,
     "productResearchCandidates": 60,
     "verifiedPaidLinks": 0
@@ -90,7 +90,7 @@
   "programs": [
     {
       "programId": "bookshop-org-us-media",
-      "programRevision": 3,
+      "programRevision": 4,
       "applicationPositioning": "Lead with the reviewed book anchors and the publication's independent, explanation-first editorial approach. Do not imply that Bookshop covers the non-book companion products.",
       "userOnlyInputs": [
         "account_login",
@@ -116,13 +116,13 @@
       ],
       "programName": "Bookshop.org US media affiliate",
       "priority": 1,
-      "registryStatus": "founder_approved",
-      "stage": "external_enrollment_required",
+      "registryStatus": "externally_verified",
+      "stage": "activation_evidence_required",
       "publicApplicationPacketReady": true,
       "externalEnrollmentAllowedByRegistry": true,
       "externalSubmissionStillRequiresActionTimeApproval": true,
-      "externalAccountEstablished": false,
-      "trackingIdentityConfigured": false,
+      "externalAccountEstablished": true,
+      "trackingIdentityConfigured": true,
       "productResearchProductKeys": [
         "read-it-then-play-it-gift-pairs:a-city-on-mars-paperback",
         "read-it-then-play-it-gift-pairs:because-internet-paperback",
@@ -140,7 +140,7 @@
       "verifiedPaidLinks": 0,
       "programHomepageUrl": "https://bookshop.org/affiliates/profile/introduction",
       "termsUrl": "https://bookshop.org/info/terms-of-use",
-      "nextGate": "Authenticate the Bookshop account, submit the prepared profile for verification, and record only Bookshop-issued tracking after acceptance; account status remains unverified until external evidence is captured."
+      "nextGate": "Review and explicitly accept the current affiliate terms, registered production site, allowed destination domain, Bookshop-issued tracking behavior, disclosure, and aggregate reporting boundary before activation; no paid link is live."
     },
     {
       "programId": "amazon-associates-us",

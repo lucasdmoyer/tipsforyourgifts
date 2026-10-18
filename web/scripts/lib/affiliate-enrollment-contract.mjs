@@ -97,7 +97,7 @@ const stageSchema = z.enum([
 const readinessProgramSchema = planProgramSchema.extend({
   programName: publicSafeText(8),
   priority: z.number().int().positive(),
-  registryStatus: z.enum(['proposed', 'founder_approved', 'enabled', 'paused', 'rejected']),
+  registryStatus: z.enum(['proposed', 'founder_approved', 'externally_verified', 'enabled', 'paused', 'rejected']),
   stage: stageSchema,
   publicApplicationPacketReady: z.literal(true),
   externalEnrollmentAllowedByRegistry: z.boolean(),
@@ -141,7 +141,7 @@ export const affiliateEnrollmentReadinessSchema = z.object({
     if (program.priority !== index + 1) context.addIssue({ code: z.ZodIssueCode.custom, path: ['programs', index, 'priority'], message: 'readiness priorities must be contiguous and sorted' });
     const expectedStage = stageFor(program);
     if (program.stage !== expectedStage) context.addIssue({ code: z.ZodIssueCode.custom, path: ['programs', index, 'stage'], message: `stage must be ${expectedStage}` });
-    const expectedEnrollmentAllowed = ['founder_approved', 'enabled'].includes(program.registryStatus);
+    const expectedEnrollmentAllowed = ['founder_approved', 'externally_verified', 'enabled'].includes(program.registryStatus);
     if (program.externalEnrollmentAllowedByRegistry !== expectedEnrollmentAllowed) context.addIssue({ code: z.ZodIssueCode.custom, path: ['programs', index, 'externalEnrollmentAllowedByRegistry'], message: 'enrollment permission must match registry status' });
     if (program.trackingIdentityConfigured && !program.externalAccountEstablished) context.addIssue({ code: z.ZodIssueCode.custom, path: ['programs', index, 'trackingIdentityConfigured'], message: 'tracking identity requires an external account' });
     if (program.registryStatus === 'proposed' && (program.externalAccountEstablished || program.trackingIdentityConfigured)) context.addIssue({ code: z.ZodIssueCode.custom, path: ['programs', index], message: 'proposed state cannot claim account or tracking setup' });
@@ -189,6 +189,7 @@ export const affiliateEnrollmentReadinessSchema = z.object({
 function stageFor(program) {
   const status = program.status ?? program.registryStatus;
   if (status === 'enabled') return 'exact_link_research';
+  if (status === 'externally_verified') return 'activation_evidence_required';
   if (status === 'founder_approved') {
     const accountEstablished = program.account?.externalAccountEstablished ?? program.externalAccountEstablished;
     return accountEstablished ? 'activation_evidence_required' : 'external_enrollment_required';
@@ -261,7 +262,7 @@ export function buildAffiliateEnrollmentReadiness({ affiliate, coverage, plan: i
         registryStatus: program.status,
         stage: stageFor(program),
         publicApplicationPacketReady: true,
-        externalEnrollmentAllowedByRegistry: ['founder_approved', 'enabled'].includes(program.status),
+        externalEnrollmentAllowedByRegistry: ['founder_approved', 'externally_verified', 'enabled'].includes(program.status),
         externalSubmissionStillRequiresActionTimeApproval: true,
         externalAccountEstablished: program.account.externalAccountEstablished,
         trackingIdentityConfigured: program.account.trackingIdentityConfigured,

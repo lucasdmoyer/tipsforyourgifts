@@ -33,9 +33,24 @@ const options = { publishedSlugs, publishedProductsByArticle, asOfDate: '2026-08
 
 function copy(value) { return structuredClone(value); }
 function programWithStatus(model, status) {
-  const program = model.programs.find((candidate) => candidate.status === status);
+  let program = model.programs.find((candidate) => candidate.status === status);
+  if (!program && status === 'founder_approved') {
+    program = model.programs.find((candidate) => candidate.status === 'proposed');
+    if (program) {
+      program.status = 'founder_approved';
+      program.founderDisposition = 'approved';
+    }
+  }
   if (!program) throw new Error(`fixture needs one ${status} affiliate program`);
   return program;
+}
+function addVerificationEvidence(program) {
+  program.account.externalAccountEstablished = true;
+  program.account.trackingIdentityConfigured = true;
+  program.account.verificationStatus = 'verified';
+  program.account.verificationObservedAt = '2026-08-03T09:00:00.000Z';
+  program.account.publicTrackingIdentity = '129750';
+  program.account.publicStorefrontUrl = 'https://bookshop.org/shop/tipsforyourgifts';
 }
 function expectFailure(label, mutate, expectedText) {
   const model = copy(base);
@@ -69,8 +84,12 @@ expectFailure('all-article selection rejects explicit product IDs', (model) => {
 expectFailure('automatic publication coverage rejects a manual article allowlist', (model) => { model.programs[1].eligibleArticleSlugs = ['gifts-for-a-golf-friend']; }, 'cannot carry a manual article allowlist');
 expectFailure('explicit selection requires an article scope', (model) => { model.programs[0].eligibleArticleSlugs = []; }, 'requires at least one eligible article');
 expectFailure('rejects unknown articles', (model) => { model.programs[0].eligibleArticleSlugs = ['invented-guide']; }, 'unknown publication-ready article');
-expectFailure('proposals cannot contain tracking setup', (model) => { programWithStatus(model, 'proposed').trackingParameterKeys = ['tag']; }, 'cannot contain activation evidence');
-expectFailure('founder-approved programs cannot contain tracking setup', (model) => { programWithStatus(model, 'founder_approved').trackingParameterKeys = ['tag']; }, 'cannot contain unreviewed activation evidence');
+expectFailure('proposals cannot contain tracking setup', (model) => { programWithStatus(model, 'proposed').trackingParameterKeys = ['tag']; }, 'cannot contain verification, activation, or tracking evidence');
+expectFailure('founder-approved programs cannot contain tracking setup', (model) => { programWithStatus(model, 'founder_approved').trackingParameterKeys = ['tag']; }, 'cannot contain unreviewed verification, activation, or tracking evidence');
+expectFailure('externally verified requires complete evidence', (model) => {
+  const program = programWithStatus(model, 'founder_approved');
+  program.status = 'externally_verified';
+}, 'requires observed account');
 expectFailure('enabled flag must match status', (model) => { programWithStatus(model, 'proposed').enabled = true; }, 'enabled flag must exactly match');
 expectFailure('enabled requires account', (model) => {
   const program = programWithStatus(model, 'founder_approved');
@@ -81,22 +100,24 @@ expectFailure('enabled requires account', (model) => {
 expectFailure('enabled requires terms evidence', (model) => {
   const program = programWithStatus(model, 'founder_approved');
   program.status = 'enabled'; program.enabled = true; program.founderDisposition = 'approved';
-  program.account.externalAccountEstablished = true; program.account.trackingIdentityConfigured = true;
+  addVerificationEvidence(program);
   program.allowedDomains = ['bookshop.org']; program.registeredSites = ['https://tipsforyourgifts.web.app'];
   program.trackingParameterKeys = ['affiliate']; program.requiredDisclosure = model.policy.defaultDisclosure;
 }, 'terms acceptance evidence');
 expectFailure('enabled requires approved disclosure', (model) => {
   const program = programWithStatus(model, 'founder_approved');
   program.status = 'enabled'; program.enabled = true; program.founderDisposition = 'approved';
-  program.account = { externalAccountEstablished: true, trackingIdentityConfigured: true, termsAcceptedByFounder: true, termsAcceptedAt: '2026-08-03T10:00:00.000Z', acceptanceEvidenceReference: 'https://github.com/lucasdmoyer/tipsforyourgifts/issues/1', reportingExportApproved: false };
+  addVerificationEvidence(program);
+  Object.assign(program.account, { termsAcceptedByFounder: true, termsAcceptedAt: '2026-08-03T10:00:00.000Z', acceptanceEvidenceReference: 'https://github.com/lucasdmoyer/tipsforyourgifts/issues/1', reportingExportApproved: false });
   program.allowedDomains = ['bookshop.org']; program.registeredSites = ['https://tipsforyourgifts.web.app']; program.trackingParameterKeys = ['affiliate'];
 }, 'approved disclosure');
 expectFailure('enabled terms review expires', (model) => {
   const program = programWithStatus(model, 'founder_approved');
   program.status = 'enabled'; program.enabled = true; program.founderDisposition = 'approved';
-  program.account = { externalAccountEstablished: true, trackingIdentityConfigured: true, termsAcceptedByFounder: true, termsAcceptedAt: '2026-08-03T10:00:00.000Z', acceptanceEvidenceReference: 'https://github.com/lucasdmoyer/tipsforyourgifts/issues/1', reportingExportApproved: false };
+  addVerificationEvidence(program);
+  Object.assign(program.account, { termsAcceptedByFounder: true, termsAcceptedAt: '2026-08-03T10:00:00.000Z', acceptanceEvidenceReference: 'https://github.com/lucasdmoyer/tipsforyourgifts/issues/1', reportingExportApproved: false });
   program.allowedDomains = ['bookshop.org']; program.registeredSites = ['https://tipsforyourgifts.web.app']; program.trackingParameterKeys = ['affiliate']; program.requiredDisclosure = model.policy.defaultDisclosure;
   program.sourceReviewExpiresAt = '2026-08-02';
 }, 'terms review has expired');
 
-console.log(JSON.stringify({ affiliateNegativeGateTests: 'passed', checks: 19, founderApprovedDisabledCheck: 'passed' }, null, 2));
+console.log(JSON.stringify({ affiliateNegativeGateTests: 'passed', checks: 20, founderApprovedDisabledCheck: 'passed', externallyVerifiedDisabledCheck: 'passed' }, null, 2));

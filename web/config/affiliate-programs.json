@@ -1,14 +1,14 @@
 {
   "schemaVersion": "1.1.0",
-  "updatedAt": "2026-10-10T18:00:00.000Z",
+  "updatedAt": "2026-10-18T23:50:38.000Z",
   "programs": [
     {
       "id": "bookshop-org-us-media",
-      "revision": 3,
+      "revision": 4,
       "priority": 1,
       "coverageRole": "category_specialist",
       "name": "Bookshop.org US media affiliate",
-      "status": "founder_approved",
+      "status": "externally_verified",
       "enabled": false,
       "founderDisposition": "approved",
       "programHomepageUrl": "https://bookshop.org/affiliates/profile/introduction",
@@ -43,15 +43,20 @@
       "trackingParameterKeys": [],
       "requiredDisclosure": null,
       "account": {
-        "externalAccountEstablished": false,
-        "trackingIdentityConfigured": false,
+        "externalAccountEstablished": true,
+        "trackingIdentityConfigured": true,
         "termsAcceptedByFounder": false,
         "termsAcceptedAt": null,
         "acceptanceEvidenceReference": null,
-        "reportingExportApproved": false
+        "reportingExportApproved": false,
+        "verificationStatus": "verified",
+        "verificationObservedAt": "2026-10-18T23:50:38.000Z",
+        "publicTrackingIdentity": "129750",
+        "publicStorefrontUrl": "https://bookshop.org/shop/tipsforyourgifts",
+        "weeklyReportsEnabled": true
       },
       "priceFeedAuthorized": false,
-      "nextGate": "Authenticate the Bookshop account, submit the prepared profile for verification, and record only Bookshop-issued tracking after acceptance; account status remains unverified until external evidence is captured."
+      "nextGate": "Review and explicitly accept the current affiliate terms, registered production site, allowed destination domain, Bookshop-issued tracking behavior, disclosure, and aggregate reporting boundary before activation; no paid link is live."
     },
     {
       "id": "amazon-associates-us",

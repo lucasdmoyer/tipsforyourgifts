@@ -15,7 +15,7 @@
   "programs": [
     {
       "programId": "bookshop-org-us-media",
-      "programRevision": 3,
+      "programRevision": 4,
       "applicationPositioning": "Lead with the reviewed book anchors and the publication's independent, explanation-first editorial approach. Do not imply that Bookshop covers the non-book companion products.",
       "userOnlyInputs": [
         "account_login",

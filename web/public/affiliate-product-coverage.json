@@ -1,7 +1,7 @@
 {
   "schemaVersion": "1.0.0",
-  "registrySha256": "37d70d043c0822ec8db3ffd7d45ed7c67af989f65e17f35e2becc8dfb12d8f61",
-  "registryUpdatedAt": "2026-10-10T18:00:00.000Z",
+  "registrySha256": "c59ecfc2114125b942d61b185d2d50a7ae89cd86b1836f51f699000b478ac668",
+  "registryUpdatedAt": "2026-10-18T23:50:38.000Z",
   "definition": "Program assignments are research queues only. They do not assert exact-product availability, account acceptance, tracking validity, or commission eligibility.",
   "counts": {
     "publicationReadyProductLinksCataloged": 60,
@@ -12,9 +12,9 @@
   "programs": [
     {
       "programId": "bookshop-org-us-media",
-      "programRevision": 3,
+      "programRevision": 4,
       "priority": 1,
-      "status": "founder_approved",
+      "status": "externally_verified",
       "selectionMode": "explicit_products",
       "eligibleArticleCount": 1,
       "productResearchCandidates": 10,

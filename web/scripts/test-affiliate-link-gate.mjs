@@ -37,6 +37,11 @@ async function makeFixture() {
   program.account = {
     externalAccountEstablished: true,
     trackingIdentityConfigured: true,
+    verificationStatus: 'verified',
+    verificationObservedAt: '2026-08-05T09:30:00.000Z',
+    publicTrackingIdentity: '129750',
+    publicStorefrontUrl: 'https://bookshop.org/shop/tipsforyourgifts',
+    weeklyReportsEnabled: true,
     termsAcceptedByFounder: true,
     termsAcceptedAt: '2026-08-05T10:00:00.000Z',
     acceptanceEvidenceReference: 'https://github.com/lucasdmoyer/tipsforyourgifts/issues/42',
@@ -74,7 +79,7 @@ async function writeJson(root, relative, value) {
 async function addReviewAndApproval(root, candidate, overrides = {}) {
   const candidateRaw = await writeJson(root, `affiliate/candidates/${candidate.candidateId}.json`, candidate);
   const review = {
-    schemaVersion: '1.2.0',
+    schemaVersion: '1.3.0',
     reviewId: `${candidate.candidateId}-review`,
     candidateId: candidate.candidateId,
     candidatePath: `affiliate/candidates/${candidate.candidateId}.json`,
@@ -83,10 +88,17 @@ async function addReviewAndApproval(root, candidate, overrides = {}) {
     reviewedAt: '2026-08-06T11:00:00.000Z',
     verdict: 'passed',
     destination: {
+      observationMethod: 'automated_fetch',
       httpStatus: 200,
       resolvedUrl: candidate.destination.paidUrl,
       resolvedHostname: candidate.destination.hostname,
       verifiedAt: '2026-08-06T11:00:00.000Z'
+    },
+    availability: {
+      status: 'available_for_purchase',
+      observedAt: '2026-08-06T11:00:00.000Z',
+      purchaseActionLabel: 'Add to cart',
+      evidenceUrl: candidate.destination.paidUrl
     },
     productIdentityEvidenceUrl: candidate.destination.productIdentityEvidenceUrl,
     trackingIdentityEvidence: {
@@ -104,6 +116,7 @@ async function addReviewAndApproval(root, candidate, overrides = {}) {
       trackingKeysApproved: true,
       trackingIdentityMatched: true,
       trackingPreserved: true,
+      purchaseActionAvailable: true,
       editorialRankingUntouched: true,
       disclosureWillRender: true,
       recommendationWorksWithoutPaidLink: true,
@@ -169,6 +182,11 @@ const pendingCandidate = await candidateFor(pendingRoot);
 await writeJson(pendingRoot, `affiliate/candidates/${pendingCandidate.candidateId}.json`, pendingCandidate);
 assert.equal((await loadAffiliateLinkState(pendingRoot, { asOfDate: '2026-08-10' })).counts.activeOverlays, 0, 'candidate alone cannot render');
 
+const unavailableRoot = await makeFixture();
+const unavailableCandidate = await candidateFor(unavailableRoot);
+await addReviewAndApproval(unavailableRoot, unavailableCandidate, { review: { availability: { status: 'unavailable', observedAt: '2026-08-06T11:00:00.000Z', purchaseActionLabel: null, evidenceUrl: unavailableCandidate.destination.paidUrl } } });
+await assert.rejects(() => loadAffiliateLinkState(unavailableRoot, { asOfDate: '2026-08-10' }), /passing review requires observed purchase availability/);
+
 const staleArticleRoot = await makeFixture();
 const staleArticleCandidate = await candidateFor(staleArticleRoot);
 await addReviewAndApproval(staleArticleRoot, staleArticleCandidate);
@@ -222,4 +240,4 @@ disabledProgram.enabled = false;
 await fs.writeFile(disabledRegistryPath, `${JSON.stringify(disabledRegistry, null, 2)}\n`);
 await assert.rejects(() => candidateFor(disabledRoot), /program is not enabled/);
 
-console.log(JSON.stringify({ affiliateLinkGateTests: 'passed', checks: 13, founderAttestedProvenance: 'passed', trackingIdentityEvidenceBinding: 'passed', broadPublicationCoverage: 'passed', approvedOverlays: cleanState.counts.activeOverlays, sourceEditorialArtifactsMutated: false }, null, 2));
+console.log(JSON.stringify({ affiliateLinkGateTests: 'passed', checks: 14, founderAttestedProvenance: 'passed', purchaseAvailabilityGate: 'passed', trackingIdentityEvidenceBinding: 'passed', broadPublicationCoverage: 'passed', approvedOverlays: cleanState.counts.activeOverlays, sourceEditorialArtifactsMutated: false }, null, 2));

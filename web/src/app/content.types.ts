@@ -160,6 +160,7 @@ export interface Operations {
   affiliateProgramsEnabled: number;
   affiliateProgramsProposed: number;
   affiliateProgramsFounderApproved: number;
+  affiliateProgramsExternallyVerified: number;
   affiliateLinksLive: number;
   socialDrafts: number;
   socialApproved: number;
@@ -265,6 +266,7 @@ export interface Operations {
   affiliate: {
     proposedPrograms: number;
     founderApprovedPrograms: number;
+    externallyVerifiedPrograms: number;
     enabledPrograms: number;
     publicationReadyProductLinksCataloged: number;
     publicationReadyPaidLinksVerified: number;
@@ -319,7 +321,7 @@ export interface Operations {
       priority: number;
       coverageRole: 'category_specialist' | 'broad_catalog' | 'retailer_alternative' | 'marketplace_contingency';
       name: string;
-      status: 'proposed' | 'founder_approved' | 'enabled' | 'paused' | 'rejected';
+      status: 'proposed' | 'founder_approved' | 'externally_verified' | 'enabled' | 'paused' | 'rejected';
       founderDisposition: 'proposed' | 'approved' | 'paused' | 'rejected';
       eligibleArticleSlugs: string[];
       productSelectionMode: 'explicit_products' | 'all_products_in_eligible_articles' | 'all_publication_ready_products';
@@ -329,6 +331,12 @@ export interface Operations {
       publicApplicationPacketReady: boolean;
       externalEnrollmentAllowedByRegistry: boolean;
       externalSubmissionStillRequiresActionTimeApproval: true;
+      externalAccountEstablished: boolean;
+      trackingIdentityConfigured: boolean;
+      verificationStatus: 'not_started' | 'requested' | 'verified';
+      publicTrackingIdentity: string | null;
+      publicStorefrontUrl: string | null;
+      weeklyReportsEnabled: boolean;
       applicationPositioning: string;
       userOnlyInputs: Array<'account_login' | 'operator_identity_contact' | 'tax_profile_if_requested' | 'payout_profile_if_requested' | 'public_social_account_selection' | 'ai_tools_written_approval_request'>;
       specialRequirements: string[];

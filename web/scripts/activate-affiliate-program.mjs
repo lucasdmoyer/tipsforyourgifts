@@ -35,7 +35,7 @@ if (args['founder-login'] !== model.policy.founderApproverLogin) throw new Error
 const program = model.programs.find((entry) => entry.id === programId);
 if (!program) throw new Error(`Unknown affiliate program: ${programId}`);
 if (program.revision !== expectedRevision) throw new Error(`${program.id} is revision ${program.revision}, not expected revision ${expectedRevision}`);
-if (program.status !== 'founder_approved' || program.founderDisposition !== 'approved' || program.enabled) throw new Error(`${program.id} is not a disabled founder-approved program`);
+if (program.status !== 'externally_verified' || program.founderDisposition !== 'approved' || program.enabled) throw new Error(`${program.id} is not a disabled externally verified program`);
 
 const now = new Date();
 if (Date.parse(termsAcceptedAt) > now.valueOf()) throw new Error('terms acceptance cannot be recorded in the future');
@@ -50,8 +50,7 @@ program.registeredSites = ['https://tipsforyourgifts.web.app/'];
 program.trackingParameterKeys = trackingParameterKeys;
 program.requiredDisclosure = model.policy.defaultDisclosure;
 program.account = {
-  externalAccountEstablished: true,
-  trackingIdentityConfigured: true,
+  ...program.account,
   termsAcceptedByFounder: true,
   termsAcceptedAt: new Date(termsAcceptedAt).toISOString(),
   acceptanceEvidenceReference: evidenceUrl.toString(),

@@ -28,7 +28,7 @@ for (const entry of registry.programs) {
 const program = registry.programs.find((entry) => entry.id === programId);
 program.revision = 2; program.status = 'enabled'; program.enabled = true; program.founderDisposition = 'approved';
 program.allowedDomains = ['bookshop.org']; program.registeredSites = ['https://tipsforyourgifts.web.app/']; program.trackingParameterKeys = ['affiliate']; program.requiredDisclosure = registry.policy.defaultDisclosure;
-program.account = { externalAccountEstablished: true, trackingIdentityConfigured: true, termsAcceptedByFounder: true, termsAcceptedAt: '2026-08-05T10:00:00.000Z', acceptanceEvidenceReference: 'https://github.com/lucasdmoyer/tipsforyourgifts/issues/42', reportingExportApproved: false };
+program.account = { externalAccountEstablished: true, trackingIdentityConfigured: true, verificationStatus: 'verified', verificationObservedAt: '2026-08-05T09:30:00.000Z', publicTrackingIdentity: '129750', publicStorefrontUrl: 'https://bookshop.org/shop/tipsforyourgifts', weeklyReportsEnabled: true, termsAcceptedByFounder: true, termsAcceptedAt: '2026-08-05T10:00:00.000Z', acceptanceEvidenceReference: 'https://github.com/lucasdmoyer/tipsforyourgifts/issues/42', reportingExportApproved: false };
 registry.updatedAt = '2026-08-05T10:00:00.000Z';
 await fs.writeFile(path.join(root, 'config', 'affiliate-programs.json'), `${JSON.stringify(registry, null, 2)}\n`);
 const articleRaw = await fs.readFile(path.join(root, 'src', 'data', 'blog', `${articleSlug}.md`));
@@ -167,7 +167,8 @@ await fs.rm(path.join(root, 'affiliate', 'reviews', `${candidateId}-review.json`
 const passedReview = affiliateLinkReviewSchema.parse({
   ...failedReview,
   verdict: 'passed',
-  destination: { httpStatus: 200, resolvedUrl: candidate.destination.paidUrl, resolvedHostname: 'bookshop.org', verifiedAt: '2026-08-06T11:00:00.000Z' },
+  destination: { observationMethod: 'automated_fetch', httpStatus: 200, resolvedUrl: candidate.destination.paidUrl, resolvedHostname: 'bookshop.org', verifiedAt: '2026-08-06T11:00:00.000Z' },
+  availability: { status: 'available_for_purchase', observedAt: '2026-08-06T11:00:00.000Z', purchaseActionLabel: 'Add to cart', evidenceUrl: candidate.destination.paidUrl },
   checks: Object.fromEntries(Object.keys(failedReview.checks).map((key) => [key, true])),
   blockers: []
 });

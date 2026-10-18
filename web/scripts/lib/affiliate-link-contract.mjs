@@ -104,6 +104,7 @@ const reviewCheckSchema = z.object({
   trackingKeysApproved: z.boolean(),
   trackingIdentityMatched: z.boolean(),
   trackingPreserved: z.boolean(),
+  purchaseActionAvailable: z.boolean(),
   editorialRankingUntouched: z.boolean(),
   disclosureWillRender: z.boolean(),
   recommendationWorksWithoutPaidLink: z.boolean(),
@@ -111,7 +112,7 @@ const reviewCheckSchema = z.object({
 }).strict();
 
 export const affiliateLinkReviewSchema = z.object({
-  schemaVersion: z.literal('1.2.0'),
+  schemaVersion: z.literal('1.3.0'),
   reviewId: slugSchema,
   candidateId: slugSchema,
   candidatePath: z.string().regex(/^affiliate\/candidates\/[a-z0-9]+(?:-[a-z0-9]+)*\.json$/),
@@ -120,10 +121,17 @@ export const affiliateLinkReviewSchema = z.object({
   reviewedAt: z.string().datetime(),
   verdict: z.enum(['passed', 'failed']),
   destination: z.object({
+    observationMethod: z.enum(['automated_fetch', 'independent_browser_observation']),
     httpStatus: z.number().int().min(100).max(599).nullable(),
     resolvedUrl: httpsUrlSchema.nullable(),
     resolvedHostname: z.string().regex(/^[a-z0-9.-]+$/).nullable(),
     verifiedAt: z.string().datetime().nullable()
+  }).strict(),
+  availability: z.object({
+    status: z.enum(['available_for_purchase', 'unavailable', 'unknown']),
+    observedAt: z.string().datetime().nullable(),
+    purchaseActionLabel: z.string().min(2).max(120).nullable(),
+    evidenceUrl: httpsUrlSchema.nullable()
   }).strict(),
   productIdentityEvidenceUrl: httpsUrlSchema,
   trackingIdentityEvidence: z.object({
@@ -138,8 +146,12 @@ export const affiliateLinkReviewSchema = z.object({
   if (review.verdict === 'passed') {
     if (checkValues.some((value) => !value)) context.addIssue({ code: z.ZodIssueCode.custom, path: ['checks'], message: 'passing review requires every check to pass' });
     if (review.blockers.length > 0) context.addIssue({ code: z.ZodIssueCode.custom, path: ['blockers'], message: 'passing review cannot contain blockers' });
-    if (review.destination.httpStatus === null || review.destination.resolvedUrl === null || review.destination.resolvedHostname === null || review.destination.verifiedAt === null) {
+    if (review.destination.resolvedUrl === null || review.destination.resolvedHostname === null || review.destination.verifiedAt === null) {
       context.addIssue({ code: z.ZodIssueCode.custom, path: ['destination'], message: 'passing review requires live destination evidence' });
+    }
+    if (review.destination.observationMethod === 'automated_fetch' && review.destination.httpStatus === null) context.addIssue({ code: z.ZodIssueCode.custom, path: ['destination', 'httpStatus'], message: 'automated fetch requires an HTTP status' });
+    if (review.availability.status !== 'available_for_purchase' || !review.availability.observedAt || !review.availability.purchaseActionLabel || !review.availability.evidenceUrl) {
+      context.addIssue({ code: z.ZodIssueCode.custom, path: ['availability'], message: 'passing review requires observed purchase availability' });
     }
   } else if (review.blockers.length === 0) {
     context.addIssue({ code: z.ZodIssueCode.custom, path: ['blockers'], message: 'failed review requires at least one blocker' });
@@ -435,7 +447,10 @@ export async function loadAffiliateLinkState(root, options = {}) {
       if (!programsById.get(candidateRecord.data.programId).allowedDomains.includes(resolved.hostname.toLowerCase())) throw new Error(`${review.reviewId}: resolved domain is not allowlisted`);
       const paid = new URL(candidateRecord.data.destination.paidUrl);
       if (!ensureTrackingPreserved(paid, resolved, candidateRecord.data.destination.trackingParameterKeys)) throw new Error(`${review.reviewId}: approved tracking values were not preserved through destination resolution`);
-      if (review.destination.httpStatus < 200 || review.destination.httpStatus >= 400) throw new Error(`${review.reviewId}: resolved destination did not return a successful status`);
+      if (review.destination.observationMethod === 'automated_fetch' && (review.destination.httpStatus < 200 || review.destination.httpStatus >= 400)) throw new Error(`${review.reviewId}: resolved destination did not return a successful status`);
+      if (review.destination.observationMethod === 'independent_browser_observation' && review.destination.httpStatus !== null) throw new Error(`${review.reviewId}: browser observation cannot invent an HTTP status`);
+      if (review.availability.status !== 'available_for_purchase' || !review.availability.purchaseActionLabel) throw new Error(`${review.reviewId}: product was not observed as available for purchase`);
+      if (review.availability.evidenceUrl !== review.destination.resolvedUrl) throw new Error(`${review.reviewId}: availability evidence must bind to the resolved paid destination`);
     }
     reviewByCandidate.set(review.candidateId, record);
   }

@@ -16,7 +16,7 @@ Five public candidates are recorded and disabled. Every current publication-read
 
 The registry records no expected revenue, invented tracking identity, exact price, or account claim. Public terms change; the source-review expiry is a mandatory recheck point, not a guarantee.
 
-`web/config/affiliate-enrollment-plans.json` contains one revision-bound, non-sensitive application packet for every registry program. The generated `web/public/affiliate-enrollment-readiness.json` artifact separates reusable public site facts from labels for credentials, identity, tax, payout, social-account, or written-approval work that Lucas must complete inside the partner portal. It stores no private values, accepts no terms, and cannot submit a form. The current ledger has five complete public packets, one program eligible for external-enrollment planning subject to fresh action-time approval, four awaiting program approval, zero externally verified accounts, and zero enabled programs.
+`web/config/affiliate-enrollment-plans.json` contains one revision-bound, non-sensitive application packet for every registry program. The generated `web/public/affiliate-enrollment-readiness.json` artifact separates reusable public site facts from labels for credentials, identity, tax, payout, social-account, or written-approval work that Lucas must complete inside the partner portal. It stores no private values, accepts no terms, and cannot submit a form. The current ledger has five complete public packets, four awaiting program approval, one externally verified Bookshop account, and zero enabled programs.
 
 ### 2026-08-16 Bookshop.org pilot evaluation
 
@@ -29,19 +29,20 @@ No account, terms acceptance, tracking identity, affiliate URL, or commission is
 ## State and authority
 
 ```text
-proposed -> founder_approved -> external enrollment -> audited activation PR -> enabled
+proposed -> founder_approved -> externally_verified -> audited activation PR -> enabled
      |              |                    |
   rejected        paused              terms or evidence fail -> disabled
 ```
 
 - `proposed`: AI or editorial research may compare public fit and limitations. All activation fields stay empty.
 - `founder_approved`: Lucas has approved spending attention on external onboarding. No account or link is implied.
+- `externally_verified`: the portal visibly confirms the account and partner-issued public identity. The program remains disabled; no terms acceptance or paid link is implied.
 - External enrollment: Lucas creates the account and accepts current terms outside Codex; this is never automated.
 - `enabled`: allowed only after the contract records registered sites, allowed domains, program-provided tracking configuration, terms evidence, disclosure, and reporting posture.
 
 The **Approve affiliate program for external onboarding** workflow is repository-owner-only and opens a pull request. Its message explicitly states that it does not enroll, accept terms, add tracking, enable links, or deploy.
 
-After Lucas completes external onboarding personally, **Activate audited affiliate program** is the second protected workflow. It requires the exact founder-approved revision, action-time `ACTIVATE-<program-id>` confirmation, current terms-acceptance timestamp and evidence URL, registered production site, explicit merchant-domain allowlist, program-provided parameter names without values, and an aggregate-reporting decision. It records only non-secret configuration in a pull request. Activation creates zero paid links, authorizes no price feed, and cannot alter an editorial score or ranking.
+After external verification is recorded, **Activate audited affiliate program** is the second protected workflow. It requires the exact externally verified revision, action-time `ACTIVATE-<program-id>` confirmation, current terms-acceptance timestamp and evidence URL, registered production site, explicit merchant-domain allowlist, program-provided parameter names without values, and an aggregate-reporting decision. It records only non-secret configuration in a pull request. Activation creates zero paid links, authorizes no price feed, and cannot alter an editorial score or ranking.
 
 ## Activation proof
 
@@ -84,4 +85,4 @@ The public publication manifest records every active overlay's candidate, indepe
 
 ## Current link posture
 
-The committed registry currently has no enabled program, no exact link candidates, no independent link receipts, no founder link approvals, and no active overlays. Five application packets are prepared, but only Bookshop is founder-approved for external enrollment. The workflows and packets create no account, credential, tracking identity, affiliate URL, external post, Firebase preview, or production deployment on their own.
+The committed registry currently has one externally verified Bookshop account with public affiliate ID `129750`, weekly reports enabled, and zero enabled programs, exact link candidates, independent link receipts, founder link approvals, or active overlays. The current Sapiens edition in the article is unavailable on Bookshop; any replacement edition must first pass a fresh editorial evidence and independent-review cycle. The workflows and packets create no credential, paid link, external post, Firebase preview, or production deployment on their own.

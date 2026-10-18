@@ -30,8 +30,9 @@ if (issues.length > 0) {
     gate: 'passed',
     proposedPrograms: model.programs.filter((program) => program.status === 'proposed').length,
     founderApprovedPrograms: model.programs.filter((program) => program.status === 'founder_approved').length,
+    externallyVerifiedPrograms: model.programs.filter((program) => program.status === 'externally_verified').length,
     enabledPrograms: model.programs.filter((program) => program.enabled).length,
-    trackingIdentitiesStored: 0,
+    publicTrackingIdentitiesStored: model.programs.filter((program) => program.account.publicTrackingIdentity).length,
     externalAccountsChanged: false
   }, null, 2));
 }

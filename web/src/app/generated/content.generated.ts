@@ -2085,10 +2085,10 @@ export const ARTICLES: readonly Article[] = [
 ];
 
 export const OPERATIONS: Operations = {
-  "generatedAt": "2026-10-10T18:00:00.000Z",
+  "generatedAt": "2026-10-18T23:50:38.000Z",
   "founderAgenda": {
     "schemaVersion": "1.0.0",
-    "generatedAt": "2026-10-10T18:00:00.000Z",
+    "generatedAt": "2026-10-18T23:50:38.000Z",
     "posture": "founder_decisions_required",
     "primaryDecisionId": "review-release-candidate",
     "profitabilityEvidence": "unknown_until_aggregate_measurement",
@@ -2101,7 +2101,7 @@ export const OPERATIONS: Operations = {
         "horizon": "now",
         "category": "release",
         "title": "Review the first accountable Angular release",
-        "recommendation": "Review publication-set-4da3c51599c94f5b as the first founder-controlled Firebase release candidate.",
+        "recommendation": "Review publication-set-a2e076613f5d6510 as the first founder-controlled Firebase release candidate.",
         "decisionQuestion": "Does this exact content set represent the site you want readers to see first?",
         "rationale": "The research and release machinery cannot create traffic, trust, or revenue while the modern reviewed site remains only a local candidate.",
         "evidence": [
@@ -2186,7 +2186,7 @@ export const OPERATIONS: Operations = {
         "decisionQuestion": "Has every external enrollment and current-terms requirement been completed and recorded for this exact revision?",
         "rationale": "A narrow pilot can test operational fit with less commission pressure than enabling the broadest catalog before traffic and conversion evidence exist.",
         "evidence": [
-          "4 affiliate programs await founder review and 1 await external activation evidence.",
+          "4 affiliate programs await founder review, 0 await external enrollment, and 1 await activation evidence.",
           "0 programs and 0 tracked links are enabled.",
           "Bookshop.org US media affiliate currently maps to 1 publication-ready article.",
           "Its public terms review expires 2027-01-08."
@@ -2199,7 +2199,7 @@ export const OPERATIONS: Operations = {
         "action": {
           "label": "Open activation handoff",
           "url": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/affiliate-program-activate.yml",
-          "command": "gh workflow run affiliate-program-activate.yml -f program_id=bookshop-org-us-media -f expected_revision=3 -f confirmation=ACTIVATE-bookshop-org-us-media"
+          "command": "gh workflow run affiliate-program-activate.yml -f program_id=bookshop-org-us-media -f expected_revision=4 -f confirmation=ACTIVATE-bookshop-org-us-media"
         }
       }
     ]
@@ -2210,7 +2210,8 @@ export const OPERATIONS: Operations = {
   "draftPosts": 3,
   "affiliateProgramsEnabled": 0,
   "affiliateProgramsProposed": 4,
-  "affiliateProgramsFounderApproved": 1,
+  "affiliateProgramsFounderApproved": 0,
+  "affiliateProgramsExternallyVerified": 1,
   "affiliateLinksLive": 0,
   "socialDrafts": 78,
   "socialApproved": 0,
@@ -2418,7 +2419,8 @@ export const OPERATIONS: Operations = {
   },
   "affiliate": {
     "proposedPrograms": 4,
-    "founderApprovedPrograms": 1,
+    "founderApprovedPrograms": 0,
+    "externallyVerifiedPrograms": 1,
     "enabledPrograms": 0,
     "publicationReadyProductLinksCataloged": 60,
     "publicationReadyPaidLinksVerified": 0,
@@ -2433,7 +2435,7 @@ export const OPERATIONS: Operations = {
     "externalEnrollmentAllowedByRegistry": 1,
     "externalSubmissionRequiresActionTimeApproval": true,
     "awaitingFounderProgramApproval": 4,
-    "externallyEnrolledPrograms": 0,
+    "externallyEnrolledPrograms": 1,
     "siteApplicationDescription": "Tips for Your Gifts helps shoppers choose thoughtful gifts by explaining what a product is, how it fits the recipient's real life, what they may already own, and what a specialty addition contributes. Recommendations are researched and ranked without regard to commission.",
     "sensitiveDataPolicy": "Account credentials, legal identity, tax details, payout details, and private contact information are entered only in the partner portal by Lucas and are never stored in Git.",
     "linkCandidates": 0,
@@ -2445,11 +2447,11 @@ export const OPERATIONS: Operations = {
     "programs": [
       {
         "id": "bookshop-org-us-media",
-        "revision": 3,
+        "revision": 4,
         "priority": 1,
         "coverageRole": "category_specialist",
         "name": "Bookshop.org US media affiliate",
-        "status": "founder_approved",
+        "status": "externally_verified",
         "founderDisposition": "approved",
         "eligibleArticleSlugs": [
           "read-it-then-play-it-gift-pairs"
@@ -2457,10 +2459,16 @@ export const OPERATIONS: Operations = {
         "productSelectionMode": "explicit_products",
         "productResearchCandidates": 10,
         "verifiedPaidLinks": 0,
-        "enrollmentStage": "external_enrollment_required",
+        "enrollmentStage": "activation_evidence_required",
         "publicApplicationPacketReady": true,
         "externalEnrollmentAllowedByRegistry": true,
         "externalSubmissionStillRequiresActionTimeApproval": true,
+        "externalAccountEstablished": true,
+        "trackingIdentityConfigured": true,
+        "verificationStatus": "verified",
+        "publicTrackingIdentity": "129750",
+        "publicStorefrontUrl": "https://bookshop.org/shop/tipsforyourgifts",
+        "weeklyReportsEnabled": true,
         "applicationPositioning": "Lead with the reviewed book anchors and the publication's independent, explanation-first editorial approach. Do not imply that Bookshop covers the non-book companion products.",
         "userOnlyInputs": [
           "account_login",
@@ -2485,7 +2493,7 @@ export const OPERATIONS: Operations = {
         "sourceReviewExpiresAt": "2027-01-08",
         "programHomepageUrl": "https://bookshop.org/affiliates/profile/introduction",
         "termsUrl": "https://bookshop.org/info/terms-of-use",
-        "nextGate": "Authenticate the Bookshop account, submit the prepared profile for verification, and record only Bookshop-issued tracking after acceptance; account status remains unverified until external evidence is captured."
+        "nextGate": "Review and explicitly accept the current affiliate terms, registered production site, allowed destination domain, Bookshop-issued tracking behavior, disclosure, and aggregate reporting boundary before activation; no paid link is live."
       },
       {
         "id": "amazon-associates-us",
@@ -2503,6 +2511,12 @@ export const OPERATIONS: Operations = {
         "publicApplicationPacketReady": true,
         "externalEnrollmentAllowedByRegistry": false,
         "externalSubmissionStillRequiresActionTimeApproval": true,
+        "externalAccountEstablished": false,
+        "trackingIdentityConfigured": false,
+        "verificationStatus": "not_started",
+        "publicTrackingIdentity": null,
+        "publicStorefrontUrl": null,
+        "weeklyReportsEnabled": false,
         "applicationPositioning": "Describe the owned editorial website and its commission-independent rankings. Do not promise broad coverage until exact products and Amazon-issued Special Links are verified one at a time.",
         "userOnlyInputs": [
           "account_login",
@@ -2545,6 +2559,12 @@ export const OPERATIONS: Operations = {
         "publicApplicationPacketReady": true,
         "externalEnrollmentAllowedByRegistry": false,
         "externalSubmissionStillRequiresActionTimeApproval": true,
+        "externalAccountEstablished": false,
+        "trackingIdentityConfigured": false,
+        "verificationStatus": "not_started",
+        "publicTrackingIdentity": null,
+        "publicStorefrontUrl": null,
+        "weeklyReportsEnabled": false,
         "applicationPositioning": "Position Target as a possible exact-product retailer alternative for family-friendly shopping, never as a substitute for the editorially selected product.",
         "userOnlyInputs": [
           "account_login",
@@ -2587,6 +2607,12 @@ export const OPERATIONS: Operations = {
         "publicApplicationPacketReady": true,
         "externalEnrollmentAllowedByRegistry": false,
         "externalSubmissionStillRequiresActionTimeApproval": true,
+        "externalAccountEstablished": false,
+        "trackingIdentityConfigured": false,
+        "verificationStatus": "not_started",
+        "publicTrackingIdentity": null,
+        "publicStorefrontUrl": null,
+        "weeklyReportsEnabled": false,
         "applicationPositioning": "Describe the owned publication and its practical gift coverage without claiming an active social audience or creator performance that has not been measured.",
         "userOnlyInputs": [
           "account_login",
@@ -2631,6 +2657,12 @@ export const OPERATIONS: Operations = {
         "publicApplicationPacketReady": true,
         "externalEnrollmentAllowedByRegistry": false,
         "externalSubmissionStillRequiresActionTimeApproval": true,
+        "externalAccountEstablished": false,
+        "trackingIdentityConfigured": false,
+        "verificationStatus": "not_started",
+        "publicTrackingIdentity": null,
+        "publicStorefrontUrl": null,
+        "weeklyReportsEnabled": false,
         "applicationPositioning": "Position eBay only as a contingency for exact discontinued or hard-to-find products. Stable manufacturer or specialist destinations remain preferred.",
         "userOnlyInputs": [
           "account_login",
@@ -5081,8 +5113,8 @@ export const OPERATIONS: Operations = {
     },
     "currentCandidate": {
       "status": "release_candidate",
-      "manifestId": "publication-set-4da3c51599c94f5b",
-      "contentSetSha256": "4da3c51599c94f5bc4ce1c49ec9f02738e4cc1d0aa9ec2958e9ce8a514ca69a5",
+      "manifestId": "publication-set-a2e076613f5d6510",
+      "contentSetSha256": "a2e076613f5d651052f209f1f5c8c622806df904d42895fb4826bb6a10654fad",
       "articles": 10,
       "independentReviews": 10,
       "socialLaunchPacks": 9,
@@ -5201,6 +5233,7 @@ export const OPERATIONS: Operations = {
     "Production Firebase rules have not been verified from this checkout.",
     "No affiliate program is enabled; links must remain non-affiliate.",
     "4 affiliate program candidates await founder review; approval does not enroll or enable tracking.",
+    "1 affiliate program is externally verified but disabled; current terms and exact activation evidence still require founder approval.",
     "78 social launch drafts await approved media, content approval, and official API access.",
     "1 original social creative candidate is locally verified but not rights-approved, released, or published.",
     "Growth measurement is not connected; traffic, conversions, and revenue remain unknown rather than zero.",

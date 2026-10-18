@@ -978,6 +978,7 @@ export class StudioPage {
     { label: 'Publication ready', value: this.content.operations.publicationReadyPosts },
     { label: 'Social drafts', value: this.content.operations.socialDrafts },
     { label: 'Affiliate candidates', value: this.content.operations.affiliateProgramsProposed },
+    { label: 'Affiliate verified', value: this.content.operations.affiliateProgramsExternallyVerified },
     { label: 'Affiliate enabled', value: this.content.operations.affiliateProgramsEnabled },
     { label: 'Strategy proposals', value: this.content.operations.proposedIdeas },
     { label: 'Scout posture', value: this.displayStatus(this.content.operations.opportunityScouting.posture) },

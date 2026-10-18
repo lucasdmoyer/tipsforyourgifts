@@ -53,7 +53,7 @@
 ## Affiliate controls
 
 - Approve one program at a time.
-- Treat `proposed` and `founder_approved` as disabled states; neither authorizes signup, terms acceptance, tracking, or links.
+- Treat `proposed`, `founder_approved`, and `externally_verified` as disabled states. External verification may record a public partner-issued identity and storefront, but it does not authorize terms acceptance, activation, or paid links.
 - Recheck the official program and terms sources before their recorded review-expiry date.
 - Record allowed domains, registered sites, disclosure requirements, price-display constraints, and tracking identity.
 - Create the protected `affiliate-activation` environment before using the audited activation workflow; store no tracking values in its inputs or repository output.

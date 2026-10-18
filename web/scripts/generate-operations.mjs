@@ -105,6 +105,7 @@ const draftPosts = articles.filter((article) => article.status === 'draft').leng
 const affiliateProgramsEnabled = affiliate.programs.filter((program) => program.enabled).length;
 const affiliateProgramsProposed = affiliate.programs.filter((program) => program.status === 'proposed').length;
 const affiliateProgramsFounderApproved = affiliate.programs.filter((program) => program.status === 'founder_approved').length;
+const affiliateProgramsExternallyVerified = affiliate.programs.filter((program) => program.status === 'externally_verified').length;
 const affiliateLinksLive = affiliateLinkState.counts.activeOverlays;
 const publicationReadyProductLinksCataloged = affiliateCoverage.counts.publicationReadyProductLinksCataloged;
 const publicationReadyPaidLinksVerified = affiliateCoverage.counts.productsWithVerifiedPaidDestination;
@@ -237,6 +238,7 @@ const alerts = [];
 alerts.push('Production Firebase rules have not been verified from this checkout.');
 if (affiliateProgramsEnabled === 0) alerts.push('No affiliate program is enabled; links must remain non-affiliate.');
 if (affiliateProgramsProposed > 0) alerts.push(`${affiliateProgramsProposed} affiliate program candidate${affiliateProgramsProposed === 1 ? ' awaits' : 's await'} founder review; approval does not enroll or enable tracking.`);
+if (affiliateProgramsExternallyVerified > 0) alerts.push(`${affiliateProgramsExternallyVerified} affiliate program ${affiliateProgramsExternallyVerified === 1 ? 'is' : 'are'} externally verified but disabled; current terms and exact activation evidence still require founder approval.`);
 if (affiliateLinkState.counts.candidates > 0) alerts.push(`${affiliateLinkState.counts.candidates} exact affiliate link candidate${affiliateLinkState.counts.candidates === 1 ? '' : 's'}: ${affiliateLinkState.counts.activeOverlays} independently reviewed and founder-approved overlay${affiliateLinkState.counts.activeOverlays === 1 ? '' : 's'} active in generated content.`);
 if (socialDrafts > 0) alerts.push(`${socialDrafts} social launch drafts await approved media, content approval, and official API access.`);
 if (socialCandidates.length > 0) alerts.push(`${socialCandidates.length} original social creative candidate${socialCandidates.length === 1 ? ' is' : 's are'} locally verified but not rights-approved, released, or published.`);
@@ -313,6 +315,7 @@ const operations = {
   affiliateProgramsEnabled,
   affiliateProgramsProposed,
   affiliateProgramsFounderApproved,
+  affiliateProgramsExternallyVerified,
   affiliateLinksLive,
   socialDrafts,
   socialApproved,
@@ -404,6 +407,7 @@ const operations = {
   affiliate: {
     proposedPrograms: affiliateProgramsProposed,
     founderApprovedPrograms: affiliateProgramsFounderApproved,
+    externallyVerifiedPrograms: affiliateProgramsExternallyVerified,
     enabledPrograms: affiliateProgramsEnabled,
     publicationReadyProductLinksCataloged,
     publicationReadyPaidLinksVerified,
@@ -443,6 +447,12 @@ const operations = {
       publicApplicationPacketReady: affiliateEnrollmentByProgram.get(program.id)?.publicApplicationPacketReady ?? false,
       externalEnrollmentAllowedByRegistry: affiliateEnrollmentByProgram.get(program.id)?.externalEnrollmentAllowedByRegistry ?? false,
       externalSubmissionStillRequiresActionTimeApproval: affiliateEnrollmentByProgram.get(program.id)?.externalSubmissionStillRequiresActionTimeApproval ?? true,
+      externalAccountEstablished: program.account.externalAccountEstablished,
+      trackingIdentityConfigured: program.account.trackingIdentityConfigured,
+      verificationStatus: program.account.verificationStatus ?? 'not_started',
+      publicTrackingIdentity: program.account.publicTrackingIdentity ?? null,
+      publicStorefrontUrl: program.account.publicStorefrontUrl ?? null,
+      weeklyReportsEnabled: program.account.weeklyReportsEnabled ?? false,
       applicationPositioning: affiliateEnrollmentByProgram.get(program.id)?.applicationPositioning ?? '',
       userOnlyInputs: affiliateEnrollmentByProgram.get(program.id)?.userOnlyInputs ?? [],
       specialRequirements: affiliateEnrollmentByProgram.get(program.id)?.specialRequirements ?? [],

@@ -34,9 +34,9 @@ assert.equal(clean.counts.totalPrograms, 5);
 assert.equal(clean.counts.publicApplicationPacketsReady, 5);
 assert.equal(clean.counts.externalEnrollmentAllowedByRegistry, 1);
 assert.equal(clean.counts.awaitingFounderProgramApproval, 4);
-assert.equal(clean.counts.externallyEnrolled, 0);
+assert.equal(clean.counts.externallyEnrolled, 1);
 assert.equal(clean.counts.enabledPrograms, 0);
-assert.equal(clean.programs.find((entry) => entry.programId === 'bookshop-org-us-media').stage, 'external_enrollment_required');
+assert.equal(clean.programs.find((entry) => entry.programId === 'bookshop-org-us-media').stage, 'activation_evidence_required');
 assert.equal(clean.programs.find((entry) => entry.programId === 'amazon-associates-us').stage, 'founder_approval_required');
 
 expectFailure('rejects missing program packet', ({ plan: value }) => { value.programs.pop(); }, 'missing programs');
