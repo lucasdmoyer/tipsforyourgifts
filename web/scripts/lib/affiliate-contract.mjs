@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { isIP } from 'node:net';
 
 const slug = z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/);
 const isoDate = z.string().regex(/^\d{4}-\d{2}-\d{2}$/);
@@ -6,6 +7,25 @@ const httpsUrl = z.string().url().refine((value) => {
   const url = new URL(value);
   return url.protocol === 'https:' && !url.username && !url.password && !url.search && !url.hash;
 }, 'must use credential-free HTTPS without userinfo, query, or fragment');
+
+export function assertPublicHttpsOrigin(value, label = 'site') {
+  let url;
+  try { url = new URL(value); } catch { throw new Error(`${label} must be a valid URL`); }
+  if (url.protocol !== 'https:' || url.username || url.password || url.search || url.hash) {
+    throw new Error(`${label} must be a credential-free HTTPS URL without query or fragment`);
+  }
+  if (url.pathname !== '/' || url.toString() !== `${url.origin}/`) {
+    throw new Error(`${label} must be the exact HTTPS site origin with a trailing slash`);
+  }
+  const hostname = url.hostname.toLowerCase();
+  const normalizedHostname = hostname.replace(/\.$/, '');
+  const unbracketedHostname = normalizedHostname.replace(/^\[|\]$/g, '');
+  const reservedSuffixes = ['.localhost', '.local', '.internal', '.home', '.lan', '.localdomain', '.test', '.example', '.invalid', '.onion'];
+  if (!normalizedHostname.includes('.') || normalizedHostname === 'localhost' || reservedSuffixes.some((suffix) => normalizedHostname.endsWith(suffix)) || isIP(unbracketedHostname) !== 0) {
+    throw new Error(`${label} must use a public DNS hostname`);
+  }
+  return url;
+}
 
 const accountSchema = z.object({
   externalAccountEstablished: z.boolean(),
@@ -149,6 +169,9 @@ export function validateAffiliateModel(input, options = {}) {
     }
     if (program.sourceCheckedAt > model.updatedAt) issues.push(`${program.id}: source check occurs after registry update`);
     if (program.sourceReviewExpiresAt < program.sourceCheckedAt.slice(0, 10)) issues.push(`${program.id}: source review expiry precedes source check`);
+    for (const registeredSite of program.registeredSites) {
+      try { assertPublicHttpsOrigin(registeredSite, `${program.id}: registered site`); } catch (error) { issues.push(error.message); }
+    }
     for (const articleSlug of program.eligibleArticleSlugs) {
       if (publishedSlugs.size > 0 && !publishedSlugs.has(articleSlug)) issues.push(`${program.id}: unknown publication-ready article ${articleSlug}`);
     }

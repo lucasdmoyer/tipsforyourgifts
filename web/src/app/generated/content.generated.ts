@@ -2199,7 +2199,7 @@ export const OPERATIONS: Operations = {
         "action": {
           "label": "Open activation handoff",
           "url": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/affiliate-program-activate.yml",
-          "command": "gh workflow run affiliate-program-activate.yml -f program_id=bookshop-org-us-media -f expected_revision=4 -f confirmation=ACTIVATE-bookshop-org-us-media"
+          "command": null
         }
       }
     ]
