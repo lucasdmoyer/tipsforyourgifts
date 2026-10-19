@@ -11,6 +11,8 @@ const webRoot = path.join(scriptRoot, '..');
 const articleSlug = 'read-it-then-play-it-gift-pairs';
 const productId = 'sapiens-us-paperback';
 const programId = 'bookshop-org-us-media';
+const sapiensOrdinaryUrl = 'https://bookshop.org/p/books/sapiens-tenth-anniversary-edition-a-brief-history-of-humankind-yuval-noah-harari/031a784adc6e9de4';
+const sapiensPaidUrl = `${sapiensOrdinaryUrl}?affiliate=test-fixture-only`;
 
 async function makeFixture() {
   const root = await fs.mkdtemp(path.join(os.tmpdir(), 'tfyg-affiliate-link-gate-'));
@@ -61,8 +63,8 @@ async function candidateFor(root, overrides = {}) {
     expectedProgramRevision: 2,
     candidateRevision: 1,
     expectedArticleSha256: sha256(articleRaw),
-    paidUrl: 'https://bookshop.org/p/books/sapiens/123?affiliate=test-fixture-only',
-    productIdentityEvidenceUrl: 'https://www.harpercollins.com/products/sapiens-yuval-noah-harari',
+    paidUrl: sapiensPaidUrl,
+    productIdentityEvidenceUrl: sapiensOrdinaryUrl,
     createdBy: 'lucasdmoyer',
     createdAt: '2026-08-06T10:00:00.000Z',
     ...overrides
@@ -213,7 +215,7 @@ await fs.writeFile(staleRegistryPath, `${JSON.stringify(staleRegistry, null, 2)}
 await assert.rejects(() => loadAffiliateLinkState(staleProgramRoot, { asOfDate: '2026-08-10' }), /program revision changed/);
 
 const unapprovedTrackingRoot = await makeFixture();
-await assert.rejects(() => candidateFor(unapprovedTrackingRoot, { paidUrl: 'https://bookshop.org/p/books/sapiens/123?affiliate=test-fixture-only&utm_source=invented' }), /tracking-like parameter utm_source is not declared and approved/);
+await assert.rejects(() => candidateFor(unapprovedTrackingRoot, { paidUrl: `${sapiensPaidUrl}&utm_source=invented` }), /tracking-like parameter utm_source is not declared and approved/);
 
 const excludedProductRoot = await makeFixture();
 await assert.rejects(() => candidateFor(excludedProductRoot, {

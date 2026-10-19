@@ -2,7 +2,7 @@
 title: "Read It, Then Use It: 10 Thoughtful Gift Pairs for Curious Adults"
 description: "Ten thoughtful book-and-game or book-and-tool gift pairs, with a simple explanation of who each one is for and what to check before you buy."
 publishDate: "2026-08-03"
-updatedDate: "2026-09-06"
+updatedDate: "2026-10-18"
 status: publication_ready
 audience: "People shopping for a curious reader who also likes games, creative projects, nature, photography, or cooking"
 occasion: "Birthdays, holidays, graduation, and shared weekends"
@@ -13,7 +13,7 @@ tags:
   - books and games
   - books and tools
   - recipient friction
-researchRun: "20260803-read-it-then-play-it-c437f208"
+researchRun: "20261018-read-it-then-play-it-c437f208"
 evidenceScore: 84
 evidenceMode: desk_research
 featured: true
@@ -29,12 +29,12 @@ specialtyLens:
   signal: "Look for the subject they keep returning to and the way they already like to explore it—alone, at a computer, outdoors, or around a table."
 products:
   - id: sapiens-us-paperback
-    name: "Sapiens: A Brief History of Humankind — U.S. trade paperback"
-    merchant: "HarperCollins"
-    url: "https://www.harpercollins.com/products/sapiens-yuval-noah-harari"
+    name: "Sapiens [Tenth Anniversary Edition]: A Brief History of Humankind — U.S. paperback, ISBN 9780063422001"
+    merchant: "Bookshop.org"
+    url: "https://bookshop.org/p/books/sapiens-tenth-anniversary-edition-a-brief-history-of-humankind-yuval-noah-harari/031a784adc6e9de4"
     affiliate: false
     priceBand: "$25-$30"
-    whyItFits: "What it is: a wide-ranging history book about how humans built societies. It fits a reader who returns to large historical questions and likes challenging a strong argument. They may enjoy carrying its ideas into a strategy game and deciding where the comparison breaks down."
+    whyItFits: "What it is: the 2025 U.S. paperback of a wide-ranging history book about how humans built societies, now with a new author afterword. It fits a reader who returns to large historical questions and likes challenging a strong argument. They may enjoy carrying its ideas into a strategy game and deciding where the comparison breaks down."
     drawback: "The book makes sweeping claims about anthropology and history, and critics dispute some of its certainty. Give it to a critical reader, not as a settled history lesson."
     editorialScore: 78
     evidenceConfidence: 82
@@ -315,7 +315,7 @@ pairs:
     companionProductId: civilization-vi-windows-steam
     whyTogether: "Sapiens offers a broad argument about human history. Civilization VI lets the recipient make simplified choices about technology, culture, trade, and expansion. Together, they can compare a persuasive story with a game that turns history into controllable rules."
     interactionMoment: "Read a section about agriculture, empire, or technology, play through a related era, then talk about one choice the game makes simpler than real history."
-    preGiftCheck: "Confirm they enjoy disputed big-history arguments, own a compatible Windows PC, use Steam, do not already own Civilization VI, and that the live total still fits your budget."
+    preGiftCheck: "Confirm they enjoy disputed big-history arguments, want the tenth-anniversary U.S. paperback (ISBN 9780063422001), own a compatible Windows PC, use Steam, do not already own Civilization VI, and that both purchase options and the live total still fit your budget."
     bundleDrawback: "Give only the book if the computer, Steam account, game ownership, or interest in long strategy games is uncertain. Neither item should be treated as a history course."
     coherenceScore: 92
     claimIds:
@@ -459,7 +459,7 @@ That is also why the disagreement can be more interesting than a perfect match. 
 4. Check the exact edition, current ownership, platform, player count, space, accessibility, live total, and return terms.
 5. Give only the anchor when the companion depends on an uncertain device, group, interest, or safety fit.
 
-These are researched recommendations, not products we physically tested. Prices, stock, editions, computer support, return terms, and recalls can change. The higher-cost pairs fit this guide's stated price range when checked on August 3, 2026, but you should always check the live total again. All product links are ordinary, unpaid links because no affiliate program is enabled.
+These are researched recommendations, not products we physically tested. Prices, stock, editions, computer support, return terms, and recalls can change. Check the exact edition, current purchase options, and live total before ordering. All product links in this draft are ordinary, unpaid links.
 
 Below are ten detailed pairings. Each one includes the two products, a real-life interaction, the checks to make before ordering, and the sources behind the recommendation.
 
@@ -469,7 +469,7 @@ Below are ten detailed pairings. Each one includes the two products, a real-life
 
 **Who this is for:** Someone who enjoys big questions about history and already spends time with long computer strategy games.
 
-**The book:** [*Sapiens: A Brief History of Humankind*](https://www.harpercollins.com/products/sapiens-yuval-noah-harari) is a wide-ranging history book about how humans built societies. It is best for a reader who likes questioning a strong argument rather than accepting it as the final word.
+**The book:** [*Sapiens [Tenth Anniversary Edition]: A Brief History of Humankind*](https://bookshop.org/p/books/sapiens-tenth-anniversary-edition-a-brief-history-of-humankind-yuval-noah-harari/031a784adc6e9de4) is the 2025 U.S. paperback (ISBN 9780063422001) of a wide-ranging history book about how humans built societies. This edition adds a new afterword from the author. It is best for a reader who likes questioning a strong argument rather than accepting it as the final word.
 
 **The game:** [*Sid Meier’s Civilization VI*](https://store.2k.com/en/game/buy-civilization-6) is a turn-based Windows PC game where the player builds a civilization across centuries. It turns technology, culture, trade, and expansion into choices the player can control.
 
@@ -479,9 +479,9 @@ Below are ten detailed pairings. Each one includes the two products, a real-life
 
 **Why this makes a good gift:** Sapiens offers a broad argument about human history. Civilization VI lets the recipient make simplified choices about technology, culture, trade, and expansion. Together, they can compare a persuasive story with a game that turns history into controllable rules.
 
-**Before you order:** Confirm they enjoy disputed big-history arguments, own a compatible Windows PC, use Steam, do not already own Civilization VI, and that the live total still fits your budget. Give only the book if the computer, Steam account, game ownership, or interest in long strategy games is uncertain. Neither item should be treated as a history course.
+**Before you order:** Confirm they enjoy disputed big-history arguments, want the tenth-anniversary U.S. paperback (ISBN 9780063422001), own a compatible Windows PC, use Steam, do not already own Civilization VI, and that both purchase options and the live total still fit your budget. Give only the book if the computer, Steam account, game ownership, or interest in long strategy games is uncertain. Neither item should be treated as a history course.
 
-Research: [The Guardian’s Sapiens review](https://www.theguardian.com/books/2014/sep/11/sapiens-brief-history-humankind-yuval-noah-harari-review), [Steam’s Civilization VI listing](https://store.steampowered.com/app/289070/Sid_Meiers_Civilization_VI/), and [PC Gamer’s review](https://www.pcgamer.com/civilization-6-review/).
+Research: [HarperCollins’ tenth-anniversary edition page](https://www.harpercollins.com/products/sapiens-tenth-anniversary-edition-yuval-noah-harari), [Kildare Library Service’s review of the anniversary edition](https://kildarelibraries.ie/blog/book-review-sapiens/), [The Guardian’s critical review of the underlying work](https://www.theguardian.com/books/2014/sep/11/sapiens-brief-history-humankind-yuval-noah-harari-review), [Steam’s Civilization VI listing](https://store.steampowered.com/app/289070/Sid_Meiers_Civilization_VI/), and [PC Gamer’s review](https://www.pcgamer.com/civilization-6-review/).
 
 ## 2. If you know someone who loves birds and computer games
 

@@ -13,6 +13,8 @@ const webRoot = path.join(scriptRoot, '..');
 const articleSlug = 'read-it-then-play-it-gift-pairs';
 const productId = 'sapiens-us-paperback';
 const programId = 'bookshop-org-us-media';
+const sapiensOrdinaryUrl = 'https://bookshop.org/p/books/sapiens-tenth-anniversary-edition-a-brief-history-of-humankind-yuval-noah-harari/031a784adc6e9de4';
+const sapiensPaidUrl = `${sapiensOrdinaryUrl}?affiliate=test-fixture-only`;
 const root = await fs.mkdtemp(path.join(os.tmpdir(), 'tfyg-affiliate-link-command-'));
 for (const relative of ['config', 'src/data/blog', 'research/runs', 'research/reviews', 'scripts']) await fs.mkdir(path.join(root, relative), { recursive: true });
 await fs.cp(path.join(webRoot, 'src', 'data', 'blog'), path.join(root, 'src', 'data', 'blog'), { recursive: true });
@@ -41,8 +43,8 @@ const candidateArgs = [
   '--expected-program-revision=2',
   '--candidate-revision=1',
   `--expected-article-sha256=${sha256(articleRaw)}`,
-  '--paid-url=https://bookshop.org/p/books/sapiens/123?affiliate=test-fixture-only',
-  '--product-identity-evidence-url=https://www.harpercollins.com/products/sapiens-yuval-noah-harari',
+  `--paid-url=${sapiensPaidUrl}`,
+  `--product-identity-evidence-url=${sapiensOrdinaryUrl}`,
   '--created-by=lucasdmoyer',
   `--confirmation=CANDIDATE-${candidateId}`
 ];

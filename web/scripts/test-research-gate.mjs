@@ -9,6 +9,7 @@ const slug = 'useful-gifts-for-hard-to-shop-for-adults';
 const thoughtfulRunId = '20260803-gifts-for-golf-friend-53cb00a5';
 const thoughtfulSlug = 'gifts-for-a-golf-friend';
 const conflictLedgerRunId = '20260816-neighborhood-tree-walk-b8a44f32';
+const refreshedRunId = '20261018-read-it-then-play-it-c437f208';
 
 async function makeFixture() {
   const fixture = await fs.mkdtemp(path.join(root, '.gate-fixture-'));
@@ -56,6 +57,18 @@ try {
 
 await expectFailure('publication-ready article with non-validated run', async (fixture) => {
   await updateJson(path.join(fixture, 'research', 'runs', `${runId}.json`), (run) => { run.status = 'researching'; });
+});
+
+await expectFailure('superseding run references a missing predecessor', async (fixture) => {
+  await updateJson(path.join(fixture, 'research', 'runs', `${refreshedRunId}.json`), (run) => {
+    run.supersedesRunId = '20260101-missing-research-run-deadbeef';
+  });
+});
+
+await expectFailure('superseding run crosses article boundaries', async (fixture) => {
+  await updateJson(path.join(fixture, 'research', 'runs', `${refreshedRunId}.json`), (run) => {
+    run.supersedesRunId = runId;
+  });
 });
 
 await expectFailure('missing independent QA receipt', async (fixture) => {

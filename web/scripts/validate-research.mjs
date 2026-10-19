@@ -107,6 +107,7 @@ const affiliateLinkSchema = z.object({
 const runSchema = z.object({
   schemaVersion: z.enum(['1.0.0', '1.1.0']),
   runId: z.string().regex(/^\d{8}-[a-z0-9-]+-[a-f0-9]{8}$/),
+  supersedesRunId: z.string().regex(/^\d{8}-[a-z0-9-]+-[a-f0-9]{8}$/).optional(),
   ideaId: z.string().min(3),
   ideaRevision: z.number().int().positive().optional(),
   ideaSha256: z.string().regex(/^[a-f0-9]{64}$/).optional(),
@@ -390,6 +391,37 @@ for (const articleFile of articleFiles) {
 }
 
 const runFiles = await filesUnder(runsDir, '.json');
+const activeResearchRunIds = new Set([...articles.values()].map((article) => article.data.researchRun).filter(Boolean));
+const successorHeadersByPriorId = new Map();
+for (const runFile of runFiles) {
+  try {
+    const raw = JSON.parse(await fs.readFile(runFile, 'utf8'));
+    if (!raw.supersedesRunId) continue;
+    if (successorHeadersByPriorId.has(raw.supersedesRunId)) {
+      errors.push(`${raw.supersedesRunId}: multiple research runs claim to supersede the same run`);
+      continue;
+    }
+    successorHeadersByPriorId.set(raw.supersedesRunId, {
+      runId: raw.runId,
+      ideaId: raw.ideaId,
+      articleSlug: raw.article?.slug,
+      startedAt: raw.startedAt
+    });
+  } catch {
+    // The canonical parse below reports malformed JSON and schema errors.
+  }
+}
+
+function isHistoricalSupersededRun(run) {
+  const successor = successorHeadersByPriorId.get(run.runId);
+  return Boolean(
+    successor
+    && activeResearchRunIds.has(successor.runId)
+    && successor.articleSlug === run.article.slug
+    && !activeResearchRunIds.has(run.runId)
+  );
+}
+
 const seenRunIds = new Set();
 const runsById = new Map();
 const rawRunsById = new Map();
@@ -564,6 +596,10 @@ for (const runFile of runFiles) {
     errors.push(`${run.runId}: article ${run.article.slug}.md is missing`);
     continue;
   }
+  if (isHistoricalSupersededRun(run)) {
+    if (run.qa.warnings.length > 0) warnings.push(...run.qa.warnings.map((warning) => `${run.runId}: ${warning}`));
+    continue;
+  }
   if (article.data.researchRun !== run.runId) errors.push(`${run.runId}: article researchRun does not match`);
   if (article.data.status !== run.article.status) errors.push(`${run.runId}: article publication status does not match the research artifact`);
   if (article.data.status === 'publication_ready' && Number(article.data.evidenceScore) < 75) errors.push(`${run.runId}: publication-ready article evidence score is below 75`);
@@ -612,6 +648,31 @@ for (const runFile of runFiles) {
   const falseExperience = impliesFirstHandExperience(article.body);
   if (falseExperience && run.article.evidenceMode !== 'hands_on') errors.push(`${run.runId}: non-hands-on article implies first-hand product experience`);
   if (run.qa.warnings.length > 0) warnings.push(...run.qa.warnings.map((warning) => `${run.runId}: ${warning}`));
+}
+
+for (const run of runsById.values()) {
+  if (!run.supersedesRunId) continue;
+  const prior = runsById.get(run.supersedesRunId);
+  if (!prior) {
+    errors.push(`${run.runId}: supersedes missing research run ${run.supersedesRunId}`);
+    continue;
+  }
+  if (run.supersedesRunId === run.runId) errors.push(`${run.runId}: a research run cannot supersede itself`);
+  if (prior.article.slug !== run.article.slug) errors.push(`${run.runId}: superseded run must belong to the same article`);
+  if (prior.ideaId !== run.ideaId) errors.push(`${run.runId}: superseded run must belong to the same strategy idea`);
+  if (prior.status !== 'validated' || prior.article.status !== 'publication_ready') errors.push(`${run.runId}: only a validated publication-ready run may be superseded`);
+  if (!activeResearchRunIds.has(run.runId)) errors.push(`${run.runId}: superseding run must be the article's active researchRun`);
+  if (prior.completedAt && new Date(run.startedAt) <= new Date(prior.completedAt)) errors.push(`${run.runId}: superseding run must start after the prior run completed`);
+  const visited = new Set([run.runId]);
+  let cursor = prior;
+  while (cursor?.supersedesRunId) {
+    if (visited.has(cursor.supersedesRunId)) {
+      errors.push(`${run.runId}: research run supersession graph contains a cycle`);
+      break;
+    }
+    visited.add(cursor.supersedesRunId);
+    cursor = runsById.get(cursor.supersedesRunId);
+  }
 }
 
 for (const [slug, article] of articles) {
@@ -696,6 +757,7 @@ for (const run of runsById.values()) {
   if (receipt.evidenceSha256 !== currentEvidenceSha256) {
     errors.push(`${run.runId}: evidence changed after independent review (expected ${receipt.evidenceSha256}, found ${currentEvidenceSha256})`);
   }
+  if (isHistoricalSupersededRun(run)) continue;
   const articlePath = path.join(blogDir, `${run.article.slug}.md`);
   if (receipt.articleSha256 !== articleDigest(await fs.readFile(articlePath))) errors.push(`${run.runId}: article changed after independent review`);
   const socialPath = path.join(socialDir, `${run.article.slug}-launch.json`);

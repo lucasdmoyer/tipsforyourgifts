@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-10-18T23:50:38.000Z",
+  "generatedAt": "2026-10-19T00:14:05.812Z",
   "founderAgenda": {
     "schemaVersion": "1.0.0",
-    "generatedAt": "2026-10-18T23:50:38.000Z",
+    "generatedAt": "2026-10-19T00:14:05.812Z",
     "posture": "founder_decisions_required",
     "primaryDecisionId": "review-release-candidate",
     "profitabilityEvidence": "unknown_until_aggregate_measurement",
@@ -15,7 +15,7 @@
         "horizon": "now",
         "category": "release",
         "title": "Review the first accountable Angular release",
-        "recommendation": "Review publication-set-a2e076613f5d6510 as the first founder-controlled Firebase release candidate.",
+        "recommendation": "Review publication-set-26510debceb26336 as the first founder-controlled Firebase release candidate.",
         "decisionQuestion": "Does this exact content set represent the site you want readers to see first?",
         "rationale": "The research and release machinery cannot create traffic, trust, or revenue while the modern reviewed site remains only a local candidate.",
         "evidence": [
@@ -118,8 +118,8 @@
       }
     ]
   },
-  "researchRuns": 13,
-  "validatedRuns": 10,
+  "researchRuns": 14,
+  "validatedRuns": 11,
   "publicationReadyPosts": 10,
   "draftPosts": 3,
   "affiliateProgramsEnabled": 0,
@@ -2314,7 +2314,7 @@
       {
         "postId": "pair-or-pile-diagnostic",
         "packId": "read-it-then-play-it-gift-pairs-launch",
-        "packSha256": "4eaa873b2855536a88b107757bc2123894b28d059cdf824c85017d6036436905",
+        "packSha256": "73de3115757ea4a19d07e99fdc8d9bf88e129c55081f48525ffbc2a732f6cc34",
         "articleSlug": "read-it-then-play-it-gift-pairs",
         "platform": "pinterest",
         "format": "vertical-checklist",
@@ -2344,7 +2344,7 @@
       {
         "postId": "read-play-disagree",
         "packId": "read-it-then-play-it-gift-pairs-launch",
-        "packSha256": "4eaa873b2855536a88b107757bc2123894b28d059cdf824c85017d6036436905",
+        "packSha256": "73de3115757ea4a19d07e99fdc8d9bf88e129c55081f48525ffbc2a732f6cc34",
         "articleSlug": "read-it-then-play-it-gift-pairs",
         "platform": "instagram",
         "format": "five-slide-carousel",
@@ -2374,7 +2374,7 @@
       {
         "postId": "bird-cards-to-outdoors",
         "packId": "read-it-then-play-it-gift-pairs-launch",
-        "packSha256": "4eaa873b2855536a88b107757bc2123894b28d059cdf824c85017d6036436905",
+        "packSha256": "73de3115757ea4a19d07e99fdc8d9bf88e129c55081f48525ffbc2a732f6cc34",
         "articleSlug": "read-it-then-play-it-gift-pairs",
         "platform": "pinterest",
         "format": "interaction-loop-card",
@@ -2404,7 +2404,7 @@
       {
         "postId": "mars-model-gap",
         "packId": "read-it-then-play-it-gift-pairs-launch",
-        "packSha256": "4eaa873b2855536a88b107757bc2123894b28d059cdf824c85017d6036436905",
+        "packSha256": "73de3115757ea4a19d07e99fdc8d9bf88e129c55081f48525ffbc2a732f6cc34",
         "articleSlug": "read-it-then-play-it-gift-pairs",
         "platform": "instagram",
         "format": "six-slide-carousel",
@@ -2434,7 +2434,7 @@
       {
         "postId": "systems-after-game",
         "packId": "read-it-then-play-it-gift-pairs-launch",
-        "packSha256": "4eaa873b2855536a88b107757bc2123894b28d059cdf824c85017d6036436905",
+        "packSha256": "73de3115757ea4a19d07e99fdc8d9bf88e129c55081f48525ffbc2a732f6cc34",
         "articleSlug": "read-it-then-play-it-gift-pairs",
         "platform": "pinterest",
         "format": "worksheet",
@@ -2464,7 +2464,7 @@
       {
         "postId": "game-gift-five-checks",
         "packId": "read-it-then-play-it-gift-pairs-launch",
-        "packSha256": "4eaa873b2855536a88b107757bc2123894b28d059cdf824c85017d6036436905",
+        "packSha256": "73de3115757ea4a19d07e99fdc8d9bf88e129c55081f48525ffbc2a732f6cc34",
         "articleSlug": "read-it-then-play-it-gift-pairs",
         "platform": "tiktok",
         "format": "thirty-second-script",
@@ -2494,7 +2494,7 @@
       {
         "postId": "park-story-to-trail-social",
         "packId": "read-it-then-play-it-gift-pairs-launch",
-        "packSha256": "4eaa873b2855536a88b107757bc2123894b28d059cdf824c85017d6036436905",
+        "packSha256": "73de3115757ea4a19d07e99fdc8d9bf88e129c55081f48525ffbc2a732f6cc34",
         "articleSlug": "read-it-then-play-it-gift-pairs",
         "platform": "pinterest",
         "format": "two-step-map",
@@ -2524,7 +2524,7 @@
       {
         "postId": "photo-technique-weekend",
         "packId": "read-it-then-play-it-gift-pairs-launch",
-        "packSha256": "4eaa873b2855536a88b107757bc2123894b28d059cdf824c85017d6036436905",
+        "packSha256": "73de3115757ea4a19d07e99fdc8d9bf88e129c55081f48525ffbc2a732f6cc34",
         "articleSlug": "read-it-then-play-it-gift-pairs",
         "platform": "instagram",
         "format": "four-slide-carousel",
@@ -2554,7 +2554,7 @@
       {
         "postId": "fungal-network-trace",
         "packId": "read-it-then-play-it-gift-pairs-launch",
-        "packSha256": "4eaa873b2855536a88b107757bc2123894b28d059cdf824c85017d6036436905",
+        "packSha256": "73de3115757ea4a19d07e99fdc8d9bf88e129c55081f48525ffbc2a732f6cc34",
         "articleSlug": "read-it-then-play-it-gift-pairs",
         "platform": "pinterest",
         "format": "systems-diagram",
@@ -2584,7 +2584,7 @@
       {
         "postId": "cook-tool-self-purchase-gap",
         "packId": "read-it-then-play-it-gift-pairs-launch",
-        "packSha256": "4eaa873b2855536a88b107757bc2123894b28d059cdf824c85017d6036436905",
+        "packSha256": "73de3115757ea4a19d07e99fdc8d9bf88e129c55081f48525ffbc2a732f6cc34",
         "articleSlug": "read-it-then-play-it-gift-pairs",
         "platform": "tiktok",
         "format": "thirty-second-script",
@@ -3027,8 +3027,8 @@
     },
     "currentCandidate": {
       "status": "release_candidate",
-      "manifestId": "publication-set-a2e076613f5d6510",
-      "contentSetSha256": "a2e076613f5d651052f209f1f5c8c622806df904d42895fb4826bb6a10654fad",
+      "manifestId": "publication-set-26510debceb26336",
+      "contentSetSha256": "26510debceb26336e7048abc46adedf8b231d4ec980bd3a6634f806db189968b",
       "articles": 10,
       "independentReviews": 10,
       "socialLaunchPacks": 9,
