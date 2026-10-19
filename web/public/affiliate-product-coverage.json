@@ -1,7 +1,7 @@
 {
   "schemaVersion": "1.0.0",
-  "registrySha256": "c59ecfc2114125b942d61b185d2d50a7ae89cd86b1836f51f699000b478ac668",
-  "registryUpdatedAt": "2026-10-18T23:50:38.000Z",
+  "registrySha256": "db2579899e18e65773247e25e6db281c2db24240a8ba5ef8c6c29297b21293c5",
+  "registryUpdatedAt": "2026-10-19T00:23:41.000Z",
   "definition": "Program assignments are research queues only. They do not assert exact-product availability, account acceptance, tracking validity, or commission eligibility.",
   "counts": {
     "publicationReadyProductLinksCataloged": 60,

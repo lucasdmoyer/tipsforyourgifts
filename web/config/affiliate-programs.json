@@ -1,6 +1,6 @@
 {
-  "schemaVersion": "1.1.0",
-  "updatedAt": "2026-10-18T23:50:38.000Z",
+  "schemaVersion": "1.2.0",
+  "updatedAt": "2026-10-19T00:23:41.000Z",
   "programs": [
     {
       "id": "bookshop-org-us-media",
@@ -18,7 +18,7 @@
       "eligibleArticleSlugs": [
         "read-it-then-play-it-gift-pairs"
       ],
-      "productSelection": {
+      "researchCandidateSelection": {
         "mode": "explicit_products",
         "eligibleProductIds": [
           "sapiens-us-paperback",
@@ -33,6 +33,12 @@
           "the-food-lab-hardcover"
         ]
       },
+      "activationProductSelection": {
+        "mode": "explicit_products",
+        "eligibleProductIds": [
+          "sapiens-us-paperback"
+        ]
+      },
       "editorialFit": "A focused first candidate for book anchors in evidence-backed pairs, with a storefront model that can support independent bookstores.",
       "limitations": [
         "It does not replace a general merchant program for non-book companions, so pair recommendations must remain independently useful with ordinary links.",
@@ -40,6 +46,8 @@
       ],
       "allowedDomains": [],
       "registeredSites": [],
+      "trackingMethod": "path_redirect_to_query",
+      "trackingPathPrefix": null,
       "trackingParameterKeys": [],
       "requiredDisclosure": null,
       "account": {
@@ -72,8 +80,12 @@
       "sourceCheckedAt": "2026-10-10T16:25:37.000Z",
       "sourceReviewExpiresAt": "2027-01-08",
       "eligibleArticleSlugs": [],
-      "productSelection": {
+      "researchCandidateSelection": {
         "mode": "all_publication_ready_products",
+        "eligibleProductIds": []
+      },
+      "activationProductSelection": {
+        "mode": "discovery_only",
         "eligibleProductIds": []
       },
       "editorialFit": "A broad-catalog candidate that could cover books, games, golf accessories, and practical gifts without changing the editorial ranking.",
@@ -83,6 +95,8 @@
       ],
       "allowedDomains": [],
       "registeredSites": [],
+      "trackingMethod": "query_parameters",
+      "trackingPathPrefix": null,
       "trackingParameterKeys": [],
       "requiredDisclosure": null,
       "account": {
@@ -110,8 +124,12 @@
       "sourceCheckedAt": "2026-10-10T16:25:37.000Z",
       "sourceReviewExpiresAt": "2027-01-08",
       "eligibleArticleSlugs": [],
-      "productSelection": {
+      "researchCandidateSelection": {
         "mode": "all_publication_ready_products",
+        "eligibleProductIds": []
+      },
+      "activationProductSelection": {
+        "mode": "discovery_only",
         "eligibleProductIds": []
       },
       "editorialFit": "A family-friendly US retailer alternative with a broad catalog and Impact-provided tracking can give readers a second exact-product destination without changing the recommendation order.",
@@ -121,6 +139,8 @@
       ],
       "allowedDomains": [],
       "registeredSites": [],
+      "trackingMethod": "query_parameters",
+      "trackingPathPrefix": null,
       "trackingParameterKeys": [],
       "requiredDisclosure": null,
       "account": {
@@ -148,8 +168,12 @@
       "sourceCheckedAt": "2026-10-10T16:25:37.000Z",
       "sourceReviewExpiresAt": "2027-01-08",
       "eligibleArticleSlugs": [],
-      "productSelection": {
+      "researchCandidateSelection": {
         "mode": "all_publication_ready_products",
+        "eligibleProductIds": []
+      },
+      "activationProductSelection": {
+        "mode": "discovery_only",
         "eligibleProductIds": []
       },
       "editorialFit": "A second large US catalog could improve exact-product availability for practical gifts while the ordinary manufacturer link remains the stable editorial source and fallback.",
@@ -160,6 +184,8 @@
       ],
       "allowedDomains": [],
       "registeredSites": [],
+      "trackingMethod": "query_parameters",
+      "trackingPathPrefix": null,
       "trackingParameterKeys": [],
       "requiredDisclosure": null,
       "account": {
@@ -187,8 +213,12 @@
       "sourceCheckedAt": "2026-10-10T16:25:37.000Z",
       "sourceReviewExpiresAt": "2027-01-08",
       "eligibleArticleSlugs": [],
-      "productSelection": {
+      "researchCandidateSelection": {
         "mode": "all_publication_ready_products",
+        "eligibleProductIds": []
+      },
+      "activationProductSelection": {
+        "mode": "discovery_only",
         "eligibleProductIds": []
       },
       "editorialFit": "A marketplace contingency can help with discontinued or hard-to-find exact editions when a stable primary retailer is unavailable, without pretending a volatile listing is the canonical product source.",
@@ -200,6 +230,8 @@
       ],
       "allowedDomains": [],
       "registeredSites": [],
+      "trackingMethod": "query_parameters",
+      "trackingPathPrefix": null,
       "trackingParameterKeys": [],
       "requiredDisclosure": null,
       "account": {

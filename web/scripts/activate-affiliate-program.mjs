@@ -22,6 +22,11 @@ function parseList(value, pattern, label) {
 
 const allowedDomains = parseList(args['allowed-domains'], /^[a-z0-9.-]+$/, 'allowed-domains');
 const trackingParameterKeys = parseList(args['tracking-parameter-keys'], /^[a-z0-9_-]+$/i, 'tracking-parameter-keys');
+const trackingMethod = args['tracking-method'] ?? 'query_parameters';
+if (!['query_parameters', 'path_redirect_to_query'].includes(trackingMethod)) throw new Error('tracking-method must be query_parameters or path_redirect_to_query');
+const trackingPathPrefix = args['tracking-path-prefix'] ?? '';
+if (trackingMethod === 'path_redirect_to_query' && !/^\/[a-z0-9-]+\/$/.test(trackingPathPrefix)) throw new Error('path-redirect tracking requires --tracking-path-prefix=/segment/');
+if (trackingMethod === 'query_parameters' && trackingPathPrefix) throw new Error('query-parameter tracking cannot configure a path prefix');
 const termsAcceptedAt = args['terms-accepted-at'];
 if (!termsAcceptedAt || !Number.isFinite(Date.parse(termsAcceptedAt))) throw new Error('terms-accepted-at must be an ISO timestamp');
 const evidenceUrl = new URL(args['acceptance-evidence-url'] ?? '');
@@ -47,6 +52,8 @@ program.status = 'enabled';
 program.enabled = true;
 program.allowedDomains = allowedDomains;
 program.registeredSites = ['https://tipsforyourgifts.web.app/'];
+program.trackingMethod = trackingMethod;
+program.trackingPathPrefix = trackingMethod === 'path_redirect_to_query' ? trackingPathPrefix : null;
 program.trackingParameterKeys = trackingParameterKeys;
 program.requiredDisclosure = model.policy.defaultDisclosure;
 program.account = {

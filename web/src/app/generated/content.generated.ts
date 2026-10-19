@@ -2085,10 +2085,10 @@ export const ARTICLES: readonly Article[] = [
 ];
 
 export const OPERATIONS: Operations = {
-  "generatedAt": "2026-10-19T00:14:05.812Z",
+  "generatedAt": "2026-10-19T00:23:41.000Z",
   "founderAgenda": {
     "schemaVersion": "1.0.0",
-    "generatedAt": "2026-10-19T00:14:05.812Z",
+    "generatedAt": "2026-10-19T00:23:41.000Z",
     "posture": "founder_decisions_required",
     "primaryDecisionId": "review-release-candidate",
     "profitabilityEvidence": "unknown_until_aggregate_measurement",
@@ -2101,7 +2101,7 @@ export const OPERATIONS: Operations = {
         "horizon": "now",
         "category": "release",
         "title": "Review the first accountable Angular release",
-        "recommendation": "Review publication-set-26510debceb26336 as the first founder-controlled Firebase release candidate.",
+        "recommendation": "Review publication-set-7be6d326b59a46e8 as the first founder-controlled Firebase release candidate.",
         "decisionQuestion": "Does this exact content set represent the site you want readers to see first?",
         "rationale": "The research and release machinery cannot create traffic, trust, or revenue while the modern reviewed site remains only a local candidate.",
         "evidence": [
@@ -5113,8 +5113,8 @@ export const OPERATIONS: Operations = {
     },
     "currentCandidate": {
       "status": "release_candidate",
-      "manifestId": "publication-set-26510debceb26336",
-      "contentSetSha256": "26510debceb26336e7048abc46adedf8b231d4ec980bd3a6634f806db189968b",
+      "manifestId": "publication-set-7be6d326b59a46e8",
+      "contentSetSha256": "7be6d326b59a46e8ef0cbcd6fe71152cf72291de6483d76d59c41b1433cdeecf",
       "articles": 10,
       "independentReviews": 10,
       "socialLaunchPacks": 9,

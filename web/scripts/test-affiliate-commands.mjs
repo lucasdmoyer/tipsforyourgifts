@@ -70,6 +70,8 @@ const commonArgs = [
   `--expected-revision=${verifiedProgram.revision}`,
   `--confirmation=ACTIVATE-${program.id}`,
   '--allowed-domains=bookshop.org',
+  '--tracking-method=path_redirect_to_query',
+  '--tracking-path-prefix=/a/',
   '--tracking-parameter-keys=affiliate',
   `--terms-accepted-at=${termsAcceptedAt}`,
   '--acceptance-evidence-url=https://github.com/lucasdmoyer/tipsforyourgifts/issues/42',
@@ -83,6 +85,8 @@ assert.equal(activatedProgram.status, 'enabled');
 assert.equal(activatedProgram.enabled, true);
 assert.equal(activatedProgram.priceFeedAuthorized, false);
 assert.deepEqual(activatedProgram.registeredSites, ['https://tipsforyourgifts.web.app/']);
+assert.equal(activatedProgram.trackingMethod, 'path_redirect_to_query');
+assert.equal(activatedProgram.trackingPathPrefix, '/a/');
 assert.deepEqual(validateAffiliateModel(activated, { asOfDate: testNow.toISOString().slice(0, 10) }), []);
 
 const rejectedRoot = await fs.mkdtemp(path.join(os.tmpdir(), 'tfyg-affiliate-command-reject-'));

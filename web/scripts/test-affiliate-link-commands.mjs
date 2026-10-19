@@ -5,7 +5,7 @@ import path from 'node:path';
 import { execFile } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { promisify } from 'node:util';
-import { affiliateLinkReviewSchema, loadAffiliateLinkState, sha256 } from './lib/affiliate-link-contract.mjs';
+import { loadAffiliateLinkState, sha256 } from './lib/affiliate-link-contract.mjs';
 
 const execFileAsync = promisify(execFile);
 const scriptRoot = path.dirname(fileURLToPath(import.meta.url));
@@ -14,7 +14,8 @@ const articleSlug = 'read-it-then-play-it-gift-pairs';
 const productId = 'sapiens-us-paperback';
 const programId = 'bookshop-org-us-media';
 const sapiensOrdinaryUrl = 'https://bookshop.org/p/books/sapiens-tenth-anniversary-edition-a-brief-history-of-humankind-yuval-noah-harari/031a784adc6e9de4';
-const sapiensPaidUrl = `${sapiensOrdinaryUrl}?affiliate=test-fixture-only`;
+const sapiensPaidUrl = 'https://bookshop.org/a/129750/9780063422001';
+const sapiensResolvedPaidUrl = `${sapiensOrdinaryUrl}?ean=9780063422001&affiliate=129750`;
 const root = await fs.mkdtemp(path.join(os.tmpdir(), 'tfyg-affiliate-link-command-'));
 for (const relative of ['config', 'src/data/blog', 'research/runs', 'research/reviews', 'scripts']) await fs.mkdir(path.join(root, relative), { recursive: true });
 await fs.cp(path.join(webRoot, 'src', 'data', 'blog'), path.join(root, 'src', 'data', 'blog'), { recursive: true });
@@ -29,7 +30,8 @@ for (const entry of registry.programs) {
 }
 const program = registry.programs.find((entry) => entry.id === programId);
 program.revision = 2; program.status = 'enabled'; program.enabled = true; program.founderDisposition = 'approved';
-program.allowedDomains = ['bookshop.org']; program.registeredSites = ['https://tipsforyourgifts.web.app/']; program.trackingParameterKeys = ['affiliate']; program.requiredDisclosure = registry.policy.defaultDisclosure;
+program.activationProductSelection = { mode: 'explicit_products', eligibleProductIds: ['sapiens-us-paperback', 'genius-of-birds-paperback', 'a-city-on-mars-paperback'] };
+program.allowedDomains = ['bookshop.org']; program.registeredSites = ['https://tipsforyourgifts.web.app/']; program.trackingMethod = 'path_redirect_to_query'; program.trackingPathPrefix = '/a/'; program.trackingParameterKeys = ['affiliate']; program.requiredDisclosure = registry.policy.defaultDisclosure;
 program.account = { externalAccountEstablished: true, trackingIdentityConfigured: true, verificationStatus: 'verified', verificationObservedAt: '2026-08-05T09:30:00.000Z', publicTrackingIdentity: '129750', publicStorefrontUrl: 'https://bookshop.org/shop/tipsforyourgifts', weeklyReportsEnabled: true, termsAcceptedByFounder: true, termsAcceptedAt: '2026-08-05T10:00:00.000Z', acceptanceEvidenceReference: 'https://github.com/lucasdmoyer/tipsforyourgifts/issues/42', reportingExportApproved: false };
 registry.updatedAt = '2026-08-05T10:00:00.000Z';
 await fs.writeFile(path.join(root, 'config', 'affiliate-programs.json'), `${JSON.stringify(registry, null, 2)}\n`);
@@ -70,7 +72,7 @@ const batchInput = {
       productId: 'genius-of-birds-paperback',
       candidateRevision: 1,
       expectedArticleSha256: sha256(articleRaw),
-      paidUrl: 'https://bookshop.org/p/books/the-genius-of-birds/456?affiliate=test-fixture-only',
+      paidUrl: 'https://bookshop.org/a/129750/456',
       productIdentityEvidenceUrl: 'https://www.penguinrandomhouse.com/books/312321/the-genius-of-birds-by-jennifer-ackerman/'
     },
     {
@@ -78,7 +80,7 @@ const batchInput = {
       productId: 'a-city-on-mars-paperback',
       candidateRevision: 1,
       expectedArticleSha256: sha256(articleRaw),
-      paidUrl: 'https://bookshop.org/p/books/a-city-on-mars/789?affiliate=test-fixture-only',
+      paidUrl: 'https://bookshop.org/a/129750/789',
       productIdentityEvidenceUrl: 'https://www.penguinrandomhouse.com/books/639449/a-city-on-mars-by-kelly-and-zach-weinersmith/'
     }
   ]
@@ -166,16 +168,29 @@ await assert.rejects(() => execFileAsync(process.execPath, [
 ], { cwd: root }), /clean independent review/);
 
 await fs.rm(path.join(root, 'affiliate', 'reviews', `${candidateId}-review.json`));
-const passedReview = affiliateLinkReviewSchema.parse({
-  ...failedReview,
-  verdict: 'passed',
-  destination: { observationMethod: 'automated_fetch', httpStatus: 200, resolvedUrl: candidate.destination.paidUrl, resolvedHostname: 'bookshop.org', verifiedAt: '2026-08-06T11:00:00.000Z' },
-  availability: { status: 'available_for_purchase', observedAt: '2026-08-06T11:00:00.000Z', purchaseActionLabel: 'Add to cart', evidenceUrl: candidate.destination.paidUrl },
-  checks: Object.fromEntries(Object.keys(failedReview.checks).map((key) => [key, true])),
-  blockers: []
-});
 const passedReviewPath = path.join(root, 'affiliate', 'reviews', `${candidateId}-review.json`);
-await fs.writeFile(passedReviewPath, `${JSON.stringify(passedReview, null, 2)}\n`);
+const browserReviewArgs = [
+  path.join(root, 'scripts', 'review-affiliate-link.mjs'),
+  `--candidate-id=${candidateId}`,
+  `--expected-candidate-sha256=${sha256(candidateRaw)}`,
+  '--reviewer-id=evidence-red-team-123',
+  '--verdict=passed',
+  '--destination-observation-method=independent_browser_observation',
+  '--product-identity-matched=true',
+  '--tracking-identity-matched=true',
+  '--purchase-action-available=true',
+  '--purchase-action-label=Add to cart',
+  '--availability-observed-at=2026-08-06T11:00:00.000Z'
+];
+await assert.rejects(() => execFileAsync(process.execPath, [
+  ...browserReviewArgs,
+  '--observed-resolved-url=https://example.com/product?affiliate=129750'
+], { cwd: root }), /resolved domain is not allowlisted/);
+await assert.rejects(() => fs.access(passedReviewPath), (error) => error?.code === 'ENOENT', 'late validation failure must remove the review file');
+await execFileAsync(process.execPath, [
+  ...browserReviewArgs,
+  `--observed-resolved-url=${sapiensResolvedPaidUrl}`
+], { cwd: root });
 const passedReviewRaw = await fs.readFile(passedReviewPath);
 await execFileAsync(process.execPath, [
   path.join(root, 'scripts', 'approve-affiliate-link.mjs'),
@@ -188,4 +203,4 @@ await execFileAsync(process.execPath, [
 const approval = JSON.parse(await fs.readFile(path.join(root, 'affiliate', 'approvals', `${candidateId}-approval.json`), 'utf8'));
 assert.equal(approval.assertions.productionDeploymentAuthorized, false);
 
-console.log(JSON.stringify({ affiliateLinkCommandTests: 'passed', candidateCreation: 'passed', founderAttestedPartnerBatchImport: 'passed', completeBatchManifest: 'passed', exactSetBinding: 'passed', programBinding: 'passed', idempotentRecovery: 'passed', failedReviewBlocksApproval: 'passed', cleanReviewFounderApproval: 'passed', deployed: false }, null, 2));
+console.log(JSON.stringify({ affiliateLinkCommandTests: 'passed', candidateCreation: 'passed', founderAttestedPartnerBatchImport: 'passed', completeBatchManifest: 'passed', exactSetBinding: 'passed', programBinding: 'passed', idempotentRecovery: 'passed', failedReviewBlocksApproval: 'passed', lateReviewRollback: 'passed', correctedReviewRecovery: 'passed', cleanReviewFounderApproval: 'passed', deployed: false }, null, 2));
