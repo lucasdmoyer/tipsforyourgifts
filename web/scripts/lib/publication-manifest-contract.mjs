@@ -1,7 +1,7 @@
 import crypto from 'node:crypto';
 import fs from 'node:fs/promises';
 import path from 'node:path';
-import matter from 'gray-matter';
+import matter from './front-matter.mjs';
 import { z } from 'zod';
 import { loadAffiliateLinkState } from './affiliate-link-contract.mjs';
 
@@ -338,8 +338,12 @@ export async function buildPublicationManifest(root) {
       }
     });
   }
-  const validatedRuns = runRecords.filter((record) => record.data.status === 'validated');
-  if (validatedRuns.length !== articles.length) throw new Error(`Expected one publication-ready article for each validated run; found ${articles.length}/${validatedRuns.length}`);
+  const activeRunIds = new Set(articles.map((article) => article.researchRunId));
+  const supersededRunIds = new Set(runRecords.map((record) => record.data.supersedesRunId).filter(Boolean));
+  const orphanValidatedRuns = runRecords.filter((record) => record.data.status === 'validated' && !activeRunIds.has(record.data.runId) && !supersededRunIds.has(record.data.runId));
+  if (orphanValidatedRuns.length > 0) throw new Error(`Validated research runs are neither active nor superseded: ${orphanValidatedRuns.map((record) => record.data.runId).join(', ')}`);
+  const activeValidatedRuns = runRecords.filter((record) => record.data.status === 'validated' && activeRunIds.has(record.data.runId));
+  if (activeValidatedRuns.length !== articles.length) throw new Error(`Expected one active publication-ready article for each active validated run; found ${articles.length}/${activeValidatedRuns.length}`);
   const affiliateLinkCount = articles.reduce((sum, article) => sum + article.affiliateLinkCount, 0);
   const overlayEntries = articles.flatMap((article) => article.affiliateLinks.map((link) => ({ articleSlug: article.articleSlug, ...link })));
   const affiliatePosture = {

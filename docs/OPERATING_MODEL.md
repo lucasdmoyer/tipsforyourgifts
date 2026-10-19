@@ -50,7 +50,9 @@ Publication begins in `founder_reviewed` mode. After ten successful founder-revi
 
 ## Affiliate posture
 
-No affiliate program is enabled by default. Public program research may add a `proposed` candidate with official source URLs, editorial fit, limitations, and a review-expiry date, but a proposal must contain no account evidence, tracking configuration, registered sites, or disclosure approval. The repository-owner workflow may record `founder_approved`; that state still cannot create an account, accept terms, or enable links.
+No affiliate program is enabled by default. Public program research may add a `proposed` candidate with official source URLs, editorial fit, limitations, and a review-expiry date, but a proposal must contain no account evidence, tracking configuration, registered sites, or disclosure approval. The repository-owner workflow may record `founder_approved`; verified portal evidence is then recorded separately as `externally_verified`. Both states remain disabled and cannot accept terms or enable paid links.
+
+Broad-catalog partner research automatically includes every present and future publication-ready product. This is only a discovery queue: it cannot assert that a partner sells the exact item, that the item is commission-eligible, or that a paid destination is valid. Exact-product verification, independent link review, and founder approval remain required for every overlay.
 
 Enabling a program later requires the founder to establish the account externally, accept current terms personally, and approve permitted domains, registered sites, a program-provided tracking identity, disclosure language, and reporting posture in a separate audited configuration pull request. Agents may never infer or invent a tag. The current candidates are decision research, not enrollment recommendations or income forecasts.
 

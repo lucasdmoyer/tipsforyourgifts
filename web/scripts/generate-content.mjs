@@ -1,7 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import process from 'node:process';
-import matter from 'gray-matter';
+import matter from './lib/front-matter.mjs';
 import { marked } from 'marked';
 import { applyAffiliateLinkOverlays, loadAffiliateLinkState } from './lib/affiliate-link-contract.mjs';
 
@@ -70,6 +70,9 @@ for (const fileName of fileNames) {
     evidenceMode: data.evidenceMode,
     featured: Boolean(data.featured),
     affiliateDisclosure: Boolean(data.affiliateDisclosure),
+    readerFormat: data.readerFormat,
+    readerIntro: data.readerIntro,
+    specialtyLens: data.specialtyLens,
     products,
     pairs,
     visual: {

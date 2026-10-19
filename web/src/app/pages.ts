@@ -5,7 +5,7 @@ import type { Article, Product, ProductPair, StrategyIdea, VisualAsset } from '.
 import { ContentService } from './content.service';
 import { assessFounderBrief, buildFounderBriefMarkdown, buildStrategyIssueUrl, EMPTY_FOUNDER_BRIEF, type FounderBriefDraft } from './founder-brief';
 import { findGiftGuides, type GiftShape, type RecipientSignal } from './gift-finder';
-import { readerBodyHtml, readerDescription, readerGiftIdea, readerLanguage, readerLead, readerTags, readerTitle } from './reader-copy';
+import { readerBodyComesFirst, readerBodyHtml, readerDescription, readerEvidenceHtml, readerGiftIdea, readerLanguage, readerLead, readerTags, readerTitle } from './reader-copy';
 import { SeoService } from './seo.service';
 
 @Component({
@@ -41,13 +41,11 @@ export class ArticleCardComponent {
   template: `
     <article class="product-card" [id]="product().id">
       <figure class="product-context-visual">
-        <a [href]="product().url" target="_blank" [attr.rel]="product().affiliate ? 'sponsored noopener' : 'noopener'" [attr.aria-label]="'See ' + product().name + ' at ' + product().merchant">
-          <img [src]="visual().src" [alt]="visual().alt" width="1536" height="1024" loading="lazy" decoding="async">
-        </a>
+        <img [src]="visual().src" [alt]="visual().alt" width="1536" height="1024" loading="lazy" decoding="async">
         <figcaption>Original illustration of the gift idea—not a product photo.</figcaption>
       </figure>
       <p class="eyebrow">A gift to consider</p>
-      <h3><a [href]="product().url" target="_blank" [attr.rel]="product().affiliate ? 'sponsored noopener' : 'noopener'">{{ product().name }}</a></h3>
+      <h3>{{ product().name }}</h3>
       <p>{{ display(product().whyItFits) }}</p>
       <p class="drawback"><strong>Before you buy:</strong> {{ display(product().drawback) }}</p>
       <p class="quiet">From {{ product().merchant }} @if (product().priceBand) { · {{ product().priceBand }} }</p>
@@ -71,35 +69,33 @@ export class ProductCardComponent {
     <article class="reader-pair-card" [id]="pair().id">
       <p class="eyebrow">A thoughtful pair</p>
       <h2>{{ pair().name }}</h2>
+      <figure class="pairing-context-visual">
+        <img [src]="pairVisual().src" [alt]="pairVisual().alt" width="1536" height="1024" loading="lazy" decoding="async">
+        <figcaption>{{ display(pairVisual().caption) }} Original illustration of the gift idea—not product photography.</figcaption>
+      </figure>
       <div class="reader-pair-products">
         @if (anchorProduct(); as product) {
           <section class="reader-pair-product">
-            <a class="reader-pair-product-visual" [href]="product.url" target="_blank" [attr.rel]="product.affiliate ? 'sponsored noopener' : 'noopener'" [attr.aria-label]="'See ' + product.name + ' at ' + product.merchant">
-              <img [src]="productVisual(product.id).src" [alt]="productVisual(product.id).alt" width="1536" height="1024" loading="lazy" decoding="async">
-            </a>
             <p class="pair-role">Start with</p>
-            <h3><a [href]="product.url" target="_blank" [attr.rel]="product.affiliate ? 'sponsored noopener' : 'noopener'">{{ product.name }}</a></h3>
+            <h3>{{ product.name }}</h3>
             <p>{{ display(product.whyItFits) }}</p>
             <p class="product-caveat"><strong>Good to know:</strong> {{ display(product.drawback) }}</p>
-            <a class="read" [href]="product.url" target="_blank" [attr.rel]="product.affiliate ? 'sponsored noopener' : 'noopener'" data-event-name="merchant_outbound_click" [attr.data-article-slug]="article().slug" [attr.data-product-id]="product.id" [attr.data-paid-link]="product.affiliate">See product details at {{ product.merchant }} →</a>
+            <a class="read" [href]="product.url" target="_blank" [attr.rel]="product.affiliate ? 'sponsored noopener' : 'noopener'" data-event-name="merchant_outbound_click" [attr.data-article-slug]="article().slug" [attr.data-product-id]="product.id" [attr.data-paid-link]="product.affiliate">See product details at {{ product.merchant }}{{ product.affiliate ? ' (paid link)' : '' }} →</a>
           </section>
         }
         @if (companionProduct(); as product) {
           <section class="reader-pair-product">
-            <a class="reader-pair-product-visual" [href]="product.url" target="_blank" [attr.rel]="product.affiliate ? 'sponsored noopener' : 'noopener'" [attr.aria-label]="'See ' + product.name + ' at ' + product.merchant">
-              <img [src]="productVisual(product.id).src" [alt]="productVisual(product.id).alt" width="1536" height="1024" loading="lazy" decoding="async">
-            </a>
             <p class="pair-role">Pair it with</p>
-            <h3><a [href]="product.url" target="_blank" [attr.rel]="product.affiliate ? 'sponsored noopener' : 'noopener'">{{ product.name }}</a></h3>
+            <h3>{{ product.name }}</h3>
             <p>{{ display(product.whyItFits) }}</p>
             <p class="product-caveat"><strong>Good to know:</strong> {{ display(product.drawback) }}</p>
-            <a class="read" [href]="product.url" target="_blank" [attr.rel]="product.affiliate ? 'sponsored noopener' : 'noopener'" data-event-name="merchant_outbound_click" [attr.data-article-slug]="article().slug" [attr.data-product-id]="product.id" [attr.data-paid-link]="product.affiliate">See product details at {{ product.merchant }} →</a>
+            <a class="read" [href]="product.url" target="_blank" [attr.rel]="product.affiliate ? 'sponsored noopener' : 'noopener'" data-event-name="merchant_outbound_click" [attr.data-article-slug]="article().slug" [attr.data-product-id]="product.id" [attr.data-paid-link]="product.affiliate">See product details at {{ product.merchant }}{{ product.affiliate ? ' (paid link)' : '' }} →</a>
           </section>
         }
       </div>
-      <p class="illustration-note">The pictures are original illustrations of the gift idea, not product photography. The links open the current product pages.</p>
-      <section class="why-good-gift">
-        <p class="eyebrow">Why this makes a good gift</p>
+      <p class="illustration-note">The links below open the current product pages.</p>
+      <section class="why-good-gift" [attr.aria-labelledby]="pair().id + '-why-good-gift'">
+        <h3 [id]="pair().id + '-why-good-gift'">Why this makes a good gift</h3>
         <p>{{ display(pair().whyTogether) }}</p>
         <p><strong>The moment it creates:</strong> {{ display(pair().interactionMoment) }}</p>
       </section>
@@ -118,9 +114,9 @@ export class PairCardComponent {
   readonly display = readerLanguage;
   anchorProduct() { return this.article().products.find((product) => product.id === this.pair().anchorProductId); }
   companionProduct() { return this.article().products.find((product) => product.id === this.pair().companionProductId); }
-  productVisual(productId: string): VisualAsset {
+  pairVisual(): VisualAsset {
     const article = this.article();
-    const sceneId = article.visual.productSceneIds[productId];
+    const sceneId = article.visual.pairSceneIds[this.pair().id];
     return article.visual.scenes.find((scene) => scene.id === sceneId) ?? article.visual.hero;
   }
 }
@@ -132,7 +128,7 @@ export class PairCardComponent {
       <div>
         <p class="eyebrow">The gifts people remember</p>
         <h1>Good gifts, minus the guesswork.</h1>
-        <p class="lede">The best gifts are often the things someone would love, use, and never quite buy for themselves. We look for the little desire hiding behind “I’m fine”—and turn it into a gift that feels like you noticed.</p>
+        <p class="lede">The best gifts are often the things someone would love, use, and never quite buy for themselves. Sometimes they already own the everyday version. The gift is the specialty extra made for the part they love most.</p>
         <div class="actions">
           <a class="button" routerLink="/gift-finder">Find their gift</a>
           <a class="button secondary" routerLink="/gifts">Browse every idea</a>
@@ -157,7 +153,7 @@ export class PairCardComponent {
         <div class="grid three">
           <div class="panel"><span class="number">01</span><h3>Notice the almost</h3><p>The hobby they circle. The worn workaround. The better version they pick up, admire, and put back.</p></div>
           <div class="panel"><span class="number">02</span><h3>Find the hesitation</h3><p>Too indulgent. Too niche. Too hard to compare. A gift removes the excuse without creating a burden.</p></div>
-          <div class="panel"><span class="number">03</span><h3>Make it personal</h3><p>The present should say, “I know why you will love this,” before the paper is even off.</p></div>
+          <div class="panel"><span class="number">03</span><h3>Add, do not erase</h3><p>Keep the useful thing they already trust. Give the specialty extra that makes one favorite part of their life better.</p></div>
         </div>
       </div>
     </section>
@@ -232,6 +228,7 @@ export class HomePage {
           <ul>
             <li>Have I actually seen them want, need, or postpone this?</li>
             <li>Do I know the size, edition, platform, or version that fits?</li>
+            <li>Does this add something special without replacing a general-purpose thing they already like?</li>
             <li>Are they denying themselves a pleasure—or simply uninterested?</li>
             <li>Will this become part of their life instead of part of their closet?</li>
           </ul>
@@ -400,6 +397,22 @@ export class BlogPage {
         @if (article.affiliateDisclosure) {
           <aside class="disclosure"><strong>Affiliate disclosure:</strong> We may earn a commission when you purchase through links on this page. That never changes who the gift is for or why it belongs here.</aside>
         }
+        @if (article.specialtyLens; as lens) {
+          <section class="specialty-lens" [attr.aria-labelledby]="article.slug + '-specialty-lens-title'">
+            <p class="eyebrow">The quick version</p>
+            <h2 [id]="article.slug + '-specialty-lens-title'">The gift may be the extra tool, not a replacement.</h2>
+            <div class="specialty-lens-grid">
+              <div><h3>What they may already use</h3><p>{{ lens.generalPurpose }}</p></div>
+              <div><h3>What this adds</h3><p>{{ lens.specialty }}</p></div>
+              <div><h3>The clue to look for</h3><p>{{ lens.signal }}</p></div>
+            </div>
+          </section>
+        }
+        @if (bodyComesFirst(article)) {
+          <section class="article-explainer" aria-label="A simple explanation of this gift idea">
+            <div class="prose" [innerHTML]="body(article)"></div>
+          </section>
+        }
         @if (article.pairs.length > 0) {
           <section aria-labelledby="pairings" class="article-pairings">
             <p class="eyebrow">Two products, one idea</p>
@@ -420,11 +433,18 @@ export class BlogPage {
             </div>
           </section>
         }
-        @if (article.products.length === 0) {
-          <div class="prose article-explainer" [innerHTML]="body(article)"></div>
-        } @else {
-          <section class="article-explainer" aria-labelledby="why-this-idea-works">
-            <div class="prose" [innerHTML]="body(article)"></div>
+        @if (!bodyComesFirst(article)) {
+          @if (article.products.length === 0) {
+            <div class="prose article-explainer" [innerHTML]="body(article)"></div>
+          } @else {
+            <section class="article-explainer" aria-label="Why this gift idea works">
+              <div class="prose" [innerHTML]="body(article)"></div>
+            </section>
+          }
+        }
+        @if (evidence(article)) {
+          <section class="article-evidence" aria-label="Sources behind this guide">
+            <div class="prose" [innerHTML]="evidence(article)"></div>
           </section>
         }
       </article>
@@ -448,6 +468,8 @@ export class ArticlePage {
   readonly lead = readerLead;
   readonly title = readerTitle;
   readonly body = readerBodyHtml;
+  readonly bodyComesFirst = readerBodyComesFirst;
+  readonly evidence = readerEvidenceHtml;
   readonly display = readerLanguage;
   unpairedProducts() {
     if (!this.article) return [];
@@ -501,6 +523,9 @@ export class ArticlePage {
         <p>The object is not the idea. The idea is that you saw the hesitation and understood what was underneath it.</p>
         <h2>A little indulgence is the point.</h2>
         <p>A gift does not need to be frivolous. It needs to cross a line the recipient will not cross alone: from good enough to genuinely enjoyable, from vague curiosity to a first real step, from someday to this weekend.</p>
+        <h2>The everyday thing can stay.</h2>
+        <p>Someone may already own a good general-purpose version: the phone app, the old towel, the plain palette, the ordinary storage box. That does not make the gift idea redundant.</p>
+        <p>Look for the specialty extra built for the exact moment they care about. It should do one narrow job better without asking them to throw away something that already works.</p>
         <h2>When two gifts belong together.</h2>
         <p>Do not make a gift basket just because two products share a color. One thing should open the door and the other should create a moment: read and play, remember and record, notice and look closer.</p>
         <h2>Let the shopping disappear.</h2>
@@ -713,6 +738,38 @@ export class AffiliateDisclosurePage {
         }
       </div>
     </section>
+    <section class="shell compact-section editorial-decision-queue">
+      <div class="section-heading">
+        <div><p class="eyebrow">Editorial decision queue</p><h2>{{ content.operations.editorialReview.counts.pendingBundles }} exact bundle{{ content.operations.editorialReview.counts.pendingBundles === 1 ? '' : 's' }} need a decision.</h2></div>
+        <p>Agents can prepare the work. Lucas approves sensitive reader language. A separate editor certifies the exact files. Nothing in this queue can publish itself.</p>
+      </div>
+      <div class="grid two mission-summary">
+        <div class="panel"><p class="eyebrow">Founder boundary</p><h2>{{ content.operations.editorialReview.counts.founderSafetyReviewsRequired }} safety review{{ content.operations.editorialReview.counts.founderSafetyReviewsRequired === 1 ? '' : 's' }} required.</h2><p>{{ content.operations.editorialReview.counts.highRiskClaims }} high-risk claims are shown below in full, with their source bindings.</p></div>
+        <div class="panel"><p class="eyebrow">Independent boundary</p><h2>{{ content.operations.editorialReview.counts.independentReviewsRequired }} fresh review{{ content.operations.editorialReview.counts.independentReviewsRequired === 1 ? '' : 's' }} required.</h2><p>The drafting desk cannot approve its own revisions. Every receipt must bind the exact run, article, and social hashes.</p></div>
+      </div>
+      @if (content.operations.editorialReview.queue.length > 0) {
+        <div class="experiment-grid editorial-review-grid">
+          @for (review of content.operations.editorialReview.queue; track review.runId) {
+            <article class="experiment-card editorial-review-card">
+              <div class="experiment-header"><p class="eyebrow">{{ review.ideaId }} · {{ review.articleSlug }}</p><span class="status blocked_on_account">{{ displayStatus(review.status) }}</span></div>
+              <h3>{{ review.founderSafetyReviewRequired ? 'Founder language review, then independent QA' : 'Independent QA required' }}</h3>
+              <p><strong>Blocking decisions:</strong></p><ul>@for (blocker of review.blockers; track blocker) { <li>{{ blocker }}</li> }</ul>
+              @if (review.highRiskClaims.length > 0) {
+                <details open><summary>Exact high-risk claims</summary>
+                  @for (claim of review.highRiskClaims; track claim.id) {
+                    <div class="editorial-claim"><p><strong>{{ claim.id }}</strong></p><p>{{ claim.text }}</p><p class="quiet">Sources: {{ claim.sourceIds.join(', ') }}</p></div>
+                  }
+                </details>
+              }
+              <p><strong>Next gate:</strong> {{ review.nextGate }}</p>
+              <details><summary>Warnings and exact file identity</summary><ul>@for (warning of review.warnings; track warning) { <li>{{ warning }}</li> }</ul><div class="command">run: {{ review.sourcePaths.run }}<br>run sha256: {{ review.sourceSha256.run }}<br>article: {{ review.sourcePaths.article }}<br>article sha256: {{ review.sourceSha256.article }}<br>social: {{ review.sourcePaths.social ?? 'none' }}<br>social sha256: {{ review.sourceSha256.social ?? 'none' }}</div></details>
+            </article>
+          }
+        </div>
+      } @else {
+        <div class="panel"><p class="eyebrow">Queue clear</p><h2>No draft bundle is waiting on founder or independent review.</h2></div>
+      }
+    </section>
     <section class="shell compact-section">
       <div class="section-heading">
         <div><p class="eyebrow">Monetization and distribution</p><h2>Proposals move. Authority does not leak.</h2></div>
@@ -722,17 +779,23 @@ export class AffiliateDisclosurePage {
         <div class="panel">
           <p class="eyebrow">Affiliate decision queue</p>
           <h2>{{ content.operations.affiliate.proposedPrograms }} programs proposed. {{ content.operations.affiliate.activeOverlays }} paid links active.</h2>
+          <p><strong>{{ content.operations.affiliate.publicationReadyProductLinksCataloged }}</strong> publication-ready product links cataloged · <strong>{{ content.operations.affiliate.publicationReadyPaidLinksVerified }}</strong> verified paid links · <strong>{{ content.operations.affiliate.publicationReadyOrdinaryLinks }}</strong> ordinary links.</p>
+          <p><strong>{{ content.operations.affiliate.productsAssignedToPartnerResearch }}/{{ content.operations.affiliate.publicationReadyProductLinksCataloged }}</strong> assigned to partner research · <strong>{{ content.operations.affiliate.productsWithoutPartnerResearch }}</strong> research gaps. Assignment does not claim exact retailer availability or paid-link eligibility.</p>
+          <p><strong>{{ content.operations.affiliate.publicApplicationPacketsReady }}</strong> public application packets ready · <strong>{{ content.operations.affiliate.externalEnrollmentAllowedByRegistry }}</strong> eligible for external enrollment planning · <strong>{{ content.operations.affiliate.awaitingFounderProgramApproval }}</strong> awaiting program approval · <strong>{{ content.operations.affiliate.externallyEnrolledPrograms }}</strong> externally verified accounts. Every portal submission still requires action-time approval.</p>
           <p><strong>{{ content.operations.affiliate.linkCandidates }}</strong> exact candidates · <strong>{{ content.operations.affiliate.linkReviewsPassed }}</strong> clean independent reviews · <strong>{{ content.operations.affiliate.linkApprovals }}</strong> founder approvals.</p>
           <p><a href="https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/affiliate-program-approval.yml" target="_blank" rel="noopener">Program onboarding approval</a> · <a href="https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/affiliate-program-activate.yml" target="_blank" rel="noopener">Program activation</a> · <a href="https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/affiliate-link-candidate.yml" target="_blank" rel="noopener">Exact-link candidate</a> · <a href="https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/affiliate-link-review.yml" target="_blank" rel="noopener">Independent link review</a> · <a href="https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/affiliate-link-approval.yml" target="_blank" rel="noopener">Founder link approval</a></p>
           <details><summary>Exact approved-overlay digest</summary><div class="command">{{ content.operations.affiliate.approvedOverlaySetSha256 }}</div></details>
+          <details><summary>Reusable public application profile</summary><p>{{ content.operations.affiliate.siteApplicationDescription }}</p><p class="quiet">{{ content.operations.affiliate.sensitiveDataPolicy }}</p></details>
+          <p><a [href]="content.operations.affiliate.productCoverageArtifactPath" target="_blank" rel="noopener">Open the product-level affiliate research ledger</a> · <a [href]="content.operations.affiliate.enrollmentReadinessArtifactPath" target="_blank" rel="noopener">Open enrollment-readiness packets</a></p>
           <div class="connector-list">
             @for (program of content.operations.affiliate.programs; track program.id) {
               <div class="connector-row">
-                <div><strong>{{ program.name }}</strong><p>Revision {{ program.revision }} · review expires {{ program.sourceReviewExpiresAt }}</p></div>
+                <div><strong>{{ program.name }}</strong><p>Priority {{ program.priority }} · {{ displayStatus(program.coverageRole) }} · {{ program.productResearchCandidates }} product research candidates · {{ program.verifiedPaidLinks }} verified paid</p><p>{{ program.productSelectionMode === 'explicit_products' ? 'explicit product research scope' : program.productSelectionMode === 'all_publication_ready_products' ? 'every present and future publication-ready product is queued automatically' : 'all products in the configured articles are queued' }} · {{ program.productSelectionMode === 'all_publication_ready_products' ? 'no manual article list' : program.eligibleArticleSlugs.length + ' configured articles' }} · revision {{ program.revision }} · review expires {{ program.sourceReviewExpiresAt }}</p><p>Enrollment: {{ displayStatus(program.enrollmentStage) }} · public packet {{ program.publicApplicationPacketReady ? 'ready' : 'incomplete' }} · portal submission requires action-time approval</p></div>
                 <span class="status" [class.blocked_on_account]="program.status === 'proposed'">{{ displayStatus(program.status) }}</span>
                 <p class="connector-gate">{{ program.editorialFit }}</p>
+                <details class="connector-gate"><summary>Open enrollment brief</summary><p>{{ program.applicationPositioning }}</p><p><strong>Lucas enters privately in the partner portal:</strong></p><ul>@for (input of program.userOnlyInputs; track input) { <li>{{ displayStatus(input) }}</li> }</ul><p><strong>Stop conditions:</strong></p><ul>@for (condition of program.stopConditions; track condition) { <li>{{ condition }}</li> }</ul></details>
                 <p class="connector-gate"><strong>Next gate:</strong> {{ program.nextGate }}</p>
-                <p class="connector-gate"><a [href]="program.programHomepageUrl" target="_blank" rel="noopener">Official program page</a> · <a [href]="program.termsUrl" target="_blank" rel="noopener">Current terms source</a></p>
+                <p class="connector-gate"><a [href]="program.programHomepageUrl" target="_blank" rel="noopener">Official program page</a> · <a [href]="program.termsUrl" target="_blank" rel="noopener">Terms or policy source</a></p>
               </div>
             }
           </div>
@@ -740,10 +803,10 @@ export class AffiliateDisclosurePage {
             <div class="connector-list">
               @for (candidate of content.operations.affiliate.linkQueue; track candidate.candidateId) {
                 <div class="connector-row">
-                  <div><strong>{{ candidate.productId }}</strong><p>{{ candidate.articleSlug }} · {{ candidate.destinationHostname }} · candidate v{{ candidate.candidateRevision }}</p></div>
+                  <div><strong>{{ candidate.productId }}</strong><p>{{ candidate.articleSlug }} · {{ candidate.destinationHostname }} · candidate v{{ candidate.candidateRevision }}</p><p class="quiet">Source: {{ displayStatus(candidate.originSource) }}{{ candidate.originReferenceId ? ' · ' + candidate.originReferenceId : '' }}</p></div>
                   <span class="status" [class.blocked_on_account]="candidate.stage === 'review_failed'">{{ displayStatus(candidate.stage) }}</span>
                   <p class="connector-gate"><strong>Next gate:</strong> {{ candidate.nextGate }}</p>
-                  <details><summary>Exact candidate digest</summary><div class="command">{{ candidate.candidateSha256 }}</div></details>
+                  <details><summary>Exact candidate and source digests</summary><div class="command">candidate: {{ candidate.candidateSha256 }}<br>source artifact: {{ candidate.originSourceArtifactPath ?? 'founder supplied in the action-time workflow' }}<br>source sha256: {{ candidate.originSourceSha256 ?? 'not applicable' }}</div></details>
                 </div>
               }
             </div>
@@ -915,6 +978,7 @@ export class StudioPage {
     { label: 'Publication ready', value: this.content.operations.publicationReadyPosts },
     { label: 'Social drafts', value: this.content.operations.socialDrafts },
     { label: 'Affiliate candidates', value: this.content.operations.affiliateProgramsProposed },
+    { label: 'Affiliate verified', value: this.content.operations.affiliateProgramsExternallyVerified },
     { label: 'Affiliate enabled', value: this.content.operations.affiliateProgramsEnabled },
     { label: 'Strategy proposals', value: this.content.operations.proposedIdeas },
     { label: 'Scout posture', value: this.displayStatus(this.content.operations.opportunityScouting.posture) },

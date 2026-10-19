@@ -54,6 +54,10 @@ jobs:
           test "$(jq -r '.title | startswith("[Strategy]")' issue.json)" = "true"
           jq '{number, title, body, html_url, user: {login}, author_association, labels: [.labels[].name]}' issue.json > strategy-intake.json
           echo "issue_number=$ISSUE_NUMBER" >> "$GITHUB_OUTPUT"
+      - name: Verify autonomous agent credential
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: node web/scripts/require-openai-api-key.mjs
       - name: Let the strategy council structure one proposal
         uses: openai/codex-action@v1
         with:

@@ -25,13 +25,49 @@ base.updatedAt = sourceCheckedAt;
 program.status = 'founder_approved';
 program.founderDisposition = 'approved';
 program.revision += 1;
+program.enabled = false;
+program.allowedDomains = [];
+program.registeredSites = [];
+program.trackingParameterKeys = [];
+program.requiredDisclosure = null;
+program.account = {
+  externalAccountEstablished: false,
+  trackingIdentityConfigured: false,
+  verificationStatus: 'not_started',
+  verificationObservedAt: null,
+  publicTrackingIdentity: null,
+  publicStorefrontUrl: null,
+  weeklyReportsEnabled: false,
+  termsAcceptedByFounder: false,
+  termsAcceptedAt: null,
+  acceptanceEvidenceReference: null,
+  reportingExportApproved: false
+};
 const fixtureRoot = await fs.mkdtemp(path.join(os.tmpdir(), 'tfyg-affiliate-command-'));
 await fs.mkdir(path.join(fixtureRoot, 'config'));
 await fs.writeFile(path.join(fixtureRoot, 'config', 'affiliate-programs.json'), `${JSON.stringify(base, null, 2)}\n`);
+const verificationArgs = [
+  path.join(scriptRoot, 'record-affiliate-verification.mjs'),
+  `--program-id=${program.id}`,
+  `--expected-revision=${program.revision}`,
+  `--confirmation=RECORD-VERIFIED-${program.id}`,
+  `--observed-at=${sourceCheckedAt}`,
+  '--public-tracking-identity=129750',
+  '--public-storefront-url=https://bookshop.org/shop/tipsforyourgifts',
+  '--weekly-reports-enabled=true'
+];
+await execFileAsync(process.execPath, verificationArgs, { cwd: fixtureRoot });
+const verified = JSON.parse(await fs.readFile(path.join(fixtureRoot, 'config', 'affiliate-programs.json'), 'utf8'));
+const verifiedProgram = verified.programs.find((entry) => entry.id === program.id);
+assert.equal(verifiedProgram.status, 'externally_verified');
+assert.equal(verifiedProgram.enabled, false);
+assert.equal(verifiedProgram.account.publicTrackingIdentity, '129750');
+assert.equal(verifiedProgram.account.weeklyReportsEnabled, true);
+
 const commonArgs = [
   path.join(scriptRoot, 'activate-affiliate-program.mjs'),
   `--program-id=${program.id}`,
-  `--expected-revision=${program.revision}`,
+  `--expected-revision=${verifiedProgram.revision}`,
   `--confirmation=ACTIVATE-${program.id}`,
   '--allowed-domains=bookshop.org',
   '--tracking-parameter-keys=affiliate',
@@ -54,4 +90,4 @@ await fs.mkdir(path.join(rejectedRoot, 'config'));
 await fs.writeFile(path.join(rejectedRoot, 'config', 'affiliate-programs.json'), `${JSON.stringify(base, null, 2)}\n`);
 await assert.rejects(() => execFileAsync(process.execPath, commonArgs.map((argument) => argument.startsWith('--confirmation=') ? '--confirmation=ACTIVATE-something-else' : argument), { cwd: rejectedRoot }), /Action-time confirmation/);
 
-console.log(JSON.stringify({ affiliateActivationCommandTests: 'passed', workflowSafetyChecks: 3, founderApprovedToEnabled: 'passed', noLinkCreation: 'passed', confirmationMismatchRejected: 'passed' }, null, 2));
+console.log(JSON.stringify({ affiliateActivationCommandTests: 'passed', workflowSafetyChecks: 3, founderApprovedToExternallyVerifiedToEnabled: 'passed', publicTrackingIdentityRecorded: 'passed', noLinkCreation: 'passed', confirmationMismatchRejected: 'passed' }, null, 2));

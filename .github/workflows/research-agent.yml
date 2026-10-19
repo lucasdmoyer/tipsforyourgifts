@@ -68,6 +68,10 @@ jobs:
           path: ${{ steps.mission.outputs.mission_path }}
           if-no-files-found: error
           retention-days: 30
+      - name: Verify autonomous agent credential
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: node web/scripts/require-openai-api-key.mjs
       - name: Run the research team
         uses: openai/codex-action@v1
         with:
@@ -158,6 +162,10 @@ jobs:
           echo "article_slug=$article_slug" >> "$GITHUB_OUTPUT"
           echo "source_patch_sha=$source_patch_sha" >> "$GITHUB_OUTPUT"
           echo "mission_id=$EXPECTED_MISSION_ID" >> "$GITHUB_OUTPUT"
+      - name: Verify autonomous agent credential
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: node web/scripts/require-openai-api-key.mjs
       - name: Run a separate independent editorial review
         uses: openai/codex-action@v1
         with:

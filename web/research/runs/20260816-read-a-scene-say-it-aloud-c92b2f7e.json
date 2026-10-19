@@ -148,7 +148,7 @@
       "id": "src-la-profe-official",
       "url": "https://1001reasonstolearnspanish.com/book/la-profe-de-espanol-2/",
       "publisher": "1001 Reasons to Learn Spanish",
-      "title": "La profe de espanol official book page",
+      "title": "La profe de español official book page",
       "accessedAt": "2026-08-16",
       "sourceClass": "manufacturer",
       "trustTier": "A",
@@ -158,7 +158,7 @@
       "id": "src-la-profe-goodreads",
       "url": "https://www.goodreads.com/book/show/30799294",
       "publisher": "Goodreads",
-      "title": "La profe de espanol reviews and edition details",
+      "title": "La profe de español reviews and edition details",
       "accessedAt": "2026-08-16",
       "sourceClass": "independent-review",
       "trustTier": "B",
@@ -168,7 +168,7 @@
       "id": "src-la-profe-natively",
       "url": "https://learnnatively.com/book/7352f024f0/",
       "publisher": "Natively",
-      "title": "La profe de espanol graded-reader reviews",
+      "title": "La profe de español graded-reader reviews",
       "accessedAt": "2026-08-16",
       "sourceClass": "independent-review",
       "trustTier": "C",
@@ -400,7 +400,7 @@
     {
       "id": "claim-la-profe-benefit",
       "kind": "product_benefit",
-      "text": "La profe de espanol is an adult A2 graded story set in a Spanish language school, with short chapters, vocabulary support, and comprehension questions documented by the author and readers.",
+      "text": "La profe de español is an adult A2 graded story set in a Spanish language school, with short chapters, vocabulary support, and comprehension questions documented by the author and readers.",
       "risk": "low",
       "status": "supported",
       "sourceIds": [
@@ -542,7 +542,7 @@
       "editorialScore": 88,
       "evidenceConfidence": 82,
       "drawbacks": [
-        "The continuing mystery can feel juvenile or uneven, and the A2-B1 label does not make it suitable for a true beginner."
+        "It is not for a true beginner. Some readers find the continuing mystery a little childish or uneven, and the separate audio edition is not included with the print book."
       ],
       "primarySourceIds": [
         "src-storylearning-catalog"
@@ -622,7 +622,7 @@
       "editorialScore": 84,
       "evidenceConfidence": 80,
       "drawbacks": [
-        "Reviews report occasional errors and low-frequency vocabulary, and some learners find it harder than the beginner label suggests."
+        "The word ‘beginners’ can be misleading: some learners find the book harder than expected. Reviews also mention occasional errors and less-common vocabulary."
       ],
       "primarySourceIds": [
         "src-storylearning-catalog"
@@ -699,11 +699,11 @@
     },
     {
       "id": "la-profe-de-espanol-a2",
-      "name": "La profe de espanol",
+      "name": "La profe de español",
       "editorialScore": 87,
       "evidenceConfidence": 83,
       "drawbacks": [
-        "The short story and its ending can feel under-resolved, and some established A2 readers may find it easier than expected."
+        "Some A2 readers may find it too easy, while others may feel that the short ending does not fully resolve the story."
       ],
       "primarySourceIds": [
         "src-la-profe-official"
@@ -783,7 +783,7 @@
       "editorialScore": 85,
       "evidenceConfidence": 81,
       "drawbacks": [
-        "The open-ended symbols provide almost no structure and can feel childish, distracting, or awkward to a recipient who dislikes improvisation."
+        "The pictures do not tell the learner what to say. Someone who dislikes improvising may find the cubes childish, awkward, or too open-ended."
       ],
       "primarySourceIds": [
         "src-rory-official"
@@ -863,7 +863,7 @@
       "editorialScore": 80,
       "evidenceConfidence": 82,
       "drawbacks": [
-        "It requires three to eight willing players, and the ambiguous image-clue format can create exactly the public-performance pressure this gift is meant to avoid."
+        "It needs three to eight willing players. If speaking Spanish in front of people makes the learner nervous, this can feel like a test instead of a game."
       ],
       "primarySourceIds": [
         "src-dixit-official"
@@ -1050,7 +1050,7 @@
       "editorialScore": 88,
       "evidenceConfidence": 82,
       "drawbacks": [
-        "The continuing mystery can feel juvenile or uneven, and the A2-B1 label does not make it suitable for a true beginner."
+        "It is not for a true beginner. Some readers find the continuing mystery a little childish or uneven, and the separate audio edition is not included with the print book."
       ],
       "primarySourceIds": [
         "src-storylearning-catalog"
@@ -1130,7 +1130,7 @@
       "editorialScore": 84,
       "evidenceConfidence": 80,
       "drawbacks": [
-        "Reviews report occasional errors and low-frequency vocabulary, and some learners find it harder than the beginner label suggests."
+        "The word ‘beginners’ can be misleading: some learners find the book harder than expected. Reviews also mention occasional errors and less-common vocabulary."
       ],
       "primarySourceIds": [
         "src-storylearning-catalog"
@@ -1207,11 +1207,11 @@
     },
     {
       "id": "la-profe-de-espanol-a2",
-      "name": "La profe de espanol",
+      "name": "La profe de español",
       "editorialScore": 87,
       "evidenceConfidence": 83,
       "drawbacks": [
-        "The short story and its ending can feel under-resolved, and some established A2 readers may find it easier than expected."
+        "Some A2 readers may find it too easy, while others may feel that the short ending does not fully resolve the story."
       ],
       "primarySourceIds": [
         "src-la-profe-official"
@@ -1291,7 +1291,7 @@
       "editorialScore": 85,
       "evidenceConfidence": 81,
       "drawbacks": [
-        "The open-ended symbols provide almost no structure and can feel childish, distracting, or awkward to a recipient who dislikes improvisation."
+        "The pictures do not tell the learner what to say. Someone who dislikes improvising may find the cubes childish, awkward, or too open-ended."
       ],
       "primarySourceIds": [
         "src-rory-official"
@@ -1371,7 +1371,7 @@
       "editorialScore": 80,
       "evidenceConfidence": 82,
       "drawbacks": [
-        "It requires three to eight willing players, and the ambiguous image-clue format can create exactly the public-performance pressure this gift is meant to avoid."
+        "It needs three to eight willing players. If speaking Spanish in front of people makes the learner nervous, this can feel like a test instead of a game."
       ],
       "primarySourceIds": [
         "src-dixit-official"
@@ -1449,13 +1449,13 @@
   "pairs": [
     {
       "id": "dialogue-to-story-cubes-loop",
-      "name": "The dialogue-to-story-cubes loop",
+      "name": "Best for private speaking practice",
       "anchorCandidateId": "101-conversations-simple-spanish",
       "companionCandidateId": "rory-story-cubes-eco-blister",
       "recipientJob": "Turn one understood Castilian-Spanish scene into one bounded minute of self-directed speech without requiring an audience.",
       "coherenceType": "practice_loop",
-      "whyTogether": "The reader supplies level-controlled characters and phrases while the image dice create a reason to recombine three of those words into a new spoken version.",
-      "interactionMoment": "Read one short exchange, roll one image die, then retell the moment for sixty seconds using any three words from the page.",
+      "whyTogether": "The book gives them a short scene and useful words. The picture die gives them one small reason to say those words in a new way. Together, the pair turns reading into a low-pressure minute of speaking practice.",
+      "interactionMoment": "They read one short conversation, choose three words from the page, roll one picture die, and use the picture to change or retell the scene out loud.",
       "compatibilityChecks": [
         {
           "dimension": "skill_or_experience",
@@ -1487,8 +1487,8 @@
       ],
       "duplicateRisk": "medium",
       "clutterDelta": "neutral",
-      "preGiftCheck": "Confirm the learner owns neither item, wants Castilian Spanish, and will actually welcome a playful solo speaking prompt.",
-      "bundleDrawback": "Choose only the reader if improvisation feels childish, embarrassing, or like forced homework; the book remains independently useful.",
+      "preGiftCheck": "Make sure they can already read simple Spanish, want Spanish from Spain, own neither item, and would enjoy making up a sentence in private.",
+      "bundleDrawback": "If improvising would feel childish or embarrassing, give the book by itself. It is still a complete and useful gift.",
       "claimIds": [
         "claim-dialogue-cubes-pair"
       ],
@@ -1505,13 +1505,13 @@
     },
     {
       "id": "a2-mystery-to-dixit-loop",
-      "name": "The A2 mystery-to-Dixit loop",
+      "name": "Best for a friendly Spanish game night",
       "anchorCandidateId": "la-profe-de-espanol-a2",
       "companionCandidateId": "dixit-2021-refresh",
       "recipientJob": "Reuse one familiar A2 scene as a short clue in an existing trusted group's imaginative game night.",
       "coherenceType": "practice_loop",
-      "whyTogether": "The graded mystery supplies shared characters and situations while Dixit supplies image-driven clue turns that can reuse the scene's vocabulary in a supportive group.",
-      "interactionMoment": "Read one short scene before game night, then give one Dixit clue in Spanish that borrows a character, action, or feeling from the page.",
+      "whyTogether": "The mystery gives the learner familiar characters, actions, and feelings. Dixit gives those words a place in a real game. This works when a supportive group wants to make Spanish part of the fun, not correct every mistake.",
+      "interactionMoment": "They read one short scene before game night. During one Dixit turn, they give a brief Spanish clue using a character, action, or feeling from the book.",
       "compatibilityChecks": [
         {
           "dimension": "skill_or_experience",
@@ -1544,8 +1544,8 @@
       ],
       "duplicateRisk": "high",
       "clutterDelta": "neutral",
-      "preGiftCheck": "Confirm the intended group does not already own Dixit, likes ambiguous clue games, and will treat Spanish turns as play rather than correction.",
-      "bundleDrawback": "Choose only La profe de espanol when group size, game ownership, creative comfort, or willingness to speak Spanish is uncertain.",
+      "preGiftCheck": "Make sure the learner wants group practice, the group has three to eight people, nobody already owns Dixit, and everyone will treat the Spanish clue as play.",
+      "bundleDrawback": "If the group, game ownership, or speaking comfort is uncertain, give La profe de español by itself.",
       "claimIds": [
         "claim-la-profe-dixit-pair"
       ],
@@ -1572,10 +1572,10 @@
   "qa": {
     "passed": true,
     "reviewerRole": "independent-editor",
-    "reviewerId": "product-link-independent-editor-20260830",
+    "reviewerId": "codex-release-audit-independent-editor-20260906",
     "receiptPath": "research/reviews/20260816-read-a-scene-say-it-aloud-c92b2f7e.qa.v1.json",
     "blockers": [],
     "warnings": []
   },
-  "completedAt": "2026-08-31T02:37:24.322Z"
+  "completedAt": "2026-09-07T04:34:27.986Z"
 }

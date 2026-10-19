@@ -1,0 +1,1036 @@
+{
+  "schemaVersion": "1.0.0",
+  "registrySha256": "c59ecfc2114125b942d61b185d2d50a7ae89cd86b1836f51f699000b478ac668",
+  "registryUpdatedAt": "2026-10-18T23:50:38.000Z",
+  "definition": "Program assignments are research queues only. They do not assert exact-product availability, account acceptance, tracking validity, or commission eligibility.",
+  "counts": {
+    "publicationReadyProductLinksCataloged": 60,
+    "productsAssignedToPartnerResearch": 60,
+    "productsWithoutPartnerResearch": 0,
+    "productsWithVerifiedPaidDestination": 0
+  },
+  "programs": [
+    {
+      "programId": "bookshop-org-us-media",
+      "programRevision": 4,
+      "priority": 1,
+      "status": "externally_verified",
+      "selectionMode": "explicit_products",
+      "eligibleArticleCount": 1,
+      "productResearchCandidates": 10,
+      "verifiedPaidLinks": 0
+    },
+    {
+      "programId": "amazon-associates-us",
+      "programRevision": 3,
+      "priority": 2,
+      "status": "proposed",
+      "selectionMode": "all_publication_ready_products",
+      "eligibleArticleCount": 9,
+      "productResearchCandidates": 60,
+      "verifiedPaidLinks": 0
+    },
+    {
+      "programId": "target-partners-us",
+      "programRevision": 2,
+      "priority": 3,
+      "status": "proposed",
+      "selectionMode": "all_publication_ready_products",
+      "eligibleArticleCount": 9,
+      "productResearchCandidates": 60,
+      "verifiedPaidLinks": 0
+    },
+    {
+      "programId": "walmart-creator-us",
+      "programRevision": 2,
+      "priority": 4,
+      "status": "proposed",
+      "selectionMode": "all_publication_ready_products",
+      "eligibleArticleCount": 9,
+      "productResearchCandidates": 60,
+      "verifiedPaidLinks": 0
+    },
+    {
+      "programId": "ebay-partner-network-us",
+      "programRevision": 2,
+      "priority": 5,
+      "status": "proposed",
+      "selectionMode": "all_publication_ready_products",
+      "eligibleArticleCount": 9,
+      "productResearchCandidates": 60,
+      "verifiedPaidLinks": 0
+    }
+  ],
+  "products": [
+    {
+      "articleSlug": "gifts-for-a-golf-friend",
+      "productId": "club-glove-caddy-towel",
+      "productName": "Club Glove Microfiber Caddy Towel",
+      "ordinaryUrl": "https://www.clubglove.com/accessories/microfiber-caddie-towel/CG24MCDT-9.html",
+      "ordinaryHostname": "www.clubglove.com",
+      "candidateProgramIds": [
+        "amazon-associates-us",
+        "target-partners-us",
+        "walmart-creator-us",
+        "ebay-partner-network-us"
+      ],
+      "preferredResearchProgramId": "amazon-associates-us",
+      "verifiedPaidProgramId": null,
+      "status": "ordinary_link_research_assigned"
+    },
+    {
+      "articleSlug": "gifts-for-a-golf-friend",
+      "productId": "footjoy-raingrip-pair",
+      "productName": "FootJoy RainGrip Pair",
+      "ordinaryUrl": "https://www.footjoy.com/men/golf-gloves/raingrip-pair/004RAI.html",
+      "ordinaryHostname": "www.footjoy.com",
+      "candidateProgramIds": [
+        "amazon-associates-us",
+        "target-partners-us",
+        "walmart-creator-us",
+        "ebay-partner-network-us"
+      ],
+      "preferredResearchProgramId": "amazon-associates-us",
+      "verifiedPaidProgramId": null,
+      "status": "ordinary_link_research_assigned"
+    },
+    {
+      "articleSlug": "gifts-for-a-golf-friend",
+      "productId": "grooveit-minig",
+      "productName": "Grooveit miniG Dry Golf Brush",
+      "ordinaryUrl": "https://grooveitbrush.com/products/mini-g",
+      "ordinaryHostname": "grooveitbrush.com",
+      "candidateProgramIds": [
+        "amazon-associates-us",
+        "target-partners-us",
+        "walmart-creator-us",
+        "ebay-partner-network-us"
+      ],
+      "preferredResearchProgramId": "amazon-associates-us",
+      "verifiedPaidProgramId": null,
+      "status": "ordinary_link_research_assigned"
+    },
+    {
+      "articleSlug": "gifts-for-a-golf-friend",
+      "productId": "puttout-pressure-putt-trainer",
+      "productName": "PuttOUT Premium Pressure Putt Trainer",
+      "ordinaryUrl": "https://puttout.golf/products/premium-pressure-putt-trainer",
+      "ordinaryHostname": "puttout.golf",
+      "candidateProgramIds": [
+        "amazon-associates-us",
+        "target-partners-us",
+        "walmart-creator-us",
+        "ebay-partner-network-us"
+      ],
+      "preferredResearchProgramId": "amazon-associates-us",
+      "verifiedPaidProgramId": null,
+      "status": "ordinary_link_research_assigned"
+    },
+    {
+      "articleSlug": "gifts-for-a-golf-friend",
+      "productId": "titleist-tour-double-canopy",
+      "productName": "Titleist Tour Double Canopy Umbrella",
+      "ordinaryUrl": "https://www.titleist.com/product/tour-double-canopy/26TATDC.html",
+      "ordinaryHostname": "www.titleist.com",
+      "candidateProgramIds": [
+        "amazon-associates-us",
+        "target-partners-us",
+        "walmart-creator-us",
+        "ebay-partner-network-us"
+      ],
+      "preferredResearchProgramId": "amazon-associates-us",
+      "verifiedPaidProgramId": null,
+      "status": "ordinary_link_research_assigned"
+    },
+    {
+      "articleSlug": "language-learning-gifts-read-a-scene-say-it-aloud",
+      "productId": "101-conversations-simple-spanish",
+      "productName": "101 Conversations in Simple Spanish",
+      "ordinaryUrl": "https://www.barnesandnoble.com/w/101-conversations-in-simple-spanish-olly-richards/1143901111",
+      "ordinaryHostname": "www.barnesandnoble.com",
+      "candidateProgramIds": [
+        "amazon-associates-us",
+        "target-partners-us",
+        "walmart-creator-us",
+        "ebay-partner-network-us"
+      ],
+      "preferredResearchProgramId": "amazon-associates-us",
+      "verifiedPaidProgramId": null,
+      "status": "ordinary_link_research_assigned"
+    },
+    {
+      "articleSlug": "language-learning-gifts-read-a-scene-say-it-aloud",
+      "productId": "dixit-2021-refresh",
+      "productName": "Dixit 2021 Refresh",
+      "ordinaryUrl": "https://store.asmodee.com/products/dixit-2021-refresh",
+      "ordinaryHostname": "store.asmodee.com",
+      "candidateProgramIds": [
+        "amazon-associates-us",
+        "target-partners-us",
+        "walmart-creator-us",
+        "ebay-partner-network-us"
+      ],
+      "preferredResearchProgramId": "amazon-associates-us",
+      "verifiedPaidProgramId": null,
+      "status": "ordinary_link_research_assigned"
+    },
+    {
+      "articleSlug": "language-learning-gifts-read-a-scene-say-it-aloud",
+      "productId": "la-profe-de-espanol-a2",
+      "productName": "La profe de español",
+      "ordinaryUrl": "https://1001reasonstolearnspanish.com/book/la-profe-de-espanol-2/",
+      "ordinaryHostname": "1001reasonstolearnspanish.com",
+      "candidateProgramIds": [
+        "amazon-associates-us",
+        "target-partners-us",
+        "walmart-creator-us",
+        "ebay-partner-network-us"
+      ],
+      "preferredResearchProgramId": "amazon-associates-us",
+      "verifiedPaidProgramId": null,
+      "status": "ordinary_link_research_assigned"
+    },
+    {
+      "articleSlug": "language-learning-gifts-read-a-scene-say-it-aloud",
+      "productId": "rory-story-cubes-eco-blister",
+      "productName": "Rory's Story Cubes Eco-Blister",
+      "ordinaryUrl": "https://store.asmodee.com/products/rorys-story-cubes-eco-blister",
+      "ordinaryHostname": "store.asmodee.com",
+      "candidateProgramIds": [
+        "amazon-associates-us",
+        "target-partners-us",
+        "walmart-creator-us",
+        "ebay-partner-network-us"
+      ],
+      "preferredResearchProgramId": "amazon-associates-us",
+      "verifiedPaidProgramId": null,
+      "status": "ordinary_link_research_assigned"
+    },
+    {
+      "articleSlug": "language-learning-gifts-read-a-scene-say-it-aloud",
+      "productId": "short-stories-spanish-beginners-v1",
+      "productName": "Short Stories in Spanish for Beginners, Volume 1",
+      "ordinaryUrl": "https://www.barnesandnoble.com/w/short-stories-in-spanish-for-beginners-olly-richards/1128247331",
+      "ordinaryHostname": "www.barnesandnoble.com",
+      "candidateProgramIds": [
+        "amazon-associates-us",
+        "target-partners-us",
+        "walmart-creator-us",
+        "ebay-partner-network-us"
+      ],
+      "preferredResearchProgramId": "amazon-associates-us",
+      "verifiedPaidProgramId": null,
+      "status": "ordinary_link_research_assigned"
+    },
+    {
+      "articleSlug": "miniature-painting-wet-palette-recipe-pairs",
+      "productId": "army-painter-wet-palette",
+      "productName": "The Army Painter Wet Palette",
+      "ordinaryUrl": "https://thearmypainter.com/products/tools-wet-palette-tl5051p",
+      "ordinaryHostname": "thearmypainter.com",
+      "candidateProgramIds": [
+        "amazon-associates-us",
+        "target-partners-us",
+        "walmart-creator-us",
+        "ebay-partner-network-us"
+      ],
+      "preferredResearchProgramId": "amazon-associates-us",
+      "verifiedPaidProgramId": null,
+      "status": "ordinary_link_research_assigned"
+    },
+    {
+      "articleSlug": "miniature-painting-wet-palette-recipe-pairs",
+      "productId": "green-stuff-world-wet-palette-xl",
+      "productName": "Green Stuff World Acrylic Wet Palette XL (reference 8435646501208ES)",
+      "ordinaryUrl": "https://www.greenstuffworld.com/en/wet-palette/1546-wet-palette-xl.html",
+      "ordinaryHostname": "www.greenstuffworld.com",
+      "candidateProgramIds": [
+        "amazon-associates-us",
+        "target-partners-us",
+        "walmart-creator-us",
+        "ebay-partner-network-us"
+      ],
+      "preferredResearchProgramId": "amazon-associates-us",
+      "verifiedPaidProgramId": null,
+      "status": "ordinary_link_research_assigned"
+    },
+    {
+      "articleSlug": "miniature-painting-wet-palette-recipe-pairs",
+      "productId": "masterson-sta-wet-handy",
+      "productName": "Masterson Sta-Wet Handy Palette",
+      "ordinaryUrl": "https://mastersonart.com/products/masterson-sta-wet-handy-palette",
+      "ordinaryHostname": "mastersonart.com",
+      "candidateProgramIds": [
+        "amazon-associates-us",
+        "target-partners-us",
+        "walmart-creator-us",
+        "ebay-partner-network-us"
+      ],
+      "preferredResearchProgramId": "amazon-associates-us",
+      "verifiedPaidProgramId": null,
+      "status": "ordinary_link_research_assigned"
+    },
+    {
+      "articleSlug": "miniature-painting-wet-palette-recipe-pairs",
+      "productId": "redgrass-painter-v2",
+      "productName": "Redgrass Everlasting Wet Palette Painter v2",
+      "ordinaryUrl": "https://www.redgrasscreative.com/us/product/v2-wet-palette/?attribute_size=Painter+v2",
+      "ordinaryHostname": "www.redgrasscreative.com",
+      "candidateProgramIds": [
+        "amazon-associates-us",
+        "target-partners-us",
+        "walmart-creator-us",
+        "ebay-partner-network-us"
+      ],
+      "preferredResearchProgramId": "amazon-associates-us",
+      "verifiedPaidProgramId": null,
+      "status": "ordinary_link_research_assigned"
+    },
+    {
+      "articleSlug": "miniature-painting-wet-palette-recipe-pairs",
+      "productId": "strathmore-mixed-media-visual-journal",
+      "productName": "Strathmore Mixed Media Visual Journal 5.5 x 8 inch",
+      "ordinaryUrl": "https://www.jasco.com.au/products/strathmore-visual-diaries",
+      "ordinaryHostname": "www.jasco.com.au",
+      "candidateProgramIds": [
+        "amazon-associates-us",
+        "target-partners-us",
+        "walmart-creator-us",
+        "ebay-partner-network-us"
+      ],
+      "preferredResearchProgramId": "amazon-associates-us",
+      "verifiedPaidProgramId": null,
+      "status": "ordinary_link_research_assigned"
+    },
+    {
+      "articleSlug": "neighborhood-tree-walk-field-guide-loupe-gift-pairs",
+      "productId": "audubon-trees-north-america",
+      "productName": "National Audubon Society Trees of North America",
+      "ordinaryUrl": "https://www.penguinrandomhouse.com/books/600056/national-audubon-society-trees-of-north-america-by-national-audubon-society/",
+      "ordinaryHostname": "www.penguinrandomhouse.com",
+      "candidateProgramIds": [
+        "amazon-associates-us",
+        "target-partners-us",
+        "walmart-creator-us",
+        "ebay-partner-network-us"
+      ],
+      "preferredResearchProgramId": "amazon-associates-us",
+      "verifiedPaidProgramId": null,
+      "status": "ordinary_link_research_assigned"
+    },
+    {
+      "articleSlug": "neighborhood-tree-walk-field-guide-loupe-gift-pairs",
+      "productId": "bausch-hastings-triplet-10x",
+      "productName": "Bausch + Lomb Hastings Triplet Magnifier 10x",
+      "ordinaryUrl": "https://www.fishersci.com/shop/products/bausch-lomb-hastings-triplet-magnifiers-4/12032b",
+      "ordinaryHostname": "www.fishersci.com",
+      "candidateProgramIds": [
+        "amazon-associates-us",
+        "target-partners-us",
+        "walmart-creator-us",
+        "ebay-partner-network-us"
+      ],
+      "preferredResearchProgramId": "amazon-associates-us",
+      "verifiedPaidProgramId": null,
+      "status": "ordinary_link_research_assigned"
+    },
+    {
+      "articleSlug": "neighborhood-tree-walk-field-guide-loupe-gift-pairs",
+      "productId": "peterson-eastern-trees",
+      "productName": "A Peterson Field Guide to Eastern Trees",
+      "ordinaryUrl": "https://www.harpercollins.com/products/a-peterson-field-guide-to-eastern-trees-george-a-petridesjanet-wehr",
+      "ordinaryHostname": "www.harpercollins.com",
+      "candidateProgramIds": [
+        "amazon-associates-us",
+        "target-partners-us",
+        "walmart-creator-us",
+        "ebay-partner-network-us"
+      ],
+      "preferredResearchProgramId": "amazon-associates-us",
+      "verifiedPaidProgramId": null,
+      "status": "ordinary_link_research_assigned"
+    },
+    {
+      "articleSlug": "neighborhood-tree-walk-field-guide-loupe-gift-pairs",
+      "productId": "princeton-eastern-north-america",
+      "productName": "Trees of Eastern North America",
+      "ordinaryUrl": "https://press.princeton.edu/books/paperback/9780691145914/trees-of-eastern-north-america",
+      "ordinaryHostname": "press.princeton.edu",
+      "candidateProgramIds": [
+        "amazon-associates-us",
+        "target-partners-us",
+        "walmart-creator-us",
+        "ebay-partner-network-us"
+      ],
+      "preferredResearchProgramId": "amazon-associates-us",
+      "verifiedPaidProgramId": null,
+      "status": "ordinary_link_research_assigned"
+    },
+    {
+      "articleSlug": "neighborhood-tree-walk-field-guide-loupe-gift-pairs",
+      "productId": "sibley-guide-to-trees",
+      "productName": "The Sibley Guide to Trees",
+      "ordinaryUrl": "https://www.penguinrandomhouse.com/books/166638/the-sibley-guide-to-trees-by-david-allen-sibley/",
+      "ordinaryHostname": "www.penguinrandomhouse.com",
+      "candidateProgramIds": [
+        "amazon-associates-us",
+        "target-partners-us",
+        "walmart-creator-us",
+        "ebay-partner-network-us"
+      ],
+      "preferredResearchProgramId": "amazon-associates-us",
+      "verifiedPaidProgramId": null,
+      "status": "ordinary_link_research_assigned"
+    },
+    {
+      "articleSlug": "night-sky-planisphere-red-light-gift-pairs",
+      "productId": "celestron-93588-red-only",
+      "productName": "Celestron Night Vision Flashlight 93588",
+      "ordinaryUrl": "https://www.celestron.com/products/night-vision-flashlight",
+      "ordinaryHostname": "www.celestron.com",
+      "candidateProgramIds": [
+        "amazon-associates-us",
+        "target-partners-us",
+        "walmart-creator-us",
+        "ebay-partner-network-us"
+      ],
+      "preferredResearchProgramId": "amazon-associates-us",
+      "verifiedPaidProgramId": null,
+      "status": "ordinary_link_research_assigned"
+    },
+    {
+      "articleSlug": "night-sky-planisphere-red-light-gift-pairs",
+      "productId": "night-sky-20-30-large",
+      "productName": "The Night Sky 20 to 30 degrees north large planisphere",
+      "ordinaryUrl": "https://www.davidchandler.com/shop/the-night-sky-20-30/",
+      "ordinaryHostname": "www.davidchandler.com",
+      "candidateProgramIds": [
+        "amazon-associates-us",
+        "target-partners-us",
+        "walmart-creator-us",
+        "ebay-partner-network-us"
+      ],
+      "preferredResearchProgramId": "amazon-associates-us",
+      "verifiedPaidProgramId": null,
+      "status": "ordinary_link_research_assigned"
+    },
+    {
+      "articleSlug": "night-sky-planisphere-red-light-gift-pairs",
+      "productId": "night-sky-30-40-large",
+      "productName": "The Night Sky 30 to 40 degrees north large planisphere",
+      "ordinaryUrl": "https://www.davidchandler.com/shop/the-night-sky-30-40n-large-plastic-2/",
+      "ordinaryHostname": "www.davidchandler.com",
+      "candidateProgramIds": [
+        "amazon-associates-us",
+        "target-partners-us",
+        "walmart-creator-us",
+        "ebay-partner-network-us"
+      ],
+      "preferredResearchProgramId": "amazon-associates-us",
+      "verifiedPaidProgramId": null,
+      "status": "ordinary_link_research_assigned"
+    },
+    {
+      "articleSlug": "night-sky-planisphere-red-light-gift-pairs",
+      "productId": "night-sky-40-50-large",
+      "productName": "The Night Sky 40 to 50 degrees north large planisphere",
+      "ordinaryUrl": "https://www.davidchandler.com/shop/the-night-sky-40-50/",
+      "ordinaryHostname": "www.davidchandler.com",
+      "candidateProgramIds": [
+        "amazon-associates-us",
+        "target-partners-us",
+        "walmart-creator-us",
+        "ebay-partner-network-us"
+      ],
+      "preferredResearchProgramId": "amazon-associates-us",
+      "verifiedPaidProgramId": null,
+      "status": "ordinary_link_research_assigned"
+    },
+    {
+      "articleSlug": "night-sky-planisphere-red-light-gift-pairs",
+      "productId": "rigel-starlite-mini-red-only",
+      "productName": "Rigel Starlite Mini red-only variable-brightness flashlight",
+      "ordinaryUrl": "https://www.rigelsys.com/mini%20flashlight.html",
+      "ordinaryHostname": "www.rigelsys.com",
+      "candidateProgramIds": [
+        "amazon-associates-us",
+        "target-partners-us",
+        "walmart-creator-us",
+        "ebay-partner-network-us"
+      ],
+      "preferredResearchProgramId": "amazon-associates-us",
+      "verifiedPaidProgramId": null,
+      "status": "ordinary_link_research_assigned"
+    },
+    {
+      "articleSlug": "one-photo-one-story-gift-pairs",
+      "productId": "archival-methods-caption-pocket-4x6",
+      "productName": "Archival Methods Caption Pocket 4x6 Photo Pages",
+      "ordinaryUrl": "https://www.archivalmethods.com/product/caption-pocket-4x6-photo-page",
+      "ordinaryHostname": "www.archivalmethods.com",
+      "candidateProgramIds": [
+        "amazon-associates-us",
+        "target-partners-us",
+        "walmart-creator-us",
+        "ebay-partner-network-us"
+      ],
+      "preferredResearchProgramId": "amazon-associates-us",
+      "verifiedPaidProgramId": null,
+      "status": "ordinary_link_research_assigned"
+    },
+    {
+      "articleSlug": "one-photo-one-story-gift-pairs",
+      "productId": "gaylord-unbuffered-photo-envelopes",
+      "productName": "Gaylord Unbuffered Paper Photo and Negative Envelopes",
+      "ordinaryUrl": "https://www.gaylord.com/Preservation/Photo%2C-Print-%26-Art-Preservation/Envelopes%2C-Sleeves-%26-Protectors/Unbuffered-Paper-Photo-%26-Negative-Envelopes-%2825-Pack%29/p/AP",
+      "ordinaryHostname": "www.gaylord.com",
+      "candidateProgramIds": [
+        "amazon-associates-us",
+        "target-partners-us",
+        "walmart-creator-us",
+        "ebay-partner-network-us"
+      ],
+      "preferredResearchProgramId": "amazon-associates-us",
+      "verifiedPaidProgramId": null,
+      "status": "ordinary_link_research_assigned"
+    },
+    {
+      "articleSlug": "one-photo-one-story-gift-pairs",
+      "productId": "meaningful-conversations-grandparents",
+      "productName": "Meaningful Conversations with My Grandparents",
+      "ordinaryUrl": "https://www.penguinrandomhouse.com/books/723772/meaningful-conversations-with-my-grandparents-100-interactive-conversation-cards-for-families-by-korie-herold/",
+      "ordinaryHostname": "www.penguinrandomhouse.com",
+      "candidateProgramIds": [
+        "amazon-associates-us",
+        "target-partners-us",
+        "walmart-creator-us",
+        "ebay-partner-network-us"
+      ],
+      "preferredResearchProgramId": "amazon-associates-us",
+      "verifiedPaidProgramId": null,
+      "status": "ordinary_link_research_assigned"
+    },
+    {
+      "articleSlug": "one-photo-one-story-gift-pairs",
+      "productId": "print-file-4x6-foldflap-sleeves",
+      "productName": "Print File PFF46 4x6 Polypropylene FoldFlap Sleeves",
+      "ordinaryUrl": "https://www.printfile.com/product/4x6-foldflap-bopp/",
+      "ordinaryHostname": "www.printfile.com",
+      "candidateProgramIds": [
+        "amazon-associates-us",
+        "target-partners-us",
+        "walmart-creator-us",
+        "ebay-partner-network-us"
+      ],
+      "preferredResearchProgramId": "amazon-associates-us",
+      "verifiedPaidProgramId": null,
+      "status": "ordinary_link_research_assigned"
+    },
+    {
+      "articleSlug": "one-photo-one-story-gift-pairs",
+      "productId": "whats-your-story-memory-game",
+      "productName": "What's Your Story? Memory Sharing Game",
+      "ordinaryUrl": "https://www.chroniclebooks.com/products/whats-your-story-memory-sharing-game",
+      "ordinaryHostname": "www.chroniclebooks.com",
+      "candidateProgramIds": [
+        "amazon-associates-us",
+        "target-partners-us",
+        "walmart-creator-us",
+        "ebay-partner-network-us"
+      ],
+      "preferredResearchProgramId": "amazon-associates-us",
+      "verifiedPaidProgramId": null,
+      "status": "ordinary_link_research_assigned"
+    },
+    {
+      "articleSlug": "puzzle-board-sorting-tray-gift-pairs",
+      "productId": "buffalo-jigsaw-pro-trays-9212",
+      "productName": "Buffalo Games Jigsaw Pro Puzzle Sorting Trays (9212-2P)",
+      "ordinaryUrl": "https://www.buffalogames.com/products/jigsaw-pro-puzzle-sorting-trays",
+      "ordinaryHostname": "www.buffalogames.com",
+      "candidateProgramIds": [
+        "amazon-associates-us",
+        "target-partners-us",
+        "walmart-creator-us",
+        "ebay-partner-network-us"
+      ],
+      "preferredResearchProgramId": "amazon-associates-us",
+      "verifiedPaidProgramId": null,
+      "status": "ordinary_link_research_assigned"
+    },
+    {
+      "articleSlug": "puzzle-board-sorting-tray-gift-pairs",
+      "productId": "jumbo-portapuzzle-deluxe-1000",
+      "productName": "Jumbo Portapuzzle Deluxe 1000 (01039)",
+      "ordinaryUrl": "https://jumboplay.com/en-gb/products/puzzle-mates-portapuzzle-deluxe-up-to-1000-piece-puzzles-01039",
+      "ordinaryHostname": "jumboplay.com",
+      "candidateProgramIds": [
+        "amazon-associates-us",
+        "target-partners-us",
+        "walmart-creator-us",
+        "ebay-partner-network-us"
+      ],
+      "preferredResearchProgramId": "amazon-associates-us",
+      "verifiedPaidProgramId": null,
+      "status": "ordinary_link_research_assigned"
+    },
+    {
+      "articleSlug": "puzzle-board-sorting-tray-gift-pairs",
+      "productId": "jumbo-portapuzzle-standard-1000",
+      "productName": "Jumbo Portapuzzle Standard 1000 (10715)",
+      "ordinaryUrl": "https://jumboplay.com/en-gb/products/puzzle-mates-portapuzzle-standard-up-to-1000-piece-puzzles-10715",
+      "ordinaryHostname": "jumboplay.com",
+      "candidateProgramIds": [
+        "amazon-associates-us",
+        "target-partners-us",
+        "walmart-creator-us",
+        "ebay-partner-network-us"
+      ],
+      "preferredResearchProgramId": "amazon-associates-us",
+      "verifiedPaidProgramId": null,
+      "status": "ordinary_link_research_assigned"
+    },
+    {
+      "articleSlug": "puzzle-board-sorting-tray-gift-pairs",
+      "productId": "jumbo-portapuzzle-standard-1500",
+      "productName": "Jumbo Portapuzzle Standard 1500 (10806)",
+      "ordinaryUrl": "https://jumboplay.com/en-gb/products/puzzle-mates-portapuzzle-standard-up-to-1500-piece-puzzles-10806",
+      "ordinaryHostname": "jumboplay.com",
+      "candidateProgramIds": [
+        "amazon-associates-us",
+        "target-partners-us",
+        "walmart-creator-us",
+        "ebay-partner-network-us"
+      ],
+      "preferredResearchProgramId": "amazon-associates-us",
+      "verifiedPaidProgramId": null,
+      "status": "ordinary_link_research_assigned"
+    },
+    {
+      "articleSlug": "puzzle-board-sorting-tray-gift-pairs",
+      "productId": "ravensburger-sort-and-go-17934",
+      "productName": "Ravensburger Sort & Go Puzzle Sorting Trays (17934)",
+      "ordinaryUrl": "https://www.ravensburger.co.uk/en-GB/products/jigsaw-puzzles/puzzle-accessories/sort-go-puzzle-sorting-trays-17934",
+      "ordinaryHostname": "www.ravensburger.co.uk",
+      "candidateProgramIds": [
+        "amazon-associates-us",
+        "target-partners-us",
+        "walmart-creator-us",
+        "ebay-partner-network-us"
+      ],
+      "preferredResearchProgramId": "amazon-associates-us",
+      "verifiedPaidProgramId": null,
+      "status": "ordinary_link_research_assigned"
+    },
+    {
+      "articleSlug": "read-it-then-play-it-gift-pairs",
+      "productId": "52-assignments-street-photography",
+      "productName": "52 Assignments: Street Photography — activity journal",
+      "ordinaryUrl": "https://www.ammonitepress.com/52-assignments-street-photography/",
+      "ordinaryHostname": "www.ammonitepress.com",
+      "candidateProgramIds": [
+        "amazon-associates-us",
+        "target-partners-us",
+        "walmart-creator-us",
+        "ebay-partner-network-us"
+      ],
+      "preferredResearchProgramId": "amazon-associates-us",
+      "verifiedPaidProgramId": null,
+      "status": "ordinary_link_research_assigned"
+    },
+    {
+      "articleSlug": "read-it-then-play-it-gift-pairs",
+      "productId": "a-city-on-mars-paperback",
+      "productName": "A City on Mars — U.S. paperback",
+      "ordinaryUrl": "https://www.penguinrandomhouse.com/books/639449/a-city-on-mars-by-kelly-and-zach-weinersmith/",
+      "ordinaryHostname": "www.penguinrandomhouse.com",
+      "candidateProgramIds": [
+        "bookshop-org-us-media",
+        "amazon-associates-us",
+        "target-partners-us",
+        "walmart-creator-us",
+        "ebay-partner-network-us"
+      ],
+      "preferredResearchProgramId": "bookshop-org-us-media",
+      "verifiedPaidProgramId": null,
+      "status": "ordinary_link_research_assigned"
+    },
+    {
+      "articleSlug": "read-it-then-play-it-gift-pairs",
+      "productId": "because-internet-paperback",
+      "productName": "Because Internet — U.S. paperback",
+      "ordinaryUrl": "https://www.penguinrandomhouse.com/books/540664/because-internet-by-gretchen-mcculloch/9780735210943/",
+      "ordinaryHostname": "www.penguinrandomhouse.com",
+      "candidateProgramIds": [
+        "bookshop-org-us-media",
+        "amazon-associates-us",
+        "target-partners-us",
+        "walmart-creator-us",
+        "ebay-partner-network-us"
+      ],
+      "preferredResearchProgramId": "bookshop-org-us-media",
+      "verifiedPaidProgramId": null,
+      "status": "ordinary_link_research_assigned"
+    },
+    {
+      "articleSlug": "read-it-then-play-it-gift-pairs",
+      "productId": "civilization-vi-windows-steam",
+      "productName": "Sid Meier’s Civilization VI — Windows PC Steam base game",
+      "ordinaryUrl": "https://store.2k.com/en/game/buy-civilization-6",
+      "ordinaryHostname": "store.2k.com",
+      "candidateProgramIds": [
+        "amazon-associates-us",
+        "target-partners-us",
+        "walmart-creator-us",
+        "ebay-partner-network-us"
+      ],
+      "preferredResearchProgramId": "amazon-associates-us",
+      "verifiedPaidProgramId": null,
+      "status": "ordinary_link_research_assigned"
+    },
+    {
+      "articleSlug": "read-it-then-play-it-gift-pairs",
+      "productId": "codenames-2025-english",
+      "productName": "Codenames — refreshed 2025 English edition",
+      "ordinaryUrl": "https://www.czechgames.com/games/codenames",
+      "ordinaryHostname": "www.czechgames.com",
+      "candidateProgramIds": [
+        "amazon-associates-us",
+        "target-partners-us",
+        "walmart-creator-us",
+        "ebay-partner-network-us"
+      ],
+      "preferredResearchProgramId": "amazon-associates-us",
+      "verifiedPaidProgramId": null,
+      "status": "ordinary_link_research_assigned"
+    },
+    {
+      "articleSlug": "read-it-then-play-it-gift-pairs",
+      "productId": "entangled-life-paperback",
+      "productName": "Entangled Life — U.S. paperback",
+      "ordinaryUrl": "https://www.penguinrandomhouse.com/books/566795/entangled-life-by-merlin-sheldrake/",
+      "ordinaryHostname": "www.penguinrandomhouse.com",
+      "candidateProgramIds": [
+        "bookshop-org-us-media",
+        "amazon-associates-us",
+        "target-partners-us",
+        "walmart-creator-us",
+        "ebay-partner-network-us"
+      ],
+      "preferredResearchProgramId": "bookshop-org-us-media",
+      "verifiedPaidProgramId": null,
+      "status": "ordinary_link_research_assigned"
+    },
+    {
+      "articleSlug": "read-it-then-play-it-gift-pairs",
+      "productId": "genius-of-birds-paperback",
+      "productName": "The Genius of Birds — U.S. paperback",
+      "ordinaryUrl": "https://www.penguinrandomhouse.com/books/312321/the-genius-of-birds-by-jennifer-ackerman/",
+      "ordinaryHostname": "www.penguinrandomhouse.com",
+      "candidateProgramIds": [
+        "bookshop-org-us-media",
+        "amazon-associates-us",
+        "target-partners-us",
+        "walmart-creator-us",
+        "ebay-partner-network-us"
+      ],
+      "preferredResearchProgramId": "bookshop-org-us-media",
+      "verifiedPaidProgramId": null,
+      "status": "ordinary_link_research_assigned"
+    },
+    {
+      "articleSlug": "read-it-then-play-it-gift-pairs",
+      "productId": "leave-only-footprints-paperback",
+      "productName": "Leave Only Footprints — U.S. paperback",
+      "ordinaryUrl": "https://www.penguinrandomhouse.com/books/600367/leave-only-footprints-by-conor-knighton/",
+      "ordinaryHostname": "www.penguinrandomhouse.com",
+      "candidateProgramIds": [
+        "bookshop-org-us-media",
+        "amazon-associates-us",
+        "target-partners-us",
+        "walmart-creator-us",
+        "ebay-partner-network-us"
+      ],
+      "preferredResearchProgramId": "bookshop-org-us-media",
+      "verifiedPaidProgramId": null,
+      "status": "ordinary_link_research_assigned"
+    },
+    {
+      "articleSlug": "read-it-then-play-it-gift-pairs",
+      "productId": "pandemic-base-game",
+      "productName": "Pandemic — English base game",
+      "ordinaryUrl": "https://www.zmangames.com/game/pandemic/",
+      "ordinaryHostname": "www.zmangames.com",
+      "candidateProgramIds": [
+        "amazon-associates-us",
+        "target-partners-us",
+        "walmart-creator-us",
+        "ebay-partner-network-us"
+      ],
+      "preferredResearchProgramId": "amazon-associates-us",
+      "verifiedPaidProgramId": null,
+      "status": "ordinary_link_research_assigned"
+    },
+    {
+      "articleSlug": "read-it-then-play-it-gift-pairs",
+      "productId": "read-this-great-photographs-2023",
+      "productName": "Read This If You Want to Take Great Photographs — revised 2023 edition",
+      "ordinaryUrl": "https://us.laurenceking.com/products/read-this-if-you-want-to-take-great-photographs",
+      "ordinaryHostname": "us.laurenceking.com",
+      "candidateProgramIds": [
+        "bookshop-org-us-media",
+        "amazon-associates-us",
+        "target-partners-us",
+        "walmart-creator-us",
+        "ebay-partner-network-us"
+      ],
+      "preferredResearchProgramId": "bookshop-org-us-media",
+      "verifiedPaidProgramId": null,
+      "status": "ordinary_link_research_assigned"
+    },
+    {
+      "articleSlug": "read-it-then-play-it-gift-pairs",
+      "productId": "rorys-story-cubes-classic",
+      "productName": "Rory’s Story Cubes Classic — magnetic-box English edition",
+      "ordinaryUrl": "https://store.asmodee.com/products/rorys-story-cubes-box",
+      "ordinaryHostname": "store.asmodee.com",
+      "candidateProgramIds": [
+        "amazon-associates-us",
+        "target-partners-us",
+        "walmart-creator-us",
+        "ebay-partner-network-us"
+      ],
+      "preferredResearchProgramId": "amazon-associates-us",
+      "verifiedPaidProgramId": null,
+      "status": "ordinary_link_research_assigned"
+    },
+    {
+      "articleSlug": "read-it-then-play-it-gift-pairs",
+      "productId": "sapiens-us-paperback",
+      "productName": "Sapiens [Tenth Anniversary Edition]: A Brief History of Humankind — U.S. paperback, ISBN 9780063422001",
+      "ordinaryUrl": "https://bookshop.org/p/books/sapiens-tenth-anniversary-edition-a-brief-history-of-humankind-yuval-noah-harari/031a784adc6e9de4",
+      "ordinaryHostname": "bookshop.org",
+      "candidateProgramIds": [
+        "bookshop-org-us-media",
+        "amazon-associates-us",
+        "target-partners-us",
+        "walmart-creator-us",
+        "ebay-partner-network-us"
+      ],
+      "preferredResearchProgramId": "bookshop-org-us-media",
+      "verifiedPaidProgramId": null,
+      "status": "ordinary_link_research_assigned"
+    },
+    {
+      "articleSlug": "read-it-then-play-it-gift-pairs",
+      "productId": "steering-the-craft-2015",
+      "productName": "Steering the Craft — revised 2015 paperback",
+      "ordinaryUrl": "https://www.ursulakleguin.com/steering-the-craft",
+      "ordinaryHostname": "www.ursulakleguin.com",
+      "candidateProgramIds": [
+        "bookshop-org-us-media",
+        "amazon-associates-us",
+        "target-partners-us",
+        "walmart-creator-us",
+        "ebay-partner-network-us"
+      ],
+      "preferredResearchProgramId": "bookshop-org-us-media",
+      "verifiedPaidProgramId": null,
+      "status": "ordinary_link_research_assigned"
+    },
+    {
+      "articleSlug": "read-it-then-play-it-gift-pairs",
+      "productId": "temppro-tp19h",
+      "productName": "TempPro TP19H — digital instant-read thermometer, model TP19H",
+      "ordinaryUrl": "https://www.homedepot.com/p/316469586",
+      "ordinaryHostname": "www.homedepot.com",
+      "candidateProgramIds": [
+        "amazon-associates-us",
+        "target-partners-us",
+        "walmart-creator-us",
+        "ebay-partner-network-us"
+      ],
+      "preferredResearchProgramId": "amazon-associates-us",
+      "verifiedPaidProgramId": null,
+      "status": "ordinary_link_research_assigned"
+    },
+    {
+      "articleSlug": "read-it-then-play-it-gift-pairs",
+      "productId": "terraforming-mars-ares-expedition",
+      "productName": "Terraforming Mars: Ares Expedition — English standalone base game",
+      "ordinaryUrl": "https://strongholdgames.com/our-games/terraforming-mars-ares-expedition/",
+      "ordinaryHostname": "strongholdgames.com",
+      "candidateProgramIds": [
+        "amazon-associates-us",
+        "target-partners-us",
+        "walmart-creator-us",
+        "ebay-partner-network-us"
+      ],
+      "preferredResearchProgramId": "amazon-associates-us",
+      "verifiedPaidProgramId": null,
+      "status": "ordinary_link_research_assigned"
+    },
+    {
+      "articleSlug": "read-it-then-play-it-gift-pairs",
+      "productId": "the-food-lab-hardcover",
+      "productName": "The Food Lab: Better Home Cooking Through Science — U.S. hardcover, ISBN 9780393081084",
+      "ordinaryUrl": "https://wwnorton.com/books/9780393081084",
+      "ordinaryHostname": "wwnorton.com",
+      "candidateProgramIds": [
+        "bookshop-org-us-media",
+        "amazon-associates-us",
+        "target-partners-us",
+        "walmart-creator-us",
+        "ebay-partner-network-us"
+      ],
+      "preferredResearchProgramId": "bookshop-org-us-media",
+      "verifiedPaidProgramId": null,
+      "status": "ordinary_link_research_assigned"
+    },
+    {
+      "articleSlug": "read-it-then-play-it-gift-pairs",
+      "productId": "thinking-in-systems-paperback",
+      "productName": "Thinking in Systems: A Primer — paperback",
+      "ordinaryUrl": "https://www.chelseagreen.com/product/thinking-in-systems/",
+      "ordinaryHostname": "www.chelseagreen.com",
+      "candidateProgramIds": [
+        "bookshop-org-us-media",
+        "amazon-associates-us",
+        "target-partners-us",
+        "walmart-creator-us",
+        "ebay-partner-network-us"
+      ],
+      "preferredResearchProgramId": "bookshop-org-us-media",
+      "verifiedPaidProgramId": null,
+      "status": "ordinary_link_research_assigned"
+    },
+    {
+      "articleSlug": "read-it-then-play-it-gift-pairs",
+      "productId": "trekking-national-parks-third-edition",
+      "productName": "Trekking the National Parks — third-edition English base game",
+      "ordinaryUrl": "https://store.wnpa.org/products/trekking-the-national-parks-3rd-edition",
+      "ordinaryHostname": "store.wnpa.org",
+      "candidateProgramIds": [
+        "amazon-associates-us",
+        "target-partners-us",
+        "walmart-creator-us",
+        "ebay-partner-network-us"
+      ],
+      "preferredResearchProgramId": "amazon-associates-us",
+      "verifiedPaidProgramId": null,
+      "status": "ordinary_link_research_assigned"
+    },
+    {
+      "articleSlug": "read-it-then-play-it-gift-pairs",
+      "productId": "undergrove-base-game",
+      "productName": "Undergrove — English base game",
+      "ordinaryUrl": "https://www.alderac.com/undergrove/",
+      "ordinaryHostname": "www.alderac.com",
+      "candidateProgramIds": [
+        "amazon-associates-us",
+        "target-partners-us",
+        "walmart-creator-us",
+        "ebay-partner-network-us"
+      ],
+      "preferredResearchProgramId": "amazon-associates-us",
+      "verifiedPaidProgramId": null,
+      "status": "ordinary_link_research_assigned"
+    },
+    {
+      "articleSlug": "read-it-then-play-it-gift-pairs",
+      "productId": "wingspan-digital-steam",
+      "productName": "Wingspan Digital — Steam base game for Windows or macOS",
+      "ordinaryUrl": "https://store.steampowered.com/app/1054490/Wingspan/",
+      "ordinaryHostname": "store.steampowered.com",
+      "candidateProgramIds": [
+        "amazon-associates-us",
+        "target-partners-us",
+        "walmart-creator-us",
+        "ebay-partner-network-us"
+      ],
+      "preferredResearchProgramId": "amazon-associates-us",
+      "verifiedPaidProgramId": null,
+      "status": "ordinary_link_research_assigned"
+    },
+    {
+      "articleSlug": "useful-gifts-for-hard-to-shop-for-adults",
+      "productId": "fenix-e12-v3",
+      "productName": "Fenix E12 V3 Flashlight",
+      "ordinaryUrl": "https://www.fenixlighting.com/products/fenix-e12-v3-aa-powered-edc-flashlight",
+      "ordinaryHostname": "www.fenixlighting.com",
+      "candidateProgramIds": [
+        "amazon-associates-us",
+        "target-partners-us",
+        "walmart-creator-us",
+        "ebay-partner-network-us"
+      ],
+      "preferredResearchProgramId": "amazon-associates-us",
+      "verifiedPaidProgramId": null,
+      "status": "ordinary_link_research_assigned"
+    },
+    {
+      "articleSlug": "useful-gifts-for-hard-to-shop-for-adults",
+      "productId": "ifixit-mako-precision-bit-set",
+      "productName": "iFixit Mako Precision Bit Set",
+      "ordinaryUrl": "https://www.ifixit.com/products/mako-driver-kit-64-precision-bits",
+      "ordinaryHostname": "www.ifixit.com",
+      "candidateProgramIds": [
+        "amazon-associates-us",
+        "target-partners-us",
+        "walmart-creator-us",
+        "ebay-partner-network-us"
+      ],
+      "preferredResearchProgramId": "amazon-associates-us",
+      "verifiedPaidProgramId": null,
+      "status": "ordinary_link_research_assigned"
+    },
+    {
+      "articleSlug": "useful-gifts-for-hard-to-shop-for-adults",
+      "productId": "logitech-pebble-mouse-2-m350s",
+      "productName": "Logitech Pebble Mouse 2 M350s",
+      "ordinaryUrl": "https://www.logitech.com/en-us/shop/qr/pebble-2-m350s-wireless-mouse",
+      "ordinaryHostname": "www.logitech.com",
+      "candidateProgramIds": [
+        "amazon-associates-us",
+        "target-partners-us",
+        "walmart-creator-us",
+        "ebay-partner-network-us"
+      ],
+      "preferredResearchProgramId": "amazon-associates-us",
+      "verifiedPaidProgramId": null,
+      "status": "ordinary_link_research_assigned"
+    },
+    {
+      "articleSlug": "useful-gifts-for-hard-to-shop-for-adults",
+      "productId": "peak-design-packing-cube-medium",
+      "productName": "Peak Design Packing Cube, Medium",
+      "ordinaryUrl": "https://www.peakdesign.com/products/packing-cube?Color=Charcoal&Size=Medium",
+      "ordinaryHostname": "www.peakdesign.com",
+      "candidateProgramIds": [
+        "amazon-associates-us",
+        "target-partners-us",
+        "walmart-creator-us",
+        "ebay-partner-network-us"
+      ],
+      "preferredResearchProgramId": "amazon-associates-us",
+      "verifiedPaidProgramId": null,
+      "status": "ordinary_link_research_assigned"
+    },
+    {
+      "articleSlug": "useful-gifts-for-hard-to-shop-for-adults",
+      "productId": "thermoworks-thermopop-2",
+      "productName": "ThermoWorks ThermoPop 2",
+      "ordinaryUrl": "https://www.thermoworks.com/products/thermopop-2",
+      "ordinaryHostname": "www.thermoworks.com",
+      "candidateProgramIds": [
+        "amazon-associates-us",
+        "target-partners-us",
+        "walmart-creator-us",
+        "ebay-partner-network-us"
+      ],
+      "preferredResearchProgramId": "amazon-associates-us",
+      "verifiedPaidProgramId": null,
+      "status": "ordinary_link_research_assigned"
+    }
+  ]
+}

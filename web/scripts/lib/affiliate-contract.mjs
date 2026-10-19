@@ -2,29 +2,55 @@ import { z } from 'zod';
 
 const slug = z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/);
 const isoDate = z.string().regex(/^\d{4}-\d{2}-\d{2}$/);
-const httpsUrl = z.string().url().refine((value) => value.startsWith('https://'), 'must use HTTPS');
+const httpsUrl = z.string().url().refine((value) => {
+  const url = new URL(value);
+  return url.protocol === 'https:' && !url.username && !url.password && !url.search && !url.hash;
+}, 'must use credential-free HTTPS without userinfo, query, or fragment');
 
 const accountSchema = z.object({
   externalAccountEstablished: z.boolean(),
   trackingIdentityConfigured: z.boolean(),
+  verificationStatus: z.enum(['not_started', 'requested', 'verified']).default('not_started'),
+  verificationObservedAt: z.string().datetime().nullable().default(null),
+  publicTrackingIdentity: z.string().regex(/^[A-Za-z0-9_-]+$/).nullable().default(null),
+  publicStorefrontUrl: httpsUrl.nullable().default(null),
+  weeklyReportsEnabled: z.boolean().default(false),
   termsAcceptedByFounder: z.boolean(),
   termsAcceptedAt: z.string().datetime().nullable(),
   acceptanceEvidenceReference: httpsUrl.nullable(),
   reportingExportApproved: z.boolean()
 }).strict();
 
+const productSelectionSchema = z.discriminatedUnion('mode', [
+  z.object({
+    mode: z.literal('explicit_products'),
+    eligibleProductIds: z.array(slug).min(1)
+  }).strict(),
+  z.object({
+    mode: z.literal('all_products_in_eligible_articles'),
+    eligibleProductIds: z.array(slug).length(0)
+  }).strict(),
+  z.object({
+    mode: z.literal('all_publication_ready_products'),
+    eligibleProductIds: z.array(slug).length(0)
+  }).strict()
+]);
+
 const programSchema = z.object({
   id: slug,
   revision: z.number().int().positive(),
+  priority: z.number().int().positive(),
+  coverageRole: z.enum(['category_specialist', 'broad_catalog', 'retailer_alternative', 'marketplace_contingency']),
   name: z.string().min(8),
-  status: z.enum(['proposed', 'founder_approved', 'enabled', 'paused', 'rejected']),
+  status: z.enum(['proposed', 'founder_approved', 'externally_verified', 'enabled', 'paused', 'rejected']),
   enabled: z.boolean(),
   founderDisposition: z.enum(['proposed', 'approved', 'paused', 'rejected']),
   programHomepageUrl: httpsUrl,
   termsUrl: httpsUrl,
   sourceCheckedAt: z.string().datetime(),
   sourceReviewExpiresAt: isoDate,
-  eligibleArticleSlugs: z.array(slug).min(1),
+  eligibleArticleSlugs: z.array(slug),
+  productSelection: productSelectionSchema,
   editorialFit: z.string().min(80),
   limitations: z.array(z.string().min(40)).min(2),
   allowedDomains: z.array(z.string().regex(/^[a-z0-9.-]+$/)).default([]),
@@ -52,6 +78,13 @@ export const affiliateSchema = z.object({
   }).strict()
 }).strict();
 
+export function programSelectsProduct(program, articleSlug, productId) {
+  if (program.productSelection.mode === 'all_publication_ready_products') return true;
+  if (!program.eligibleArticleSlugs.includes(articleSlug)) return false;
+  return program.productSelection.mode === 'all_products_in_eligible_articles' ||
+    program.productSelection.eligibleProductIds.includes(productId);
+}
+
 export function validateAffiliateModel(input, options = {}) {
   const issues = [];
   let model;
@@ -63,28 +96,67 @@ export function validateAffiliateModel(input, options = {}) {
   }
 
   const ids = new Set();
+  const priorities = new Set();
   const publishedSlugs = options.publishedSlugs ?? new Set();
-  for (const program of model.programs) {
+  for (const [programIndex, program] of model.programs.entries()) {
     if (ids.has(program.id)) issues.push(`${program.id}: duplicate program ID`);
     ids.add(program.id);
+    if (priorities.has(program.priority)) issues.push(`${program.id}: duplicate program priority ${program.priority}`);
+    priorities.add(program.priority);
+    const expectedPriority = programIndex + 1;
+    if (program.priority !== expectedPriority) {
+      issues.push(`${program.id}: program priorities must be contiguous and registry order must be ascending; expected ${expectedPriority}, received ${program.priority}`);
+    }
+    if (new Set(program.eligibleArticleSlugs).size !== program.eligibleArticleSlugs.length) {
+      issues.push(`${program.id}: eligible article slugs cannot contain duplicates`);
+    }
+    if (new Set(program.productSelection.eligibleProductIds).size !== program.productSelection.eligibleProductIds.length) {
+      issues.push(`${program.id}: eligible product IDs cannot contain duplicates`);
+    }
+    if (program.productSelection.mode === 'all_publication_ready_products' && program.eligibleArticleSlugs.length > 0) {
+      issues.push(`${program.id}: automatic publication-ready coverage cannot carry a manual article allowlist`);
+    }
+    if (program.productSelection.mode !== 'all_publication_ready_products' && program.eligibleArticleSlugs.length === 0) {
+      issues.push(`${program.id}: configured product selection requires at least one eligible article`);
+    }
     if (program.sourceCheckedAt > model.updatedAt) issues.push(`${program.id}: source check occurs after registry update`);
     if (program.sourceReviewExpiresAt < program.sourceCheckedAt.slice(0, 10)) issues.push(`${program.id}: source review expiry precedes source check`);
     for (const articleSlug of program.eligibleArticleSlugs) {
       if (publishedSlugs.size > 0 && !publishedSlugs.has(articleSlug)) issues.push(`${program.id}: unknown publication-ready article ${articleSlug}`);
     }
+    const publishedProductsByArticle = options.publishedProductsByArticle ?? new Map();
+    if (publishedProductsByArticle.size > 0 && program.productSelection.mode === 'explicit_products') {
+      for (const productId of program.productSelection.eligibleProductIds) {
+        const matchingArticles = program.eligibleArticleSlugs.filter((articleSlug) => publishedProductsByArticle.get(articleSlug)?.has(productId));
+        if (matchingArticles.length === 0) issues.push(`${program.id}: unknown eligible product ${productId} in configured publication-ready articles`);
+        if (matchingArticles.length > 1) issues.push(`${program.id}: eligible product ${productId} is ambiguous across configured articles`);
+      }
+    }
 
     const account = program.account;
+    const externalVerificationFieldsPresent = account.externalAccountEstablished || account.trackingIdentityConfigured ||
+      account.verificationStatus !== 'not_started' || account.verificationObservedAt !== null ||
+      account.publicTrackingIdentity !== null || account.publicStorefrontUrl !== null || account.weeklyReportsEnabled;
     const activationFieldsPresent = program.allowedDomains.length > 0 || program.registeredSites.length > 0 ||
-      program.trackingParameterKeys.length > 0 || program.requiredDisclosure !== null ||
-      account.externalAccountEstablished || account.trackingIdentityConfigured || account.termsAcceptedByFounder ||
+      program.trackingParameterKeys.length > 0 || program.requiredDisclosure !== null || account.termsAcceptedByFounder ||
       account.termsAcceptedAt !== null || account.acceptanceEvidenceReference !== null || account.reportingExportApproved;
 
     if (program.status === 'proposed') {
       if (program.enabled || program.founderDisposition !== 'proposed') issues.push(`${program.id}: proposed program must remain disabled and proposed`);
-      if (activationFieldsPresent) issues.push(`${program.id}: proposed program cannot contain activation evidence or tracking configuration`);
+      if (externalVerificationFieldsPresent || activationFieldsPresent) issues.push(`${program.id}: proposed program cannot contain verification, activation, or tracking evidence`);
     }
     if (program.status === 'founder_approved') {
       if (program.enabled || program.founderDisposition !== 'approved') issues.push(`${program.id}: founder-approved program must remain disabled with approved disposition`);
+      if (externalVerificationFieldsPresent || activationFieldsPresent) issues.push(`${program.id}: founder-approved program cannot contain unreviewed verification, activation, or tracking evidence`);
+    }
+    if (program.status === 'externally_verified') {
+      if (program.enabled || program.founderDisposition !== 'approved') issues.push(`${program.id}: externally verified program must remain disabled with approved disposition`);
+      if (!account.externalAccountEstablished || !account.trackingIdentityConfigured || account.verificationStatus !== 'verified' ||
+        !account.verificationObservedAt || !account.publicTrackingIdentity || !account.publicStorefrontUrl) {
+        issues.push(`${program.id}: externally verified program requires observed account, tracking identity, and storefront evidence`);
+      }
+      if (account.verificationObservedAt && account.verificationObservedAt > model.updatedAt) issues.push(`${program.id}: verification observation occurs after registry update`);
+      if (activationFieldsPresent) issues.push(`${program.id}: externally verified program cannot contain terms acceptance or activation configuration`);
     }
     if (program.status === 'rejected' && (program.enabled || program.founderDisposition !== 'rejected')) {
       issues.push(`${program.id}: rejected program must be disabled and rejected`);
@@ -96,6 +168,9 @@ export function validateAffiliateModel(input, options = {}) {
       if (program.founderDisposition !== 'approved') issues.push(`${program.id}: enabled program requires founder approval`);
       if (!account.externalAccountEstablished) issues.push(`${program.id}: enabled program requires an externally established account`);
       if (!account.trackingIdentityConfigured) issues.push(`${program.id}: enabled program requires a program-provided tracking identity`);
+      if (account.verificationStatus !== 'verified' || !account.verificationObservedAt || !account.publicTrackingIdentity || !account.publicStorefrontUrl) {
+        issues.push(`${program.id}: enabled program requires recorded external verification evidence`);
+      }
       if (!account.termsAcceptedByFounder || !account.termsAcceptedAt || !account.acceptanceEvidenceReference) {
         issues.push(`${program.id}: enabled program requires founder-recorded terms acceptance evidence`);
       }

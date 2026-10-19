@@ -62,9 +62,10 @@ function selectStrategyCandidate(strategy) {
 
 function selectAffiliatePilot(affiliate) {
   return affiliate.programs
-    .filter((program) => ['proposed', 'founder_approved'].includes(program.status))
+    .filter((program) => ['proposed', 'founder_approved', 'externally_verified'].includes(program.status))
     .sort((left, right) => {
-      const stateDifference = Number(right.status === 'founder_approved') - Number(left.status === 'founder_approved');
+      const stateWeight = { externally_verified: 2, founder_approved: 1, proposed: 0 };
+      const stateDifference = (stateWeight[right.status] ?? 0) - (stateWeight[left.status] ?? 0);
       return stateDifference || left.eligibleArticleSlugs.length - right.eligibleArticleSlugs.length || left.id.localeCompare(right.id);
     })[0];
 }
@@ -234,7 +235,7 @@ export function buildFounderAgenda(input) {
   const affiliatePilot = selectAffiliatePilot(input.affiliate);
   const enabledPrograms = input.affiliate.programs.filter((program) => program.enabled);
   if (enabledPrograms.length === 0 && affiliatePilot) {
-    const readyForActivationReview = affiliatePilot.status === 'founder_approved';
+    const readyForActivationReview = affiliatePilot.status === 'externally_verified';
     decisions.push({
       id: 'choose-affiliate-pilot',
       rank: 0,
@@ -250,7 +251,7 @@ export function buildFounderAgenda(input) {
         : 'Is this program worth the external account, terms, disclosure, and reporting burden?',
       rationale: 'A narrow pilot can test operational fit with less commission pressure than enabling the broadest catalog before traffic and conversion evidence exist.',
       evidence: [
-        `${input.affiliate.programs.filter((program) => program.status === 'proposed').length} affiliate programs await founder review and ${input.affiliate.programs.filter((program) => program.status === 'founder_approved').length} await external activation evidence.`,
+        `${input.affiliate.programs.filter((program) => program.status === 'proposed').length} affiliate programs await founder review, ${input.affiliate.programs.filter((program) => program.status === 'founder_approved').length} await external enrollment, and ${input.affiliate.programs.filter((program) => program.status === 'externally_verified').length} await activation evidence.`,
         `${enabledPrograms.length} programs and ${input.publicationManifest.counts.affiliateLinks} tracked links are enabled.`,
         `${affiliatePilot.name} currently maps to ${affiliatePilot.eligibleArticleSlugs.length} publication-ready article.`,
         `Its public terms review expires ${affiliatePilot.sourceReviewExpiresAt}.`

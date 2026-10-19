@@ -711,7 +711,7 @@
       "editorialScore": 88,
       "evidenceConfidence": 88,
       "drawbacks": [
-        "It is a large roughly four-kilogram case before the puzzle is added, its flexible panels should not be sharply bent, and loose-piece behavior during vertical storage is not uniformly reported."
+        "The empty case weighs roughly four kilograms and takes up substantial space. Its flexible panels should not be bent sharply, and the evidence does not support promising that every loose piece will stay put during upright storage."
       ],
       "primarySourceIds": [
         "src-deluxe-official"
@@ -785,7 +785,7 @@
       "editorialScore": 80,
       "evidenceConfidence": 81,
       "drawbacks": [
-        "Its 68 by 49 centimeter format excludes some common 1000-piece finished images, it has no zipper or carry handle, and the conservative use is flat storage rather than frequent lifting or upright storage."
+        "Some 1000-piece puzzles are larger than its 68 by 49 centimeter work area. It has no zipper or handle, so treat it as flat storage rather than a case for frequent carrying or upright storage."
       ],
       "primarySourceIds": [
         "src-standard1000-official"
@@ -859,7 +859,7 @@
       "editorialScore": 84,
       "evidenceConfidence": 86,
       "drawbacks": [
-        "Its large inserts can flex and multiple owner sources report loose-piece shift during vertical movement, so it should be treated as a flat-store system despite broad transport language."
+        "The large inserts can bend when lifted, and several owners report loose pieces moving when the folder is carried upright. It is safest to think of this as a flat-storage system."
       ],
       "primarySourceIds": [
         "src-standard1500-official"
@@ -933,7 +933,7 @@
       "editorialScore": 86,
       "evidenceConfidence": 86,
       "drawbacks": [
-        "The six shallow blue trays have no dedicated lid, depend on their outer box for closed storage, and may offer poor contrast for dark-blue puzzle areas."
+        "The trays do not have their own lids, so the original box is part of the storage system. Their blue color can also make dark-blue puzzle pieces harder to see."
       ],
       "primarySourceIds": [
         "src-ravensburger-sort-official"
@@ -1006,7 +1006,7 @@
       "editorialScore": 83,
       "evidenceConfidence": 81,
       "drawbacks": [
-        "The single lid covers only the top of the stack, the trays are not a locking spill-proof carrier, and colored bases or compact tray area will not suit every visual-sorting method."
+        "There is only one lid for the top of the stack, and the trays do not lock into a spill-proof container. They must be carried level, and the colored bases will not suit every puzzle."
       ],
       "primarySourceIds": [
         "src-buffalo-trays-official"
@@ -1328,7 +1328,7 @@
       "editorialScore": 80,
       "evidenceConfidence": 81,
       "drawbacks": [
-        "Its 68 by 49 centimeter format excludes some common 1000-piece finished images, it has no zipper or carry handle, and the conservative use is flat storage rather than frequent lifting or upright storage."
+        "Some 1000-piece puzzles are larger than its 68 by 49 centimeter work area. It has no zipper or handle, so treat it as flat storage rather than a case for frequent carrying or upright storage."
       ],
       "primarySourceIds": [
         "src-standard1000-official"
@@ -1402,7 +1402,7 @@
       "editorialScore": 88,
       "evidenceConfidence": 88,
       "drawbacks": [
-        "It is a large roughly four-kilogram case before the puzzle is added, its flexible panels should not be sharply bent, and loose-piece behavior during vertical storage is not uniformly reported."
+        "The empty case weighs roughly four kilograms and takes up substantial space. Its flexible panels should not be bent sharply, and the evidence does not support promising that every loose piece will stay put during upright storage."
       ],
       "primarySourceIds": [
         "src-deluxe-official"
@@ -1476,7 +1476,7 @@
       "editorialScore": 84,
       "evidenceConfidence": 86,
       "drawbacks": [
-        "Its large inserts can flex and multiple owner sources report loose-piece shift during vertical movement, so it should be treated as a flat-store system despite broad transport language."
+        "The large inserts can bend when lifted, and several owners report loose pieces moving when the folder is carried upright. It is safest to think of this as a flat-storage system."
       ],
       "primarySourceIds": [
         "src-standard1500-official"
@@ -1550,7 +1550,7 @@
       "editorialScore": 86,
       "evidenceConfidence": 86,
       "drawbacks": [
-        "The six shallow blue trays have no dedicated lid, depend on their outer box for closed storage, and may offer poor contrast for dark-blue puzzle areas."
+        "The trays do not have their own lids, so the original box is part of the storage system. Their blue color can also make dark-blue puzzle pieces harder to see."
       ],
       "primarySourceIds": [
         "src-ravensburger-sort-official"
@@ -1623,7 +1623,7 @@
       "editorialScore": 83,
       "evidenceConfidence": 81,
       "drawbacks": [
-        "The single lid covers only the top of the stack, the trays are not a locking spill-proof carrier, and colored bases or compact tray area will not suit every visual-sorting method."
+        "There is only one lid for the top of the stack, and the trays do not lock into a spill-proof container. They must be carried level, and the colored bases will not suit every puzzle."
       ],
       "primarySourceIds": [
         "src-buffalo-trays-official"
@@ -1694,13 +1694,13 @@
   "pairs": [
     {
       "id": "zip-case-lidded-seven-tray-loop",
-      "name": "The zip-case and lidded seven-tray pause loop",
+      "name": "Best for someone who sorts into many groups",
       "anchorCandidateId": "jumbo-portapuzzle-deluxe-1000",
       "companionCandidateId": "buffalo-jigsaw-pro-trays-9212",
       "recipientJob": "Preserve one compatible unfinished image and seven sorting decisions while returning a shared table to the household.",
       "coherenceType": "completes_task",
-      "whyTogether": "The Portapuzzle closes around the dimension-qualified assembled section while the Buffalo set keeps seven loose-piece groups stacked under one top lid, preserving both kinds of progress.",
-      "interactionMoment": "Sort the edge plus six useful visual groups, build only on the fitted case surface, then zip the case and carry the lidded tray stack level to their named storage locations.",
+      "whyTogether": "The Portapuzzle protects the part they have already assembled. The Buffalo trays keep the loose edge, color, and pattern groups separate. Together, the person can clear the table without losing either kind of progress.",
+      "interactionMoment": "They build on the open case and sort loose pieces into useful groups. When the table is needed, they zip the case, cover the tray stack, and carry both pieces level to their storage spots.",
       "compatibilityChecks": [
         {
           "dimension": "size_or_fit",
@@ -1734,8 +1734,8 @@
       ],
       "duplicateRisk": "high",
       "clutterDelta": "reduces",
-      "preGiftCheck": "Confirm the exact finished dimensions, roughly four-kilogram lift tolerance, flat case location, level tray shelf, useful colored contrast, and no existing start-and-store system.",
-      "bundleDrawback": "Buy only the Deluxe when its two included loose boards already provide enough sorting; buy only the trays when a trusted dimension-compatible storage surface already exists.",
+      "preGiftCheck": "Measure the finished puzzle, confirm they can lift the roughly four-kilogram empty case, name a flat case location and a level tray shelf, and make sure they do not already own a system they like.",
+      "bundleDrawback": "If the two sorting boards included with the case are enough, give only the Portapuzzle. If they already have a fitted puzzle board, the trays may be the better gift.",
       "claimIds": [
         "claim-pair-deluxe-buffalo"
       ],
@@ -1752,13 +1752,13 @@
     },
     {
       "id": "zip-case-shallow-six-tray-loop",
-      "name": "The zip-case and shallow six-tray restart loop",
+      "name": "Best for someone who likes shallow sorting trays",
       "anchorCandidateId": "jumbo-portapuzzle-deluxe-1000",
       "companionCandidateId": "ravensburger-sort-and-go-17934",
       "recipientJob": "Preserve one compatible unfinished image and a few easy-to-scan sorting groups while reclaiming a shared table.",
       "coherenceType": "completes_task",
-      "whyTogether": "The Portapuzzle closes around the dimension-qualified assembled section while the six shallow Ravensburger trays keep active groups visible and return to their box between sessions.",
-      "interactionMoment": "Sort the edge and five broad color or pattern groups, build on the fitted case surface, then zip the case and place the boxed tray stack on its named shelf.",
+      "whyTogether": "The Portapuzzle stores the unfinished picture while the shallow Ravensburger trays keep six broad groups easy to see. This pair suits someone who values quick scanning more than a lid on every tray.",
+      "interactionMoment": "They build on the open case and sort the edge plus five color or pattern groups. At cleanup, they zip the case and return the stacked trays to their original box.",
       "compatibilityChecks": [
         {
           "dimension": "size_or_fit",
@@ -1792,8 +1792,8 @@
       ],
       "duplicateRisk": "high",
       "clutterDelta": "reduces",
-      "preGiftCheck": "Confirm finished dimensions, case weight, flat storage, boxed-tray shelf space, blue contrast, six-group sorting preference, and no existing system they trust.",
-      "bundleDrawback": "Buy only the Deluxe when its two included boards already make restart easy; buy only Sort & Go when the recipient's current fitted board already protects the assembled image.",
+      "preGiftCheck": "Measure the finished puzzle, confirm the case can be stored flat, keep a shelf for the tray box, and check that blue trays will not hide the colors they usually sort.",
+      "bundleDrawback": "If the case's two included boards already make restarting easy, give only the case. If they already own a fitted board, give only the Sort & Go trays.",
       "claimIds": [
         "claim-pair-deluxe-ravensburger"
       ],
@@ -1834,10 +1834,10 @@
   "qa": {
     "passed": true,
     "reviewerRole": "independent-editor",
-    "reviewerId": "puzzle-start-store-independent-qa-desk",
+    "reviewerId": "codex-parfit-independent-editor-20260906",
     "receiptPath": "research/reviews/20260816-puzzle-start-store-a30ab01a.qa.v1.json",
     "blockers": [],
     "warnings": []
   },
-  "completedAt": "2026-08-16T21:29:05.550Z"
+  "completedAt": "2026-09-07T04:31:50.831Z"
 }

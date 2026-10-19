@@ -1,0 +1,147 @@
+{
+  "schemaVersion": "1.0.0",
+  "updatedAt": "2026-10-10T18:00:00.000Z",
+  "siteProfile": {
+    "siteName": "Tips for Your Gifts",
+    "productionUrl": "https://tipsforyourgifts.web.app/",
+    "publisherType": "independent_editorial_publication",
+    "applicationDescription": "Tips for Your Gifts helps shoppers choose thoughtful gifts by explaining what a product is, how it fits the recipient's real life, what they may already own, and what a specialty addition contributes. Recommendations are researched and ranked without regard to commission.",
+    "promotionMethods": [
+      "owned_editorial_website"
+    ],
+    "audienceClaim": "No audience-size, traffic, conversion, or revenue claim is made until a complete aggregate measurement baseline exists.",
+    "sensitiveDataPolicy": "Account credentials, legal identity, tax details, payout details, and private contact information are entered only in the partner portal by Lucas and are never stored in Git."
+  },
+  "programs": [
+    {
+      "programId": "bookshop-org-us-media",
+      "programRevision": 4,
+      "applicationPositioning": "Lead with the reviewed book anchors and the publication's independent, explanation-first editorial approach. Do not imply that Bookshop covers the non-book companion products.",
+      "userOnlyInputs": [
+        "account_login",
+        "operator_identity_contact",
+        "tax_profile_if_requested",
+        "payout_profile_if_requested"
+      ],
+      "publicPortalFields": [
+        "site_name",
+        "site_url",
+        "about_copy",
+        "public_social_profiles_if_used",
+        "profile_image_if_used",
+        "banner_image_if_used"
+      ],
+      "specialRequirements": [
+        "Bookshop must verify the external account before any tracking identity is recorded.",
+        "Only the ten explicitly scoped book products may enter exact-link review during the narrow pilot."
+      ],
+      "stopConditions": [
+        "Stop if the portal requests a claim about traffic, revenue, or first-hand product testing that the publication cannot substantiate.",
+        "Stop if the exact edition or Bookshop-issued paid destination cannot be independently verified."
+      ]
+    },
+    {
+      "programId": "amazon-associates-us",
+      "programRevision": 3,
+      "applicationPositioning": "Describe the owned editorial website and its commission-independent rankings. Do not promise broad coverage until exact products and Amazon-issued Special Links are verified one at a time.",
+      "userOnlyInputs": [
+        "account_login",
+        "operator_identity_contact",
+        "tax_profile_if_requested",
+        "payout_profile_if_requested"
+      ],
+      "publicPortalFields": [
+        "site_name",
+        "site_url",
+        "about_copy",
+        "promotion_method"
+      ],
+      "specialRequirements": [
+        "The current operating agreement and incorporated program policies require a fresh founder review before signup.",
+        "Only program-provided link formats may enter the exact-link lane after account acceptance."
+      ],
+      "stopConditions": [
+        "Stop if a requested content, pricing, or availability claim cannot be supported by an authorized current source.",
+        "Stop if enrollment would require changing editorial rankings or removing ordinary manufacturer fallbacks."
+      ]
+    },
+    {
+      "programId": "target-partners-us",
+      "programRevision": 2,
+      "applicationPositioning": "Position Target as a possible exact-product retailer alternative for family-friendly shopping, never as a substitute for the editorially selected product.",
+      "userOnlyInputs": [
+        "account_login",
+        "operator_identity_contact",
+        "tax_profile_if_requested",
+        "payout_profile_if_requested"
+      ],
+      "publicPortalFields": [
+        "site_name",
+        "site_url",
+        "about_copy",
+        "promotion_method"
+      ],
+      "specialRequirements": [
+        "The operative member agreement must be retrieved from the partner portal and reviewed before acceptance.",
+        "Marketplace substitutions and near matches cannot be represented as the reviewed product."
+      ],
+      "stopConditions": [
+        "Stop if the operative member contract is unavailable for complete founder review before acceptance.",
+        "Stop if the partner portal cannot produce an exact-product destination with a stable disclosure path."
+      ]
+    },
+    {
+      "programId": "walmart-creator-us",
+      "programRevision": 2,
+      "applicationPositioning": "Describe the owned publication and its practical gift coverage without claiming an active social audience or creator performance that has not been measured.",
+      "userOnlyInputs": [
+        "account_login",
+        "operator_identity_contact",
+        "public_social_account_selection",
+        "tax_profile_if_requested",
+        "payout_profile_if_requested"
+      ],
+      "publicPortalFields": [
+        "site_name",
+        "site_url",
+        "about_copy",
+        "public_social_profiles_if_used",
+        "promotion_method"
+      ],
+      "specialRequirements": [
+        "Lucas must confirm applicant eligibility, select a truthful public social account, and review the current arbitration and disclosure terms.",
+        "Member-only payout terms and Impact identity verification remain separate from editorial approval."
+      ],
+      "stopConditions": [
+        "Stop if the application would require presenting a dormant or unrelated social account as an active publication channel.",
+        "Stop if required disclosure, exact-product eligibility, or member payout terms cannot be captured for review."
+      ]
+    },
+    {
+      "programId": "ebay-partner-network-us",
+      "programRevision": 2,
+      "applicationPositioning": "Position eBay only as a contingency for exact discontinued or hard-to-find products. Stable manufacturer or specialist destinations remain preferred.",
+      "userOnlyInputs": [
+        "account_login",
+        "operator_identity_contact",
+        "tax_profile_if_requested",
+        "payout_profile_if_requested",
+        "ai_tools_written_approval_request"
+      ],
+      "publicPortalFields": [
+        "site_name",
+        "site_url",
+        "about_copy",
+        "promotion_method"
+      ],
+      "specialRequirements": [
+        "Written eBay approval for promotion through generative-AI tools is required before this AI-assisted publication may activate EPN.",
+        "Every volatile listing needs a fresh seller, condition, shipping, and exact-item check."
+      ],
+      "stopConditions": [
+        "Stop until eBay grants the required written AI-tools approval from the registered account.",
+        "Stop if a volatile listing would be presented as a stable canonical product destination."
+      ]
+    }
+  ]
+}

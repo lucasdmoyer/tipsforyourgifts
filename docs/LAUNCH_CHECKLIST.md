@@ -4,7 +4,7 @@
 
 - Protect `master`; require content quality and Firebase preview checks.
 - Create the GitHub `production` environment and require Lucas as a reviewer for the first ten releases.
-- Add `OPENAI_API_KEY` as a repository secret for the read-only research job.
+- Add `OPENAI_API_KEY` as a repository secret for the read-only strategy, research, independent-review, opportunity, growth, and affiliate-evidence jobs. Every Codex step runs the reviewed presence-only preflight immediately before model execution; a missing secret now fails with an actionable message before the model action starts and never prints a secret value.
 - Confirm owner-authored `[Strategy]` issues can run the strategy-intake workflow and that non-owner issues cannot access the AI job.
 - Confirm `/studio/brief` blocks incomplete or credential-like drafts, opens the exact owner-authored GitHub issue for review, and grants no research or publication authority by itself.
 - Require review on strategy proposal and strategy approval pull requests; the AI proposal job must never set `approved_for_research`.
@@ -53,7 +53,7 @@
 ## Affiliate controls
 
 - Approve one program at a time.
-- Treat `proposed` and `founder_approved` as disabled states; neither authorizes signup, terms acceptance, tracking, or links.
+- Treat `proposed`, `founder_approved`, and `externally_verified` as disabled states. External verification may record a public partner-issued identity and storefront, but it does not authorize terms acceptance, activation, or paid links.
 - Recheck the official program and terms sources before their recorded review-expiry date.
 - Record allowed domains, registered sites, disclosure requirements, price-display constraints, and tracking identity.
 - Create the protected `affiliate-activation` environment before using the audited activation workflow; store no tracking values in its inputs or repository output.

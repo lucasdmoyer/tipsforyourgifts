@@ -1,0 +1,16 @@
+{
+  "schemaVersion": "1.0.0",
+  "receiptId": "20261018-read-it-then-play-it-c437f208-qa",
+  "runId": "20261018-read-it-then-play-it-c437f208",
+  "articleSlug": "read-it-then-play-it-gift-pairs",
+  "reviewedAt": "2026-10-19T00:14:05.812Z",
+  "reviewerRole": "independent-editor",
+  "reviewerId": "codex-independent-editor-sapiens-20261018",
+  "workflowRunId": "local-independent-sapiens-canonical-url-qa",
+  "verdict": "passed",
+  "evidenceSha256": "f12d4375585d9f8101f461eb996955b01b9e03118602baed20bd420e84dffcf5",
+  "articleSha256": "92d71732667e82af3f507dbc16ee639c25f3375bf03eddd9980431fb4f76ef12",
+  "socialSha256": "73de3115757ea4a19d07e99fdc8d9bf88e129c55081f48525ffbc2a732f6cc34",
+  "blockers": [],
+  "warnings": []
+}
