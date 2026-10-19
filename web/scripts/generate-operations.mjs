@@ -440,7 +440,7 @@ const operations = {
       status: program.status,
       founderDisposition: program.founderDisposition,
       eligibleArticleSlugs: program.eligibleArticleSlugs,
-      productSelectionMode: program.productSelection.mode,
+      productSelectionMode: program.researchCandidateSelection.mode,
       productResearchCandidates: affiliateCoverageByProgram.get(program.id)?.productResearchCandidates ?? 0,
       verifiedPaidLinks: affiliateCoverageByProgram.get(program.id)?.verifiedPaidLinks ?? 0,
       enrollmentStage: affiliateEnrollmentByProgram.get(program.id)?.stage ?? 'founder_approval_required',

@@ -3,7 +3,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import matter from './front-matter.mjs';
 import { z } from 'zod';
-import { affiliateSchema, programSelectsProduct, validateAffiliateModel } from './affiliate-contract.mjs';
+import { affiliateSchema, programAllowsPaidProduct, validateAffiliateModel } from './affiliate-contract.mjs';
 
 const sha256Schema = z.string().regex(/^[a-f0-9]{64}$/);
 const slugSchema = z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/);
@@ -56,7 +56,7 @@ const sourceSchema = z.object({
 }).strict();
 
 export const affiliateLinkCandidateSchema = z.object({
-  schemaVersion: z.literal('1.1.0'),
+  schemaVersion: z.literal('1.2.0'),
   candidateId: slugSchema,
   status: z.literal('candidate'),
   articleSlug: slugSchema,
@@ -76,7 +76,18 @@ export const affiliateLinkCandidateSchema = z.object({
   destination: z.object({
     paidUrl: httpsUrlSchema,
     hostname: z.string().regex(/^[a-z0-9.-]+$/),
-    trackingParameterKeys: z.array(z.string().regex(/^[A-Za-z0-9_-]+$/)).min(1),
+    tracking: z.discriminatedUnion('method', [
+      z.object({
+        method: z.literal('query_parameters'),
+        parameterKeys: z.array(z.string().regex(/^[A-Za-z0-9_-]+$/)).min(1)
+      }).strict(),
+      z.object({
+        method: z.literal('path_redirect_to_query'),
+        sourcePathPrefix: z.string().regex(/^\/[a-z0-9-]+\/$/),
+        identity: safeIdentitySchema,
+        resolvedParameterKeys: z.array(z.string().regex(/^[A-Za-z0-9_-]+$/)).min(1)
+      }).strict()
+    ]),
     productIdentityEvidenceUrl: httpsUrlSchema
   }).strict(),
   assertions: z.object({
@@ -221,11 +232,35 @@ function parameterKeys(url) {
   return [...new Set([...url.searchParams.keys()])].sort((left, right) => left.localeCompare(right));
 }
 
-function ensureTrackingPreserved(source, resolved, keys) {
-  return keys.every((key) => {
-    const expected = source.searchParams.getAll(key);
+function resolvedTrackingKeysAreAllowlisted(resolved, allowedKeys) {
+  const allowed = new Set(allowedKeys.map((key) => key.toLowerCase()));
+  const seen = new Map();
+  for (const rawKey of parameterKeys(resolved)) {
+    const normalized = rawKey.toLowerCase();
+    const previous = seen.get(normalized);
+    if (previous && previous !== rawKey) return false;
+    seen.set(normalized, rawKey);
+    if (trackingLike(rawKey) && !allowed.has(normalized)) return false;
+  }
+  return true;
+}
+
+export function trackingResolutionPreserved(destination, resolved) {
+  const source = new URL(destination.paidUrl);
+  if (destination.tracking.method === 'query_parameters') {
+    if (!resolvedTrackingKeysAreAllowlisted(resolved, destination.tracking.parameterKeys)) return false;
+    return destination.tracking.parameterKeys.every((key) => {
+      const expected = source.searchParams.getAll(key);
+      const actual = resolved.searchParams.getAll(key);
+      return expected.length > 0 && JSON.stringify(actual) === JSON.stringify(expected);
+    });
+  }
+  const expectedPath = `${destination.tracking.sourcePathPrefix}${encodeURIComponent(destination.tracking.identity)}/`;
+  if (!source.pathname.startsWith(expectedPath)) return false;
+  if (!resolvedTrackingKeysAreAllowlisted(resolved, destination.tracking.resolvedParameterKeys)) return false;
+  return destination.tracking.resolvedParameterKeys.every((key) => {
     const actual = resolved.searchParams.getAll(key);
-    return expected.length > 0 && JSON.stringify(actual) === JSON.stringify(expected);
+    return actual.length > 0 && actual.every((value) => value === destination.tracking.identity);
   });
 }
 
@@ -283,7 +318,7 @@ function validateCandidate(candidate, candidateRecord, programsById, sources, fo
   if (candidate.source.independentReviewPath !== review.path || candidate.source.independentReviewSha256 !== review.sha256) throw new Error(`${candidate.candidateId}: source independent review hash changed`);
   const product = (article.data.products ?? []).find((entry) => entry.id === candidate.productId);
   if (!product) throw new Error(`${candidate.candidateId}: source product no longer exists`);
-  if (!programSelectsProduct(program, candidate.articleSlug, candidate.productId)) throw new Error(`${candidate.candidateId}: product is not eligible for this affiliate program`);
+  if (!programAllowsPaidProduct(program, candidate.articleSlug, candidate.productId)) throw new Error(`${candidate.candidateId}: product is not allowlisted for paid activation in this affiliate program`);
   if (product.affiliate) throw new Error(`${candidate.candidateId}: overlay candidates require an ordinary source link`);
   if (candidate.source.ordinaryUrl !== product.url) throw new Error(`${candidate.candidateId}: ordinary product URL changed`);
   if (candidate.source.productEditorialSha256 !== productEditorialSha256(product)) throw new Error(`${candidate.candidateId}: editorial product fields changed`);
@@ -305,17 +340,30 @@ function validateCandidate(candidate, candidateRecord, programsById, sources, fo
   if (paidUrl.hash) throw new Error(`${candidate.candidateId}: paid URL cannot contain a fragment`);
   if (paidUrl.hostname.toLowerCase() !== candidate.destination.hostname) throw new Error(`${candidate.candidateId}: paid URL hostname does not match the recorded hostname`);
   if (!program.allowedDomains.includes(candidate.destination.hostname)) throw new Error(`${candidate.candidateId}: paid URL hostname is not allowlisted`);
-  const declaredKeys = [...new Set(candidate.destination.trackingParameterKeys.map((key) => key.toLowerCase()))].sort();
-  if (declaredKeys.length !== candidate.destination.trackingParameterKeys.length || declaredKeys.some((key, index) => key !== candidate.destination.trackingParameterKeys[index])) throw new Error(`${candidate.candidateId}: tracking parameter keys must be unique, lowercase, and sorted`);
   const approvedKeys = new Set(program.trackingParameterKeys.map((key) => key.toLowerCase()));
   const actualKeys = parameterKeys(paidUrl);
-  for (const key of declaredKeys) {
-    if (!approvedKeys.has(key)) throw new Error(`${candidate.candidateId}: tracking parameter ${key} is not approved by the program registry`);
-    if (!actualKeys.some((actual) => actual.toLowerCase() === key)) throw new Error(`${candidate.candidateId}: paid URL is missing declared tracking parameter ${key}`);
-    if (paidUrl.searchParams.getAll(key).some((value) => value.length === 0)) throw new Error(`${candidate.candidateId}: tracking parameter ${key} has an empty value`);
-  }
-  for (const key of actualKeys) {
-    if (trackingLike(key) && !declaredKeys.includes(key.toLowerCase())) throw new Error(`${candidate.candidateId}: tracking-like parameter ${key} is not declared and approved`);
+  if (candidate.destination.tracking.method !== program.trackingMethod) throw new Error(`${candidate.candidateId}: candidate tracking method does not match the program registry`);
+  if (candidate.destination.tracking.method === 'query_parameters') {
+    const declaredKeys = [...new Set(candidate.destination.tracking.parameterKeys.map((key) => key.toLowerCase()))].sort();
+    if (declaredKeys.length !== candidate.destination.tracking.parameterKeys.length || declaredKeys.some((key, index) => key !== candidate.destination.tracking.parameterKeys[index])) throw new Error(`${candidate.candidateId}: tracking parameter keys must be unique, lowercase, and sorted`);
+    for (const key of declaredKeys) {
+      if (!approvedKeys.has(key)) throw new Error(`${candidate.candidateId}: tracking parameter ${key} is not approved by the program registry`);
+      if (!actualKeys.some((actual) => actual.toLowerCase() === key)) throw new Error(`${candidate.candidateId}: paid URL is missing declared tracking parameter ${key}`);
+      if (paidUrl.searchParams.getAll(key).some((value) => value.length === 0)) throw new Error(`${candidate.candidateId}: tracking parameter ${key} has an empty value`);
+    }
+    for (const key of actualKeys) {
+      if (trackingLike(key) && !declaredKeys.includes(key.toLowerCase())) throw new Error(`${candidate.candidateId}: tracking-like parameter ${key} is not declared and approved`);
+    }
+  } else {
+    const tracking = candidate.destination.tracking;
+    if (tracking.sourcePathPrefix !== program.trackingPathPrefix) throw new Error(`${candidate.candidateId}: path tracking prefix does not match the program registry`);
+    if (tracking.identity !== program.account.publicTrackingIdentity) throw new Error(`${candidate.candidateId}: path tracking identity does not match the verified account`);
+    const expectedPath = `${tracking.sourcePathPrefix}${encodeURIComponent(tracking.identity)}/`;
+    if (!paidUrl.pathname.startsWith(expectedPath)) throw new Error(`${candidate.candidateId}: paid URL is missing the verified path tracking identity`);
+    const resolvedKeys = [...new Set(tracking.resolvedParameterKeys.map((key) => key.toLowerCase()))].sort();
+    if (resolvedKeys.length !== tracking.resolvedParameterKeys.length || resolvedKeys.some((key, index) => key !== tracking.resolvedParameterKeys[index])) throw new Error(`${candidate.candidateId}: resolved tracking parameter keys must be unique, lowercase, and sorted`);
+    for (const key of resolvedKeys) if (!approvedKeys.has(key)) throw new Error(`${candidate.candidateId}: resolved tracking parameter ${key} is not approved by the program registry`);
+    for (const key of actualKeys) if (trackingLike(key)) throw new Error(`${candidate.candidateId}: path-tracked paid URL cannot add a tracking-like query parameter before redirect`);
   }
   return { program, article, run, review, product, paidUrl };
 }
@@ -335,13 +383,23 @@ export async function buildCandidateFromRepository(root, input) {
   const product = (article.data.products ?? []).find((entry) => entry.id === input.productId);
   if (!run || !review || !product) throw new Error(`${input.articleSlug}/${input.productId}: incomplete reviewed source bundle`);
   const paidUrl = assertSafePublicHttpsUrl(input.paidUrl, 'paid URL');
-  const trackingParameterKeys = parameterKeys(paidUrl)
-    .filter((key) => program.trackingParameterKeys.some((approved) => approved.toLowerCase() === key.toLowerCase()))
-    .map((key) => key.toLowerCase()).sort();
+  const tracking = program.trackingMethod === 'query_parameters'
+    ? {
+        method: 'query_parameters',
+        parameterKeys: parameterKeys(paidUrl)
+          .filter((key) => program.trackingParameterKeys.some((approved) => approved.toLowerCase() === key.toLowerCase()))
+          .map((key) => key.toLowerCase()).sort()
+      }
+    : {
+        method: 'path_redirect_to_query',
+        sourcePathPrefix: program.trackingPathPrefix,
+        identity: program.account.publicTrackingIdentity,
+        resolvedParameterKeys: program.trackingParameterKeys.map((key) => key.toLowerCase()).sort()
+      };
   if (!Number.isInteger(input.candidateRevision) || input.candidateRevision < 1) throw new Error('candidate revision must be a positive integer');
   const candidateId = `affiliate-link-${input.articleSlug}-${input.productId}-${input.programId}-v${input.candidateRevision}`;
   const candidate = affiliateLinkCandidateSchema.parse({
-    schemaVersion: '1.1.0',
+    schemaVersion: '1.2.0',
     candidateId,
     status: 'candidate',
     articleSlug: input.articleSlug,
@@ -365,7 +423,7 @@ export async function buildCandidateFromRepository(root, input) {
     destination: {
       paidUrl: paidUrl.toString(),
       hostname: paidUrl.hostname.toLowerCase(),
-      trackingParameterKeys,
+      tracking,
       productIdentityEvidenceUrl: input.productIdentityEvidenceUrl
     },
     assertions: {
@@ -445,8 +503,7 @@ export async function loadAffiliateLinkState(root, options = {}) {
       const resolved = assertSafePublicHttpsUrl(review.destination.resolvedUrl, `${review.reviewId} resolved URL`);
       if (resolved.hostname.toLowerCase() !== review.destination.resolvedHostname) throw new Error(`${review.reviewId}: resolved hostname does not match URL`);
       if (!programsById.get(candidateRecord.data.programId).allowedDomains.includes(resolved.hostname.toLowerCase())) throw new Error(`${review.reviewId}: resolved domain is not allowlisted`);
-      const paid = new URL(candidateRecord.data.destination.paidUrl);
-      if (!ensureTrackingPreserved(paid, resolved, candidateRecord.data.destination.trackingParameterKeys)) throw new Error(`${review.reviewId}: approved tracking values were not preserved through destination resolution`);
+      if (!trackingResolutionPreserved(candidateRecord.data.destination, resolved)) throw new Error(`${review.reviewId}: approved tracking values were not preserved through destination resolution`);
       if (review.destination.observationMethod === 'automated_fetch' && (review.destination.httpStatus < 200 || review.destination.httpStatus >= 400)) throw new Error(`${review.reviewId}: resolved destination did not return a successful status`);
       if (review.destination.observationMethod === 'independent_browser_observation' && review.destination.httpStatus !== null) throw new Error(`${review.reviewId}: browser observation cannot invent an HTTP status`);
       if (review.availability.status !== 'available_for_purchase' || !review.availability.purchaseActionLabel) throw new Error(`${review.reviewId}: product was not observed as available for purchase`);

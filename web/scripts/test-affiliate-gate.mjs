@@ -72,15 +72,21 @@ proposedCandidate.revision += 1;
 const approvedCandidateIssues = validateAffiliateModel(approvedCandidate, options);
 if (approvedCandidateIssues.length > 0) throw new Error(`founder-approved disabled candidate should pass: ${approvedCandidateIssues.join('; ')}`);
 
+const broadActivationCandidate = copy(base);
+broadActivationCandidate.programs[1].activationProductSelection = { mode: 'explicit_products', eligibleProductIds: ['sapiens-us-paperback'] };
+const broadActivationCandidateIssues = validateAffiliateModel(broadActivationCandidate, options);
+if (broadActivationCandidateIssues.length > 0) throw new Error(`broad research with a narrow activation allowlist should pass: ${broadActivationCandidateIssues.join('; ')}`);
+
 expectFailure('rejects duplicate IDs', (model) => { model.programs.push(copy(model.programs[0])); }, 'duplicate program id');
 expectFailure('rejects duplicate priorities', (model) => { model.programs[1].priority = model.programs[0].priority; }, 'duplicate program priority');
 expectFailure('rejects priority gaps', (model) => { model.programs[4].priority = 99; }, 'program priorities must be contiguous');
 expectFailure('rejects unsorted priorities', (model) => { [model.programs[0], model.programs[1]] = [model.programs[1], model.programs[0]]; }, 'registry order must be ascending');
 expectFailure('rejects duplicate eligible articles', (model) => { model.programs[0].eligibleArticleSlugs.push(model.programs[0].eligibleArticleSlugs[0]); }, 'eligible article slugs cannot contain duplicates');
-expectFailure('rejects duplicate eligible products', (model) => { model.programs[0].productSelection.eligibleProductIds.push(model.programs[0].productSelection.eligibleProductIds[0]); }, 'eligible product ids cannot contain duplicates');
-expectFailure('rejects unknown eligible products', (model) => { model.programs[0].productSelection.eligibleProductIds = ['invented-product']; }, 'unknown eligible product');
-expectFailure('rejects product outside configured articles', (model) => { model.programs[0].productSelection.eligibleProductIds = ['grooveit-minig']; }, 'unknown eligible product');
-expectFailure('all-article selection rejects explicit product IDs', (model) => { model.programs[1].productSelection.eligibleProductIds = ['grooveit-minig']; }, 'expected array to have <=0 items');
+expectFailure('rejects duplicate research candidate products', (model) => { model.programs[0].researchCandidateSelection.eligibleProductIds.push(model.programs[0].researchCandidateSelection.eligibleProductIds[0]); }, 'research candidate product ids cannot contain duplicates');
+expectFailure('rejects unknown research candidate products', (model) => { model.programs[0].researchCandidateSelection.eligibleProductIds = ['invented-product']; }, 'unknown research candidate product');
+expectFailure('rejects research candidate outside configured articles', (model) => { model.programs[0].researchCandidateSelection.eligibleProductIds = ['grooveit-minig']; }, 'unknown research candidate product');
+expectFailure('rejects activation outside research candidates', (model) => { model.programs[0].activationProductSelection.eligibleProductIds = ['invented-product']; }, 'must also be an explicit research candidate');
+expectFailure('all-article selection rejects explicit product IDs', (model) => { model.programs[1].researchCandidateSelection.eligibleProductIds = ['grooveit-minig']; }, 'expected array to have <=0 items');
 expectFailure('automatic publication coverage rejects a manual article allowlist', (model) => { model.programs[1].eligibleArticleSlugs = ['gifts-for-a-golf-friend']; }, 'cannot carry a manual article allowlist');
 expectFailure('explicit selection requires an article scope', (model) => { model.programs[0].eligibleArticleSlugs = []; }, 'requires at least one eligible article');
 expectFailure('rejects unknown articles', (model) => { model.programs[0].eligibleArticleSlugs = ['invented-guide']; }, 'unknown publication-ready article');
@@ -120,4 +126,4 @@ expectFailure('enabled terms review expires', (model) => {
   program.sourceReviewExpiresAt = '2026-08-02';
 }, 'terms review has expired');
 
-console.log(JSON.stringify({ affiliateNegativeGateTests: 'passed', checks: 20, founderApprovedDisabledCheck: 'passed', externallyVerifiedDisabledCheck: 'passed' }, null, 2));
+console.log(JSON.stringify({ affiliateNegativeGateTests: 'passed', checks: 21, founderApprovedDisabledCheck: 'passed', externallyVerifiedDisabledCheck: 'passed', researchActivationSeparation: 'passed', broadResearchNarrowActivation: 'passed' }, null, 2));

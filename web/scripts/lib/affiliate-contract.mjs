@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { isIP } from 'node:net';
 
 const slug = z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/);
 const isoDate = z.string().regex(/^\d{4}-\d{2}-\d{2}$/);
@@ -6,6 +7,25 @@ const httpsUrl = z.string().url().refine((value) => {
   const url = new URL(value);
   return url.protocol === 'https:' && !url.username && !url.password && !url.search && !url.hash;
 }, 'must use credential-free HTTPS without userinfo, query, or fragment');
+
+export function assertPublicHttpsOrigin(value, label = 'site') {
+  let url;
+  try { url = new URL(value); } catch { throw new Error(`${label} must be a valid URL`); }
+  if (url.protocol !== 'https:' || url.username || url.password || url.search || url.hash) {
+    throw new Error(`${label} must be a credential-free HTTPS URL without query or fragment`);
+  }
+  if (url.pathname !== '/' || url.toString() !== `${url.origin}/`) {
+    throw new Error(`${label} must be the exact HTTPS site origin with a trailing slash`);
+  }
+  const hostname = url.hostname.toLowerCase();
+  const normalizedHostname = hostname.replace(/\.$/, '');
+  const unbracketedHostname = normalizedHostname.replace(/^\[|\]$/g, '');
+  const reservedSuffixes = ['.localhost', '.local', '.internal', '.home', '.lan', '.localdomain', '.test', '.example', '.invalid', '.onion'];
+  if (!normalizedHostname.includes('.') || normalizedHostname === 'localhost' || reservedSuffixes.some((suffix) => normalizedHostname.endsWith(suffix)) || isIP(unbracketedHostname) !== 0) {
+    throw new Error(`${label} must use a public DNS hostname`);
+  }
+  return url;
+}
 
 const accountSchema = z.object({
   externalAccountEstablished: z.boolean(),
@@ -21,7 +41,7 @@ const accountSchema = z.object({
   reportingExportApproved: z.boolean()
 }).strict();
 
-const productSelectionSchema = z.discriminatedUnion('mode', [
+const researchCandidateSelectionSchema = z.discriminatedUnion('mode', [
   z.object({
     mode: z.literal('explicit_products'),
     eligibleProductIds: z.array(slug).min(1)
@@ -32,6 +52,17 @@ const productSelectionSchema = z.discriminatedUnion('mode', [
   }).strict(),
   z.object({
     mode: z.literal('all_publication_ready_products'),
+    eligibleProductIds: z.array(slug).length(0)
+  }).strict()
+]);
+
+const activationProductSelectionSchema = z.discriminatedUnion('mode', [
+  z.object({
+    mode: z.literal('explicit_products'),
+    eligibleProductIds: z.array(slug).min(1)
+  }).strict(),
+  z.object({
+    mode: z.literal('discovery_only'),
     eligibleProductIds: z.array(slug).length(0)
   }).strict()
 ]);
@@ -50,11 +81,14 @@ const programSchema = z.object({
   sourceCheckedAt: z.string().datetime(),
   sourceReviewExpiresAt: isoDate,
   eligibleArticleSlugs: z.array(slug),
-  productSelection: productSelectionSchema,
+  researchCandidateSelection: researchCandidateSelectionSchema,
+  activationProductSelection: activationProductSelectionSchema,
   editorialFit: z.string().min(80),
   limitations: z.array(z.string().min(40)).min(2),
   allowedDomains: z.array(z.string().regex(/^[a-z0-9.-]+$/)).default([]),
   registeredSites: z.array(httpsUrl).default([]),
+  trackingMethod: z.enum(['query_parameters', 'path_redirect_to_query']).default('query_parameters'),
+  trackingPathPrefix: z.string().regex(/^\/[a-z0-9-]+\/$/).nullable().default(null),
   trackingParameterKeys: z.array(z.string().regex(/^[A-Za-z0-9_-]+$/)).default([]),
   requiredDisclosure: z.string().min(20).nullable(),
   account: accountSchema,
@@ -63,7 +97,7 @@ const programSchema = z.object({
 }).strict();
 
 export const affiliateSchema = z.object({
-  schemaVersion: z.literal('1.1.0'),
+  schemaVersion: z.literal('1.2.0'),
   updatedAt: z.string().datetime(),
   programs: z.array(programSchema),
   policy: z.object({
@@ -78,11 +112,17 @@ export const affiliateSchema = z.object({
   }).strict()
 }).strict();
 
-export function programSelectsProduct(program, articleSlug, productId) {
-  if (program.productSelection.mode === 'all_publication_ready_products') return true;
+export function programSelectsResearchCandidate(program, articleSlug, productId) {
+  if (program.researchCandidateSelection.mode === 'all_publication_ready_products') return true;
   if (!program.eligibleArticleSlugs.includes(articleSlug)) return false;
-  return program.productSelection.mode === 'all_products_in_eligible_articles' ||
-    program.productSelection.eligibleProductIds.includes(productId);
+  return program.researchCandidateSelection.mode === 'all_products_in_eligible_articles' ||
+    program.researchCandidateSelection.eligibleProductIds.includes(productId);
+}
+
+export function programAllowsPaidProduct(program, articleSlug, productId) {
+  return program.activationProductSelection.mode === 'explicit_products' &&
+    program.activationProductSelection.eligibleProductIds.includes(productId) &&
+    programSelectsResearchCandidate(program, articleSlug, productId);
 }
 
 export function validateAffiliateModel(input, options = {}) {
@@ -110,26 +150,47 @@ export function validateAffiliateModel(input, options = {}) {
     if (new Set(program.eligibleArticleSlugs).size !== program.eligibleArticleSlugs.length) {
       issues.push(`${program.id}: eligible article slugs cannot contain duplicates`);
     }
-    if (new Set(program.productSelection.eligibleProductIds).size !== program.productSelection.eligibleProductIds.length) {
-      issues.push(`${program.id}: eligible product IDs cannot contain duplicates`);
+    if (new Set(program.researchCandidateSelection.eligibleProductIds).size !== program.researchCandidateSelection.eligibleProductIds.length) {
+      issues.push(`${program.id}: research candidate product IDs cannot contain duplicates`);
     }
-    if (program.productSelection.mode === 'all_publication_ready_products' && program.eligibleArticleSlugs.length > 0) {
+    if (new Set(program.activationProductSelection.eligibleProductIds).size !== program.activationProductSelection.eligibleProductIds.length) {
+      issues.push(`${program.id}: activation product IDs cannot contain duplicates`);
+    }
+    if (program.researchCandidateSelection.mode === 'all_publication_ready_products' && program.eligibleArticleSlugs.length > 0) {
       issues.push(`${program.id}: automatic publication-ready coverage cannot carry a manual article allowlist`);
     }
-    if (program.productSelection.mode !== 'all_publication_ready_products' && program.eligibleArticleSlugs.length === 0) {
-      issues.push(`${program.id}: configured product selection requires at least one eligible article`);
+    if (program.researchCandidateSelection.mode !== 'all_publication_ready_products' && program.eligibleArticleSlugs.length === 0) {
+      issues.push(`${program.id}: configured research candidate selection requires at least one eligible article`);
+    }
+    for (const productId of program.activationProductSelection.eligibleProductIds) {
+      if (program.researchCandidateSelection.mode === 'explicit_products' && !program.researchCandidateSelection.eligibleProductIds.includes(productId)) {
+        issues.push(`${program.id}: activation product ${productId} must also be an explicit research candidate`);
+      }
     }
     if (program.sourceCheckedAt > model.updatedAt) issues.push(`${program.id}: source check occurs after registry update`);
     if (program.sourceReviewExpiresAt < program.sourceCheckedAt.slice(0, 10)) issues.push(`${program.id}: source review expiry precedes source check`);
+    for (const registeredSite of program.registeredSites) {
+      try { assertPublicHttpsOrigin(registeredSite, `${program.id}: registered site`); } catch (error) { issues.push(error.message); }
+    }
     for (const articleSlug of program.eligibleArticleSlugs) {
       if (publishedSlugs.size > 0 && !publishedSlugs.has(articleSlug)) issues.push(`${program.id}: unknown publication-ready article ${articleSlug}`);
     }
     const publishedProductsByArticle = options.publishedProductsByArticle ?? new Map();
-    if (publishedProductsByArticle.size > 0 && program.productSelection.mode === 'explicit_products') {
-      for (const productId of program.productSelection.eligibleProductIds) {
+    if (publishedProductsByArticle.size > 0 && program.researchCandidateSelection.mode === 'explicit_products') {
+      for (const productId of program.researchCandidateSelection.eligibleProductIds) {
         const matchingArticles = program.eligibleArticleSlugs.filter((articleSlug) => publishedProductsByArticle.get(articleSlug)?.has(productId));
-        if (matchingArticles.length === 0) issues.push(`${program.id}: unknown eligible product ${productId} in configured publication-ready articles`);
-        if (matchingArticles.length > 1) issues.push(`${program.id}: eligible product ${productId} is ambiguous across configured articles`);
+        if (matchingArticles.length === 0) issues.push(`${program.id}: unknown research candidate product ${productId} in configured publication-ready articles`);
+        if (matchingArticles.length > 1) issues.push(`${program.id}: research candidate product ${productId} is ambiguous across configured articles`);
+      }
+    }
+    if (publishedProductsByArticle.size > 0 && program.activationProductSelection.mode === 'explicit_products') {
+      const activationArticleSlugs = program.eligibleArticleSlugs.length > 0
+        ? program.eligibleArticleSlugs
+        : [...publishedProductsByArticle.keys()];
+      for (const productId of program.activationProductSelection.eligibleProductIds) {
+        const matchingArticles = activationArticleSlugs.filter((articleSlug) => publishedProductsByArticle.get(articleSlug)?.has(productId));
+        if (matchingArticles.length === 0) issues.push(`${program.id}: unknown activation product ${productId} in configured publication-ready articles`);
+        if (matchingArticles.length > 1) issues.push(`${program.id}: activation product ${productId} is ambiguous across configured articles`);
       }
     }
 
@@ -138,7 +199,7 @@ export function validateAffiliateModel(input, options = {}) {
       account.verificationStatus !== 'not_started' || account.verificationObservedAt !== null ||
       account.publicTrackingIdentity !== null || account.publicStorefrontUrl !== null || account.weeklyReportsEnabled;
     const activationFieldsPresent = program.allowedDomains.length > 0 || program.registeredSites.length > 0 ||
-      program.trackingParameterKeys.length > 0 || program.requiredDisclosure !== null || account.termsAcceptedByFounder ||
+      program.trackingParameterKeys.length > 0 || program.trackingPathPrefix !== null || program.requiredDisclosure !== null || account.termsAcceptedByFounder ||
       account.termsAcceptedAt !== null || account.acceptanceEvidenceReference !== null || account.reportingExportApproved;
 
     if (program.status === 'proposed') {
@@ -177,6 +238,9 @@ export function validateAffiliateModel(input, options = {}) {
       if (program.allowedDomains.length === 0) issues.push(`${program.id}: enabled program requires allowlisted destination domains`);
       if (program.registeredSites.length === 0) issues.push(`${program.id}: enabled program requires at least one registered site`);
       if (program.trackingParameterKeys.length === 0) issues.push(`${program.id}: enabled program requires approved tracking parameter keys`);
+      if (program.trackingMethod === 'query_parameters' && program.trackingPathPrefix !== null) issues.push(`${program.id}: query-parameter tracking cannot configure a path prefix`);
+      if (program.trackingMethod === 'path_redirect_to_query' && program.trackingPathPrefix === null) issues.push(`${program.id}: path-redirect tracking requires a path prefix`);
+      if (program.activationProductSelection.mode !== 'explicit_products') issues.push(`${program.id}: enabled program requires an explicit paid-product allowlist`);
       if (!program.requiredDisclosure) issues.push(`${program.id}: enabled program requires approved disclosure language`);
       const asOfDate = options.asOfDate ?? model.updatedAt.slice(0, 10);
       if (program.sourceReviewExpiresAt < asOfDate) issues.push(`${program.id}: enabled program terms review has expired`);

@@ -238,7 +238,7 @@ export function buildAffiliateEnrollmentReadiness({ affiliate, coverage, plan: i
       if (programCoverage.programRevision !== program.revision) throw new Error(`${program.id} coverage revision does not match the affiliate registry`);
       if (programCoverage.priority !== program.priority) throw new Error(`${program.id} coverage priority does not match the affiliate registry`);
       if (programCoverage.status !== program.status) throw new Error(`${program.id} coverage status does not match the affiliate registry`);
-      if (programCoverage.selectionMode !== program.productSelection.mode) throw new Error(`${program.id} coverage selection mode does not match the affiliate registry`);
+      if (programCoverage.selectionMode !== program.researchCandidateSelection.mode) throw new Error(`${program.id} coverage selection mode does not match the affiliate registry`);
       const selectedCoverageArticleCount = new Set(
         coverage.products
           .filter((product) => product.candidateProgramIds.includes(program.id))

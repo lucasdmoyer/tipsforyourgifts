@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "registryUpdatedAt": "2026-10-18T23:50:38.000Z",
+  "registryUpdatedAt": "2026-10-19T00:23:41.000Z",
   "planUpdatedAt": "2026-10-10T18:00:00.000Z",
   "definition": "Application packets contain public site facts, non-sensitive positioning, and labels for portal-only founder inputs. They do not create accounts, accept terms, submit forms, assert acceptance, store credentials, or authorize paid links.",
   "siteProfile": {

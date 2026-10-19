@@ -15,6 +15,21 @@ on:
         description: "Comma-separated official merchant domains allowed by current terms"
         required: true
         type: string
+      registered_site:
+        description: "Exact credential-free HTTPS site registered with the affiliate program"
+        required: true
+        type: string
+      tracking_method:
+        description: "Program-issued tracking format"
+        required: true
+        type: choice
+        options:
+          - query_parameters
+          - path_redirect_to_query
+      tracking_path_prefix:
+        description: "Required for path redirects, for example /a/; leave empty for query-only tracking"
+        required: false
+        type: string
       tracking_parameter_keys:
         description: "Comma-separated program-provided parameter names only; never enter values"
         required: true
@@ -74,6 +89,9 @@ jobs:
           PROGRAM_ID: ${{ inputs.program_id }}
           EXPECTED_REVISION: ${{ inputs.expected_revision }}
           ALLOWED_DOMAINS: ${{ inputs.allowed_domains }}
+          REGISTERED_SITE: ${{ inputs.registered_site }}
+          TRACKING_METHOD: ${{ inputs.tracking_method }}
+          TRACKING_PATH_PREFIX: ${{ inputs.tracking_path_prefix }}
           TRACKING_PARAMETER_KEYS: ${{ inputs.tracking_parameter_keys }}
           TERMS_ACCEPTED_AT: ${{ inputs.terms_accepted_at }}
           ACCEPTANCE_EVIDENCE_URL: ${{ inputs.acceptance_evidence_url }}
@@ -83,7 +101,7 @@ jobs:
         run: |
           npm ci --prefix web
           npm run validate
-          npm --prefix web run affiliate:activate -- --program-id="$PROGRAM_ID" --expected-revision="$EXPECTED_REVISION" --allowed-domains="$ALLOWED_DOMAINS" --tracking-parameter-keys="$TRACKING_PARAMETER_KEYS" --terms-accepted-at="$TERMS_ACCEPTED_AT" --acceptance-evidence-url="$ACCEPTANCE_EVIDENCE_URL" --reporting-export-approved="$REPORTING_EXPORT_APPROVED" --confirmation="$CONFIRMATION" --founder-login="$FOUNDER_LOGIN"
+          npm --prefix web run affiliate:activate -- --program-id="$PROGRAM_ID" --expected-revision="$EXPECTED_REVISION" --allowed-domains="$ALLOWED_DOMAINS" --registered-site="$REGISTERED_SITE" --tracking-method="$TRACKING_METHOD" --tracking-path-prefix="$TRACKING_PATH_PREFIX" --tracking-parameter-keys="$TRACKING_PARAMETER_KEYS" --terms-accepted-at="$TERMS_ACCEPTED_AT" --acceptance-evidence-url="$ACCEPTANCE_EVIDENCE_URL" --reporting-export-approved="$REPORTING_EXPORT_APPROVED" --confirmation="$CONFIRMATION" --founder-login="$FOUNDER_LOGIN"
           npm --prefix web run generate
       - name: Prove the bounded activation patch
         run: |

@@ -1,7 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import process from 'node:process';
-import { validateAffiliateModel } from './lib/affiliate-contract.mjs';
+import { assertPublicHttpsOrigin, validateAffiliateModel } from './lib/affiliate-contract.mjs';
 
 const args = Object.fromEntries(process.argv.slice(2).map((argument) => {
   const [key, ...parts] = argument.replace(/^--/, '').split('=');
@@ -21,11 +21,26 @@ function parseList(value, pattern, label) {
 }
 
 const allowedDomains = parseList(args['allowed-domains'], /^[a-z0-9.-]+$/, 'allowed-domains');
+const registeredSite = assertPublicHttpsOrigin(args['registered-site'] ?? '', 'registered-site');
+if (registeredSite.toString() !== 'https://tipsforyourgifts.web.app/') {
+  throw new Error('registered-site must match the approved Tips for Your Gifts Firebase production origin');
+}
 const trackingParameterKeys = parseList(args['tracking-parameter-keys'], /^[a-z0-9_-]+$/i, 'tracking-parameter-keys');
+const trackingMethod = args['tracking-method'];
+if (!['query_parameters', 'path_redirect_to_query'].includes(trackingMethod)) throw new Error('tracking-method must be query_parameters or path_redirect_to_query');
+const trackingPathPrefix = args['tracking-path-prefix'] ?? '';
+if (trackingMethod === 'path_redirect_to_query' && !/^\/[a-z0-9-]+\/$/.test(trackingPathPrefix)) throw new Error('path-redirect tracking requires --tracking-path-prefix=/segment/');
+if (trackingMethod === 'query_parameters' && trackingPathPrefix) throw new Error('query-parameter tracking cannot configure a path prefix');
 const termsAcceptedAt = args['terms-accepted-at'];
-if (!termsAcceptedAt || !Number.isFinite(Date.parse(termsAcceptedAt))) throw new Error('terms-accepted-at must be an ISO timestamp');
+const termsAcceptedAtMs = Date.parse(termsAcceptedAt ?? '');
+if (!termsAcceptedAt || !Number.isFinite(termsAcceptedAtMs) || new Date(termsAcceptedAtMs).toISOString() !== termsAcceptedAt) {
+  throw new Error('terms-accepted-at must be a canonical ISO timestamp');
+}
 const evidenceUrl = new URL(args['acceptance-evidence-url'] ?? '');
-if (evidenceUrl.protocol !== 'https:' || evidenceUrl.username || evidenceUrl.password || evidenceUrl.search || evidenceUrl.hash) throw new Error('acceptance-evidence-url must be a credential-free HTTPS URL without query or fragment');
+if (evidenceUrl.protocol !== 'https:' || evidenceUrl.username || evidenceUrl.password || evidenceUrl.search || evidenceUrl.hash ||
+  evidenceUrl.origin !== 'https://github.com' || !/^\/lucasdmoyer\/tipsforyourgifts\/(?:issues|pull)\/[1-9]\d*$/.test(evidenceUrl.pathname)) {
+  throw new Error('acceptance-evidence-url must be a numbered issue or pull request in github.com/lucasdmoyer/tipsforyourgifts');
+}
 if (!['true', 'false'].includes(args['reporting-export-approved'])) throw new Error('reporting-export-approved must be true or false');
 
 const root = process.cwd();
@@ -36,23 +51,26 @@ const program = model.programs.find((entry) => entry.id === programId);
 if (!program) throw new Error(`Unknown affiliate program: ${programId}`);
 if (program.revision !== expectedRevision) throw new Error(`${program.id} is revision ${program.revision}, not expected revision ${expectedRevision}`);
 if (program.status !== 'externally_verified' || program.founderDisposition !== 'approved' || program.enabled) throw new Error(`${program.id} is not a disabled externally verified program`);
+if (program.trackingMethod !== trackingMethod) throw new Error(`${program.id}: tracking-method does not match the externally observed method`);
 
 const now = new Date();
-if (Date.parse(termsAcceptedAt) > now.valueOf()) throw new Error('terms acceptance cannot be recorded in the future');
-if (termsAcceptedAt < program.sourceCheckedAt) throw new Error('terms acceptance must follow the recorded public source review');
+if (termsAcceptedAtMs > now.valueOf()) throw new Error('terms acceptance cannot be recorded in the future');
+if (termsAcceptedAtMs < Date.parse(program.sourceCheckedAt)) throw new Error('terms acceptance must follow the recorded public source review');
 if (program.sourceReviewExpiresAt < now.toISOString().slice(0, 10)) throw new Error('affiliate terms review has expired and must be refreshed before activation');
 
 program.revision += 1;
 program.status = 'enabled';
 program.enabled = true;
 program.allowedDomains = allowedDomains;
-program.registeredSites = ['https://tipsforyourgifts.web.app/'];
+program.registeredSites = [registeredSite.toString()];
+program.trackingMethod = trackingMethod;
+program.trackingPathPrefix = trackingMethod === 'path_redirect_to_query' ? trackingPathPrefix : null;
 program.trackingParameterKeys = trackingParameterKeys;
 program.requiredDisclosure = model.policy.defaultDisclosure;
 program.account = {
   ...program.account,
   termsAcceptedByFounder: true,
-  termsAcceptedAt: new Date(termsAcceptedAt).toISOString(),
+  termsAcceptedAt,
   acceptanceEvidenceReference: evidenceUrl.toString(),
   reportingExportApproved: args['reporting-export-approved'] === 'true'
 };

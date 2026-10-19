@@ -271,7 +271,7 @@ export function buildFounderAgenda(input) {
           ? 'https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/affiliate-program-activate.yml'
           : 'https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/affiliate-program-approval.yml',
         command: readyForActivationReview
-          ? `gh workflow run affiliate-program-activate.yml -f program_id=${affiliatePilot.id} -f expected_revision=${affiliatePilot.revision} -f confirmation=ACTIVATE-${affiliatePilot.id}`
+          ? null
           : `gh workflow run affiliate-program-approval.yml -f program_id=${affiliatePilot.id} -f expected_revision=${affiliatePilot.revision}`
       }
     });
