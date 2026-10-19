@@ -2101,7 +2101,7 @@ export const OPERATIONS: Operations = {
         "horizon": "now",
         "category": "release",
         "title": "Review the first accountable Angular release",
-        "recommendation": "Review publication-set-26510debceb26336 as the first founder-controlled Firebase release candidate.",
+        "recommendation": "Review publication-set-fa182be5685910df as the first founder-controlled Firebase release candidate.",
         "decisionQuestion": "Does this exact content set represent the site you want readers to see first?",
         "rationale": "The research and release machinery cannot create traffic, trust, or revenue while the modern reviewed site remains only a local candidate.",
         "evidence": [
@@ -2225,6 +2225,9 @@ export const OPERATIONS: Operations = {
     "counts": {
       "pendingBundles": 3,
       "founderSafetyReviewsRequired": 3,
+      "founderSafetyClassificationsPending": 0,
+      "founderSafetyApprovalsPending": 3,
+      "founderSafetyApprovalsRecorded": 0,
       "independentReviewsRequired": 3,
       "highRiskClaims": 7
     },
@@ -2254,7 +2257,12 @@ export const OPERATIONS: Operations = {
             ]
           }
         ],
+        "highRiskClaimIds": "claim-makers-board-magnet-boundary",
         "founderSafetyReviewRequired": true,
+        "founderSafetyClassificationRequired": false,
+        "founderSafetyReviewStatus": "approval_required",
+        "founderSafetyApprovalPath": null,
+        "founderSafetyApprovalSha256": null,
         "independentReviewRequired": true,
         "sourcePaths": {
           "run": "research/runs/20260823-fiber-art-pause-269f700c.json",
@@ -2266,7 +2274,7 @@ export const OPERATIONS: Operations = {
           "article": "ec08428c406968b7719359b1d6fc26fff109ecefca5bfa8efc92a0a00b2ea9b4",
           "social": "d72f7f6a657b352a8569640ecce7449950f625b341b4c9e756a063dc5a0ee682"
         },
-        "nextGate": "Lucas reviews the exact high-risk claim language and reader-facing safety boundary; a separate independent editor then issues a new hash-bound receipt."
+        "nextGate": "Lucas reviews the exact high-risk claim language and records a hash-bound founder receipt; this does not approve publication."
       },
       {
         "runId": "20260823-muddy-paw-arrival-e09ff303",
@@ -2326,7 +2334,12 @@ export const OPERATIONS: Operations = {
             ]
           }
         ],
+        "highRiskClaimIds": "claim-mudbuster-fit,claim-mudbuster-drawback,claim-warm-water-boundary,claim-no-force-stop-boundary,claim-owner-resistance-conflict",
         "founderSafetyReviewRequired": true,
+        "founderSafetyClassificationRequired": false,
+        "founderSafetyReviewStatus": "approval_required",
+        "founderSafetyApprovalPath": null,
+        "founderSafetyApprovalSha256": null,
         "independentReviewRequired": true,
         "sourcePaths": {
           "run": "research/runs/20260823-muddy-paw-arrival-e09ff303.json",
@@ -2338,7 +2351,7 @@ export const OPERATIONS: Operations = {
           "article": "2a5a2f877e5cc56cf5d5fad663e983a02794e46f70e859a2fcbdb669bed36ed8",
           "social": "91545c599b5c982e81111bbae224d9947b3f8adc33c19caccdb5e132444dad82"
         },
-        "nextGate": "Lucas reviews the exact high-risk claim language and reader-facing safety boundary; a separate independent editor then issues a new hash-bound receipt."
+        "nextGate": "Lucas reviews the exact high-risk claim language and records a hash-bound founder receipt; this does not approve publication."
       },
       {
         "runId": "20260823-used-record-reset-53a6b604",
@@ -2365,7 +2378,12 @@ export const OPERATIONS: Operations = {
             ]
           }
         ],
+        "highRiskClaimIds": "claim-groovewasher-g2-label-boundary",
         "founderSafetyReviewRequired": true,
+        "founderSafetyClassificationRequired": false,
+        "founderSafetyReviewStatus": "approval_required",
+        "founderSafetyApprovalPath": null,
+        "founderSafetyApprovalSha256": null,
         "independentReviewRequired": true,
         "sourcePaths": {
           "run": "research/runs/20260823-used-record-reset-53a6b604.json",
@@ -2377,7 +2395,7 @@ export const OPERATIONS: Operations = {
           "article": "c15ea7a3362ea193b9cb7fff587e42c750b4216b451aa9e97ee97786fc909f56",
           "social": "fe56464843b6f49fe43406d17df490f6fe74344d7ad26765d8c6659f16ec7637"
         },
-        "nextGate": "Lucas reviews the exact high-risk claim language and reader-facing safety boundary; a separate independent editor then issues a new hash-bound receipt."
+        "nextGate": "Lucas reviews the exact high-risk claim language and records a hash-bound founder receipt; this does not approve publication."
       }
     ]
   },
@@ -5113,8 +5131,8 @@ export const OPERATIONS: Operations = {
     },
     "currentCandidate": {
       "status": "release_candidate",
-      "manifestId": "publication-set-26510debceb26336",
-      "contentSetSha256": "26510debceb26336e7048abc46adedf8b231d4ec980bd3a6634f806db189968b",
+      "manifestId": "publication-set-fa182be5685910df",
+      "contentSetSha256": "fa182be5685910df505806a06da162c3f03d46cda7e88520de8f2a3dd799a9d1",
       "articles": 10,
       "independentReviews": 10,
       "socialLaunchPacks": 9,

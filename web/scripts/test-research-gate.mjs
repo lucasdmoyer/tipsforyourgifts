@@ -19,6 +19,7 @@ async function makeFixture() {
   await fs.mkdir(path.join(fixture, 'scripts', 'lib'), { recursive: true });
   await fs.copyFile(path.join(root, 'scripts', 'validate-research.mjs'), path.join(fixture, 'scripts', 'validate-research.mjs'));
   await fs.copyFile(path.join(root, 'scripts', 'lib', 'front-matter.mjs'), path.join(fixture, 'scripts', 'lib', 'front-matter.mjs'));
+  await fs.copyFile(path.join(root, 'scripts', 'lib', 'founder-safety-review-contract.mjs'), path.join(fixture, 'scripts', 'lib', 'founder-safety-review-contract.mjs'));
   return fixture;
 }
 

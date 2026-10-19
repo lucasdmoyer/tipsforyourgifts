@@ -9,6 +9,8 @@ on:
       - ".firebaserc"
 
 permissions:
+  actions: read
+  attestations: read
   contents: read
 
 concurrency:
@@ -46,6 +48,8 @@ jobs:
     environment: production
     timeout-minutes: 30
     permissions:
+      actions: read
+      attestations: read
       contents: read
       deployments: read
     steps:
@@ -71,6 +75,7 @@ jobs:
           npm run validate
           npm run build
           npm run smoke
+          GITHUB_TOKEN="${{ github.token }}" npm --prefix web run review:safety:verify-provenance -- --manifest=dist/publication-manifest.json
       - name: Deploy the exact artifact to a temporary Firebase channel
         id: preview
         uses: FirebaseExtended/action-hosting-deploy@v0

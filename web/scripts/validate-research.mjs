@@ -4,6 +4,7 @@ import path from 'node:path';
 import process from 'node:process';
 import matter from './lib/front-matter.mjs';
 import { z } from 'zod';
+import { founderSafetyReviewRequired, loadFounderSafetyPolicy, requireFounderSafetyReceipt } from './lib/founder-safety-review-contract.mjs';
 
 const root = process.cwd();
 const runsDir = path.join(root, 'research', 'runs');
@@ -12,6 +13,8 @@ const socialDir = path.join(root, 'social', 'drafts');
 const reviewsDir = path.join(root, 'research', 'reviews');
 const affiliateConfigPath = path.join(root, 'config', 'affiliate-programs.json');
 const strategyPath = path.join(root, 'src', 'data', 'strategy.json');
+const founderSafetyPolicy = await loadFounderSafetyPolicy(root);
+const legacyFounderSafetyRunIds = new Set(founderSafetyPolicy.data.legacyValidatedRunIds);
 
 const isoDate = z.string().regex(/^\d{4}-\d{2}-\d{2}(T.*Z)?$/);
 const sourceSchema = z.object({
@@ -159,7 +162,14 @@ const runSchema = z.object({
     receiptPath: z.string().regex(/^research\/reviews\/[a-z0-9-]+\.qa\.v1\.json$/),
     blockers: z.array(z.string()),
     warnings: z.array(z.string())
-  })
+  }),
+  founderSafetyApproval: z.object({
+    path: z.string().regex(/^research\/founder-safety-reviews\/[a-z0-9-]+\.founder\.v1\.json$/),
+    sha256: z.string().regex(/^[a-f0-9]{64}$/),
+    reviewedAt: z.string().datetime(),
+    workflowRunId: z.string().regex(/^[1-9]\d*$/),
+    sourceCommitSha: z.string().regex(/^[a-f0-9]{40}$/)
+  }).strict().optional()
 });
 
 const reviewReceiptSchema = z.object({
@@ -738,6 +748,16 @@ for (const socialFile of socialFiles) {
   }
 }
 
+for (const legacyRunId of legacyFounderSafetyRunIds) {
+  const run = runsById.get(legacyRunId);
+  if (!run) errors.push(`${legacyRunId}: founder safety legacy exception references a missing run`);
+  else {
+    if (run.status !== 'validated' || !founderSafetyReviewRequired(run)) errors.push(`${legacyRunId}: founder safety legacy exception must identify one validated high-risk run`);
+    if (!run.completedAt || new Date(run.completedAt) >= new Date(founderSafetyPolicy.data.effectiveAt)) errors.push(`${legacyRunId}: founder safety legacy exception must predate policy enforcement`);
+    if (run.founderSafetyApproval) errors.push(`${legacyRunId}: attested approval and legacy exception cannot both be active`);
+  }
+}
+
 for (const run of runsById.values()) {
   if (run.status !== 'validated') continue;
   const receiptPath = path.join(root, run.qa.receiptPath);
@@ -753,6 +773,17 @@ for (const run of runsById.values()) {
   if (receipt.receiptId !== `${run.runId}-qa` || receipt.runId !== run.runId || receipt.articleSlug !== run.article.slug) errors.push(`${run.runId}: QA receipt identity does not match the run`);
   if (receipt.verdict !== 'passed' || receipt.blockers.length > 0) errors.push(`${run.runId}: QA receipt did not pass cleanly`);
   if (receipt.reviewerId !== run.qa.reviewerId || receipt.reviewerId === run.draftAuthor) errors.push(`${run.runId}: QA receipt reviewer separation failed`);
+  const safetyApprovalRequired = founderSafetyReviewRequired(run);
+  const legacySafetyException = legacyFounderSafetyRunIds.has(run.runId);
+  if (safetyApprovalRequired && !run.founderSafetyApproval && !legacySafetyException) errors.push(`${run.runId}: validated high-risk run is missing an attested founder safety approval`);
+  if (run.founderSafetyApproval) {
+    try {
+      const founderSafety = await requireFounderSafetyReceipt(root, run.runId);
+      if (!founderSafety.required) errors.push(`${run.runId}: durable founder safety approval is bound to a run that does not require it`);
+    } catch (error) {
+      errors.push(`${run.runId}: founder safety approval is missing or invalid (${error.message})`);
+    }
+  }
   const currentEvidenceSha256 = evidenceDigest(rawRunsById.get(run.runId));
   if (receipt.evidenceSha256 !== currentEvidenceSha256) {
     errors.push(`${run.runId}: evidence changed after independent review (expected ${receipt.evidenceSha256}, found ${currentEvidenceSha256})`);

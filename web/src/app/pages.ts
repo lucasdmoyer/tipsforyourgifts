@@ -744,15 +744,15 @@ export class AffiliateDisclosurePage {
         <p>Agents can prepare the work. Lucas approves sensitive reader language. A separate editor certifies the exact files. Nothing in this queue can publish itself.</p>
       </div>
       <div class="grid two mission-summary">
-        <div class="panel"><p class="eyebrow">Founder boundary</p><h2>{{ content.operations.editorialReview.counts.founderSafetyReviewsRequired }} safety review{{ content.operations.editorialReview.counts.founderSafetyReviewsRequired === 1 ? '' : 's' }} required.</h2><p>{{ content.operations.editorialReview.counts.highRiskClaims }} high-risk claims are shown below in full, with their source bindings.</p></div>
+        <div class="panel"><p class="eyebrow">Founder boundary</p><h2>{{ content.operations.editorialReview.counts.founderSafetyApprovalsPending }} wording approval{{ content.operations.editorialReview.counts.founderSafetyApprovalsPending === 1 ? '' : 's' }} pending.</h2><p>{{ content.operations.editorialReview.counts.founderSafetyApprovalsRecorded }} recorded · {{ content.operations.editorialReview.counts.founderSafetyClassificationsPending }} need claim classification · {{ content.operations.editorialReview.counts.highRiskClaims }} high-risk claims shown below in full.</p><p><a class="button secondary" href="https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/editorial-founder-safety-review.yml" target="_blank" rel="noopener">Open wording approval workflow</a></p></div>
         <div class="panel"><p class="eyebrow">Independent boundary</p><h2>{{ content.operations.editorialReview.counts.independentReviewsRequired }} fresh review{{ content.operations.editorialReview.counts.independentReviewsRequired === 1 ? '' : 's' }} required.</h2><p>The drafting desk cannot approve its own revisions. Every receipt must bind the exact run, article, and social hashes.</p></div>
       </div>
       @if (content.operations.editorialReview.queue.length > 0) {
         <div class="experiment-grid editorial-review-grid">
           @for (review of content.operations.editorialReview.queue; track review.runId) {
             <article class="experiment-card editorial-review-card">
-              <div class="experiment-header"><p class="eyebrow">{{ review.ideaId }} · {{ review.articleSlug }}</p><span class="status blocked_on_account">{{ displayStatus(review.status) }}</span></div>
-              <h3>{{ review.founderSafetyReviewRequired ? 'Founder language review, then independent QA' : 'Independent QA required' }}</h3>
+              <div class="experiment-header"><p class="eyebrow">{{ review.ideaId }} · {{ review.articleSlug }}</p><span class="status" [class.blocked_on_account]="review.founderSafetyReviewStatus === 'approval_required' || review.founderSafetyReviewStatus === 'classification_required'">{{ displayStatus(review.founderSafetyReviewStatus) }}</span></div>
+              <h3>{{ review.founderSafetyClassificationRequired ? 'Classify the safety claim before founder review' : review.founderSafetyReviewRequired ? 'Founder language review, then independent QA' : 'Independent QA required' }}</h3>
               <p><strong>Blocking decisions:</strong></p><ul>@for (blocker of review.blockers; track blocker) { <li>{{ blocker }}</li> }</ul>
               @if (review.highRiskClaims.length > 0) {
                 <details open><summary>Exact high-risk claims</summary>
@@ -762,6 +762,11 @@ export class AffiliateDisclosurePage {
                 </details>
               }
               <p><strong>Next gate:</strong> {{ review.nextGate }}</p>
+              @if (review.founderSafetyReviewStatus === 'approval_required') {
+                <details><summary>Exact workflow inputs</summary><div class="command">run_id: {{ review.runId }}<br>expected_run_sha256: {{ review.sourceSha256.run }}<br>expected_article_sha256: {{ review.sourceSha256.article }}<br>expected_social_sha256: {{ review.sourceSha256.social ?? '' }}<br>approved_claim_ids: {{ review.highRiskClaimIds }}<br>confirmation: APPROVE-SAFETY-{{ review.runId }}</div></details>
+              } @else if (review.founderSafetyReviewStatus === 'approved') {
+                <details><summary>Immutable founder receipt</summary><div class="command">{{ review.founderSafetyApprovalPath }}<br>sha256: {{ review.founderSafetyApprovalSha256 }}</div></details>
+              }
               <details><summary>Warnings and exact file identity</summary><ul>@for (warning of review.warnings; track warning) { <li>{{ warning }}</li> }</ul><div class="command">run: {{ review.sourcePaths.run }}<br>run sha256: {{ review.sourceSha256.run }}<br>article: {{ review.sourcePaths.article }}<br>article sha256: {{ review.sourceSha256.article }}<br>social: {{ review.sourcePaths.social ?? 'none' }}<br>social sha256: {{ review.sourceSha256.social ?? 'none' }}</div></details>
             </article>
           }

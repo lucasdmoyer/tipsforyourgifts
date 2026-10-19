@@ -174,6 +174,9 @@ export interface Operations {
     counts: {
       pendingBundles: number;
       founderSafetyReviewsRequired: number;
+      founderSafetyClassificationsPending: number;
+      founderSafetyApprovalsPending: number;
+      founderSafetyApprovalsRecorded: number;
       independentReviewsRequired: number;
       highRiskClaims: number;
     };
@@ -186,7 +189,12 @@ export interface Operations {
       blockers: string[];
       warnings: string[];
       highRiskClaims: Array<{ id: string; text: string; sourceIds: string[] }>;
+      highRiskClaimIds: string;
       founderSafetyReviewRequired: boolean;
+      founderSafetyClassificationRequired: boolean;
+      founderSafetyReviewStatus: 'not_required' | 'classification_required' | 'approval_required' | 'approved';
+      founderSafetyApprovalPath: string | null;
+      founderSafetyApprovalSha256: string | null;
       independentReviewRequired: true;
       sourcePaths: { run: string; article: string; social: string | null };
       sourceSha256: { run: string; article: string; social: string | null };

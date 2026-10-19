@@ -19,6 +19,9 @@ expectFailure('visual registry digest cannot drift', (manifest) => { manifest.vi
 expectFailure('visual file digest cannot drift', (manifest) => { manifest.visualPosture.assets[0].sha256 = 'f'.repeat(64); });
 expectFailure('article count cannot drift', (manifest) => { manifest.counts.articles += 1; });
 expectFailure('review count cannot drift', (manifest) => { manifest.counts.independentReviews -= 1; });
+expectFailure('founder safety approval count cannot drift', (manifest) => { manifest.counts.founderSafetyApprovals += 1; });
+expectFailure('legacy founder safety count cannot drift', (manifest) => { manifest.counts.legacyFounderSafetyArticles += 1; });
+expectFailure('founder safety policy digest cannot drift', (manifest) => { manifest.founderSafetyPosture.policySha256 = 'f'.repeat(64); });
 expectFailure('social count cannot drift', (manifest) => { manifest.counts.socialDrafts += 1; });
 expectFailure('mission count cannot drift', (manifest) => { manifest.counts.missionBoundArticles += 1; });
 expectFailure('affiliate count cannot drift', (manifest) => { manifest.affiliatePosture.liveAffiliateLinkCount += 1; });
@@ -29,4 +32,4 @@ expectFailure('article route must bind slug', (manifest) => { manifest.articles[
 expectFailure('duplicate article slug rejected', (manifest) => { manifest.articles[1].articleSlug = manifest.articles[0].articleSlug; manifest.articles[1].route = manifest.articles[0].route; });
 expectFailure('duplicate research run rejected', (manifest) => { manifest.articles[1].researchRunId = manifest.articles[0].researchRunId; });
 expectFailure('unexpected fields rejected', (manifest) => { manifest.unverifiedNote = 'trust me'; });
-console.log(JSON.stringify({ publicationManifestNegativeGateTests: 'passed', checks: 18, articles: base.counts.articles, hashBoundReviews: base.counts.independentReviews, hashBoundVisuals: base.counts.visualAssets, hashBoundAffiliateOverlays: base.counts.affiliateLinks }, null, 2));
+console.log(JSON.stringify({ publicationManifestNegativeGateTests: 'passed', checks: 21, articles: base.counts.articles, hashBoundReviews: base.counts.independentReviews, hashBoundFounderSafetyApprovals: base.counts.founderSafetyApprovals, explicitLegacyFounderSafetyArticles: base.counts.legacyFounderSafetyArticles, hashBoundVisuals: base.counts.visualAssets, hashBoundAffiliateOverlays: base.counts.affiliateLinks }, null, 2));

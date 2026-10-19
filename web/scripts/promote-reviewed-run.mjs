@@ -2,6 +2,7 @@ import fs from 'node:fs/promises';
 import crypto from 'node:crypto';
 import path from 'node:path';
 import process from 'node:process';
+import { requireFounderSafetyReceipt } from './lib/founder-safety-review-contract.mjs';
 
 const runId = process.argv[2];
 if (!runId) throw new Error('Usage: node scripts/promote-reviewed-run.mjs <run-id>');
@@ -11,6 +12,7 @@ const runPath = path.join(root, 'research', 'runs', `${runId}.json`);
 const receiptPath = path.join(root, 'research', 'reviews', `${runId}.qa.v1.json`);
 const run = JSON.parse(await fs.readFile(runPath, 'utf8'));
 const receipt = JSON.parse(await fs.readFile(receiptPath, 'utf8'));
+await requireFounderSafetyReceipt(root, runId);
 if (receipt.verdict !== 'passed' || receipt.blockers.length > 0) throw new Error('Independent review did not pass cleanly');
 if (receipt.runId !== runId || receipt.articleSlug !== run.article.slug) throw new Error('Review receipt identity mismatch');
 if (receipt.reviewerId === run.draftAuthor) throw new Error('Draft author cannot promote their own work');

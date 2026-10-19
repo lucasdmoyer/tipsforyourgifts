@@ -8,6 +8,7 @@ import { affiliateEnrollmentReadinessSchema, buildAffiliateEnrollmentReadiness }
 import { buildEditorialReviewQueue } from './lib/editorial-review-queue-contract.mjs';
 import { buildFounderAgenda } from './lib/founder-agenda-contract.mjs';
 import { loadAffiliateLinkState } from './lib/affiliate-link-contract.mjs';
+import { requireFounderSafetyReceipt } from './lib/founder-safety-review-contract.mjs';
 
 const root = process.cwd();
 const runsDir = path.join(root, 'research', 'runs');
@@ -15,6 +16,7 @@ const missionsDir = path.join(root, 'research', 'missions');
 const opportunityMissionsDir = path.join(root, 'research', 'opportunity-missions');
 const opportunityReportsDir = path.join(root, 'research', 'opportunities');
 const opportunityReviewsDir = path.join(root, 'research', 'opportunity-reviews');
+const founderSafetyReviewsDir = path.join(root, 'research', 'founder-safety-reviews');
 const blogDir = path.join(root, 'src', 'data', 'blog');
 const socialDir = path.join(root, 'social', 'drafts');
 const socialApprovalDir = path.join(root, 'social', 'approvals');
@@ -98,6 +100,19 @@ const livePublication = JSON.parse(await fs.readFile(livePublicationPath, 'utf8'
 const publicationPolicy = JSON.parse(await fs.readFile(publicationPolicyPath, 'utf8'));
 const opportunityPolicy = JSON.parse(await fs.readFile(opportunityPolicyPath, 'utf8'));
 const publicationManifest = JSON.parse(await fs.readFile(publicationManifestPath, 'utf8'));
+let founderSafetyReviewNames = [];
+try { founderSafetyReviewNames = (await fs.readdir(founderSafetyReviewsDir)).filter((name) => name.endsWith('.founder.v1.json')).sort(); } catch {}
+const founderSafetyReviews = await Promise.all(founderSafetyReviewNames.map(async (name) => {
+  const raw = await fs.readFile(path.join(founderSafetyReviewsDir, name), 'utf8');
+  const data = JSON.parse(raw);
+  const verified = await requireFounderSafetyReceipt(root, data.runId);
+  if (verified.path !== `research/founder-safety-reviews/${name}` || verified.sha256 !== createHash('sha256').update(raw).digest('hex')) throw new Error(`${data.runId}: founder safety receipt filename or digest differs from its durable run binding`);
+  return { data: verified.receipt, path: verified.path, sha256: verified.sha256 };
+}));
+const founderSafetyReviewByRun = new Map(founderSafetyReviews.map((record) => [record.data.runId, record]));
+for (const record of runRecords) {
+  if (record.data.founderSafetyApproval && !founderSafetyReviewByRun.has(record.data.runId)) throw new Error(`${record.data.runId}: durable founder safety approval receipt is missing`);
+}
 
 const validatedRuns = runs.filter((run) => run.status === 'validated').length;
 const publicationReadyPosts = articles.filter((article) => article.status === 'publication_ready').length;
@@ -168,7 +183,8 @@ const editorialReviewQueue = buildEditorialReviewQueue(runRecords
       articlePath: `src/data/blog/${articleRecord.name}`,
       articleSha256: articleRecord.sha256,
       socialPath: socialPack ? `social/drafts/${socialPack.name}` : null,
-      socialSha256: socialPack?.sha256 ?? null
+      socialSha256: socialPack?.sha256 ?? null,
+      founderSafetyApproval: founderSafetyReviewByRun.get(record.data.runId) ?? null
     };
   }));
 const socialPublished = socialPublications.length;
@@ -278,6 +294,7 @@ const sourceDates = [
   ...affiliateLinkState.candidates.map((record) => record.data.createdAt),
   ...affiliateLinkState.reviews.map((record) => record.data.reviewedAt),
   ...affiliateLinkState.approvals.map((record) => record.data.approvedAt),
+  ...founderSafetyReviews.map((record) => record.data.reviewedAt),
   ...articles.flatMap((article) => [article.publishDate, article.updatedDate]).filter(Boolean)
 ].map((value) => new Date(value).valueOf()).filter(Number.isFinite);
 const generatedAt = new Date(Math.max(...sourceDates)).toISOString();

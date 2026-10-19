@@ -27,10 +27,16 @@ The release decision is state-derived rather than permanent. A strict post-deplo
 ## State machine
 
 ```text
-idea -> researching -> drafted -> independent QA -> validated -> preview -> founder approval -> production
-          |               |             |             |
-          +---- blocked / qa_failed / rejected <-------+
+idea -> researching -> drafted -> founder safety wording* -> independent QA -> validated -> preview -> founder release approval -> production
+          |                     |                         |             |
+          +---------- blocked / qa_failed / rejected <-----------------+
 ```
+
+`*` Founder safety wording approval is required when the bundle contains one or more explicitly classified high-risk claims. A safety blocker with no high-risk claim is returned to the drafting desk for exact claim text and source classification; Studio never presents an impossible empty approval form. The immutable receipt binds the complete high-risk claim set plus the exact run, article, and social-draft hashes. It approves wording only: it cannot certify evidence, replace independent QA, authorize publication, merge content, or deploy Firebase. Any source or wording change invalidates the receipt and returns the bundle to founder review.
+
+The approval can be created only by the repository owner through the protected `workflow_dispatch` on `master`. GitHub OIDC attests the exact receipt bytes. The run stores a durable receipt binding before independent QA, the publication manifest carries that binding after promotion, and both founder-reviewed and automatic release workflows verify the successful GitHub run plus its byte-level attestation before Firebase authentication. Removing either the receipt or its run binding breaks deterministic validation.
+
+`web/config/founder-safety-policy.json` records the enforcement date and the closed set of already-validated high-risk runs that predate this receipt system. Those legacy exceptions are explicit and hash-bound into the publication manifest; no new run can join the set implicitly. A later attested review must remove the corresponding legacy exception so a run can never claim both postures.
 
 A validated roundup requires at least 12 candidates, five finalists, five source classes, three research passes, two final passes below 10 percent material novelty, supported claims, an editorial score of at least 75, evidence confidence of at least 70, and a clean independent review.
 

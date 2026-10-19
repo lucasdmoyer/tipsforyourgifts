@@ -26,11 +26,31 @@ const fixture = {
 const queue = buildEditorialReviewQueue([fixture]);
 assert.equal(queue.counts.pendingBundles, 1);
 assert.equal(queue.counts.founderSafetyReviewsRequired, 1);
+assert.equal(queue.counts.founderSafetyClassificationsPending, 0);
+assert.equal(queue.counts.founderSafetyApprovalsPending, 1);
+assert.equal(queue.counts.founderSafetyApprovalsRecorded, 0);
 assert.equal(queue.counts.independentReviewsRequired, 1);
 assert.equal(queue.counts.highRiskClaims, 1);
 assert.equal(queue.queue[0].founderSafetyReviewRequired, true);
+assert.equal(queue.queue[0].founderSafetyReviewStatus, 'approval_required');
 assert.equal(queue.queue[0].independentReviewRequired, true);
+assert.equal(queue.queue[0].highRiskClaimIds, 'claim-safety-boundary');
 assert.equal(queue.queue[0].sourceSha256.article, sha('b'));
+
+const approvedQueue = buildEditorialReviewQueue([{ ...fixture, founderSafetyApproval: { path: `research/founder-safety-reviews/${fixture.run.runId}.founder.v1.json`, sha256: sha('d') } }]);
+assert.equal(approvedQueue.counts.founderSafetyApprovalsPending, 0);
+assert.equal(approvedQueue.counts.founderSafetyApprovalsRecorded, 1);
+assert.equal(approvedQueue.queue[0].founderSafetyReviewStatus, 'approved');
+assert.equal(approvedQueue.queue[0].founderSafetyApprovalSha256, sha('d'));
+
+const unclassifiedFixture = structuredClone(fixture);
+unclassifiedFixture.run.claims[0].risk = 'low';
+unclassifiedFixture.run.qa.blockers = ['Safety wording needs exact claim classification before founder review.'];
+const unclassifiedQueue = buildEditorialReviewQueue([unclassifiedFixture]);
+assert.equal(unclassifiedQueue.counts.founderSafetyReviewsRequired, 0);
+assert.equal(unclassifiedQueue.counts.founderSafetyClassificationsPending, 1);
+assert.equal(unclassifiedQueue.queue[0].founderSafetyReviewStatus, 'classification_required');
+assert.equal(unclassifiedQueue.queue[0].highRiskClaimIds, '');
 
 function expectFailure(label, mutate) {
   const candidate = structuredClone(queue);
@@ -43,5 +63,6 @@ expectFailure('high-risk claims cannot bypass founder review', (candidate) => { 
 expectFailure('social path and digest must move together', (candidate) => { candidate.queue[0].sourceSha256.social = null; });
 expectFailure('source identity must use sha256', (candidate) => { candidate.queue[0].sourceSha256.run = 'not-a-digest'; });
 expectFailure('independent review remains mandatory', (candidate) => { candidate.queue[0].independentReviewRequired = false; });
+expectFailure('approval status requires receipt identity', (candidate) => { candidate.queue[0].founderSafetyReviewStatus = 'approved'; });
 
-console.log(JSON.stringify({ editorialReviewQueueGateTests: 'passed', negativeChecks: 5, pendingBundles: queue.counts.pendingBundles, highRiskClaims: queue.counts.highRiskClaims }, null, 2));
+console.log(JSON.stringify({ editorialReviewQueueGateTests: 'passed', negativeChecks: 6, pendingBundles: queue.counts.pendingBundles, highRiskClaims: queue.counts.highRiskClaims, founderSafetyApprovalsPending: queue.counts.founderSafetyApprovalsPending, approvedReceiptTransition: 'passed', unclassifiedSafetyBlockerTransition: 'passed' }, null, 2));

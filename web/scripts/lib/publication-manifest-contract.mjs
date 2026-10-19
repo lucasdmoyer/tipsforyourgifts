@@ -4,6 +4,7 @@ import path from 'node:path';
 import matter from './front-matter.mjs';
 import { z } from 'zod';
 import { loadAffiliateLinkState } from './affiliate-link-contract.mjs';
+import { founderSafetyReviewRequired, loadFounderSafetyPolicy, requireFounderSafetyReceipt } from './founder-safety-review-contract.mjs';
 
 const sha256Schema = z.string().regex(/^[a-f0-9]{64}$/);
 const slugSchema = z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/);
@@ -55,6 +56,15 @@ const articleEntrySchema = z.object({
   independentReviewPath: z.string().regex(/^research\/reviews\/\d{8}-[a-z0-9-]+-[a-f0-9]{8}\.qa\.v1\.json$/),
   independentReviewSha256: sha256Schema,
   reviewedEvidenceSha256: sha256Schema,
+  founderSafetyApproval: z.object({
+    path: z.string().regex(/^research\/founder-safety-reviews\/\d{8}-[a-z0-9-]+-[a-f0-9]{8}\.founder\.v1\.json$/),
+    sha256: sha256Schema,
+    reviewedAt: z.string().datetime(),
+    workflowRunId: z.string().regex(/^[1-9]\d*$/),
+    runAttempt: z.string().regex(/^[1-9]\d*$/),
+    sourceCommitSha: z.string().regex(/^[a-f0-9]{40}$/)
+  }).strict().nullable(),
+  founderSafetyStatus: z.enum(['not_required', 'legacy_pre_receipt', 'receipt_attested']),
   mission: missionSchema.nullable(),
   socialPack: socialPackSchema.nullable(),
   editorialScore: z.number().min(75).max(100),
@@ -78,7 +88,7 @@ const articleEntrySchema = z.object({
 }).strict();
 
 export const publicationManifestSchema = z.object({
-  schemaVersion: z.literal('1.2.0'),
+  schemaVersion: z.literal('1.3.0'),
   manifestId: z.string().regex(/^publication-set-[a-f0-9]{16}$/),
   generatedAt: z.string().datetime(),
   status: z.literal('release_candidate'),
@@ -90,12 +100,22 @@ export const publicationManifestSchema = z.object({
     articles: z.number().int().positive(),
     researchRuns: z.number().int().positive(),
     independentReviews: z.number().int().positive(),
+    founderSafetyApprovals: z.number().int().nonnegative(),
+    legacyFounderSafetyArticles: z.number().int().nonnegative(),
     socialLaunchPacks: z.number().int().nonnegative(),
     socialDrafts: z.number().int().nonnegative(),
     missionBoundArticles: z.number().int().nonnegative(),
     preMissionValidatedArticles: z.number().int().nonnegative(),
     affiliateLinks: z.number().int().nonnegative(),
     visualAssets: z.number().int().positive()
+  }).strict(),
+  founderSafetyPosture: z.object({
+    policyPath: z.literal('config/founder-safety-policy.json'),
+    policySha256: sha256Schema,
+    effectiveAt: z.string().datetime(),
+    oidcReceiptAttestationRequired: z.literal(true),
+    releaseProvenanceVerificationRequired: z.literal(true),
+    legacyValidatedRunIds: z.array(runIdSchema)
   }).strict(),
   visualPosture: z.object({
     styleVersion: z.literal('gift-thread-editorial-cartoon-v1.0'),
@@ -125,6 +145,8 @@ export const publicationManifestSchema = z.object({
   let socialDrafts = 0;
   let missionBound = 0;
   let affiliateLinks = 0;
+  let founderSafetyApprovals = 0;
+  let legacyFounderSafetyArticles = 0;
   for (const [index, article] of manifest.articles.entries()) {
     if (slugs.has(article.articleSlug)) context.addIssue({ code: z.ZodIssueCode.custom, path: ['articles', index, 'articleSlug'], message: 'article slugs must be unique' });
     if (runIds.has(article.researchRunId)) context.addIssue({ code: z.ZodIssueCode.custom, path: ['articles', index, 'researchRunId'], message: 'research runs must map to exactly one article' });
@@ -132,6 +154,9 @@ export const publicationManifestSchema = z.object({
     runIds.add(article.researchRunId);
     if (article.route !== `/blog/${article.articleSlug}`) context.addIssue({ code: z.ZodIssueCode.custom, path: ['articles', index, 'route'], message: 'article route must match slug' });
     if (article.mission) missionBound += 1;
+    if (article.founderSafetyApproval) founderSafetyApprovals += 1;
+    if (article.founderSafetyStatus === 'legacy_pre_receipt') legacyFounderSafetyArticles += 1;
+    if ((article.founderSafetyStatus === 'receipt_attested') !== (article.founderSafetyApproval !== null)) context.addIssue({ code: z.ZodIssueCode.custom, path: ['articles', index, 'founderSafetyStatus'], message: 'attested status and founder receipt must be present together' });
     if (article.socialPack) {
       socialPacks += 1;
       socialDrafts += article.socialPack.postCount;
@@ -144,6 +169,8 @@ export const publicationManifestSchema = z.object({
     articles: manifest.articles.length,
     researchRuns: runIds.size,
     independentReviews: manifest.articles.length,
+    founderSafetyApprovals,
+    legacyFounderSafetyArticles,
     socialLaunchPacks: socialPacks,
     socialDrafts,
     missionBoundArticles: missionBound,
@@ -161,7 +188,8 @@ export const publicationManifestSchema = z.object({
   if (publishedVisualIds.size !== usedVisualIds.size || [...usedVisualIds].some((id) => !publishedVisualIds.has(id))) context.addIssue({ code: z.ZodIssueCode.custom, path: ['visualPosture', 'assets'], message: 'visual posture must bind every and only released article asset' });
   const overlayEntries = manifest.articles.flatMap((article) => article.affiliateLinks.map((link) => ({ articleSlug: article.articleSlug, ...link })));
   if (manifest.affiliatePosture.approvedOverlaySetSha256 !== canonicalSha256(overlayEntries)) context.addIssue({ code: z.ZodIssueCode.custom, path: ['affiliatePosture', 'approvedOverlaySetSha256'], message: 'approved overlay digest must bind all paid-link approval records' });
-  const expectedContentSetSha256 = canonicalSha256({ articles: manifest.articles, affiliatePosture: manifest.affiliatePosture, visualPosture: manifest.visualPosture });
+  if (new Set(manifest.founderSafetyPosture.legacyValidatedRunIds).size !== manifest.founderSafetyPosture.legacyValidatedRunIds.length) context.addIssue({ code: z.ZodIssueCode.custom, path: ['founderSafetyPosture', 'legacyValidatedRunIds'], message: 'legacy run IDs must be unique' });
+  const expectedContentSetSha256 = canonicalSha256({ articles: manifest.articles, affiliatePosture: manifest.affiliatePosture, visualPosture: manifest.visualPosture, founderSafetyPosture: manifest.founderSafetyPosture });
   if (manifest.contentSetSha256 !== expectedContentSetSha256) context.addIssue({ code: z.ZodIssueCode.custom, path: ['contentSetSha256'], message: 'content set SHA-256 must bind the canonical article and affiliate posture' });
   if (manifest.manifestId !== `publication-set-${manifest.contentSetSha256.slice(0, 16)}`) context.addIssue({ code: z.ZodIssueCode.custom, path: ['manifestId'], message: 'manifest ID must bind the content set SHA-256' });
 });
@@ -204,6 +232,8 @@ function reviewedArticleSha256(raw) {
 
 export async function buildPublicationManifest(root) {
   const affiliateLinkState = await loadAffiliateLinkState(root);
+  const founderSafetyPolicy = await loadFounderSafetyPolicy(root);
+  const legacyFounderSafetyRunIds = new Set(founderSafetyPolicy.data.legacyValidatedRunIds);
   const visualRegistryRaw = await fs.readFile(path.join(root, 'visuals', 'article-visuals.json'));
   const visualRegistry = JSON.parse(visualRegistryRaw.toString('utf8'));
   if (visualRegistry.status !== 'founder_approved' || visualRegistry.styleVersion !== 'gift-thread-editorial-cartoon-v1.0' || visualRegistry.generator !== 'openai-built-in-imagegen' || visualRegistry.rightsPosture !== 'founder-approved-original-ai-generated') throw new Error('Visual registry is not in the approved Gift-Thread release posture');
@@ -216,6 +246,12 @@ export async function buildPublicationManifest(root) {
   const runById = new Map(runRecords.map((record) => [record.data.runId, record]));
   const reviewByPath = new Map(reviewRecords.map((record) => [`research/reviews/${record.name}`, record]));
   const socialByRun = new Map(socialRecords.map((record) => [record.data.researchRun, record]));
+  for (const legacyRunId of legacyFounderSafetyRunIds) {
+    const run = runById.get(legacyRunId)?.data;
+    if (!run || run.status !== 'validated' || !founderSafetyReviewRequired(run)) throw new Error(`${legacyRunId}: founder safety legacy exception must identify one validated high-risk run`);
+    if (!run.completedAt || new Date(run.completedAt) >= new Date(founderSafetyPolicy.data.effectiveAt)) throw new Error(`${legacyRunId}: founder safety legacy exception must predate policy enforcement`);
+    if (run.founderSafetyApproval) throw new Error(`${legacyRunId}: attested approval and legacy exception cannot both be active`);
+  }
   const missionByRun = new Map();
   for (const record of missionRecords) {
     if (record.data.status !== 'completed' || !record.data.completion) continue;
@@ -257,6 +293,10 @@ export async function buildPublicationManifest(root) {
     const articleSha = sha256(articleRaw);
     const runSha = sha256(run.raw);
     const reviewSha = sha256(review.raw);
+    const safetyApprovalRequired = founderSafetyReviewRequired(run.data);
+    const legacyFounderSafety = legacyFounderSafetyRunIds.has(run.data.runId);
+    if (safetyApprovalRequired && !run.data.founderSafetyApproval && !legacyFounderSafety) throw new Error(`${slug}: validated high-risk run is missing an attested founder safety approval`);
+    const founderSafety = run.data.founderSafetyApproval ? await requireFounderSafetyReceipt(root, run.data.runId) : null;
     if (mission) {
       const completion = mission.data.completion;
       if (completion.runSha256 !== runSha || completion.articleSha256 !== articleSha || completion.reviewReceiptSha256 !== reviewSha || completion.reviewReceiptPath !== reviewPath || completion.articleSlug !== slug) throw new Error(`${slug}: completed mission hashes differ from release artifacts`);
@@ -289,7 +329,7 @@ export async function buildPublicationManifest(root) {
       if (!sourceProduct) throw new Error(`${slug}: approved affiliate overlay targets an unknown product ${overlay.productId}`);
     }
     const updatedAt = new Date(parsed.data.updatedDate ?? parsed.data.publishDate).toISOString();
-    dates.push(updatedAt, run.data.completedAt, review.data.reviewedAt, social?.data.createdAt, mission?.data.completedAt);
+    dates.push(updatedAt, run.data.completedAt, review.data.reviewedAt, founderSafety?.receipt.reviewedAt, social?.data.createdAt, mission?.data.completedAt);
     articles.push({
       articleSlug: slug,
       title: parsed.data.title,
@@ -304,6 +344,15 @@ export async function buildPublicationManifest(root) {
       independentReviewPath: reviewPath,
       independentReviewSha256: reviewSha,
       reviewedEvidenceSha256: review.data.evidenceSha256,
+      founderSafetyApproval: founderSafety ? {
+        path: founderSafety.path,
+        sha256: founderSafety.sha256,
+        reviewedAt: founderSafety.receipt.reviewedAt,
+        workflowRunId: founderSafety.receipt.workflowRunId,
+        runAttempt: founderSafety.receipt.provenance.runAttempt,
+        sourceCommitSha: founderSafety.receipt.provenance.sourceCommitSha
+      } : null,
+      founderSafetyStatus: founderSafety ? 'receipt_attested' : legacyFounderSafety ? 'legacy_pre_receipt' : 'not_required',
       mission: mission ? {
         missionId: mission.data.missionId,
         path: `research/missions/${mission.name}`,
@@ -376,9 +425,17 @@ export async function buildPublicationManifest(root) {
     rightsPosture: visualRegistry.rightsPosture,
     assets: publishedVisualAssets
   };
-  const contentSetSha256 = canonicalSha256({ articles, affiliatePosture, visualPosture });
+  const founderSafetyPosture = {
+    policyPath: founderSafetyPolicy.path,
+    policySha256: founderSafetyPolicy.sha256,
+    effectiveAt: founderSafetyPolicy.data.effectiveAt,
+    oidcReceiptAttestationRequired: founderSafetyPolicy.data.oidcReceiptAttestationRequired,
+    releaseProvenanceVerificationRequired: founderSafetyPolicy.data.releaseProvenanceVerificationRequired,
+    legacyValidatedRunIds: [...legacyFounderSafetyRunIds].sort()
+  };
+  const contentSetSha256 = canonicalSha256({ articles, affiliatePosture, visualPosture, founderSafetyPosture });
   const manifest = {
-    schemaVersion: '1.2.0',
+    schemaVersion: '1.3.0',
     manifestId: `publication-set-${contentSetSha256.slice(0, 16)}`,
     generatedAt: new Date(Math.max(...dates.filter(Boolean).map((value) => new Date(value).valueOf()))).toISOString(),
     status: 'release_candidate',
@@ -390,6 +447,8 @@ export async function buildPublicationManifest(root) {
       articles: articles.length,
       researchRuns: articles.length,
       independentReviews: articles.length,
+      founderSafetyApprovals: articles.filter((article) => article.founderSafetyApproval).length,
+      legacyFounderSafetyArticles: articles.filter((article) => article.founderSafetyStatus === 'legacy_pre_receipt').length,
       socialLaunchPacks: articles.filter((article) => article.socialPack).length,
       socialDrafts: articles.reduce((sum, article) => sum + (article.socialPack?.postCount ?? 0), 0),
       missionBoundArticles: articles.filter((article) => article.mission).length,
@@ -398,6 +457,7 @@ export async function buildPublicationManifest(root) {
       visualAssets: publishedVisualAssets.length
     },
     visualPosture,
+    founderSafetyPosture,
     affiliatePosture,
     articles
   };

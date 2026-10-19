@@ -9,6 +9,8 @@ on:
         type: string
 
 permissions:
+  actions: read
+  attestations: read
   contents: read
   deployments: read
   id-token: write
@@ -56,6 +58,7 @@ jobs:
           npm run validate
           npm run build
           npm run smoke
+          GITHUB_TOKEN="${{ github.token }}" npm --prefix web run review:safety:verify-provenance -- --manifest=dist/publication-manifest.json
       - id: google_auth
         name: Mint short-lived Google credentials for the exact production workflow
         uses: google-github-actions/auth@v3
