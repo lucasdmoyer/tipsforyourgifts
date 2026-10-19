@@ -1,0 +1,13 @@
+{
+  "schemaVersion": "1.0.0",
+  "effectiveAt": "2026-10-19T00:00:00.000Z",
+  "repository": "lucasdmoyer/tipsforyourgifts",
+  "workflowRef": "lucasdmoyer/tipsforyourgifts/.github/workflows/editorial-founder-safety-review.yml@refs/heads/master",
+  "oidcReceiptAttestationRequired": true,
+  "releaseProvenanceVerificationRequired": true,
+  "legacyValidatedRunIds": [
+    "20260802-editorial-standard-6a5ce1b9",
+    "20260816-one-photo-one-story-4cf6dd3f",
+    "20260816-read-a-scene-say-it-aloud-c92b2f7e"
+  ]
+}

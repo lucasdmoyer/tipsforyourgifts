@@ -2,6 +2,7 @@ import fs from 'node:fs/promises';
 import crypto from 'node:crypto';
 import path from 'node:path';
 import process from 'node:process';
+import { requireFounderSafetyReceipt } from './lib/founder-safety-review-contract.mjs';
 
 const args = Object.fromEntries(process.argv.slice(2).map((value) => {
   const [key, ...rest] = value.replace(/^--/, '').split('=');
@@ -18,6 +19,7 @@ const root = process.cwd();
 const runPath = path.join(root, 'research', 'runs', `${runId}.json`);
 const run = JSON.parse(await fs.readFile(runPath, 'utf8'));
 if (run.draftAuthor === reviewerId) throw new Error('The independent reviewer cannot be the draft author');
+if (verdict === 'passed') await requireFounderSafetyReceipt(root, runId);
 const sha256 = (value) => crypto.createHash('sha256').update(value).digest('hex');
 const reviewable = structuredClone(run);
 delete reviewable.qa;

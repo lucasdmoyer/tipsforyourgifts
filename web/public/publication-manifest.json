@@ -1,22 +1,36 @@
 {
-  "schemaVersion": "1.2.0",
-  "manifestId": "publication-set-26510debceb26336",
+  "schemaVersion": "1.3.0",
+  "manifestId": "publication-set-fa182be5685910df",
   "generatedAt": "2026-10-19T00:14:05.812Z",
   "status": "release_candidate",
   "projectId": "tipsforyourgifts",
   "siteId": "tipsforyourgifts",
   "publicBaseUrl": "https://tipsforyourgifts.web.app",
-  "contentSetSha256": "26510debceb26336e7048abc46adedf8b231d4ec980bd3a6634f806db189968b",
+  "contentSetSha256": "fa182be5685910df505806a06da162c3f03d46cda7e88520de8f2a3dd799a9d1",
   "counts": {
     "articles": 10,
     "researchRuns": 10,
     "independentReviews": 10,
+    "founderSafetyApprovals": 0,
+    "legacyFounderSafetyArticles": 3,
     "socialLaunchPacks": 9,
     "socialDrafts": 60,
     "missionBoundArticles": 0,
     "preMissionValidatedArticles": 10,
     "affiliateLinks": 0,
     "visualAssets": 19
+  },
+  "founderSafetyPosture": {
+    "policyPath": "config/founder-safety-policy.json",
+    "policySha256": "206d3a2800d5438281b70271fd02be9ce45f1dcb36c6cdfc09e275616b0d5a58",
+    "effectiveAt": "2026-10-19T00:00:00.000Z",
+    "oidcReceiptAttestationRequired": true,
+    "releaseProvenanceVerificationRequired": true,
+    "legacyValidatedRunIds": [
+      "20260802-editorial-standard-6a5ce1b9",
+      "20260816-one-photo-one-story-4cf6dd3f",
+      "20260816-read-a-scene-say-it-aloud-c92b2f7e"
+    ]
   },
   "visualPosture": {
     "styleVersion": "gift-thread-editorial-cartoon-v1.0",
@@ -149,6 +163,8 @@
       "independentReviewPath": "research/reviews/20260803-gifts-for-golf-friend-53cb00a5.qa.v1.json",
       "independentReviewSha256": "c903f92019cf3f951d2e816ba3cd602baebcb6f109c425dae7f09d6e175e532e",
       "reviewedEvidenceSha256": "fb90be30adba2972f9d5543e99e33f0cc633de4844b0ef334a06873a166639b9",
+      "founderSafetyApproval": null,
+      "founderSafetyStatus": "not_required",
       "mission": null,
       "socialPack": {
         "packId": "gifts-for-a-golf-friend-launch",
@@ -192,6 +208,8 @@
       "independentReviewPath": "research/reviews/20260802-editorial-standard-6a5ce1b9.qa.v1.json",
       "independentReviewSha256": "23728f042b9762138c84dbaf64766d33a79a172b94100a13561ddcc3e0aaa763",
       "reviewedEvidenceSha256": "f871ef023df1df7b801e71b3b0603a2feb0aa26558548d736ab3dfe67f949ad1",
+      "founderSafetyApproval": null,
+      "founderSafetyStatus": "legacy_pre_receipt",
       "mission": null,
       "socialPack": null,
       "editorialScore": 94,
@@ -229,6 +247,8 @@
       "independentReviewPath": "research/reviews/20260816-read-a-scene-say-it-aloud-c92b2f7e.qa.v1.json",
       "independentReviewSha256": "838c08254b2d07e1ba16020749b03e399ab2536cdcdd722b72a9b0c79a2065ef",
       "reviewedEvidenceSha256": "f5a9c18606efc84f5519207408cfe9eff5da1056497e686bb207b63bc3fa142b",
+      "founderSafetyApproval": null,
+      "founderSafetyStatus": "legacy_pre_receipt",
       "mission": null,
       "socialPack": {
         "packId": "language-learning-gifts-read-a-scene-say-it-aloud-launch",
@@ -272,6 +292,8 @@
       "independentReviewPath": "research/reviews/20260816-miniature-painting-recipe-pairs-08892218.qa.v1.json",
       "independentReviewSha256": "c567d842102d1624c327bc1d9e731790511a1d83f0d15352f2e4bb0f631ce55b",
       "reviewedEvidenceSha256": "b8e70258603646368248facc20c70cc87f532640a834a3fea9710cc56ed52ea6",
+      "founderSafetyApproval": null,
+      "founderSafetyStatus": "not_required",
       "mission": null,
       "socialPack": {
         "packId": "miniature-painting-wet-palette-recipe-pairs-launch",
@@ -315,6 +337,8 @@
       "independentReviewPath": "research/reviews/20260816-neighborhood-tree-walk-b8a44f32.qa.v1.json",
       "independentReviewSha256": "17832e5d8d59d341517369e358c60fe47fdcd7a7f0079118227d863122359e8b",
       "reviewedEvidenceSha256": "a47f496a769999593ef100f2450cd4a398a61b11289f9826958a5b8ac56a92a0",
+      "founderSafetyApproval": null,
+      "founderSafetyStatus": "not_required",
       "mission": null,
       "socialPack": {
         "packId": "neighborhood-tree-walk-field-guide-loupe-gift-pairs-launch",
@@ -358,6 +382,8 @@
       "independentReviewPath": "research/reviews/20260816-night-sky-ritual-a5594a7b.qa.v1.json",
       "independentReviewSha256": "3242bc1768b7de70dc9267ec00ef87337906723ca473dc791a2a891ce394fd62",
       "reviewedEvidenceSha256": "0280028eac7052bef7ccba74e2dbc39f467a3c99c6ff3b5eb30198108854c550",
+      "founderSafetyApproval": null,
+      "founderSafetyStatus": "not_required",
       "mission": null,
       "socialPack": {
         "packId": "night-sky-planisphere-red-light-gift-pairs-launch",
@@ -401,6 +427,8 @@
       "independentReviewPath": "research/reviews/20260816-one-photo-one-story-4cf6dd3f.qa.v1.json",
       "independentReviewSha256": "420c67c8f03617eea7a8550dee862b02e85e6db91bc7b13ade09eff3a081435f",
       "reviewedEvidenceSha256": "18e02e52b438cf3a9ca8fbad47cbcd85e8f771df06c9009d79129d6c270013ac",
+      "founderSafetyApproval": null,
+      "founderSafetyStatus": "legacy_pre_receipt",
       "mission": null,
       "socialPack": {
         "packId": "one-photo-one-story-gift-pairs-launch",
@@ -444,6 +472,8 @@
       "independentReviewPath": "research/reviews/20260816-puzzle-start-store-a30ab01a.qa.v1.json",
       "independentReviewSha256": "ae2bb02ca796d5cf396f756391dc04fadfc772a693ca0e354126bc3aec0ecb03",
       "reviewedEvidenceSha256": "ddf1ba5c8fff832c606be278579ea3d43feaf7db91c0ac8efaeead70b62a898c",
+      "founderSafetyApproval": null,
+      "founderSafetyStatus": "not_required",
       "mission": null,
       "socialPack": {
         "packId": "puzzle-board-sorting-tray-gift-pairs-launch",
@@ -487,6 +517,8 @@
       "independentReviewPath": "research/reviews/20261018-read-it-then-play-it-c437f208.qa.v1.json",
       "independentReviewSha256": "50f9adf5cd650ae9d63ca4818d46f813a365bf0ada48edc64391712fa4bda070",
       "reviewedEvidenceSha256": "f12d4375585d9f8101f461eb996955b01b9e03118602baed20bd420e84dffcf5",
+      "founderSafetyApproval": null,
+      "founderSafetyStatus": "not_required",
       "mission": null,
       "socialPack": {
         "packId": "read-it-then-play-it-gift-pairs-launch",
@@ -539,6 +571,8 @@
       "independentReviewPath": "research/reviews/20260803-useful-gifts-hard-to-shop-for-adults-ceca335c.qa.v1.json",
       "independentReviewSha256": "3e376c10f43bf56aae09ed9ccc456b92d40bcf565858b9e8437570f604b90e27",
       "reviewedEvidenceSha256": "d2e2ab1623ab6cb3e7d50a158886b949b180a3ae2cdd793d1bd1a2de1a393bf8",
+      "founderSafetyApproval": null,
+      "founderSafetyStatus": "not_required",
       "mission": null,
       "socialPack": {
         "packId": "useful-gifts-for-hard-to-shop-for-adults-launch",

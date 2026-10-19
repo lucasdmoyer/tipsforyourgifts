@@ -1,0 +1,132 @@
+name: Record founder safety wording approval
+
+on:
+  workflow_dispatch:
+    inputs:
+      run_id:
+        description: "Exact research run ID visible in Studio"
+        required: true
+        type: string
+      expected_run_sha256:
+        description: "Exact research-run SHA-256 visible in Studio"
+        required: true
+        type: string
+      expected_article_sha256:
+        description: "Exact article SHA-256 visible in Studio"
+        required: true
+        type: string
+      expected_social_sha256:
+        description: "Exact social-draft SHA-256 visible in Studio; leave empty only when Studio says none"
+        required: false
+        type: string
+      approved_claim_ids:
+        description: "Every high-risk claim ID shown in Studio, comma separated"
+        required: true
+        type: string
+      confirmation:
+        description: "Type APPROVE-SAFETY- followed by the exact run ID"
+        required: true
+        type: string
+
+permissions:
+  attestations: write
+  contents: write
+  id-token: write
+  pull-requests: write
+
+concurrency:
+  group: editorial-founder-safety-${{ inputs.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  record:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    environment: editorial-founder-safety
+    steps:
+      - name: Require repository-owner action-time decision
+        env:
+          ACTOR: ${{ github.actor }}
+          OWNER: ${{ github.repository_owner }}
+          RUN_ID: ${{ inputs.run_id }}
+          CONFIRMATION: ${{ inputs.confirmation }}
+        run: |
+          test "$ACTOR" = "$OWNER" || { echo "Only the repository owner may approve reader-facing safety wording." >&2; exit 1; }
+          [[ "$RUN_ID" =~ ^[0-9]{8}-[a-z0-9-]+-[a-f0-9]{8}$ ]] || { echo "Invalid research run ID." >&2; exit 1; }
+          test "$CONFIRMATION" = "APPROVE-SAFETY-$RUN_ID" || { echo "Action-time confirmation does not match the exact research run." >&2; exit 1; }
+      - uses: actions/checkout@v5
+        with:
+          ref: master
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24.14.0"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - name: Record the immutable wording-only receipt
+        env:
+          RUN_ID: ${{ inputs.run_id }}
+          EXPECTED_RUN_SHA256: ${{ inputs.expected_run_sha256 }}
+          EXPECTED_ARTICLE_SHA256: ${{ inputs.expected_article_sha256 }}
+          EXPECTED_SOCIAL_SHA256: ${{ inputs.expected_social_sha256 }}
+          APPROVED_CLAIM_IDS: ${{ inputs.approved_claim_ids }}
+          CONFIRMATION: ${{ inputs.confirmation }}
+        working-directory: web
+        run: |
+          npm ci
+          npm run validate
+          test -z "$(git status --short)" || { echo "Trusted master is not generation-clean before founder approval." >&2; git status --short >&2; exit 1; }
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA" || { echo "Workflow checkout does not match the dispatched master commit." >&2; exit 1; }
+          npm run review:safety:approve -- \
+            --run-id="$RUN_ID" \
+            --expected-run-sha256="$EXPECTED_RUN_SHA256" \
+            --expected-article-sha256="$EXPECTED_ARTICLE_SHA256" \
+            --expected-social-sha256="$EXPECTED_SOCIAL_SHA256" \
+            --approved-claim-ids="$APPROVED_CLAIM_IDS" \
+            --confirmation="$CONFIRMATION"
+          npm run generate
+      - name: Prove the receipt cannot review, publish, or deploy
+        env:
+          RUN_ID: ${{ inputs.run_id }}
+        run: |
+          test -f "web/research/founder-safety-reviews/$RUN_ID.founder.v1.json"
+          while IFS= read -r changed_path; do
+            case "$changed_path" in
+              web/research/runs/"$RUN_ID".json|web/research/founder-safety-reviews/"$RUN_ID".founder.v1.json|web/src/data/operations.json|web/src/app/generated/content.generated.ts) ;;
+              *) echo "Founder safety approval changed forbidden path: $changed_path" >&2; exit 1 ;;
+            esac
+          done < <(git status --short | cut -c4-)
+          test -z "$(git status --short web/research/reviews)" || { echo "Founder approval cannot create or change an independent review receipt." >&2; exit 1; }
+          test -z "$(git status --short web/publication-receipts web/config/live-publication.json)" || { echo "Founder approval cannot authorize publication or deployment." >&2; exit 1; }
+          npm run validate
+          npm run build
+          npm run smoke
+          git diff --check
+      - name: Attest the exact founder receipt bytes with GitHub OIDC
+        uses: actions/attest-build-provenance@v3
+        with:
+          subject-path: web/research/founder-safety-reviews/${{ inputs.run_id }}.founder.v1.json
+      - name: Commit the founder-controlled receipt branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ACTION_RUN_ID: ${{ github.run_id }}
+          RESEARCH_RUN_ID: ${{ inputs.run_id }}
+        run: |
+          gh auth setup-git
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -c "codex/founder-safety-$ACTION_RUN_ID"
+          git add "web/research/runs/$RESEARCH_RUN_ID.json" "web/research/founder-safety-reviews/$RESEARCH_RUN_ID.founder.v1.json" web/src/data/operations.json web/src/app/generated/content.generated.ts
+          git commit -m "Approve exact safety wording for $RESEARCH_RUN_ID"
+          git push origin "codex/founder-safety-$ACTION_RUN_ID"
+      - name: Open the wording-approval pull request
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ACTION_RUN_ID: ${{ github.run_id }}
+          RESEARCH_RUN_ID: ${{ inputs.run_id }}
+        run: |
+          gh pr create \
+            --base master \
+            --head "codex/founder-safety-$ACTION_RUN_ID" \
+            --title "Approve exact safety wording for $RESEARCH_RUN_ID" \
+            --body "This immutable founder receipt approves only the exact high-risk claim wording and source hashes shown in Studio. It does not certify the evidence, replace independent editorial review, authorize publication, merge content, or deploy Firebase. Any wording or source drift invalidates the receipt."

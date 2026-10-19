@@ -304,7 +304,8 @@ describe('App', () => {
     const editorial = OPERATIONS.editorialReview;
     expect(element.textContent).toContain('Editorial decision queue');
     expect(element.textContent).toContain(`${editorial.counts.pendingBundles} exact bundle`);
-    expect(element.textContent).toContain(`${editorial.counts.founderSafetyReviewsRequired} safety review`);
+    expect(element.textContent).toContain(`${editorial.counts.founderSafetyApprovalsPending} wording approval`);
+    expect(element.textContent).toContain(`${editorial.counts.founderSafetyApprovalsRecorded} recorded`);
     expect(element.textContent).toContain(`${editorial.counts.independentReviewsRequired} fresh review`);
     expect(element.textContent).toContain('Nothing in this queue can publish itself.');
     expect(element.querySelectorAll('.editorial-review-card')).toHaveLength(editorial.queue.length);
