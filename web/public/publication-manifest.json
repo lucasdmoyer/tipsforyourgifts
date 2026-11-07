@@ -1,12 +1,12 @@
 {
   "schemaVersion": "1.2.0",
-  "manifestId": "publication-set-1eec9a99c189c31c",
-  "generatedAt": "2026-10-19T00:14:05.812Z",
+  "manifestId": "publication-set-4bcf0b8c125e611d",
+  "generatedAt": "2026-11-07T23:35:17.025Z",
   "status": "release_candidate",
   "projectId": "tipsforyourgifts",
   "siteId": "tipsforyourgifts",
   "publicBaseUrl": "https://tipsforyourgifts.web.app",
-  "contentSetSha256": "1eec9a99c189c31ccf7d8b8be88029f0de8bba66df767f0c13670a3e73cc3b6c",
+  "contentSetSha256": "4bcf0b8c125e611d4c544ebb96915173c5102594029402dd231a17e04b7f2b0a",
   "counts": {
     "articles": 10,
     "researchRuns": 10,
@@ -130,7 +130,7 @@
       "bookshop-org-us-media"
     ],
     "enabledProgramCount": 1,
-    "candidateCount": 0,
+    "candidateCount": 1,
     "passedReviewCount": 0,
     "founderApprovalCount": 0,
     "liveAffiliateLinkCount": 0,
