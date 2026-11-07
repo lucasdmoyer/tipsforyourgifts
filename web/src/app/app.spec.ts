@@ -373,6 +373,18 @@ describe('App', () => {
     expect(element.textContent).toContain(OPERATIONS.affiliate.siteApplicationDescription);
     expect(element.textContent).toContain(OPERATIONS.affiliate.sensitiveDataPolicy);
     expect(element.textContent).toContain(`${OPERATIONS.affiliate.linkCandidates} exact candidates · ${OPERATIONS.affiliate.linkReviewsPassed} clean independent reviews · ${OPERATIONS.affiliate.linkApprovals} founder approvals.`);
+    for (const proposal of OPERATIONS.affiliate.activationProposals) {
+      expect(element.textContent).toContain('Bookshop decision packet');
+      expect(element.textContent).toContain(proposal.activationState === 'activation_recorded' ? 'Narrow program activation recorded. No paid links yet.' : 'Verified account. One observed book link. Still disabled.');
+      expect(element.textContent).toContain(proposal.evidence.publicTrackingIdentity);
+      expect(element.textContent).toContain(`ISBN ${proposal.evidence.productIsbn}`);
+      expect(element.textContent).toContain(`HTTP ${proposal.evidence.automatedFetchStatus}`);
+      expect(element.textContent).toContain(proposal.approvalBoundarySha256);
+      expect(element.textContent).toContain(proposal.evidence.observationReceiptSha256);
+      expect(element.querySelector(`a[href="${proposal.evidence.publicStorefrontUrl}"]`)).not.toBeNull();
+      expect(element.querySelector(`a[href="${proposal.evidence.termsSourceUrl}"]`)).not.toBeNull();
+      expect(element.querySelector(`a[href="${proposal.evidence.termsResolvedUrl}"]`)).not.toBeNull();
+    }
     expect(element.textContent).toContain(`${OPERATIONS.social.channelsActive}/${OPERATIONS.social.channelsTotal} channels active.`);
     expect(element.textContent).toContain(`Open the ${OPERATIONS.social.queue.length}-post approval queue`);
     expect(element.querySelector('a[href*="affiliate-program-approval.yml"]')).not.toBeNull();
@@ -392,6 +404,22 @@ describe('App', () => {
     if (visualCandidate) {
       expect(element.querySelector(`img[src="${visualCandidate.creativeCandidateAssetPath}"]`)).not.toBeNull();
       expect(element.textContent).toContain('generated, locally verified, not rights-approved or published');
+    }
+  });
+
+  it('renders the post-activation Bookshop state without implying a paid link or deployment', () => {
+    const proposal = OPERATIONS.affiliate.activationProposals[0];
+    const originalState = proposal.activationState;
+    proposal.activationState = 'activation_recorded';
+    try {
+      const fixture = TestBed.createComponent(StudioPage);
+      fixture.detectChanges();
+      const element = fixture.nativeElement as HTMLElement;
+      expect(element.textContent).toContain('Narrow program activation recorded. No paid links yet.');
+      expect(element.textContent).toContain('Create one exact product-level candidate, complete an independent destination review, and obtain a separate founder approval before any paid link can enter a Firebase preview.');
+      expect(element.textContent).not.toContain('Verified account. One observed book link. Still disabled.');
+    } finally {
+      proposal.activationState = originalState;
     }
   });
 

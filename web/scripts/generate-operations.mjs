@@ -5,6 +5,7 @@ import process from 'node:process';
 import matter from './lib/front-matter.mjs';
 import { affiliateCoverageSchema } from './lib/affiliate-coverage-contract.mjs';
 import { affiliateEnrollmentReadinessSchema, buildAffiliateEnrollmentReadiness } from './lib/affiliate-enrollment-contract.mjs';
+import { affiliateActivationProposalSchema, validateAffiliateActivationProposals } from './lib/affiliate-activation-proposal-contract.mjs';
 import { buildEditorialReviewQueue } from './lib/editorial-review-queue-contract.mjs';
 import { buildFounderAgenda } from './lib/founder-agenda-contract.mjs';
 import { loadAffiliateLinkState } from './lib/affiliate-link-contract.mjs';
@@ -27,6 +28,7 @@ const affiliatePath = path.join(root, 'config', 'affiliate-programs.json');
 const affiliateCoveragePath = path.join(root, 'public', 'affiliate-product-coverage.json');
 const affiliateEnrollmentPath = path.join(root, 'public', 'affiliate-enrollment-readiness.json');
 const affiliateEnrollmentPlanPath = path.join(root, 'config', 'affiliate-enrollment-plans.json');
+const affiliateActivationProposalPath = path.join(root, 'config', 'affiliate-activation-proposals.json');
 const socialChannelsPath = path.join(root, 'config', 'social-channels.json');
 const livePublicationPath = path.join(root, 'config', 'live-publication.json');
 const publicationPolicyPath = path.join(root, 'config', 'publication-policy.json');
@@ -85,11 +87,22 @@ const growthRaw = await fs.readFile(growthPath);
 const growth = JSON.parse(growthRaw.toString('utf8'));
 const growthSha256 = createHash('sha256').update(growthRaw).digest('hex');
 const affiliate = JSON.parse(await fs.readFile(affiliatePath, 'utf8'));
+const affiliateActivationProposalDocument = affiliateActivationProposalSchema.parse(JSON.parse(await fs.readFile(affiliateActivationProposalPath, 'utf8')));
+const affiliateActivationEvidenceRecords = new Map(await Promise.all(affiliateActivationProposalDocument.proposals.map(async (proposal) => {
+  const raw = await fs.readFile(path.join(root, proposal.evidence.observationReceiptPath));
+  return [proposal.evidence.observationReceiptPath, { raw, data: JSON.parse(raw.toString('utf8')) }];
+})));
 const affiliateCoverage = affiliateCoverageSchema.parse(JSON.parse(await fs.readFile(affiliateCoveragePath, 'utf8')));
 const affiliateEnrollment = affiliateEnrollmentReadinessSchema.parse(JSON.parse(await fs.readFile(affiliateEnrollmentPath, 'utf8')));
 const affiliateEnrollmentPlan = JSON.parse(await fs.readFile(affiliateEnrollmentPlanPath, 'utf8'));
 const expectedAffiliateEnrollment = buildAffiliateEnrollmentReadiness({ affiliate, coverage: affiliateCoverage, plan: affiliateEnrollmentPlan });
 if (JSON.stringify(affiliateEnrollment) !== JSON.stringify(expectedAffiliateEnrollment)) throw new Error('affiliate enrollment readiness is stale or differs from registry, coverage, or plan sources');
+const affiliateActivationProposals = validateAffiliateActivationProposals({
+  document: affiliateActivationProposalDocument,
+  affiliate,
+  articles: articleRecords.map((record) => ({ ...record.data, slug: record.name.replace(/\.md$/, '') })),
+  evidenceRecords: affiliateActivationEvidenceRecords
+});
 const affiliateLinkState = await loadAffiliateLinkState(root);
 const socialChannelsRaw = await fs.readFile(socialChannelsPath);
 const socialChannels = JSON.parse(socialChannelsRaw.toString('utf8'));
@@ -429,6 +442,7 @@ const operations = {
     linkReviewsPassed: affiliateLinkState.counts.passedReviews,
     linkApprovals: affiliateLinkState.counts.approvals,
     activeOverlays: affiliateLinkState.counts.activeOverlays,
+    activationProposals: affiliateActivationProposals.proposals,
     approvedOverlaySetSha256: publicationManifest.affiliatePosture.approvedOverlaySetSha256,
     linkQueue: affiliateLinkQueue,
     programs: [...affiliate.programs].sort((left, right) => left.priority - right.priority).map((program) => ({

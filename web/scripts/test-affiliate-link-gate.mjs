@@ -26,7 +26,7 @@ async function makeFixture() {
   const registry = JSON.parse(await fs.readFile(path.join(webRoot, 'config', 'affiliate-programs.json'), 'utf8'));
   for (const entry of registry.programs) {
     entry.sourceCheckedAt = '2026-08-05T09:00:00.000Z';
-    entry.sourceReviewExpiresAt = '2026-11-03';
+    entry.sourceReviewExpiresAt = '2027-01-08';
   }
   const program = registry.programs.find((entry) => entry.id === programId);
   program.revision = 2;
@@ -50,7 +50,9 @@ async function makeFixture() {
     termsAcceptedByFounder: true,
     termsAcceptedAt: '2026-08-05T10:00:00.000Z',
     acceptanceEvidenceReference: 'https://github.com/lucasdmoyer/tipsforyourgifts/issues/42',
-    reportingExportApproved: false
+    reportingExportApproved: false,
+    activationProposalId: 'bookshop-test-activation-boundary',
+    activationProposalSha256: 'a'.repeat(64)
   };
   registry.updatedAt = '2026-08-05T10:00:00.000Z';
   await fs.writeFile(path.join(root, 'config', 'affiliate-programs.json'), `${JSON.stringify(registry, null, 2)}\n`);

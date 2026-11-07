@@ -26,13 +26,13 @@ await fs.cp(path.join(webRoot, 'scripts'), path.join(root, 'scripts'), { recursi
 const registry = JSON.parse(await fs.readFile(path.join(webRoot, 'config', 'affiliate-programs.json'), 'utf8'));
 for (const entry of registry.programs) {
   entry.sourceCheckedAt = '2026-08-05T09:00:00.000Z';
-  entry.sourceReviewExpiresAt = '2026-11-03';
+  entry.sourceReviewExpiresAt = '2027-01-08';
 }
 const program = registry.programs.find((entry) => entry.id === programId);
 program.revision = 2; program.status = 'enabled'; program.enabled = true; program.founderDisposition = 'approved';
 program.activationProductSelection = { mode: 'explicit_products', eligibleProductIds: ['sapiens-us-paperback', 'genius-of-birds-paperback', 'a-city-on-mars-paperback'] };
 program.allowedDomains = ['bookshop.org']; program.registeredSites = ['https://tipsforyourgifts.web.app/']; program.trackingMethod = 'path_redirect_to_query'; program.trackingPathPrefix = '/a/'; program.trackingParameterKeys = ['affiliate']; program.requiredDisclosure = registry.policy.defaultDisclosure;
-program.account = { externalAccountEstablished: true, trackingIdentityConfigured: true, verificationStatus: 'verified', verificationObservedAt: '2026-08-05T09:30:00.000Z', publicTrackingIdentity: '129750', publicStorefrontUrl: 'https://bookshop.org/shop/tipsforyourgifts', weeklyReportsEnabled: true, termsAcceptedByFounder: true, termsAcceptedAt: '2026-08-05T10:00:00.000Z', acceptanceEvidenceReference: 'https://github.com/lucasdmoyer/tipsforyourgifts/issues/42', reportingExportApproved: false };
+program.account = { externalAccountEstablished: true, trackingIdentityConfigured: true, verificationStatus: 'verified', verificationObservedAt: '2026-08-05T09:30:00.000Z', publicTrackingIdentity: '129750', publicStorefrontUrl: 'https://bookshop.org/shop/tipsforyourgifts', weeklyReportsEnabled: true, termsAcceptedByFounder: true, termsAcceptedAt: '2026-08-05T10:00:00.000Z', acceptanceEvidenceReference: 'https://github.com/lucasdmoyer/tipsforyourgifts/issues/42', reportingExportApproved: false, activationProposalId: 'bookshop-test-activation-boundary', activationProposalSha256: 'a'.repeat(64) };
 registry.updatedAt = '2026-08-05T10:00:00.000Z';
 await fs.writeFile(path.join(root, 'config', 'affiliate-programs.json'), `${JSON.stringify(registry, null, 2)}\n`);
 const articleRaw = await fs.readFile(path.join(root, 'src', 'data', 'blog', `${articleSlug}.md`));
