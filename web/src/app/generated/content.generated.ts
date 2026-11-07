@@ -2085,10 +2085,10 @@ export const ARTICLES: readonly Article[] = [
 ];
 
 export const OPERATIONS: Operations = {
-  "generatedAt": "2026-10-19T00:23:41.000Z",
+  "generatedAt": "2026-11-07T23:25:53.490Z",
   "founderAgenda": {
     "schemaVersion": "1.0.0",
-    "generatedAt": "2026-10-19T00:23:41.000Z",
+    "generatedAt": "2026-11-07T23:25:53.490Z",
     "posture": "founder_decisions_required",
     "primaryDecisionId": "review-release-candidate",
     "profitabilityEvidence": "unknown_until_aggregate_measurement",
@@ -2101,7 +2101,7 @@ export const OPERATIONS: Operations = {
         "horizon": "now",
         "category": "release",
         "title": "Review the first accountable Angular release",
-        "recommendation": "Review publication-set-7be6d326b59a46e8 as the first founder-controlled Firebase release candidate.",
+        "recommendation": "Review publication-set-1eec9a99c189c31c as the first founder-controlled Firebase release candidate.",
         "decisionQuestion": "Does this exact content set represent the site you want readers to see first?",
         "rationale": "The research and release machinery cannot create traffic, trust, or revenue while the modern reviewed site remains only a local candidate.",
         "evidence": [
@@ -2181,24 +2181,24 @@ export const OPERATIONS: Operations = {
         "priorityScore": 65,
         "horizon": "later",
         "category": "monetization",
-        "title": "Complete the audited affiliate activation review",
-        "recommendation": "Activate Bookshop.org US media affiliate only after external enrollment, current terms acceptance, registered-site, tracking, domain, disclosure, and reporting evidence are complete.",
-        "decisionQuestion": "Has every external enrollment and current-terms requirement been completed and recorded for this exact revision?",
-        "rationale": "A narrow pilot can test operational fit with less commission pressure than enabling the broadest catalog before traffic and conversion evidence exist.",
+        "title": "Choose one existing editorial winner for a paid-link pilot",
+        "recommendation": "Start with one product from read-it-then-play-it-gift-pairs that already won on editorial merit.",
+        "decisionQuestion": "Which already-recommended product should receive the first bounded affiliate-link candidate?",
+        "rationale": "Program activation alone cannot prove that one tracked URL still lands on the intended product, preserves approved tracking, and leaves the recommendation useful without commission.",
         "evidence": [
-          "4 affiliate programs await founder review, 0 await external enrollment, and 1 await activation evidence.",
-          "0 programs and 0 tracked links are enabled.",
-          "Bookshop.org US media affiliate currently maps to 1 publication-ready article.",
-          "Its public terms review expires 2027-01-08."
+          "1 affiliate program is enabled and 0 paid-link overlays are active.",
+          "0 exact candidates, 0 clean independent reviews, and 0 founder approvals are recorded.",
+          "No exact product-level paid-link candidate exists yet.",
+          "0 paid links are bound into the current release manifest."
         ],
-        "unlocks": "A passing activation PR enables only contract-validated paid-link candidates; every destination and disclosure remains separately reviewable.",
-        "tradeoff": "Enrollment and reporting add compliance work, while a narrow program covers fewer products and cannot monetize every companion in a pair.",
-        "guardrail": "Record only founder-completed external facts and non-secret configuration; activation cannot invent a tracking identity, change editorial ranking, or make any link live by itself.",
+        "unlocks": "One approved overlay creates a measurable monetization pilot without rewriting product order, scores, gift logic, pairings, or raw editorial evidence.",
+        "tradeoff": "A paid-link pilot adds destination monitoring, disclosure, terms, and reader-trust obligations before conversion evidence exists.",
+        "guardrail": "Require exact candidate, independent review, and founder approval hashes; then inspect the Firebase preview. Approval does not authorize production deployment.",
         "reversibility": "high",
         "founderActionRequired": true,
         "action": {
-          "label": "Open activation handoff",
-          "url": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/affiliate-program-activate.yml",
+          "label": "Open link candidate",
+          "url": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/affiliate-link-candidate.yml",
           "command": null
         }
       }
@@ -2208,10 +2208,10 @@ export const OPERATIONS: Operations = {
   "validatedRuns": 11,
   "publicationReadyPosts": 10,
   "draftPosts": 3,
-  "affiliateProgramsEnabled": 0,
+  "affiliateProgramsEnabled": 1,
   "affiliateProgramsProposed": 4,
   "affiliateProgramsFounderApproved": 0,
-  "affiliateProgramsExternallyVerified": 1,
+  "affiliateProgramsExternallyVerified": 0,
   "affiliateLinksLive": 0,
   "socialDrafts": 78,
   "socialApproved": 0,
@@ -2420,8 +2420,8 @@ export const OPERATIONS: Operations = {
   "affiliate": {
     "proposedPrograms": 4,
     "founderApprovedPrograms": 0,
-    "externallyVerifiedPrograms": 1,
-    "enabledPrograms": 0,
+    "externallyVerifiedPrograms": 0,
+    "enabledPrograms": 1,
     "publicationReadyProductLinksCataloged": 60,
     "publicationReadyPaidLinksVerified": 0,
     "publicationReadyOrdinaryLinks": 60,
@@ -2492,7 +2492,7 @@ export const OPERATIONS: Operations = {
           "productionDeploymentAuthorized": false,
           "customerDataExportApproved": false
         },
-        "activationState": "awaiting_founder_terms_acceptance",
+        "activationState": "activation_recorded",
         "approvalBoundarySha256": "9c521256d14e650a50359f02f58dba81b07d0689b972c42b2c01e33630b91295"
       }
     ],
@@ -2501,11 +2501,11 @@ export const OPERATIONS: Operations = {
     "programs": [
       {
         "id": "bookshop-org-us-media",
-        "revision": 4,
+        "revision": 5,
         "priority": 1,
         "coverageRole": "category_specialist",
         "name": "Bookshop.org US media affiliate",
-        "status": "externally_verified",
+        "status": "enabled",
         "founderDisposition": "approved",
         "eligibleArticleSlugs": [
           "read-it-then-play-it-gift-pairs"
@@ -2513,7 +2513,7 @@ export const OPERATIONS: Operations = {
         "productSelectionMode": "explicit_products",
         "productResearchCandidates": 10,
         "verifiedPaidLinks": 0,
-        "enrollmentStage": "activation_evidence_required",
+        "enrollmentStage": "exact_link_research",
         "publicApplicationPacketReady": true,
         "externalEnrollmentAllowedByRegistry": true,
         "externalSubmissionStillRequiresActionTimeApproval": true,
@@ -2547,7 +2547,7 @@ export const OPERATIONS: Operations = {
         "sourceReviewExpiresAt": "2027-01-08",
         "programHomepageUrl": "https://bookshop.org/affiliates/profile/introduction",
         "termsUrl": "https://bookshop.org/info/terms-of-use",
-        "nextGate": "Review and explicitly accept the current affiliate terms, registered production site, allowed destination domain, Bookshop-issued tracking behavior, disclosure, and aggregate reporting boundary before activation; no paid link is live."
+        "nextGate": "Create and independently review exact destination-link candidates with the approved disclosure and sponsored relationship; activation alone does not make a paid link live or authorize prices."
       },
       {
         "id": "amazon-associates-us",
@@ -5167,8 +5167,8 @@ export const OPERATIONS: Operations = {
     },
     "currentCandidate": {
       "status": "release_candidate",
-      "manifestId": "publication-set-7be6d326b59a46e8",
-      "contentSetSha256": "7be6d326b59a46e8ef0cbcd6fe71152cf72291de6483d76d59c41b1433cdeecf",
+      "manifestId": "publication-set-1eec9a99c189c31c",
+      "contentSetSha256": "1eec9a99c189c31ccf7d8b8be88029f0de8bba66df767f0c13670a3e73cc3b6c",
       "articles": 10,
       "independentReviews": 10,
       "socialLaunchPacks": 9,
@@ -5285,9 +5285,7 @@ export const OPERATIONS: Operations = {
   },
   "alerts": [
     "Production Firebase rules have not been verified from this checkout.",
-    "No affiliate program is enabled; links must remain non-affiliate.",
     "4 affiliate program candidates await founder review; approval does not enroll or enable tracking.",
-    "1 affiliate program is externally verified but disabled; current terms and exact activation evidence still require founder approval.",
     "78 social launch drafts await approved media, content approval, and official API access.",
     "1 original social creative candidate is locally verified but not rights-approved, released, or published.",
     "Growth measurement is not connected; traffic, conversions, and revenue remain unknown rather than zero.",

@@ -1,15 +1,15 @@
 {
   "schemaVersion": "1.2.0",
-  "updatedAt": "2026-10-19T00:23:41.000Z",
+  "updatedAt": "2026-11-07T23:25:53.490Z",
   "programs": [
     {
       "id": "bookshop-org-us-media",
-      "revision": 4,
+      "revision": 5,
       "priority": 1,
       "coverageRole": "category_specialist",
       "name": "Bookshop.org US media affiliate",
-      "status": "externally_verified",
-      "enabled": false,
+      "status": "enabled",
+      "enabled": true,
       "founderDisposition": "approved",
       "programHomepageUrl": "https://bookshop.org/affiliates/profile/introduction",
       "termsUrl": "https://bookshop.org/info/terms-of-use",
@@ -44,27 +44,35 @@
         "It does not replace a general merchant program for non-book companions, so pair recommendations must remain independently useful with ordinary links.",
         "Attribution, compensation, onboarding, disclosure, and product availability must be rechecked against current terms before activation."
       ],
-      "allowedDomains": [],
-      "registeredSites": [],
+      "allowedDomains": [
+        "bookshop.org"
+      ],
+      "registeredSites": [
+        "https://tipsforyourgifts.web.app/"
+      ],
       "trackingMethod": "path_redirect_to_query",
-      "trackingPathPrefix": null,
-      "trackingParameterKeys": [],
-      "requiredDisclosure": null,
+      "trackingPathPrefix": "/a/",
+      "trackingParameterKeys": [
+        "affiliate"
+      ],
+      "requiredDisclosure": "Disclosure: We may earn a commission if you purchase through a paid link on this page. Recommendations are selected independently.",
       "account": {
         "externalAccountEstablished": true,
         "trackingIdentityConfigured": true,
-        "termsAcceptedByFounder": false,
-        "termsAcceptedAt": null,
-        "acceptanceEvidenceReference": null,
+        "termsAcceptedByFounder": true,
+        "termsAcceptedAt": "2026-11-07T23:15:22.000Z",
+        "acceptanceEvidenceReference": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/23",
         "reportingExportApproved": false,
         "verificationStatus": "verified",
         "verificationObservedAt": "2026-10-18T23:50:38.000Z",
         "publicTrackingIdentity": "129750",
         "publicStorefrontUrl": "https://bookshop.org/shop/tipsforyourgifts",
-        "weeklyReportsEnabled": true
+        "weeklyReportsEnabled": true,
+        "activationProposalId": "bookshop-org-us-media-revision-4",
+        "activationProposalSha256": "9c521256d14e650a50359f02f58dba81b07d0689b972c42b2c01e33630b91295"
       },
       "priceFeedAuthorized": false,
-      "nextGate": "Review and explicitly accept the current affiliate terms, registered production site, allowed destination domain, Bookshop-issued tracking behavior, disclosure, and aggregate reporting boundary before activation; no paid link is live."
+      "nextGate": "Create and independently review exact destination-link candidates with the approved disclosure and sponsored relationship; activation alone does not make a paid link live or authorize prices."
     },
     {
       "id": "amazon-associates-us",

@@ -4,6 +4,7 @@ import process from 'node:process';
 import matter from './lib/front-matter.mjs';
 import { validateAffiliateModel } from './lib/affiliate-contract.mjs';
 import { affiliateActivationProposalSchema, validateAffiliateActivationProposals } from './lib/affiliate-activation-proposal-contract.mjs';
+import { affiliateEnrollmentPlanSchema } from './lib/affiliate-enrollment-contract.mjs';
 
 const args = Object.fromEntries(process.argv.slice(2).map((argument) => {
   const [key, ...parts] = argument.replace(/^--/, '').split('=');
@@ -30,6 +31,8 @@ if (evidenceUrl.protocol !== 'https:' || evidenceUrl.username || evidenceUrl.pas
 const root = process.cwd();
 const configPath = path.join(root, 'config', 'affiliate-programs.json');
 const model = JSON.parse(await fs.readFile(configPath, 'utf8'));
+const enrollmentPlanPath = path.join(root, 'config', 'affiliate-enrollment-plans.json');
+const enrollmentPlan = affiliateEnrollmentPlanSchema.parse(JSON.parse(await fs.readFile(enrollmentPlanPath, 'utf8')));
 const proposalPath = path.join(root, 'config', 'affiliate-activation-proposals.json');
 const proposalDocument = affiliateActivationProposalSchema.parse(JSON.parse(await fs.readFile(proposalPath, 'utf8')));
 const evidenceRecords = new Map(await Promise.all(proposalDocument.proposals.map(async (entry) => {
@@ -54,6 +57,9 @@ if (!program) throw new Error(`Unknown affiliate program: ${programId}`);
 if (program.revision !== proposal.expectedProgramRevision) throw new Error(`${program.id} is revision ${program.revision}, not proposal revision ${proposal.expectedProgramRevision}`);
 if (program.status !== 'externally_verified' || program.founderDisposition !== 'approved' || program.enabled) throw new Error(`${program.id} is not a disabled externally verified program`);
 if (program.trackingMethod !== proposal.activation.trackingMethod) throw new Error(`${program.id}: tracking method does not match the exact activation boundary`);
+const enrollmentPlanProgram = enrollmentPlan.programs.find((entry) => entry.programId === program.id);
+if (!enrollmentPlanProgram) throw new Error(`${program.id}: enrollment plan is missing the program`);
+if (enrollmentPlanProgram.programRevision !== program.revision) throw new Error(`${program.id}: enrollment plan revision does not match the activation boundary`);
 
 const now = new Date();
 if (termsAcceptedAtMs > now.valueOf()) throw new Error('terms acceptance cannot be recorded in the future');
@@ -81,8 +87,13 @@ program.account = {
 program.priceFeedAuthorized = proposal.activation.priceFeedAuthorized;
 program.nextGate = 'Create and independently review exact destination-link candidates with the approved disclosure and sponsored relationship; activation alone does not make a paid link live or authorize prices.';
 model.updatedAt = now.toISOString();
+enrollmentPlanProgram.programRevision = program.revision;
+enrollmentPlan.updatedAt = model.updatedAt;
 const issues = validateAffiliateModel(model, { asOfDate: now.toISOString().slice(0, 10) });
 if (issues.length > 0) throw new Error(`Affiliate activation would violate the contract: ${issues.join('; ')}`);
-await fs.writeFile(configPath, `${JSON.stringify(model, null, 2)}\n`);
+await Promise.all([
+  fs.writeFile(configPath, `${JSON.stringify(model, null, 2)}\n`),
+  fs.writeFile(enrollmentPlanPath, `${JSON.stringify(enrollmentPlan, null, 2)}\n`)
+]);
 if (process.env.GITHUB_OUTPUT) await fs.appendFile(process.env.GITHUB_OUTPUT, `program_id=${program.id}\nprogram_revision=${program.revision}\n`);
 console.log(JSON.stringify({ activated: true, programId: program.id, revision: program.revision, enabled: program.enabled, affiliateLinksCreated: 0, priceFeedAuthorized: false }, null, 2));
