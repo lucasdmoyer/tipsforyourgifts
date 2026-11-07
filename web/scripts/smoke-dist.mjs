@@ -63,7 +63,9 @@ try {
   const expectedEnrollment = buildAffiliateEnrollmentReadiness({ affiliate, coverage, plan });
   if (JSON.stringify(enrollment) !== JSON.stringify(expectedEnrollment)) failures.push('affiliate enrollment readiness: deployed artifact differs from registry, coverage, or plan sources');
   if (enrollment.counts.publicApplicationPacketsReady !== enrollment.counts.totalPrograms) failures.push('affiliate enrollment readiness: every program must have a public application packet');
-  if (enrollment.counts.enabledPrograms !== 0 || enrollment.counts.verifiedPaidLinks !== 0) failures.push('affiliate enrollment readiness: release candidate unexpectedly claims enabled programs or paid links');
+  const expectedEnabledPrograms = affiliate.programs.filter((program) => program.enabled === true).length;
+  if (enrollment.counts.enabledPrograms !== expectedEnabledPrograms) failures.push('affiliate enrollment readiness: enabled-program count differs from the validated registry');
+  if (enrollment.counts.verifiedPaidLinks !== coverage.counts.productsWithVerifiedPaidDestination) failures.push('affiliate enrollment readiness: verified-paid-link count differs from validated product coverage');
 } catch (error) {
   failures.push(`affiliate enrollment readiness: ${error instanceof Error ? error.message : String(error)}`);
 }

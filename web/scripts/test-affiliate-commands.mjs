@@ -19,7 +19,9 @@ assert.match(activationWorkflow, /--proposal-id="\$PROPOSAL_ID"/);
 assert.match(activationWorkflow, /--expected-proposal-sha256="\$EXPECTED_PROPOSAL_SHA256"/);
 assert.doesNotMatch(activationWorkflow, /allowed_domains:|tracking_method:|tracking_parameter_keys:|reporting_export_approved:/);
 assert.match(activationWorkflow, /It creates no account, creates no paid link/);
+assert.match(activationWorkflow, /web\/config\/affiliate-enrollment-plans\.json/);
 const base = JSON.parse(await fs.readFile(path.join(scriptRoot, '..', 'config', 'affiliate-programs.json'), 'utf8'));
+const sourceEnrollmentPlan = JSON.parse(await fs.readFile(path.join(scriptRoot, '..', 'config', 'affiliate-enrollment-plans.json'), 'utf8'));
 const sourceProposalDocument = JSON.parse(await fs.readFile(path.join(scriptRoot, '..', 'config', 'affiliate-activation-proposals.json'), 'utf8'));
 const sourceProposal = sourceProposalDocument.proposals[0];
 const sourceObservationRaw = await fs.readFile(path.join(scriptRoot, '..', sourceProposal.evidence.observationReceiptPath));
@@ -31,6 +33,13 @@ async function writeProposalSupportFiles(fixtureRoot, proposalDocument) {
   await fs.writeFile(path.join(fixtureRoot, 'config', 'affiliate-activation-proposals.json'), `${JSON.stringify(proposalDocument, null, 2)}\n`);
   await fs.writeFile(path.join(fixtureRoot, proposal.evidence.observationReceiptPath), sourceObservationRaw);
   await fs.writeFile(path.join(fixtureRoot, 'src', 'data', 'blog', `${proposal.evidence.articleSlug}.md`), sourceArticleRaw);
+}
+async function writeEnrollmentPlan(fixtureRoot, programId, programRevision) {
+  const plan = structuredClone(sourceEnrollmentPlan);
+  plan.updatedAt = testNow.toISOString();
+  const entry = plan.programs.find((candidate) => candidate.programId === programId);
+  entry.programRevision = programRevision;
+  await fs.writeFile(path.join(fixtureRoot, 'config', 'affiliate-enrollment-plans.json'), `${JSON.stringify(plan, null, 2)}\n`);
 }
 const program = base.programs[0];
 const testNow = new Date();
@@ -46,6 +55,7 @@ program.revision += 1;
 program.enabled = false;
 program.allowedDomains = [];
 program.registeredSites = [];
+program.trackingPathPrefix = null;
 program.trackingParameterKeys = [];
 program.requiredDisclosure = null;
 program.account = {
@@ -88,6 +98,7 @@ fixtureProposalDocument.proposals[0].expectedProgramRevision = verifiedProgram.r
 await writeProposalSupportFiles(fixtureRoot, fixtureProposalDocument);
 const fixtureProposal = fixtureProposalDocument.proposals[0];
 const fixtureProposalSha256 = affiliateActivationApprovalBoundarySha256(fixtureProposal);
+await writeEnrollmentPlan(fixtureRoot, program.id, verifiedProgram.revision);
 
 const commonArgs = [
   path.join(scriptRoot, 'activate-affiliate-program.mjs'),
@@ -102,6 +113,8 @@ const commonArgs = [
 await execFileAsync(process.execPath, commonArgs, { cwd: fixtureRoot });
 const activated = JSON.parse(await fs.readFile(path.join(fixtureRoot, 'config', 'affiliate-programs.json'), 'utf8'));
 const activatedProgram = activated.programs.find((entry) => entry.id === program.id);
+const activatedEnrollmentPlan = JSON.parse(await fs.readFile(path.join(fixtureRoot, 'config', 'affiliate-enrollment-plans.json'), 'utf8'));
+const activatedEnrollmentPlanProgram = activatedEnrollmentPlan.programs.find((entry) => entry.programId === program.id);
 assert.equal(activatedProgram.status, 'enabled');
 assert.equal(activatedProgram.enabled, true);
 assert.equal(activatedProgram.priceFeedAuthorized, false);
@@ -110,6 +123,7 @@ assert.equal(activatedProgram.trackingMethod, 'path_redirect_to_query');
 assert.equal(activatedProgram.trackingPathPrefix, '/a/');
 assert.equal(activatedProgram.account.activationProposalId, fixtureProposal.id);
 assert.equal(activatedProgram.account.activationProposalSha256, fixtureProposalSha256);
+assert.equal(activatedEnrollmentPlanProgram.programRevision, activatedProgram.revision);
 assert.deepEqual(validateAffiliateModel(activated, { asOfDate: testNow.toISOString().slice(0, 10) }), []);
 const { stdout: activatedProposalValidationOutput } = await execFileAsync(process.execPath, [path.join(scriptRoot, 'validate-affiliate-activation-proposals.mjs')], { cwd: fixtureRoot });
 const activatedProposalValidation = JSON.parse(activatedProposalValidationOutput);
@@ -120,6 +134,7 @@ assert.equal(activatedProposalValidation.productionDeploymentsAuthorized, 0);
 const rejectedRoot = await fs.mkdtemp(path.join(os.tmpdir(), 'tfyg-affiliate-command-reject-'));
 await fs.mkdir(path.join(rejectedRoot, 'config'));
 await fs.writeFile(path.join(rejectedRoot, 'config', 'affiliate-programs.json'), `${JSON.stringify(verified, null, 2)}\n`);
+await writeEnrollmentPlan(rejectedRoot, program.id, verifiedProgram.revision);
 await writeProposalSupportFiles(rejectedRoot, fixtureProposalDocument);
 await assert.rejects(() => execFileAsync(process.execPath, commonArgs.map((argument) => argument.startsWith('--confirmation=') ? '--confirmation=ACTIVATE-something-else' : argument), { cwd: rejectedRoot }), /Action-time confirmation/);
 await assert.rejects(() => execFileAsync(process.execPath, commonArgs.map((argument) => argument.startsWith('--expected-proposal-sha256=') ? `--expected-proposal-sha256=${'f'.repeat(64)}` : argument), { cwd: rejectedRoot }), /does not match the exact activation boundary/);
@@ -129,6 +144,7 @@ async function expectDivergentProposal(label, mutate, expectedText) {
   const divergentRoot = await fs.mkdtemp(path.join(os.tmpdir(), `tfyg-affiliate-divergence-${label}-`));
   await fs.mkdir(path.join(divergentRoot, 'config'));
   await fs.writeFile(path.join(divergentRoot, 'config', 'affiliate-programs.json'), `${JSON.stringify(verified, null, 2)}\n`);
+  await writeEnrollmentPlan(divergentRoot, program.id, verifiedProgram.revision);
   const divergentDocument = structuredClone(fixtureProposalDocument);
   mutate(divergentDocument.proposals[0]);
   await writeProposalSupportFiles(divergentRoot, divergentDocument);
@@ -147,7 +163,8 @@ await assert.rejects(() => execFileAsync(process.execPath, commonArgs.map((argum
 const evidenceRejectedRoot = await fs.mkdtemp(path.join(os.tmpdir(), 'tfyg-affiliate-command-evidence-reject-'));
 await fs.mkdir(path.join(evidenceRejectedRoot, 'config'));
 await fs.writeFile(path.join(evidenceRejectedRoot, 'config', 'affiliate-programs.json'), `${JSON.stringify(verified, null, 2)}\n`);
+await writeEnrollmentPlan(evidenceRejectedRoot, program.id, verifiedProgram.revision);
 await writeProposalSupportFiles(evidenceRejectedRoot, fixtureProposalDocument);
 await assert.rejects(() => execFileAsync(process.execPath, commonArgs.map((argument) => argument.startsWith('--terms-accepted-at=') ? `--terms-accepted-at=${new Date(Date.parse(sourceCheckedAt) - 3_600_000).toISOString()}` : argument), { cwd: evidenceRejectedRoot }), /terms acceptance must follow the recorded public source review/);
 
-console.log(JSON.stringify({ affiliateActivationCommandTests: 'passed', workflowSafetyChecks: 8, founderApprovedToExternallyVerifiedToEnabled: 'passed', publicTrackingIdentityRecorded: 'passed', exactProposalDigestBound: 'passed', activationSettingsDerivedFromProposal: 'passed', noLinkCreation: 'passed', activationNegativeChecks: 10, invalidEvidenceReferencesRejected: 6 }, null, 2));
+console.log(JSON.stringify({ affiliateActivationCommandTests: 'passed', workflowSafetyChecks: 9, founderApprovedToExternallyVerifiedToEnabled: 'passed', publicTrackingIdentityRecorded: 'passed', exactProposalDigestBound: 'passed', activationSettingsDerivedFromProposal: 'passed', noLinkCreation: 'passed', activationNegativeChecks: 10, invalidEvidenceReferencesRejected: 6 }, null, 2));
