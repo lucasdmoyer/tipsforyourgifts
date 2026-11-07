@@ -48,11 +48,11 @@ const researchCandidateSelectionSchema = z.discriminatedUnion('mode', [
   }).strict(),
   z.object({
     mode: z.literal('all_products_in_eligible_articles'),
-    eligibleProductIds: z.array(slug).length(0)
+    eligibleProductIds: z.array(slug).refine((value) => value.length === 0, 'must not include explicit product IDs')
   }).strict(),
   z.object({
     mode: z.literal('all_publication_ready_products'),
-    eligibleProductIds: z.array(slug).length(0)
+    eligibleProductIds: z.array(slug).refine((value) => value.length === 0, 'must not include explicit product IDs')
   }).strict()
 ]);
 
@@ -63,7 +63,7 @@ const activationProductSelectionSchema = z.discriminatedUnion('mode', [
   }).strict(),
   z.object({
     mode: z.literal('discovery_only'),
-    eligibleProductIds: z.array(slug).length(0)
+    eligibleProductIds: z.array(slug).refine((value) => value.length === 0, 'must not include activation product IDs')
   }).strict()
 ]);
 

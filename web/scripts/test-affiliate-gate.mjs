@@ -86,7 +86,7 @@ expectFailure('rejects duplicate research candidate products', (model) => { mode
 expectFailure('rejects unknown research candidate products', (model) => { model.programs[0].researchCandidateSelection.eligibleProductIds = ['invented-product']; }, 'unknown research candidate product');
 expectFailure('rejects research candidate outside configured articles', (model) => { model.programs[0].researchCandidateSelection.eligibleProductIds = ['grooveit-minig']; }, 'unknown research candidate product');
 expectFailure('rejects activation outside research candidates', (model) => { model.programs[0].activationProductSelection.eligibleProductIds = ['invented-product']; }, 'must also be an explicit research candidate');
-expectFailure('all-article selection rejects explicit product IDs', (model) => { model.programs[1].researchCandidateSelection.eligibleProductIds = ['grooveit-minig']; }, 'expected array to have <=0 items');
+expectFailure('all-article selection rejects explicit product IDs', (model) => { model.programs[1].researchCandidateSelection.eligibleProductIds = ['grooveit-minig']; }, 'must not include explicit product IDs');
 expectFailure('automatic publication coverage rejects a manual article allowlist', (model) => { model.programs[1].eligibleArticleSlugs = ['gifts-for-a-golf-friend']; }, 'cannot carry a manual article allowlist');
 expectFailure('explicit selection requires an article scope', (model) => { model.programs[0].eligibleArticleSlugs = []; }, 'requires at least one eligible article');
 expectFailure('rejects unknown articles', (model) => { model.programs[0].eligibleArticleSlugs = ['invented-guide']; }, 'unknown publication-ready article');
