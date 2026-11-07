@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "1.2.0",
+  "candidateId": "affiliate-link-read-it-then-play-it-gift-pairs-sapiens-us-paperback-bookshop-org-us-media-v1",
+  "status": "candidate",
+  "articleSlug": "read-it-then-play-it-gift-pairs",
+  "productId": "sapiens-us-paperback",
+  "programId": "bookshop-org-us-media",
+  "programRevision": 5,
+  "candidateRevision": 1,
+  "createdAt": "2026-11-07T23:35:17.025Z",
+  "createdBy": "lucasdmoyer",
+  "origin": {
+    "source": "founder_supplied",
+    "referenceId": null,
+    "sourceArtifactPath": null,
+    "sourceSha256": null
+  },
+  "source": {
+    "articlePath": "src/data/blog/read-it-then-play-it-gift-pairs.md",
+    "articleSha256": "7fb26c710e7cdd48615bcd4acf56a209295ea70d8925dfb7e7998f8c0a0a0f37",
+    "researchRunPath": "research/runs/20261018-read-it-then-play-it-c437f208.json",
+    "researchRunSha256": "2226215c2b737cbe9b0e98703d2f4a4a79c2612ae1678d7254ba9abb407d61a8",
+    "independentReviewPath": "research/reviews/20261018-read-it-then-play-it-c437f208.qa.v1.json",
+    "independentReviewSha256": "50f9adf5cd650ae9d63ca4818d46f813a365bf0ada48edc64391712fa4bda070",
+    "productEditorialSha256": "4fa8360d72ebf2e6c451cc2fb455f6a7aa3c48220b951d4d6f1bceff8ba6f84f",
+    "ordinaryUrl": "https://bookshop.org/p/books/sapiens-tenth-anniversary-edition-a-brief-history-of-humankind-yuval-noah-harari/031a784adc6e9de4"
+  },
+  "destination": {
+    "paidUrl": "https://bookshop.org/a/129750/9780063422001",
+    "hostname": "bookshop.org",
+    "tracking": {
+      "method": "path_redirect_to_query",
+      "sourcePathPrefix": "/a/",
+      "identity": "129750",
+      "resolvedParameterKeys": [
+        "affiliate"
+      ]
+    },
+    "productIdentityEvidenceUrl": "https://bookshop.org/p/books/sapiens-tenth-anniversary-edition-a-brief-history-of-humankind-yuval-noah-harari/031a784adc6e9de4"
+  },
+  "assertions": {
+    "editorialRankUnchanged": true,
+    "productCopyUnchanged": true,
+    "priceOrAvailabilityClaimAdded": false
+  }
+}

@@ -2085,10 +2085,10 @@ export const ARTICLES: readonly Article[] = [
 ];
 
 export const OPERATIONS: Operations = {
-  "generatedAt": "2026-11-07T23:25:53.490Z",
+  "generatedAt": "2026-11-07T23:35:17.025Z",
   "founderAgenda": {
     "schemaVersion": "1.0.0",
-    "generatedAt": "2026-11-07T23:25:53.490Z",
+    "generatedAt": "2026-11-07T23:35:17.025Z",
     "posture": "founder_decisions_required",
     "primaryDecisionId": "review-release-candidate",
     "profitabilityEvidence": "unknown_until_aggregate_measurement",
@@ -2101,7 +2101,7 @@ export const OPERATIONS: Operations = {
         "horizon": "now",
         "category": "release",
         "title": "Review the first accountable Angular release",
-        "recommendation": "Review publication-set-1eec9a99c189c31c as the first founder-controlled Firebase release candidate.",
+        "recommendation": "Review publication-set-4bcf0b8c125e611d as the first founder-controlled Firebase release candidate.",
         "decisionQuestion": "Does this exact content set represent the site you want readers to see first?",
         "rationale": "The research and release machinery cannot create traffic, trust, or revenue while the modern reviewed site remains only a local candidate.",
         "evidence": [
@@ -2181,14 +2181,14 @@ export const OPERATIONS: Operations = {
         "priorityScore": 65,
         "horizon": "later",
         "category": "monetization",
-        "title": "Choose one existing editorial winner for a paid-link pilot",
-        "recommendation": "Start with one product from read-it-then-play-it-gift-pairs that already won on editorial merit.",
-        "decisionQuestion": "Which already-recommended product should receive the first bounded affiliate-link candidate?",
+        "title": "Send the first exact paid link to evidence review",
+        "recommendation": "Run the isolated evidence editor for affiliate-link-read-it-then-play-it-gift-pairs-sapiens-us-paperback-bookshop-org-us-media-v1; a candidate alone remains inert.",
+        "decisionQuestion": "Should the independent evidence editor verify this exact destination now?",
         "rationale": "Program activation alone cannot prove that one tracked URL still lands on the intended product, preserves approved tracking, and leaves the recommendation useful without commission.",
         "evidence": [
           "1 affiliate program is enabled and 0 paid-link overlays are active.",
-          "0 exact candidates, 0 clean independent reviews, and 0 founder approvals are recorded.",
-          "No exact product-level paid-link candidate exists yet.",
+          "1 exact candidates, 0 clean independent reviews, and 0 founder approvals are recorded.",
+          "affiliate-link-read-it-then-play-it-gift-pairs-sapiens-us-paperback-bookshop-org-us-media-v1 is at independent_review_required.",
           "0 paid links are bound into the current release manifest."
         ],
         "unlocks": "One approved overlay creates a measurable monetization pilot without rewriting product order, scores, gift logic, pairings, or raw editorial evidence.",
@@ -2197,9 +2197,9 @@ export const OPERATIONS: Operations = {
         "reversibility": "high",
         "founderActionRequired": true,
         "action": {
-          "label": "Open link candidate",
-          "url": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/affiliate-link-candidate.yml",
-          "command": null
+          "label": "Open independent review",
+          "url": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/affiliate-link-review.yml",
+          "command": "gh workflow run affiliate-link-review.yml -f candidate_id=affiliate-link-read-it-then-play-it-gift-pairs-sapiens-us-paperback-bookshop-org-us-media-v1 -f expected_candidate_sha256=8376c5b87f055002aaedea531d45818e401a91d98994d07d76785d647f64494f"
         }
       }
     ]
@@ -2438,7 +2438,7 @@ export const OPERATIONS: Operations = {
     "externallyEnrolledPrograms": 1,
     "siteApplicationDescription": "Tips for Your Gifts helps shoppers choose thoughtful gifts by explaining what a product is, how it fits the recipient's real life, what they may already own, and what a specialty addition contributes. Recommendations are researched and ranked without regard to commission.",
     "sensitiveDataPolicy": "Account credentials, legal identity, tax details, payout details, and private contact information are entered only in the partner portal by Lucas and are never stored in Git.",
-    "linkCandidates": 0,
+    "linkCandidates": 1,
     "linkReviewsPassed": 0,
     "linkApprovals": 0,
     "activeOverlays": 0,
@@ -2497,7 +2497,34 @@ export const OPERATIONS: Operations = {
       }
     ],
     "approvedOverlaySetSha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
-    "linkQueue": [],
+    "linkQueue": [
+      {
+        "candidateId": "affiliate-link-read-it-then-play-it-gift-pairs-sapiens-us-paperback-bookshop-org-us-media-v1",
+        "candidateRevision": 1,
+        "candidatePath": "affiliate/candidates/affiliate-link-read-it-then-play-it-gift-pairs-sapiens-us-paperback-bookshop-org-us-media-v1.json",
+        "candidateSha256": "8376c5b87f055002aaedea531d45818e401a91d98994d07d76785d647f64494f",
+        "articleSlug": "read-it-then-play-it-gift-pairs",
+        "productId": "sapiens-us-paperback",
+        "programId": "bookshop-org-us-media",
+        "programRevision": 5,
+        "destinationHostname": "bookshop.org",
+        "createdAt": "2026-11-07T23:35:17.025Z",
+        "createdBy": "lucasdmoyer",
+        "originSource": "founder_supplied",
+        "originReferenceId": null,
+        "originSourceArtifactPath": null,
+        "originSourceSha256": null,
+        "stage": "independent_review_required",
+        "reviewVerdict": null,
+        "reviewPath": null,
+        "reviewSha256": null,
+        "reviewedAt": null,
+        "approvalPath": null,
+        "approvalSha256": null,
+        "approvedAt": null,
+        "nextGate": "Run the isolated affiliate evidence editor against this exact candidate SHA-256."
+      }
+    ],
     "programs": [
       {
         "id": "bookshop-org-us-media",
@@ -5167,8 +5194,8 @@ export const OPERATIONS: Operations = {
     },
     "currentCandidate": {
       "status": "release_candidate",
-      "manifestId": "publication-set-1eec9a99c189c31c",
-      "contentSetSha256": "1eec9a99c189c31ccf7d8b8be88029f0de8bba66df767f0c13670a3e73cc3b6c",
+      "manifestId": "publication-set-4bcf0b8c125e611d",
+      "contentSetSha256": "4bcf0b8c125e611d4c544ebb96915173c5102594029402dd231a17e04b7f2b0a",
       "articles": 10,
       "independentReviews": 10,
       "socialLaunchPacks": 9,
@@ -5286,6 +5313,7 @@ export const OPERATIONS: Operations = {
   "alerts": [
     "Production Firebase rules have not been verified from this checkout.",
     "4 affiliate program candidates await founder review; approval does not enroll or enable tracking.",
+    "1 exact affiliate link candidate: 0 independently reviewed and founder-approved overlays active in generated content.",
     "78 social launch drafts await approved media, content approval, and official API access.",
     "1 original social creative candidate is locally verified but not rights-approved, released, or published.",
     "Growth measurement is not connected; traffic, conversions, and revenue remain unknown rather than zero.",
