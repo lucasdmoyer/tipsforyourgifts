@@ -26,7 +26,7 @@ await fs.cp(path.join(webRoot, 'scripts'), path.join(root, 'scripts'), { recursi
 const registry = JSON.parse(await fs.readFile(path.join(webRoot, 'config', 'affiliate-programs.json'), 'utf8'));
 for (const entry of registry.programs) {
   entry.sourceCheckedAt = '2026-08-05T09:00:00.000Z';
-  entry.sourceReviewExpiresAt = '2026-11-03';
+  entry.sourceReviewExpiresAt = '2099-11-03';
 }
 const program = registry.programs.find((entry) => entry.id === programId);
 program.revision = 2; program.status = 'enabled'; program.enabled = true; program.founderDisposition = 'approved';
