@@ -7,7 +7,7 @@
     "publicationReadyProductLinksCataloged": 60,
     "productsAssignedToPartnerResearch": 60,
     "productsWithoutPartnerResearch": 0,
-    "productsWithVerifiedPaidDestination": 0
+    "productsWithVerifiedPaidDestination": 1
   },
   "programs": [
     {
@@ -18,7 +18,7 @@
       "selectionMode": "explicit_products",
       "eligibleArticleCount": 1,
       "productResearchCandidates": 10,
-      "verifiedPaidLinks": 0
+      "verifiedPaidLinks": 1
     },
     {
       "programId": "amazon-associates-us",
@@ -818,8 +818,8 @@
         "ebay-partner-network-us"
       ],
       "preferredResearchProgramId": "bookshop-org-us-media",
-      "verifiedPaidProgramId": null,
-      "status": "ordinary_link_research_assigned"
+      "verifiedPaidProgramId": "bookshop-org-us-media",
+      "status": "verified_paid_link"
     },
     {
       "articleSlug": "read-it-then-play-it-gift-pairs",

@@ -103,14 +103,19 @@ expectArtifactFailure('artifact rejects credential-like next gates', (artifact) 
 
 const paused = copy(clean);
 const pausedBookshop = paused.programs.find((program) => program.programId === 'bookshop-org-us-media');
+const pausedPaidProductKeys = new Set(pausedBookshop.verifiedPaidProductKeys);
 pausedBookshop.registryStatus = 'paused';
 pausedBookshop.stage = 'paused';
 pausedBookshop.externalEnrollmentAllowedByRegistry = false;
 pausedBookshop.externalAccountEstablished = true;
 pausedBookshop.trackingIdentityConfigured = true;
+pausedBookshop.verifiedPaidProductKeys = [];
+pausedBookshop.verifiedPaidLinks = 0;
+paused.verifiedPaidProductKeys = paused.verifiedPaidProductKeys.filter((productKey) => !pausedPaidProductKeys.has(productKey));
 paused.counts.externalEnrollmentAllowedByRegistry = 0;
 paused.counts.externallyEnrolled = 1;
 paused.counts.enabledPrograms = clean.counts.enabledPrograms - 1;
+paused.counts.verifiedPaidLinks = paused.verifiedPaidProductKeys.length;
 affiliateEnrollmentReadinessSchema.parse(paused);
 
 console.log(JSON.stringify({ affiliateEnrollmentGateTests: 'passed', checks: 35, sensitiveValuesStored: false, externalSubmissionsAttempted: false }, null, 2));

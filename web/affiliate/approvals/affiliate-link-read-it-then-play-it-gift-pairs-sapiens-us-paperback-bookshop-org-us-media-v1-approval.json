@@ -1,0 +1,20 @@
+{
+  "schemaVersion": "1.0.0",
+  "approvalId": "affiliate-link-read-it-then-play-it-gift-pairs-sapiens-us-paperback-bookshop-org-us-media-v1-approval",
+  "candidateId": "affiliate-link-read-it-then-play-it-gift-pairs-sapiens-us-paperback-bookshop-org-us-media-v1",
+  "candidatePath": "affiliate/candidates/affiliate-link-read-it-then-play-it-gift-pairs-sapiens-us-paperback-bookshop-org-us-media-v1.json",
+  "candidateSha256": "8376c5b87f055002aaedea531d45818e401a91d98994d07d76785d647f64494f",
+  "reviewPath": "affiliate/reviews/affiliate-link-read-it-then-play-it-gift-pairs-sapiens-us-paperback-bookshop-org-us-media-v1-review.json",
+  "reviewSha256": "79425876cbb6d37d58538e9bc7c97b38d3df33782fbcad3f864259389098002a",
+  "founderLogin": "lucasdmoyer",
+  "approvedAt": "2026-11-07T23:58:13.560Z",
+  "confirmation": "APPROVE-affiliate-link-read-it-then-play-it-gift-pairs-sapiens-us-paperback-bookshop-org-us-media-v1",
+  "status": "approved",
+  "assertions": {
+    "exactPaidDestinationApproved": true,
+    "affiliateDisclosureRequired": true,
+    "editorialRankingUnchanged": true,
+    "firebasePreviewRequiredBeforeRelease": true,
+    "productionDeploymentAuthorized": false
+  }
+}

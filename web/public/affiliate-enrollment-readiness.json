@@ -76,7 +76,9 @@
     "useful-gifts-for-hard-to-shop-for-adults:peak-design-packing-cube-medium",
     "useful-gifts-for-hard-to-shop-for-adults:thermoworks-thermopop-2"
   ],
-  "verifiedPaidProductKeys": [],
+  "verifiedPaidProductKeys": [
+    "read-it-then-play-it-gift-pairs:sapiens-us-paperback"
+  ],
   "counts": {
     "totalPrograms": 5,
     "publicApplicationPacketsReady": 5,
@@ -85,7 +87,7 @@
     "externallyEnrolled": 1,
     "enabledPrograms": 1,
     "productResearchCandidates": 60,
-    "verifiedPaidLinks": 0
+    "verifiedPaidLinks": 1
   },
   "programs": [
     {
@@ -135,9 +137,11 @@
         "read-it-then-play-it-gift-pairs:the-food-lab-hardcover",
         "read-it-then-play-it-gift-pairs:thinking-in-systems-paperback"
       ],
-      "verifiedPaidProductKeys": [],
+      "verifiedPaidProductKeys": [
+        "read-it-then-play-it-gift-pairs:sapiens-us-paperback"
+      ],
       "productResearchCandidates": 10,
-      "verifiedPaidLinks": 0,
+      "verifiedPaidLinks": 1,
       "programHomepageUrl": "https://bookshop.org/affiliates/profile/introduction",
       "termsUrl": "https://bookshop.org/info/terms-of-use",
       "nextGate": "Create and independently review exact destination-link candidates with the approved disclosure and sponsored relationship; activation alone does not make a paid link live or authorize prices."
