@@ -575,6 +575,18 @@ export function applyAffiliateLinkOverlays(article, state) {
     applied += 1;
     return { ...product, url: overlay.paidUrl, affiliate: true, affiliateProgram: overlay.programId };
   });
-  if (applied > 0) copy.affiliateDisclosure = true;
+  if (applied > 0) {
+    copy.affiliateDisclosure = true;
+    if (typeof copy.contentHtml === 'string') {
+      const unpaidOnlyStatements = [
+        'All product links in this draft are ordinary, unpaid links.',
+        'Every product link is an ordinary, unpaid link; no affiliate program is enabled for this article.',
+        'The product links are ordinary, unpaid links.'
+      ];
+      for (const statement of unpaidOnlyStatements) {
+        copy.contentHtml = copy.contentHtml.replaceAll(statement, 'Paid links on this page are clearly labeled. All other product links are ordinary, unpaid links.');
+      }
+    }
+  }
   return copy;
 }

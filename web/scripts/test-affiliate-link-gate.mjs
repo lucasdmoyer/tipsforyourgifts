@@ -165,12 +165,20 @@ assert.deepEqual(cleanCandidate.destination.tracking, { method: 'path_redirect_t
 await addReviewAndApproval(cleanRoot, cleanCandidate);
 const cleanState = await loadAffiliateLinkState(cleanRoot, { asOfDate: '2026-08-10' });
 assert.equal(cleanState.counts.activeOverlays, 1);
-const sourceArticle = { slug: articleSlug, affiliateDisclosure: false, products: [{ id: productId, url: cleanCandidate.source.ordinaryUrl, affiliate: false }] };
+const sourceArticle = {
+  slug: articleSlug,
+  affiliateDisclosure: false,
+  contentHtml: '<p>All product links in this draft are ordinary, unpaid links.</p>',
+  products: [{ id: productId, url: cleanCandidate.source.ordinaryUrl, affiliate: false }]
+};
 const renderedArticle = applyAffiliateLinkOverlays(sourceArticle, cleanState);
 assert.equal(sourceArticle.products[0].affiliate, false, 'source article must remain ordinary');
+assert.match(sourceArticle.contentHtml, /All product links in this draft are ordinary, unpaid links\./, 'source disclosure copy must remain unchanged');
 assert.equal(renderedArticle.products[0].affiliate, true);
 assert.equal(renderedArticle.products[0].affiliateProgram, programId);
 assert.equal(renderedArticle.affiliateDisclosure, true);
+assert.doesNotMatch(renderedArticle.contentHtml, /All product links in this draft are ordinary, unpaid links\./);
+assert.match(renderedArticle.contentHtml, /Paid links on this page are clearly labeled\. All other product links are ordinary, unpaid links\./);
 
 const falseFounderRoot = await makeFixture();
 await assert.rejects(() => candidateFor(falseFounderRoot, { createdBy: 'affiliate-bot' }), /paid URL intake must identify the configured founder/);
