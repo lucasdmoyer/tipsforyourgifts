@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { programSelectsProduct } from './affiliate-contract.mjs';
+import { programSelectsResearchCandidate } from './affiliate-contract.mjs';
 
 const slug = z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/);
 const sha256 = z.string().regex(/^[a-f0-9]{64}$/);
@@ -88,7 +88,7 @@ export function buildAffiliateCoverage({ affiliate, registrySha256, articles, ov
     .filter(({ product }) => typeof product.url === 'string' && product.url.startsWith('https://'))
     .sort((left, right) => left.articleSlug.localeCompare(right.articleSlug) || left.product.id.localeCompare(right.product.id))
     .map(({ articleSlug, product }) => {
-      const candidates = sortedPrograms.filter((program) => !['paused', 'rejected'].includes(program.status) && programSelectsProduct(program, articleSlug, product.id));
+      const candidates = sortedPrograms.filter((program) => !['paused', 'rejected'].includes(program.status) && programSelectsResearchCandidate(program, articleSlug, product.id));
       const overlay = overlays.get(`${articleSlug}:${product.id}`) ?? null;
       if (overlay && !candidates.some((program) => program.id === overlay.programId)) {
         throw new Error(`${articleSlug}:${product.id}: approved overlay program is outside configured product selection`);
@@ -113,7 +113,7 @@ export function buildAffiliateCoverage({ affiliate, registrySha256, articles, ov
       programRevision: program.revision,
       priority: program.priority,
       status: program.status,
-      selectionMode: program.productSelection.mode,
+      selectionMode: program.researchCandidateSelection.mode,
       eligibleArticleCount: new Set(selectedProducts.map((product) => product.articleSlug)).size,
       productResearchCandidates: selectedProducts.length,
       verifiedPaidLinks: products.filter((product) => product.verifiedPaidProgramId === program.id).length

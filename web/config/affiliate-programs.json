@@ -1,15 +1,15 @@
 {
-  "schemaVersion": "1.1.0",
-  "updatedAt": "2026-10-18T23:50:38.000Z",
+  "schemaVersion": "1.2.0",
+  "updatedAt": "2026-11-07T23:25:53.490Z",
   "programs": [
     {
       "id": "bookshop-org-us-media",
-      "revision": 4,
+      "revision": 5,
       "priority": 1,
       "coverageRole": "category_specialist",
       "name": "Bookshop.org US media affiliate",
-      "status": "externally_verified",
-      "enabled": false,
+      "status": "enabled",
+      "enabled": true,
       "founderDisposition": "approved",
       "programHomepageUrl": "https://bookshop.org/affiliates/profile/introduction",
       "termsUrl": "https://bookshop.org/info/terms-of-use",
@@ -18,7 +18,7 @@
       "eligibleArticleSlugs": [
         "read-it-then-play-it-gift-pairs"
       ],
-      "productSelection": {
+      "researchCandidateSelection": {
         "mode": "explicit_products",
         "eligibleProductIds": [
           "sapiens-us-paperback",
@@ -33,30 +33,46 @@
           "the-food-lab-hardcover"
         ]
       },
+      "activationProductSelection": {
+        "mode": "explicit_products",
+        "eligibleProductIds": [
+          "sapiens-us-paperback"
+        ]
+      },
       "editorialFit": "A focused first candidate for book anchors in evidence-backed pairs, with a storefront model that can support independent bookstores.",
       "limitations": [
         "It does not replace a general merchant program for non-book companions, so pair recommendations must remain independently useful with ordinary links.",
         "Attribution, compensation, onboarding, disclosure, and product availability must be rechecked against current terms before activation."
       ],
-      "allowedDomains": [],
-      "registeredSites": [],
-      "trackingParameterKeys": [],
-      "requiredDisclosure": null,
+      "allowedDomains": [
+        "bookshop.org"
+      ],
+      "registeredSites": [
+        "https://tipsforyourgifts.web.app/"
+      ],
+      "trackingMethod": "path_redirect_to_query",
+      "trackingPathPrefix": "/a/",
+      "trackingParameterKeys": [
+        "affiliate"
+      ],
+      "requiredDisclosure": "Disclosure: We may earn a commission if you purchase through a paid link on this page. Recommendations are selected independently.",
       "account": {
         "externalAccountEstablished": true,
         "trackingIdentityConfigured": true,
-        "termsAcceptedByFounder": false,
-        "termsAcceptedAt": null,
-        "acceptanceEvidenceReference": null,
+        "termsAcceptedByFounder": true,
+        "termsAcceptedAt": "2026-11-07T23:15:22.000Z",
+        "acceptanceEvidenceReference": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/23",
         "reportingExportApproved": false,
         "verificationStatus": "verified",
         "verificationObservedAt": "2026-10-18T23:50:38.000Z",
         "publicTrackingIdentity": "129750",
         "publicStorefrontUrl": "https://bookshop.org/shop/tipsforyourgifts",
-        "weeklyReportsEnabled": true
+        "weeklyReportsEnabled": true,
+        "activationProposalId": "bookshop-org-us-media-revision-4",
+        "activationProposalSha256": "9c521256d14e650a50359f02f58dba81b07d0689b972c42b2c01e33630b91295"
       },
       "priceFeedAuthorized": false,
-      "nextGate": "Review and explicitly accept the current affiliate terms, registered production site, allowed destination domain, Bookshop-issued tracking behavior, disclosure, and aggregate reporting boundary before activation; no paid link is live."
+      "nextGate": "Create and independently review exact destination-link candidates with the approved disclosure and sponsored relationship; activation alone does not make a paid link live or authorize prices."
     },
     {
       "id": "amazon-associates-us",
@@ -72,8 +88,12 @@
       "sourceCheckedAt": "2026-10-10T16:25:37.000Z",
       "sourceReviewExpiresAt": "2027-01-08",
       "eligibleArticleSlugs": [],
-      "productSelection": {
+      "researchCandidateSelection": {
         "mode": "all_publication_ready_products",
+        "eligibleProductIds": []
+      },
+      "activationProductSelection": {
+        "mode": "discovery_only",
         "eligibleProductIds": []
       },
       "editorialFit": "A broad-catalog candidate that could cover books, games, golf accessories, and practical gifts without changing the editorial ranking.",
@@ -83,6 +103,8 @@
       ],
       "allowedDomains": [],
       "registeredSites": [],
+      "trackingMethod": "query_parameters",
+      "trackingPathPrefix": null,
       "trackingParameterKeys": [],
       "requiredDisclosure": null,
       "account": {
@@ -110,8 +132,12 @@
       "sourceCheckedAt": "2026-10-10T16:25:37.000Z",
       "sourceReviewExpiresAt": "2027-01-08",
       "eligibleArticleSlugs": [],
-      "productSelection": {
+      "researchCandidateSelection": {
         "mode": "all_publication_ready_products",
+        "eligibleProductIds": []
+      },
+      "activationProductSelection": {
+        "mode": "discovery_only",
         "eligibleProductIds": []
       },
       "editorialFit": "A family-friendly US retailer alternative with a broad catalog and Impact-provided tracking can give readers a second exact-product destination without changing the recommendation order.",
@@ -121,6 +147,8 @@
       ],
       "allowedDomains": [],
       "registeredSites": [],
+      "trackingMethod": "query_parameters",
+      "trackingPathPrefix": null,
       "trackingParameterKeys": [],
       "requiredDisclosure": null,
       "account": {
@@ -148,8 +176,12 @@
       "sourceCheckedAt": "2026-10-10T16:25:37.000Z",
       "sourceReviewExpiresAt": "2027-01-08",
       "eligibleArticleSlugs": [],
-      "productSelection": {
+      "researchCandidateSelection": {
         "mode": "all_publication_ready_products",
+        "eligibleProductIds": []
+      },
+      "activationProductSelection": {
+        "mode": "discovery_only",
         "eligibleProductIds": []
       },
       "editorialFit": "A second large US catalog could improve exact-product availability for practical gifts while the ordinary manufacturer link remains the stable editorial source and fallback.",
@@ -160,6 +192,8 @@
       ],
       "allowedDomains": [],
       "registeredSites": [],
+      "trackingMethod": "query_parameters",
+      "trackingPathPrefix": null,
       "trackingParameterKeys": [],
       "requiredDisclosure": null,
       "account": {
@@ -187,8 +221,12 @@
       "sourceCheckedAt": "2026-10-10T16:25:37.000Z",
       "sourceReviewExpiresAt": "2027-01-08",
       "eligibleArticleSlugs": [],
-      "productSelection": {
+      "researchCandidateSelection": {
         "mode": "all_publication_ready_products",
+        "eligibleProductIds": []
+      },
+      "activationProductSelection": {
+        "mode": "discovery_only",
         "eligibleProductIds": []
       },
       "editorialFit": "A marketplace contingency can help with discontinued or hard-to-find exact editions when a stable primary retailer is unavailable, without pretending a volatile listing is the canonical product source.",
@@ -200,6 +238,8 @@
       ],
       "allowedDomains": [],
       "registeredSites": [],
+      "trackingMethod": "query_parameters",
+      "trackingPathPrefix": null,
       "trackingParameterKeys": [],
       "requiredDisclosure": null,
       "account": {

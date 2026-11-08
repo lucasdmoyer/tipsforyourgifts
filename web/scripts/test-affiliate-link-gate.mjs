@@ -12,7 +12,8 @@ const articleSlug = 'read-it-then-play-it-gift-pairs';
 const productId = 'sapiens-us-paperback';
 const programId = 'bookshop-org-us-media';
 const sapiensOrdinaryUrl = 'https://bookshop.org/p/books/sapiens-tenth-anniversary-edition-a-brief-history-of-humankind-yuval-noah-harari/031a784adc6e9de4';
-const sapiensPaidUrl = `${sapiensOrdinaryUrl}?affiliate=test-fixture-only`;
+const sapiensPaidUrl = 'https://bookshop.org/a/129750/9780063422001';
+const sapiensResolvedPaidUrl = `${sapiensOrdinaryUrl}?ean=9780063422001&affiliate=129750`;
 
 async function makeFixture() {
   const root = await fs.mkdtemp(path.join(os.tmpdir(), 'tfyg-affiliate-link-gate-'));
@@ -25,7 +26,7 @@ async function makeFixture() {
   const registry = JSON.parse(await fs.readFile(path.join(webRoot, 'config', 'affiliate-programs.json'), 'utf8'));
   for (const entry of registry.programs) {
     entry.sourceCheckedAt = '2026-08-05T09:00:00.000Z';
-    entry.sourceReviewExpiresAt = '2026-11-03';
+    entry.sourceReviewExpiresAt = '2027-01-08';
   }
   const program = registry.programs.find((entry) => entry.id === programId);
   program.revision = 2;
@@ -34,6 +35,8 @@ async function makeFixture() {
   program.founderDisposition = 'approved';
   program.allowedDomains = ['bookshop.org'];
   program.registeredSites = ['https://tipsforyourgifts.web.app/'];
+  program.trackingMethod = 'path_redirect_to_query';
+  program.trackingPathPrefix = '/a/';
   program.trackingParameterKeys = ['affiliate'];
   program.requiredDisclosure = registry.policy.defaultDisclosure;
   program.account = {
@@ -47,7 +50,9 @@ async function makeFixture() {
     termsAcceptedByFounder: true,
     termsAcceptedAt: '2026-08-05T10:00:00.000Z',
     acceptanceEvidenceReference: 'https://github.com/lucasdmoyer/tipsforyourgifts/issues/42',
-    reportingExportApproved: false
+    reportingExportApproved: false,
+    activationProposalId: 'bookshop-test-activation-boundary',
+    activationProposalSha256: 'a'.repeat(64)
   };
   registry.updatedAt = '2026-08-05T10:00:00.000Z';
   await fs.writeFile(path.join(root, 'config', 'affiliate-programs.json'), `${JSON.stringify(registry, null, 2)}\n`);
@@ -92,7 +97,7 @@ async function addReviewAndApproval(root, candidate, overrides = {}) {
     destination: {
       observationMethod: 'automated_fetch',
       httpStatus: 200,
-      resolvedUrl: candidate.destination.paidUrl,
+      resolvedUrl: sapiensResolvedPaidUrl,
       resolvedHostname: candidate.destination.hostname,
       verifiedAt: '2026-08-06T11:00:00.000Z'
     },
@@ -100,7 +105,7 @@ async function addReviewAndApproval(root, candidate, overrides = {}) {
       status: 'available_for_purchase',
       observedAt: '2026-08-06T11:00:00.000Z',
       purchaseActionLabel: 'Add to cart',
-      evidenceUrl: candidate.destination.paidUrl
+      evidenceUrl: sapiensResolvedPaidUrl
     },
     productIdentityEvidenceUrl: candidate.destination.productIdentityEvidenceUrl,
     trackingIdentityEvidence: {
@@ -156,15 +161,24 @@ async function addReviewAndApproval(root, candidate, overrides = {}) {
 const cleanRoot = await makeFixture();
 const cleanCandidate = await candidateFor(cleanRoot);
 assert.deepEqual(cleanCandidate.origin, { source: 'founder_supplied', referenceId: null, sourceArtifactPath: null, sourceSha256: null });
+assert.deepEqual(cleanCandidate.destination.tracking, { method: 'path_redirect_to_query', sourcePathPrefix: '/a/', identity: '129750', resolvedParameterKeys: ['affiliate'] });
 await addReviewAndApproval(cleanRoot, cleanCandidate);
 const cleanState = await loadAffiliateLinkState(cleanRoot, { asOfDate: '2026-08-10' });
 assert.equal(cleanState.counts.activeOverlays, 1);
-const sourceArticle = { slug: articleSlug, affiliateDisclosure: false, products: [{ id: productId, url: cleanCandidate.source.ordinaryUrl, affiliate: false }] };
+const sourceArticle = {
+  slug: articleSlug,
+  affiliateDisclosure: false,
+  contentHtml: '<p>All product links in this draft are ordinary, unpaid links.</p>',
+  products: [{ id: productId, url: cleanCandidate.source.ordinaryUrl, affiliate: false }]
+};
 const renderedArticle = applyAffiliateLinkOverlays(sourceArticle, cleanState);
 assert.equal(sourceArticle.products[0].affiliate, false, 'source article must remain ordinary');
+assert.match(sourceArticle.contentHtml, /All product links in this draft are ordinary, unpaid links\./, 'source disclosure copy must remain unchanged');
 assert.equal(renderedArticle.products[0].affiliate, true);
 assert.equal(renderedArticle.products[0].affiliateProgram, programId);
 assert.equal(renderedArticle.affiliateDisclosure, true);
+assert.doesNotMatch(renderedArticle.contentHtml, /All product links in this draft are ordinary, unpaid links\./);
+assert.match(renderedArticle.contentHtml, /Paid links on this page are clearly labeled\. All other product links are ordinary, unpaid links\./);
 
 const falseFounderRoot = await makeFixture();
 await assert.rejects(() => candidateFor(falseFounderRoot, { createdBy: 'affiliate-bot' }), /paid URL intake must identify the configured founder/);
@@ -205,6 +219,21 @@ const unboundTrackingIdentityCandidate = await candidateFor(unboundTrackingIdent
 await addReviewAndApproval(unboundTrackingIdentityRoot, unboundTrackingIdentityCandidate, { review: { trackingIdentityEvidence: { method: 'owner_gated_single_link_intake', referencePath: `affiliate/candidates/${unboundTrackingIdentityCandidate.candidateId}.json`, sha256: 'a'.repeat(64) } } });
 await assert.rejects(() => loadAffiliateLinkState(unboundTrackingIdentityRoot, { asOfDate: '2026-08-10' }), /tracking identity evidence is not bound/);
 
+for (const [label, extraQuery] of [
+  ['unapproved sub-ID', '&subid=unapproved'],
+  ['unapproved campaign tag', '&utm_source=unapproved'],
+  ['case-colliding affiliate key', '&Affiliate=evil']
+]) {
+  const root = await makeFixture();
+  const candidate = await candidateFor(root);
+  const resolvedUrl = `${sapiensResolvedPaidUrl}${extraQuery}`;
+  await addReviewAndApproval(root, candidate, { review: {
+    destination: { observationMethod: 'automated_fetch', httpStatus: 200, resolvedUrl, resolvedHostname: 'bookshop.org', verifiedAt: '2026-08-06T11:00:00.000Z' },
+    availability: { status: 'available_for_purchase', observedAt: '2026-08-06T11:00:00.000Z', purchaseActionLabel: 'Add to cart', evidenceUrl: resolvedUrl }
+  } });
+  await assert.rejects(() => loadAffiliateLinkState(root, { asOfDate: '2026-08-10' }), /tracking values were not preserved/, label);
+}
+
 const staleProgramRoot = await makeFixture();
 const staleProgramCandidate = await candidateFor(staleProgramRoot);
 await addReviewAndApproval(staleProgramRoot, staleProgramCandidate);
@@ -215,20 +244,20 @@ await fs.writeFile(staleRegistryPath, `${JSON.stringify(staleRegistry, null, 2)}
 await assert.rejects(() => loadAffiliateLinkState(staleProgramRoot, { asOfDate: '2026-08-10' }), /program revision changed/);
 
 const unapprovedTrackingRoot = await makeFixture();
-await assert.rejects(() => candidateFor(unapprovedTrackingRoot, { paidUrl: `${sapiensPaidUrl}&utm_source=invented` }), /tracking-like parameter utm_source is not declared and approved/);
+await assert.rejects(() => candidateFor(unapprovedTrackingRoot, { paidUrl: `${sapiensPaidUrl}?utm_source=invented` }), /path-tracked paid URL cannot add a tracking-like query parameter/);
 
 const excludedProductRoot = await makeFixture();
 await assert.rejects(() => candidateFor(excludedProductRoot, {
   productId: 'civilization-vi-windows-steam',
   productIdentityEvidenceUrl: 'https://store.2k.com/en/game/buy-civilization-6'
-}), /product is not eligible for this affiliate program/);
+}), /product is not allowlisted for paid activation/);
 
 const broadCoverageRoot = await makeFixture();
 const broadCoverageRegistryPath = path.join(broadCoverageRoot, 'config', 'affiliate-programs.json');
 const broadCoverageRegistry = JSON.parse(await fs.readFile(broadCoverageRegistryPath, 'utf8'));
 const broadCoverageProgram = broadCoverageRegistry.programs.find((entry) => entry.id === programId);
 broadCoverageProgram.eligibleArticleSlugs = [];
-broadCoverageProgram.productSelection = { mode: 'all_publication_ready_products', eligibleProductIds: [] };
+broadCoverageProgram.researchCandidateSelection = { mode: 'all_publication_ready_products', eligibleProductIds: [] };
 await fs.writeFile(broadCoverageRegistryPath, `${JSON.stringify(broadCoverageRegistry, null, 2)}\n`);
 const broadCoverageCandidate = await candidateFor(broadCoverageRoot);
 assert.equal(broadCoverageCandidate.productId, productId, 'all-publication-ready coverage must not require a manual article allowlist');
@@ -242,4 +271,4 @@ disabledProgram.enabled = false;
 await fs.writeFile(disabledRegistryPath, `${JSON.stringify(disabledRegistry, null, 2)}\n`);
 await assert.rejects(() => candidateFor(disabledRoot), /program is not enabled/);
 
-console.log(JSON.stringify({ affiliateLinkGateTests: 'passed', checks: 14, founderAttestedProvenance: 'passed', purchaseAvailabilityGate: 'passed', trackingIdentityEvidenceBinding: 'passed', broadPublicationCoverage: 'passed', approvedOverlays: cleanState.counts.activeOverlays, sourceEditorialArtifactsMutated: false }, null, 2));
+console.log(JSON.stringify({ affiliateLinkGateTests: 'passed', checks: 17, founderAttestedProvenance: 'passed', purchaseAvailabilityGate: 'passed', trackingIdentityEvidenceBinding: 'passed', resolvedTrackingAllowlist: 'passed', broadPublicationCoverage: 'passed', approvedOverlays: cleanState.counts.activeOverlays, sourceEditorialArtifactsMutated: false }, null, 2));

@@ -63,7 +63,9 @@ try {
   const expectedEnrollment = buildAffiliateEnrollmentReadiness({ affiliate, coverage, plan });
   if (JSON.stringify(enrollment) !== JSON.stringify(expectedEnrollment)) failures.push('affiliate enrollment readiness: deployed artifact differs from registry, coverage, or plan sources');
   if (enrollment.counts.publicApplicationPacketsReady !== enrollment.counts.totalPrograms) failures.push('affiliate enrollment readiness: every program must have a public application packet');
-  if (enrollment.counts.enabledPrograms !== 0 || enrollment.counts.verifiedPaidLinks !== 0) failures.push('affiliate enrollment readiness: release candidate unexpectedly claims enabled programs or paid links');
+  const expectedEnabledPrograms = affiliate.programs.filter((program) => program.enabled === true).length;
+  if (enrollment.counts.enabledPrograms !== expectedEnabledPrograms) failures.push('affiliate enrollment readiness: enabled-program count differs from the validated registry');
+  if (enrollment.counts.verifiedPaidLinks !== coverage.counts.productsWithVerifiedPaidDestination) failures.push('affiliate enrollment readiness: verified-paid-link count differs from validated product coverage');
 } catch (error) {
   failures.push(`affiliate enrollment readiness: ${error instanceof Error ? error.message : String(error)}`);
 }
@@ -140,6 +142,19 @@ for (const article of readyArticles) {
     if (!html.includes(escapeHtmlText(product.name))) failures.push(`${article.slug}: missing product ${product.id}`);
     if (!html.includes(`data-product-id="${product.id}"`)) failures.push(`${article.slug}: missing outbound marker for ${product.id}`);
     if (!html.includes(escapeHtmlText(product.url))) failures.push(`${article.slug}: missing merchant link for ${product.id}`);
+  }
+  const manifestArticle = publicationManifest?.articles.find((entry) => entry.articleSlug === article.slug);
+  if ((manifestArticle?.affiliateLinkCount ?? 0) > 0) {
+    for (const marker of ['Affiliate disclosure:</strong> We may earn a commission', 'rel="sponsored noopener"', 'data-paid-link="true"']) {
+      if (!html.includes(marker)) failures.push(`${article.slug}: paid-link article is missing ${JSON.stringify(marker)}`);
+    }
+    for (const marker of [
+      'All product links in this draft are ordinary, unpaid links.',
+      'Every product link is an ordinary, unpaid link; no affiliate program is enabled for this article.',
+      'The product links are ordinary, unpaid links.'
+    ]) {
+      if (html.includes(marker)) failures.push(`${article.slug}: paid-link article retains contradictory unpaid-only copy ${JSON.stringify(marker)}`);
+    }
   }
   const pairs = Array.isArray(article.pairs) ? article.pairs : [];
   if (pairs.length > 0) {

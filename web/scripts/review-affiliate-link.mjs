@@ -1,7 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import process from 'node:process';
-import { affiliateLinkCandidateSchema, affiliateLinkReviewSchema, loadAffiliateLinkState, sha256 } from './lib/affiliate-link-contract.mjs';
+import { affiliateLinkCandidateSchema, affiliateLinkReviewSchema, loadAffiliateLinkState, sha256, trackingResolutionPreserved } from './lib/affiliate-link-contract.mjs';
 
 const root = process.cwd();
 const args = Object.fromEntries(process.argv.slice(2).map((argument) => {
@@ -43,8 +43,7 @@ if (verdict === 'passed') {
     if (!args['observed-resolved-url']) throw new Error('browser observation requires --observed-resolved-url');
     resolved = new URL(args['observed-resolved-url']);
   }
-  const paid = new URL(candidate.destination.paidUrl);
-  trackingPreserved = candidate.destination.trackingParameterKeys.every((key) => JSON.stringify(paid.searchParams.getAll(key)) === JSON.stringify(resolved.searchParams.getAll(key)));
+  trackingPreserved = trackingResolutionPreserved(candidate.destination, resolved);
   destination = { ...destination, resolvedUrl: resolved.toString(), resolvedHostname: resolved.hostname.toLowerCase(), verifiedAt: new Date().toISOString() };
   if (!trackingPreserved) throw new Error('approved tracking values were not preserved through destination resolution');
   availability = { status: 'available_for_purchase', observedAt: new Date(args['availability-observed-at']).toISOString(), purchaseActionLabel: args['purchase-action-label'], evidenceUrl: resolved.toString() };
@@ -92,7 +91,12 @@ const review = affiliateLinkReviewSchema.parse({
 const outputPath = path.join(root, 'affiliate', 'reviews', `${review.reviewId}.json`);
 try { await fs.access(outputPath); throw new Error(`${review.reviewId} already exists`); } catch (error) { if (error?.code !== 'ENOENT') throw error; }
 await fs.mkdir(path.dirname(outputPath), { recursive: true });
-await fs.writeFile(outputPath, `${JSON.stringify(review, null, 2)}\n`);
-await loadAffiliateLinkState(root);
+try {
+  await fs.writeFile(outputPath, `${JSON.stringify(review, null, 2)}\n`);
+  await loadAffiliateLinkState(root);
+} catch (error) {
+  await fs.unlink(outputPath).catch(() => {});
+  throw error;
+}
 if (process.env.GITHUB_OUTPUT) await fs.appendFile(process.env.GITHUB_OUTPUT, `candidate_id=${candidateId}\nreview_path=${path.relative(root, outputPath)}\nverdict=${verdict}\n`);
 console.log(JSON.stringify({ reviewCreated: true, candidateId, verdict, approved: false, published: false }, null, 2));
