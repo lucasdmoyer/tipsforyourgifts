@@ -35,8 +35,11 @@ assert.equal(clean.counts.publicApplicationPacketsReady, 5);
 assert.equal(clean.counts.externalEnrollmentAllowedByRegistry, 1);
 assert.equal(clean.counts.awaitingFounderProgramApproval, 4);
 assert.equal(clean.counts.externallyEnrolled, 1);
-assert.equal(clean.counts.enabledPrograms, 0);
-assert.equal(clean.programs.find((entry) => entry.programId === 'bookshop-org-us-media').stage, 'activation_evidence_required');
+assert.equal(clean.counts.enabledPrograms, affiliate.programs.filter((program) => program.enabled).length);
+assert.equal(
+  clean.programs.find((entry) => entry.programId === 'bookshop-org-us-media').stage,
+  affiliate.programs.find((entry) => entry.id === 'bookshop-org-us-media').enabled ? 'exact_link_research' : 'activation_evidence_required'
+);
 assert.equal(clean.programs.find((entry) => entry.programId === 'amazon-associates-us').stage, 'founder_approval_required');
 
 expectFailure('rejects missing program packet', ({ plan: value }) => { value.programs.pop(); }, 'missing programs');
@@ -82,9 +85,9 @@ expectArtifactFailure('artifact rejects proposed account and tracking claims', (
 expectArtifactFailure('artifact rejects false per-program product coverage', (artifact) => { artifact.programs[0].productResearchCandidates += 1; }, 'match its explicit product key set');
 expectArtifactFailure('artifact rejects false per-program product roster', (artifact) => { artifact.programs[0].productResearchProductKeys.pop(); }, 'match its explicit product key set');
 expectArtifactFailure('artifact rejects paid-link claims for disabled programs', (artifact) => {
-  const productKey = artifact.programs[0].productResearchProductKeys[0];
-  artifact.programs[0].verifiedPaidProductKeys = [productKey];
-  artifact.programs[0].verifiedPaidLinks = 1;
+  const productKey = artifact.programs[1].productResearchProductKeys[0];
+  artifact.programs[1].verifiedPaidProductKeys = [productKey];
+  artifact.programs[1].verifiedPaidLinks = 1;
   artifact.verifiedPaidProductKeys = [productKey];
   artifact.counts.verifiedPaidLinks = 1;
 }, 'only enabled programs');
@@ -100,13 +103,19 @@ expectArtifactFailure('artifact rejects credential-like next gates', (artifact) 
 
 const paused = copy(clean);
 const pausedBookshop = paused.programs.find((program) => program.programId === 'bookshop-org-us-media');
+const pausedPaidProductKeys = new Set(pausedBookshop.verifiedPaidProductKeys);
 pausedBookshop.registryStatus = 'paused';
 pausedBookshop.stage = 'paused';
 pausedBookshop.externalEnrollmentAllowedByRegistry = false;
 pausedBookshop.externalAccountEstablished = true;
 pausedBookshop.trackingIdentityConfigured = true;
+pausedBookshop.verifiedPaidProductKeys = [];
+pausedBookshop.verifiedPaidLinks = 0;
+paused.verifiedPaidProductKeys = paused.verifiedPaidProductKeys.filter((productKey) => !pausedPaidProductKeys.has(productKey));
 paused.counts.externalEnrollmentAllowedByRegistry = 0;
 paused.counts.externallyEnrolled = 1;
+paused.counts.enabledPrograms = clean.counts.enabledPrograms - 1;
+paused.counts.verifiedPaidLinks = paused.verifiedPaidProductKeys.length;
 affiliateEnrollmentReadinessSchema.parse(paused);
 
 console.log(JSON.stringify({ affiliateEnrollmentGateTests: 'passed', checks: 35, sensitiveValuesStored: false, externalSubmissionsAttempted: false }, null, 2));

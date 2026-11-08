@@ -1,12 +1,12 @@
 {
   "schemaVersion": "1.2.0",
-  "manifestId": "publication-set-7be6d326b59a46e8",
-  "generatedAt": "2026-10-19T00:14:05.812Z",
+  "manifestId": "publication-set-8e8287a5ec7db534",
+  "generatedAt": "2026-11-07T23:58:13.560Z",
   "status": "release_candidate",
   "projectId": "tipsforyourgifts",
   "siteId": "tipsforyourgifts",
   "publicBaseUrl": "https://tipsforyourgifts.web.app",
-  "contentSetSha256": "7be6d326b59a46e8ef0cbcd6fe71152cf72291de6483d76d59c41b1433cdeecf",
+  "contentSetSha256": "8e8287a5ec7db534c5c2255d15cca7c050aed88bc63df25a0fdd46aecda2dae6",
   "counts": {
     "articles": 10,
     "researchRuns": 10,
@@ -15,7 +15,7 @@
     "socialDrafts": 60,
     "missionBoundArticles": 0,
     "preMissionValidatedArticles": 10,
-    "affiliateLinks": 0,
+    "affiliateLinks": 1,
     "visualAssets": 19
   },
   "visualPosture": {
@@ -124,14 +124,16 @@
     ]
   },
   "affiliatePosture": {
-    "registrySha256": "db2579899e18e65773247e25e6db281c2db24240a8ba5ef8c6c29297b21293c5",
-    "approvedOverlaySetSha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
-    "enabledProgramIds": [],
-    "enabledProgramCount": 0,
-    "candidateCount": 0,
-    "passedReviewCount": 0,
-    "founderApprovalCount": 0,
-    "liveAffiliateLinkCount": 0,
+    "registrySha256": "4145e34d6a8c0c1e5087f31d76d06983d4e3e2a64b5aae62d4a7e6d4eee0bde5",
+    "approvedOverlaySetSha256": "7052e5fe641aa1f01231cf8aa5d9c62bc5309127d7ff19076a25aad17f412e02",
+    "enabledProgramIds": [
+      "bookshop-org-us-media"
+    ],
+    "enabledProgramCount": 1,
+    "candidateCount": 1,
+    "passedReviewCount": 1,
+    "founderApprovalCount": 1,
+    "liveAffiliateLinkCount": 1,
     "editorialRankingIndependent": true
   },
   "articles": [
@@ -513,8 +515,23 @@
         "read-it-temperature-loop",
         "read-it-writing-constraint"
       ],
-      "affiliateLinkCount": 0,
-      "affiliateLinks": [],
+      "affiliateLinkCount": 1,
+      "affiliateLinks": [
+        {
+          "productId": "sapiens-us-paperback",
+          "programId": "bookshop-org-us-media",
+          "programRevision": 5,
+          "candidateId": "affiliate-link-read-it-then-play-it-gift-pairs-sapiens-us-paperback-bookshop-org-us-media-v1",
+          "candidatePath": "affiliate/candidates/affiliate-link-read-it-then-play-it-gift-pairs-sapiens-us-paperback-bookshop-org-us-media-v1.json",
+          "candidateSha256": "8376c5b87f055002aaedea531d45818e401a91d98994d07d76785d647f64494f",
+          "reviewId": "affiliate-link-read-it-then-play-it-gift-pairs-sapiens-us-paperback-bookshop-org-us-media-v1-review",
+          "reviewPath": "affiliate/reviews/affiliate-link-read-it-then-play-it-gift-pairs-sapiens-us-paperback-bookshop-org-us-media-v1-review.json",
+          "reviewSha256": "79425876cbb6d37d58538e9bc7c97b38d3df33782fbcad3f864259389098002a",
+          "approvalId": "affiliate-link-read-it-then-play-it-gift-pairs-sapiens-us-paperback-bookshop-org-us-media-v1-approval",
+          "approvalPath": "affiliate/approvals/affiliate-link-read-it-then-play-it-gift-pairs-sapiens-us-paperback-bookshop-org-us-media-v1-approval.json",
+          "approvalSha256": "f37a6f710d3b3289089bc12f5c7186766acec23955736240ed44fa565e50c22b"
+        }
+      ],
       "quality": {
         "researchValidated": true,
         "independentReviewPassed": true,

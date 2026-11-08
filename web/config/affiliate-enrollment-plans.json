@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "updatedAt": "2026-10-10T18:00:00.000Z",
+  "updatedAt": "2026-11-07T23:25:53.490Z",
   "siteProfile": {
     "siteName": "Tips for Your Gifts",
     "productionUrl": "https://tipsforyourgifts.web.app/",
@@ -15,7 +15,7 @@
   "programs": [
     {
       "programId": "bookshop-org-us-media",
-      "programRevision": 4,
+      "programRevision": 5,
       "applicationPositioning": "Lead with the reviewed book anchors and the publication's independent, explanation-first editorial approach. Do not imply that Bookshop covers the non-book companion products.",
       "userOnlyInputs": [
         "account_login",

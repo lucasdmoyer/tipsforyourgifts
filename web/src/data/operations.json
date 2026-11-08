@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-10-19T00:23:41.000Z",
+  "generatedAt": "2026-11-07T23:58:13.560Z",
   "founderAgenda": {
     "schemaVersion": "1.0.0",
-    "generatedAt": "2026-10-19T00:23:41.000Z",
+    "generatedAt": "2026-11-07T23:58:13.560Z",
     "posture": "founder_decisions_required",
     "primaryDecisionId": "review-release-candidate",
     "profitabilityEvidence": "unknown_until_aggregate_measurement",
@@ -15,7 +15,7 @@
         "horizon": "now",
         "category": "release",
         "title": "Review the first accountable Angular release",
-        "recommendation": "Review publication-set-7be6d326b59a46e8 as the first founder-controlled Firebase release candidate.",
+        "recommendation": "Review publication-set-8e8287a5ec7db534 as the first founder-controlled Firebase release candidate.",
         "decisionQuestion": "Does this exact content set represent the site you want readers to see first?",
         "rationale": "The research and release machinery cannot create traffic, trust, or revenue while the modern reviewed site remains only a local candidate.",
         "evidence": [
@@ -88,33 +88,6 @@
           "url": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/social-channel-configure.yml",
           "command": null
         }
-      },
-      {
-        "id": "choose-affiliate-pilot",
-        "rank": 4,
-        "priorityScore": 65,
-        "horizon": "later",
-        "category": "monetization",
-        "title": "Complete the audited affiliate activation review",
-        "recommendation": "Activate Bookshop.org US media affiliate only after external enrollment, current terms acceptance, registered-site, tracking, domain, disclosure, and reporting evidence are complete.",
-        "decisionQuestion": "Has every external enrollment and current-terms requirement been completed and recorded for this exact revision?",
-        "rationale": "A narrow pilot can test operational fit with less commission pressure than enabling the broadest catalog before traffic and conversion evidence exist.",
-        "evidence": [
-          "4 affiliate programs await founder review, 0 await external enrollment, and 1 await activation evidence.",
-          "0 programs and 0 tracked links are enabled.",
-          "Bookshop.org US media affiliate currently maps to 1 publication-ready article.",
-          "Its public terms review expires 2027-01-08."
-        ],
-        "unlocks": "A passing activation PR enables only contract-validated paid-link candidates; every destination and disclosure remains separately reviewable.",
-        "tradeoff": "Enrollment and reporting add compliance work, while a narrow program covers fewer products and cannot monetize every companion in a pair.",
-        "guardrail": "Record only founder-completed external facts and non-secret configuration; activation cannot invent a tracking identity, change editorial ranking, or make any link live by itself.",
-        "reversibility": "high",
-        "founderActionRequired": true,
-        "action": {
-          "label": "Open activation handoff",
-          "url": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/affiliate-program-activate.yml",
-          "command": null
-        }
       }
     ]
   },
@@ -122,11 +95,11 @@
   "validatedRuns": 11,
   "publicationReadyPosts": 10,
   "draftPosts": 3,
-  "affiliateProgramsEnabled": 0,
+  "affiliateProgramsEnabled": 1,
   "affiliateProgramsProposed": 4,
   "affiliateProgramsFounderApproved": 0,
-  "affiliateProgramsExternallyVerified": 1,
-  "affiliateLinksLive": 0,
+  "affiliateProgramsExternallyVerified": 0,
+  "affiliateLinksLive": 1,
   "socialDrafts": 78,
   "socialApproved": 0,
   "socialPublished": 0,
@@ -334,11 +307,11 @@
   "affiliate": {
     "proposedPrograms": 4,
     "founderApprovedPrograms": 0,
-    "externallyVerifiedPrograms": 1,
-    "enabledPrograms": 0,
+    "externallyVerifiedPrograms": 0,
+    "enabledPrograms": 1,
     "publicationReadyProductLinksCataloged": 60,
-    "publicationReadyPaidLinksVerified": 0,
-    "publicationReadyOrdinaryLinks": 60,
+    "publicationReadyPaidLinksVerified": 1,
+    "publicationReadyOrdinaryLinks": 59,
     "productsAssignedToPartnerResearch": 60,
     "productsWithoutPartnerResearch": 0,
     "productCoverageArtifactPath": "/affiliate-product-coverage.json",
@@ -352,28 +325,109 @@
     "externallyEnrolledPrograms": 1,
     "siteApplicationDescription": "Tips for Your Gifts helps shoppers choose thoughtful gifts by explaining what a product is, how it fits the recipient's real life, what they may already own, and what a specialty addition contributes. Recommendations are researched and ranked without regard to commission.",
     "sensitiveDataPolicy": "Account credentials, legal identity, tax details, payout details, and private contact information are entered only in the partner portal by Lucas and are never stored in Git.",
-    "linkCandidates": 0,
-    "linkReviewsPassed": 0,
-    "linkApprovals": 0,
-    "activeOverlays": 0,
-    "approvedOverlaySetSha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
-    "linkQueue": [],
+    "linkCandidates": 1,
+    "linkReviewsPassed": 1,
+    "linkApprovals": 1,
+    "activeOverlays": 1,
+    "activationProposals": [
+      {
+        "id": "bookshop-org-us-media-revision-4",
+        "status": "approval_boundary",
+        "programId": "bookshop-org-us-media",
+        "expectedProgramRevision": 4,
+        "activation": {
+          "allowedDomains": [
+            "bookshop.org"
+          ],
+          "registeredSite": "https://tipsforyourgifts.web.app/",
+          "trackingMethod": "path_redirect_to_query",
+          "trackingPathPrefix": "/a/",
+          "trackingParameterKeys": [
+            "affiliate"
+          ],
+          "reportingExportApproved": false,
+          "requiredDisclosure": "Disclosure: We may earn a commission if you purchase through a paid link on this page. Recommendations are selected independently.",
+          "priceFeedAuthorized": false
+        },
+        "evidence": {
+          "termsSourceUrl": "https://bookshop.org/info/terms-of-use",
+          "termsResolvedUrl": "https://bookshop-webflow.bkshp.org/terms-of-use",
+          "termsLastUpdated": "2025-07-10",
+          "programExplanationUrl": "https://support.bookshop.org/en/support/solutions/articles/65000191390-can-you-explain-bookshop-org-s-affiliate-program-",
+          "linkGuideUrl": "https://support.bookshop.org/en/support/solutions/articles/65000189603-how-do-affiliate-links-widgets-work-on-bookshop-org-",
+          "disclosureGuideUrl": "https://support.bookshop.org/en/support/solutions/articles/65000168990-if-i-m-an-affiliate-do-i-have-to-disclose-that-on-my-website-newsletter-or-social-media-posts-",
+          "observedAt": "2026-10-19T01:27:40.000Z",
+          "publicTrackingIdentity": "129750",
+          "publicStorefrontUrl": "https://bookshop.org/shop/tipsforyourgifts",
+          "observedPaidUrl": "https://bookshop.org/a/129750/9780063422001",
+          "observedResolvedUrl": "https://bookshop.org/p/books/sapiens-tenth-anniversary-edition-a-brief-history-of-humankind-yuval-noah-harari/031a784adc6e9de4?ean=9780063422001&affiliate=129750",
+          "productIsbn": "9780063422001",
+          "productId": "sapiens-us-paperback",
+          "articleSlug": "read-it-then-play-it-gift-pairs",
+          "automatedFetchStatus": 403,
+          "destinationObservationMethod": "authenticated_browser_observation",
+          "observationReceiptPath": "affiliate/evidence/bookshop-sapiens-browser-observation-20261019.json",
+          "observationReceiptSha256": "f6e1e78b23f92938c7578fe0785325489910d1aa20bb3312b4fe4444424b4fff",
+          "observerId": "codex-browser-operator-20261019",
+          "purchaseActionLabel": "Add to Cart"
+        },
+        "assertions": {
+          "programStillDisabledAtProposalCreation": true,
+          "termsNotRecordedAcceptedAtProposalCreation": true,
+          "paidLinkCandidateCreatedAtProposalCreation": false,
+          "activationCreatesPaidLink": false,
+          "productionDeploymentAuthorized": false,
+          "customerDataExportApproved": false
+        },
+        "activationState": "activation_recorded",
+        "approvalBoundarySha256": "9c521256d14e650a50359f02f58dba81b07d0689b972c42b2c01e33630b91295"
+      }
+    ],
+    "approvedOverlaySetSha256": "7052e5fe641aa1f01231cf8aa5d9c62bc5309127d7ff19076a25aad17f412e02",
+    "linkQueue": [
+      {
+        "candidateId": "affiliate-link-read-it-then-play-it-gift-pairs-sapiens-us-paperback-bookshop-org-us-media-v1",
+        "candidateRevision": 1,
+        "candidatePath": "affiliate/candidates/affiliate-link-read-it-then-play-it-gift-pairs-sapiens-us-paperback-bookshop-org-us-media-v1.json",
+        "candidateSha256": "8376c5b87f055002aaedea531d45818e401a91d98994d07d76785d647f64494f",
+        "articleSlug": "read-it-then-play-it-gift-pairs",
+        "productId": "sapiens-us-paperback",
+        "programId": "bookshop-org-us-media",
+        "programRevision": 5,
+        "destinationHostname": "bookshop.org",
+        "createdAt": "2026-11-07T23:35:17.025Z",
+        "createdBy": "lucasdmoyer",
+        "originSource": "founder_supplied",
+        "originReferenceId": null,
+        "originSourceArtifactPath": null,
+        "originSourceSha256": null,
+        "stage": "approved_overlay",
+        "reviewVerdict": "passed",
+        "reviewPath": "affiliate/reviews/affiliate-link-read-it-then-play-it-gift-pairs-sapiens-us-paperback-bookshop-org-us-media-v1-review.json",
+        "reviewSha256": "79425876cbb6d37d58538e9bc7c97b38d3df33782fbcad3f864259389098002a",
+        "reviewedAt": "2026-11-07T23:53:30.221Z",
+        "approvalPath": "affiliate/approvals/affiliate-link-read-it-then-play-it-gift-pairs-sapiens-us-paperback-bookshop-org-us-media-v1-approval.json",
+        "approvalSha256": "f37a6f710d3b3289089bc12f5c7186766acec23955736240ed44fa565e50c22b",
+        "approvedAt": "2026-11-07T23:58:13.560Z",
+        "nextGate": "Include this exact approved overlay in a Firebase preview, verify disclosure and sponsored rel, then use the separate exact-SHA release gate."
+      }
+    ],
     "programs": [
       {
         "id": "bookshop-org-us-media",
-        "revision": 4,
+        "revision": 5,
         "priority": 1,
         "coverageRole": "category_specialist",
         "name": "Bookshop.org US media affiliate",
-        "status": "externally_verified",
+        "status": "enabled",
         "founderDisposition": "approved",
         "eligibleArticleSlugs": [
           "read-it-then-play-it-gift-pairs"
         ],
         "productSelectionMode": "explicit_products",
         "productResearchCandidates": 10,
-        "verifiedPaidLinks": 0,
-        "enrollmentStage": "activation_evidence_required",
+        "verifiedPaidLinks": 1,
+        "enrollmentStage": "exact_link_research",
         "publicApplicationPacketReady": true,
         "externalEnrollmentAllowedByRegistry": true,
         "externalSubmissionStillRequiresActionTimeApproval": true,
@@ -407,7 +461,7 @@
         "sourceReviewExpiresAt": "2027-01-08",
         "programHomepageUrl": "https://bookshop.org/affiliates/profile/introduction",
         "termsUrl": "https://bookshop.org/info/terms-of-use",
-        "nextGate": "Review and explicitly accept the current affiliate terms, registered production site, allowed destination domain, Bookshop-issued tracking behavior, disclosure, and aggregate reporting boundary before activation; no paid link is live."
+        "nextGate": "Create and independently review exact destination-link candidates with the approved disclosure and sponsored relationship; activation alone does not make a paid link live or authorize prices."
       },
       {
         "id": "amazon-associates-us",
@@ -3027,15 +3081,15 @@
     },
     "currentCandidate": {
       "status": "release_candidate",
-      "manifestId": "publication-set-7be6d326b59a46e8",
-      "contentSetSha256": "7be6d326b59a46e8ef0cbcd6fe71152cf72291de6483d76d59c41b1433cdeecf",
+      "manifestId": "publication-set-8e8287a5ec7db534",
+      "contentSetSha256": "8e8287a5ec7db534c5c2255d15cca7c050aed88bc63df25a0fdd46aecda2dae6",
       "articles": 10,
       "independentReviews": 10,
       "socialLaunchPacks": 9,
       "socialDrafts": 60,
       "missionBoundArticles": 0,
       "preMissionValidatedArticles": 10,
-      "affiliateLinks": 0
+      "affiliateLinks": 1
     }
   },
   "growth": {
@@ -3145,9 +3199,8 @@
   },
   "alerts": [
     "Production Firebase rules have not been verified from this checkout.",
-    "No affiliate program is enabled; links must remain non-affiliate.",
     "4 affiliate program candidates await founder review; approval does not enroll or enable tracking.",
-    "1 affiliate program is externally verified but disabled; current terms and exact activation evidence still require founder approval.",
+    "1 exact affiliate link candidate: 1 independently reviewed and founder-approved overlay active in generated content.",
     "78 social launch drafts await approved media, content approval, and official API access.",
     "1 original social creative candidate is locally verified but not rights-approved, released, or published.",
     "Growth measurement is not connected; traffic, conversions, and revenue remain unknown rather than zero.",

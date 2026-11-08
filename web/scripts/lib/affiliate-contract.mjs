@@ -38,7 +38,9 @@ const accountSchema = z.object({
   termsAcceptedByFounder: z.boolean(),
   termsAcceptedAt: z.string().datetime().nullable(),
   acceptanceEvidenceReference: httpsUrl.nullable(),
-  reportingExportApproved: z.boolean()
+  reportingExportApproved: z.boolean(),
+  activationProposalId: slug.nullable().default(null),
+  activationProposalSha256: z.string().regex(/^[a-f0-9]{64}$/).nullable().default(null)
 }).strict();
 
 const researchCandidateSelectionSchema = z.discriminatedUnion('mode', [
@@ -235,6 +237,9 @@ export function validateAffiliateModel(input, options = {}) {
       if (!account.termsAcceptedByFounder || !account.termsAcceptedAt || !account.acceptanceEvidenceReference) {
         issues.push(`${program.id}: enabled program requires founder-recorded terms acceptance evidence`);
       }
+      if (!account.activationProposalId || !account.activationProposalSha256) {
+        issues.push(`${program.id}: enabled program requires an exact activation proposal ID and SHA-256`);
+      }
       if (program.allowedDomains.length === 0) issues.push(`${program.id}: enabled program requires allowlisted destination domains`);
       if (program.registeredSites.length === 0) issues.push(`${program.id}: enabled program requires at least one registered site`);
       if (program.trackingParameterKeys.length === 0) issues.push(`${program.id}: enabled program requires approved tracking parameter keys`);
@@ -244,6 +249,9 @@ export function validateAffiliateModel(input, options = {}) {
       if (!program.requiredDisclosure) issues.push(`${program.id}: enabled program requires approved disclosure language`);
       const asOfDate = options.asOfDate ?? model.updatedAt.slice(0, 10);
       if (program.sourceReviewExpiresAt < asOfDate) issues.push(`${program.id}: enabled program terms review has expired`);
+    }
+    if (program.status !== 'enabled' && (account.activationProposalId !== null || account.activationProposalSha256 !== null)) {
+      issues.push(`${program.id}: disabled program cannot claim an activation proposal receipt`);
     }
   }
   return issues;

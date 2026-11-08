@@ -1,24 +1,24 @@
 {
   "schemaVersion": "1.0.0",
-  "registrySha256": "db2579899e18e65773247e25e6db281c2db24240a8ba5ef8c6c29297b21293c5",
-  "registryUpdatedAt": "2026-10-19T00:23:41.000Z",
+  "registrySha256": "4145e34d6a8c0c1e5087f31d76d06983d4e3e2a64b5aae62d4a7e6d4eee0bde5",
+  "registryUpdatedAt": "2026-11-07T23:25:53.490Z",
   "definition": "Program assignments are research queues only. They do not assert exact-product availability, account acceptance, tracking validity, or commission eligibility.",
   "counts": {
     "publicationReadyProductLinksCataloged": 60,
     "productsAssignedToPartnerResearch": 60,
     "productsWithoutPartnerResearch": 0,
-    "productsWithVerifiedPaidDestination": 0
+    "productsWithVerifiedPaidDestination": 1
   },
   "programs": [
     {
       "programId": "bookshop-org-us-media",
-      "programRevision": 4,
+      "programRevision": 5,
       "priority": 1,
-      "status": "externally_verified",
+      "status": "enabled",
       "selectionMode": "explicit_products",
       "eligibleArticleCount": 1,
       "productResearchCandidates": 10,
-      "verifiedPaidLinks": 0
+      "verifiedPaidLinks": 1
     },
     {
       "programId": "amazon-associates-us",
@@ -818,8 +818,8 @@
         "ebay-partner-network-us"
       ],
       "preferredResearchProgramId": "bookshop-org-us-media",
-      "verifiedPaidProgramId": null,
-      "status": "ordinary_link_research_assigned"
+      "verifiedPaidProgramId": "bookshop-org-us-media",
+      "status": "verified_paid_link"
     },
     {
       "articleSlug": "read-it-then-play-it-gift-pairs",

@@ -289,6 +289,54 @@ export interface Operations {
     linkApprovals: number;
     activeOverlays: number;
     approvedOverlaySetSha256: string;
+    activationProposals: Array<{
+      id: string;
+      status: 'approval_boundary';
+      activationState: 'awaiting_founder_terms_acceptance' | 'activation_recorded';
+      programId: string;
+      expectedProgramRevision: number;
+      approvalBoundarySha256: string;
+      activation: {
+        allowedDomains: string[];
+        registeredSite: string;
+        trackingMethod: 'path_redirect_to_query';
+        trackingPathPrefix: '/a/';
+        trackingParameterKeys: ['affiliate'];
+        reportingExportApproved: false;
+        requiredDisclosure: string;
+        priceFeedAuthorized: false;
+      };
+      evidence: {
+        termsSourceUrl: string;
+        termsResolvedUrl: string;
+        termsLastUpdated: string;
+        programExplanationUrl: string;
+        linkGuideUrl: string;
+        disclosureGuideUrl: string;
+        observedAt: string;
+        publicTrackingIdentity: string;
+        publicStorefrontUrl: string;
+        observedPaidUrl: string;
+        observedResolvedUrl: string;
+        productIsbn: string;
+        productId: string;
+        articleSlug: string;
+        automatedFetchStatus: 403;
+        destinationObservationMethod: 'authenticated_browser_observation';
+        observationReceiptPath: string;
+        observationReceiptSha256: string;
+        observerId: string;
+        purchaseActionLabel: string;
+      };
+      assertions: {
+        programStillDisabledAtProposalCreation: true;
+        termsNotRecordedAcceptedAtProposalCreation: true;
+        paidLinkCandidateCreatedAtProposalCreation: false;
+        activationCreatesPaidLink: false;
+        productionDeploymentAuthorized: false;
+        customerDataExportApproved: false;
+      };
+    }>;
     linkQueue: Array<{
       candidateId: string;
       candidateRevision: number;

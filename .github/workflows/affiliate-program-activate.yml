@@ -7,31 +7,12 @@ on:
         description: "Exact externally verified program ID visible in Studio"
         required: true
         type: string
-      expected_revision:
-        description: "Exact externally verified revision visible in Studio"
-        required: true
-        type: number
-      allowed_domains:
-        description: "Comma-separated official merchant domains allowed by current terms"
+      proposal_id:
+        description: "Exact activation proposal ID visible in Studio"
         required: true
         type: string
-      registered_site:
-        description: "Exact credential-free HTTPS site registered with the affiliate program"
-        required: true
-        type: string
-      tracking_method:
-        description: "Program-issued tracking format"
-        required: true
-        type: choice
-        options:
-          - query_parameters
-          - path_redirect_to_query
-      tracking_path_prefix:
-        description: "Required for path redirects, for example /a/; leave empty for query-only tracking"
-        required: false
-        type: string
-      tracking_parameter_keys:
-        description: "Comma-separated program-provided parameter names only; never enter values"
+      expected_proposal_sha256:
+        description: "Exact approval-boundary SHA-256 visible in Studio"
         required: true
         type: string
       terms_accepted_at:
@@ -42,10 +23,6 @@ on:
         description: "Credential-free HTTPS issue or PR recording the external activation review"
         required: true
         type: string
-      reporting_export_approved:
-        description: "Whether aggregate reporting export was reviewed and approved"
-        required: true
-        type: boolean
       confirmation:
         description: "Type ACTIVATE- followed by the exact program ID"
         required: true
@@ -70,10 +47,14 @@ jobs:
           ACTOR: ${{ github.actor }}
           OWNER: ${{ github.repository_owner }}
           PROGRAM_ID: ${{ inputs.program_id }}
+          PROPOSAL_ID: ${{ inputs.proposal_id }}
+          EXPECTED_PROPOSAL_SHA256: ${{ inputs.expected_proposal_sha256 }}
           CONFIRMATION: ${{ inputs.confirmation }}
         run: |
           test "$ACTOR" = "$OWNER" || { echo "Only the repository owner may activate an affiliate program." >&2; exit 1; }
           [[ "$PROGRAM_ID" =~ ^[a-z0-9]+(-[a-z0-9]+)*$ ]] || { echo "Invalid program ID." >&2; exit 1; }
+          [[ "$PROPOSAL_ID" =~ ^[a-z0-9]+(-[a-z0-9]+)*$ ]] || { echo "Invalid proposal ID." >&2; exit 1; }
+          [[ "$EXPECTED_PROPOSAL_SHA256" =~ ^[a-f0-9]{64}$ ]] || { echo "Invalid proposal SHA-256." >&2; exit 1; }
           test "$CONFIRMATION" = "ACTIVATE-$PROGRAM_ID" || { echo "Action-time confirmation does not match the exact program." >&2; exit 1; }
       - uses: actions/checkout@v5
         with:
@@ -87,27 +68,22 @@ jobs:
       - name: Record non-secret external activation evidence
         env:
           PROGRAM_ID: ${{ inputs.program_id }}
-          EXPECTED_REVISION: ${{ inputs.expected_revision }}
-          ALLOWED_DOMAINS: ${{ inputs.allowed_domains }}
-          REGISTERED_SITE: ${{ inputs.registered_site }}
-          TRACKING_METHOD: ${{ inputs.tracking_method }}
-          TRACKING_PATH_PREFIX: ${{ inputs.tracking_path_prefix }}
-          TRACKING_PARAMETER_KEYS: ${{ inputs.tracking_parameter_keys }}
+          PROPOSAL_ID: ${{ inputs.proposal_id }}
+          EXPECTED_PROPOSAL_SHA256: ${{ inputs.expected_proposal_sha256 }}
           TERMS_ACCEPTED_AT: ${{ inputs.terms_accepted_at }}
           ACCEPTANCE_EVIDENCE_URL: ${{ inputs.acceptance_evidence_url }}
-          REPORTING_EXPORT_APPROVED: ${{ inputs.reporting_export_approved }}
           CONFIRMATION: ${{ inputs.confirmation }}
           FOUNDER_LOGIN: ${{ github.actor }}
         run: |
           npm ci --prefix web
           npm run validate
-          npm --prefix web run affiliate:activate -- --program-id="$PROGRAM_ID" --expected-revision="$EXPECTED_REVISION" --allowed-domains="$ALLOWED_DOMAINS" --registered-site="$REGISTERED_SITE" --tracking-method="$TRACKING_METHOD" --tracking-path-prefix="$TRACKING_PATH_PREFIX" --tracking-parameter-keys="$TRACKING_PARAMETER_KEYS" --terms-accepted-at="$TERMS_ACCEPTED_AT" --acceptance-evidence-url="$ACCEPTANCE_EVIDENCE_URL" --reporting-export-approved="$REPORTING_EXPORT_APPROVED" --confirmation="$CONFIRMATION" --founder-login="$FOUNDER_LOGIN"
+          npm --prefix web run affiliate:activate -- --program-id="$PROGRAM_ID" --proposal-id="$PROPOSAL_ID" --expected-proposal-sha256="$EXPECTED_PROPOSAL_SHA256" --terms-accepted-at="$TERMS_ACCEPTED_AT" --acceptance-evidence-url="$ACCEPTANCE_EVIDENCE_URL" --confirmation="$CONFIRMATION" --founder-login="$FOUNDER_LOGIN"
           npm --prefix web run generate
       - name: Prove the bounded activation patch
         run: |
           while IFS= read -r changed_path; do
             case "$changed_path" in
-              web/config/affiliate-programs.json|web/src/data/operations.json|web/src/app/generated/content.generated.ts|web/public/publication-manifest.json|web/public/sitemap.xml) ;;
+              web/config/affiliate-programs.json|web/config/affiliate-enrollment-plans.json|web/src/data/operations.json|web/src/app/generated/content.generated.ts|web/public/publication-manifest.json|web/public/sitemap.xml) ;;
               *) echo "Affiliate activation changed forbidden path: $changed_path" >&2; exit 1 ;;
             esac
           done < <(git diff --name-only HEAD)
@@ -123,7 +99,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git switch -c "codex/activate-affiliate-$RUN_ID"
-          git add web/config/affiliate-programs.json web/src/data/operations.json web/src/app/generated/content.generated.ts web/public/publication-manifest.json web/public/sitemap.xml
+          git add web/config/affiliate-programs.json web/config/affiliate-enrollment-plans.json web/src/data/operations.json web/src/app/generated/content.generated.ts web/public/publication-manifest.json web/public/sitemap.xml
           git commit -m "Activate audited affiliate program $PROGRAM_ID"
           git push origin "codex/activate-affiliate-$RUN_ID"
       - name: Open the activation pull request
@@ -132,4 +108,4 @@ jobs:
           RUN_ID: ${{ github.run_id }}
           PROGRAM_ID: ${{ inputs.program_id }}
         run: |
-          gh pr create --base master --head "codex/activate-affiliate-$RUN_ID" --title "Activate audited affiliate program $PROGRAM_ID" --body "This founder-dispatched patch records external account, current-terms, registered-site, non-secret tracking-configuration, destination-domain, disclosure, and reporting evidence. It creates no account, accepts no terms, creates no paid link, authorizes no price, changes no editorial rank, and does not deploy. Exact link candidates and their Firebase preview remain separately reviewed."
+          gh pr create --base master --head "codex/activate-affiliate-$RUN_ID" --title "Activate audited affiliate program $PROGRAM_ID" --body "This founder-dispatched patch is bound to the exact Studio activation proposal ID and SHA-256. It records current-terms acceptance evidence and derives site, tracking, domain, disclosure, reporting, and price-feed boundaries from that immutable packet. It creates no account, creates no paid link, authorizes no product-level price, changes no editorial rank, and does not deploy. Exact link candidates and their Firebase preview remain separately reviewed."

@@ -1,7 +1,7 @@
 {
   "schemaVersion": "1.0.0",
-  "registryUpdatedAt": "2026-10-19T00:23:41.000Z",
-  "planUpdatedAt": "2026-10-10T18:00:00.000Z",
+  "registryUpdatedAt": "2026-11-07T23:25:53.490Z",
+  "planUpdatedAt": "2026-11-07T23:25:53.490Z",
   "definition": "Application packets contain public site facts, non-sensitive positioning, and labels for portal-only founder inputs. They do not create accounts, accept terms, submit forms, assert acceptance, store credentials, or authorize paid links.",
   "siteProfile": {
     "siteName": "Tips for Your Gifts",
@@ -76,21 +76,23 @@
     "useful-gifts-for-hard-to-shop-for-adults:peak-design-packing-cube-medium",
     "useful-gifts-for-hard-to-shop-for-adults:thermoworks-thermopop-2"
   ],
-  "verifiedPaidProductKeys": [],
+  "verifiedPaidProductKeys": [
+    "read-it-then-play-it-gift-pairs:sapiens-us-paperback"
+  ],
   "counts": {
     "totalPrograms": 5,
     "publicApplicationPacketsReady": 5,
     "externalEnrollmentAllowedByRegistry": 1,
     "awaitingFounderProgramApproval": 4,
     "externallyEnrolled": 1,
-    "enabledPrograms": 0,
+    "enabledPrograms": 1,
     "productResearchCandidates": 60,
-    "verifiedPaidLinks": 0
+    "verifiedPaidLinks": 1
   },
   "programs": [
     {
       "programId": "bookshop-org-us-media",
-      "programRevision": 4,
+      "programRevision": 5,
       "applicationPositioning": "Lead with the reviewed book anchors and the publication's independent, explanation-first editorial approach. Do not imply that Bookshop covers the non-book companion products.",
       "userOnlyInputs": [
         "account_login",
@@ -116,8 +118,8 @@
       ],
       "programName": "Bookshop.org US media affiliate",
       "priority": 1,
-      "registryStatus": "externally_verified",
-      "stage": "activation_evidence_required",
+      "registryStatus": "enabled",
+      "stage": "exact_link_research",
       "publicApplicationPacketReady": true,
       "externalEnrollmentAllowedByRegistry": true,
       "externalSubmissionStillRequiresActionTimeApproval": true,
@@ -135,12 +137,14 @@
         "read-it-then-play-it-gift-pairs:the-food-lab-hardcover",
         "read-it-then-play-it-gift-pairs:thinking-in-systems-paperback"
       ],
-      "verifiedPaidProductKeys": [],
+      "verifiedPaidProductKeys": [
+        "read-it-then-play-it-gift-pairs:sapiens-us-paperback"
+      ],
       "productResearchCandidates": 10,
-      "verifiedPaidLinks": 0,
+      "verifiedPaidLinks": 1,
       "programHomepageUrl": "https://bookshop.org/affiliates/profile/introduction",
       "termsUrl": "https://bookshop.org/info/terms-of-use",
-      "nextGate": "Review and explicitly accept the current affiliate terms, registered production site, allowed destination domain, Bookshop-issued tracking behavior, disclosure, and aggregate reporting boundary before activation; no paid link is live."
+      "nextGate": "Create and independently review exact destination-link candidates with the approved disclosure and sponsored relationship; activation alone does not make a paid link live or authorize prices."
     },
     {
       "programId": "amazon-associates-us",
