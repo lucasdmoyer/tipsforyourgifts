@@ -143,6 +143,19 @@ for (const article of readyArticles) {
     if (!html.includes(`data-product-id="${product.id}"`)) failures.push(`${article.slug}: missing outbound marker for ${product.id}`);
     if (!html.includes(escapeHtmlText(product.url))) failures.push(`${article.slug}: missing merchant link for ${product.id}`);
   }
+  const manifestArticle = publicationManifest?.articles.find((entry) => entry.articleSlug === article.slug);
+  if ((manifestArticle?.affiliateLinkCount ?? 0) > 0) {
+    for (const marker of ['Affiliate disclosure:</strong> We may earn a commission', 'rel="sponsored noopener"', 'data-paid-link="true"']) {
+      if (!html.includes(marker)) failures.push(`${article.slug}: paid-link article is missing ${JSON.stringify(marker)}`);
+    }
+    for (const marker of [
+      'All product links in this draft are ordinary, unpaid links.',
+      'Every product link is an ordinary, unpaid link; no affiliate program is enabled for this article.',
+      'The product links are ordinary, unpaid links.'
+    ]) {
+      if (html.includes(marker)) failures.push(`${article.slug}: paid-link article retains contradictory unpaid-only copy ${JSON.stringify(marker)}`);
+    }
+  }
   const pairs = Array.isArray(article.pairs) ? article.pairs : [];
   if (pairs.length > 0) {
     for (const marker of ['Why this makes a good gift', 'Before you buy', 'Original illustration of the gift idea—not product photography.']) {
