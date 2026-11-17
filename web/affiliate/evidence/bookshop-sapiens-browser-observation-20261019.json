@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "1.0.0",
+  "receiptId": "bookshop-sapiens-browser-observation-20261019",
+  "observerId": "codex-browser-operator-20261019",
+  "observationMethod": "authenticated_browser_observation",
+  "observedAt": "2026-10-19T01:27:40.000Z",
+  "programId": "bookshop-org-us-media",
+  "publicTrackingIdentity": "129750",
+  "publicStorefrontUrl": "https://bookshop.org/shop/tipsforyourgifts",
+  "articleSlug": "read-it-then-play-it-gift-pairs",
+  "productId": "sapiens-us-paperback",
+  "productIsbn": "9780063422001",
+  "paidUrl": "https://bookshop.org/a/129750/9780063422001",
+  "resolvedUrl": "https://bookshop.org/p/books/sapiens-tenth-anniversary-edition-a-brief-history-of-humankind-yuval-noah-harari/031a784adc6e9de4?ean=9780063422001&affiliate=129750",
+  "purchaseActionLabel": "Add to Cart",
+  "storefrontLabel": "Tips for Your Gifts",
+  "automatedFetch": {
+    "lastKnownStatus": 403,
+    "redirectsObserved": 0,
+    "treatedAsPassingEvidence": false
+  },
+  "assertions": {
+    "intendedEditionObserved": true,
+    "trackingIdentityObserved": true,
+    "purchaseActionObserved": true,
+    "independentAffiliateLinkReviewCompleted": false,
+    "paidLinkApproved": false,
+    "productionDeploymentAuthorized": false
+  }
+}

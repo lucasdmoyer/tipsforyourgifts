@@ -1,0 +1,100 @@
+name: Record an affiliate partner link batch
+
+on:
+  workflow_dispatch:
+    inputs:
+      batch_json:
+        description: "Exact credential-free partner export JSON; URLs must be program-issued and use only approved tracking keys"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: affiliate-link-batch-${{ github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  record:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    environment: affiliate-links
+    steps:
+      - name: Require repository-owner action-time attestation
+        env:
+          ACTOR: ${{ github.actor }}
+          OWNER: ${{ github.repository_owner }}
+        run: test "$ACTOR" = "$OWNER" || { echo "Only the repository owner may attest and import a partner export." >&2; exit 1; }
+      - uses: actions/checkout@v5
+        with:
+          ref: master
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24.14.0"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - name: Validate and preserve the exact founder-attested export
+        id: batch_input
+        env:
+          AFFILIATE_BATCH_JSON: ${{ inputs.batch_json }}
+          AFFILIATE_BATCH_INPUT_PATH: ${{ runner.temp }}/affiliate-partner-export.json
+        run: |
+          npm ci --prefix web
+          npm run validate
+          npm --prefix web run affiliate:link:batch:prepare
+      - name: Create an inert, hash-bound candidate for every export record
+        id: batch
+        env:
+          INPUT_PATH: ${{ steps.batch_input.outputs.input_path }}
+          EXPORT_ID: ${{ steps.batch_input.outputs.export_id }}
+          EXPORT_SHA256: ${{ steps.batch_input.outputs.export_sha256 }}
+          CREATOR_ID: ${{ github.actor }}
+        run: |
+          echo "baseline_live_links=$(node -p 'require(\"./web/public/publication-manifest.json\").affiliatePosture.liveAffiliateLinkCount')" >> "$GITHUB_OUTPUT"
+          npm --prefix web run affiliate:link:batch-candidate -- \
+            --input="$INPUT_PATH" \
+            --founder-login="$CREATOR_ID" \
+            --confirmation="IMPORT-$EXPORT_ID-$EXPORT_SHA256"
+          npm --prefix web run generate
+      - name: Prove the batch is complete, inert, and bounded
+        env:
+          SOURCE_ARTIFACT_PATH: ${{ steps.batch.outputs.source_artifact_path }}
+          BATCH_MANIFEST_PATH: ${{ steps.batch.outputs.batch_manifest_path }}
+          BASELINE_LIVE_LINKS: ${{ steps.batch.outputs.baseline_live_links }}
+        run: |
+          git add -N .
+          while IFS= read -r changed_path; do
+            case "$changed_path" in
+              "$SOURCE_ARTIFACT_PATH"|"$BATCH_MANIFEST_PATH"|web/affiliate/candidates/*|web/src/data/operations.json|web/src/app/generated/content.generated.ts|web/public/publication-manifest.json|web/public/sitemap.xml) ;;
+              *) echo "Affiliate batch changed forbidden path: $changed_path" >&2; exit 1 ;;
+            esac
+          done < <(git diff --name-only HEAD)
+          test "$(node -p "require('./web/public/publication-manifest.json').affiliatePosture.liveAffiliateLinkCount")" -eq "$BASELINE_LIVE_LINKS"
+          npm run validate
+          npm run build
+          npm run smoke
+          git diff --check
+      - name: Commit the attested batch branch
+        env:
+          RUN_ID: ${{ github.run_id }}
+          SOURCE_ARTIFACT_PATH: ${{ steps.batch.outputs.source_artifact_path }}
+          BATCH_MANIFEST_PATH: ${{ steps.batch.outputs.batch_manifest_path }}
+          EXPORT_ID: ${{ steps.batch.outputs.export_id }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -c "codex/affiliate-link-batch-$RUN_ID"
+          git add "$SOURCE_ARTIFACT_PATH" "$BATCH_MANIFEST_PATH" web/affiliate/candidates web/src/data/operations.json web/src/app/generated/content.generated.ts web/public/publication-manifest.json web/public/sitemap.xml
+          git commit -m "Record affiliate partner batch $EXPORT_ID"
+          git push origin "codex/affiliate-link-batch-$RUN_ID"
+      - name: Open independent-review pull request
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ github.run_id }}
+          EXPORT_ID: ${{ steps.batch.outputs.export_id }}
+          CANDIDATE_COUNT: ${{ steps.batch.outputs.candidate_count }}
+        run: |
+          gh pr create --base master --head "codex/affiliate-link-batch-$RUN_ID" --title "Review affiliate partner batch $EXPORT_ID" --body "Repository owner ${{ github.actor }} attested this exact partner export at action time. It preserves the source bytes and creates $CANDIDATE_COUNT inert, hash-bound candidates with an exact-set completion manifest. It does not review, approve, render, or publish any paid link. Each candidate still requires independent evidence review, founder approval, and an exact-SHA Firebase preview."

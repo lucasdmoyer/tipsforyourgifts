@@ -661,7 +661,7 @@
       "editorialScore": 78,
       "evidenceConfidence": 74,
       "drawbacks": [
-        "Its narrow northern latitude range fits comparatively few US observing sites, and its compact flat map cannot locate the moving Moon or planets."
+        "This narrow latitude range fits relatively few US viewing locations. The compact flat map also cannot show where the moving Moon or planets will be."
       ],
       "primarySourceIds": [
         "src-chandler-20-30-official"
@@ -736,7 +736,7 @@
       "editorialScore": 87,
       "evidenceConfidence": 84,
       "drawbacks": [
-        "It is still a compact flat projection with limited labels, and it cannot locate the changing Moon or planets."
+        "It is a compact flat map with limited labels and a small learning curve. It shows fixed stars and constellations, not the changing positions of the Moon or planets."
       ],
       "primarySourceIds": [
         "src-chandler-30-40-official"
@@ -812,7 +812,7 @@
       "editorialScore": 86,
       "evidenceConfidence": 83,
       "drawbacks": [
-        "Independent exact-edition reviews disagree about whether its usable map area and label density are generous enough for a beginner."
+        "Independent reviews of this exact edition disagree about whether the map area and number of labels are generous enough for a beginner. Preview it if the recipient needs larger print or more detail."
       ],
       "primarySourceIds": [
         "src-chandler-40-50-official"
@@ -887,7 +887,7 @@
       "editorialScore": 82,
       "evidenceConfidence": 78,
       "drawbacks": [
-        "The order page is a model selector, so choose Deep Red/Red rather than Skylite. It also uses a bulky 9-volt battery, is not water resistant, and may still be too bright at its lowest setting."
+        "The order page includes several models, so choose Deep Red/Red rather than Skylite. It uses a bulky 9-volt battery, is not water resistant, and one independent test found that even its lowest setting may be too bright, so test it indoors first."
       ],
       "primarySourceIds": [
         "src-rigel-manual",
@@ -960,7 +960,7 @@
       "editorialScore": 79,
       "evidenceConfidence": 75,
       "drawbacks": [
-        "Independent reviews report uneven diffusion, one-handed-use friction, and mixed build-quality impressions, and the reviewed product page provides no weather-resistance rating."
+        "Independent reviews report uneven light, awkward one-handed use, and mixed impressions of the build quality. The product page we reviewed gave no weather-resistance rating, so keep it dry and recheck the current seller and return terms."
       ],
       "primarySourceIds": [
         "src-celestron-light-official"
@@ -1207,7 +1207,7 @@
       "editorialScore": 78,
       "evidenceConfidence": 74,
       "drawbacks": [
-        "Its narrow northern latitude range fits comparatively few US observing sites, and its compact flat map cannot locate the moving Moon or planets."
+        "This narrow latitude range fits relatively few US viewing locations. The compact flat map also cannot show where the moving Moon or planets will be."
       ],
       "primarySourceIds": [
         "src-chandler-20-30-official"
@@ -1282,7 +1282,7 @@
       "editorialScore": 87,
       "evidenceConfidence": 84,
       "drawbacks": [
-        "It is still a compact flat projection with limited labels, and it cannot locate the changing Moon or planets."
+        "It is a compact flat map with limited labels and a small learning curve. It shows fixed stars and constellations, not the changing positions of the Moon or planets."
       ],
       "primarySourceIds": [
         "src-chandler-30-40-official"
@@ -1358,7 +1358,7 @@
       "editorialScore": 86,
       "evidenceConfidence": 83,
       "drawbacks": [
-        "Independent exact-edition reviews disagree about whether its usable map area and label density are generous enough for a beginner."
+        "Independent reviews of this exact edition disagree about whether the map area and number of labels are generous enough for a beginner. Preview it if the recipient needs larger print or more detail."
       ],
       "primarySourceIds": [
         "src-chandler-40-50-official"
@@ -1433,7 +1433,7 @@
       "editorialScore": 82,
       "evidenceConfidence": 78,
       "drawbacks": [
-        "The order page is a model selector, so choose Deep Red/Red rather than Skylite. It also uses a bulky 9-volt battery, is not water resistant, and may still be too bright at its lowest setting."
+        "The order page includes several models, so choose Deep Red/Red rather than Skylite. It uses a bulky 9-volt battery, is not water resistant, and one independent test found that even its lowest setting may be too bright, so test it indoors first."
       ],
       "primarySourceIds": [
         "src-rigel-manual",
@@ -1506,7 +1506,7 @@
       "editorialScore": 79,
       "evidenceConfidence": 75,
       "drawbacks": [
-        "Independent reviews report uneven diffusion, one-handed-use friction, and mixed build-quality impressions, and the reviewed product page provides no weather-resistance rating."
+        "Independent reviews report uneven light, awkward one-handed use, and mixed impressions of the build quality. The product page we reviewed gave no weather-resistance rating, so keep it dry and recheck the current seller and return terms."
       ],
       "primarySourceIds": [
         "src-celestron-light-official"
@@ -1575,13 +1575,13 @@
   "pairs": [
     {
       "id": "lower-midlatitude-one-pattern-pair",
-      "name": "The 30-to-40-degree one-pattern configuration",
+      "name": "For a 30-to-40-degree north viewing spot",
       "anchorCandidateId": "night-sky-30-40-large",
       "companionCandidateId": "rigel-starlite-mini-red-only",
       "recipientJob": "Set one date and time for a 30-to-40-degree north site, identify one familiar pattern, then use a prechecked two-red-LED light at its lowest usable output to find one adjacent pattern outside.",
       "coherenceType": "observation_loop",
-      "whyTogether": "The latitude-correct wheel answers what fixed-star pattern should be above the horizon, while the Rigel supplies adjustable direct red chart light; the pair qualifies only after its lowest usable output is checked indoors.",
-      "interactionMoment": "Before dark adaptation, set the wheel and check the Rigel's lowest usable output indoors; outside, find one familiar pattern, consult the chart briefly, then locate one neighbor.",
+      "whyTogether": "The correctly matched star wheel shows which fixed-star patterns should be above the horizon. The adjustable red light helps the recipient read the wheel outside without switching on white light. Test the light's dimmest useful setting indoors first.",
+      "interactionMoment": "Indoors, set the wheel for the date and time and test the light at its lowest setting. Outside, find one familiar star pattern, glance at the wheel briefly, turn the light off, and look for one neighboring pattern.",
       "compatibilityChecks": [
         {
           "dimension": "edition_or_region",
@@ -1613,8 +1613,8 @@
       ],
       "duplicateRisk": "medium",
       "clutterDelta": "neutral",
-      "preGiftCheck": "Confirm the exact observing latitude, analog preference, chart readability, existing guide, existing red light, 9-volt battery acceptance, and the Deep Red/Red—not Skylite—option at checkout.",
-      "bundleDrawback": "Buy only the planisphere if they already own a trusted red-only light with verified low-end output; buy only the Rigel if they already own the correct analog guide; skip both if they prefer apps.",
+      "preGiftCheck": "Confirm that the regular viewing spot is between 30 and 40 degrees north, that the recipient prefers a printed guide and can read it comfortably, and that they do not already own either tool. At checkout choose Deep Red/Red, not Skylite, and make sure a 9-volt battery and dry storage work for them.",
+      "bundleDrawback": "Give only the star wheel if they already own a dim red-only light. Give only the Rigel if they already own the correct star guide. Skip both if they prefer an app, need screen zoom or audio, or find the lowest light setting too bright.",
       "claimIds": [
         "claim-pair-30-40-rigel"
       ],
@@ -1631,13 +1631,13 @@
     },
     {
       "id": "upper-midlatitude-one-pattern-pair",
-      "name": "The 40-to-50-degree one-pattern configuration",
+      "name": "For a 40-to-50-degree north viewing spot",
       "anchorCandidateId": "night-sky-40-50-large",
       "companionCandidateId": "rigel-starlite-mini-red-only",
       "recipientJob": "Set one date and time for a 40-to-50-degree north site, identify one familiar pattern, then use a prechecked two-red-LED light at its lowest usable output to find one adjacent pattern outside.",
       "coherenceType": "observation_loop",
-      "whyTogether": "The latitude-correct wheel supplies the northern-US seasonal orientation layer, while the Rigel supplies adjustable direct red chart light; the pair qualifies only after its lowest usable output is checked indoors.",
-      "interactionMoment": "Before dark adaptation, set the wheel and check the Rigel's lowest usable output indoors; outside, find one familiar pattern, consult the chart briefly, then locate one neighbor.",
+      "whyTogether": "The correctly matched star wheel shows which fixed-star patterns should be above the horizon. The adjustable red light helps the recipient read the wheel outside without switching on white light. Test the light's dimmest useful setting indoors first.",
+      "interactionMoment": "Indoors, set the wheel for the date and time and test the light at its lowest setting. Outside, find one familiar star pattern, glance at the wheel briefly, turn the light off, and look for one neighboring pattern.",
       "compatibilityChecks": [
         {
           "dimension": "edition_or_region",
@@ -1669,8 +1669,8 @@
       ],
       "duplicateRisk": "medium",
       "clutterDelta": "neutral",
-      "preGiftCheck": "Confirm the exact observing latitude, analog preference, chart readability, existing guide, existing red light, 9-volt battery acceptance, and the Deep Red/Red—not Skylite—option at checkout.",
-      "bundleDrawback": "Buy only the planisphere if they already own a trusted red-only light with verified low-end output; buy only the Rigel if they already own the correct analog guide; skip both if they prefer apps.",
+      "preGiftCheck": "Confirm that the regular viewing spot is between 40 and 50 degrees north, that the recipient prefers a printed guide and can read it comfortably, and that they do not already own either tool. At checkout choose Deep Red/Red, not Skylite, and make sure a 9-volt battery and dry storage work for them.",
+      "bundleDrawback": "Give only the star wheel if they already own a dim red-only light. Give only the Rigel if they already own the correct star guide. Skip both if they prefer an app, need screen zoom or audio, or find the lowest light setting too bright.",
       "claimIds": [
         "claim-pair-40-50-rigel"
       ],
@@ -1707,10 +1707,10 @@
   "qa": {
     "passed": true,
     "reviewerRole": "independent-editor",
-    "reviewerId": "product-link-independent-editor-20260830",
+    "reviewerId": "codex-popper-independent-editor-20260906",
     "receiptPath": "research/reviews/20260816-night-sky-ritual-a5594a7b.qa.v1.json",
     "blockers": [],
     "warnings": []
   },
-  "completedAt": "2026-08-31T02:37:56.648Z"
+  "completedAt": "2026-09-07T04:31:51.764Z"
 }

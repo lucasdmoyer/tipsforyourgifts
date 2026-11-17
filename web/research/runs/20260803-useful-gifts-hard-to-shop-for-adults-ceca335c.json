@@ -14,7 +14,7 @@
   "riskClass": "medium",
   "draftAuthor": "roundup-editorial-team",
   "startedAt": "2026-08-03T01:00:00.000Z",
-  "completedAt": "2026-08-31T02:37:24.016Z",
+  "completedAt": "2026-09-07T04:31:51.315Z",
   "researchPasses": [
     {
       "pass": 1,
@@ -412,7 +412,7 @@
       "editorialScore": 86,
       "evidenceConfidence": 84,
       "drawbacks": [
-        "The quick-opening design can strain the zipper or mesh, and it adds little for someone who already likes a packing system."
+        "Skip it if they already have packing cubes they like. The quick-opening design can put extra strain on the zipper or mesh."
       ],
       "primarySourceIds": [
         "src-peak-official"
@@ -433,7 +433,7 @@
       "editorialScore": 91,
       "evidenceConfidence": 92,
       "drawbacks": [
-        "It is a spot-check tool rather than a leave-in probe, and its straight body takes more drawer space than a folding thermometer."
+        "This checks one spot at a time and cannot stay in the food while it cooks. Its straight shape also takes more drawer space than a folding thermometer."
       ],
       "primarySourceIds": [
         "src-thermopop-official"
@@ -454,7 +454,7 @@
       "editorialScore": 84,
       "evidenceConfidence": 87,
       "drawbacks": [
-        "Its low profile may be uncomfortable for long sessions, and a compatible Logi Bolt receiver is not included with the standalone mouse."
+        "The flat shape may be uncomfortable during long work sessions. The mouse also does not include a compatible Logi Bolt receiver."
       ],
       "primarySourceIds": [
         "src-logitech-official"
@@ -475,7 +475,7 @@
       "editorialScore": 81,
       "evidenceConfidence": 82,
       "drawbacks": [
-        "The beam tint and modest output are not for every enthusiast, and there is no built-in USB charging."
+        "It does not have built-in USB charging. Flashlight enthusiasts may also want a different beam color or more brightness."
       ],
       "primarySourceIds": [
         "src-fenix-official"
@@ -496,7 +496,7 @@
       "editorialScore": 80,
       "evidenceConfidence": 78,
       "drawbacks": [
-        "It is a precision kit rather than a high-torque household screwdriver, and the driver may not reach every deep recessed fastener."
+        "This is for small precision screws, not heavy household jobs. The driver may not reach every deeply recessed screw."
       ],
       "primarySourceIds": [
         "src-ifixit-official"
@@ -623,7 +623,7 @@
       "editorialScore": 86,
       "evidenceConfidence": 84,
       "drawbacks": [
-        "The quick-opening design can strain the zipper or mesh, and it adds little for someone who already likes a packing system."
+        "Skip it if they already have packing cubes they like. The quick-opening design can put extra strain on the zipper or mesh."
       ],
       "primarySourceIds": [
         "src-peak-official"
@@ -644,7 +644,7 @@
       "editorialScore": 91,
       "evidenceConfidence": 92,
       "drawbacks": [
-        "It is a spot-check tool rather than a leave-in probe, and its straight body takes more drawer space than a folding thermometer."
+        "This checks one spot at a time and cannot stay in the food while it cooks. Its straight shape also takes more drawer space than a folding thermometer."
       ],
       "primarySourceIds": [
         "src-thermopop-official"
@@ -665,7 +665,7 @@
       "editorialScore": 84,
       "evidenceConfidence": 87,
       "drawbacks": [
-        "Its low profile may be uncomfortable for long sessions, and a compatible Logi Bolt receiver is not included with the standalone mouse."
+        "The flat shape may be uncomfortable during long work sessions. The mouse also does not include a compatible Logi Bolt receiver."
       ],
       "primarySourceIds": [
         "src-logitech-official"
@@ -686,7 +686,7 @@
       "editorialScore": 81,
       "evidenceConfidence": 82,
       "drawbacks": [
-        "The beam tint and modest output are not for every enthusiast, and there is no built-in USB charging."
+        "It does not have built-in USB charging. Flashlight enthusiasts may also want a different beam color or more brightness."
       ],
       "primarySourceIds": [
         "src-fenix-official"
@@ -707,7 +707,7 @@
       "editorialScore": 80,
       "evidenceConfidence": 78,
       "drawbacks": [
-        "It is a precision kit rather than a high-torque household screwdriver, and the driver may not reach every deep recessed fastener."
+        "This is for small precision screws, not heavy household jobs. The driver may not reach every deeply recessed screw."
       ],
       "primarySourceIds": [
         "src-ifixit-official"
@@ -734,12 +734,9 @@
   "qa": {
     "passed": true,
     "reviewerRole": "independent-editor",
-    "reviewerId": "product-link-independent-editor-20260830",
+    "reviewerId": "codex-parfit-independent-editor-20260906",
     "receiptPath": "research/reviews/20260803-useful-gifts-hard-to-shop-for-adults-ceca335c.qa.v1.json",
     "blockers": [],
-    "warnings": [
-      "Recheck availability, return terms, and recall databases at the external release gate.",
-      "Keep all links non-affiliate until a founder-approved program is enabled."
-    ]
+    "warnings": []
   }
 }

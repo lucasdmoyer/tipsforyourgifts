@@ -29,6 +29,8 @@ For schema 1.1, score each finalist out of 20: friction specificity 5, self-purc
 
 Score pairs out of 100: shared curiosity 20, complementary roles 20, interaction loop 20, observable trigger 15, independent value 10, compatibility 10, and ownership ease 5. Require 80 or better. Both items must independently clear product gates. Reject pairs that merely match, add merchandise, duplicate the same job, leave compatibility unresolved, or need the weak item to be rescued by the strong one.
 
+Name the ownership relationship in plain language. If the recipient already has a useful general-purpose item, the recommendation should add a narrower specialty job without pretending the existing item is inadequate. Do not force this frame onto conceptual pairs; for a book-and-game pair, for example, the specialty value may be the connection between two ways of exploring the same idea.
+
 ## Evidence confidence
 
 Score confidence out of 100: primary coverage 40, independent corroboration 25, freshness 15, first-hand or original evidence 10, and conflict resolution 10. Require 70 or better. Use `desk_research` unless hands-on evidence is recorded.

@@ -833,7 +833,7 @@
       "editorialScore": 88,
       "evidenceConfidence": 84,
       "drawbacks": [
-        "It occupies more desk area than The Army Painter standard palette, and the reusable membrane is valuable only if the painter will rinse and reuse it."
+        "It takes more desk space than The Army Painter palette. Its reusable sheet also needs to be rinsed and cared for, so it is not the simplest cleanup option."
       ],
       "primarySourceIds": [
         "src-rgg-painter-v2-official"
@@ -904,7 +904,7 @@
       "editorialScore": 85,
       "evidenceConfidence": 82,
       "drawbacks": [
-        "The brush-storage insert is part of the closing stack, so it adds setup bulk for a painter who does not want brushes stored inside."
+        "The brush tray sits inside the case and is part of how it closes. If they do not want to store brushes there, that extra layer may feel like clutter."
       ],
       "primarySourceIds": [
         "src-army-painter-official"
@@ -1117,7 +1117,7 @@
       "editorialScore": 80,
       "evidenceConfidence": 76,
       "drawbacks": [
-        "It has no preprinted recipe fields, and its paper can buckle when heavily saturated, so every notation layout and small dried swatch must be made by the painter."
+        "It is a blank journal, not a ready-made paint log. They must create their own simple note format, and the pages can bend if they use too much wet paint."
       ],
       "primarySourceIds": [
         "src-strathmore-catalog"
@@ -1188,7 +1188,7 @@
       "editorialScore": 82,
       "evidenceConfidence": 78,
       "drawbacks": [
-        "Its sponge and proprietary paper require deliberate preparation, and the plain case has no miniature-specific brush storage or reusable membrane."
+        "The sponge and paper need to be prepared according to the instructions. The plain case has no brush storage, and its paper is replaced rather than washed and reused."
       ],
       "primarySourceIds": [
         "src-masterson-official"
@@ -1281,7 +1281,7 @@
       "editorialScore": 77,
       "evidenceConfidence": 74,
       "drawbacks": [
-        "Its 190 by 280 millimeter surface is for a dedicated desk; Tale of Painters notes no rubber seal and imperfect foam fit, while one exact-XL owner reports the supplied hydropaper expanded beyond the tray and behaved too hydrophobically for their workflow."
+        "It needs about 7.5 by 11 inches of desk space. A reviewer noted that the case has no rubber seal and the foam could fit better. One owner reported that the included paper expanded beyond the tray and repelled water in their setup, so test the first sheet with an unimportant mix."
       ],
       "primarySourceIds": [
         "src-gsw-xl-official"
@@ -1552,7 +1552,7 @@
       "editorialScore": 88,
       "evidenceConfidence": 84,
       "drawbacks": [
-        "It occupies more desk area than The Army Painter standard palette, and the reusable membrane is valuable only if the painter will rinse and reuse it."
+        "It takes more desk space than The Army Painter palette. Its reusable sheet also needs to be rinsed and cared for, so it is not the simplest cleanup option."
       ],
       "primarySourceIds": [
         "src-rgg-painter-v2-official"
@@ -1623,7 +1623,7 @@
       "editorialScore": 85,
       "evidenceConfidence": 82,
       "drawbacks": [
-        "The brush-storage insert is part of the closing stack, so it adds setup bulk for a painter who does not want brushes stored inside."
+        "The brush tray sits inside the case and is part of how it closes. If they do not want to store brushes there, that extra layer may feel like clutter."
       ],
       "primarySourceIds": [
         "src-army-painter-official"
@@ -1694,7 +1694,7 @@
       "editorialScore": 82,
       "evidenceConfidence": 78,
       "drawbacks": [
-        "Its sponge and proprietary paper require deliberate preparation, and the plain case has no miniature-specific brush storage or reusable membrane."
+        "The sponge and paper need to be prepared according to the instructions. The plain case has no brush storage, and its paper is replaced rather than washed and reused."
       ],
       "primarySourceIds": [
         "src-masterson-official"
@@ -1766,7 +1766,7 @@
       "editorialScore": 80,
       "evidenceConfidence": 76,
       "drawbacks": [
-        "It has no preprinted recipe fields, and its paper can buckle when heavily saturated, so every notation layout and small dried swatch must be made by the painter."
+        "It is a blank journal, not a ready-made paint log. They must create their own simple note format, and the pages can bend if they use too much wet paint."
       ],
       "primarySourceIds": [
         "src-strathmore-catalog"
@@ -1837,7 +1837,7 @@
       "editorialScore": 77,
       "evidenceConfidence": 74,
       "drawbacks": [
-        "Its 190 by 280 millimeter surface is for a dedicated desk; Tale of Painters notes no rubber seal and imperfect foam fit, while one exact-XL owner reports the supplied hydropaper expanded beyond the tray and behaved too hydrophobically for their workflow."
+        "It needs about 7.5 by 11 inches of desk space. A reviewer noted that the case has no rubber seal and the foam could fit better. One owner reported that the included paper expanded beyond the tray and repelled water in their setup, so test the first sheet with an unimportant mix."
       ],
       "primarySourceIds": [
         "src-gsw-xl-official"
@@ -1907,13 +1907,13 @@
   "pairs": [
     {
       "id": "roomier-reusable-recipe-pair",
-      "name": "The roomier reusable-desk configuration",
+      "name": "Best for a roomier hobby desk",
       "anchorCandidateId": "redgrass-painter-v2",
       "companionCandidateId": "strathmore-mixed-media-visual-journal",
       "recipientJob": "Use a roomier reusable palette for an active conventional-acrylic mix and preserve its ratio, layer order, and dried reference in one flexible project journal.",
       "coherenceType": "observation_loop",
-      "whyTogether": "This is the roomier alternative configuration: the Redgrass reusable palette protects the live mix while the same qualified Strathmore journal records the observed result for the next unit; it is an alternative to, not an addition to, the compact Army Painter configuration.",
-      "interactionMoment": "Before cleanup, write the paint brands, approximate ratio, model area, and layer order on one Strathmore page, add one small swatch, then leave the page open until it dries.",
+      "whyTogether": "The wet palette helps keep today's mixed paint from drying too quickly. The journal helps them remember that mix after the session is over. Together, they make it easier to paint several matching figures without starting the color from scratch each time.",
+      "interactionMoment": "They mix a color on the palette, paint their model, then write down the paint names and add one small color sample before cleaning up.",
       "compatibilityChecks": [
         {
           "dimension": "skill_or_experience",
@@ -1936,8 +1936,8 @@
       ],
       "duplicateRisk": "medium",
       "clutterDelta": "neutral",
-      "preGiftCheck": "Confirm their desk fits the roomier Redgrass case, they want reusable membranes, and they prefer freeform physical notes; do not buy both palette configurations.",
-      "bundleDrawback": "Choose only the Redgrass palette if the painter will not maintain freeform notes, or choose only the journal if their existing wet palette already controls conventional acrylic mixes well.",
+      "preGiftCheck": "Choose this pair only if they use regular water-based acrylic paint, have room for the Redgrass palette, and enjoy writing down how they work. Do not buy both wet palettes in this guide.",
+      "bundleDrawback": "If they dislike taking notes, give the palette by itself. If they already own a wet palette they love, the journal can be the thoughtful upgrade.",
       "claimIds": [
         "claim-pair-rgg-strathmore"
       ],
@@ -1954,13 +1954,13 @@
     },
     {
       "id": "compact-desk-recipe-pair",
-      "name": "The compact brush-storage configuration",
+      "name": "Best for a smaller painting space",
       "anchorCandidateId": "army-painter-wet-palette",
       "companionCandidateId": "strathmore-mixed-media-visual-journal",
       "recipientJob": "Use a smaller palette for an active acrylic mix and keep a flexible project page with the recipe, application order, and dried color reference.",
       "coherenceType": "observation_loop",
-      "whyTogether": "This is the compact alternative configuration: The Army Painter palette addresses the drying mix while the same qualified Strathmore journal records the observed result and next-session steps; choose it instead of Redgrass when the smaller footprint and brush layer fit better.",
-      "interactionMoment": "At the end of a unit, write one model area and layer sequence, add the paint brands and approximate ratio, then place a small swatch on the same page and let it dry flat.",
+      "whyTogether": "This pair solves the same two problems in less space. The compact palette helps keep today's paint workable, while the journal helps the painter remember the color and steps when they return to the project later.",
+      "interactionMoment": "After painting, they jot down the paint names, the rough mix, and where they used it. A small dried sample gives them a visual reminder next time.",
       "compatibilityChecks": [
         {
           "dimension": "skill_or_experience",
@@ -1983,8 +1983,8 @@
       ],
       "duplicateRisk": "medium",
       "clutterDelta": "neutral",
-      "preGiftCheck": "Confirm the smaller footprint and brush-storage layer are welcome and that a blank-page recipe key feels useful; do not buy both palette configurations.",
-      "bundleDrawback": "Choose only the palette if the painter will not maintain freeform notes, or choose only the journal if their existing wet palette already controls conventional acrylic mixes well.",
+      "preGiftCheck": "Choose this version only if they use regular water-based acrylic paint, want a smaller palette, and would actually use the built-in brush tray and blank journal. Do not buy both wet palettes.",
+      "bundleDrawback": "If they will not keep notes, the palette is enough. If they already have a wet palette they trust, choose only the journal.",
       "claimIds": [
         "claim-pair-army-strathmore"
       ],
@@ -2011,10 +2011,10 @@
   "qa": {
     "passed": true,
     "reviewerRole": "independent-editor",
-    "reviewerId": "product-link-independent-editor-20260830",
+    "reviewerId": "codex-release-audit-independent-editor-20260906",
     "receiptPath": "research/reviews/20260816-miniature-painting-recipe-pairs-08892218.qa.v1.json",
     "blockers": [],
     "warnings": []
   },
-  "completedAt": "2026-08-31T02:37:24.169Z"
+  "completedAt": "2026-09-07T04:34:28.210Z"
 }

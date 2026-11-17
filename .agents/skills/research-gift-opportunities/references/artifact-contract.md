@@ -10,6 +10,8 @@ For a roundup, include at least 12 candidates, five finalists, five source class
 
 Schema 1.1 finalists additionally require an observation prompt, recipient-friction claim, physical-gift boundary, defensible self-purchase reason, duplicate and clutter controls, resolved compatibility, and thoughtfulness score of at least 15 out of 20. Qualified pairs require two distinct finalists, typed pair-coherence evidence, resolved compatibility, a reason to buy only the anchor, and coherence score of at least 80 out of 100. Article pair metadata and social claim, product, and pair references must exactly match the reviewed run.
 
+Every recommendation article must also satisfy the executable `recipient-specialty-v1` reader contract. Its frontmatter includes `readerIntro` and `specialtyLens`; its six required reader sections explain the product, real-life fit, existing general-purpose setup, specialty addition, thoughtful reason, and pre-purchase checks. This presentation layer does not replace or weaken the run's evidence, claim, compatibility, drawback, or review requirements.
+
 For a validated run, include at least three passes. Make each of the final two `materialNoveltyRate` values less than `0.1`, support every claim, set a completion timestamp, and use an independent reviewer who is not the draft author.
 
 Run `npm run validate` for the executable contract. Do not loosen the validator to make a weak bundle pass.

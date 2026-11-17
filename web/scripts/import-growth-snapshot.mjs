@@ -1,7 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import process from 'node:process';
-import matter from 'gray-matter';
+import matter from './lib/front-matter.mjs';
 import { growthSnapshotSchema, validateGrowthModel } from './lib/growth-contract.mjs';
 
 const root = process.cwd();

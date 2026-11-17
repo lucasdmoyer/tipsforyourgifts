@@ -1,7 +1,8 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import process from 'node:process';
-import matter from 'gray-matter';
+import matter from './lib/front-matter.mjs';
+import { affiliateEnrollmentReadinessSchema, buildAffiliateEnrollmentReadiness } from './lib/affiliate-enrollment-contract.mjs';
 import { buildPublicationManifest, parsePublicationManifest, sha256 } from './lib/publication-manifest-contract.mjs';
 
 const root = process.cwd();
@@ -15,7 +16,8 @@ const checks = [
   ['founder brief builder', 'studio/brief/index.html', ['Founder brief builder', 'Notice the gift before naming the product.', 'Complete the missing decisions', 'noindex,nofollow']],
   ['robots', 'robots.txt', ['Disallow: /studio', 'Sitemap:']],
   ['sitemap', 'sitemap.xml', ['blog/how-we-research-gifts', 'standards']],
-  ['publication manifest', 'publication-manifest.json', ['"status": "release_candidate"', '"projectId": "tipsforyourgifts"']]
+  ['publication manifest', 'publication-manifest.json', ['"status": "release_candidate"', '"projectId": "tipsforyourgifts"']],
+  ['affiliate enrollment readiness', 'affiliate-enrollment-readiness.json', ['"publicApplicationPacketsReady": 5', '"externalEnrollmentAllowedByRegistry": 1', '"externalSubmissionStillRequiresActionTimeApproval": true']]
 ];
 const forbiddenLegacyMarkers = [
   'https://amzn.to/2UiRnkY',
@@ -51,6 +53,24 @@ for (const [label, relativePath, markers] of checks) {
 }
 
 try {
+  const sourceEnrollmentRaw = await fs.readFile(path.join(root, 'public', 'affiliate-enrollment-readiness.json'));
+  const distEnrollmentRaw = await fs.readFile(path.join(dist, 'affiliate-enrollment-readiness.json'));
+  if (!sourceEnrollmentRaw.equals(distEnrollmentRaw)) failures.push('affiliate enrollment readiness: built bytes differ from the validated public source');
+  const enrollment = affiliateEnrollmentReadinessSchema.parse(JSON.parse(distEnrollmentRaw.toString('utf8')));
+  const affiliate = JSON.parse(await fs.readFile(path.join(root, 'config', 'affiliate-programs.json'), 'utf8'));
+  const coverage = JSON.parse(await fs.readFile(path.join(root, 'public', 'affiliate-product-coverage.json'), 'utf8'));
+  const plan = JSON.parse(await fs.readFile(path.join(root, 'config', 'affiliate-enrollment-plans.json'), 'utf8'));
+  const expectedEnrollment = buildAffiliateEnrollmentReadiness({ affiliate, coverage, plan });
+  if (JSON.stringify(enrollment) !== JSON.stringify(expectedEnrollment)) failures.push('affiliate enrollment readiness: deployed artifact differs from registry, coverage, or plan sources');
+  if (enrollment.counts.publicApplicationPacketsReady !== enrollment.counts.totalPrograms) failures.push('affiliate enrollment readiness: every program must have a public application packet');
+  const expectedEnabledPrograms = affiliate.programs.filter((program) => program.enabled === true).length;
+  if (enrollment.counts.enabledPrograms !== expectedEnabledPrograms) failures.push('affiliate enrollment readiness: enabled-program count differs from the validated registry');
+  if (enrollment.counts.verifiedPaidLinks !== coverage.counts.productsWithVerifiedPaidDestination) failures.push('affiliate enrollment readiness: verified-paid-link count differs from validated product coverage');
+} catch (error) {
+  failures.push(`affiliate enrollment readiness: ${error instanceof Error ? error.message : String(error)}`);
+}
+
+try {
   const sourceManifestRaw = await fs.readFile(path.join(root, 'public', 'publication-manifest.json'));
   const distManifestRaw = await fs.readFile(path.join(dist, 'publication-manifest.json'));
   if (!sourceManifestRaw.equals(distManifestRaw)) failures.push('publication manifest: built bytes differ from the validated public source');
@@ -72,6 +92,15 @@ const readyArticles = sourceArticles.filter((article) => article.status === 'pub
 const draftArticles = sourceArticles.filter((article) => article.status === 'draft');
 const operations = JSON.parse(await fs.readFile(path.join(root, 'src', 'data', 'operations.json'), 'utf8'));
 const studioHtml = await fs.readFile(path.join(dist, 'studio', 'index.html'), 'utf8');
+for (const marker of [
+  'public application packets ready',
+  'eligible for external enrollment planning',
+  'awaiting program approval',
+  'Every portal submission still requires action-time approval.',
+  'Open enrollment-readiness packets'
+]) {
+  if (!studioHtml.includes(marker)) failures.push(`studio: missing affiliate enrollment marker ${JSON.stringify(marker)}`);
+}
 const agendaCountLabel = `${operations.founderAgenda.decisions.length} decision${operations.founderAgenda.decisions.length === 1 ? '' : 's'}. One clear order.`;
 if (!studioHtml.includes(agendaCountLabel)) failures.push(`studio: founder agenda count differs from operations data: ${JSON.stringify(agendaCountLabel)}`);
 for (const decision of operations.founderAgenda.decisions) {
@@ -114,9 +143,22 @@ for (const article of readyArticles) {
     if (!html.includes(`data-product-id="${product.id}"`)) failures.push(`${article.slug}: missing outbound marker for ${product.id}`);
     if (!html.includes(escapeHtmlText(product.url))) failures.push(`${article.slug}: missing merchant link for ${product.id}`);
   }
+  const manifestArticle = publicationManifest?.articles.find((entry) => entry.articleSlug === article.slug);
+  if ((manifestArticle?.affiliateLinkCount ?? 0) > 0) {
+    for (const marker of ['Affiliate disclosure:</strong> We may earn a commission', 'rel="sponsored noopener"', 'data-paid-link="true"']) {
+      if (!html.includes(marker)) failures.push(`${article.slug}: paid-link article is missing ${JSON.stringify(marker)}`);
+    }
+    for (const marker of [
+      'All product links in this draft are ordinary, unpaid links.',
+      'Every product link is an ordinary, unpaid link; no affiliate program is enabled for this article.',
+      'The product links are ordinary, unpaid links.'
+    ]) {
+      if (html.includes(marker)) failures.push(`${article.slug}: paid-link article retains contradictory unpaid-only copy ${JSON.stringify(marker)}`);
+    }
+  }
   const pairs = Array.isArray(article.pairs) ? article.pairs : [];
   if (pairs.length > 0) {
-    for (const marker of ['Why this makes a good gift', 'Before you buy', 'original illustrations of the gift idea']) {
+    for (const marker of ['Why this makes a good gift', 'Before you buy', 'Original illustration of the gift idea—not product photography.']) {
       if (!html.includes(marker)) failures.push(`${article.slug}: pairing layout missing ${JSON.stringify(marker)}`);
     }
     for (const pair of pairs) {

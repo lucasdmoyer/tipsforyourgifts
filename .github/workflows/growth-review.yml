@@ -33,6 +33,10 @@ jobs:
           npm ci --prefix web
           npm run validate
           cp web/src/data/growth.json growth.base.json
+      - name: Verify autonomous agent credential
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: node web/scripts/require-openai-api-key.mjs
       - name: Let the growth team propose the next measured experiment
         uses: openai/codex-action@v1
         with:

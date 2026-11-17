@@ -18,7 +18,7 @@
       "status": "draft",
       "angle": "Separate physical project state from decision state",
       "headline": "A paused knitting project has two states to protect",
-      "copy": "The bag keeps fabric, yarn, tools, and notions together. The counter or chart marker preserves the last completed row or next instruction. A thoughtful pair solves both restart jobs without guessing at yarn or needles.",
+      "copy": "The bag keeps fabric, yarn, and small tools such as scissors and stitch markers together. The counter or chart marker preserves the last completed row or next instruction. A thoughtful pair solves both restart jobs without guessing at yarn or needles.",
       "assetBrief": "Original vertical two-column diagram labeled Physical state and Decision state, converging on a clean restart; generic yarn and chart icons only.",
       "altText": "Diagram showing a project bag protecting yarn and tools while a counter or chart board preserves the next instruction.",
       "destinationUrl": "https://tipsforyourgifts.web.app/blog/knitting-crochet-project-bag-row-counter-gift-pairs",
@@ -27,11 +27,11 @@
         "claim-pair-della-clover"
       ],
       "productIds": [
-        "della-q-makers-train-case",
-        "clover-kacha-kacha-336"
+        "della-q-makers-mini-messenger",
+        "clover-mini-kacha-kacha-3118"
       ],
       "pairIds": [
-        "compact-case-locked-count-loop"
+        "compact-bag-locked-count-loop"
       ],
       "disclosureRequired": false,
       "externalPostId": null
@@ -43,18 +43,18 @@
       "status": "draft",
       "angle": "Choose a container from one real project",
       "headline": "Never gift a knitting bag before naming the project",
-      "copy": "Sock, hat, cowl, sweater, or blanket? Count active skeins, measure the longest tool, check closure needs, and name the storage place. The beautiful wrong-size bag is still the wrong bag.",
+      "copy": "Sock, hat, cowl, sweater, or blanket? Count the balls of yarn the project uses, measure the longest tool, check closure needs, and name the storage place. The beautiful wrong-size bag is still the wrong bag.",
       "assetBrief": "Six original slides comparing generic compact and large works by yarn volume, tool length, closure, carry, and storage; no branded imagery.",
       "altText": "Carousel showing how project type, yarn volume, longest tool, closure, and storage determine fiber-art bag size.",
       "destinationUrl": "https://tipsforyourgifts.web.app/blog/knitting-crochet-project-bag-row-counter-gift-pairs",
       "claimIds": [
         "claim-della-fit",
-        "claim-artbin-fit",
+        "claim-lands-end-fit",
         "claim-fiber-duplicate-boundary"
       ],
       "productIds": [
-        "della-q-makers-train-case",
-        "artbin-yarn-tote-6821ag"
+        "della-q-makers-mini-messenger",
+        "lands-end-medium-5-pocket-zip-top-tote"
       ],
       "pairIds": [],
       "disclosureRequired": false,
@@ -67,16 +67,17 @@
       "status": "draft",
       "angle": "Turn a counter number into usable restart information",
       "headline": "Does 27 mean finished—or next? Decide before clicking",
-      "copy": "A row counter stores a number, not its meaning. Write one rule: the display shows the row just completed, or the row to begin next. Lock it, keep it with the project, and use the same rule every session.",
-      "assetBrief": "Original vertical card with a large number 27, two labeled interpretation branches, a lock icon, and a project-bag icon.",
+      "copy": "A row counter stores a number, not its meaning. Write one rule: the display shows the row just completed, or the row to begin next. The documented lock is on Clover Mini item 3118; recheck the exact item, stock, and delivery timing, and pull any added cord through gently.",
+      "assetBrief": "Original vertical card with a large number 27, two labeled interpretation branches, a lock icon, a project-bag icon, and a verify-item-and-availability note.",
       "altText": "Checklist explaining the completed-row versus next-row convention for a physical knitting counter.",
       "destinationUrl": "https://tipsforyourgifts.web.app/blog/knitting-crochet-project-bag-row-counter-gift-pairs",
       "claimIds": [
         "claim-counter-convention",
-        "claim-clover-drawback"
+        "claim-clover-drawback",
+        "claim-clover-variant-availability"
       ],
       "productIds": [
-        "clover-kacha-kacha-336",
+        "clover-mini-kacha-kacha-3118",
         "cocoknits-knitting-row-counter"
       ],
       "pairIds": [],
@@ -90,13 +91,15 @@
       "status": "draft",
       "angle": "Route paper-pattern makers and app users differently",
       "headline": "Chart board or no chart board? Watch the pattern habit",
-      "copy": "A magnetic board can preserve one paper chart line. It is clutter for an app-only maker. Check paper size, print readability, bag fit, magnet comfort, and whether a clipboard system already wins.",
-      "assetBrief": "Five original slides: paper chart, phone pattern, measurement overlay, existing clipboard, and buy-or-skip decision.",
-      "altText": "Carousel comparing a paper-chart workflow with an app-based knitting pattern workflow before gifting a magnetic board.",
+      "copy": "A magnetic board can preserve one paper chart line, but an app user may not need it. Measure the recipient's actual chart against the usable surface. Owner stitching reports conflict and do not establish a defect rate, so inspect it and check returns. The nine loose magnets also need controlled storage under general CPSC guidance—not an exact finding about this board.",
+      "assetBrief": "Five original slides: paper chart, phone pattern, actual-chart measurement overlay, stitching-and-returns check, and a buy-or-skip card that states the qualified general small-magnet storage boundary without labeling the product recalled or hazardous.",
+      "altText": "Carousel comparing paper and app knitting-pattern workflows, measuring the actual chart, checking stitching and returns, and storing the board's nine loose magnets under general CPSC guidance.",
       "destinationUrl": "https://tipsforyourgifts.web.app/blog/knitting-crochet-project-bag-row-counter-gift-pairs",
       "claimIds": [
         "claim-makers-board-benefit",
-        "claim-makers-board-drawback"
+        "claim-makers-board-drawback",
+        "claim-makers-board-stitching-durability-conflict",
+        "claim-makers-board-magnet-boundary"
       ],
       "productIds": [
         "cocoknits-makers-board"
@@ -111,7 +114,7 @@
       "format": "thirty-second-script",
       "status": "draft",
       "angle": "Demonstrate the mark-close-resume loop without pretending to test a product",
-      "headline": "The 20-second habit that saves a knitting restart",
+      "headline": "The small pause ritual that makes a knitting restart easier",
       "copy": "Hook: the bag cannot remember your row. Show a generic swatch reaching a clean stop, a counter being set to the agreed convention, a note added for one modification, and every tool closing with the work. End: protect the object and the decision.",
       "assetBrief": "Original unbranded storyboard with generic swatch, click counter, note card, project bag, and next-session arrow; no product-performance simulation.",
       "altText": "Short video storyboard showing a row marked, counter locked, tools contained, and a fiber-art project ready to resume.",
@@ -121,11 +124,11 @@
         "claim-fiber-restart-friction"
       ],
       "productIds": [
-        "della-q-makers-train-case",
-        "clover-kacha-kacha-336"
+        "della-q-makers-mini-messenger",
+        "clover-mini-kacha-kacha-3118"
       ],
       "pairIds": [
-        "compact-case-locked-count-loop"
+        "compact-bag-locked-count-loop"
       ],
       "disclosureRequired": false,
       "externalPostId": null
@@ -143,17 +146,17 @@
       "destinationUrl": "https://tipsforyourgifts.web.app/blog/knitting-crochet-project-bag-row-counter-gift-pairs",
       "claimIds": [
         "claim-pair-della-clover",
-        "claim-pair-artbin-board",
+        "claim-pair-lands-end-board",
         "claim-fiber-duplicate-boundary"
       ],
       "productIds": [
-        "della-q-makers-train-case",
-        "clover-kacha-kacha-336",
-        "artbin-yarn-tote-6821ag",
+        "della-q-makers-mini-messenger",
+        "clover-mini-kacha-kacha-3118",
+        "lands-end-medium-5-pocket-zip-top-tote",
         "cocoknits-makers-board"
       ],
       "pairIds": [
-        "compact-case-locked-count-loop",
+        "compact-bag-locked-count-loop",
         "large-tote-paper-chart-loop"
       ],
       "disclosureRequired": false,

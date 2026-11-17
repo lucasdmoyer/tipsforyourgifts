@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "1.0.0",
+  "updatedAt": "2026-10-19T01:27:40.000Z",
+  "proposals": [
+    {
+      "id": "bookshop-org-us-media-revision-4",
+      "status": "approval_boundary",
+      "programId": "bookshop-org-us-media",
+      "expectedProgramRevision": 4,
+      "activation": {
+        "allowedDomains": [
+          "bookshop.org"
+        ],
+        "registeredSite": "https://tipsforyourgifts.web.app/",
+        "trackingMethod": "path_redirect_to_query",
+        "trackingPathPrefix": "/a/",
+        "trackingParameterKeys": [
+          "affiliate"
+        ],
+        "reportingExportApproved": false,
+        "requiredDisclosure": "Disclosure: We may earn a commission if you purchase through a paid link on this page. Recommendations are selected independently.",
+        "priceFeedAuthorized": false
+      },
+      "evidence": {
+        "termsSourceUrl": "https://bookshop.org/info/terms-of-use",
+        "termsResolvedUrl": "https://bookshop-webflow.bkshp.org/terms-of-use",
+        "termsLastUpdated": "2025-07-10",
+        "programExplanationUrl": "https://support.bookshop.org/en/support/solutions/articles/65000191390-can-you-explain-bookshop-org-s-affiliate-program-",
+        "linkGuideUrl": "https://support.bookshop.org/en/support/solutions/articles/65000189603-how-do-affiliate-links-widgets-work-on-bookshop-org-",
+        "disclosureGuideUrl": "https://support.bookshop.org/en/support/solutions/articles/65000168990-if-i-m-an-affiliate-do-i-have-to-disclose-that-on-my-website-newsletter-or-social-media-posts-",
+        "observedAt": "2026-10-19T01:27:40.000Z",
+        "publicTrackingIdentity": "129750",
+        "publicStorefrontUrl": "https://bookshop.org/shop/tipsforyourgifts",
+        "observedPaidUrl": "https://bookshop.org/a/129750/9780063422001",
+        "observedResolvedUrl": "https://bookshop.org/p/books/sapiens-tenth-anniversary-edition-a-brief-history-of-humankind-yuval-noah-harari/031a784adc6e9de4?ean=9780063422001&affiliate=129750",
+        "productIsbn": "9780063422001",
+        "productId": "sapiens-us-paperback",
+        "articleSlug": "read-it-then-play-it-gift-pairs",
+        "automatedFetchStatus": 403,
+        "destinationObservationMethod": "authenticated_browser_observation",
+        "observationReceiptPath": "affiliate/evidence/bookshop-sapiens-browser-observation-20261019.json",
+        "observationReceiptSha256": "f6e1e78b23f92938c7578fe0785325489910d1aa20bb3312b4fe4444424b4fff",
+        "observerId": "codex-browser-operator-20261019",
+        "purchaseActionLabel": "Add to Cart"
+      },
+      "assertions": {
+        "programStillDisabledAtProposalCreation": true,
+        "termsNotRecordedAcceptedAtProposalCreation": true,
+        "paidLinkCandidateCreatedAtProposalCreation": false,
+        "activationCreatesPaidLink": false,
+        "productionDeploymentAuthorized": false,
+        "customerDataExportApproved": false
+      }
+    }
+  ]
+}

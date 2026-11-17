@@ -678,7 +678,7 @@
       "editorialScore": 86,
       "evidenceConfidence": 80,
       "drawbacks": [
-        "The deck includes emotionally loaded topics such as childhood heartbreak, so choose one light question in advance and make skipping it effortless."
+        "Some cards ask about emotional subjects, including childhood heartbreak. Choose one light question together instead of drawing blindly, and make it easy to skip any card without explaining why."
       ],
       "primarySourceIds": [
         "src-whats-your-story-official"
@@ -750,7 +750,7 @@
       "editorialScore": 84,
       "evidenceConfidence": 79,
       "drawbacks": [
-        "The grandparent framing and reflective subjects such as regrets or relationship advice can feel presumptive, so preview and agree on the topic first."
+        "The grandparent label will not feel right to everyone, and some questions cover regrets or relationship advice. Make sure they welcome the label and the exact topic before using a card."
       ],
       "primarySourceIds": [
         "src-grandparent-cards-official"
@@ -822,7 +822,7 @@
       "editorialScore": 91,
       "evidenceConfidence": 90,
       "drawbacks": [
-        "The pages fit 4x6 prints and require a compatible binder; plastic is not appropriate for flaking, damp, unidentified, or otherwise fragile photographs."
+        "The page fits only 4x6 prints and needs a compatible three-ring binder. Do not use its plastic pockets for a photograph that is flaking, damp, unidentified, unusually valuable, or otherwise fragile without specialist advice."
       ],
       "primarySourceIds": [
         "src-caption-pocket-official"
@@ -894,7 +894,7 @@
       "editorialScore": 87,
       "evidenceConfidence": 88,
       "drawbacks": [
-        "The opaque envelope hides the image and requires removal for viewing; putting many photographs in one envelope weakens one-photo identification and increases handling."
+        "The opaque paper hides the photograph, so the print must be removed for viewing. Putting many photos in one envelope also makes the caption less precise and creates more handling."
       ],
       "primarySourceIds": [
         "src-gaylord-envelopes-official"
@@ -965,7 +965,7 @@
       "editorialScore": 88,
       "evidenceConfidence": 87,
       "drawbacks": [
-        "The fixed-size sleeve has no caption field, and clear plastic is unsuitable for flaking surfaces, high-humidity storage, or some negatives."
+        "The sleeve fits only 4x6 prints and has no place for a caption. Clear plastic is not suitable for flaking photographs, humid storage, or some negatives, so use it only after checking the photo and storage conditions."
       ],
       "primarySourceIds": [
         "src-print-file-foldflap-official"
@@ -1181,7 +1181,7 @@
       "editorialScore": 86,
       "evidenceConfidence": 80,
       "drawbacks": [
-        "The deck includes emotionally loaded topics such as childhood heartbreak, so choose one light question in advance and make skipping it effortless."
+        "Some cards ask about emotional subjects, including childhood heartbreak. Choose one light question together instead of drawing blindly, and make it easy to skip any card without explaining why."
       ],
       "primarySourceIds": [
         "src-whats-your-story-official"
@@ -1253,7 +1253,7 @@
       "editorialScore": 84,
       "evidenceConfidence": 79,
       "drawbacks": [
-        "The grandparent framing and reflective subjects such as regrets or relationship advice can feel presumptive, so preview and agree on the topic first."
+        "The grandparent label will not feel right to everyone, and some questions cover regrets or relationship advice. Make sure they welcome the label and the exact topic before using a card."
       ],
       "primarySourceIds": [
         "src-grandparent-cards-official"
@@ -1325,7 +1325,7 @@
       "editorialScore": 91,
       "evidenceConfidence": 90,
       "drawbacks": [
-        "The pages fit 4x6 prints and require a compatible binder; plastic is not appropriate for flaking, damp, unidentified, or otherwise fragile photographs."
+        "The page fits only 4x6 prints and needs a compatible three-ring binder. Do not use its plastic pockets for a photograph that is flaking, damp, unidentified, unusually valuable, or otherwise fragile without specialist advice."
       ],
       "primarySourceIds": [
         "src-caption-pocket-official"
@@ -1397,7 +1397,7 @@
       "editorialScore": 87,
       "evidenceConfidence": 88,
       "drawbacks": [
-        "The opaque envelope hides the image and requires removal for viewing; putting many photographs in one envelope weakens one-photo identification and increases handling."
+        "The opaque paper hides the photograph, so the print must be removed for viewing. Putting many photos in one envelope also makes the caption less precise and creates more handling."
       ],
       "primarySourceIds": [
         "src-gaylord-envelopes-official"
@@ -1468,7 +1468,7 @@
       "editorialScore": 88,
       "evidenceConfidence": 87,
       "drawbacks": [
-        "The fixed-size sleeve has no caption field, and clear plastic is unsuitable for flaking surfaces, high-humidity storage, or some negatives."
+        "The sleeve fits only 4x6 prints and has no place for a caption. Clear plastic is not suitable for flaking photographs, humid storage, or some negatives, so use it only after checking the photo and storage conditions."
       ],
       "primarySourceIds": [
         "src-print-file-foldflap-official"
@@ -1538,13 +1538,13 @@
   "pairs": [
     {
       "id": "one-photo-caption-page-ritual",
-      "name": "The one-photo caption-page ritual",
+      "name": "A general story deck and a visible photo caption",
       "anchorCandidateId": "whats-your-story-memory-game",
       "companionCandidateId": "archival-methods-caption-pocket-4x6",
       "recipientJob": "Invite one freely chosen memory and keep its approved names and context visible beside one stable 4x6 photograph.",
       "coherenceType": "completes_task",
-      "whyTogether": "The card deck lowers conversation-starting friction while the separate caption pocket keeps consented context beside a stable 4x6 print without writing on or attaching anything to the original.",
-      "interactionMoment": "Choose one ordinary photograph, let the storyteller approve one light prompt, write only the context they want kept on the separate caption insert, then stop after ten minutes.",
+      "whyTogether": "The card deck offers one easy way to begin a willing conversation. The binder page keeps the names and context the storyteller approves beside one stable 4x6 print, without writing on or attaching anything to the photograph.",
+      "interactionMoment": "Choose one ordinary photograph, agree on one light question, listen for up to ten minutes, then write only the names and context the storyteller wants kept on the separate caption card.",
       "compatibilityChecks": [
         {
           "dimension": "skill_or_experience",
@@ -1567,8 +1567,8 @@
       ],
       "duplicateRisk": "medium",
       "clutterDelta": "neutral",
-      "preGiftCheck": "Confirm a willing storyteller, one stable 4x6 photograph, English reading comfort, a compatible binder, and no existing prompt or caption system they prefer.",
-      "bundleDrawback": "Choose only the prompt deck when the photograph's condition or format is uncertain; choose only the caption page when conversation already starts easily and the recipient dislikes prompt cards.",
+      "preGiftCheck": "Make sure the storyteller welcomes the conversation, reads English comfortably or wants the card read aloud, and can skip any topic. Confirm the photo is a stable 4x6 print, a compatible binder is available, and they do not already prefer another prompt or caption system.",
+      "bundleDrawback": "Give only the cards if the photograph's type, size, or condition is uncertain. Give only the caption page if stories already come easily and prompt cards would feel unnatural.",
       "claimIds": [
         "claim-one-photo-caption-page-pair"
       ],
@@ -1585,13 +1585,13 @@
     },
     {
       "id": "grandparent-story-envelope-ritual",
-      "name": "The grandparent story-envelope ritual",
+      "name": "A grandparent story deck and a labeled photo envelope",
       "anchorCandidateId": "meaningful-conversations-grandparents",
       "companionCandidateId": "gaylord-unbuffered-photo-envelopes",
       "recipientJob": "Invite one welcome grandparent story and label the outside of one suitable paper enclosure with only the approved identifying context.",
       "coherenceType": "completes_task",
-      "whyTogether": "The grandparent-focused deck supplies a bounded conversation starter while the PAT-passed non-adhesive envelope provides exterior fields for the date, subject, and place the storyteller chooses to preserve.",
-      "interactionMoment": "Preview one prompt together, choose one stable print up to 4x6, ask and listen without recording by default, then pencil only the approved date, subject, and place on the envelope exterior.",
+      "whyTogether": "The grandparent deck offers one agreed-on conversation starter. The non-adhesive paper envelope provides places to write the date, subject, and location the storyteller wants to preserve outside one suitable photograph.",
+      "interactionMoment": "Choose one light question together and one stable print up to 4x6. Listen without recording unless they ask for it, then pencil only the approved date, subject, and location on the outside of the envelope.",
       "compatibilityChecks": [
         {
           "dimension": "accessibility",
@@ -1614,8 +1614,8 @@
       ],
       "duplicateRisk": "medium",
       "clutterDelta": "reduces",
-      "preGiftCheck": "Confirm the recipient welcomes grandparent prompts, the photograph fits and is stable, an opaque envelope suits viewing habits, and no current safe housing already does the job.",
-      "bundleDrawback": "Choose only the cards when the photograph needs professional assessment; choose only the envelope when the recipient already tells stories freely or would find a prompt deck performative.",
+      "preGiftCheck": "Confirm that the recipient welcomes the grandparent label and the chosen English question. Make sure the photograph is a stable print no larger than 4x6, opaque storage suits how they view it, and an appropriate enclosure is not already in use.",
+      "bundleDrawback": "Give only the cards if the photograph needs professional assessment. Give only the envelope if the recipient already tells stories freely or would find a prompt deck forced.",
       "claimIds": [
         "claim-grandparent-envelope-pair"
       ],
@@ -1642,10 +1642,10 @@
   "qa": {
     "passed": true,
     "reviewerRole": "independent-editor",
-    "reviewerId": "family-history-independent-editor-20260816",
+    "reviewerId": "codex-popper-independent-editor-20260906",
     "receiptPath": "research/reviews/20260816-one-photo-one-story-4cf6dd3f.qa.v1.json",
     "blockers": [],
     "warnings": []
   },
-  "completedAt": "2026-08-16T19:11:08.635Z"
+  "completedAt": "2026-09-07T04:31:51.989Z"
 }

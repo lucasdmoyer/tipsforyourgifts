@@ -6,9 +6,9 @@
   "ideaSha256": "53a6b604899ff8724dcd771efa829ecf7994a1491baafdf30469eff63f5373e2",
   "decisionLens": "gift_pairing",
   "contentType": "pairing-guide",
-  "status": "drafted",
+  "status": "qa_failed",
   "topic": "Manual vinyl-record cleaning systems paired with correctly sized fresh inner sleeves for a complete used-record reset",
-  "audience": "People buying for a vinyl collector who has a visible queue of used or dusty records and wants a repeatable clean-dry-rehouse routine",
+  "audience": "People buying for a vinyl collector who has a visible group of used or dusty records waiting to be cleaned and put into fresh sleeves",
   "occasion": "Birthday, holiday, Record Store Day, collection milestone, or move into a dedicated listening space",
   "budgetBands": [
     "$35-$70",
@@ -111,6 +111,16 @@
       "independenceGroup": "spin-clean"
     },
     {
+      "id": "src-spin-clean-product",
+      "url": "https://www.spinclean.com/store/Spin-Clean%C2%AE-Record-Washer-MKII-Complete-Kit-p14190723",
+      "publisher": "Spin-Clean",
+      "title": "Spin-Clean Vinyl Record Washer Complete Kit product page",
+      "accessedAt": "2026-09-06",
+      "sourceClass": "manufacturer",
+      "trustTier": "A",
+      "independenceGroup": "spin-clean"
+    },
+    {
       "id": "src-spin-clean-whathifi-review",
       "url": "https://www.whathifi.com/features/i-tested-3-vinyl-record-cleaning-systems-and-the-results-were-both-revelatory-and-depressing",
       "publisher": "What Hi-Fi?",
@@ -132,10 +142,10 @@
     },
     {
       "id": "src-groovewasher-official",
-      "url": "https://www.groovewasher.com/",
+      "url": "https://www.groovewasher.com/products/groovewasher-walnut-record-cleaning-kit",
       "publisher": "GrooveWasher",
-      "title": "GrooveWasher G2 fluid, pad, and damp-clean use guidance",
-      "accessedAt": "2026-08-23",
+      "title": "GrooveWasher Hardwood Record Cleaning Kit current contents, use guidance, and product-label warning",
+      "accessedAt": "2026-10-10",
       "sourceClass": "manufacturer",
       "trustTier": "A",
       "independenceGroup": "groovewasher"
@@ -144,10 +154,10 @@
       "id": "src-groovewasher-soundmatters-review",
       "url": "https://www.yoursoundmatters.com/groovewasher-g2-vinyl-record-cleaner-review/",
       "publisher": "Sound Matters",
-      "title": "GrooveWasher G2 exact-product hands-on review",
-      "accessedAt": "2026-08-23",
-      "sourceClass": "independent-review",
-      "trustTier": "B",
+      "title": "GrooveWasher G2 supplied-product review with affiliate and discount links, retained only as a conflict record",
+      "accessedAt": "2026-10-10",
+      "sourceClass": "commercial-review",
+      "trustTier": "D",
       "independenceGroup": "sound-matters"
     },
     {
@@ -161,23 +171,73 @@
       "independenceGroup": "soundstage-access"
     },
     {
+      "id": "src-groovewasher-ecoustics-review",
+      "url": "https://www.ecoustics.com/articles/best-record-cleaning-options-2026/",
+      "publisher": "ecoustics",
+      "title": "First-person GrooveWasher Hardwood Record Cleaning Kit use report with disclosed commission links",
+      "accessedAt": "2026-10-10",
+      "sourceClass": "independent-review",
+      "trustTier": "C",
+      "independenceGroup": "ecoustics-eric-pye"
+    },
+    {
+      "id": "src-groovewasher-g2-label",
+      "url": "https://www.groovewasher.com/products/g2-8-oz-fluid-refill-bottle",
+      "publisher": "GrooveWasher",
+      "title": "Current G2 Record Cleaning Fluid product-label warning and precautionary statements",
+      "accessedAt": "2026-10-10",
+      "sourceClass": "manufacturer",
+      "trustTier": "A",
+      "independenceGroup": "groovewasher"
+    },
+    {
+      "id": "src-groovewasher-how-to",
+      "url": "https://www.groovewasher.com/pages/how-to",
+      "publisher": "GrooveWasher",
+      "title": "Official GrooveWasher cleaning, drying, and pad-care instructions",
+      "accessedAt": "2026-10-10",
+      "sourceClass": "manufacturer",
+      "trustTier": "A",
+      "independenceGroup": "groovewasher"
+    },
+    {
+      "id": "src-groovewasher-faq",
+      "url": "https://www.groovewasher.com/pages/faqs",
+      "publisher": "GrooveWasher",
+      "title": "Official GrooveWasher use and maintenance FAQ",
+      "accessedAt": "2026-10-10",
+      "sourceClass": "manufacturer",
+      "trustTier": "A",
+      "independenceGroup": "groovewasher"
+    },
+    {
       "id": "src-mofi-sleeve-official",
       "url": "https://mofi.com/shop/accessories/mobile-fidelity-original-master-record-inner-sleeves-50pk/",
       "publisher": "Mobile Fidelity Sound Lab",
-      "title": "Original Master Record Inner Sleeves official product specifications",
-      "accessedAt": "2026-08-23",
+      "title": "Original Master Record Inner Sleeves official product specifications; current stock field did not show ordinary availability",
+      "accessedAt": "2026-10-10",
       "sourceClass": "manufacturer",
       "trustTier": "A",
       "independenceGroup": "mobile-fidelity"
     },
     {
+      "id": "src-mofi-musicdirect-shopping",
+      "url": "https://www.musicdirect.com/mobile-fidelity---record-inner-sleeves--50pk-/",
+      "publisher": "Music Direct",
+      "title": "MoFi Original Master Record Inner Sleeves 50-pack exact-product shopping page",
+      "accessedAt": "2026-10-10",
+      "sourceClass": "retailer",
+      "trustTier": "B",
+      "independenceGroup": "music-direct"
+    },
+    {
       "id": "src-mofi-audiophileman-review",
       "url": "https://theaudiophileman.com/mofi-the-games-up-an-inner-sleeve-odyssey/",
       "publisher": "The Audiophile Man",
-      "title": "Comparative inner-sleeve review including MoFi and Big Fudge",
-      "accessedAt": "2026-08-23",
+      "title": "Self-funded comparative inner-sleeve review including MoFi and Big Fudge with disclosed affiliate links",
+      "accessedAt": "2026-10-10",
       "sourceClass": "independent-review",
-      "trustTier": "B",
+      "trustTier": "C",
       "independenceGroup": "the-audiophile-man"
     },
     {
@@ -194,30 +254,40 @@
       "id": "src-bigfudge-sleeve-official",
       "url": "https://bigfudgevinyl.com/products/big-fudge-premium-master-vinyl-record-sleeves-50x-record-inner-sleeves-for-12-vinyl-record-storage-clear-3-layer-lp-sleeves-with-anti-static-rice-paper-acid-free-archival-album-sleeves",
       "publisher": "Big Fudge",
-      "title": "Premium Master Inner Sleeves official sizes and material construction",
-      "accessedAt": "2026-08-23",
+      "title": "Premium Master Inner Sleeves official sizes and material construction; direct product page marked sold out",
+      "accessedAt": "2026-10-10",
       "sourceClass": "manufacturer",
       "trustTier": "A",
       "independenceGroup": "big-fudge"
     },
     {
-      "id": "src-bigfudge-audiophilecafe-review",
-      "url": "https://theaudiophilecafecom.wordpress.com/2020/10/24/big-fudge-vinyl-inner-record-sleeves/",
-      "publisher": "The Audiophile Cafe",
-      "title": "Big Fudge inner record sleeves independent review",
-      "accessedAt": "2026-08-23",
-      "sourceClass": "independent-review",
+      "id": "src-bigfudge-binaural-shopping",
+      "url": "https://binauralrecords.com/products/big-fudge-12-inch-premium-master-archive-quality-inner-sleeves",
+      "publisher": "Binaural Records",
+      "title": "Big Fudge 12-inch Premium Master Inner Sleeves 50-count exact-product shopping page",
+      "accessedAt": "2026-10-10",
+      "sourceClass": "retailer",
       "trustTier": "B",
-      "independenceGroup": "the-audiophile-cafe"
+      "independenceGroup": "binaural-records"
+    },
+    {
+      "id": "src-bigfudge-platekompaniet-reviews",
+      "url": "https://www.platekompaniet.no/lyd-hifi/vinyltilbehor/oppbevaring/innercover/big-fudge-12-tommer-premium-master-innerlommer-50stk-innercover",
+      "publisher": "Platekompaniet verified buyer reviews",
+      "title": "Big Fudge Premium Master 12-inch exact-product verified-owner review corpus",
+      "accessedAt": "2026-10-10",
+      "sourceClass": "independent-review",
+      "trustTier": "C",
+      "independenceGroup": "platekompaniet-bigfudge-buyers"
     },
     {
       "id": "src-bigfudge-audiophileman-review",
       "url": "https://theaudiophileman.com/mofi-the-games-up-an-inner-sleeve-odyssey/",
       "publisher": "The Audiophile Man",
-      "title": "Comparative inner-sleeve review favorably assessing Big Fudge",
-      "accessedAt": "2026-08-23",
+      "title": "Self-funded comparative review of Big Fudge Premium Master sleeves with disclosed affiliate links",
+      "accessedAt": "2026-10-10",
       "sourceClass": "independent-review",
-      "trustTier": "B",
+      "trustTier": "C",
       "independenceGroup": "audiophile-man-big-fudge"
     },
     {
@@ -231,23 +301,23 @@
       "independenceGroup": "sleeve-city"
     },
     {
-      "id": "src-diskeeper-ezvid-review",
-      "url": "https://wiki.ezvid.com/best-record-inner-sleeves",
-      "publisher": "Ezvid Wiki",
-      "title": "Independent record-inner-sleeve comparison including Diskeeper 2.0",
-      "accessedAt": "2026-08-23",
+      "id": "src-diskeeper-audiokarma-review",
+      "url": "https://audiokarma.org/forums/threads/inner-sleeves-anything-worth-buying-over-another-12.800609/#post-11110382",
+      "publisher": "Audiokarma owner discussion",
+      "title": "Diskeeper 2.0 exact-product owner reports covering long use and quality-control concerns",
+      "accessedAt": "2026-10-10",
       "sourceClass": "independent-review",
-      "trustTier": "B",
-      "independenceGroup": "ezvid-wiki"
+      "trustTier": "C",
+      "independenceGroup": "audiokarma-diskeeper-owners"
     },
     {
       "id": "src-diskeeper-ebay-review",
       "url": "https://www.ebay.co.uk/itm/234646278745",
       "publisher": "eBay UK verified product reviews",
       "title": "Diskeeper 2.0 exact-product owner review corpus",
-      "accessedAt": "2026-08-23",
+      "accessedAt": "2026-10-10",
       "sourceClass": "independent-review",
-      "trustTier": "B",
+      "trustTier": "C",
       "independenceGroup": "ebay-uk-diskeeper-buyers"
     },
     {
@@ -276,7 +346,7 @@
     {
       "id": "claim-record-self-purchase",
       "kind": "self_purchase_pattern",
-      "text": "Cleaning systems and bulk sleeves are maintenance purchases that can remain postponed while collectors continue prioritizing records and playback equipment.",
+      "text": "Public collector discussions describe records waiting to be cleaned or moved into a fresh sleeve; that supports asking about a visible unfinished-care queue, but it does not establish why any individual postponed it.",
       "risk": "low",
       "status": "supported",
       "sourceIds": [
@@ -288,7 +358,7 @@
       "id": "claim-record-handling-boundary",
       "kind": "compatibility",
       "text": "Recorded sound discs should be handled by the outer edge or label area, kept on a clean work surface, and cleaned only with a procedure appropriate to the exact medium.",
-      "risk": "high",
+      "risk": "medium",
       "status": "supported",
       "sourceIds": [
         "src-loc-record-care",
@@ -309,13 +379,12 @@
     {
       "id": "claim-spin-clean-benefit",
       "kind": "product_benefit",
-      "text": "The Spin-Clean Record Washer MkII uses a manual bath, adjustable roller positions for 12-, 10-, and 7-inch discs, brushes, concentrate, and reusable drying cloths for a batch-cleaning session.",
+      "text": "The Spin-Clean Vinyl Record Washer Complete Kit uses a manual bath, adjustable roller positions for several common vinyl sizes, brushes, concentrate, and reusable drying cloths for a batch-cleaning session.",
       "risk": "medium",
       "status": "supported",
       "sourceIds": [
         "src-spin-clean-official",
-        "src-spin-clean-whathifi-review",
-        "src-spin-clean-popmech-review"
+        "src-spin-clean-product"
       ]
     },
     {
@@ -334,7 +403,7 @@
       "id": "claim-spin-clean-fit",
       "kind": "compatibility",
       "text": "The included instructions show positions for nominal 12-, 10-, and 7-inch records but do not authorize every disc material, label condition, picture disc, lacquer, or shellac cleaning scenario.",
-      "risk": "high",
+      "risk": "medium",
       "status": "supported",
       "sourceIds": [
         "src-spin-clean-official",
@@ -349,8 +418,7 @@
       "status": "supported",
       "sourceIds": [
         "src-groovewasher-official",
-        "src-groovewasher-soundmatters-review",
-        "src-groovewasher-soundstage-review"
+        "src-groovewasher-how-to"
       ]
     },
     {
@@ -361,8 +429,21 @@
       "status": "supported",
       "sourceIds": [
         "src-groovewasher-official",
-        "src-groovewasher-soundmatters-review",
-        "src-groovewasher-soundstage-review"
+        "src-groovewasher-how-to",
+        "src-groovewasher-faq",
+        "src-groovewasher-soundstage-review",
+        "src-groovewasher-ecoustics-review"
+      ]
+    },
+    {
+      "id": "claim-groovewasher-g2-label-boundary",
+      "kind": "compatibility",
+      "text": "GrooveWasher's current G2 label says the fluid is for hard surfaces only, can cause eye irritation, should be kept away from eyes, skin, clothing, and food, must not be swallowed, and includes exposure-specific first-aid directions; this manufacturer-label summary requires founder review before publication.",
+      "risk": "high",
+      "status": "supported",
+      "sourceIds": [
+        "src-groovewasher-official",
+        "src-groovewasher-g2-label"
       ]
     },
     {
@@ -372,9 +453,7 @@
       "risk": "medium",
       "status": "supported",
       "sourceIds": [
-        "src-mofi-sleeve-official",
-        "src-mofi-audiophileman-review",
-        "src-mofi-acousticsounds-review"
+        "src-mofi-sleeve-official"
       ]
     },
     {
@@ -392,24 +471,22 @@
     {
       "id": "claim-bigfudge-benefit",
       "kind": "product_benefit",
-      "text": "Big Fudge Premium Master Sleeves offer a three-layer 12-inch format with HDPE and paper support, plus a separately specified 7-inch option.",
+      "text": "The Big Fudge 12-inch Premium Master Inner Sleeves use a three-layer format with HDPE and paper support and are sold in an exact 50-count pack for standard 12-inch LPs.",
       "risk": "medium",
       "status": "supported",
       "sourceIds": [
-        "src-bigfudge-sleeve-official",
-        "src-bigfudge-audiophilecafe-review",
-        "src-bigfudge-audiophileman-review"
+        "src-bigfudge-sleeve-official"
       ]
     },
     {
       "id": "claim-bigfudge-drawback",
       "kind": "product_drawback",
-      "text": "A multi-layer replacement sleeve still requires exact 12- versus 7-inch selection, inspection for manufacturing debris or creases, and a fit check in tight jackets before a whole pack is used.",
+      "text": "A supported multi-layer 12-inch sleeve still requires inspection for manufacturing debris or creases and a fit check in tight jackets before a whole pack is used; the direct manufacturer page was marked sold out during this review.",
       "risk": "medium",
       "status": "supported",
       "sourceIds": [
         "src-bigfudge-sleeve-official",
-        "src-bigfudge-audiophilecafe-review",
+        "src-bigfudge-platekompaniet-reviews",
         "src-vinylpress-sleeve-care"
       ]
     },
@@ -420,19 +497,17 @@
       "risk": "medium",
       "status": "supported",
       "sourceIds": [
-        "src-diskeeper-official",
-        "src-diskeeper-ezvid-review",
-        "src-diskeeper-ebay-review"
+        "src-diskeeper-official"
       ]
     },
     {
       "id": "claim-diskeeper-drawback",
       "kind": "product_drawback",
-      "text": "The unsupported HDPE format is less rigid during jacket insertion than paper-backed alternatives, and exact-product owner discussions include both long use and past quality-control concerns, so each sleeve needs inspection.",
+      "text": "The thin plastic is less rigid than a paper-backed sleeve when someone slides it into a record jacket. Owner discussions include both long use and past quality-control concerns, so each sleeve needs inspection.",
       "risk": "medium",
       "status": "supported",
       "sourceIds": [
-        "src-diskeeper-ezvid-review",
+        "src-diskeeper-audiokarma-review",
         "src-diskeeper-ebay-review",
         "src-vinylpress-sleeve-care"
       ]
@@ -452,7 +527,7 @@
     {
       "id": "claim-pair-groove-bigfudge",
       "kind": "pair_coherence",
-      "text": "The GrooveWasher G2 kit and Big Fudge sleeves complete a one-record reset: controlled damp cleaning and full drying precede rehousing in one inspected size-matched sleeve.",
+      "text": "The GrooveWasher G2 kit and Big Fudge 12-inch sleeves complete a one-record reset: manufacturer-directed damp cleaning and full drying precede rehousing one standard LP in an inspected, test-fitted sleeve.",
       "risk": "low",
       "status": "supported",
       "sourceIds": [
@@ -481,19 +556,44 @@
     {
       "id": "inner-sleeve-fit-tradeoff",
       "summary": "Thinner sleeves can fit tight jackets but bunch more easily, while supported sleeves insert more rigidly but add thickness; the article treats jacket clearance and sample inspection as required."
+    },
+    {
+      "id": "groovewasher-supplied-affiliate-review-excluded",
+      "summary": "Sound Matters says GrooveWasher supplied its review kit and the page uses affiliate and direct-order discount links, so that source is Tier D and excluded from every scored claim and finalist source set."
+    },
+    {
+      "id": "groovewasher-ecoustics-affiliate-review-qualified",
+      "summary": "The ecoustics article is a first-person report about the exact Hardwood kit and describes the author's own cleaning setup, but it links the product through Amazon and carries a site-wide commission disclosure; it is retained at Tier C only for subjective handling and pad-wear evidence, never for objective specifications."
+    },
+    {
+      "id": "audiophileman-affiliate-review-disclosed",
+      "summary": "The Audiophile Man says the MoFi and Big Fudge packs were bought with the reviewer's own money but the page uses disclosed affiliate links; it is retained at Tier C and paired with separate exact-product owner evidence."
+    },
+    {
+      "id": "bigfudge-wrong-product-review-replaced",
+      "summary": "The former Audiophile Cafe citation covers a manufacturer-supplied plain paper sleeve rather than the Premium Master product, so it was removed and replaced with exact-product verified-owner evidence."
+    },
+    {
+      "id": "diskeeper-affiliate-listicle-replaced",
+      "summary": "The Ezvid affiliate listicle was removed from the bundle; Diskeeper now uses its official page for specifications plus separate eBay and Audiokarma exact-product owner evidence for handling and quality history."
+    },
+    {
+      "id": "shopping-destination-refresh",
+      "summary": "The MoFi manufacturer page and Big Fudge direct page did not show ordinary current availability. Reader shopping links now use exact-product ordinary pages at Music Direct for the MoFi 50-pack and Binaural Records for the Big Fudge 12-inch 50-count pack; availability must still be rechecked before publication."
     }
   ],
   "candidates": [
     {
       "id": "spin-clean-record-washer-mkii",
-      "name": "Spin-Clean Record Washer System MkII",
+      "name": "Spin-Clean Vinyl Record Washer Complete Kit",
       "editorialScore": 89,
       "evidenceConfidence": 90,
       "drawbacks": [
         "The system requires a level work area, distilled water and concentrate, prewashed cloths, careful label clearance, manual drying, brush rinsing and air drying, and basin cleanup after a session."
       ],
       "primarySourceIds": [
-        "src-spin-clean-official"
+        "src-spin-clean-official",
+        "src-spin-clean-product"
       ],
       "independentSourceIds": [
         "src-spin-clean-whathifi-review",
@@ -514,7 +614,7 @@
         "physicalGiftBoundary": "welcome_when_verified",
         "selfPurchase": {
           "reason": "coordination_burden",
-          "rationale": "The manual bath makes sense for a real batch but requires water, cloth preparation, work surface, cleanup, drying, and supply planning before it becomes useful.",
+          "rationale": "When the recipient has already named a batch waiting for care, this kit organizes the wash-and-dry session; do not infer why that batch is unfinished without asking.",
           "basis": "recipient_observation_prompt",
           "claimIds": [
             "claim-record-self-purchase"
@@ -559,18 +659,18 @@
         ],
         "score": {
           "frictionSpecificity": 5,
-          "selfPurchaseLogic": 5,
+          "selfPurchaseLogic": 4,
           "ownershipEase": 3,
           "recipientSpecificity": 5,
-          "total": 18
+          "total": 17
         }
       }
     },
     {
       "id": "groovewasher-g2-kit",
-      "name": "GrooveWasher G2 Record Cleaning Kit",
-      "editorialScore": 87,
-      "evidenceConfidence": 86,
+      "name": "GrooveWasher Hardwood Record Cleaning Kit",
+      "editorialScore": 82,
+      "evidenceConfidence": 80,
       "drawbacks": [
         "The G2 process is a light one-record clean that can require repeated passes on dirty used vinyl, needs pad maintenance and replacement fluid, and demands careful control around the label."
       ],
@@ -578,12 +678,13 @@
         "src-groovewasher-official"
       ],
       "independentSourceIds": [
-        "src-groovewasher-soundmatters-review",
-        "src-groovewasher-soundstage-review"
+        "src-groovewasher-soundstage-review",
+        "src-groovewasher-ecoustics-review"
       ],
       "claimIds": [
         "claim-groovewasher-benefit",
         "claim-groovewasher-drawback",
+        "claim-groovewasher-g2-label-boundary",
         "claim-record-handling-boundary"
       ],
       "evidenceMode": "desk_research",
@@ -595,8 +696,8 @@
         "physicalGiftBoundary": "welcome_when_verified",
         "selfPurchase": {
           "reason": "research_burden",
-          "rationale": "A one-record pad system is easy to defer because fluid choice, label control, pad care, and heavy-dirt limits require more research than a dry dusting brush.",
-          "basis": "editorial_inference",
+          "rationale": "When the recipient has already named a one-record cleaning queue and asked for a compact routine, this kit supplies that routine; do not infer reluctance or its cause without that observation.",
+          "basis": "recipient_observation_prompt",
           "claimIds": [
             "claim-record-self-purchase"
           ]
@@ -617,13 +718,14 @@
             "requirement": "Use only on vinyl records explicitly supported by the G2 instructions and exclude unknown or special disc materials.",
             "claimIds": [
               "claim-groovewasher-benefit",
+              "claim-groovewasher-g2-label-boundary",
               "claim-record-handling-boundary"
             ]
           },
           {
             "dimension": "space_or_storage",
             "status": "verified",
-            "requirement": "Confirm a clean flat support, protected label area, air-dry time, pad-rinse path, and dust-free kit storage.",
+            "requirement": "Confirm a clean flat support, protected label area, full air-dry time, a pad-rinse path, and a clean storage drawer.",
             "claimIds": [
               "claim-groovewasher-drawback"
             ]
@@ -631,18 +733,18 @@
         ],
         "score": {
           "frictionSpecificity": 5,
-          "selfPurchaseLogic": 5,
+          "selfPurchaseLogic": 4,
           "ownershipEase": 4,
           "recipientSpecificity": 5,
-          "total": 19
+          "total": 18
         }
       }
     },
     {
       "id": "mofi-original-master-sleeves",
       "name": "MoFi Original Master Record Inner Sleeves",
-      "editorialScore": 84,
-      "evidenceConfidence": 83,
+      "editorialScore": 82,
+      "evidenceConfidence": 78,
       "drawbacks": [
         "The soft multi-layer sleeve can bunch during insertion into a tight jacket, and independent owner reports include both long-term satisfaction and isolated quality concerns that justify inspecting every sleeve before use."
       ],
@@ -667,8 +769,8 @@
         "physicalGiftBoundary": "welcome_when_verified",
         "selfPurchase": {
           "reason": "replacement_inertia",
-          "rationale": "Original paper inners technically contain the record, so a bulk replacement pack is easy to postpone until it completes a planned cleaning batch.",
-          "basis": "social_demand",
+          "rationale": "When a collector has already identified a cleaned or soon-to-be-cleaned 12-inch batch that still returns to shedding paper, the pack completes that observed queue; do not infer why it remains unfinished.",
+          "basis": "recipient_observation_prompt",
           "claimIds": [
             "claim-record-self-purchase"
           ]
@@ -703,26 +805,26 @@
         ],
         "score": {
           "frictionSpecificity": 5,
-          "selfPurchaseLogic": 4,
+          "selfPurchaseLogic": 3,
           "ownershipEase": 5,
           "recipientSpecificity": 4,
-          "total": 18
+          "total": 17
         }
       }
     },
     {
       "id": "big-fudge-premium-master-sleeves",
-      "name": "Big Fudge Premium Master Inner Sleeves",
-      "editorialScore": 86,
-      "evidenceConfidence": 84,
+      "name": "Big Fudge 12-inch Premium Master Inner Sleeves (50 count)",
+      "editorialScore": 82,
+      "evidenceConfidence": 76,
       "drawbacks": [
-        "A multi-layer replacement sleeve still requires exact 12- versus 7-inch selection, inspection for manufacturing debris or creases, and a fit check in tight jackets before a whole pack is used."
+        "A supported multi-layer 12-inch sleeve still requires inspection for manufacturing debris or creases and a fit check in tight jackets before a whole pack is used; the direct manufacturer page was marked sold out during this review."
       ],
       "primarySourceIds": [
         "src-bigfudge-sleeve-official"
       ],
       "independentSourceIds": [
-        "src-bigfudge-audiophilecafe-review",
+        "src-bigfudge-platekompaniet-reviews",
         "src-bigfudge-audiophileman-review"
       ],
       "claimIds": [
@@ -732,22 +834,22 @@
       ],
       "evidenceMode": "desk_research",
       "thoughtfulness": {
-        "observationPrompt": "Can you confirm whether the intended clean-record queue is 12-inch LPs or 7-inch singles and whether its tightest jackets accept a supported sleeve?",
+        "observationPrompt": "Can you confirm the intended clean-record queue is made of standard 12-inch LPs and that its tightest jackets accept a supported sleeve?",
         "frictionClaimIds": [
           "claim-record-reset-friction"
         ],
         "physicalGiftBoundary": "welcome_when_verified",
         "selfPurchase": {
           "reason": "research_burden",
-          "rationale": "The collector must choose exact disc size, jacket fit, pack quantity, and material construction before the bulk maintenance purchase becomes useful.",
-          "basis": "editorial_inference",
+          "rationale": "When the recipient has already named a 12-inch cleaning queue and shown that a supported sleeve fits, the 50-count pack completes that observed queue; do not infer why it remains unfinished.",
+          "basis": "recipient_observation_prompt",
           "claimIds": [
             "claim-record-self-purchase"
           ]
         },
         "duplicateRisk": {
           "level": "high",
-          "preGiftCheck": "Count existing unused 7- and 12-inch sleeves separately and identify the exact clean-record batch."
+          "preGiftCheck": "Count existing unused 12-inch sleeves and identify the exact clean-record batch."
         },
         "clutterRisk": {
           "level": "low",
@@ -758,7 +860,7 @@
           {
             "dimension": "size_or_fit",
             "status": "verified",
-            "requirement": "Select the documented 12- or 7-inch version and confirm actual jacket clearance with one representative record.",
+            "requirement": "Confirm standard 12-inch LP size and actual jacket clearance with one representative record.",
             "claimIds": [
               "claim-bigfudge-benefit",
               "claim-bigfudge-drawback"
@@ -775,26 +877,26 @@
         ],
         "score": {
           "frictionSpecificity": 5,
-          "selfPurchaseLogic": 5,
+          "selfPurchaseLogic": 4,
           "ownershipEase": 5,
           "recipientSpecificity": 5,
-          "total": 20
+          "total": 19
         }
       }
     },
     {
       "id": "sleeve-city-diskeeper-2",
       "name": "Sleeve City Diskeeper 2.0 Antistatic Sleeves",
-      "editorialScore": 78,
-      "evidenceConfidence": 77,
+      "editorialScore": 75,
+      "evidenceConfidence": 72,
       "drawbacks": [
-        "The unsupported HDPE format is less rigid during jacket insertion than paper-backed alternatives, and exact-product owner discussions include both long use and past quality-control concerns, so each sleeve needs inspection."
+        "The thin plastic is less rigid than a paper-backed sleeve when someone slides it into a record jacket. Owner discussions include both long use and past quality-control concerns, so each sleeve needs inspection."
       ],
       "primarySourceIds": [
         "src-diskeeper-official"
       ],
       "independentSourceIds": [
-        "src-diskeeper-ezvid-review",
+        "src-diskeeper-audiokarma-review",
         "src-diskeeper-ebay-review"
       ],
       "claimIds": [
@@ -811,7 +913,7 @@
         "physicalGiftBoundary": "welcome_when_verified",
         "selfPurchase": {
           "reason": "research_burden",
-          "rationale": "The lower-bulk sleeve solves a narrow jacket-fit problem but requires inspection and is less rigid to insert than supported designs.",
+          "rationale": "When the recipient has already identified ordinary 12-inch jackets that reject thicker supported sleeves, the thinner sample addresses that observed fit problem; do not infer a need collection-wide.",
           "basis": "recipient_observation_prompt",
           "claimIds": [
             "claim-record-self-purchase"
@@ -949,14 +1051,15 @@
   "finalists": [
     {
       "id": "spin-clean-record-washer-mkii",
-      "name": "Spin-Clean Record Washer System MkII",
+      "name": "Spin-Clean Vinyl Record Washer Complete Kit",
       "editorialScore": 89,
       "evidenceConfidence": 90,
       "drawbacks": [
         "The system requires a level work area, distilled water and concentrate, prewashed cloths, careful label clearance, manual drying, brush rinsing and air drying, and basin cleanup after a session."
       ],
       "primarySourceIds": [
-        "src-spin-clean-official"
+        "src-spin-clean-official",
+        "src-spin-clean-product"
       ],
       "independentSourceIds": [
         "src-spin-clean-whathifi-review",
@@ -977,7 +1080,7 @@
         "physicalGiftBoundary": "welcome_when_verified",
         "selfPurchase": {
           "reason": "coordination_burden",
-          "rationale": "The manual bath makes sense for a real batch but requires water, cloth preparation, work surface, cleanup, drying, and supply planning before it becomes useful.",
+          "rationale": "When the recipient has already named a batch waiting for care, this kit organizes the wash-and-dry session; do not infer why that batch is unfinished without asking.",
           "basis": "recipient_observation_prompt",
           "claimIds": [
             "claim-record-self-purchase"
@@ -1022,18 +1125,18 @@
         ],
         "score": {
           "frictionSpecificity": 5,
-          "selfPurchaseLogic": 5,
+          "selfPurchaseLogic": 4,
           "ownershipEase": 3,
           "recipientSpecificity": 5,
-          "total": 18
+          "total": 17
         }
       }
     },
     {
       "id": "groovewasher-g2-kit",
-      "name": "GrooveWasher G2 Record Cleaning Kit",
-      "editorialScore": 87,
-      "evidenceConfidence": 86,
+      "name": "GrooveWasher Hardwood Record Cleaning Kit",
+      "editorialScore": 82,
+      "evidenceConfidence": 80,
       "drawbacks": [
         "The G2 process is a light one-record clean that can require repeated passes on dirty used vinyl, needs pad maintenance and replacement fluid, and demands careful control around the label."
       ],
@@ -1041,12 +1144,13 @@
         "src-groovewasher-official"
       ],
       "independentSourceIds": [
-        "src-groovewasher-soundmatters-review",
-        "src-groovewasher-soundstage-review"
+        "src-groovewasher-soundstage-review",
+        "src-groovewasher-ecoustics-review"
       ],
       "claimIds": [
         "claim-groovewasher-benefit",
         "claim-groovewasher-drawback",
+        "claim-groovewasher-g2-label-boundary",
         "claim-record-handling-boundary"
       ],
       "evidenceMode": "desk_research",
@@ -1058,8 +1162,8 @@
         "physicalGiftBoundary": "welcome_when_verified",
         "selfPurchase": {
           "reason": "research_burden",
-          "rationale": "A one-record pad system is easy to defer because fluid choice, label control, pad care, and heavy-dirt limits require more research than a dry dusting brush.",
-          "basis": "editorial_inference",
+          "rationale": "When the recipient has already named a one-record cleaning queue and asked for a compact routine, this kit supplies that routine; do not infer reluctance or its cause without that observation.",
+          "basis": "recipient_observation_prompt",
           "claimIds": [
             "claim-record-self-purchase"
           ]
@@ -1080,13 +1184,14 @@
             "requirement": "Use only on vinyl records explicitly supported by the G2 instructions and exclude unknown or special disc materials.",
             "claimIds": [
               "claim-groovewasher-benefit",
+              "claim-groovewasher-g2-label-boundary",
               "claim-record-handling-boundary"
             ]
           },
           {
             "dimension": "space_or_storage",
             "status": "verified",
-            "requirement": "Confirm a clean flat support, protected label area, air-dry time, pad-rinse path, and dust-free kit storage.",
+            "requirement": "Confirm a clean flat support, protected label area, full air-dry time, a pad-rinse path, and a clean storage drawer.",
             "claimIds": [
               "claim-groovewasher-drawback"
             ]
@@ -1094,18 +1199,18 @@
         ],
         "score": {
           "frictionSpecificity": 5,
-          "selfPurchaseLogic": 5,
+          "selfPurchaseLogic": 4,
           "ownershipEase": 4,
           "recipientSpecificity": 5,
-          "total": 19
+          "total": 18
         }
       }
     },
     {
       "id": "mofi-original-master-sleeves",
       "name": "MoFi Original Master Record Inner Sleeves",
-      "editorialScore": 84,
-      "evidenceConfidence": 83,
+      "editorialScore": 82,
+      "evidenceConfidence": 78,
       "drawbacks": [
         "The soft multi-layer sleeve can bunch during insertion into a tight jacket, and independent owner reports include both long-term satisfaction and isolated quality concerns that justify inspecting every sleeve before use."
       ],
@@ -1130,8 +1235,8 @@
         "physicalGiftBoundary": "welcome_when_verified",
         "selfPurchase": {
           "reason": "replacement_inertia",
-          "rationale": "Original paper inners technically contain the record, so a bulk replacement pack is easy to postpone until it completes a planned cleaning batch.",
-          "basis": "social_demand",
+          "rationale": "When a collector has already identified a cleaned or soon-to-be-cleaned 12-inch batch that still returns to shedding paper, the pack completes that observed queue; do not infer why it remains unfinished.",
+          "basis": "recipient_observation_prompt",
           "claimIds": [
             "claim-record-self-purchase"
           ]
@@ -1166,26 +1271,26 @@
         ],
         "score": {
           "frictionSpecificity": 5,
-          "selfPurchaseLogic": 4,
+          "selfPurchaseLogic": 3,
           "ownershipEase": 5,
           "recipientSpecificity": 4,
-          "total": 18
+          "total": 17
         }
       }
     },
     {
       "id": "big-fudge-premium-master-sleeves",
-      "name": "Big Fudge Premium Master Inner Sleeves",
-      "editorialScore": 86,
-      "evidenceConfidence": 84,
+      "name": "Big Fudge 12-inch Premium Master Inner Sleeves (50 count)",
+      "editorialScore": 82,
+      "evidenceConfidence": 76,
       "drawbacks": [
-        "A multi-layer replacement sleeve still requires exact 12- versus 7-inch selection, inspection for manufacturing debris or creases, and a fit check in tight jackets before a whole pack is used."
+        "A supported multi-layer 12-inch sleeve still requires inspection for manufacturing debris or creases and a fit check in tight jackets before a whole pack is used; the direct manufacturer page was marked sold out during this review."
       ],
       "primarySourceIds": [
         "src-bigfudge-sleeve-official"
       ],
       "independentSourceIds": [
-        "src-bigfudge-audiophilecafe-review",
+        "src-bigfudge-platekompaniet-reviews",
         "src-bigfudge-audiophileman-review"
       ],
       "claimIds": [
@@ -1195,22 +1300,22 @@
       ],
       "evidenceMode": "desk_research",
       "thoughtfulness": {
-        "observationPrompt": "Can you confirm whether the intended clean-record queue is 12-inch LPs or 7-inch singles and whether its tightest jackets accept a supported sleeve?",
+        "observationPrompt": "Can you confirm the intended clean-record queue is made of standard 12-inch LPs and that its tightest jackets accept a supported sleeve?",
         "frictionClaimIds": [
           "claim-record-reset-friction"
         ],
         "physicalGiftBoundary": "welcome_when_verified",
         "selfPurchase": {
           "reason": "research_burden",
-          "rationale": "The collector must choose exact disc size, jacket fit, pack quantity, and material construction before the bulk maintenance purchase becomes useful.",
-          "basis": "editorial_inference",
+          "rationale": "When the recipient has already named a 12-inch cleaning queue and shown that a supported sleeve fits, the 50-count pack completes that observed queue; do not infer why it remains unfinished.",
+          "basis": "recipient_observation_prompt",
           "claimIds": [
             "claim-record-self-purchase"
           ]
         },
         "duplicateRisk": {
           "level": "high",
-          "preGiftCheck": "Count existing unused 7- and 12-inch sleeves separately and identify the exact clean-record batch."
+          "preGiftCheck": "Count existing unused 12-inch sleeves and identify the exact clean-record batch."
         },
         "clutterRisk": {
           "level": "low",
@@ -1221,7 +1326,7 @@
           {
             "dimension": "size_or_fit",
             "status": "verified",
-            "requirement": "Select the documented 12- or 7-inch version and confirm actual jacket clearance with one representative record.",
+            "requirement": "Confirm standard 12-inch LP size and actual jacket clearance with one representative record.",
             "claimIds": [
               "claim-bigfudge-benefit",
               "claim-bigfudge-drawback"
@@ -1238,26 +1343,26 @@
         ],
         "score": {
           "frictionSpecificity": 5,
-          "selfPurchaseLogic": 5,
+          "selfPurchaseLogic": 4,
           "ownershipEase": 5,
           "recipientSpecificity": 5,
-          "total": 20
+          "total": 19
         }
       }
     },
     {
       "id": "sleeve-city-diskeeper-2",
       "name": "Sleeve City Diskeeper 2.0 Antistatic Sleeves",
-      "editorialScore": 78,
-      "evidenceConfidence": 77,
+      "editorialScore": 75,
+      "evidenceConfidence": 72,
       "drawbacks": [
-        "The unsupported HDPE format is less rigid during jacket insertion than paper-backed alternatives, and exact-product owner discussions include both long use and past quality-control concerns, so each sleeve needs inspection."
+        "The thin plastic is less rigid than a paper-backed sleeve when someone slides it into a record jacket. Owner discussions include both long use and past quality-control concerns, so each sleeve needs inspection."
       ],
       "primarySourceIds": [
         "src-diskeeper-official"
       ],
       "independentSourceIds": [
-        "src-diskeeper-ezvid-review",
+        "src-diskeeper-audiokarma-review",
         "src-diskeeper-ebay-review"
       ],
       "claimIds": [
@@ -1274,7 +1379,7 @@
         "physicalGiftBoundary": "welcome_when_verified",
         "selfPurchase": {
           "reason": "research_burden",
-          "rationale": "The lower-bulk sleeve solves a narrow jacket-fit problem but requires inspection and is less rigid to insert than supported designs.",
+          "rationale": "When the recipient has already identified ordinary 12-inch jackets that reject thicker supported sleeves, the thinner sample addresses that observed fit problem; do not infer a need collection-wide.",
           "basis": "recipient_observation_prompt",
           "claimIds": [
             "claim-record-self-purchase"
@@ -1321,13 +1426,13 @@
   "pairs": [
     {
       "id": "batch-wash-fresh-sleeve-loop",
-      "name": "The batch-wash and fresh-sleeve reset loop",
+      "name": "Clean a small batch, then give each record a fresh sleeve",
       "anchorCandidateId": "spin-clean-record-washer-mkii",
       "companionCandidateId": "mofi-original-master-sleeves",
       "recipientJob": "Clean and fully dry a planned batch of compatible standard LPs, then move each inspected record into a fresh correctly fitted inner sleeve.",
       "coherenceType": "protects",
-      "whyTogether": "The Spin-Clean performs the batch wash and dry workflow while the MoFi pack supplies the distinct rehousing step the washer's own instructions recommend after a record is completely dry.",
-      "interactionMoment": "Choose a small compatible batch, follow the official wash and cloth-dry sequence, inspect the record and one new sleeve, retain printed originals, then rehouse only when fully dry.",
+      "whyTogether": "The Spin-Clean washes a small group of compatible records. The MoFi sleeves give each fully dry record a clean place to go instead of returning it to the dusty paper sleeve it just left.",
+      "interactionMoment": "Choose a small group of compatible records, wash and dry them as directed, inspect each record and new sleeve, keep any printed original sleeve, then put the record away only when it is fully dry.",
       "compatibilityChecks": [
         {
           "dimension": "edition_or_region",
@@ -1377,13 +1482,13 @@
     },
     {
       "id": "one-record-clean-fresh-sleeve-loop",
-      "name": "The one-record clean and fresh-sleeve reset loop",
+      "name": "Clean one used record and give it a fresh sleeve",
       "anchorCandidateId": "groovewasher-g2-kit",
       "companionCandidateId": "big-fudge-premium-master-sleeves",
-      "recipientJob": "Give one compatible used vinyl record a controlled damp clean and dry, then rehouse it in one inspected sleeve of the exact disc size.",
+      "recipientJob": "Give one compatible standard 12-inch vinyl record a manufacturer-directed damp clean and dry, then rehouse it in one inspected, test-fitted sleeve.",
       "coherenceType": "protects",
-      "whyTogether": "The GrooveWasher supports the compact one-record cleaning step while the Big Fudge pack supplies a separately sized clean inner for the dry record instead of returning it to the old paper sleeve.",
-      "interactionMoment": "Protect the label, clean one supported record according to the G2 instructions, let it dry fully, inspect the correct-size sleeve, and retain any printed original beside it.",
+      "whyTogether": "The GrooveWasher cleans one compatible record without setting up a full washing bath. The Big Fudge 12-inch pack provides a clean sleeve once that standard LP is fully dry.",
+      "interactionMoment": "Protect the label, follow the current product directions and label, let one compatible 12-inch record dry fully, inspect and test-fit a new sleeve, and keep any printed original sleeve beside it.",
       "compatibilityChecks": [
         {
           "dimension": "edition_or_region",
@@ -1391,13 +1496,14 @@
           "requirement": "Confirm the record is supported vinyl rather than shellac, lacquer, a special picture disc, or another material not authorized by the instructions.",
           "claimIds": [
             "claim-groovewasher-benefit",
+            "claim-groovewasher-g2-label-boundary",
             "claim-record-handling-boundary"
           ]
         },
         {
           "dimension": "size_or_fit",
           "status": "verified",
-          "requirement": "Choose the exact 12- or 7-inch Big Fudge version and test jacket clearance before opening the full batch."
+          "requirement": "Confirm a standard 12-inch LP and test actual jacket clearance before opening the full pack."
           ,"claimIds": [
             "claim-bigfudge-benefit",
             "claim-bigfudge-drawback"
@@ -1414,8 +1520,8 @@
       ],
       "duplicateRisk": "high",
       "clutterDelta": "neutral",
-      "preGiftCheck": "Name one supported used record, confirm its size and jacket fit, inventory existing wet-clean tools and sleeves, and preserve any meaningful printed inner."
-      ,"bundleDrawback": "Buy only the kit when clean correctly sized sleeves already exist; buy only sleeves when a trusted one-record clean is established; skip the pair for an unsupported medium or batch-cleaning preference."
+      "preGiftCheck": "Name one supported 12-inch used record, confirm its jacket fit, inventory existing wet-clean tools and sleeves, review the current G2 label, and preserve any meaningful printed inner."
+      ,"bundleDrawback": "Buy only the kit when clean 12-inch sleeves already exist; buy only sleeves when a trusted one-record clean is established; skip the pair for an unsupported medium, unavailable stock, or batch-cleaning preference."
       ,"claimIds": [
         "claim-pair-groove-bigfudge"
       ],
@@ -1425,26 +1531,33 @@
         "interactionLoop": 20,
         "observableTrigger": 15,
         "independentValue": 9,
-        "compatibility": 9,
-        "ownershipEase": 4,
-        "total": 96
+        "compatibility": 8,
+        "ownershipEase": 3,
+        "total": 94
       }
     }
   ],
   "affiliateLinks": [],
   "article": {
     "slug": "vinyl-record-cleaner-inner-sleeve-gift-pairs",
-    "editorialScore": 89,
-    "evidenceConfidence": 85,
+    "editorialScore": 84,
+    "evidenceConfidence": 80,
     "evidenceMode": "desk_research",
     "status": "draft"
   },
   "qa": {
     "passed": false,
     "reviewerRole": "independent-editor",
-    "reviewerId": "pending-used-record-reset-independent-qa-desk",
+    "reviewerId": "independent-evidence-audit-20261010",
     "receiptPath": "research/reviews/20260823-used-record-reset-53a6b604.qa.v1.json",
-    "blockers": [],
-    "warnings": []
+    "blockers": [
+      "Founder review is required for the qualified current GrooveWasher G2 product-label safety boundary before promotion or publication.",
+      "The repaired bundle has not received a fresh independent review after exact-product source replacement, shopping-link refresh, claim-role separation, and score changes."
+    ],
+    "warnings": [
+      "Sound Matters remains in the source ledger only as a Tier-D conflict record and is not used in any scored claim or finalist source set.",
+      "The Big Fudge manufacturer page was marked sold out during review; the reader link uses the exact 12-inch 50-count product at Binaural Records and availability still requires a pre-publication recheck.",
+      "Every product link remains ordinary and unpaid; no affiliate tracking was added."
+    ]
   }
 }

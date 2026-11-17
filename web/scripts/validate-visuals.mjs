@@ -2,7 +2,7 @@ import crypto from 'node:crypto';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import process from 'node:process';
-import matter from 'gray-matter';
+import matter from './lib/front-matter.mjs';
 
 const root = process.cwd();
 const visualRegistryPath = path.join(root, 'visuals', 'article-visuals.json');

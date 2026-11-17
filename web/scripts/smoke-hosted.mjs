@@ -1,7 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import process from 'node:process';
-import matter from 'gray-matter';
+import matter from './lib/front-matter.mjs';
 
 const baseUrl = process.argv[2];
 if (!baseUrl) throw new Error('Usage: npm run smoke:hosted -- https://example.web.app');
