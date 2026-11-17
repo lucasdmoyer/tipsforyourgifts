@@ -1,7 +1,7 @@
 import { DatePipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, InjectionToken, input } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import type { Article, Product, ProductPair, StrategyIdea, VisualAsset } from './content.types';
+import type { Article, Growth, Operations, Product, ProductPair, Strategy, StrategyIdea, VisualAsset } from './content.types';
 import { ContentService } from './content.service';
 import { assessFounderBrief, buildFounderBriefMarkdown, buildStrategyIssueUrl, EMPTY_FOUNDER_BRIEF, type FounderBriefDraft } from './founder-brief';
 import { findGiftGuides, type GiftShape, type RecipientSignal } from './gift-finder';
@@ -549,10 +549,8 @@ export class StandardsPage {
       <div class="prose">
         <p>Tips for Your Gifts may eventually earn a commission from certain links. When a link is paid, we will say so plainly before you click it.</p>
         <p>The person comes first, the gift idea comes second, and the link comes last. A commission never turns the wrong gift into the right one.</p>
-        @if (content.operations.affiliate.activeOverlays > 0) {
-          <p>{{ content.operations.affiliate.activeOverlays }} paid {{ content.operations.affiliate.activeOverlays === 1 ? 'link is' : 'links are' }} currently active. Each one is labeled where it appears.</p>
-        } @else if (content.operations.affiliate.enabledPrograms > 0) {
-          <p>{{ content.operations.affiliate.enabledPrograms }} affiliate {{ content.operations.affiliate.enabledPrograms === 1 ? 'partnership is' : 'partnerships are' }} available, but the links on the site remain ordinary, unpaid links unless they are labeled otherwise.</p>
+        @if (paidLinkCount > 0) {
+          <p>{{ paidLinkCount }} paid {{ paidLinkCount === 1 ? 'link is' : 'links are' }} currently active. Each one is labeled where it appears.</p>
         } @else {
           <p>No affiliate partnership is active today. Every product destination is an ordinary, unpaid link.</p>
         }
@@ -563,15 +561,29 @@ export class StandardsPage {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AffiliateDisclosurePage {
-  readonly content = inject(ContentService);
+  readonly paidLinkCount = inject(ContentService).articles
+    .flatMap((article) => article.products)
+    .filter((product) => product.affiliate).length;
   private readonly seo = inject(SeoService);
   constructor() {
     this.seo.set({ title: 'Affiliate disclosure', description: 'A plain-language explanation of paid links on Tips for Your Gifts.', path: '/affiliate-disclosure' });
   }
 }
 
+export interface StudioData {
+  operations: Operations;
+  strategy: Strategy;
+  growth: Growth;
+}
+
+export const STUDIO_DATA = new InjectionToken<StudioData>('STUDIO_DATA');
+
 @Component({
   imports: [RouterLink],
+  providers: [{
+    provide: STUDIO_DATA,
+    useFactory: () => inject(ActivatedRoute).snapshot.data['studioData'] as StudioData
+  }],
   template: `
     <section class="shell studio-hero">
       <p class="eyebrow">Executive studio</p><h1>Set the direction. Let the system run.</h1>
@@ -978,7 +990,7 @@ export class AffiliateDisclosurePage {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class StudioPage {
-  readonly content = inject(ContentService);
+  readonly content = inject(STUDIO_DATA);
   private readonly ideaStages = new Map(this.content.operations.ideaStages.map((idea) => [idea.ideaId, idea]));
   readonly nextResearchIdea = this.content.strategy.ideas.find((idea) => this.ideaStages.get(idea.id)?.stage === 'approved_for_research');
   readonly proposedIdeas = this.content.strategy.ideas
