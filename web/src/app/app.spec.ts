@@ -1,13 +1,22 @@
 import { TestBed } from '@angular/core/testing';
 import { provideRouter, Router } from '@angular/router';
 import { App } from './app';
-import { ARTICLES, GROWTH, OPERATIONS, STRATEGY } from './generated/content.generated';
-import { ArticlePage, FounderBriefPage, GiftFinderPage, PairCardComponent, ProductCardComponent, StudioPage } from './pages';
+import { ARTICLES } from './generated/content.generated';
+import { GROWTH, OPERATIONS, STRATEGY } from './generated/studio.generated';
+import { ArticlePage, FounderBriefPage, GiftFinderPage, PairCardComponent, ProductCardComponent, STUDIO_DATA, StudioPage } from './pages';
 import { readerBodyComesFirst, readerBodyHtml, readerEvidenceHtml, readerLanguage, readerLead } from './reader-copy';
 
 describe('App', () => {
   beforeEach(async () => {
-    await TestBed.configureTestingModule({ imports: [App, ArticlePage, StudioPage, FounderBriefPage, GiftFinderPage, ProductCardComponent, PairCardComponent], providers: [provideRouter([{ path: 'blog/:slug', component: ArticlePage }])] }).compileComponents();
+    TestBed.overrideComponent(StudioPage, {
+      set: { providers: [{ provide: STUDIO_DATA, useValue: { operations: OPERATIONS, strategy: STRATEGY, growth: GROWTH } }] }
+    });
+    await TestBed.configureTestingModule({
+      imports: [App, ArticlePage, StudioPage, FounderBriefPage, GiftFinderPage, ProductCardComponent, PairCardComponent],
+      providers: [
+        provideRouter([{ path: 'blog/:slug', component: ArticlePage }])
+      ]
+    }).compileComponents();
   });
 
   it('renders the editorial brand and primary navigation', () => {
