@@ -114,7 +114,7 @@ export function buildEditorialReviewQueue(records) {
         sourcePaths: { run: runPath, article: articlePath, social: socialPath },
         sourceSha256: { run: runSha256, article: articleSha256, social: socialSha256 },
         nextGate: founderSafetyReviewStatus === 'approved_current'
-          ? 'Founder safety approval matches the current bytes; a separate independent editor now reviews the exact run, article, social pack, and safety boundary before promotion.'
+          ? 'Founder safety approval matches the current bytes; merging that decision dispatches the separate independent editor automatically, with the Studio workflow available for recovery before promotion.'
           : founderSafetyReviewStatus === 'rejected_current'
             ? 'Do not publish this bundle. Revise or remove the rejected high-risk claim language, then request a new founder safety review on the changed bytes.'
             : founderSafetyReviewStatus === 'stale'

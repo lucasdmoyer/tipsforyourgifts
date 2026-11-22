@@ -179,7 +179,7 @@ jobs:
             If and only if the exact bundle passes without blockers, create the hash-bound receipt by running:
             npm --prefix web run review:receipt -- --run-id=${{ steps.identify.outputs.run_id }} --reviewer-id=evidence-red-team-${{ github.run_id }} --verdict=passed --workflow-run-id=${{ github.run_id }}
 
-            If it has any blocker, run the same command with --verdict=failed. You may create only web/research/reviews/${{ steps.identify.outputs.run_id }}.qa.v1.json. Never approve work by changing the source bundle.
+            If it has any blocker, run the same command with --verdict=failed. The command creates the next immutable web/research/reviews/${{ steps.identify.outputs.run_id }}.qa.vN.json revision. You may create only that one receipt. Never approve work by changing the source bundle.
       - name: Prove reviewer isolation and promote only a passing receipt
         env:
           MISSION_ID: ${{ steps.identify.outputs.mission_id }}
@@ -189,7 +189,8 @@ jobs:
         run: |
           actual_source_patch_sha="$(git diff --binary HEAD -- "web/research/runs/$RUN_ID.json" "web/src/data/blog/$ARTICLE_SLUG.md" "web/social/drafts/$ARTICLE_SLUG-launch.json" | shasum -a 256 | cut -d ' ' -f 1)"
           test "$actual_source_patch_sha" = "$EXPECTED_SOURCE_PATCH_SHA"
-          test -f "web/research/reviews/$RUN_ID.qa.v1.json"
+          mapfile -t receipt_files < <(git status --short | cut -c4- | grep -E "^web/research/reviews/$RUN_ID\\.qa\\.v[1-9][0-9]*\\.json$")
+          test "${#receipt_files[@]}" -eq 1
           while IFS= read -r changed_path; do
             case "$changed_path" in
               web/research/missions/*.json|web/research/runs/*.json|web/research/reviews/*.json|web/social/drafts/*.json|web/src/data/blog/*.md|web/src/data/operations.json|web/src/app/generated/content.generated.ts|web/public/publication-manifest.json|web/public/sitemap.xml) ;;

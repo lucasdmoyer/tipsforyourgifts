@@ -26,6 +26,8 @@ Before Codex receives a key, the trusted workflow writes `web/research/missions/
 
 The drafting agent cannot edit that envelope. A separate editor can create only the hash-bound QA receipt. Trusted scripts promote the reviewed bundle and complete the mission receipt with the exact SHA-256 digest of every output.
 
+Review receipts use immutable revisions. A failed `qa.vN` remains in Git; a later review writes `qa.vN+1` and cannot overwrite the earlier evidence. Promotion records the exact passing receipt path in the run and, when a mission exists, in the mission completion record.
+
 ## Team handoffs
 
 1. **Research editorial team — draft only.** Deep public research, typed claim ledger, qualified finalists, thoughtful-fit analysis, article, and draft social pack.

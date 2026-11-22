@@ -44,6 +44,8 @@ Each founder-started Codex workflow is represented by a versioned research missi
 
 Founder safety decisions live under `web/research/safety-approvals/`. Only the protected owner workflow may add a versioned decision. The deterministic promotion script and publication-manifest builder independently re-evaluate it, so copying an old approval or changing the reviewed language cannot advance a bundle.
 
+Independent editorial receipts are append-only revisions. The evidence editor runs with read-only repository permission and returns structured findings only. A credential-free job creates `qa.vN`, preserves failed attempts, and promotes only a clean receipt whose hashes still match the run, article, and social pack. That job may open a pull request; it cannot merge or deploy.
+
 Mission completion advances the bundle to release preparation. While publication mode is founder reviewed, it still requires the exact-SHA pull request, Firebase preview, and founder merge decision. Once the separately approved automatic-after-proven policy is active, the same completion receipt can make the pull request eligible for required-check automatic merge.
 
 The GitHub research job has read-only repository permission while the OpenAI key is present. It serializes a patch, rejects edits outside content-only paths, and discards the credential. A second job with write permission applies the patch, reruns every gate without the AI credential, pushes a branch, and opens a pull request.
