@@ -172,7 +172,15 @@ export interface AutomationReadiness {
 
 export interface AiAutomationPolicy {
   schemaVersion: '1.0.0';
-  status: 'awaiting_founder_platform_budget' | 'active';
+  status: 'awaiting_founder_platform_budget' | 'budget_approved_awaiting_credential' | 'active';
+  policySha256: string;
+  budgetConfiguration: {
+    available: boolean;
+    workflowUrl: string;
+    confirmation: 'CONFIGURE-ai-automation-budget';
+    evidenceMode: 'founder_attested_external_platform_configuration';
+    command: string;
+  };
   activationReady: boolean;
   activationBlockers: string[];
   protectedWorkflows: number;

@@ -118,7 +118,21 @@ const livePublication = JSON.parse(await fs.readFile(livePublicationPath, 'utf8'
 const publicationPolicy = JSON.parse(await fs.readFile(publicationPolicyPath, 'utf8'));
 const opportunityPolicy = JSON.parse(await fs.readFile(opportunityPolicyPath, 'utf8'));
 const automationReadinessEvidence = automationReadinessEvidenceSchema.parse(JSON.parse(await fs.readFile(automationReadinessPath, 'utf8')));
-const aiAutomationPolicy = buildAiAutomationPolicySummary(parseAiAutomationPolicy(JSON.parse(await fs.readFile(aiAutomationPolicyPath, 'utf8'))));
+const aiAutomationPolicyRaw = await fs.readFile(aiAutomationPolicyPath);
+const aiAutomationPolicySha256 = createHash('sha256').update(aiAutomationPolicyRaw).digest('hex');
+const aiAutomationPolicySummary = buildAiAutomationPolicySummary(parseAiAutomationPolicy(JSON.parse(aiAutomationPolicyRaw.toString('utf8'))));
+const aiAutomationBudgetWorkflowUrl = 'https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/ai-automation-budget-configure.yml';
+const aiAutomationPolicy = {
+  ...aiAutomationPolicySummary,
+  policySha256: aiAutomationPolicySha256,
+  budgetConfiguration: {
+    available: aiAutomationPolicySummary.status === 'awaiting_founder_platform_budget',
+    workflowUrl: aiAutomationBudgetWorkflowUrl,
+    confirmation: 'CONFIGURE-ai-automation-budget',
+    evidenceMode: 'founder_attested_external_platform_configuration',
+    command: `gh workflow run ai-automation-budget-configure.yml --repo lucasdmoyer/tipsforyourgifts --ref master -f expected_policy_sha256=${aiAutomationPolicySha256} -f monthly_budget_usd='<APPROVED_MONTHLY_USD>' -f platform_evidence_url='<OPENAI_PLATFORM_SETTINGS_URL>' -f confirmation='CONFIGURE-ai-automation-budget'`
+  }
+};
 const publicationManifest = JSON.parse(await fs.readFile(publicationManifestPath, 'utf8'));
 const editorialSafetyApprovals = await loadEditorialSafetyApprovalRecords(root);
 

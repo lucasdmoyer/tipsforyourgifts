@@ -25,6 +25,21 @@ assert.throws(() => parseAiAutomationPolicy({ ...clone(rawPolicy), status: 'acti
 const mismatchedBudget = clone(rawPolicy);
 mismatchedBudget.spendControl.monthlyBudgetUsd = 25;
 assert.throws(() => parseAiAutomationPolicy(mismatchedBudget), /Budget amount and platform evidence URL/);
+const budgetApprovedPolicy = clone(rawPolicy);
+budgetApprovedPolicy.status = 'budget_approved_awaiting_credential';
+budgetApprovedPolicy.spendControl.status = 'configured_external';
+budgetApprovedPolicy.spendControl.monthlyBudgetUsd = 25;
+budgetApprovedPolicy.spendControl.evidenceUrl = 'https://platform.openai.com/settings/organization/limits';
+assert.deepEqual(buildAiAutomationPolicySummary(budgetApprovedPolicy).activationBlockers, [
+  'Dedicated OpenAI project credential is not configured.',
+  'Versioned automation policy is not active.'
+]);
+const budgetApprovedWithCredential = clone(budgetApprovedPolicy);
+budgetApprovedWithCredential.credential.status = 'configured_external';
+assert.throws(() => parseAiAutomationPolicy(budgetApprovedWithCredential), /must keep the credential unconfigured/);
+const awaitingWithBudget = clone(budgetApprovedPolicy);
+awaitingWithBudget.status = 'awaiting_founder_platform_budget';
+assert.throws(() => parseAiAutomationPolicy(awaitingWithBudget), /cannot contain a configured budget/);
 
 const workflowPolicy = policy.workflows.find((entry) => entry.file === 'growth-review.yml');
 const workflow = parse(await fs.readFile(path.join(repoRoot, '.github', 'workflows', workflowPolicy.file), 'utf8'));
@@ -53,7 +68,7 @@ await fs.writeFile(activePolicyPath, `${JSON.stringify(activePolicy, null, 2)}\n
 
 console.log(JSON.stringify({
   aiAutomationPolicyGateTests: 'passed',
-  negativeChecks: 6,
+  negativeChecks: 8,
   protectedWorkflows: validation.protectedWorkflows,
   protectedModelCalls: validation.protectedModelCalls,
   currentActivationReady: summary.activationReady,

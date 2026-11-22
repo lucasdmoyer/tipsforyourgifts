@@ -179,6 +179,7 @@ h3 { font-size: 1.35rem; }
 .readiness-evidence details { padding: 14px 0; border-top: 1px solid var(--line); }
 .readiness-evidence summary { cursor: pointer; color: var(--evergreen); font-weight: 850; }
 .release-candidate-card h3 { font: 800 1.45rem/1.2 ui-monospace, SFMono-Regular, Menlo, monospace; }
+.policy-digest { overflow-wrap: anywhere; }
 .founder-agenda { scroll-margin-top: 96px; }
 .agenda-primary { border-color: #c8d9cf; background: linear-gradient(135deg, var(--paper), #f1f8f3); }
 .agenda-primary h2 { max-width: 20ch; margin-bottom: 14px; }

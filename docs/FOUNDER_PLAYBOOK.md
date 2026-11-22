@@ -16,6 +16,12 @@ For measurement, follow the exact staged action shown in Studio: configure the c
 
 After a managed Firebase release, the release card remains until the strict post-deploy receipt is synchronized into `web/config/live-publication.json` and its content-set SHA-256 matches the current candidate. This avoids repeatedly asking you to release content that Git can prove is already live. Affiliate and social cards automatically advance from selection to activation handoffs as their founder-controlled registries change state.
 
+## Set the AI operating budget
+
+The **AI authority and spend** card in `/studio` shows the exact SHA-256 of the versioned policy. First set a real monthly limit inside the dedicated OpenAI Platform project. Then use **Record Lucas-approved budget** with that exact digest, the approved USD amount, and a credential-free OpenAI Platform settings URL. The owner-only workflow validates the repository, prepares a narrow patch, validates it again in a separate writer job, and opens a pull request for review.
+
+That pull request records your attestation; it does not independently verify or change the external account. It also cannot add a credential, call a model, activate the policy, merge, deploy Firebase, publish content, activate affiliate links, post to social media, or send email. After it merges, Studio moves to `budget approved awaiting credential`. Credential verification and policy activation remain separate founder-controlled decisions before any AI run can spend money.
+
 ## The executive brief
 
 Use `/studio/brief` for a guided completeness check, or use the raw GitHub executive-content issue form, to record:

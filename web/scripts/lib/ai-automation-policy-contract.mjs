@@ -31,7 +31,7 @@ const workflowPolicySchema = z.object({
 
 export const aiAutomationPolicySchema = z.object({
   schemaVersion: z.literal('1.0.0'),
-  status: z.enum(['awaiting_founder_platform_budget', 'active']),
+  status: z.enum(['awaiting_founder_platform_budget', 'budget_approved_awaiting_credential', 'active']),
   credential: z.object({
     secretName: z.literal('OPENAI_API_KEY'),
     status: z.enum(['not_configured', 'configured_external']),
@@ -85,15 +85,25 @@ export const aiAutomationPolicySchema = z.object({
     context.addIssue({ code: z.ZodIssueCode.custom, path: ['workflows'], message: `Expected 8 protected Codex steps, found ${codexSteps}` });
   }
 
-  const activationReady = policy.credential.status === 'configured_external'
-    && policy.spendControl.status === 'configured_external'
+  const budgetConfigured = policy.spendControl.status === 'configured_external'
     && policy.spendControl.monthlyBudgetUsd !== null
     && policy.spendControl.evidenceUrl !== null;
+  const credentialConfigured = policy.credential.status === 'configured_external';
+  const activationReady = credentialConfigured && budgetConfigured;
+  if (policy.spendControl.status === 'not_configured' && (policy.spendControl.monthlyBudgetUsd !== null || policy.spendControl.evidenceUrl !== null)) {
+    context.addIssue({ code: z.ZodIssueCode.custom, path: ['spendControl'], message: 'An unconfigured budget cannot retain an amount or platform evidence URL' });
+  }
+  if (policy.spendControl.status === 'configured_external' && !budgetConfigured) {
+    context.addIssue({ code: z.ZodIssueCode.custom, path: ['spendControl'], message: 'A configured budget requires both an amount and platform evidence URL' });
+  }
+  if (policy.status === 'awaiting_founder_platform_budget' && (budgetConfigured || credentialConfigured)) {
+    context.addIssue({ code: z.ZodIssueCode.custom, path: ['status'], message: 'The awaiting-budget state cannot contain a configured budget or credential' });
+  }
+  if (policy.status === 'budget_approved_awaiting_credential' && (!budgetConfigured || credentialConfigured)) {
+    context.addIssue({ code: z.ZodIssueCode.custom, path: ['status'], message: 'The budget-approved state requires budget evidence and must keep the credential unconfigured' });
+  }
   if (policy.status === 'active' && !activationReady) {
     context.addIssue({ code: z.ZodIssueCode.custom, path: ['status'], message: 'Active policy requires an externally configured credential and founder-approved platform budget evidence' });
-  }
-  if (policy.status !== 'active' && activationReady) {
-    context.addIssue({ code: z.ZodIssueCode.custom, path: ['status'], message: 'A fully configured policy must be explicitly activated or its external status rolled back' });
   }
   if ((policy.spendControl.monthlyBudgetUsd === null) !== (policy.spendControl.evidenceUrl === null)) {
     context.addIssue({ code: z.ZodIssueCode.custom, path: ['spendControl'], message: 'Budget amount and platform evidence URL must be recorded together' });
@@ -109,8 +119,7 @@ export function buildAiAutomationPolicySummary(value) {
   const codexSteps = policy.workflows.reduce((total, workflow) => total + workflow.codexSteps, 0);
   const activationBlockers = [];
   if (policy.credential.status !== 'configured_external') activationBlockers.push('Dedicated OpenAI project credential is not configured.');
-  if (policy.spendControl.status !== 'configured_external') activationBlockers.push('OpenAI project monthly budget is not configured.');
-  if (policy.spendControl.monthlyBudgetUsd === null || policy.spendControl.evidenceUrl === null) activationBlockers.push('Founder-approved budget amount and platform evidence are not recorded.');
+  if (policy.spendControl.status !== 'configured_external' || policy.spendControl.monthlyBudgetUsd === null || policy.spendControl.evidenceUrl === null) activationBlockers.push('Founder-approved OpenAI project monthly budget and platform evidence are not recorded.');
   if (policy.status !== 'active') activationBlockers.push('Versioned automation policy is not active.');
 
   return {
