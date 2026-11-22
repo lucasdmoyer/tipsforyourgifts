@@ -168,6 +168,17 @@ for (const asset of assets.values()) {
   } catch (error) {
     errors.push(`${asset.id}: cannot read ${path.relative(root, filePath)} (${error.message})`);
   }
+  if (isPublic) {
+    const responsivePath = publicPath.replace(/\.webp$/, '-768.webp');
+    try {
+      const responsiveBuffer = await fs.readFile(responsivePath);
+      expect(responsiveBuffer.length <= 80 * 1024, `${asset.id}: 768px responsive WebP exceeds 80 KiB`);
+      const responsiveDimensions = webpDimensions(responsiveBuffer);
+      expect(responsiveDimensions?.width === 768 && responsiveDimensions?.height === 512, `${asset.id}: responsive WebP must be exactly 768x512, got ${responsiveDimensions ? `${responsiveDimensions.width}x${responsiveDimensions.height}` : 'unreadable dimensions'}`);
+    } catch (error) {
+      errors.push(`${asset.id}: cannot read responsive derivative ${path.relative(root, responsivePath)} (${error.message})`);
+    }
+  }
   if (isDraft) expect(!(await fileExists(publicPath)), `${asset.id}: draft-only asset must not exist under public/`);
   if (isPublic) expect(!(await fileExists(draftPath)), `${asset.id}: public asset must not have a stale draft delivery copy`);
 }
@@ -181,8 +192,13 @@ for (const directory of await fs.readdir(publicImageRoot, { withFileTypes: true 
   }
 }
 const registeredPublicSources = new Set([...publicAssetIds].map((id) => assets.get(id)?.src));
-for (const src of publicWebps) expect(registeredPublicSources.has(src), `Unregistered deployable visual: ${src}`);
-expect(publicWebps.length === publicAssetIds.size, `Deployable WebP count ${publicWebps.length} must match ${publicAssetIds.size} public registry assets`);
+const registeredResponsiveSources = new Set([...registeredPublicSources].map((src) => src?.replace(/\.webp$/, '-768.webp')));
+const originalPublicWebps = publicWebps.filter((src) => !src.endsWith('-768.webp'));
+const responsivePublicWebps = publicWebps.filter((src) => src.endsWith('-768.webp'));
+for (const src of originalPublicWebps) expect(registeredPublicSources.has(src), `Unregistered deployable visual: ${src}`);
+for (const src of responsivePublicWebps) expect(registeredResponsiveSources.has(src), `Unregistered responsive visual: ${src}`);
+expect(originalPublicWebps.length === publicAssetIds.size, `Deployable original WebP count ${originalPublicWebps.length} must match ${publicAssetIds.size} public registry assets`);
+expect(responsivePublicWebps.length === publicAssetIds.size, `Deployable responsive WebP count ${responsivePublicWebps.length} must match ${publicAssetIds.size} public registry assets`);
 
 const productCount = [...articles.values()].reduce((sum, article) => sum + article.products.length, 0);
 const pairCount = [...articles.values()].reduce((sum, article) => sum + article.pairs.length, 0);
@@ -199,4 +215,4 @@ if (errors.length > 0) {
   process.exit(1);
 }
 
-console.log(`Validated ${assets.size} original visuals (${publicAssetIds.size} public, ${draftAssetIds.size} draft-only) across ${articles.size} articles, ${productCount} products, and ${pairCount} pairs`);
+console.log(`Validated ${assets.size} original visuals (${publicAssetIds.size} public with 768px responsive derivatives, ${draftAssetIds.size} draft-only) across ${articles.size} articles, ${productCount} products, and ${pairCount} pairs`);

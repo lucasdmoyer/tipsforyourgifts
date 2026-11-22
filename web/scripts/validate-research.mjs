@@ -4,6 +4,10 @@ import path from 'node:path';
 import process from 'node:process';
 import matter from './lib/front-matter.mjs';
 import { z } from 'zod';
+import {
+  assertReviewReceiptIdentity,
+  reviewReceiptPathPattern
+} from './lib/editorial-review-receipt-contract.mjs';
 
 const root = process.cwd();
 const runsDir = path.join(root, 'research', 'runs');
@@ -156,27 +160,10 @@ const runSchema = z.object({
     passed: z.boolean(),
     reviewerRole: z.literal('independent-editor'),
     reviewerId: z.string().min(3),
-    receiptPath: z.string().regex(/^research\/reviews\/[a-z0-9-]+\.qa\.v1\.json$/),
+    receiptPath: z.string().regex(/^research\/reviews\/[a-z0-9-]+\.qa\.v[1-9]\d*\.json$/),
     blockers: z.array(z.string()),
     warnings: z.array(z.string())
   })
-});
-
-const reviewReceiptSchema = z.object({
-  schemaVersion: z.literal('1.0.0'),
-  receiptId: z.string().regex(/^\d{8}-[a-z0-9-]+-[a-f0-9]{8}-qa$/),
-  runId: z.string().regex(/^\d{8}-[a-z0-9-]+-[a-f0-9]{8}$/),
-  articleSlug: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
-  reviewedAt: z.string().datetime(),
-  reviewerRole: z.literal('independent-editor'),
-  reviewerId: z.string().min(3),
-  workflowRunId: z.string().min(1),
-  verdict: z.enum(['passed', 'failed']),
-  evidenceSha256: z.string().regex(/^[a-f0-9]{64}$/),
-  articleSha256: z.string().regex(/^[a-f0-9]{64}$/),
-  socialSha256: z.string().regex(/^[a-f0-9]{64}$/).nullable(),
-  blockers: z.array(z.string()),
-  warnings: z.array(z.string())
 });
 
 const socialPostSchema = z.object({
@@ -650,6 +637,38 @@ for (const runFile of runFiles) {
   if (run.qa.warnings.length > 0) warnings.push(...run.qa.warnings.map((warning) => `${run.runId}: ${warning}`));
 }
 
+const reviewFiles = await filesUnder(reviewsDir, '.json');
+const reviewReceiptIds = new Set();
+const reviewRevisionKeys = new Set();
+for (const reviewFile of reviewFiles) {
+  const relativePath = `research/reviews/${path.basename(reviewFile)}`;
+  if (!reviewReceiptPathPattern.test(relativePath)) {
+    errors.push(`${relativePath}: review filename does not use the versioned run receipt pattern`);
+    continue;
+  }
+  try {
+    const receipt = assertReviewReceiptIdentity(JSON.parse(await fs.readFile(reviewFile, 'utf8')), relativePath);
+    const run = runsById.get(receipt.runId);
+    if (!run) errors.push(`${relativePath}: referenced research run is missing`);
+    else {
+      if (receipt.articleSlug !== run.article.slug) errors.push(`${relativePath}: article slug differs from the research run`);
+      if (receipt.reviewerId === run.draftAuthor) errors.push(`${relativePath}: draft author cannot be the independent reviewer`);
+    }
+    if (reviewReceiptIds.has(receipt.receiptId)) errors.push(`${relativePath}: duplicate review receipt ID ${receipt.receiptId}`);
+    reviewReceiptIds.add(receipt.receiptId);
+    const revision = Number(/\.qa\.v([1-9]\d*)\.json$/.exec(relativePath)?.[1]);
+    const revisionKey = `${receipt.runId}:${revision}`;
+    if (reviewRevisionKeys.has(revisionKey)) errors.push(`${relativePath}: duplicate review revision ${revisionKey}`);
+    reviewRevisionKeys.add(revisionKey);
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      for (const issue of error.issues) errors.push(`${relativePath} ${issue.path.join('.')}: ${issue.message}`);
+    } else {
+      errors.push(`${relativePath}: ${error.message}`);
+    }
+  }
+}
+
 for (const run of runsById.values()) {
   if (!run.supersedesRunId) continue;
   const prior = runsById.get(run.supersedesRunId);
@@ -745,12 +764,12 @@ for (const run of runsById.values()) {
   let receiptRaw;
   try {
     receiptRaw = await fs.readFile(receiptPath, 'utf8');
-    receipt = reviewReceiptSchema.parse(JSON.parse(receiptRaw));
+    receipt = assertReviewReceiptIdentity(JSON.parse(receiptRaw), run.qa.receiptPath);
   } catch (error) {
     errors.push(`${run.runId}: independent QA receipt is missing or invalid (${error.message})`);
     continue;
   }
-  if (receipt.receiptId !== `${run.runId}-qa` || receipt.runId !== run.runId || receipt.articleSlug !== run.article.slug) errors.push(`${run.runId}: QA receipt identity does not match the run`);
+  if (receipt.runId !== run.runId || receipt.articleSlug !== run.article.slug) errors.push(`${run.runId}: QA receipt identity does not match the run`);
   if (receipt.verdict !== 'passed' || receipt.blockers.length > 0) errors.push(`${run.runId}: QA receipt did not pass cleanly`);
   if (receipt.reviewerId !== run.qa.reviewerId || receipt.reviewerId === run.draftAuthor) errors.push(`${run.runId}: QA receipt reviewer separation failed`);
   const currentEvidenceSha256 = evidenceDigest(rawRunsById.get(run.runId));
@@ -773,6 +792,7 @@ else {
     researchRuns: runFiles.length,
     articles: articleFiles.length,
     socialPacks: socialFiles.length,
+    independentReviewReceipts: reviewFiles.length,
     enabledAffiliatePrograms: enabledPrograms.size,
     warnings
   }, null, 2));

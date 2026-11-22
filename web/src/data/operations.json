@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-11-07T23:58:13.560Z",
+  "generatedAt": "2026-11-22T06:16:08.292Z",
   "founderAgenda": {
     "schemaVersion": "1.0.0",
-    "generatedAt": "2026-11-07T23:58:13.560Z",
+    "generatedAt": "2026-11-22T06:16:08.292Z",
     "posture": "founder_decisions_required",
     "primaryDecisionId": "review-release-candidate",
     "profitabilityEvidence": "unknown_until_aggregate_measurement",
@@ -15,14 +15,14 @@
         "horizon": "now",
         "category": "release",
         "title": "Review the first accountable Angular release",
-        "recommendation": "Review publication-set-8e8287a5ec7db534 as the first founder-controlled Firebase release candidate.",
+        "recommendation": "Review publication-set-42500af1ebd2d773 as the first founder-controlled Firebase release candidate.",
         "decisionQuestion": "Does this exact content set represent the site you want readers to see first?",
         "rationale": "The research and release machinery cannot create traffic, trust, or revenue while the modern reviewed site remains only a local candidate.",
         "evidence": [
           "10 publication-ready articles are in the candidate set.",
           "10 independent QA receipts are hash-bound to those articles.",
           "60 reviewed social drafts are prepared for later distribution.",
-          "The latest Git-recorded live content set is publication-set-0e33c0313ad4afec, which differs from this candidate."
+          "The latest Git-recorded live content set is publication-set-8e8287a5ec7db534, which differs from this candidate."
         ],
         "unlocks": "A protected exact-SHA preview and founder-reviewed Firebase release establish the owned destination for every later growth and affiliate action.",
         "tradeoff": "The first release creates a public baseline and monitoring responsibility, while affiliate links and social publishing remain separately disabled.",
@@ -91,6 +91,287 @@
       }
     ]
   },
+  "automationReadiness": {
+    "schemaVersion": "1.1.0",
+    "observedAt": "2026-11-22T15:18:34.000Z",
+    "sourceMode": "versioned_snapshot_not_live_poll",
+    "posture": "founder_action_required",
+    "summary": "The operating system can validate content and run a narrow affiliate pilot today. Research generation, automated previews, distribution, measurement, release approval, and eventual keyless automatic publication still require explicit bounded founder actions.",
+    "counts": {
+      "teams": 8,
+      "ready": 1,
+      "limited": 2,
+      "blocked": 4,
+      "founderActions": 6
+    },
+    "teams": [
+      {
+        "id": "research-generation",
+        "label": "Research generation",
+        "status": "blocked_external_configuration",
+        "evidence": "Scheduled research workflows stop before any model call because the repository has no OPENAI_API_KEY secret configured.",
+        "nextAction": "Approve one dedicated OpenAI Platform project credential with a bounded monthly limit, stored only as the GitHub Actions secret OPENAI_API_KEY.",
+        "actionUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/issues/37",
+        "founderActionRequired": true
+      },
+      {
+        "id": "deterministic-quality",
+        "label": "Deterministic quality gates",
+        "status": "ready",
+        "evidence": "11 validated research runs and 10 publication-ready posts currently pass the versioned deterministic gates.",
+        "nextAction": "Keep drafting and independent review separate; every new research bundle must pass validation and build before release review.",
+        "actionUrl": null,
+        "founderActionRequired": false
+      },
+      {
+        "id": "affiliate-monetization",
+        "label": "Affiliate monetization",
+        "status": "limited_live",
+        "evidence": "1 independently reviewed and founder-approved paid-link overlay is active; editorial source artifacts remain unchanged.",
+        "nextAction": "Measure the narrow pilot before expanding; keep affiliate economics separate from editorial rankings.",
+        "actionUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/affiliate-link-review.yml",
+        "founderActionRequired": false
+      },
+      {
+        "id": "social-distribution",
+        "label": "Social distribution",
+        "status": "blocked_founder_configuration",
+        "evidence": "78 drafts are prepared; 0 official social channels are active.",
+        "nextAction": "Approve one official account, rights boundary, cadence, and official API configuration before any post can publish.",
+        "actionUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/social-channel-configure.yml",
+        "founderActionRequired": true
+      },
+      {
+        "id": "growth-measurement",
+        "label": "Aggregate growth measurement",
+        "status": "blocked_founder_configuration",
+        "evidence": "0 aggregate connectors are active and 0 complete measurement snapshots exist; unknown traffic is never reported as zero.",
+        "nextAction": "Configure the approved read-only Search Console page-aggregate boundary and establish the first complete baseline.",
+        "actionUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/search-console-configure.yml",
+        "founderActionRequired": true
+      },
+      {
+        "id": "preview-delivery",
+        "label": "Firebase preview delivery",
+        "status": "manual_fallback_verified",
+        "evidence": "The exact Firebase preview passed Node 24 validation, 29 Angular tests, build, smoke, artifact-hash verification, and a true 390 by 844 review of all 18 prerendered routes. Automated keyless delivery remains blocked: The reusable preview deploy cannot authenticate because its Google Workload Identity provider is missing or unavailable.",
+        "nextAction": "Create or enable the narrowly scoped tips-github-preview pool and github-preview provider for pull-request merge refs and the master-pinned reusable preview workflow.",
+        "actionUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/issues/41",
+        "founderActionRequired": true
+      },
+      {
+        "id": "production-release",
+        "label": "Production release",
+        "status": "founder_approval_required",
+        "evidence": "Exact candidate 011b110d05d334d5e9b42752b902dc17916e5504 has a reviewed Firebase preview; production remains unchanged and separately gated.",
+        "nextAction": "Lucas approves this exact SHA as the replacement release candidate and authorizes fast-forward integration into PR 33. Production remains a separate gate.",
+        "actionUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/39#issuecomment-7080869696",
+        "founderActionRequired": true
+      },
+      {
+        "id": "automatic-publication",
+        "label": "Proven automatic publication",
+        "status": "blocked_external_configuration",
+        "evidence": "Automatic-after-proven publication remains disabled, and its dedicated master-bound Google Workload Identity provider and service account have not been provisioned or verified. The founder-reviewed release ledger currently records 0 of 10 releases required before activation.",
+        "nextAction": "After ten verified founder-reviewed releases, separately approve and provision the dedicated tips-github-auto-production identity, then review the policy activation pull request and production environment boundary.",
+        "actionUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/issues/43",
+        "founderActionRequired": true
+      }
+    ],
+    "externalGates": [
+      {
+        "id": "openai-platform-credential",
+        "label": "Research model credential",
+        "status": "blocked_external_configuration",
+        "summary": "Scheduled research workflows stop before any model call because the repository has no OPENAI_API_KEY secret configured.",
+        "evidenceUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/issues/37",
+        "diagnosticUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/runs/44413289046",
+        "nextAction": "Approve one dedicated OpenAI Platform project credential with a bounded monthly limit, stored only as the GitHub Actions secret OPENAI_API_KEY.",
+        "authorityBoundary": "The credential value must never be displayed, logged, downloaded, committed, or placed in Studio data. It authorizes only the existing proposal, research, growth-review, and independent-QA workflows."
+      },
+      {
+        "id": "firebase-preview-identity",
+        "label": "Keyless Firebase preview identity",
+        "status": "blocked_external_configuration",
+        "summary": "The reusable preview deploy cannot authenticate because its Google Workload Identity provider is missing or unavailable.",
+        "evidenceUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/issues/41",
+        "diagnosticUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/runs/44998331230",
+        "nextAction": "Create or enable the narrowly scoped tips-github-preview pool and github-preview provider for pull-request merge refs and the master-pinned reusable preview workflow.",
+        "authorityBoundary": "Use short-lived impersonation for Firebase Hosting previews only. No Firebase Auth Admin, user-managed service-account key, or production Hosting authorization."
+      },
+      {
+        "id": "firebase-auto-production-identity",
+        "label": "Keyless automatic-production identity",
+        "status": "blocked_external_configuration",
+        "summary": "Automatic-after-proven publication remains disabled, and its dedicated master-bound Google Workload Identity provider and service account have not been provisioned or verified.",
+        "evidenceUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/issues/43",
+        "diagnosticUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/firebase-auto-production.yml",
+        "nextAction": "After ten verified founder-reviewed releases, separately approve and provision the dedicated tips-github-auto-production identity, then review the policy activation pull request and production environment boundary.",
+        "authorityBoundary": "Use short-lived impersonation only for the master-pinned automatic Firebase Hosting workflow. No Firebase Auth Admin, user-managed service-account key, database access, affiliate activation, social publishing, or policy bypass."
+      }
+    ],
+    "releaseCandidate": {
+      "status": "exact_preview_verified",
+      "sha": "011b110d05d334d5e9b42752b902dc17916e5504",
+      "pullRequestUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/39",
+      "reviewUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/39#issuecomment-7080869696",
+      "previewUrl": "https://tipsforyourgifts--release-011b110-20261122-gd6h6lnx.web.app/",
+      "summary": "The exact Firebase preview passed Node 24 validation, 29 Angular tests, build, smoke, artifact-hash verification, and a true 390 by 844 review of all 18 prerendered routes.",
+      "nextAction": "Lucas approves this exact SHA as the replacement release candidate and authorizes fast-forward integration into PR 33. Production remains a separate gate."
+    }
+  },
+  "aiAutomationPolicy": {
+    "schemaVersion": "1.0.0",
+    "status": "awaiting_founder_platform_budget",
+    "activationReady": false,
+    "activationBlockers": [
+      "Dedicated OpenAI project credential is not configured.",
+      "Founder-approved OpenAI project monthly budget and platform evidence are not recorded.",
+      "Versioned automation policy is not active."
+    ],
+    "protectedWorkflows": 6,
+    "protectedModelCalls": 8,
+    "credential": {
+      "secretName": "OPENAI_API_KEY",
+      "status": "not_configured",
+      "scope": "dedicated_openai_project",
+      "valueStoredInGit": false,
+      "verification": {
+        "status": "not_verified",
+        "method": null,
+        "endpoint": null,
+        "verifiedAt": null,
+        "evidenceUrl": null,
+        "receiptPath": null,
+        "receiptSha256": null,
+        "responseBodyStored": false,
+        "modelCalled": false
+      }
+    },
+    "spendControl": {
+      "status": "not_configured",
+      "enforcement": "openai_project_monthly_budget",
+      "monthlyBudgetUsd": null,
+      "evidenceUrl": null,
+      "repositoryHardCap": false,
+      "activationRule": "Record the founder-approved OpenAI project monthly budget and its platform evidence before activating this policy or adding the repository secret."
+    },
+    "runtime": {
+      "action": "openai/codex-action@v1",
+      "documentationUrl": "https://learn.chatgpt.com/docs/github-action",
+      "safetyStrategy": "drop-sudo",
+      "sandbox": "workspace-write",
+      "sessionMode": "ephemeral",
+      "modelPolicy": "action_default",
+      "effortPolicy": "action_default",
+      "trustedInitiators": "repository_write_collaborators_and_bounded_github_automation"
+    },
+    "authority": {
+      "modelJobGithubContents": "read",
+      "modelJobCanWritePullRequests": false,
+      "detachedWriterJobsMayOpenProposalPullRequests": true,
+      "writerJobsReceiveOpenAiKey": false,
+      "canDeployFirebase": false,
+      "canActivateAffiliateLinks": false,
+      "canPublishSocialPosts": false,
+      "canSendEmail": false,
+      "canCreateCredentials": false
+    },
+    "workflows": [
+      {
+        "file": "research-agent.yml",
+        "codexJobs": [
+          "research",
+          "quality_review"
+        ],
+        "codexSteps": 2,
+        "searchEnabled": true,
+        "githubActionsBotAllowed": true,
+        "purpose": "Draft one founder-approved research bundle and run a separate independent editorial review."
+      },
+      {
+        "file": "opportunity-scout.yml",
+        "codexJobs": [
+          "discover",
+          "independent_review"
+        ],
+        "codexSteps": 2,
+        "searchEnabled": true,
+        "githubActionsBotAllowed": false,
+        "purpose": "Propose one evidence-backed gift opportunity and run a separate opportunity red team."
+      },
+      {
+        "file": "editorial-independent-review.yml",
+        "codexJobs": [
+          "independent_review"
+        ],
+        "codexSteps": 1,
+        "searchEnabled": true,
+        "githubActionsBotAllowed": true,
+        "purpose": "Independently review one exact editorial run after its founder safety gate."
+      },
+      {
+        "file": "growth-review.yml",
+        "codexJobs": [
+          "analyze"
+        ],
+        "codexSteps": 1,
+        "searchEnabled": true,
+        "githubActionsBotAllowed": false,
+        "purpose": "Propose one measured growth experiment from committed aggregate evidence only."
+      },
+      {
+        "file": "strategy-intake.yml",
+        "codexJobs": [
+          "propose"
+        ],
+        "codexSteps": 1,
+        "searchEnabled": false,
+        "githubActionsBotAllowed": false,
+        "purpose": "Turn one owner-authored executive brief into a proposed strategy record without approving it."
+      },
+      {
+        "file": "affiliate-link-review.yml",
+        "codexJobs": [
+          "review"
+        ],
+        "codexSteps": 1,
+        "searchEnabled": true,
+        "githubActionsBotAllowed": false,
+        "purpose": "Independently review one exact paid-link candidate without approving or activating it."
+      }
+    ],
+    "shutdownConditions": [
+      "A missing repository secret stops the job before a model call.",
+      "A policy that is not active stops the job even if a credential appears.",
+      "Missing platform budget evidence prevents policy activation.",
+      "Workflow permission, sandbox, session, or credential-placement drift fails deterministic validation.",
+      "Any proposed patch outside its workflow-specific allowlist fails deterministic validation.",
+      "Budget exhaustion, repeated failures, or suspected credential exposure requires the founder to disable runs and rotate the credential before resuming."
+    ],
+    "policySha256": "b01d9b13eaac26020069e28b712f958dd8642343b173c1d5cfc19044d2baf46d",
+    "budgetConfiguration": {
+      "available": true,
+      "workflowUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/ai-automation-budget-configure.yml",
+      "confirmation": "CONFIGURE-ai-automation-budget",
+      "evidenceMode": "founder_attested_external_platform_configuration",
+      "command": "gh workflow run ai-automation-budget-configure.yml --repo lucasdmoyer/tipsforyourgifts --ref master -f expected_policy_sha256=b01d9b13eaac26020069e28b712f958dd8642343b173c1d5cfc19044d2baf46d -f monthly_budget_usd='<APPROVED_MONTHLY_USD>' -f platform_evidence_url='<OPENAI_PLATFORM_SETTINGS_URL>' -f confirmation='CONFIGURE-ai-automation-budget'"
+    },
+    "credentialVerification": {
+      "available": false,
+      "workflowUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/ai-automation-credential-verify.yml",
+      "confirmation": "VERIFY-ai-automation-credential",
+      "method": "openai_models_endpoint",
+      "endpoint": "https://api.openai.com/v1/models",
+      "command": "gh workflow run ai-automation-credential-verify.yml --repo lucasdmoyer/tipsforyourgifts --ref master -f expected_policy_sha256=b01d9b13eaac26020069e28b712f958dd8642343b173c1d5cfc19044d2baf46d -f confirmation='VERIFY-ai-automation-credential'"
+    },
+    "policyActivation": {
+      "available": false,
+      "workflowUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/ai-automation-activate.yml",
+      "confirmation": "ACTIVATE-ai-automation",
+      "command": "gh workflow run ai-automation-activate.yml --repo lucasdmoyer/tipsforyourgifts --ref master -f expected_policy_sha256=b01d9b13eaac26020069e28b712f958dd8642343b173c1d5cfc19044d2baf46d -f confirmation='ACTIVATE-ai-automation'"
+    }
+  },
   "researchRuns": 14,
   "validatedRuns": 11,
   "publicationReadyPosts": 10,
@@ -108,10 +389,11 @@
   "pairingIdeas": 10,
   "recipientFrictionIdeas": 2,
   "editorialReview": {
-    "schemaVersion": "1.0.0",
+    "schemaVersion": "1.1.0",
     "counts": {
       "pendingBundles": 3,
       "founderSafetyReviewsRequired": 3,
+      "founderSafetyApprovalsCurrent": 0,
       "independentReviewsRequired": 3,
       "highRiskClaims": 7
     },
@@ -141,7 +423,15 @@
             ]
           }
         ],
+        "founderDecisionPacket": {
+          "workflowUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/editorial-safety-approval.yml",
+          "approveCommand": "gh workflow run editorial-safety-approval.yml -f run_id=20260823-fiber-art-pause-269f700c -f decision=approved -f confirmation=REVIEW-20260823-fiber-art-pause-269f700c-approved",
+          "rejectCommand": "gh workflow run editorial-safety-approval.yml -f run_id=20260823-fiber-art-pause-269f700c -f decision=rejected -f confirmation=REVIEW-20260823-fiber-art-pause-269f700c-rejected",
+          "authorityBoundary": "This decision binds only the exact current run, article, social, and high-risk claim hashes. It does not replace independent QA, merge a pull request, or authorize publication."
+        },
         "founderSafetyReviewRequired": true,
+        "founderSafetyReviewStatus": "approval_required",
+        "safetyApproval": null,
         "independentReviewRequired": true,
         "sourcePaths": {
           "run": "research/runs/20260823-fiber-art-pause-269f700c.json",
@@ -153,7 +443,7 @@
           "article": "ec08428c406968b7719359b1d6fc26fff109ecefca5bfa8efc92a0a00b2ea9b4",
           "social": "d72f7f6a657b352a8569640ecce7449950f625b341b4c9e756a063dc5a0ee682"
         },
-        "nextGate": "Lucas reviews the exact high-risk claim language and reader-facing safety boundary; a separate independent editor then issues a new hash-bound receipt."
+        "nextGate": "Lucas records an owner-only, hash-bound decision on the exact high-risk claim language; approval still does not replace independent QA or authorize publication."
       },
       {
         "runId": "20260823-muddy-paw-arrival-e09ff303",
@@ -213,7 +503,15 @@
             ]
           }
         ],
+        "founderDecisionPacket": {
+          "workflowUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/editorial-safety-approval.yml",
+          "approveCommand": "gh workflow run editorial-safety-approval.yml -f run_id=20260823-muddy-paw-arrival-e09ff303 -f decision=approved -f confirmation=REVIEW-20260823-muddy-paw-arrival-e09ff303-approved",
+          "rejectCommand": "gh workflow run editorial-safety-approval.yml -f run_id=20260823-muddy-paw-arrival-e09ff303 -f decision=rejected -f confirmation=REVIEW-20260823-muddy-paw-arrival-e09ff303-rejected",
+          "authorityBoundary": "This decision binds only the exact current run, article, social, and high-risk claim hashes. It does not replace independent QA, merge a pull request, or authorize publication."
+        },
         "founderSafetyReviewRequired": true,
+        "founderSafetyReviewStatus": "approval_required",
+        "safetyApproval": null,
         "independentReviewRequired": true,
         "sourcePaths": {
           "run": "research/runs/20260823-muddy-paw-arrival-e09ff303.json",
@@ -225,7 +523,7 @@
           "article": "2a5a2f877e5cc56cf5d5fad663e983a02794e46f70e859a2fcbdb669bed36ed8",
           "social": "91545c599b5c982e81111bbae224d9947b3f8adc33c19caccdb5e132444dad82"
         },
-        "nextGate": "Lucas reviews the exact high-risk claim language and reader-facing safety boundary; a separate independent editor then issues a new hash-bound receipt."
+        "nextGate": "Lucas records an owner-only, hash-bound decision on the exact high-risk claim language; approval still does not replace independent QA or authorize publication."
       },
       {
         "runId": "20260823-used-record-reset-53a6b604",
@@ -252,7 +550,15 @@
             ]
           }
         ],
+        "founderDecisionPacket": {
+          "workflowUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/editorial-safety-approval.yml",
+          "approveCommand": "gh workflow run editorial-safety-approval.yml -f run_id=20260823-used-record-reset-53a6b604 -f decision=approved -f confirmation=REVIEW-20260823-used-record-reset-53a6b604-approved",
+          "rejectCommand": "gh workflow run editorial-safety-approval.yml -f run_id=20260823-used-record-reset-53a6b604 -f decision=rejected -f confirmation=REVIEW-20260823-used-record-reset-53a6b604-rejected",
+          "authorityBoundary": "This decision binds only the exact current run, article, social, and high-risk claim hashes. It does not replace independent QA, merge a pull request, or authorize publication."
+        },
         "founderSafetyReviewRequired": true,
+        "founderSafetyReviewStatus": "approval_required",
+        "safetyApproval": null,
         "independentReviewRequired": true,
         "sourcePaths": {
           "run": "research/runs/20260823-used-record-reset-53a6b604.json",
@@ -264,7 +570,7 @@
           "article": "c15ea7a3362ea193b9cb7fff587e42c750b4216b451aa9e97ee97786fc909f56",
           "social": "fe56464843b6f49fe43406d17df490f6fe74344d7ad26765d8c6659f16ec7637"
         },
-        "nextGate": "Lucas reviews the exact high-risk claim language and reader-facing safety boundary; a separate independent editor then issues a new hash-bound receipt."
+        "nextGate": "Lucas records an owner-only, hash-bound decision on the exact high-risk claim language; approval still does not replace independent QA or authorize publication."
       }
     ]
   },
@@ -3067,24 +3373,25 @@
     "releaseEvidenceSource": "github_production_deployments_at_enable_time",
     "currentLive": {
       "status": "verified_managed_content_release",
-      "updatedAt": "2026-08-31T18:24:14.891Z",
-      "receiptId": "firebase-6fed7c2a9898-33424522855-1",
-      "receiptSha256": "c8d02f502cc39c6317e488d95a40d09e993dea452f0a58f4168ec064982c5fac",
-      "receiptPath": "releases/receipts/firebase-6fed7c2a9898-33424522855-1.json",
-      "releaseSha": "6fed7c2a9898eeb03f0ad78020c398c5c9b4cdd7",
-      "workflowRunUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/runs/33424522855",
-      "manifestId": "publication-set-0e33c0313ad4afec",
-      "contentSetSha256": "0e33c0313ad4afeca7b72b10d0895f51f9f62895b51cabb36924efeced9a0ba5",
+      "updatedAt": "2026-11-22T06:16:08.292Z",
+      "receiptId": "firebase-90aa88bdbbc2-44992730111-1",
+      "receiptSha256": "2b0ea60fa2db96063847d8314ba31133f14a85c75a792c15ddbe9ea1f59dcb5d",
+      "receiptPath": "releases/receipts/firebase-90aa88bdbbc2-44992730111-1.json",
+      "releaseSha": "90aa88bdbbc2319f8b94eeb5c6f2c87736ee9a65",
+      "workflowRunUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/runs/44992730111",
+      "manifestId": "publication-set-8e8287a5ec7db534",
+      "contentSetSha256": "8e8287a5ec7db534c5c2255d15cca7c050aed88bc63df25a0fdd46aecda2dae6",
       "articles": 10,
-      "affiliateLinks": 0,
+      "affiliateLinks": 1,
       "matchesCurrentCandidate": false
     },
     "currentCandidate": {
       "status": "release_candidate",
-      "manifestId": "publication-set-8e8287a5ec7db534",
-      "contentSetSha256": "8e8287a5ec7db534c5c2255d15cca7c050aed88bc63df25a0fdd46aecda2dae6",
+      "manifestId": "publication-set-42500af1ebd2d773",
+      "contentSetSha256": "42500af1ebd2d773bce4ec43aa19aeba6ea3b4013d64b596b578ec57191f2210",
       "articles": 10,
       "independentReviews": 10,
+      "founderSafetyApprovals": 0,
       "socialLaunchPacks": 9,
       "socialDrafts": 60,
       "missionBoundArticles": 0,
@@ -3103,6 +3410,56 @@
     "proposedExperiments": 3,
     "approvedExperiments": 0,
     "runningExperiments": 0,
+    "commercialScorecard": {
+      "status": "awaiting_observed_export",
+      "evidenceStage": "awaiting_observed_export",
+      "periodStart": null,
+      "periodEnd": null,
+      "reportingWindowDays": null,
+      "snapshotIds": [],
+      "sourceConnectorIds": [],
+      "articleCount": 0,
+      "knownMetrics": [],
+      "missingMetrics": [
+        "searchImpressions",
+        "organicClicks",
+        "engagedSessions",
+        "outboundMerchantClicks",
+        "affiliateConversions",
+        "revenueUsd",
+        "socialImpressions",
+        "socialEngagements",
+        "ownedSiteClicks"
+      ],
+      "totals": {
+        "searchImpressions": null,
+        "organicClicks": null,
+        "engagedSessions": null,
+        "outboundMerchantClicks": null,
+        "affiliateConversions": null,
+        "revenueUsd": null,
+        "socialImpressions": null,
+        "socialEngagements": null,
+        "ownedSiteClicks": null
+      },
+      "rates": {
+        "organicClickThrough": null,
+        "merchantClickThrough": null,
+        "affiliateConversion": null,
+        "earningsPerOutboundClickUsd": null,
+        "revenuePerConversionUsd": null,
+        "socialOwnedClickThrough": null
+      },
+      "leaders": {
+        "organicClicks": null,
+        "outboundMerchantClicks": null,
+        "affiliateConversions": null,
+        "revenueUsd": null,
+        "ownedSiteClicks": null
+      },
+      "profitabilityConclusion": "unknown_until_observed_revenue_and_cost_evidence",
+      "nextGate": "Import one complete approved aggregate reporting window. Missing traffic, conversion, and revenue remain unknown rather than zero."
+    },
     "searchConsole": {
       "status": "not_connected",
       "founderApproved": false,
