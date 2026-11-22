@@ -1,0 +1,20 @@
+{
+  "schemaVersion": "1.0.0",
+  "receiptId": "opportunity-scout-2026112201-1-qa",
+  "scoutId": "opportunity-scout-2026112201-1",
+  "reviewedAt": "2026-11-22T14:30:00.000Z",
+  "reviewerRole": "independent-opportunity-editor",
+  "reviewerId": "codex-independent-opportunity-editor-boardgame-20261122",
+  "workflowRunId": "2026112201",
+  "verdict": "passed",
+  "startedMissionSha256": "c96527e9b1d76a7d1e616610b428c6b0e78c35d8e9751ae140b44cdbd99b1c97",
+  "draftReportSha256": "4a226cb5a2e625f717d5b76881005da8d7b026fb9adf739b97d72b6542a5f85d",
+  "proposalSha256": "ae4315926df665522bb09a805dc5a01086bef8c53da131e83351b2c94c9ae0cc",
+  "blockers": [],
+  "warnings": [
+    "The selected thesis leads the swimmer candidate by only two points; founder preference may reasonably choose either.",
+    "Article research must independently qualify five actual products and recheck exact edition, expansions, sleeves, assembly, orientation, lid closure, returns, and availability.",
+    "Keep ordinary links only unless a separate founder-approved affiliate program later covers this category.",
+    "Discovery-only inaccessible sources must never be promoted into claim evidence without fresh verification."
+  ]
+}

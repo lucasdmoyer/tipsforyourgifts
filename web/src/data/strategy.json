@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.1.0",
-  "updatedAt": "2026-08-23T19:50:08.618Z",
+  "updatedAt": "2026-11-22T14:25:00.000Z",
   "northStar": "Become the most trusted place to make a confident gift decision without wasting time or money.",
   "currentBet": "Build three evergreen recipient-intent guides around routines shoppers can actually observe: clean and dry muddy paws at the door, preserve a fiber-art work in progress and its exact stopping point, and move a cleaned vinyl record into a fresh sleeve instead of returning it to dust.",
   "thoughtfulnessFramework": {
@@ -623,6 +623,36 @@
         "minimumSocialAngles": 5
       },
       "researchBrief": "Research manual vinyl-cleaning plus fresh-inner-sleeve pairs for collectors with an observed queue of used or dusty records. Require exact record-format and material support, fluid and water instructions, label and drying controls, level workspace, batch size, replacement supplies, sleeve material and dimensions, jacket clearance, artwork retention, independent usefulness, and one clean-dry-rehouse interaction. Exclude unsupported media, invented preservation or sound claims, powered systems, exact current prices, and any workflow the recipient did not ask to maintain."
+    },
+    {
+      "id": "founder-idea-014",
+      "revision": 1,
+      "founderDisposition": "proposed",
+      "ideaType": "editorial",
+      "thesisType": "recipient_friction",
+      "title": "Open the box, start the game: an exact-title organizer for the board game they already love",
+      "audience": "Someone buying for a person who repeatedly plays one component-heavy board game and loses game-night momentum to bag sorting, setup, or teardown",
+      "occasion": "Birthday, holiday, game-night milestone, or a thoughtful upgrade for a proven favorite",
+      "budget": "$20-$120",
+      "priority": "high",
+      "insight": "Instead of guessing which new game they might enjoy, improve the favorite they already choose by making its first ten minutes easier and its last ten minutes less tedious.",
+      "observedFriction": "The same game stays on the shelf because its cards, tokens, player pieces, and expansions must be separated from bags or rebuilt from the rulebook before play can begin.",
+      "selfPurchaseReluctance": "An organizer feels like unglamorous infrastructure beside a new game, and buying the right one requires exact edition, expansion, sleeve, box, and storage-orientation research.",
+      "fitSignals": [
+        "They repeatedly choose one component-heavy game and have complained about its setup, teardown, bag sorting, or pieces migrating between expansions.",
+        "You can identify the exact title, printing or edition, owned expansions, sleeve use, preferred box, and whether the game is stored flat or upright."
+      ],
+      "avoidIf": [
+        "The game is rarely played, the recipient already likes the current storage system, or inexpensive labeled bags and small bins already solve the observed friction.",
+        "The organizer does not explicitly support the recipient's exact edition, expansions, sleeved-card thickness, box orientation, and acceptable lid closure."
+      ],
+      "successMetric": "Five independently qualified organizer options across exact-title and reusable approaches, each with edition, expansion, sleeve, lid, assembly, orientation, and simpler-bag fallback checks",
+      "deliverables": {
+        "minimumFinalists": 5,
+        "minimumQualifiedPairs": 0,
+        "minimumSocialAngles": 5
+      },
+      "researchBrief": "Research thoughtful organizers for a board game the recipient already plays often. Existing gift guides already mention inserts, so differentiate through a plain-language compatibility and rejection process for a non-expert shopper, not a claim that the category is new. Start from witnessed setup, teardown, or bag-sorting friction rather than genre guesses. Require exact title, printing or edition, owned expansions, sleeve thickness, insert dimensions, box and lid closure, horizontal versus vertical storage, assembly, weight, table deployment, travel behavior, return policy, and a labeled-bag or small-bin fallback. One organizer is enough; do not force a bundle, recommend another game, assume every premium insert saves time, or let affiliate availability influence ranking."
     }
   ]
 }

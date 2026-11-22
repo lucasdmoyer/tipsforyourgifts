@@ -39,8 +39,35 @@ export const OPERATIONS: Operations = {
         }
       },
       {
-        "id": "establish-measurement",
+        "id": "choose-next-thesis",
         "rank": 2,
+        "priorityScore": 95,
+        "horizon": "now",
+        "category": "editorial_direction",
+        "title": "Choose the next recipient problem to research",
+        "recommendation": "Approve founder-idea-014 revision 1: Open the box, start the game: an exact-title organizer for the board game they already love.",
+        "decisionQuestion": "Should this be the next bounded research mission for the editorial team?",
+        "rationale": "This proposal passed the separate opportunity-review gate, and founder selection is the deliberate boundary before the team spends product-research capacity.",
+        "evidence": [
+          "1/5 founder proposal slots are occupied.",
+          "The recommended thesis has high strategic priority.",
+          "It is a single-product thesis, so the team will not force a pair before product research.",
+          "The brief requires 5 finalists, 0 qualified pairs, and 5 social angles."
+        ],
+        "unlocks": "Merging the deterministic approval pull request starts one hash-bound research mission while leaving the remaining proposal slots available.",
+        "tradeoff": "Approval spends research capacity on one audience and ritual before product evidence has been collected; the mission may still reject the thesis.",
+        "guardrail": "This action authorizes research only. It cannot approve evidence, add affiliate tracking, publish content, spend money, or deploy Firebase.",
+        "reversibility": "high",
+        "founderActionRequired": true,
+        "action": {
+          "label": "Open strategy approval",
+          "url": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/strategy-approval.yml",
+          "command": "gh workflow run strategy-approval.yml -f idea_id=founder-idea-014 -f expected_revision=1"
+        }
+      },
+      {
+        "id": "establish-measurement",
+        "rank": 3,
         "priorityScore": 85,
         "horizon": "next",
         "category": "measurement",
@@ -67,7 +94,7 @@ export const OPERATIONS: Operations = {
       },
       {
         "id": "configure-first-social-channel",
-        "rank": 3,
+        "rank": 4,
         "priorityScore": 75,
         "horizon": "next",
         "category": "distribution",
@@ -388,9 +415,9 @@ export const OPERATIONS: Operations = {
   "socialApproved": 0,
   "socialPublished": 0,
   "approvedIdeas": 13,
-  "proposedIdeas": 0,
+  "proposedIdeas": 1,
   "pairingIdeas": 10,
-  "recipientFrictionIdeas": 2,
+  "recipientFrictionIdeas": 3,
   "editorialReview": {
     "schemaVersion": "1.1.0",
     "counts": {
@@ -543,14 +570,14 @@ export const OPERATIONS: Operations = {
     "cadence": "weekly",
     "posture": "capacity_available",
     "maxOpenProposals": 5,
-    "openProposals": 0,
-    "capacityRemaining": 5,
-    "totalMissions": 0,
+    "openProposals": 1,
+    "capacityRemaining": 4,
+    "totalMissions": 1,
     "activeMissions": 0,
-    "completedMissions": 0,
+    "completedMissions": 1,
     "draftedReports": 0,
-    "validatedReports": 0,
-    "passedReviews": 0,
+    "validatedReports": 1,
+    "passedReviews": 1,
     "policy": {
       "minimumResearchPasses": 3,
       "minimumSources": 10,
@@ -564,7 +591,27 @@ export const OPERATIONS: Operations = {
       "diminishingReturnThreshold": 0.1,
       "socialEvidencePolicy": "public_only_no_personal_identifiers"
     },
-    "queue": []
+    "queue": [
+      {
+        "scoutId": "opportunity-scout-2026112201-1",
+        "missionRecordSha256": "4e4410a50806ca53a19eff965a561aa7ec87675818d77888eea68d48fc8af769",
+        "reportRecordSha256": "250d668e110af19d1afbd82ddcd1d2e40f506b200c0804bfbb1839b944d8a294",
+        "status": "validated",
+        "createdAt": "2026-11-22T14:10:00.000Z",
+        "completedAt": "2026-11-22T14:30:00.000Z",
+        "expectedProposalId": "founder-idea-014",
+        "selectedProposalId": "founder-idea-014",
+        "selectedTitle": "Open the box, start the game: an exact-title organizer for the board game they already love",
+        "candidates": 3,
+        "sources": 19,
+        "sourceClasses": 6,
+        "publicSocialOrCommunitySources": 5,
+        "evidenceConfidence": 88,
+        "thoughtfulnessPotential": 94,
+        "reviewVerdict": "passed",
+        "nextGate": "Founder reviews the proposal; approval is a separate exact-revision workflow."
+      }
+    ]
   },
   "affiliate": {
     "proposedPrograms": 4,
@@ -3495,17 +3542,22 @@ export const OPERATIONS: Operations = {
       "ideaId": "founder-idea-013",
       "stage": "independent_review",
       "nextGate": "Resolve evidence or editorial blockers and obtain a hash-bound independent review receipt."
+    },
+    {
+      "ideaId": "founder-idea-014",
+      "stage": "proposed",
+      "nextGate": "Founder approves, pauses, or rejects the research thesis."
     }
   ],
   "pipeline": {
-    "idea": 13,
+    "idea": 14,
     "researching": 0,
     "missionsActive": 0,
     "missionsCompleted": 0,
     "opportunityScoutsActive": 0,
-    "opportunityReportsValidated": 0,
+    "opportunityReportsValidated": 1,
     "qa": 2,
-    "proposed": 0,
+    "proposed": 1,
     "ready": 0,
     "publicationReady": 11,
     "socialDrafts": 78
@@ -3518,6 +3570,7 @@ export const OPERATIONS: Operations = {
     "1 original social creative candidate is locally verified but not rights-approved, released, or published.",
     "Growth measurement is not connected; traffic, conversions, and revenue remain unknown rather than zero.",
     "3 growth experiments await founder review and an aggregate baseline.",
+    "1 strategy proposal awaits a founder approval decision before research can start.",
     "Production promotion remains founder-reviewed; automatic release requires 10 verified successful releases and a separate founder approval.",
     "2 article bundles remain blocked in the editorial decision queue; none can self-certify or publish."
   ]
@@ -3525,7 +3578,7 @@ export const OPERATIONS: Operations = {
 
 export const STRATEGY: Strategy = {
   "schemaVersion": "1.1.0",
-  "updatedAt": "2026-08-23T19:50:08.618Z",
+  "updatedAt": "2026-11-22T14:25:00.000Z",
   "northStar": "Become the most trusted place to make a confident gift decision without wasting time or money.",
   "currentBet": "Build three evergreen recipient-intent guides around routines shoppers can actually observe: clean and dry muddy paws at the door, preserve a fiber-art work in progress and its exact stopping point, and move a cleaned vinyl record into a fresh sleeve instead of returning it to dust.",
   "thoughtfulnessFramework": {
@@ -4148,6 +4201,36 @@ export const STRATEGY: Strategy = {
         "minimumSocialAngles": 5
       },
       "researchBrief": "Research manual vinyl-cleaning plus fresh-inner-sleeve pairs for collectors with an observed queue of used or dusty records. Require exact record-format and material support, fluid and water instructions, label and drying controls, level workspace, batch size, replacement supplies, sleeve material and dimensions, jacket clearance, artwork retention, independent usefulness, and one clean-dry-rehouse interaction. Exclude unsupported media, invented preservation or sound claims, powered systems, exact current prices, and any workflow the recipient did not ask to maintain."
+    },
+    {
+      "id": "founder-idea-014",
+      "revision": 1,
+      "founderDisposition": "proposed",
+      "ideaType": "editorial",
+      "thesisType": "recipient_friction",
+      "title": "Open the box, start the game: an exact-title organizer for the board game they already love",
+      "audience": "Someone buying for a person who repeatedly plays one component-heavy board game and loses game-night momentum to bag sorting, setup, or teardown",
+      "occasion": "Birthday, holiday, game-night milestone, or a thoughtful upgrade for a proven favorite",
+      "budget": "$20-$120",
+      "priority": "high",
+      "insight": "Instead of guessing which new game they might enjoy, improve the favorite they already choose by making its first ten minutes easier and its last ten minutes less tedious.",
+      "observedFriction": "The same game stays on the shelf because its cards, tokens, player pieces, and expansions must be separated from bags or rebuilt from the rulebook before play can begin.",
+      "selfPurchaseReluctance": "An organizer feels like unglamorous infrastructure beside a new game, and buying the right one requires exact edition, expansion, sleeve, box, and storage-orientation research.",
+      "fitSignals": [
+        "They repeatedly choose one component-heavy game and have complained about its setup, teardown, bag sorting, or pieces migrating between expansions.",
+        "You can identify the exact title, printing or edition, owned expansions, sleeve use, preferred box, and whether the game is stored flat or upright."
+      ],
+      "avoidIf": [
+        "The game is rarely played, the recipient already likes the current storage system, or inexpensive labeled bags and small bins already solve the observed friction.",
+        "The organizer does not explicitly support the recipient's exact edition, expansions, sleeved-card thickness, box orientation, and acceptable lid closure."
+      ],
+      "successMetric": "Five independently qualified organizer options across exact-title and reusable approaches, each with edition, expansion, sleeve, lid, assembly, orientation, and simpler-bag fallback checks",
+      "deliverables": {
+        "minimumFinalists": 5,
+        "minimumQualifiedPairs": 0,
+        "minimumSocialAngles": 5
+      },
+      "researchBrief": "Research thoughtful organizers for a board game the recipient already plays often. Existing gift guides already mention inserts, so differentiate through a plain-language compatibility and rejection process for a non-expert shopper, not a claim that the category is new. Start from witnessed setup, teardown, or bag-sorting friction rather than genre guesses. Require exact title, printing or edition, owned expansions, sleeve thickness, insert dimensions, box and lid closure, horizontal versus vertical storage, assembly, weight, table deployment, travel behavior, return policy, and a labeled-bag or small-bin fallback. One organizer is enough; do not force a bundle, recommend another game, assume every premium insert saves time, or let affiliate availability influence ranking."
     }
   ]
 };
