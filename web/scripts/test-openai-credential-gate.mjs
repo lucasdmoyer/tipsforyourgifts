@@ -47,7 +47,7 @@ await fs.writeFile(activePolicyPath, `${JSON.stringify(activePolicy, null, 2)}\n
 const configured = spawnSync(process.execPath, [guardPath], {
   cwd: webRoot,
   encoding: 'utf8',
-  env: { ...process.env, OPENAI_API_KEY: fakeSecret, AI_AUTOMATION_POLICY_PATH: activePolicyPath }
+  env: { ...process.env, GITHUB_ACTIONS: 'false', OPENAI_API_KEY: fakeSecret, AI_AUTOMATION_POLICY_PATH: activePolicyPath }
 });
 
 if (configured.status !== 0) throw new Error(configured.stderr || configured.stdout);
