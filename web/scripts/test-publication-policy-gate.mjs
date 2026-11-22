@@ -9,6 +9,7 @@ const repositoryRoot = path.resolve(process.cwd(), '..');
 const manualWorkflow = await fs.readFile(path.join(repositoryRoot, '.github', 'workflows', 'firebase-production.yml'), 'utf8');
 const automaticWorkflow = await fs.readFile(path.join(repositoryRoot, '.github', 'workflows', 'firebase-auto-production.yml'), 'utf8');
 const previewWorkflow = await fs.readFile(path.join(repositoryRoot, '.github', 'workflows', 'firebase-preview-deploy.yml'), 'utf8');
+const previewCallerWorkflow = await fs.readFile(path.join(repositoryRoot, '.github', 'workflows', 'firebase-preview.yml'), 'utf8');
 const [previewBuildJob, previewDeployJob = ''] = previewWorkflow.split('\n  deploy:\n');
 const previewAuthIndex = previewDeployJob.indexOf('id: google_auth');
 const previewAfterAuth = previewAuthIndex >= 0 ? previewDeployJob.slice(previewAuthIndex) : '';
@@ -73,5 +74,11 @@ assert.doesNotMatch(previewAfterAuth, /actions\/checkout|npm (?:ci|run)|npm --pr
 assert.doesNotMatch(previewAfterAuth, /hosting:clone|deploy --only hosting/, 'preview deploy must not mutate the live Hosting channel');
 assert.match(previewAfterAuth, /hosting:channel:deploy "\$CHANNEL_ID"[\s\S]*--project tipsforyourgifts/, 'preview deploy must target only the exact temporary channel and Firebase project');
 assert.match(previewAfterAuth, /grep -F "Good gifts, minus the guesswork\."/, 'preview deploy must smoke the hosted channel after release');
+assert.match(previewCallerWorkflow, /uses: lucasdmoyer\/tipsforyourgifts\/\.github\/workflows\/firebase-preview-deploy\.yml@master/, 'preview caller must pin the reusable trust boundary to master');
+assert.match(previewCallerWorkflow, /classify:[\s\S]*permissions:[\s\S]*contents: read[\s\S]*preview:[\s\S]*permissions:[\s\S]*id-token: write/, 'preview caller must keep OIDC authority out of the classifier and grant it only to the reusable job');
+assert.match(previewCallerWorkflow, /needs: classify[\s\S]*hosting_changed: \$\{\{ needs\.classify\.outputs\.hosting_changed == 'true' \}\}/, 'preview caller must bind deployment to the classifier output');
+assert.match(previewCallerWorkflow, /pr_number: \$\{\{ github\.event\.number \}\}/, 'preview caller must pass the current event PR number');
+assert.doesNotMatch(previewCallerWorkflow, /github-pr-20|refs\/pull\/20\/merge|test "\$CHANNEL_ID" = "pr-20"/, 'preview caller must not retain a one-pull-request credential boundary');
+assert.doesNotMatch(previewCallerWorkflow, /google-github-actions\/auth|hosting:channel:deploy/, 'preview caller must delegate all authenticated behavior to the master-pinned reusable workflow');
 
-console.log(JSON.stringify({ publicationPolicyNegativeGateTests: 'passed', negativeChecks: 8, workflowReleaseChecks: 38 }, null, 2));
+console.log(JSON.stringify({ publicationPolicyNegativeGateTests: 'passed', negativeChecks: 8, workflowReleaseChecks: 44 }, null, 2));
