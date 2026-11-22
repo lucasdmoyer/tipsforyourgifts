@@ -14,7 +14,7 @@
     "$35-$70",
     "$70-$110"
   ],
-  "riskClass": "medium",
+  "riskClass": "high",
   "draftAuthor": "used-record-reset-drafting-research-desk",
   "startedAt": "2026-08-23T20:40:00.000Z",
   "researchPasses": [
@@ -288,7 +288,7 @@
       "accessedAt": "2026-10-10",
       "sourceClass": "independent-review",
       "trustTier": "C",
-      "independenceGroup": "audiophile-man-big-fudge"
+      "independenceGroup": "the-audiophile-man"
     },
     {
       "id": "src-diskeeper-official",
@@ -390,7 +390,7 @@
     {
       "id": "claim-spin-clean-drawback",
       "kind": "product_drawback",
-      "text": "The system requires a level work area, distilled water and concentrate, prewashed cloths, careful label clearance, manual drying, brush rinsing and air drying, and basin cleanup after a session.",
+      "text": "The system requires a level work area, cleaning concentrate, prewashed cloths, careful label clearance, manual drying, brush rinsing and air drying, and basin cleanup after a session. Spin-Clean directs users to distilled water by default and expressly allows tap water when distilled water is unavailable.",
       "risk": "medium",
       "status": "supported",
       "sourceIds": [
@@ -438,7 +438,7 @@
     {
       "id": "claim-groovewasher-g2-label-boundary",
       "kind": "compatibility",
-      "text": "GrooveWasher's current G2 label says the fluid is for hard surfaces only, can cause eye irritation, should be kept away from eyes, skin, clothing, and food, must not be swallowed, and includes exposure-specific first-aid directions; this manufacturer-label summary requires founder review before publication.",
+      "text": "GrooveWasher's current G2 label says improper use can be hazardous to humans and domestic animals; the fluid is for hard surfaces only, can cause eye irritation, should be kept away from eyes, skin, clothing, and food, must not be swallowed, and includes exposure-specific first-aid directions. The manufacturer also displays a California Proposition 65 warning for cancer and reproductive harm; this records the manufacturer's warning and does not claim that this particular use causes those harms. This manufacturer-label summary requires founder review before publication.",
       "risk": "high",
       "status": "supported",
       "sourceIds": [
@@ -589,7 +589,7 @@
       "editorialScore": 89,
       "evidenceConfidence": 90,
       "drawbacks": [
-        "The system requires a level work area, distilled water and concentrate, prewashed cloths, careful label clearance, manual drying, brush rinsing and air drying, and basin cleanup after a session."
+        "The system requires a level work area, cleaning concentrate, prewashed cloths, careful label clearance, manual drying, brush rinsing and air drying, and basin cleanup after a session. Spin-Clean directs users to distilled water by default and expressly allows tap water when distilled water is unavailable."
       ],
       "primarySourceIds": [
         "src-spin-clean-official",
@@ -1055,7 +1055,7 @@
       "editorialScore": 89,
       "evidenceConfidence": 90,
       "drawbacks": [
-        "The system requires a level work area, distilled water and concentrate, prewashed cloths, careful label clearance, manual drying, brush rinsing and air drying, and basin cleanup after a session."
+        "The system requires a level work area, cleaning concentrate, prewashed cloths, careful label clearance, manual drying, brush rinsing and air drying, and basin cleanup after a session. Spin-Clean directs users to distilled water by default and expressly allows tap water when distilled water is unavailable."
       ],
       "primarySourceIds": [
         "src-spin-clean-official",
@@ -1548,13 +1548,13 @@
   "qa": {
     "passed": false,
     "reviewerRole": "independent-editor",
-    "reviewerId": "independent-evidence-audit-20261010",
+    "reviewerId": "codex-independent-editor-vinyl-20261122",
     "receiptPath": "research/reviews/20260823-used-record-reset-53a6b604.qa.v1.json",
     "blockers": [
-      "Founder review is required for the qualified current GrooveWasher G2 product-label safety boundary before promotion or publication.",
-      "The repaired bundle has not received a fresh independent review after exact-product source replacement, shopping-link refresh, claim-role separation, and score changes."
+      "Founder review is required for the qualified current GrooveWasher G2 product-label safety boundary before promotion or publication."
     ],
     "warnings": [
+      "Independent editorial review passed the exact evidence, article, and social hashes; that pass does not satisfy the separate founder safety gate.",
       "Sound Matters remains in the source ledger only as a Tier-D conflict record and is not used in any scored claim or finalist source set.",
       "The Big Fudge manufacturer page was marked sold out during review; the reader link uses the exact 12-inch 50-count product at Binaural Records and availability still requires a pre-publication recheck.",
       "Every product link remains ordinary and unpaid; no affiliate tracking was added."

@@ -1,0 +1,21 @@
+{
+  "schemaVersion": "1.0.0",
+  "receiptId": "20260823-used-record-reset-53a6b604-qa",
+  "runId": "20260823-used-record-reset-53a6b604",
+  "articleSlug": "vinyl-record-cleaner-inner-sleeve-gift-pairs",
+  "reviewedAt": "2026-11-22T07:48:34.966Z",
+  "reviewerRole": "independent-editor",
+  "reviewerId": "codex-independent-editor-vinyl-20261122",
+  "workflowRunId": "local-independent-vinyl-repair-qa-20261122",
+  "verdict": "passed",
+  "evidenceSha256": "3f69de2afb56922f1c4a4d54fbfeaab09b3d09c56b020874738c9b1c2ad47227",
+  "articleSha256": "dc770dc6bc86da64dcc28efcb5e4e4857677956887bb84cfc29114fb587a7440",
+  "socialSha256": "fe56464843b6f49fe43406d17df490f6fe74344d7ad26765d8c6659f16ec7637",
+  "blockers": [],
+  "warnings": [
+    "Founder review is required for the GrooveWasher G2 manufacturer-label safety boundary before any promotion or publication; this independent editorial pass does not satisfy that separate gate.",
+    "Sound Matters remains in the source ledger only as a Tier-D conflict record and is not used in any scored claim or finalist source set.",
+    "The Big Fudge manufacturer page was marked sold out during review; the reader link uses the exact 12-inch 50-count product at Binaural Records and availability still requires a pre-publication recheck.",
+    "Every product link remains ordinary and unpaid; no affiliate tracking was added."
+  ]
+}

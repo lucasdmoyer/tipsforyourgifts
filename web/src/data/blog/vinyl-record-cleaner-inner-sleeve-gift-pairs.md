@@ -35,7 +35,7 @@ products:
     affiliate: false
     priceBand: "$70-$110"
     whyItFits: "What it is: a manual bath-style washer for compatible vinyl records. It fits a collector with a small batch of confirmed vinyl, a level wet-work area, and the patience to wash, dry, and clean the system afterward."
-    drawback: "The system requires a level work area, distilled water and concentrate, prewashed cloths, careful label clearance, manual drying, brush rinsing and air drying, and basin cleanup after a session."
+    drawback: "The system requires a level work area, cleaning concentrate, prewashed cloths, careful label clearance, manual drying, brush rinsing and air drying, and basin cleanup after a session. Spin-Clean directs users to distilled water by default and expressly allows tap water when distilled water is unavailable."
     editorialScore: 89
     evidenceConfidence: 90
     claimIds:
@@ -166,7 +166,7 @@ It is also not a collection-wide assignment. The first useful result is one comp
 
 ### For a small batch: choose a washer and 12-inch sleeves
 
-The [Spin-Clean Vinyl Record Washer Complete Kit](https://www.spinclean.com/store/Spin-Clean%C2%AE-Record-Washer-MKII-Complete-Kit-p14190723) is the batch option. Its [official instructions](https://www.spinclean.com/about/instructions/) describe roller positions for several common vinyl sizes, distilled water and cleaning concentrate, turns in both directions, reusable drying cloths, brush rinsing, and air drying for the components. The instructions also recommend putting a fully dry record in a new inner sleeve.
+The [Spin-Clean Vinyl Record Washer Complete Kit](https://www.spinclean.com/store/Spin-Clean%C2%AE-Record-Washer-MKII-Complete-Kit-p14190723) is the batch option. Its [official instructions](https://www.spinclean.com/about/instructions/) describe roller positions for several common vinyl sizes, cleaning concentrate, turns in both directions, reusable drying cloths, brush rinsing, and air drying for the components. The instructions direct users to distilled water by default and expressly allow tap water when distilled water is unavailable. They also recommend putting a fully dry record in a new inner sleeve.
 
 That routine takes real space and attention. It needs a level wet surface, prewashed cloths, protected labels, a cleanup plan, and clean storage for the components. Independent reviewers describe a purposeful manual bath, along with the work that makes it a poor fit for someone who wants a quick or automatic process ([What Hi-Fi? review](https://www.whathifi.com/features/i-tested-3-vinyl-record-cleaning-systems-and-the-results-were-both-revelatory-and-depressing), [Popular Mechanics review](https://www.popularmechanics.com/home/interior-projects/a45356168/spin-clean-record-washer-review/)).
 
@@ -180,7 +180,7 @@ The [GrooveWasher Hardwood Record Cleaning Kit](https://www.groovewasher.com/pro
 
 This is a routine rather than a spray-and-forget accessory. Start with one confirmed vinyl record, follow the current [how-to instructions](https://www.groovewasher.com/pages/how-to) and [maintenance FAQ](https://www.groovewasher.com/pages/faqs), keep the label dry, allow the record to air-dry fully, rinse and air-dry the removable pad as directed, and give the kit a clean storage drawer.
 
-The current manufacturer label for G2 says the fluid is for hard surfaces only, can irritate eyes, should be kept away from eyes, skin, clothing, and food, must not be swallowed, and has specific first-aid directions for exposure ([current G2 label](https://www.groovewasher.com/products/g2-8-oz-fluid-refill-bottle)). Follow the complete current label rather than this summary.
+The current manufacturer label for G2 says improper use can be hazardous to humans and domestic animals. It says the fluid is for hard surfaces only, can irritate eyes, should be kept away from eyes, skin, clothing, and food, must not be swallowed, and has specific first-aid directions for exposure ([current G2 label](https://www.groovewasher.com/products/g2-8-oz-fluid-refill-bottle)). The manufacturer also displays a California Proposition 65 warning for cancer and reproductive harm. This article is reporting the warning, not concluding that using this product will cause those harms. Follow the complete current label rather than this summary.
 
 The [Big Fudge 12-inch Premium Master Inner Sleeves](https://binauralrecords.com/products/big-fudge-12-inch-premium-master-archive-quality-inner-sleeves) are supported multi-layer replacements for standard 12-inch LPs ([official specifications](https://bigfudgevinyl.com/products/big-fudge-premium-master-vinyl-record-sleeves-50x-record-inner-sleeves-for-12-vinyl-record-storage-clear-3-layer-lp-sleeves-with-anti-static-rice-paper-acid-free-archival-album-sleeves)). The direct manufacturer page was marked sold out during this review, so the ordinary, unpaid link goes to the exact 50-count product at Binaural Records; recheck stock before ordering. Each sleeve still needs inspection for creases or debris and a fit test inside the actual jacket ([exact-product verified-owner reviews](https://www.platekompaniet.no/lyd-hifi/vinyltilbehor/oppbevaring/innercover/big-fudge-12-tommer-premium-master-innerlommer-50stk-innercover), [comparative review](https://theaudiophileman.com/mofi-the-games-up-an-inner-sleeve-odyssey/)).
 
