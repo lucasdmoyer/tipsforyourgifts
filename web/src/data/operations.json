@@ -271,6 +271,12 @@
             ]
           }
         ],
+        "founderDecisionPacket": {
+          "workflowUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/editorial-safety-approval.yml",
+          "approveCommand": "gh workflow run editorial-safety-approval.yml -f run_id=20260823-fiber-art-pause-269f700c -f decision=approved -f confirmation=REVIEW-20260823-fiber-art-pause-269f700c-approved",
+          "rejectCommand": "gh workflow run editorial-safety-approval.yml -f run_id=20260823-fiber-art-pause-269f700c -f decision=rejected -f confirmation=REVIEW-20260823-fiber-art-pause-269f700c-rejected",
+          "authorityBoundary": "This decision binds only the exact current run, article, social, and high-risk claim hashes. It does not replace independent QA, merge a pull request, or authorize publication."
+        },
         "founderSafetyReviewRequired": true,
         "founderSafetyReviewStatus": "approval_required",
         "safetyApproval": null,
@@ -345,6 +351,12 @@
             ]
           }
         ],
+        "founderDecisionPacket": {
+          "workflowUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/editorial-safety-approval.yml",
+          "approveCommand": "gh workflow run editorial-safety-approval.yml -f run_id=20260823-muddy-paw-arrival-e09ff303 -f decision=approved -f confirmation=REVIEW-20260823-muddy-paw-arrival-e09ff303-approved",
+          "rejectCommand": "gh workflow run editorial-safety-approval.yml -f run_id=20260823-muddy-paw-arrival-e09ff303 -f decision=rejected -f confirmation=REVIEW-20260823-muddy-paw-arrival-e09ff303-rejected",
+          "authorityBoundary": "This decision binds only the exact current run, article, social, and high-risk claim hashes. It does not replace independent QA, merge a pull request, or authorize publication."
+        },
         "founderSafetyReviewRequired": true,
         "founderSafetyReviewStatus": "approval_required",
         "safetyApproval": null,
@@ -386,6 +398,12 @@
             ]
           }
         ],
+        "founderDecisionPacket": {
+          "workflowUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/editorial-safety-approval.yml",
+          "approveCommand": "gh workflow run editorial-safety-approval.yml -f run_id=20260823-used-record-reset-53a6b604 -f decision=approved -f confirmation=REVIEW-20260823-used-record-reset-53a6b604-approved",
+          "rejectCommand": "gh workflow run editorial-safety-approval.yml -f run_id=20260823-used-record-reset-53a6b604 -f decision=rejected -f confirmation=REVIEW-20260823-used-record-reset-53a6b604-rejected",
+          "authorityBoundary": "This decision binds only the exact current run, article, social, and high-risk claim hashes. It does not replace independent QA, merge a pull request, or authorize publication."
+        },
         "founderSafetyReviewRequired": true,
         "founderSafetyReviewStatus": "approval_required",
         "safetyApproval": null,

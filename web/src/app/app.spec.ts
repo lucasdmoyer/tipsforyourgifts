@@ -335,6 +335,11 @@ describe('App', () => {
         expect(element.textContent).toContain(claim.id);
         expect(element.textContent).toContain(claim.text);
       }
+      if (review.founderDecisionPacket) {
+        expect(element.textContent).toContain(review.founderDecisionPacket.approveCommand);
+        expect(element.textContent).toContain(review.founderDecisionPacket.rejectCommand);
+        expect(element.textContent).toContain(review.founderDecisionPacket.authorityBoundary);
+      }
     }
   });
 

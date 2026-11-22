@@ -268,6 +268,12 @@ export interface Operations {
       blockers: string[];
       warnings: string[];
       highRiskClaims: Array<{ id: string; text: string; sourceIds: string[] }>;
+      founderDecisionPacket: {
+        workflowUrl: string;
+        approveCommand: string;
+        rejectCommand: string;
+        authorityBoundary: string;
+      } | null;
       founderSafetyReviewRequired: boolean;
       founderSafetyReviewStatus: 'not_required' | 'approval_required' | 'approved_current' | 'rejected_current' | 'stale';
       safetyApproval: {
