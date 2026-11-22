@@ -32,6 +32,8 @@ idea -> researching -> drafted -> independent QA -> validated -> preview -> foun
           +---- blocked / qa_failed / rejected <-------+
 ```
 
+When a draft contains an explicitly classified high-risk claim, insert a founder language decision before final independent QA. The owner-only decision is an immutable, hash-bound Git artifact; it neither certifies the evidence nor authorizes publication. Rejected or stale language fails closed. Promotion and the publication manifest both require the latest approved decision to match the same reviewable content and exact high-risk claim hashes.
+
 A validated roundup requires at least 12 candidates, five finalists, five source classes, three research passes, two final passes below 10 percent material novelty, supported claims, an editorial score of at least 75, evidence confidence of at least 70, and a clean independent review.
 
 ## Publication architecture
@@ -39,6 +41,8 @@ A validated roundup requires at least 12 candidates, five finalists, five source
 Git is the content database. A research run and its matching Markdown article are versioned together. Deterministic scripts generate typed Angular data, the operating dashboard, and the sitemap. Angular prerenders the public site into `web/dist`; Firebase Hosting serves that exact artifact.
 
 Each founder-started Codex workflow is represented by a versioned research mission receipt. The trusted envelope fixes the approved idea, base commit, team roles, required deliverables, quality thresholds, and publication policy before the drafting role begins. The independent review and completion scripts bind exact artifact hashes; a model response alone cannot complete a mission.
+
+Founder safety decisions live under `web/research/safety-approvals/`. Only the protected owner workflow may add a versioned decision. The deterministic promotion script and publication-manifest builder independently re-evaluate it, so copying an old approval or changing the reviewed language cannot advance a bundle.
 
 Mission completion advances the bundle to release preparation. While publication mode is founder reviewed, it still requires the exact-SHA pull request, Firebase preview, and founder merge decision. Once the separately approved automatic-after-proven policy is active, the same completion receipt can make the pull request eligible for required-check automatic merge.
 

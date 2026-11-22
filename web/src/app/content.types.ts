@@ -216,10 +216,11 @@ export interface Operations {
   pairingIdeas: number;
   recipientFrictionIdeas: number;
   editorialReview: {
-    schemaVersion: '1.0.0';
+    schemaVersion: '1.1.0';
     counts: {
       pendingBundles: number;
       founderSafetyReviewsRequired: number;
+      founderSafetyApprovalsCurrent: number;
       independentReviewsRequired: number;
       highRiskClaims: number;
     };
@@ -233,6 +234,15 @@ export interface Operations {
       warnings: string[];
       highRiskClaims: Array<{ id: string; text: string; sourceIds: string[] }>;
       founderSafetyReviewRequired: boolean;
+      founderSafetyReviewStatus: 'not_required' | 'approval_required' | 'approved_current' | 'rejected_current' | 'stale';
+      safetyApproval: {
+        status: 'approved_current' | 'rejected_current' | 'stale';
+        revision: number;
+        decision: 'approved' | 'rejected';
+        reviewedAt: string;
+        path: string;
+        sha256: string;
+      } | null;
       independentReviewRequired: true;
       sourcePaths: { run: string; article: string; social: string | null };
       sourceSha256: { run: string; article: string; social: string | null };
@@ -527,6 +537,7 @@ export interface Operations {
       contentSetSha256: string;
       articles: number;
       independentReviews: number;
+      founderSafetyApprovals: number;
       socialLaunchPacks: number;
       socialDrafts: number;
       missionBoundArticles: number;

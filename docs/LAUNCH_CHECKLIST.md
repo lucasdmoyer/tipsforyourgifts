@@ -10,6 +10,7 @@
 - Require review on strategy proposal and strategy approval pull requests; the AI proposal job must never set `approved_for_research`.
 - Confirm the weekly opportunity scout exits before model execution at the founder proposal cap, creates no mission file in that posture, and can append at most one `proposed` idea when capacity exists.
 - Require a separate hash-bound opportunity editor receipt; the scout author must never validate their own report or advance a proposal to `approved_for_research`.
+- Create the protected `editorial-safety-approval` environment with Lucas as required reviewer. Confirm only repository owner `lucasdmoyer` can record a decision, the workflow has no model or Firebase credential, and it can open but cannot merge or deploy its pull request.
 - Configure the founder-reviewed production workflow with its dedicated, workflow-path-bound GitHub OIDC provider and keyless Firebase Hosting service account; never add a long-lived service-account JSON key.
 - Keep Dependabot enabled for `/web`.
 
@@ -50,6 +51,8 @@
 - Distinguish a deferred useful purchase from something the recipient does not want.
 - Require compatibility, duplicate, clutter, ownership-burden, and rejection checks for every finalist.
 - Require pair coherence of at least 80 and prove that both items qualify independently and perform different roles.
+- For every explicitly high-risk claim, review the exact reader-facing language and source bindings through the owner workflow. Treat approval as language acceptance only; require a fresh independent QA receipt afterward.
+- Confirm that changing the run, article, social draft, or high-risk claim content makes the latest founder safety decision stale and blocks promotion.
 
 ## Affiliate controls
 
