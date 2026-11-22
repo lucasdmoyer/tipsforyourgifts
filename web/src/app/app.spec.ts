@@ -3,7 +3,8 @@ import { provideRouter, Router } from '@angular/router';
 import { App } from './app';
 import { ARTICLES } from './generated/content.generated';
 import { GROWTH, OPERATIONS, STRATEGY } from './generated/studio.generated';
-import { ArticlePage, FounderBriefPage, GiftFinderPage, PairCardComponent, ProductCardComponent, STUDIO_DATA, StudioPage } from './pages';
+import { ArticlePage, GiftFinderPage, PairCardComponent, ProductCardComponent } from './public-pages';
+import { FounderBriefPage, STUDIO_DATA, StudioPage } from './studio-pages';
 import { readerBodyComesFirst, readerBodyHtml, readerEvidenceHtml, readerLanguage, readerLead } from './reader-copy';
 
 describe('App', () => {

@@ -1,7 +1,10 @@
 import { Routes } from '@angular/router';
 
-const page = <T extends keyof typeof import('./pages')>(name: T) =>
-  () => import('./pages').then((pages) => pages[name]);
+const page = <T extends keyof typeof import('./public-pages')>(name: T) =>
+  () => import('./public-pages').then((pages) => pages[name]);
+
+const studioPage = <T extends keyof typeof import('./studio-pages')>(name: T) =>
+  () => import('./studio-pages').then((pages) => pages[name]);
 
 const studioData = () => import('./generated/studio.generated').then(({ OPERATIONS, STRATEGY, GROWTH }) => ({
   operations: OPERATIONS,
@@ -17,7 +20,7 @@ export const routes: Routes = [
   { path: 'blog/:slug', loadComponent: page('ArticlePage') },
   { path: 'standards', loadComponent: page('StandardsPage') },
   { path: 'affiliate-disclosure', loadComponent: page('AffiliateDisclosurePage') },
-  { path: 'studio', loadComponent: page('StudioPage'), resolve: { studioData } },
-  { path: 'studio/brief', loadComponent: page('FounderBriefPage') },
+  { path: 'studio', loadComponent: studioPage('StudioPage'), resolve: { studioData } },
+  { path: 'studio/brief', loadComponent: studioPage('FounderBriefPage') },
   { path: '**', loadComponent: page('NotFoundPage') }
 ];
