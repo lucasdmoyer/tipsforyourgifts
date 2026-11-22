@@ -255,6 +255,14 @@ export const STUDIO_DATA = new InjectionToken<StudioData>('STUDIO_DATA');
                   }
                 </details>
               }
+              @if (review.founderDecisionPacket) {
+                <details class="founder-decision-packet"><summary>Copy exact founder decision</summary>
+                  <p><strong>Approve this exact language:</strong></p><div class="command">{{ review.founderDecisionPacket.approveCommand }}</div>
+                  <p><strong>Reject this exact language:</strong></p><div class="command">{{ review.founderDecisionPacket.rejectCommand }}</div>
+                  <p class="quiet">{{ review.founderDecisionPacket.authorityBoundary }}</p>
+                  <p><a class="button secondary" [href]="review.founderDecisionPacket.workflowUrl" target="_blank" rel="noopener">Open founder decision workflow</a></p>
+                </details>
+              }
               <p><strong>Next gate:</strong> {{ review.nextGate }}</p>
               <details><summary>Warnings and exact file identity</summary><ul>@for (warning of review.warnings; track warning) { <li>{{ warning }}</li> }</ul><div class="command">run: {{ review.sourcePaths.run }}<br>run sha256: {{ review.sourceSha256.run }}<br>article: {{ review.sourcePaths.article }}<br>article sha256: {{ review.sourceSha256.article }}<br>social: {{ review.sourcePaths.social ?? 'none' }}<br>social sha256: {{ review.sourceSha256.social ?? 'none' }}</div></details>
             </article>
