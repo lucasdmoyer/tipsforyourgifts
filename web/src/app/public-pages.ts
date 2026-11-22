@@ -7,13 +7,17 @@ import { findGiftGuides, type GiftShape, type RecipientSignal } from './gift-fin
 import { readerBodyComesFirst, readerBodyHtml, readerDescription, readerEvidenceHtml, readerGiftIdea, readerLanguage, readerLead, readerTags, readerTitle } from './reader-copy';
 import { SeoService } from './seo.service';
 
+const responsiveImageSrcset = (src: string) => src.endsWith('.webp')
+  ? `${src.replace(/\.webp$/, '-768.webp')} 768w, ${src} 1536w`
+  : null;
+
 @Component({
   selector: 'tfg-article-card',
   imports: [RouterLink],
   template: `
     <article class="article-card">
       <a class="article-card-visual" [routerLink]="['/blog', article().slug]" [attr.aria-label]="'Read ' + title(article())">
-        <img [src]="article().visual.hero.src" [alt]="article().visual.hero.alt" width="1536" height="1024" loading="lazy" decoding="async">
+        <img [src]="article().visual.hero.src" [attr.srcset]="imageSrcset(article().visual.hero.src)" sizes="(max-width: 620px) calc(100vw - 28px), (max-width: 860px) calc((100vw - 60px) / 2), 380px" [alt]="article().visual.hero.alt" width="1536" height="1024" loading="lazy" decoding="async">
       </a>
       <div class="meta">
         <span>{{ article().occasion }}</span><span>·</span><span>{{ article().priceBand }}</span>
@@ -30,6 +34,7 @@ import { SeoService } from './seo.service';
 })
 export class ArticleCardComponent {
   readonly article = input.required<Article>();
+  readonly imageSrcset = responsiveImageSrcset;
   readonly description = readerDescription;
   readonly tags = readerTags;
   readonly title = readerTitle;
@@ -40,7 +45,7 @@ export class ArticleCardComponent {
   template: `
     <article class="product-card" [id]="product().id">
       <figure class="product-context-visual">
-        <img [src]="visual().src" [alt]="visual().alt" width="1536" height="1024" loading="lazy" decoding="async">
+        <img [src]="visual().src" [attr.srcset]="imageSrcset(visual().src)" sizes="(max-width: 620px) calc(100vw - 68px), (max-width: 1080px) calc(100vw - 92px), 988px" [alt]="visual().alt" width="1536" height="1024" loading="lazy" decoding="async">
         <figcaption>Original illustration of the gift idea—not a product photo.</figcaption>
       </figure>
       <p class="eyebrow">A gift to consider</p>
@@ -59,6 +64,7 @@ export class ProductCardComponent {
   readonly product = input.required<Product>();
   readonly articleSlug = input.required<string>();
   readonly visual = input.required<VisualAsset>();
+  readonly imageSrcset = responsiveImageSrcset;
   readonly display = readerLanguage;
 }
 
@@ -69,7 +75,7 @@ export class ProductCardComponent {
       <p class="eyebrow">A thoughtful pair</p>
       <h2>{{ pair().name }}</h2>
       <figure class="pairing-context-visual">
-        <img [src]="pairVisual().src" [alt]="pairVisual().alt" width="1536" height="1024" loading="lazy" decoding="async">
+        <img [src]="pairVisual().src" [attr.srcset]="imageSrcset(pairVisual().src)" sizes="(max-width: 620px) calc(100vw - 68px), (max-width: 1080px) calc(100vw - 100px), 978px" [alt]="pairVisual().alt" width="1536" height="1024" loading="lazy" decoding="async">
         <figcaption>{{ display(pairVisual().caption) }} Original illustration of the gift idea—not product photography.</figcaption>
       </figure>
       <div class="reader-pair-products">
@@ -110,6 +116,7 @@ export class ProductCardComponent {
 export class PairCardComponent {
   readonly article = input.required<Article>();
   readonly pair = input.required<ProductPair>();
+  readonly imageSrcset = responsiveImageSrcset;
   readonly display = readerLanguage;
   anchorProduct() { return this.article().products.find((product) => product.id === this.pair().anchorProductId); }
   companionProduct() { return this.article().products.find((product) => product.id === this.pair().companionProductId); }
@@ -385,7 +392,7 @@ export class BlogPage {
           <span>·</span><span>For {{ article.audience }}</span>
         </div>
         <figure class="article-hero-visual">
-          <img [src]="article.visual.hero.src" [alt]="article.visual.hero.alt" width="1536" height="1024" fetchpriority="high" decoding="async">
+          <img [src]="article.visual.hero.src" [attr.srcset]="imageSrcset(article.visual.hero.src)" sizes="(max-width: 620px) calc(100vw - 28px), (max-width: 1080px) calc(100vw - 40px), 1040px" [alt]="article.visual.hero.alt" width="1536" height="1024" fetchpriority="high" decoding="async">
           <figcaption>{{ display(article.visual.hero.caption) }} <span>Original illustration made for this guide.</span></figcaption>
         </figure>
         <aside class="panel gift-premise">
@@ -470,6 +477,7 @@ export class ArticlePage {
   readonly bodyComesFirst = readerBodyComesFirst;
   readonly evidence = readerEvidenceHtml;
   readonly display = readerLanguage;
+  readonly imageSrcset = responsiveImageSrcset;
   unpairedProducts() {
     if (!this.article) return [];
     const pairedIds = new Set(this.article.pairs.flatMap((pair) => [pair.anchorProductId, pair.companionProductId]));
