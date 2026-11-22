@@ -79,6 +79,8 @@ Use **Record founder editorial safety decision** only after reading the exact ru
 
 The receipt binds the reviewable run and article content, the social draft, and every explicitly classified high-risk claim by SHA-256. Lifecycle-only changes from draft to publication-ready do not invalidate it; any substantive source, article, social, or claim change does. Approval means only that Lucas accepted the exact reader-facing safety boundary. A separate independent editor must still issue a fresh clean receipt, and the exact-SHA preview and release approval remain separate.
 
+After an approved safety-decision pull request merges, **Run independent editorial recheck** selects that exact run automatically. Its model job has read-only repository permission and may produce only one structured findings file. A separate job without the OpenAI credential converts those findings into the next immutable `qa.vN` receipt. Failed receipts remain in Git without changing the article; a later revision cannot overwrite them. Only a clean receipt matching the current run, article, social draft, and safety decision can promote the bundle and open a review pull request. Studio exposes the manual workflow only as recovery when an automatic dispatch fails.
+
 ## Weekly executive review
 
 Use `/studio` and the workbook to answer six questions:

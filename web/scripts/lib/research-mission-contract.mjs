@@ -21,7 +21,7 @@ const completionSchema = z.object({
   articleSha256: sha256Schema,
   socialPackId: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*-launch$/),
   socialPackSha256: sha256Schema,
-  reviewReceiptPath: z.string().regex(/^research\/reviews\/[a-z0-9-]+\.qa\.v1\.json$/),
+  reviewReceiptPath: z.string().regex(/^research\/reviews\/[a-z0-9-]+\.qa\.v[1-9]\d*\.json$/),
   reviewReceiptSha256: sha256Schema,
   publicationReadiness: z.enum(['founder_review_required', 'automatic_merge_eligible']),
   nextGate: z.string().min(30)

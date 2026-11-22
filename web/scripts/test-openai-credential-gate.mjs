@@ -71,8 +71,8 @@ for (const workflowName of workflowNames) {
   if (workflowUsesCodex) protectedWorkflows.push(workflowName);
 }
 
-if (codexSteps !== 7 || protectedWorkflows.length !== 5) {
-  throw new Error(`Expected 7 Codex steps across 5 workflows, found ${codexSteps} across ${protectedWorkflows.length}.`);
+if (codexSteps !== 8 || protectedWorkflows.length !== 6) {
+  throw new Error(`Expected 8 Codex steps across 6 workflows, found ${codexSteps} across ${protectedWorkflows.length}.`);
 }
 
 console.log(JSON.stringify({

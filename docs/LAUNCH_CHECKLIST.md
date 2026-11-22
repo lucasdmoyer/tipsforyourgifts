@@ -11,6 +11,8 @@
 - Confirm the weekly opportunity scout exits before model execution at the founder proposal cap, creates no mission file in that posture, and can append at most one `proposed` idea when capacity exists.
 - Require a separate hash-bound opportunity editor receipt; the scout author must never validate their own report or advance a proposal to `approved_for_research`.
 - Create the protected `editorial-safety-approval` environment with Lucas as required reviewer. Confirm only repository owner `lucasdmoyer` can record a decision, the workflow has no model or Firebase credential, and it can open but cannot merge or deploy its pull request.
+- Confirm an approved safety-decision merge triggers the read-only independent recheck, while a rejection exits without a model call. Verify the model can create only structured findings and the credential-free job creates the next immutable `qa.vN` receipt.
+- Test both review outcomes: a failed receipt remains auditable without changing the article, while a clean current receipt alone may promote and open a pull request. Neither path may merge or deploy.
 - Configure the founder-reviewed production workflow with its dedicated, workflow-path-bound GitHub OIDC provider and keyless Firebase Hosting service account; never add a long-lived service-account JSON key.
 - Keep Dependabot enabled for `/web`.
 

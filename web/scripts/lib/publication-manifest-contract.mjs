@@ -71,7 +71,7 @@ const articleEntrySchema = z.object({
   researchRunId: runIdSchema,
   researchRunPath: z.string().regex(/^research\/runs\/\d{8}-[a-z0-9-]+-[a-f0-9]{8}\.json$/),
   researchRunSha256: sha256Schema,
-  independentReviewPath: z.string().regex(/^research\/reviews\/\d{8}-[a-z0-9-]+-[a-f0-9]{8}\.qa\.v1\.json$/),
+  independentReviewPath: z.string().regex(/^research\/reviews\/\d{8}-[a-z0-9-]+-[a-f0-9]{8}\.qa\.v[1-9]\d*\.json$/),
   independentReviewSha256: sha256Schema,
   reviewedEvidenceSha256: sha256Schema,
   founderSafetyPosture: z.enum(['not_required', 'legacy_independent_review_only', 'approved_current']),
