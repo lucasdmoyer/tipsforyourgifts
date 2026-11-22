@@ -1,0 +1,499 @@
+{
+  "schemaVersion": "1.0.0",
+  "scoutId": "opportunity-scout-2026112201-1",
+  "missionId": "opportunity-scout-2026112201-1",
+  "status": "validated",
+  "createdAt": "2026-11-22T06:40:44.000Z",
+  "draftAuthor": "codex-opportunity-drafter",
+  "scope": {
+    "geography": "United States",
+    "language": "English",
+    "horizon": "evergreen",
+    "sensitiveCategoriesExcluded": true
+  },
+  "researchPasses": [
+    {
+      "pass": 1,
+      "objective": "Discover recurring, observable hobby frictions that gift shoppers can verify without inferring private traits or choosing taste-dependent core equipment.",
+      "queries": [
+        "public board-game communities setup teardown baggies organizer friction",
+        "BoardGameGeek component trays setup cleanup organizer",
+        "lap swimmer wet swimsuit bag drying routine",
+        "visible mending beginner tools repair pile community",
+        "official board-game component storage trays",
+        "independent editorial board-game setup organization"
+      ],
+      "newSignals": 10,
+      "materialNoveltyRate": 0.72
+    },
+    {
+      "pass": 2,
+      "objective": "Corroborate the strongest board-game thesis with primary specifications, independent guidance, merchant breadth, and exact compatibility constraints.",
+      "queries": [
+        "Gamegenic removable component trays official dimensions sleeve capacity",
+        "official CATAN licensed accessories trays component organization",
+        "board game organizer retailer exact edition expansion insert",
+        "board game insert supports sleeves vertical storage compatibility"
+      ],
+      "newSignals": 2,
+      "materialNoveltyRate": 0.08
+    },
+    {
+      "pass": 3,
+      "objective": "Challenge the selected thesis with skip conditions, cheap fallbacks, duplicate-system risk, and compatibility failures before stopping at evidence saturation.",
+      "queries": [
+        "board game organizer insert not worth it baggies rarely played",
+        "board game insert compatibility edition expansions sleeves lid lift",
+        "board game organizer travel vertical storage spill risk",
+        "component tray duplicate factory insert setup burden"
+      ],
+      "newSignals": 1,
+      "materialNoveltyRate": 0.05
+    }
+  ],
+  "sources": [
+    {
+      "id": "opp-source-reddit-boardgames-setup",
+      "url": "https://www.reddit.com/r/boardgames/comments/193vmte/how_to_deal_with_complex_or_large_board_games/",
+      "publisher": "Reddit r/boardgames",
+      "title": "How to deal with complex or large board games with large setup and teardown times?",
+      "accessedAt": "2026-11-22T06:40:44.000Z",
+      "sourceClass": "public_community",
+      "trustTier": "C",
+      "independenceGroup": "reddit-boardgames-community",
+      "publicContent": true,
+      "containsPersonalIdentifiers": false
+    },
+    {
+      "id": "opp-source-bgg-setup-faster",
+      "url": "https://boardgamegeek.com/thread/3783817/how-to-table-and-set-up-faster",
+      "publisher": "BoardGameGeek",
+      "title": "How to table and set up faster",
+      "accessedAt": "2026-11-22T06:40:44.000Z",
+      "sourceClass": "public_community",
+      "trustTier": "C",
+      "independenceGroup": "boardgamegeek-community",
+      "publicContent": true,
+      "containsPersonalIdentifiers": false
+    },
+    {
+      "id": "opp-source-youtube-component-trays",
+      "url": "https://www.youtube.com/watch?v=wZcL42_5rg8",
+      "publisher": "BoardGameCo on YouTube",
+      "title": "Wooden Component Trays - One Sharp Joe Crafts",
+      "accessedAt": "2026-11-22T06:40:44.000Z",
+      "sourceClass": "public_social",
+      "trustTier": "C",
+      "independenceGroup": "youtube-boardgameco",
+      "publicContent": true,
+      "containsPersonalIdentifiers": false
+    },
+    {
+      "id": "opp-source-gamegenic-token-silo",
+      "url": "https://www.gamegenic.com/product/token-silo-convertible/",
+      "publisher": "Gamegenic",
+      "title": "Token Silo Convertible",
+      "accessedAt": "2026-11-22T06:40:44.000Z",
+      "sourceClass": "manufacturer_category",
+      "trustTier": "A",
+      "independenceGroup": "gamegenic-manufacturer",
+      "publicContent": true,
+      "containsPersonalIdentifiers": false
+    },
+    {
+      "id": "opp-source-catan-accessory-announcement",
+      "url": "https://www.catan.com/sites/default/files/2021-09/2020-gg-catan-product-announcement%20%281%29_0.pdf",
+      "publisher": "CATAN Studio",
+      "title": "CATAN Studio and Gamegenic official accessory product announcement",
+      "accessedAt": "2026-11-22T06:40:44.000Z",
+      "sourceClass": "manufacturer_category",
+      "trustTier": "A",
+      "independenceGroup": "catan-studio-publisher",
+      "publicContent": true,
+      "containsPersonalIdentifiers": false
+    },
+    {
+      "id": "opp-source-nerdist-quick-setup",
+      "url": "https://nerdist.com/article/tips-for-organizing-your-board-games-for-quick-setup/",
+      "publisher": "Nerdist",
+      "title": "Cut Down Your Board Game Setup Time in Five Easy Steps",
+      "accessedAt": "2026-11-22T06:40:44.000Z",
+      "sourceClass": "independent_editorial",
+      "trustTier": "B",
+      "independenceGroup": "nerdist-editorial",
+      "publicContent": true,
+      "containsPersonalIdentifiers": false
+    },
+    {
+      "id": "opp-source-boardgamehelpers-storage",
+      "url": "https://www.boardgamehelpers.com/Articles/Organizing_and_Storing_Game_Components",
+      "publisher": "BoardGameHelpers",
+      "title": "Organizing and Storing Game Components",
+      "accessedAt": "2026-11-22T06:40:44.000Z",
+      "sourceClass": "independent_editorial",
+      "trustTier": "C",
+      "independenceGroup": "boardgamehelpers-editorial",
+      "publicContent": true,
+      "containsPersonalIdentifiers": false
+    },
+    {
+      "id": "opp-source-tabletopterrain-inserts",
+      "url": "https://tabletopterrain.com/collections/board-game-organizers",
+      "publisher": "Tabletop Terrain",
+      "title": "Board Game Storage and Organizer Inserts",
+      "accessedAt": "2026-11-22T06:40:44.000Z",
+      "sourceClass": "merchant_catalog",
+      "trustTier": "B",
+      "independenceGroup": "tabletopterrain-merchant",
+      "publicContent": true,
+      "containsPersonalIdentifiers": false
+    },
+    {
+      "id": "opp-source-reddit-organizer-skip",
+      "url": "https://www.reddit.com/r/boardgames/comments/1h9jhaz/do_you_use_organizers/",
+      "publisher": "Reddit r/boardgames",
+      "title": "Do you use organizers?",
+      "accessedAt": "2026-11-22T06:40:44.000Z",
+      "sourceClass": "public_community",
+      "trustTier": "C",
+      "independenceGroup": "reddit-boardgames-community",
+      "publicContent": true,
+      "containsPersonalIdentifiers": false
+    },
+    {
+      "id": "opp-source-bgg-insert-compatibility",
+      "url": "https://boardgamegeek.com/thread/2161144/is-there-a-storage-insert-that-fits-all-expansions",
+      "publisher": "BoardGameGeek",
+      "title": "Is there a storage insert that fits all expansions and sleeved cards?",
+      "accessedAt": "2026-11-22T06:40:44.000Z",
+      "sourceClass": "public_community",
+      "trustTier": "C",
+      "independenceGroup": "boardgamegeek-community",
+      "publicContent": true,
+      "containsPersonalIdentifiers": false
+    },
+    {
+      "id": "opp-source-reddit-swimming-wet-gear",
+      "url": "https://www.reddit.com/r/Swimming/comments/1j830lo/wet_swim_gear/",
+      "publisher": "Reddit r/Swimming",
+      "title": "Wet swim gear",
+      "accessedAt": "2026-11-22T06:40:44.000Z",
+      "sourceClass": "public_community",
+      "trustTier": "C",
+      "independenceGroup": "reddit-swimming-community",
+      "publicContent": true,
+      "containsPersonalIdentifiers": false
+    },
+    {
+      "id": "opp-source-usms-swimsuit-durability",
+      "url": "https://www.usms.org/fitness-and-training/articles-and-videos/articles/how-to-maximize-swimsuit-durability?Oldid=243",
+      "publisher": "U.S. Masters Swimming",
+      "title": "How to Maximize Swimsuit Durability",
+      "accessedAt": "2026-11-22T06:40:44.000Z",
+      "sourceClass": "independent_editorial",
+      "trustTier": "B",
+      "independenceGroup": "usms-association",
+      "publicContent": true,
+      "containsPersonalIdentifiers": false
+    },
+    {
+      "id": "opp-source-tyr-swim-bags",
+      "url": "https://tyr.com/collections/bags",
+      "publisher": "TYR",
+      "title": "Bags and Backpacks for Swim, Gym, and Team Use",
+      "accessedAt": "2026-11-22T06:40:44.000Z",
+      "sourceClass": "manufacturer_category",
+      "trustTier": "A",
+      "independenceGroup": "tyr-manufacturer",
+      "publicContent": true,
+      "containsPersonalIdentifiers": false
+    },
+    {
+      "id": "opp-source-swimoutlet-mesh-bag",
+      "url": "https://www.swimoutlet.com/products/sporti-mesh-bag-with-zipper-pocket-8163775",
+      "publisher": "SwimOutlet",
+      "title": "Sporti Mesh Bag with Zipper Pocket",
+      "accessedAt": "2026-11-22T06:40:44.000Z",
+      "sourceClass": "merchant_catalog",
+      "trustTier": "B",
+      "independenceGroup": "swimoutlet-merchant",
+      "publicContent": true,
+      "containsPersonalIdentifiers": false
+    },
+    {
+      "id": "opp-source-reddit-visiblemending-tools",
+      "url": "https://www.reddit.com/r/Visiblemending/comments/1pbebx9/best_tools_for_a_beginner/",
+      "publisher": "Reddit r/Visiblemending",
+      "title": "Best tools for a beginner?",
+      "accessedAt": "2026-11-22T06:40:44.000Z",
+      "sourceClass": "public_community",
+      "trustTier": "C",
+      "independenceGroup": "reddit-visiblemending-community",
+      "publicContent": true,
+      "containsPersonalIdentifiers": false
+    },
+    {
+      "id": "opp-source-kuow-visiblemending",
+      "url": "https://m.kuow.org/stories/the-perfectly-imperfect-art-of-visible-mending-a-beginner-s-guide",
+      "publisher": "KUOW",
+      "title": "The perfectly imperfect art of visible mending: a beginner's guide",
+      "accessedAt": "2026-11-22T06:40:44.000Z",
+      "sourceClass": "independent_editorial",
+      "trustTier": "B",
+      "independenceGroup": "kuow-editorial",
+      "publicContent": true,
+      "containsPersonalIdentifiers": false
+    },
+    {
+      "id": "opp-source-visiblemending-getting-started",
+      "url": "https://visiblemending.com/pages/getting-started",
+      "publisher": "Visible Mending",
+      "title": "Getting Started with Visible Mending",
+      "accessedAt": "2026-11-22T06:40:44.000Z",
+      "sourceClass": "merchant_catalog",
+      "trustTier": "B",
+      "independenceGroup": "visiblemending-merchant",
+      "publicContent": true,
+      "containsPersonalIdentifiers": false
+    },
+    {
+      "id": "opp-source-youtube-visiblemending",
+      "url": "https://www.youtube.com/watch?v=dpCYa0UquWc",
+      "publisher": "Virtual Village Hall on YouTube",
+      "title": "Visible Mending - An Introduction to Darning with Kim Searle",
+      "accessedAt": "2026-11-22T06:40:44.000Z",
+      "sourceClass": "public_social",
+      "trustTier": "B",
+      "independenceGroup": "youtube-virtual-village-hall",
+      "publicContent": true,
+      "containsPersonalIdentifiers": false
+    }
+  ],
+  "signals": [
+    {
+      "id": "opp-signal-boardgame-start-delay",
+      "kind": "recipient_language",
+      "summary": "Board-game communities repeatedly describe setup and teardown as the reason a component-heavy favorite stays on the shelf even when the game itself is loved.",
+      "interpretation": "The recipient signal is not merely owning games; it is repeatedly choosing around the preparation burden of one identifiable title.",
+      "limitations": "Community accounts establish demand language and workarounds, not universal time savings or product performance.",
+      "sourceIds": [
+        "opp-source-reddit-boardgames-setup",
+        "opp-source-bgg-setup-faster"
+      ]
+    },
+    {
+      "id": "opp-signal-boardgame-baggie-workaround",
+      "kind": "observed_workaround",
+      "summary": "Players commonly sort tokens and cards into many small bags or improvised containers, then reverse that work at the end of the session.",
+      "interpretation": "A shopper can observe the workaround directly and should qualify an organizer only when it removes repeated sorting rather than merely making the box look tidier.",
+      "limitations": "Baggies are inexpensive, flexible, and often good enough; their presence alone does not prove the recipient wants an organizer.",
+      "sourceIds": [
+        "opp-source-reddit-boardgames-setup",
+        "opp-source-boardgamehelpers-storage",
+        "opp-source-nerdist-quick-setup"
+      ]
+    },
+    {
+      "id": "opp-signal-boardgame-infrastructure-gap",
+      "kind": "self_purchase_gap",
+      "summary": "Players report that organizers feel worthwhile mainly for frequently played games with meaningfully poor storage, while other titles remain in bags because the upgrade is optional.",
+      "interpretation": "The self-purchase gap is defensible only for a known repeat-play title where research burden and infrastructure spending have been deferred.",
+      "limitations": "The gift should be skipped when play frequency, friction, or recipient preference is uncertain, even if a compatible organizer exists.",
+      "sourceIds": [
+        "opp-source-reddit-organizer-skip",
+        "opp-source-reddit-boardgames-setup",
+        "opp-source-bgg-insert-compatibility"
+      ]
+    },
+    {
+      "id": "opp-signal-boardgame-table-ready-storage",
+      "kind": "pairing_behavior",
+      "summary": "Table-ready removable trays can connect storage to play by moving sorted components from the box directly to shared or player positions on the table.",
+      "interpretation": "Research should favor a single exact-title organizer that already supplies the interaction, using extra component trays only when they add a distinct missing job.",
+      "limitations": "Generic trays can duplicate a fitted insert, consume table space, or fail to fit the stored configuration, so a two-item bundle must not be forced.",
+      "sourceIds": [
+        "opp-source-gamegenic-token-silo",
+        "opp-source-catan-accessory-announcement",
+        "opp-source-youtube-component-trays"
+      ]
+    },
+    {
+      "id": "opp-signal-boardgame-compatibility-gap",
+      "kind": "editorial_gap",
+      "summary": "General organizing advice explains why trays help, but exact-title purchases can fail on printing, expansions, sleeves, dimensions, lid lift, or shelf orientation.",
+      "interpretation": "A useful gift guide should behave like a compatibility decision tool and include a prominent skip path, not rank attractive organizers in the abstract.",
+      "limitations": "Compatibility claims must be rechecked per exact product and recipient configuration during full product research.",
+      "sourceIds": [
+        "opp-source-nerdist-quick-setup",
+        "opp-source-bgg-insert-compatibility",
+        "opp-source-tabletopterrain-inserts"
+      ]
+    },
+    {
+      "id": "opp-signal-boardgame-category-breadth",
+      "kind": "commercial_breadth",
+      "summary": "The category spans reusable component trays, licensed accessories, and title-specific inserts sold through specialist merchants in multiple materials and configurations.",
+      "interpretation": "There is enough ordinary-link product breadth for a commission-independent research guide, but monetization must remain disabled until a separately approved program covers an exact item.",
+      "limitations": "Catalog breadth does not establish current availability, durability, fit, or affiliate eligibility for any recommendation.",
+      "sourceIds": [
+        "opp-source-gamegenic-token-silo",
+        "opp-source-catan-accessory-announcement",
+        "opp-source-tabletopterrain-inserts"
+      ]
+    },
+    {
+      "id": "opp-signal-alternative-hobby-frictions",
+      "kind": "editorial_gap",
+      "summary": "Wet swim gear and postponed visible mending also expose observable, low-risk specialty-gift opportunities with clear existing workarounds.",
+      "interpretation": "Both remain viable future theses, but each needs a narrower recipient boundary before displacing the more exact and compatibility-rich board-game opportunity.",
+      "limitations": "Swim and mending evidence was sufficient for opportunity scoring, not for selecting products or making care, performance, or safety claims.",
+      "sourceIds": [
+        "opp-source-reddit-swimming-wet-gear",
+        "opp-source-usms-swimsuit-durability",
+        "opp-source-reddit-visiblemending-tools",
+        "opp-source-kuow-visiblemending"
+      ]
+    }
+  ],
+  "candidates": [
+    {
+      "id": "opp-candidate-exact-title-boardgame-organizer",
+      "title": "Exact-title organizer for the board game they already love",
+      "audience": "An adult board-game fan who repeatedly plays one component-heavy title and still sorts it from bags or a poor factory insert",
+      "observedFriction": "The same game begins and ends with repeated bag opening, token sorting, card separation, and repacking, or loses table time to preparation.",
+      "selfPurchaseGap": "The recipient prioritizes games and expansions while postponing a compatibility-heavy infrastructure purchase that is useful but not exciting to research.",
+      "pairingHypothesis": null,
+      "whyNow": "The opportunity is evergreen and can be qualified from an existing repeat-play habit without depending on a seasonal trend or a new release.",
+      "editorialGap": "Most accessory lists do not make shoppers verify printing, expansions, sleeve thickness, box fit, lid closure, shelf orientation, assembly, and actual play frequency together.",
+      "monetizationPosture": "ordinary_links_only",
+      "commissionIndependent": true,
+      "sourceIds": [
+        "opp-source-reddit-boardgames-setup",
+        "opp-source-bgg-setup-faster",
+        "opp-source-gamegenic-token-silo",
+        "opp-source-catan-accessory-announcement",
+        "opp-source-nerdist-quick-setup",
+        "opp-source-boardgamehelpers-storage",
+        "opp-source-tabletopterrain-inserts",
+        "opp-source-reddit-organizer-skip",
+        "opp-source-bgg-insert-compatibility"
+      ],
+      "rejectionConditions": [
+        "Reject when the title is not replayed often enough for setup friction to recur or the recipient likes the existing ritual.",
+        "Reject when edition, expansion, sleeve, box, lid, storage-orientation, material, assembly, weight, or travel compatibility is unresolved.",
+        "Reject any additional tray that duplicates table-ready compartments already supplied by the selected organizer."
+      ],
+      "score": {
+        "evidenceConfidence": 90,
+        "thoughtfulnessPotential": 94,
+        "differentiation": 88,
+        "evergreenValue": 91,
+        "productionFeasibility": 84,
+        "total": 89
+      }
+    },
+    {
+      "id": "opp-candidate-swimmer-wet-gear-reset",
+      "title": "Contain, then air-dry: a lap-swimmer wet-gear reset",
+      "audience": "A regular adult lap swimmer who carries a wet suit, towel, cap, and goggles into a work bag, car, or ordinary gym tote",
+      "observedFriction": "Wet equipment is wrapped in a towel, isolated in a plastic bag, or forgotten in an enclosed tote until the swimmer gets home and rebuilds the drying setup.",
+      "selfPurchaseGap": "A general gym bag technically works, so a better separation-and-drying routine feels like unglamorous infrastructure rather than the next swim purchase.",
+      "pairingHypothesis": "A washable wet-item container handles the commute while a compact home drying solution completes the same return-from-the-pool ritual.",
+      "whyNow": "The need recurs year-round for pool swimmers and can be recognized from an existing post-swim routine rather than a speculative performance goal.",
+      "editorialGap": "Many swim gift lists emphasize goggles and training equipment while underexplaining the transition between a wet locker room and dry everyday belongings.",
+      "monetizationPosture": "ordinary_links_only",
+      "commissionIndependent": true,
+      "sourceIds": [
+        "opp-source-reddit-swimming-wet-gear",
+        "opp-source-usms-swimsuit-durability",
+        "opp-source-tyr-swim-bags",
+        "opp-source-swimoutlet-mesh-bag"
+      ],
+      "rejectionConditions": [
+        "Reject when a reusable plastic bag and existing drying location already solve the recipient's actual routine without leaking or clutter.",
+        "Reject a mesh transport solution when wet gear must ride beside electronics or dry work clothing without a separate containment layer.",
+        "Reject a drying companion unless its footprint, mounting method, care, and named home location are verified."
+      ],
+      "score": {
+        "evidenceConfidence": 86,
+        "thoughtfulnessPotential": 90,
+        "differentiation": 76,
+        "evergreenValue": 89,
+        "productionFeasibility": 91,
+        "total": 86
+      }
+    },
+    {
+      "id": "opp-candidate-visible-mending-starter",
+      "title": "Repair one favorite: a visible-mending first-project station",
+      "audience": "An adult who already keeps a small pile of loved, repairable clothes and has shown interest in hand mending rather than replacement",
+      "observedFriction": "A specific sock, sweater, or woven garment remains unworn because the matching support, needle, thread, patch material, and first technique are scattered or uncertain.",
+      "selfPurchaseGap": "The supplies are individually modest, but choosing the right tool and material for one fabric requires enough technique research that the repair remains postponed.",
+      "pairingHypothesis": "A fabric-appropriate support tool and a small project-matched supply set could turn one known garment into a contained first repair session.",
+      "whyNow": "Visible mending remains an evergreen, skill-building way to care for an already valued object when the recipient has expressed interest and chosen the garment.",
+      "editorialGap": "Generic kits bundle many tools without distinguishing knit from woven fabric, visible from invisible repair, or a welcomed project from unsolicited wardrobe criticism.",
+      "monetizationPosture": "ordinary_links_only",
+      "commissionIndependent": true,
+      "sourceIds": [
+        "opp-source-reddit-visiblemending-tools",
+        "opp-source-kuow-visiblemending",
+        "opp-source-visiblemending-getting-started",
+        "opp-source-youtube-visiblemending"
+      ],
+      "rejectionConditions": [
+        "Reject when the recipient has not expressed interest in mending or the gift could read as criticism of their clothes, spending, or housekeeping.",
+        "Reject when the garment fiber, construction, damage, repair visibility preference, needle handling, and tool technique are not appropriate for a beginner.",
+        "Reject sentimental, irreplaceable, highly damaged, or specialty-clean garments as a first practice project."
+      ],
+      "score": {
+        "evidenceConfidence": 81,
+        "thoughtfulnessPotential": 89,
+        "differentiation": 82,
+        "evergreenValue": 88,
+        "productionFeasibility": 79,
+        "total": 84
+      }
+    }
+  ],
+  "selectedProposal": {
+    "proposalId": "founder-idea-014",
+    "candidateId": "opp-candidate-exact-title-boardgame-organizer",
+    "title": "Open the box, start the game: an exact-title organizer for the board game they already love",
+    "rationale": "This thesis turns a plainly observable workaround into a single specialty gift for a hobby the recipient already practices. It avoids guessing at game taste, gives the shopper a rigorous compatibility checklist, preserves baggies and working factory inserts as valid fallbacks, and remains useful with no affiliate relationship.",
+    "sourceIds": [
+      "opp-source-reddit-boardgames-setup",
+      "opp-source-bgg-setup-faster",
+      "opp-source-gamegenic-token-silo",
+      "opp-source-catan-accessory-announcement",
+      "opp-source-nerdist-quick-setup",
+      "opp-source-boardgamehelpers-storage",
+      "opp-source-tabletopterrain-inserts",
+      "opp-source-reddit-organizer-skip",
+      "opp-source-bgg-insert-compatibility"
+    ]
+  },
+  "conflicts": [
+    "Experienced players disagree about whether fitted organizers justify their cost; bags and factory inserts remain the better answer for some titles and routines.",
+    "An organizer can reduce setup while creating lid lift, added weight, assembly work, travel spillage, or incompatibility with sleeves and later expansions.",
+    "Reusable tabletop component trays can help play flow but may duplicate the removable trays of a fitted organizer, so the selected thesis recommends one verified specialty item rather than forcing a bundle."
+  ],
+  "unknowns": [
+    "Full product research must identify which frequently replayed U.S.-available titles have at least five independently verifiable organizer options or a defensible cross-title roundup structure.",
+    "Assembly tolerance, long-term material durability, vertical-storage retention, travel behavior, return terms, and accessibility remain product-specific and unverified at opportunity stage.",
+    "No affiliate program currently authorizes tracked links for this category, and exact availability, prices, image rights, and paid-link eligibility have not been evaluated."
+  ],
+  "commercialBoundary": {
+    "commissionIndependent": true,
+    "revenueClaimsMade": false,
+    "affiliateEnrollmentChanged": false
+  },
+  "qa": {
+    "passed": true,
+    "reviewerRole": "independent-opportunity-editor",
+    "reviewerId": "codex-opportunity-red-team-20261122",
+    "receiptPath": "research/opportunity-reviews/opportunity-scout-2026112201-1.qa.v1.json",
+    "draftReportSha256": "a1bd1bc7a41f8f3e43c81dd0502487ed71636cc304431d26a79a4e4efaaa714b",
+    "startedMissionSha256": "70c6e8e2add9075179b684a8eb981a7f48596a67c509a1d16d7f88273d288375",
+    "warnings": []
+  }
+}

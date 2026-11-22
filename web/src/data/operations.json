@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-11-07T23:58:13.560Z",
+  "generatedAt": "2026-11-22T06:49:03.017Z",
   "founderAgenda": {
     "schemaVersion": "1.0.0",
-    "generatedAt": "2026-11-07T23:58:13.560Z",
+    "generatedAt": "2026-11-22T06:49:03.017Z",
     "posture": "founder_decisions_required",
     "primaryDecisionId": "review-release-candidate",
     "profitabilityEvidence": "unknown_until_aggregate_measurement",
@@ -36,8 +36,35 @@
         }
       },
       {
-        "id": "establish-measurement",
+        "id": "choose-next-thesis",
         "rank": 2,
+        "priorityScore": 95,
+        "horizon": "now",
+        "category": "editorial_direction",
+        "title": "Choose the next recipient problem to research",
+        "recommendation": "Approve founder-idea-014 revision 1: Open the box, start the game: an exact-title organizer for the board game they already love.",
+        "decisionQuestion": "Should this be the next bounded research mission for the editorial team?",
+        "rationale": "The founder proposal queue is full, so one decision both chooses the next article direction and restores capacity to the autonomous opportunity scout.",
+        "evidence": [
+          "1/5 founder proposal slots are occupied.",
+          "The recommended thesis has high strategic priority.",
+          "Its pair-coherence hypothesis scores not applicable/100 before product research.",
+          "The brief requires 5 finalists, 0 qualified pairs, and 5 social angles."
+        ],
+        "unlocks": "Merging the deterministic approval pull request starts one hash-bound research mission and reopens one weekly opportunity-scout slot.",
+        "tradeoff": "Approval spends research capacity on one audience and ritual before product evidence has been collected; the mission may still reject the thesis.",
+        "guardrail": "This action authorizes research only. It cannot approve evidence, add affiliate tracking, publish content, spend money, or deploy Firebase.",
+        "reversibility": "high",
+        "founderActionRequired": true,
+        "action": {
+          "label": "Open strategy approval",
+          "url": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/strategy-approval.yml",
+          "command": "gh workflow run strategy-approval.yml -f idea_id=founder-idea-014 -f expected_revision=1"
+        }
+      },
+      {
+        "id": "establish-measurement",
+        "rank": 3,
         "priorityScore": 85,
         "horizon": "next",
         "category": "measurement",
@@ -64,7 +91,7 @@
       },
       {
         "id": "configure-first-social-channel",
-        "rank": 3,
+        "rank": 4,
         "priorityScore": 75,
         "horizon": "next",
         "category": "distribution",
@@ -104,9 +131,9 @@
   "socialApproved": 0,
   "socialPublished": 0,
   "approvedIdeas": 13,
-  "proposedIdeas": 0,
+  "proposedIdeas": 1,
   "pairingIdeas": 10,
-  "recipientFrictionIdeas": 2,
+  "recipientFrictionIdeas": 3,
   "editorialReview": {
     "schemaVersion": "1.0.0",
     "counts": {
@@ -281,14 +308,14 @@
     "cadence": "weekly",
     "posture": "capacity_available",
     "maxOpenProposals": 5,
-    "openProposals": 0,
-    "capacityRemaining": 5,
-    "totalMissions": 0,
+    "openProposals": 1,
+    "capacityRemaining": 4,
+    "totalMissions": 1,
     "activeMissions": 0,
-    "completedMissions": 0,
+    "completedMissions": 1,
     "draftedReports": 0,
-    "validatedReports": 0,
-    "passedReviews": 0,
+    "validatedReports": 1,
+    "passedReviews": 1,
     "policy": {
       "minimumResearchPasses": 3,
       "minimumSources": 10,
@@ -302,7 +329,27 @@
       "diminishingReturnThreshold": 0.1,
       "socialEvidencePolicy": "public_only_no_personal_identifiers"
     },
-    "queue": []
+    "queue": [
+      {
+        "scoutId": "opportunity-scout-2026112201-1",
+        "missionRecordSha256": "02a5e6a8c2cf7005ec1fa48f3b82557057c0d7fdbf72df5284273608ee7cafc5",
+        "reportRecordSha256": "4aef4dae60dcb0d41ccfe5250193155d6e2d6a6bc634ee705d03cd122944bea2",
+        "status": "validated",
+        "createdAt": "2026-11-22T06:38:28.691Z",
+        "completedAt": "2026-11-22T06:49:03.017Z",
+        "expectedProposalId": "founder-idea-014",
+        "selectedProposalId": "founder-idea-014",
+        "selectedTitle": "Open the box, start the game: an exact-title organizer for the board game they already love",
+        "candidates": 3,
+        "sources": 18,
+        "sourceClasses": 5,
+        "publicSocialOrCommunitySources": 8,
+        "evidenceConfidence": 90,
+        "thoughtfulnessPotential": 94,
+        "reviewVerdict": "passed",
+        "nextGate": "Founder reviews the proposal; approval is a separate exact-revision workflow."
+      }
+    ]
   },
   "affiliate": {
     "proposedPrograms": 4,
@@ -3182,17 +3229,22 @@
       "ideaId": "founder-idea-013",
       "stage": "independent_review",
       "nextGate": "Resolve evidence or editorial blockers and obtain a hash-bound independent review receipt."
+    },
+    {
+      "ideaId": "founder-idea-014",
+      "stage": "proposed",
+      "nextGate": "Founder approves, pauses, or rejects the research thesis."
     }
   ],
   "pipeline": {
-    "idea": 13,
+    "idea": 14,
     "researching": 0,
     "missionsActive": 0,
     "missionsCompleted": 0,
     "opportunityScoutsActive": 0,
-    "opportunityReportsValidated": 0,
+    "opportunityReportsValidated": 1,
     "qa": 3,
-    "proposed": 0,
+    "proposed": 1,
     "ready": 0,
     "publicationReady": 10,
     "socialDrafts": 78
@@ -3205,6 +3257,7 @@
     "1 original social creative candidate is locally verified but not rights-approved, released, or published.",
     "Growth measurement is not connected; traffic, conversions, and revenue remain unknown rather than zero.",
     "3 growth experiments await founder review and an aggregate baseline.",
+    "1 strategy proposal awaits a founder approval decision before research can start.",
     "Production promotion remains founder-reviewed; automatic release requires 10 verified successful releases and a separate founder approval.",
     "3 article bundles remain blocked in the editorial decision queue; none can self-certify or publish."
   ]
