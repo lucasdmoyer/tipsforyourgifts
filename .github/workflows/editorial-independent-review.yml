@@ -85,7 +85,9 @@ jobs:
         with:
           openai-api-key: ${{ secrets.OPENAI_API_KEY }}
           safety-strategy: drop-sudo
-          codex-args: --search
+          sandbox: workspace-write
+          codex-args: '["--search","--ephemeral"]'
+          allow-bots: true
           prompt: |
             Use the repository research-gift-opportunities skill, but act only as the independent evidence and compliance editor for run ${{ steps.target.outputs.run_id }} and article ${{ steps.target.outputs.article_slug }}.
 

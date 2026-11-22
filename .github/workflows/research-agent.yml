@@ -77,7 +77,9 @@ jobs:
         with:
           openai-api-key: ${{ secrets.OPENAI_API_KEY }}
           safety-strategy: drop-sudo
-          codex-args: --search
+          sandbox: workspace-write
+          codex-args: '["--search","--ephemeral"]'
+          allow-bots: true
           prompt: |
             Use $research-gift-opportunities in this repository.
 
@@ -175,7 +177,9 @@ jobs:
         with:
           openai-api-key: ${{ secrets.OPENAI_API_KEY }}
           safety-strategy: drop-sudo
-          codex-args: --search
+          sandbox: workspace-write
+          codex-args: '["--search","--ephemeral"]'
+          allow-bots: true
           prompt: |
             Act only as the independent evidence and compliance editor for mission ${{ steps.identify.outputs.mission_id }} and run ${{ steps.identify.outputs.run_id }}.
             Read the repository research skill and review the exact run, matching article, and social launch pack. Challenge source independence, product fit, benefits, drawbacks, safety, unsupported experience, merchant links, affiliate posture, social policy, observed-friction specificity, self-purchase logic, recipient-fit signals, duplicate and clutter risk, ownership burden, pair coherence, and every compatibility check. Reject a companion that only increases basket size or rescues a weak anchor. Do not modify any existing file and do not draft new copy.

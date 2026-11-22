@@ -42,7 +42,8 @@ jobs:
         with:
           openai-api-key: ${{ secrets.OPENAI_API_KEY }}
           safety-strategy: drop-sudo
-          codex-args: --search
+          sandbox: workspace-write
+          codex-args: '["--search","--ephemeral"]'
           prompt: |
             Act as the Tips for Your Gifts growth lead and executive analyst. Read docs/GROWTH_MEASUREMENT.md, web/src/data/growth.json, web/src/data/operations.json, web/src/data/strategy.json, and the publication-ready article metadata.
 

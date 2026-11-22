@@ -223,6 +223,126 @@ export const OPERATIONS: Operations = {
       "nextAction": "Lucas approves this exact SHA as the replacement release candidate and authorizes fast-forward integration into PR 33. Production remains a separate gate."
     }
   },
+  "aiAutomationPolicy": {
+    "schemaVersion": "1.0.0",
+    "status": "awaiting_founder_platform_budget",
+    "activationReady": false,
+    "activationBlockers": [
+      "Dedicated OpenAI project credential is not configured.",
+      "OpenAI project monthly budget is not configured.",
+      "Founder-approved budget amount and platform evidence are not recorded.",
+      "Versioned automation policy is not active."
+    ],
+    "protectedWorkflows": 6,
+    "protectedModelCalls": 8,
+    "credential": {
+      "secretName": "OPENAI_API_KEY",
+      "status": "not_configured",
+      "scope": "dedicated_openai_project",
+      "valueStoredInGit": false
+    },
+    "spendControl": {
+      "status": "not_configured",
+      "enforcement": "openai_project_monthly_budget",
+      "monthlyBudgetUsd": null,
+      "evidenceUrl": null,
+      "repositoryHardCap": false,
+      "activationRule": "Record the founder-approved OpenAI project monthly budget and its platform evidence before activating this policy or adding the repository secret."
+    },
+    "runtime": {
+      "action": "openai/codex-action@v1",
+      "documentationUrl": "https://learn.chatgpt.com/docs/github-action",
+      "safetyStrategy": "drop-sudo",
+      "sandbox": "workspace-write",
+      "sessionMode": "ephemeral",
+      "modelPolicy": "action_default",
+      "effortPolicy": "action_default",
+      "trustedInitiators": "repository_write_collaborators_and_bounded_github_automation"
+    },
+    "authority": {
+      "modelJobGithubContents": "read",
+      "modelJobCanWritePullRequests": false,
+      "detachedWriterJobsMayOpenProposalPullRequests": true,
+      "writerJobsReceiveOpenAiKey": false,
+      "canDeployFirebase": false,
+      "canActivateAffiliateLinks": false,
+      "canPublishSocialPosts": false,
+      "canSendEmail": false,
+      "canCreateCredentials": false
+    },
+    "workflows": [
+      {
+        "file": "research-agent.yml",
+        "codexJobs": [
+          "research",
+          "quality_review"
+        ],
+        "codexSteps": 2,
+        "searchEnabled": true,
+        "githubActionsBotAllowed": true,
+        "purpose": "Draft one founder-approved research bundle and run a separate independent editorial review."
+      },
+      {
+        "file": "opportunity-scout.yml",
+        "codexJobs": [
+          "discover",
+          "independent_review"
+        ],
+        "codexSteps": 2,
+        "searchEnabled": true,
+        "githubActionsBotAllowed": false,
+        "purpose": "Propose one evidence-backed gift opportunity and run a separate opportunity red team."
+      },
+      {
+        "file": "editorial-independent-review.yml",
+        "codexJobs": [
+          "independent_review"
+        ],
+        "codexSteps": 1,
+        "searchEnabled": true,
+        "githubActionsBotAllowed": true,
+        "purpose": "Independently review one exact editorial run after its founder safety gate."
+      },
+      {
+        "file": "growth-review.yml",
+        "codexJobs": [
+          "analyze"
+        ],
+        "codexSteps": 1,
+        "searchEnabled": true,
+        "githubActionsBotAllowed": false,
+        "purpose": "Propose one measured growth experiment from committed aggregate evidence only."
+      },
+      {
+        "file": "strategy-intake.yml",
+        "codexJobs": [
+          "propose"
+        ],
+        "codexSteps": 1,
+        "searchEnabled": false,
+        "githubActionsBotAllowed": false,
+        "purpose": "Turn one owner-authored executive brief into a proposed strategy record without approving it."
+      },
+      {
+        "file": "affiliate-link-review.yml",
+        "codexJobs": [
+          "review"
+        ],
+        "codexSteps": 1,
+        "searchEnabled": true,
+        "githubActionsBotAllowed": false,
+        "purpose": "Independently review one exact paid-link candidate without approving or activating it."
+      }
+    ],
+    "shutdownConditions": [
+      "A missing repository secret stops the job before a model call.",
+      "A policy that is not active stops the job even if a credential appears.",
+      "Missing platform budget evidence prevents policy activation.",
+      "Workflow permission, sandbox, session, or credential-placement drift fails deterministic validation.",
+      "Any proposed patch outside its workflow-specific allowlist fails deterministic validation.",
+      "Budget exhaustion, repeated failures, or suspected credential exposure requires the founder to disable runs and rotate the credential before resuming."
+    ]
+  },
   "researchRuns": 14,
   "validatedRuns": 11,
   "publicationReadyPosts": 10,

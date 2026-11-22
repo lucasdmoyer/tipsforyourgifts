@@ -63,6 +63,8 @@ jobs:
         with:
           openai-api-key: ${{ secrets.OPENAI_API_KEY }}
           safety-strategy: drop-sudo
+          sandbox: workspace-write
+          codex-args: '["--ephemeral"]'
           prompt: |
             Act as the Tips for Your Gifts strategy council. Read AGENTS.md, docs/THOUGHTFUL_GIFT_FRAMEWORK.md, web/src/data/strategy.json, and strategy-intake.json.
 
