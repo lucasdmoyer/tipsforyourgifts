@@ -328,7 +328,9 @@ const automationReadiness = buildAutomationReadiness({
   activeSocialChannels,
   socialDrafts,
   activeGrowthConnectors,
-  growthSnapshots: growth.snapshots.length
+  growthSnapshots: growth.snapshots.length,
+  verifiedFounderReviewedReleases: publicationPolicy.automaticPromotion.verifiedSuccessfulReleaseCount,
+  minimumFounderReviewedReleases: publicationPolicy.automaticPromotion.minimumSuccessfulFounderReviewedReleases
 });
 
 const operations = {
