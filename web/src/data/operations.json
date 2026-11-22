@@ -3240,6 +3240,56 @@
     "proposedExperiments": 3,
     "approvedExperiments": 0,
     "runningExperiments": 0,
+    "commercialScorecard": {
+      "status": "awaiting_observed_export",
+      "evidenceStage": "awaiting_observed_export",
+      "periodStart": null,
+      "periodEnd": null,
+      "reportingWindowDays": null,
+      "snapshotIds": [],
+      "sourceConnectorIds": [],
+      "articleCount": 0,
+      "knownMetrics": [],
+      "missingMetrics": [
+        "searchImpressions",
+        "organicClicks",
+        "engagedSessions",
+        "outboundMerchantClicks",
+        "affiliateConversions",
+        "revenueUsd",
+        "socialImpressions",
+        "socialEngagements",
+        "ownedSiteClicks"
+      ],
+      "totals": {
+        "searchImpressions": null,
+        "organicClicks": null,
+        "engagedSessions": null,
+        "outboundMerchantClicks": null,
+        "affiliateConversions": null,
+        "revenueUsd": null,
+        "socialImpressions": null,
+        "socialEngagements": null,
+        "ownedSiteClicks": null
+      },
+      "rates": {
+        "organicClickThrough": null,
+        "merchantClickThrough": null,
+        "affiliateConversion": null,
+        "earningsPerOutboundClickUsd": null,
+        "revenuePerConversionUsd": null,
+        "socialOwnedClickThrough": null
+      },
+      "leaders": {
+        "organicClicks": null,
+        "outboundMerchantClicks": null,
+        "affiliateConversions": null,
+        "revenueUsd": null,
+        "ownedSiteClicks": null
+      },
+      "profitabilityConclusion": "unknown_until_observed_revenue_and_cost_evidence",
+      "nextGate": "Import one complete approved aggregate reporting window. Missing traffic, conversion, and revenue remain unknown rather than zero."
+    },
     "searchConsole": {
       "status": "not_connected",
       "founderApproved": false,

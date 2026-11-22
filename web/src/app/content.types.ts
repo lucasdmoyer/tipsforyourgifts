@@ -170,6 +170,41 @@ export interface AutomationReadiness {
   };
 }
 
+export interface CommercialScorecard {
+  status: 'awaiting_observed_export' | 'partial_observed_window' | 'complete_observed_window';
+  evidenceStage: 'awaiting_observed_export' | 'reach_observed' | 'qualified_traffic_observed' | 'merchant_intent_observed' | 'affiliate_outcome_observed';
+  periodStart: string | null;
+  periodEnd: string | null;
+  reportingWindowDays: number | null;
+  snapshotIds: string[];
+  sourceConnectorIds: GrowthConnector['id'][];
+  articleCount: number;
+  knownMetrics: string[];
+  missingMetrics: string[];
+  totals: {
+    searchImpressions: number | null;
+    organicClicks: number | null;
+    engagedSessions: number | null;
+    outboundMerchantClicks: number | null;
+    affiliateConversions: number | null;
+    revenueUsd: number | null;
+    socialImpressions: number | null;
+    socialEngagements: number | null;
+    ownedSiteClicks: number | null;
+  };
+  rates: {
+    organicClickThrough: number | null;
+    merchantClickThrough: number | null;
+    affiliateConversion: number | null;
+    earningsPerOutboundClickUsd: number | null;
+    revenuePerConversionUsd: number | null;
+    socialOwnedClickThrough: number | null;
+  };
+  leaders: Record<'organicClicks' | 'outboundMerchantClicks' | 'affiliateConversions' | 'revenueUsd' | 'ownedSiteClicks', { slug: string; value: number } | null>;
+  profitabilityConclusion: 'unknown_until_observed_revenue_and_cost_evidence' | 'unknown_until_operating_cost_evidence';
+  nextGate: string;
+}
+
 export interface Operations {
   generatedAt: string;
   founderAgenda: {
@@ -556,6 +591,7 @@ export interface Operations {
     proposedExperiments: number;
     approvedExperiments: number;
     runningExperiments: number;
+    commercialScorecard: CommercialScorecard;
     searchConsole: {
       status: 'not_connected' | 'configured' | 'active' | 'paused';
       founderApproved: boolean;

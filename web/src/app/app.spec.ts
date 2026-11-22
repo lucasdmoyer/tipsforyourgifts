@@ -252,6 +252,11 @@ describe('App', () => {
     const element = fixture.nativeElement as HTMLElement;
     expect(element.textContent).toContain('Measure first. Scale what earns attention.');
     expect(element.textContent).toContain('Personal data stored');
+    const scorecard = element.querySelector('#commercial-scorecard') as HTMLElement;
+    expect(scorecard).toBeTruthy();
+    expect(scorecard.textContent).toContain('Every commercial value below remains unknown—not zero.');
+    expect(scorecard.textContent).toContain('Revenue is not profit.');
+    expect(scorecard.textContent).toContain('0/9');
     const connectorLists = element.querySelectorAll('.connector-list');
     expect(connectorLists[connectorLists.length - 1].querySelectorAll('.connector-row')).toHaveLength(OPERATIONS.growth.connectorsTotal);
     const experimentGrids = element.querySelectorAll('.experiment-grid');

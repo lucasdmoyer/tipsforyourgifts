@@ -442,6 +442,39 @@ export const STUDIO_DATA = new InjectionToken<StudioData>('STUDIO_DATA');
           <p class="quiet">Import only complete aggregate windows of at least {{ content.growth.measurementPolicy.minimumReportingWindowDays }} days. The gate rejects identifiers, raw queries, negative metrics, unknown articles, and unapproved affiliate exports.</p>
         </div>
       </div>
+      @if (content.operations.growth.commercialScorecard; as scorecard) {
+        <div id="commercial-scorecard" class="panel commercial-scorecard">
+          <div class="experiment-header">
+            <div><p class="eyebrow">Commercial scorecard</p><h2>{{ displayStatus(scorecard.evidenceStage) }}</h2></div>
+            <span class="status" [class.blocked_on_account]="scorecard.status === 'awaiting_observed_export'">{{ displayStatus(scorecard.status) }}</span>
+          </div>
+          @if (scorecard.periodStart && scorecard.periodEnd) {
+            <p>Latest comparable aggregate window: <strong>{{ scorecard.periodStart }} through {{ scorecard.periodEnd }}</strong> · {{ scorecard.reportingWindowDays }} days · {{ scorecard.articleCount }} article{{ scorecard.articleCount === 1 ? '' : 's' }}.</p>
+          } @else {
+            <p>No complete aggregate reporting window has been imported. Every commercial value below remains unknown—not zero.</p>
+          }
+          <dl class="measurement-list">
+            <div><dt>Organic click-through</dt><dd>{{ formatPercent(scorecard.rates.organicClickThrough) }}</dd></div>
+            <div><dt>Merchant click-through</dt><dd>{{ formatPercent(scorecard.rates.merchantClickThrough) }}</dd></div>
+            <div><dt>Affiliate conversion</dt><dd>{{ formatPercent(scorecard.rates.affiliateConversion) }}</dd></div>
+            <div><dt>Earnings per outbound click</dt><dd>{{ formatMoney(scorecard.rates.earningsPerOutboundClickUsd) }}</dd></div>
+            <div><dt>Observed affiliate revenue</dt><dd>{{ formatMoney(scorecard.totals.revenueUsd) }}</dd></div>
+            <div><dt>Observed conversions</dt><dd>{{ formatCount(scorecard.totals.affiliateConversions) }}</dd></div>
+            <div><dt>Social owned-site click-through</dt><dd>{{ formatPercent(scorecard.rates.socialOwnedClickThrough) }}</dd></div>
+            <div><dt>Known metric families</dt><dd>{{ scorecard.knownMetrics.length }}/{{ scorecard.knownMetrics.length + scorecard.missingMetrics.length }}</dd></div>
+          </dl>
+          <p><strong>Next evidence gate:</strong> {{ scorecard.nextGate }}</p>
+          <p class="quiet"><strong>Profit boundary:</strong> Revenue is not profit. Operating costs are not part of this registry, so this scorecard cannot label the publication profitable even after revenue is observed.</p>
+          @if (scorecard.leaders.revenueUsd; as leader) {
+            <p><strong>Observed revenue leader:</strong> {{ displaySlug(leader.slug) }} · {{ formatMoney(leader.value) }}</p>
+          } @else if (scorecard.leaders.outboundMerchantClicks; as leader) {
+            <p><strong>Observed merchant-intent leader:</strong> {{ displaySlug(leader.slug) }} · {{ formatCount(leader.value) }} outbound clicks</p>
+          } @else if (scorecard.leaders.organicClicks; as leader) {
+            <p><strong>Observed organic-discovery leader:</strong> {{ displaySlug(leader.slug) }} · {{ formatCount(leader.value) }} clicks</p>
+          }
+          <details><summary>Exact scorecard evidence</summary><div class="command">snapshots: {{ scorecard.snapshotIds.length > 0 ? scorecard.snapshotIds.join(', ') : 'none' }}<br>connectors: {{ scorecard.sourceConnectorIds.length > 0 ? scorecard.sourceConnectorIds.join(', ') : 'none' }}<br>profitability conclusion: {{ scorecard.profitabilityConclusion }}</div></details>
+        </div>
+      }
       <div class="experiment-grid">
         @for (experiment of content.growth.experiments; track experiment.id) {
           <article class="experiment-card">
@@ -513,6 +546,10 @@ export class StudioPage {
     this.seo.set({ title: 'Executive studio', description: 'Founder strategy, editorial pipeline, operating alerts, and next actions for Tips for Your Gifts.', path: '/studio', noindex: true });
   }
   displayStatus(status: string) { return status.replaceAll('_', ' '); }
+  displaySlug(slug: string) { return slug.replaceAll('-', ' '); }
+  formatPercent(value: number | null) { return value === null ? 'Unknown' : new Intl.NumberFormat('en-US', { style: 'percent', maximumFractionDigits: 1 }).format(value); }
+  formatMoney(value: number | null) { return value === null ? 'Unknown' : new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value); }
+  formatCount(value: number | null) { return value === null ? 'Unknown' : new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 }).format(value); }
   readonly metricLabel = (metric: string) => metric.replace(/([a-z])([A-Z])/g, '$1 $2').toLowerCase();
   stageFor(ideaId: string) { return this.ideaStages.get(ideaId)?.stage ?? 'untracked'; }
   nextGateFor(ideaId: string) { return this.ideaStages.get(ideaId)?.nextGate ?? 'Connect this idea to the strategy pipeline.'; }
