@@ -164,6 +164,21 @@ h3 { font-size: 1.35rem; }
 .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px; }
 .kpi { padding: 20px; }
 .kpi strong { display: block; font-size: 2rem; line-height: 1; margin-bottom: 8px; }
+.automation-readiness { scroll-margin-top: 96px; }
+.readiness-summary { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-bottom: 16px; }
+.readiness-summary > div { padding: 18px; border: 1px solid var(--line); border-radius: 16px; background: var(--paper); }
+.readiness-summary strong { display: block; margin-bottom: 5px; color: var(--evergreen-dark); font-size: 1.8rem; line-height: 1; }
+.readiness-summary span { color: var(--ink-soft); font-size: 0.86rem; font-weight: 760; }
+.readiness-snapshot { max-width: 75ch; color: var(--ink-soft); font-size: 0.9rem; }
+.readiness-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; margin-top: 22px; }
+.readiness-card { min-width: 0; display: flex; flex-direction: column; overflow-wrap: anywhere; padding: 20px; border: 1px solid var(--line); border-radius: 18px; background: var(--paper); }
+.readiness-card p { color: var(--ink-soft); }
+.readiness-card .readiness-next { padding-top: 14px; border-top: 1px solid var(--line); }
+.readiness-card > p:last-child { margin-top: auto; margin-bottom: 0; }
+.readiness-evidence { margin-top: 18px; }
+.readiness-evidence details { padding: 14px 0; border-top: 1px solid var(--line); }
+.readiness-evidence summary { cursor: pointer; color: var(--evergreen); font-weight: 850; }
+.release-candidate-card h3 { font: 800 1.45rem/1.2 ui-monospace, SFMono-Regular, Menlo, monospace; }
 .founder-agenda { scroll-margin-top: 96px; }
 .agenda-primary { border-color: #c8d9cf; background: linear-gradient(135deg, var(--paper), #f1f8f3); }
 .agenda-primary h2 { max-width: 20ch; margin-bottom: 14px; }
@@ -301,6 +316,7 @@ h3 { font-size: 1.35rem; }
   .reader-pair-products { grid-template-columns: 1fr; }
   .reader-pair-card { padding: 20px; }
   .grid.three, .grid.two, .kpi-grid { grid-template-columns: 1fr; }
+  .readiness-summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .section-heading, .footer-grid { display: block; }
   .executive-actions { justify-content: flex-start; margin-top: 20px; }
   .idea-card-header { display: block; }

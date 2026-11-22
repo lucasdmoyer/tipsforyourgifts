@@ -125,6 +125,51 @@ export interface Strategy {
   ideas: StrategyIdea[];
 }
 
+export type AutomationTeamStatus =
+  | 'ready'
+  | 'limited_live'
+  | 'blocked_external_configuration'
+  | 'blocked_founder_configuration'
+  | 'manual_fallback_verified'
+  | 'founder_approval_required';
+
+export interface AutomationReadiness {
+  schemaVersion: '1.0.0';
+  observedAt: string;
+  sourceMode: 'versioned_snapshot_not_live_poll';
+  posture: 'founder_action_required';
+  summary: string;
+  counts: { teams: number; ready: number; limited: number; blocked: number; founderActions: number };
+  teams: Array<{
+    id: 'research-generation' | 'deterministic-quality' | 'affiliate-monetization' | 'social-distribution' | 'growth-measurement' | 'preview-delivery' | 'production-release';
+    label: string;
+    status: AutomationTeamStatus;
+    evidence: string;
+    nextAction: string;
+    actionUrl: string | null;
+    founderActionRequired: boolean;
+  }>;
+  externalGates: Array<{
+    id: 'openai-platform-credential' | 'firebase-preview-identity';
+    label: string;
+    status: 'blocked_external_configuration';
+    summary: string;
+    evidenceUrl: string;
+    diagnosticUrl: string;
+    nextAction: string;
+    authorityBoundary: string;
+  }>;
+  releaseCandidate: {
+    status: 'exact_preview_verified';
+    sha: string;
+    pullRequestUrl: string;
+    reviewUrl: string;
+    previewUrl: string;
+    summary: string;
+    nextAction: string;
+  };
+}
+
 export interface Operations {
   generatedAt: string;
   founderAgenda: {
@@ -153,6 +198,7 @@ export interface Operations {
       action: { label: string; url: string; command: string | null };
     }>;
   };
+  automationReadiness: AutomationReadiness;
   researchRuns: number;
   validatedRuns: number;
   publicationReadyPosts: number;

@@ -6,6 +6,7 @@ import matter from './lib/front-matter.mjs';
 import { affiliateCoverageSchema } from './lib/affiliate-coverage-contract.mjs';
 import { affiliateEnrollmentReadinessSchema, buildAffiliateEnrollmentReadiness } from './lib/affiliate-enrollment-contract.mjs';
 import { affiliateActivationProposalSchema, validateAffiliateActivationProposals } from './lib/affiliate-activation-proposal-contract.mjs';
+import { automationReadinessEvidenceSchema, buildAutomationReadiness } from './lib/automation-readiness-contract.mjs';
 import { buildEditorialReviewQueue } from './lib/editorial-review-queue-contract.mjs';
 import { buildFounderAgenda } from './lib/founder-agenda-contract.mjs';
 import { loadAffiliateLinkState } from './lib/affiliate-link-contract.mjs';
@@ -33,6 +34,7 @@ const socialChannelsPath = path.join(root, 'config', 'social-channels.json');
 const livePublicationPath = path.join(root, 'config', 'live-publication.json');
 const publicationPolicyPath = path.join(root, 'config', 'publication-policy.json');
 const opportunityPolicyPath = path.join(root, 'config', 'opportunity-scout-policy.json');
+const automationReadinessPath = path.join(root, 'config', 'automation-readiness.json');
 const publicationManifestPath = path.join(root, 'public', 'publication-manifest.json');
 const outputPath = path.join(root, 'src', 'data', 'operations.json');
 
@@ -110,6 +112,7 @@ const socialChannelsSha256 = createHash('sha256').update(socialChannelsRaw).dige
 const livePublication = JSON.parse(await fs.readFile(livePublicationPath, 'utf8'));
 const publicationPolicy = JSON.parse(await fs.readFile(publicationPolicyPath, 'utf8'));
 const opportunityPolicy = JSON.parse(await fs.readFile(opportunityPolicyPath, 'utf8'));
+const automationReadinessEvidence = automationReadinessEvidenceSchema.parse(JSON.parse(await fs.readFile(automationReadinessPath, 'utf8')));
 const publicationManifest = JSON.parse(await fs.readFile(publicationManifestPath, 'utf8'));
 
 const validatedRuns = runs.filter((run) => run.status === 'validated').length;
@@ -317,10 +320,21 @@ const founderAgenda = buildFounderAgenda({
     queue: affiliateLinkQueue
   }
 });
+const automationReadiness = buildAutomationReadiness({
+  evidence: automationReadinessEvidence,
+  validatedRuns,
+  publicationReadyPosts,
+  activeAffiliateOverlays: affiliateLinkState.counts.activeOverlays,
+  activeSocialChannels,
+  socialDrafts,
+  activeGrowthConnectors,
+  growthSnapshots: growth.snapshots.length
+});
 
 const operations = {
   generatedAt,
   founderAgenda,
+  automationReadiness,
   researchRuns: runs.length,
   validatedRuns,
   publicationReadyPosts,
