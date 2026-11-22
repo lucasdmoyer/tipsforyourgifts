@@ -5,7 +5,18 @@
     "secretName": "OPENAI_API_KEY",
     "status": "not_configured",
     "scope": "dedicated_openai_project",
-    "valueStoredInGit": false
+    "valueStoredInGit": false,
+    "verification": {
+      "status": "not_verified",
+      "method": null,
+      "endpoint": null,
+      "verifiedAt": null,
+      "evidenceUrl": null,
+      "receiptPath": null,
+      "receiptSha256": null,
+      "responseBodyStored": false,
+      "modelCalled": false
+    }
   },
   "spendControl": {
     "status": "not_configured",

@@ -13,7 +13,7 @@ const policy = parseAiAutomationPolicy(rawPolicy);
 const summary = buildAiAutomationPolicySummary(policy);
 const validation = await validateAiAutomationWorkflows({ repoRoot, policy });
 
-assert.equal(summary.activationReady, false);
+assert.equal(summary.activationReady, ['credential_verified_awaiting_activation', 'active'].includes(policy.status));
 assert.equal(summary.protectedWorkflows, 6);
 assert.equal(summary.protectedModelCalls, 8);
 assert.equal(validation.modelJobsWithGithubWrite, 0);
@@ -21,11 +21,20 @@ assert.equal(validation.writerJobsReceivingOpenAiKey, 0);
 
 const clone = (value) => structuredClone(value);
 assert.throws(() => parseAiAutomationPolicy({ ...clone(rawPolicy), unexpectedSecret: 'never-allowed' }));
-assert.throws(() => parseAiAutomationPolicy({ ...clone(rawPolicy), status: 'active' }), /Active policy requires/);
-const mismatchedBudget = clone(rawPolicy);
+const awaitingPolicy = clone(rawPolicy);
+awaitingPolicy.status = 'awaiting_founder_platform_budget';
+awaitingPolicy.credential.status = 'not_configured';
+awaitingPolicy.credential.verification.status = 'not_verified';
+for (const key of ['method', 'endpoint', 'verifiedAt', 'evidenceUrl', 'receiptPath', 'receiptSha256']) awaitingPolicy.credential.verification[key] = null;
+awaitingPolicy.spendControl.status = 'not_configured';
+awaitingPolicy.spendControl.monthlyBudgetUsd = null;
+awaitingPolicy.spendControl.evidenceUrl = null;
+parseAiAutomationPolicy(awaitingPolicy);
+assert.throws(() => parseAiAutomationPolicy({ ...clone(awaitingPolicy), status: 'active' }), /Active policy requires/);
+const mismatchedBudget = clone(awaitingPolicy);
 mismatchedBudget.spendControl.monthlyBudgetUsd = 25;
 assert.throws(() => parseAiAutomationPolicy(mismatchedBudget), /Budget amount and platform evidence URL/);
-const budgetApprovedPolicy = clone(rawPolicy);
+const budgetApprovedPolicy = clone(awaitingPolicy);
 budgetApprovedPolicy.status = 'budget_approved_awaiting_credential';
 budgetApprovedPolicy.spendControl.status = 'configured_external';
 budgetApprovedPolicy.spendControl.monthlyBudgetUsd = 25;
@@ -36,7 +45,7 @@ assert.deepEqual(buildAiAutomationPolicySummary(budgetApprovedPolicy).activation
 ]);
 const budgetApprovedWithCredential = clone(budgetApprovedPolicy);
 budgetApprovedWithCredential.credential.status = 'configured_external';
-assert.throws(() => parseAiAutomationPolicy(budgetApprovedWithCredential), /must keep the credential unconfigured/);
+assert.throws(() => parseAiAutomationPolicy(budgetApprovedWithCredential), /complete external verification receipt/);
 const awaitingWithBudget = clone(budgetApprovedPolicy);
 awaitingWithBudget.status = 'awaiting_founder_platform_budget';
 assert.throws(() => parseAiAutomationPolicy(awaitingWithBudget), /cannot contain a configured budget/);
@@ -54,9 +63,18 @@ const botExpandedWorkflow = clone(workflow);
 botExpandedWorkflow.jobs.analyze.steps.find((step) => step.uses === policy.runtime.action).with['allow-bots'] = true;
 assert.throws(() => validateAiWorkflowDocument({ policy, workflowPolicy, workflow: botExpandedWorkflow }), /bot authority/);
 
-const activePolicy = clone(rawPolicy);
+const activePolicy = clone(budgetApprovedPolicy);
 activePolicy.status = 'active';
 activePolicy.credential.status = 'configured_external';
+Object.assign(activePolicy.credential.verification, {
+  status: 'verified_external',
+  method: 'openai_models_endpoint',
+  endpoint: 'https://api.openai.com/v1/models',
+  verifiedAt: '2026-11-22T18:00:00.000Z',
+  evidenceUrl: 'https://github.com/lucasdmoyer/tipsforyourgifts/actions/runs/12345',
+  receiptPath: 'config/ai-credential-verification.json',
+  receiptSha256: 'a'.repeat(64)
+});
 activePolicy.spendControl.status = 'configured_external';
 activePolicy.spendControl.monthlyBudgetUsd = 25;
 activePolicy.spendControl.evidenceUrl = 'https://platform.openai.com/settings/organization/limits';
@@ -68,7 +86,7 @@ await fs.writeFile(activePolicyPath, `${JSON.stringify(activePolicy, null, 2)}\n
 
 console.log(JSON.stringify({
   aiAutomationPolicyGateTests: 'passed',
-  negativeChecks: 8,
+  negativeChecks: 9,
   protectedWorkflows: validation.protectedWorkflows,
   protectedModelCalls: validation.protectedModelCalls,
   currentActivationReady: summary.activationReady,

@@ -172,13 +172,27 @@ export interface AutomationReadiness {
 
 export interface AiAutomationPolicy {
   schemaVersion: '1.0.0';
-  status: 'awaiting_founder_platform_budget' | 'budget_approved_awaiting_credential' | 'active';
+  status: 'awaiting_founder_platform_budget' | 'budget_approved_awaiting_credential' | 'credential_verified_awaiting_activation' | 'active';
   policySha256: string;
   budgetConfiguration: {
     available: boolean;
     workflowUrl: string;
     confirmation: 'CONFIGURE-ai-automation-budget';
     evidenceMode: 'founder_attested_external_platform_configuration';
+    command: string;
+  };
+  credentialVerification: {
+    available: boolean;
+    workflowUrl: string;
+    confirmation: 'VERIFY-ai-automation-credential';
+    method: 'openai_models_endpoint';
+    endpoint: 'https://api.openai.com/v1/models';
+    command: string;
+  };
+  policyActivation: {
+    available: boolean;
+    workflowUrl: string;
+    confirmation: 'ACTIVATE-ai-automation';
     command: string;
   };
   activationReady: boolean;
@@ -190,6 +204,17 @@ export interface AiAutomationPolicy {
     status: 'not_configured' | 'configured_external';
     scope: 'dedicated_openai_project';
     valueStoredInGit: false;
+    verification: {
+      status: 'not_verified' | 'verified_external';
+      method: 'openai_models_endpoint' | null;
+      endpoint: 'https://api.openai.com/v1/models' | null;
+      verifiedAt: string | null;
+      evidenceUrl: string | null;
+      receiptPath: 'config/ai-credential-verification.json' | null;
+      receiptSha256: string | null;
+      responseBodyStored: false;
+      modelCalled: false;
+    };
   };
   spendControl: {
     status: 'not_configured' | 'configured_external';

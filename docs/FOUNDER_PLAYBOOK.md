@@ -22,6 +22,10 @@ The **AI authority and spend** card in `/studio` shows the exact SHA-256 of the 
 
 That pull request records your attestation; it does not independently verify or change the external account. It also cannot add a credential, call a model, activate the policy, merge, deploy Firebase, publish content, activate affiliate links, post to social media, or send email. After it merges, Studio moves to `budget approved awaiting credential`. Credential verification and policy activation remain separate founder-controlled decisions before any AI run can spend money.
 
+After the budget pull request merges, add the dedicated project key as repository secret `OPENAI_API_KEY` and create the protected `ai-automation-credential` environment with yourself as reviewer. Use **Verify dedicated AI credential** from Studio. The secret exists only inside one protected verifier step that checks out and runs no repository code. It authenticates against OpenAI's documented models endpoint, discards the response body, calls no model, and hands a credential-free receipt to a separate writer job. Review and merge that receipt pull request.
+
+Studio then offers **Propose AI policy activation**. This second protected workflow receives no OpenAI key and calls no external service. It opens an exact-hash pull request changing only the versioned policy. Review what becomes eligible—the six allowlisted, read-only model workflows and their credential-free writer jobs—then merge only if you intend those bounded jobs to begin using the approved monthly platform budget. Until that merge, the key remains unusable by the model preflight.
+
 ## The executive brief
 
 Use `/studio/brief` for a guided completeness check, or use the raw GitHub executive-content issue form, to record:

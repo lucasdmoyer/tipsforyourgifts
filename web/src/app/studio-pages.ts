@@ -48,7 +48,9 @@ export const STUDIO_DATA = new InjectionToken<StudioData>('STUDIO_DATA');
         @if (content.operations.aiAutomationPolicy.status === 'awaiting_founder_platform_budget') {
           <p><strong>Current stop:</strong> Lucas must first set a real monthly budget in the dedicated OpenAI project, then record the amount and credential-free platform settings URL through the exact-hash workflow below.</p>
         } @else if (content.operations.aiAutomationPolicy.status === 'budget_approved_awaiting_credential') {
-          <p><strong>Current stop:</strong> The founder-attested budget is recorded. Credential verification and explicit policy activation remain separate gates before any model call.</p>
+          <p><strong>Current stop:</strong> The founder-attested budget is recorded. Lucas must add the dedicated project key as the repository secret, then run the protected verification below. Verification calls the documented models endpoint once, discards the response body, and does not call a model.</p>
+        } @else if (content.operations.aiAutomationPolicy.status === 'credential_verified_awaiting_activation') {
+          <p><strong>Current stop:</strong> The credential receipt and founder-approved budget are current. Explicit policy activation remains a separate protected pull request before any model job becomes eligible.</p>
         } @else {
           <p><strong>Current posture:</strong> The versioned policy is active; every model job still requires its credential preflight and bounded workflow permissions.</p>
         }
@@ -56,6 +58,14 @@ export const STUDIO_DATA = new InjectionToken<StudioData>('STUDIO_DATA');
         @if (content.operations.aiAutomationPolicy.budgetConfiguration.available) {
           <p><a class="button" [href]="content.operations.aiAutomationPolicy.budgetConfiguration.workflowUrl" target="_blank" rel="noopener">Record Lucas-approved budget</a></p>
           <details><summary>Copy the exact budget command</summary><p>This records a founder attestation in a review pull request. It does not create the external budget, add a credential, call a model, activate the policy, merge, or deploy.</p><p class="command">{{ content.operations.aiAutomationPolicy.budgetConfiguration.command }}</p></details>
+        }
+        @if (content.operations.aiAutomationPolicy.credentialVerification.available) {
+          <p><a class="button" [href]="content.operations.aiAutomationPolicy.credentialVerification.workflowUrl" target="_blank" rel="noopener">Verify dedicated AI credential</a></p>
+          <details><summary>Copy the exact credential command</summary><p>The protected verifier receives the secret only for one direct authentication request. It checks out and runs no repository code, retains no API response body, calls no model, and opens only a credential-free receipt pull request.</p><p class="command">{{ content.operations.aiAutomationPolicy.credentialVerification.command }}</p></details>
+        }
+        @if (content.operations.aiAutomationPolicy.policyActivation.available) {
+          <p><a class="button" [href]="content.operations.aiAutomationPolicy.policyActivation.workflowUrl" target="_blank" rel="noopener">Propose AI policy activation</a></p>
+          <details><summary>Copy the exact activation command</summary><p>This creates a review pull request without receiving the OpenAI key or calling any external API. Only merging that exact proposal activates the bounded model workflows.</p><p class="command">{{ content.operations.aiAutomationPolicy.policyActivation.command }}</p></details>
         }
         <details><summary>Activation blockers and shutdown rules</summary><p><strong>Activation blockers</strong></p><ul>@for (blocker of content.operations.aiAutomationPolicy.activationBlockers; track blocker) { <li>{{ blocker }}</li> }</ul><p><strong>Automatic or founder shutdown conditions</strong></p><ul>@for (condition of content.operations.aiAutomationPolicy.shutdownConditions; track condition) { <li>{{ condition }}</li> }</ul><p><a [href]="content.operations.aiAutomationPolicy.runtime.documentationUrl" target="_blank" rel="noopener">Open Codex GitHub Action documentation →</a></p></details>
       </article>
