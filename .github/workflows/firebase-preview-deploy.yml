@@ -1,0 +1,129 @@
+name: Trusted Firebase preview deployment
+
+on:
+  workflow_call:
+    inputs:
+      hosting_changed:
+        description: "Whether the pull request changes bytes served by Firebase Hosting"
+        required: true
+        type: boolean
+      pr_number:
+        description: "Pull request number from the trusted caller context"
+        required: true
+        type: number
+    outputs:
+      preview_url:
+        description: "Exact Firebase preview channel URL when Hosting bytes changed"
+        value: ${{ jobs.deploy.outputs.preview_url }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    outputs:
+      artifact_name: ${{ steps.artifact.outputs.name }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24.14.0"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - run: npm ci --prefix web
+      - run: npm run build
+      - run: npm run smoke
+      - name: Bind the static artifact to this exact run
+        id: artifact
+        if: inputs.hosting_changed
+        env:
+          PR_NUMBER: ${{ inputs.pr_number }}
+        run: echo "name=firebase-preview-pr-$PR_NUMBER-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT" >> "$GITHUB_OUTPUT"
+      - uses: actions/upload-artifact@v4
+        if: inputs.hosting_changed
+        with:
+          name: ${{ steps.artifact.outputs.name }}
+          path: web/dist
+          if-no-files-found: error
+          retention-days: 7
+
+  deploy:
+    if: inputs.hosting_changed
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      id-token: write
+    outputs:
+      preview_url: ${{ steps.firebase_preview.outputs.preview_url }}
+    steps:
+      - name: Refuse any caller outside the immutable preview boundary
+        env:
+          ACTOR_ID: ${{ github.actor_id }}
+          BASE_REF: ${{ github.base_ref }}
+          EVENT_NAME: ${{ github.event_name }}
+          HEAD_REPOSITORY_ID: ${{ github.event.pull_request.head.repo.id }}
+          PR_NUMBER: ${{ inputs.pr_number }}
+          REF_VALUE: ${{ github.ref }}
+          REPOSITORY_ID: ${{ github.repository_id }}
+          REPOSITORY_OWNER_ID: ${{ github.repository_owner_id }}
+        run: |
+          test "$REPOSITORY_ID" = "171694140"
+          test "$REPOSITORY_OWNER_ID" = "23782501"
+          test "$ACTOR_ID" = "23782501"
+          test "$EVENT_NAME" = "pull_request"
+          test "$BASE_REF" = "master"
+          test "$HEAD_REPOSITORY_ID" = "$REPOSITORY_ID"
+          test "$REF_VALUE" = "refs/pull/$PR_NUMBER/merge"
+      - uses: actions/checkout@v5
+        with:
+          ref: master
+          path: trusted-config
+          persist-credentials: false
+          sparse-checkout: firebase.json
+          sparse-checkout-cone-mode: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24.14.0"
+      - name: Install the pinned Firebase CLI before cloud authentication
+        run: npm install --prefix "$RUNNER_TEMP/firebase-cli" --no-audit --no-fund firebase-tools@15.26.0
+      - uses: actions/download-artifact@v4
+        with:
+          name: ${{ needs.build.outputs.artifact_name }}
+          path: trusted-config/web/dist
+      - id: google_auth
+        name: Mint short-lived credentials through the master-pinned preview workflow
+        uses: google-github-actions/auth@v3
+        with:
+          project_id: tipsforyourgifts
+          workload_identity_provider: projects/647657919626/locations/global/workloadIdentityPools/tips-github-preview/providers/github-preview
+          service_account: github-action-171694140@tipsforyourgifts.iam.gserviceaccount.com
+          create_credentials_file: true
+          export_environment_variables: true
+      - name: Deploy the exact artifact to the pull request channel
+        id: firebase_preview
+        working-directory: trusted-config
+        env:
+          CHANNEL_ID: pr-${{ inputs.pr_number }}
+          FIREBASE_CLI: ${{ runner.temp }}/firebase-cli/node_modules/firebase-tools/lib/bin/firebase.js
+        run: |
+          node "$FIREBASE_CLI" hosting:channel:deploy "$CHANNEL_ID" \
+            --expires 7d \
+            --project tipsforyourgifts \
+            --non-interactive
+          channel_file="$RUNNER_TEMP/firebase-hosting-channels.json"
+          node "$FIREBASE_CLI" hosting:channel:list \
+            --site tipsforyourgifts \
+            --project tipsforyourgifts \
+            --json > "$channel_file"
+          preview_url="$(node -e 'const fs = require("node:fs"); const data = JSON.parse(fs.readFileSync(process.argv[1], "utf8")); const suffix = `/channels/${process.env.CHANNEL_ID}`; const channel = data?.result?.channels?.find((entry) => entry.name?.endsWith(suffix)); if (!channel?.url) throw new Error(`Firebase preview URL missing for ${process.env.CHANNEL_ID}`); process.stdout.write(channel.url);' "$channel_file")"
+          echo "preview_url=$preview_url" >> "$GITHUB_OUTPUT"
+      - name: Smoke the hosted preview without executing pull request code
+        env:
+          PREVIEW_URL: ${{ steps.firebase_preview.outputs.preview_url }}
+        run: curl --fail --silent --show-error --location --max-time 30 "$PREVIEW_URL" | grep -F "Good gifts, minus the guesswork."
