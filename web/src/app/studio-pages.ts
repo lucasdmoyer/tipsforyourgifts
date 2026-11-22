@@ -36,6 +36,18 @@ export const STUDIO_DATA = new InjectionToken<StudioData>('STUDIO_DATA');
         <div><strong>{{ content.operations.automationReadiness.counts.founderActions }}</strong><span>need founder action</span></div>
       </div>
       <p class="readiness-snapshot"><strong>Evidence snapshot:</strong> {{ content.operations.automationReadiness.observedAt | date: 'MMMM d, y, h:mm a': 'UTC' }} UTC. This is versioned operating evidence, not a live account poll.</p>
+      <article class="panel ai-policy-card">
+        <div class="experiment-header"><div><p class="eyebrow">AI authority and spend</p><h3>Six workflows. Eight model calls. Zero production authority.</h3></div><span class="status" [class.blocked_on_account]="!content.operations.aiAutomationPolicy.activationReady" [class.approved_for_research]="content.operations.aiAutomationPolicy.activationReady">{{ displayStatus(content.operations.aiAutomationPolicy.status) }}</span></div>
+        <p>The model jobs can draft inside the repository with read-only GitHub permissions. Separate writer jobs may open proposal pull requests, but they never receive the OpenAI key. The model cannot deploy Firebase, activate affiliate links, publish social posts, send email, or create credentials.</p>
+        <div class="readiness-summary" aria-label="AI policy summary">
+          <div><strong>{{ content.operations.aiAutomationPolicy.protectedWorkflows }}</strong><span>protected workflows</span></div>
+          <div><strong>{{ content.operations.aiAutomationPolicy.protectedModelCalls }}</strong><span>bounded model steps</span></div>
+          <div><strong>{{ content.operations.aiAutomationPolicy.spendControl.monthlyBudgetUsd === null ? '—' : ('$' + content.operations.aiAutomationPolicy.spendControl.monthlyBudgetUsd) }}</strong><span>monthly platform budget</span></div>
+          <div><strong>{{ content.operations.aiAutomationPolicy.activationReady ? 'Yes' : 'No' }}</strong><span>activation ready</span></div>
+        </div>
+        <p><strong>Current stop:</strong> A real OpenAI project monthly budget and platform evidence must be recorded before the policy can become active or a credential can be used.</p>
+        <details><summary>Activation blockers and shutdown rules</summary><p><strong>Activation blockers</strong></p><ul>@for (blocker of content.operations.aiAutomationPolicy.activationBlockers; track blocker) { <li>{{ blocker }}</li> }</ul><p><strong>Automatic or founder shutdown conditions</strong></p><ul>@for (condition of content.operations.aiAutomationPolicy.shutdownConditions; track condition) { <li>{{ condition }}</li> }</ul><p><a [href]="content.operations.aiAutomationPolicy.runtime.documentationUrl" target="_blank" rel="noopener">Open Codex GitHub Action documentation →</a></p></details>
+      </article>
       <div class="readiness-grid">
         @for (team of content.operations.automationReadiness.teams; track team.id) {
           <article class="readiness-card">
@@ -49,7 +61,7 @@ export const STUDIO_DATA = new InjectionToken<StudioData>('STUDIO_DATA');
       <div class="grid two readiness-evidence">
         <div class="panel">
           <p class="eyebrow">External configuration</p>
-          <h3>Two bounded infrastructure gates.</h3>
+          <h3>Three bounded infrastructure gates.</h3>
           @for (gate of content.operations.automationReadiness.externalGates; track gate.id) {
             <details>
               <summary>{{ gate.label }} · {{ displayStatus(gate.status) }}</summary>

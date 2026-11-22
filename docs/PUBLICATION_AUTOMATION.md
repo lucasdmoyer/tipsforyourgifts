@@ -60,7 +60,7 @@ The automatic workflow keeps build authority and cloud authority distinct. It va
 
 - `master` branch protection requires content quality and Firebase preview checks.
 - GitHub auto-merge is enabled for the repository.
-- `OPENAI_API_KEY` exists only for the read-only drafting and review jobs.
+- A dedicated OpenAI Platform project has a founder-approved monthly budget recorded with HTTPS platform evidence in the active `web/config/ai-automation-policy.json`; only then may `OPENAI_API_KEY` exist for the read-only drafting and review jobs. Model jobs use explicit `drop-sudo`, `workspace-write`, and ephemeral sessions. Credential-free writer jobs alone may open proposal pull requests.
 - The production GitHub OIDC provider is restricted to repository `lucasdmoyer/tipsforyourgifts`, actor `lucasdmoyer`, `workflow_dispatch`, `refs/heads/master`, and `.github/workflows/firebase-production.yml@refs/heads/master`.
 - `github-production@tipsforyourgifts.iam.gserviceaccount.com` is limited to Firebase Hosting and has no user-managed key.
 - The automatic-production GitHub OIDC provider is isolated in `tips-github-auto-production`, accepts only repository ID `171694140`, repository-owner ID `23782501`, event `push`, ref `refs/heads/master`, and `job_workflow_ref` `lucasdmoyer/tipsforyourgifts/.github/workflows/firebase-auto-production.yml@refs/heads/master`.

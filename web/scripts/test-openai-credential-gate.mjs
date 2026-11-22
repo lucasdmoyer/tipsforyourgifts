@@ -1,4 +1,5 @@
 import fs from 'node:fs/promises';
+import os from 'node:os';
 import path from 'node:path';
 import process from 'node:process';
 import { spawnSync } from 'node:child_process';
@@ -11,6 +12,7 @@ const guardPath = path.join(webRoot, 'scripts', 'require-openai-api-key.mjs');
 const workflowDir = path.join(repoRoot, '.github', 'workflows');
 const secretExpression = '${{ secrets.OPENAI_API_KEY }}';
 const fakeSecret = 'test-only-openai-key-never-send-or-store';
+const policyPath = path.join(webRoot, 'config', 'ai-automation-policy.json');
 
 const missing = spawnSync(process.execPath, [guardPath], {
   cwd: webRoot,
@@ -22,14 +24,34 @@ if (missing.status === 0 || !missing.stderr.includes('Autonomous agent credentia
   throw new Error('The credential guard must fail with an actionable error when OPENAI_API_KEY is absent.');
 }
 
-const configured = spawnSync(process.execPath, [guardPath], {
+const blockedByPolicy = spawnSync(process.execPath, [guardPath], {
   cwd: webRoot,
   encoding: 'utf8',
   env: { ...process.env, OPENAI_API_KEY: fakeSecret }
 });
 
+if (blockedByPolicy.status === 0 || !blockedByPolicy.stderr.includes('AI automation policy not active')) {
+  throw new Error('A configured credential must remain blocked until the versioned budget policy is active.');
+}
+
+const activePolicy = JSON.parse(await fs.readFile(policyPath, 'utf8'));
+activePolicy.status = 'active';
+activePolicy.credential.status = 'configured_external';
+activePolicy.spendControl.status = 'configured_external';
+activePolicy.spendControl.monthlyBudgetUsd = 25;
+activePolicy.spendControl.evidenceUrl = 'https://platform.openai.com/settings/organization/limits';
+const temporaryDirectory = await fs.mkdtemp(path.join(os.tmpdir(), 'tips-openai-guard-test-'));
+const activePolicyPath = path.join(temporaryDirectory, 'active-policy.json');
+await fs.writeFile(activePolicyPath, `${JSON.stringify(activePolicy, null, 2)}\n`);
+
+const configured = spawnSync(process.execPath, [guardPath], {
+  cwd: webRoot,
+  encoding: 'utf8',
+  env: { ...process.env, OPENAI_API_KEY: fakeSecret, AI_AUTOMATION_POLICY_PATH: activePolicyPath }
+});
+
 if (configured.status !== 0) throw new Error(configured.stderr || configured.stdout);
-if (`${missing.stdout}${missing.stderr}${configured.stdout}${configured.stderr}`.includes(fakeSecret)) {
+if (`${missing.stdout}${missing.stderr}${blockedByPolicy.stdout}${blockedByPolicy.stderr}${configured.stdout}${configured.stderr}`.includes(fakeSecret)) {
   throw new Error('The credential guard exposed the secret value.');
 }
 
@@ -65,6 +87,17 @@ for (const workflowName of workflowNames) {
       if (step.with?.['openai-api-key'] !== secretExpression) {
         throw new Error(`${workflowName}:${jobName} must pass only secrets.OPENAI_API_KEY to Codex.`);
       }
+      if (step.with?.['safety-strategy'] !== 'drop-sudo' || step.with?.sandbox !== 'workspace-write') {
+        throw new Error(`${workflowName}:${jobName} must use the explicit reviewed privilege boundary.`);
+      }
+      const codexArgs = JSON.parse(step.with?.['codex-args'] ?? '[]');
+      if (!codexArgs.includes('--ephemeral')) {
+        throw new Error(`${workflowName}:${jobName} must use an ephemeral Codex session.`);
+      }
+      const permissions = job.permissions ?? workflow.permissions ?? {};
+      if (permissions.contents !== 'read' || Object.values(permissions).includes('write')) {
+        throw new Error(`${workflowName}:${jobName} cannot expose the model key in a GitHub write-capable job.`);
+      }
     }
   }
 
@@ -80,5 +113,7 @@ console.log(JSON.stringify({
   codexSteps,
   protectedWorkflows,
   missingCredentialFailsBeforeModelCall: true,
+  inactivePolicyFailsBeforeModelCall: true,
+  modelJobsWithGithubWrite: 0,
   secretValuePrinted: false
 }, null, 2));

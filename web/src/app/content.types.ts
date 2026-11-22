@@ -170,6 +170,59 @@ export interface AutomationReadiness {
   };
 }
 
+export interface AiAutomationPolicy {
+  schemaVersion: '1.0.0';
+  status: 'awaiting_founder_platform_budget' | 'active';
+  activationReady: boolean;
+  activationBlockers: string[];
+  protectedWorkflows: number;
+  protectedModelCalls: number;
+  credential: {
+    secretName: 'OPENAI_API_KEY';
+    status: 'not_configured' | 'configured_external';
+    scope: 'dedicated_openai_project';
+    valueStoredInGit: false;
+  };
+  spendControl: {
+    status: 'not_configured' | 'configured_external';
+    enforcement: 'openai_project_monthly_budget';
+    monthlyBudgetUsd: number | null;
+    evidenceUrl: string | null;
+    repositoryHardCap: false;
+    activationRule: string;
+  };
+  runtime: {
+    action: 'openai/codex-action@v1';
+    documentationUrl: 'https://learn.chatgpt.com/docs/github-action';
+    safetyStrategy: 'drop-sudo';
+    sandbox: 'workspace-write';
+    sessionMode: 'ephemeral';
+    modelPolicy: 'action_default';
+    effortPolicy: 'action_default';
+    trustedInitiators: 'repository_write_collaborators_and_bounded_github_automation';
+  };
+  authority: {
+    modelJobGithubContents: 'read';
+    modelJobCanWritePullRequests: false;
+    detachedWriterJobsMayOpenProposalPullRequests: true;
+    writerJobsReceiveOpenAiKey: false;
+    canDeployFirebase: false;
+    canActivateAffiliateLinks: false;
+    canPublishSocialPosts: false;
+    canSendEmail: false;
+    canCreateCredentials: false;
+  };
+  workflows: Array<{
+    file: string;
+    codexJobs: string[];
+    codexSteps: number;
+    searchEnabled: boolean;
+    githubActionsBotAllowed: boolean;
+    purpose: string;
+  }>;
+  shutdownConditions: string[];
+}
+
 export interface CommercialScorecard {
   status: 'awaiting_observed_export' | 'partial_observed_window' | 'complete_observed_window';
   evidenceStage: 'awaiting_observed_export' | 'reach_observed' | 'qualified_traffic_observed' | 'merchant_intent_observed' | 'affiliate_outcome_observed';
@@ -234,6 +287,7 @@ export interface Operations {
     }>;
   };
   automationReadiness: AutomationReadiness;
+  aiAutomationPolicy: AiAutomationPolicy;
   researchRuns: number;
   validatedRuns: number;
   publicationReadyPosts: number;
