@@ -31,12 +31,23 @@ const workflowPolicySchema = z.object({
 
 export const aiAutomationPolicySchema = z.object({
   schemaVersion: z.literal('1.0.0'),
-  status: z.enum(['awaiting_founder_platform_budget', 'budget_approved_awaiting_credential', 'active']),
+  status: z.enum(['awaiting_founder_platform_budget', 'budget_approved_awaiting_credential', 'credential_verified_awaiting_activation', 'active']),
   credential: z.object({
     secretName: z.literal('OPENAI_API_KEY'),
     status: z.enum(['not_configured', 'configured_external']),
     scope: z.literal('dedicated_openai_project'),
-    valueStoredInGit: z.literal(false)
+    valueStoredInGit: z.literal(false),
+    verification: z.object({
+      status: z.enum(['not_verified', 'verified_external']),
+      method: z.literal('openai_models_endpoint').nullable(),
+      endpoint: z.literal('https://api.openai.com/v1/models').nullable(),
+      verifiedAt: z.string().datetime({ offset: true }).nullable(),
+      evidenceUrl: httpsUrl.nullable(),
+      receiptPath: z.literal('config/ai-credential-verification.json').nullable(),
+      receiptSha256: z.string().regex(/^[a-f0-9]{64}$/).nullable(),
+      responseBodyStored: z.literal(false),
+      modelCalled: z.literal(false)
+    }).strict()
   }).strict(),
   spendControl: z.object({
     status: z.enum(['not_configured', 'configured_external']),
@@ -88,19 +99,38 @@ export const aiAutomationPolicySchema = z.object({
   const budgetConfigured = policy.spendControl.status === 'configured_external'
     && policy.spendControl.monthlyBudgetUsd !== null
     && policy.spendControl.evidenceUrl !== null;
-  const credentialConfigured = policy.credential.status === 'configured_external';
-  const activationReady = credentialConfigured && budgetConfigured;
+  const verification = policy.credential.verification;
+  const verificationValues = [verification.method, verification.endpoint, verification.verifiedAt, verification.evidenceUrl, verification.receiptPath, verification.receiptSha256];
+  const credentialVerified = policy.credential.status === 'configured_external'
+    && verification.status === 'verified_external'
+    && verificationValues.every((value) => value !== null);
+  const activationReady = credentialVerified && budgetConfigured;
   if (policy.spendControl.status === 'not_configured' && (policy.spendControl.monthlyBudgetUsd !== null || policy.spendControl.evidenceUrl !== null)) {
     context.addIssue({ code: z.ZodIssueCode.custom, path: ['spendControl'], message: 'An unconfigured budget cannot retain an amount or platform evidence URL' });
   }
   if (policy.spendControl.status === 'configured_external' && !budgetConfigured) {
     context.addIssue({ code: z.ZodIssueCode.custom, path: ['spendControl'], message: 'A configured budget requires both an amount and platform evidence URL' });
   }
-  if (policy.status === 'awaiting_founder_platform_budget' && (budgetConfigured || credentialConfigured)) {
+  if (verification.status === 'not_verified' && verificationValues.some((value) => value !== null)) {
+    context.addIssue({ code: z.ZodIssueCode.custom, path: ['credential', 'verification'], message: 'An unverified credential cannot retain verification evidence' });
+  }
+  if (verification.status === 'verified_external' && !credentialVerified) {
+    context.addIssue({ code: z.ZodIssueCode.custom, path: ['credential', 'verification'], message: 'A verified credential requires complete external verification evidence' });
+  }
+  if (policy.credential.status === 'not_configured' && verification.status !== 'not_verified') {
+    context.addIssue({ code: z.ZodIssueCode.custom, path: ['credential'], message: 'An unconfigured credential cannot claim external verification' });
+  }
+  if (policy.credential.status === 'configured_external' && verification.status !== 'verified_external') {
+    context.addIssue({ code: z.ZodIssueCode.custom, path: ['credential'], message: 'A configured credential requires a complete external verification receipt' });
+  }
+  if (policy.status === 'awaiting_founder_platform_budget' && (budgetConfigured || credentialVerified)) {
     context.addIssue({ code: z.ZodIssueCode.custom, path: ['status'], message: 'The awaiting-budget state cannot contain a configured budget or credential' });
   }
-  if (policy.status === 'budget_approved_awaiting_credential' && (!budgetConfigured || credentialConfigured)) {
+  if (policy.status === 'budget_approved_awaiting_credential' && (!budgetConfigured || credentialVerified)) {
     context.addIssue({ code: z.ZodIssueCode.custom, path: ['status'], message: 'The budget-approved state requires budget evidence and must keep the credential unconfigured' });
+  }
+  if (policy.status === 'credential_verified_awaiting_activation' && !activationReady) {
+    context.addIssue({ code: z.ZodIssueCode.custom, path: ['status'], message: 'The credential-verified state requires current budget and credential verification evidence' });
   }
   if (policy.status === 'active' && !activationReady) {
     context.addIssue({ code: z.ZodIssueCode.custom, path: ['status'], message: 'Active policy requires an externally configured credential and founder-approved platform budget evidence' });
@@ -119,13 +149,17 @@ export function buildAiAutomationPolicySummary(value) {
   const codexSteps = policy.workflows.reduce((total, workflow) => total + workflow.codexSteps, 0);
   const activationBlockers = [];
   if (policy.credential.status !== 'configured_external') activationBlockers.push('Dedicated OpenAI project credential is not configured.');
+  else if (policy.credential.verification.status !== 'verified_external') activationBlockers.push('Dedicated OpenAI project credential is not externally verified.');
   if (policy.spendControl.status !== 'configured_external' || policy.spendControl.monthlyBudgetUsd === null || policy.spendControl.evidenceUrl === null) activationBlockers.push('Founder-approved OpenAI project monthly budget and platform evidence are not recorded.');
   if (policy.status !== 'active') activationBlockers.push('Versioned automation policy is not active.');
 
   return {
     schemaVersion: policy.schemaVersion,
     status: policy.status,
-    activationReady: activationBlockers.length === 0,
+    activationReady: policy.credential.verification.status === 'verified_external'
+      && policy.spendControl.status === 'configured_external'
+      && policy.spendControl.monthlyBudgetUsd !== null
+      && policy.spendControl.evidenceUrl !== null,
     activationBlockers,
     protectedWorkflows: policy.workflows.length,
     protectedModelCalls: codexSteps,

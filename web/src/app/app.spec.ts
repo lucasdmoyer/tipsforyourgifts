@@ -396,21 +396,62 @@ describe('App', () => {
   });
 
   it('renders an exact-hash founder budget handoff without granting runtime authority', () => {
-    const fixture = TestBed.createComponent(StudioPage);
-    fixture.detectChanges();
-    const element = fixture.nativeElement as HTMLElement;
     const policy = OPERATIONS.aiAutomationPolicy;
-    expect(policy.policySha256).toMatch(/^[a-f0-9]{64}$/);
-    expect(element.textContent).toContain(policy.policySha256);
-    expect(element.textContent).toContain('Lucas must first set a real monthly budget');
-    expect(element.textContent).toContain('does not create the external budget, add a credential, call a model, activate the policy, merge, or deploy');
-    expect(policy.budgetConfiguration.available).toBe(true);
-    expect(policy.budgetConfiguration.command).toContain(`expected_policy_sha256=${policy.policySha256}`);
-    expect(policy.budgetConfiguration.command).toContain("monthly_budget_usd='<APPROVED_MONTHLY_USD>'");
-    expect(element.textContent).toContain(policy.budgetConfiguration.command);
-    expect(element.querySelector(`a[href="${policy.budgetConfiguration.workflowUrl}"]`)).not.toBeNull();
-    expect(policy.credential.valueStoredInGit).toBe(false);
-    expect(policy.activationReady).toBe(false);
+    const original = structuredClone(policy);
+    try {
+      policy.status = 'awaiting_founder_platform_budget';
+      policy.budgetConfiguration.available = true;
+      policy.credentialVerification.available = false;
+      policy.policyActivation.available = false;
+      policy.activationReady = false;
+      const fixture = TestBed.createComponent(StudioPage);
+      fixture.detectChanges();
+      const element = fixture.nativeElement as HTMLElement;
+      expect(policy.policySha256).toMatch(/^[a-f0-9]{64}$/);
+      expect(element.textContent).toContain(policy.policySha256);
+      expect(element.textContent).toContain('Lucas must first set a real monthly budget');
+      expect(element.textContent).toContain('does not create the external budget, add a credential, call a model, activate the policy, merge, or deploy');
+      expect(policy.budgetConfiguration.command).toContain(`expected_policy_sha256=${policy.policySha256}`);
+      expect(policy.budgetConfiguration.command).toContain("monthly_budget_usd='<APPROVED_MONTHLY_USD>'");
+      expect(element.textContent).toContain(policy.budgetConfiguration.command);
+      expect(element.querySelector(`a[href="${policy.budgetConfiguration.workflowUrl}"]`)).not.toBeNull();
+      expect(policy.credential.valueStoredInGit).toBe(false);
+    } finally {
+      Object.assign(policy, original);
+    }
+  });
+
+  it('keeps credential verification and policy activation as separate founder actions', () => {
+    const policy = OPERATIONS.aiAutomationPolicy;
+    const original = structuredClone(policy);
+    try {
+      policy.status = 'budget_approved_awaiting_credential';
+      policy.budgetConfiguration.available = false;
+      policy.credentialVerification.available = true;
+      policy.policyActivation.available = false;
+      let fixture = TestBed.createComponent(StudioPage);
+      fixture.detectChanges();
+      let element = fixture.nativeElement as HTMLElement;
+      expect(element.textContent).toContain('Verify dedicated AI credential');
+      expect(element.textContent).toContain('checks out and runs no repository code');
+      expect(element.textContent).toContain(policy.credentialVerification.command);
+      expect(element.querySelector(`a[href="${policy.credentialVerification.workflowUrl}"]`)).not.toBeNull();
+      expect(element.textContent).not.toContain('Propose AI policy activation');
+
+      policy.status = 'credential_verified_awaiting_activation';
+      policy.credentialVerification.available = false;
+      policy.policyActivation.available = true;
+      fixture = TestBed.createComponent(StudioPage);
+      fixture.detectChanges();
+      element = fixture.nativeElement as HTMLElement;
+      expect(element.textContent).toContain('Propose AI policy activation');
+      expect(element.textContent).toContain('Only merging that exact proposal activates');
+      expect(element.textContent).toContain(policy.policyActivation.command);
+      expect(element.querySelector(`a[href="${policy.policyActivation.workflowUrl}"]`)).not.toBeNull();
+      expect(element.textContent).not.toContain('Verify dedicated AI credential');
+    } finally {
+      Object.assign(policy, original);
+    }
   });
 
   it('renders the fail-closed autonomous opportunity desk', () => {

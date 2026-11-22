@@ -238,7 +238,18 @@ export const OPERATIONS: Operations = {
       "secretName": "OPENAI_API_KEY",
       "status": "not_configured",
       "scope": "dedicated_openai_project",
-      "valueStoredInGit": false
+      "valueStoredInGit": false,
+      "verification": {
+        "status": "not_verified",
+        "method": null,
+        "endpoint": null,
+        "verifiedAt": null,
+        "evidenceUrl": null,
+        "receiptPath": null,
+        "receiptSha256": null,
+        "responseBodyStored": false,
+        "modelCalled": false
+      }
     },
     "spendControl": {
       "status": "not_configured",
@@ -341,13 +352,27 @@ export const OPERATIONS: Operations = {
       "Any proposed patch outside its workflow-specific allowlist fails deterministic validation.",
       "Budget exhaustion, repeated failures, or suspected credential exposure requires the founder to disable runs and rotate the credential before resuming."
     ],
-    "policySha256": "f9f8f2f0f7ab2a6740eb5e6d8dc89859193bd645fdc44c64e72e046a6ec7616c",
+    "policySha256": "b01d9b13eaac26020069e28b712f958dd8642343b173c1d5cfc19044d2baf46d",
     "budgetConfiguration": {
       "available": true,
       "workflowUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/ai-automation-budget-configure.yml",
       "confirmation": "CONFIGURE-ai-automation-budget",
       "evidenceMode": "founder_attested_external_platform_configuration",
-      "command": "gh workflow run ai-automation-budget-configure.yml --repo lucasdmoyer/tipsforyourgifts --ref master -f expected_policy_sha256=f9f8f2f0f7ab2a6740eb5e6d8dc89859193bd645fdc44c64e72e046a6ec7616c -f monthly_budget_usd='<APPROVED_MONTHLY_USD>' -f platform_evidence_url='<OPENAI_PLATFORM_SETTINGS_URL>' -f confirmation='CONFIGURE-ai-automation-budget'"
+      "command": "gh workflow run ai-automation-budget-configure.yml --repo lucasdmoyer/tipsforyourgifts --ref master -f expected_policy_sha256=b01d9b13eaac26020069e28b712f958dd8642343b173c1d5cfc19044d2baf46d -f monthly_budget_usd='<APPROVED_MONTHLY_USD>' -f platform_evidence_url='<OPENAI_PLATFORM_SETTINGS_URL>' -f confirmation='CONFIGURE-ai-automation-budget'"
+    },
+    "credentialVerification": {
+      "available": false,
+      "workflowUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/ai-automation-credential-verify.yml",
+      "confirmation": "VERIFY-ai-automation-credential",
+      "method": "openai_models_endpoint",
+      "endpoint": "https://api.openai.com/v1/models",
+      "command": "gh workflow run ai-automation-credential-verify.yml --repo lucasdmoyer/tipsforyourgifts --ref master -f expected_policy_sha256=b01d9b13eaac26020069e28b712f958dd8642343b173c1d5cfc19044d2baf46d -f confirmation='VERIFY-ai-automation-credential'"
+    },
+    "policyActivation": {
+      "available": false,
+      "workflowUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/ai-automation-activate.yml",
+      "confirmation": "ACTIVATE-ai-automation",
+      "command": "gh workflow run ai-automation-activate.yml --repo lucasdmoyer/tipsforyourgifts --ref master -f expected_policy_sha256=b01d9b13eaac26020069e28b712f958dd8642343b173c1d5cfc19044d2baf46d -f confirmation='ACTIVATE-ai-automation'"
     }
   },
   "researchRuns": 14,

@@ -13,6 +13,7 @@ const workflowDir = path.join(repoRoot, '.github', 'workflows');
 const secretExpression = '${{ secrets.OPENAI_API_KEY }}';
 const fakeSecret = 'test-only-openai-key-never-send-or-store';
 const policyPath = path.join(webRoot, 'config', 'ai-automation-policy.json');
+const temporaryDirectory = await fs.mkdtemp(path.join(os.tmpdir(), 'tips-openai-guard-test-'));
 
 const missing = spawnSync(process.execPath, [guardPath], {
   cwd: webRoot,
@@ -24,10 +25,20 @@ if (missing.status === 0 || !missing.stderr.includes('Autonomous agent credentia
   throw new Error('The credential guard must fail with an actionable error when OPENAI_API_KEY is absent.');
 }
 
+const inactivePolicy = JSON.parse(await fs.readFile(policyPath, 'utf8'));
+inactivePolicy.status = 'awaiting_founder_platform_budget';
+inactivePolicy.credential.status = 'not_configured';
+inactivePolicy.credential.verification.status = 'not_verified';
+for (const key of ['method', 'endpoint', 'verifiedAt', 'evidenceUrl', 'receiptPath', 'receiptSha256']) inactivePolicy.credential.verification[key] = null;
+inactivePolicy.spendControl.status = 'not_configured';
+inactivePolicy.spendControl.monthlyBudgetUsd = null;
+inactivePolicy.spendControl.evidenceUrl = null;
+const inactivePolicyPath = path.join(temporaryDirectory, 'inactive-policy.json');
+await fs.writeFile(inactivePolicyPath, `${JSON.stringify(inactivePolicy, null, 2)}\n`);
 const blockedByPolicy = spawnSync(process.execPath, [guardPath], {
   cwd: webRoot,
   encoding: 'utf8',
-  env: { ...process.env, OPENAI_API_KEY: fakeSecret }
+  env: { ...process.env, GITHUB_ACTIONS: 'false', OPENAI_API_KEY: fakeSecret, AI_AUTOMATION_POLICY_PATH: inactivePolicyPath }
 });
 
 if (blockedByPolicy.status === 0 || !blockedByPolicy.stderr.includes('AI automation policy not active')) {
@@ -37,10 +48,18 @@ if (blockedByPolicy.status === 0 || !blockedByPolicy.stderr.includes('AI automat
 const activePolicy = JSON.parse(await fs.readFile(policyPath, 'utf8'));
 activePolicy.status = 'active';
 activePolicy.credential.status = 'configured_external';
+Object.assign(activePolicy.credential.verification, {
+  status: 'verified_external',
+  method: 'openai_models_endpoint',
+  endpoint: 'https://api.openai.com/v1/models',
+  verifiedAt: '2026-11-22T18:00:00.000Z',
+  evidenceUrl: 'https://github.com/lucasdmoyer/tipsforyourgifts/actions/runs/12345',
+  receiptPath: 'config/ai-credential-verification.json',
+  receiptSha256: 'a'.repeat(64)
+});
 activePolicy.spendControl.status = 'configured_external';
 activePolicy.spendControl.monthlyBudgetUsd = 25;
 activePolicy.spendControl.evidenceUrl = 'https://platform.openai.com/settings/organization/limits';
-const temporaryDirectory = await fs.mkdtemp(path.join(os.tmpdir(), 'tips-openai-guard-test-'));
 const activePolicyPath = path.join(temporaryDirectory, 'active-policy.json');
 await fs.writeFile(activePolicyPath, `${JSON.stringify(activePolicy, null, 2)}\n`);
 

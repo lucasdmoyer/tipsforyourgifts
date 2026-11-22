@@ -122,6 +122,8 @@ const aiAutomationPolicyRaw = await fs.readFile(aiAutomationPolicyPath);
 const aiAutomationPolicySha256 = createHash('sha256').update(aiAutomationPolicyRaw).digest('hex');
 const aiAutomationPolicySummary = buildAiAutomationPolicySummary(parseAiAutomationPolicy(JSON.parse(aiAutomationPolicyRaw.toString('utf8'))));
 const aiAutomationBudgetWorkflowUrl = 'https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/ai-automation-budget-configure.yml';
+const aiAutomationCredentialWorkflowUrl = 'https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/ai-automation-credential-verify.yml';
+const aiAutomationActivationWorkflowUrl = 'https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/ai-automation-activate.yml';
 const aiAutomationPolicy = {
   ...aiAutomationPolicySummary,
   policySha256: aiAutomationPolicySha256,
@@ -131,6 +133,20 @@ const aiAutomationPolicy = {
     confirmation: 'CONFIGURE-ai-automation-budget',
     evidenceMode: 'founder_attested_external_platform_configuration',
     command: `gh workflow run ai-automation-budget-configure.yml --repo lucasdmoyer/tipsforyourgifts --ref master -f expected_policy_sha256=${aiAutomationPolicySha256} -f monthly_budget_usd='<APPROVED_MONTHLY_USD>' -f platform_evidence_url='<OPENAI_PLATFORM_SETTINGS_URL>' -f confirmation='CONFIGURE-ai-automation-budget'`
+  },
+  credentialVerification: {
+    available: aiAutomationPolicySummary.status === 'budget_approved_awaiting_credential',
+    workflowUrl: aiAutomationCredentialWorkflowUrl,
+    confirmation: 'VERIFY-ai-automation-credential',
+    method: 'openai_models_endpoint',
+    endpoint: 'https://api.openai.com/v1/models',
+    command: `gh workflow run ai-automation-credential-verify.yml --repo lucasdmoyer/tipsforyourgifts --ref master -f expected_policy_sha256=${aiAutomationPolicySha256} -f confirmation='VERIFY-ai-automation-credential'`
+  },
+  policyActivation: {
+    available: aiAutomationPolicySummary.status === 'credential_verified_awaiting_activation',
+    workflowUrl: aiAutomationActivationWorkflowUrl,
+    confirmation: 'ACTIVATE-ai-automation',
+    command: `gh workflow run ai-automation-activate.yml --repo lucasdmoyer/tipsforyourgifts --ref master -f expected_policy_sha256=${aiAutomationPolicySha256} -f confirmation='ACTIVATE-ai-automation'`
   }
 };
 const publicationManifest = JSON.parse(await fs.readFile(publicationManifestPath, 'utf8'));
