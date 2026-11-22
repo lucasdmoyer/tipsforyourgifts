@@ -7,6 +7,7 @@ import { affiliateCoverageSchema } from './lib/affiliate-coverage-contract.mjs';
 import { affiliateEnrollmentReadinessSchema, buildAffiliateEnrollmentReadiness } from './lib/affiliate-enrollment-contract.mjs';
 import { affiliateActivationProposalSchema, validateAffiliateActivationProposals } from './lib/affiliate-activation-proposal-contract.mjs';
 import { automationReadinessEvidenceSchema, buildAutomationReadiness } from './lib/automation-readiness-contract.mjs';
+import { buildCommercialScorecard } from './lib/commercial-scorecard.mjs';
 import { buildEditorialReviewQueue } from './lib/editorial-review-queue-contract.mjs';
 import { assessEditorialSafetyApproval, reviewedContentDigests } from './lib/editorial-safety-contract.mjs';
 import { latestEditorialSafetyApproval, loadEditorialSafetyApprovalRecords } from './lib/editorial-safety-store.mjs';
@@ -269,6 +270,7 @@ const proposedGrowthExperiments = growth.experiments.filter((experiment) => expe
 const approvedGrowthExperiments = growth.experiments.filter((experiment) => experiment.founderDisposition === 'approved').length;
 const runningGrowthExperiments = growth.experiments.filter((experiment) => experiment.status === 'running').length;
 const latestGrowthSnapshot = [...growth.snapshots].sort((left, right) => right.periodEnd.localeCompare(left.periodEnd))[0];
+const commercialScorecard = buildCommercialScorecard(growth);
 const measurementStatus = activeGrowthConnectors === 0
   ? 'not_connected'
   : latestGrowthSnapshot ? 'measured' : 'awaiting_snapshot';
@@ -640,6 +642,7 @@ const operations = {
     proposedExperiments: proposedGrowthExperiments,
     approvedExperiments: approvedGrowthExperiments,
     runningExperiments: runningGrowthExperiments,
+    commercialScorecard,
     searchConsole: (() => {
       const connector = growth.connectors.find((entry) => entry.id === 'search-console');
       return {

@@ -39,6 +39,14 @@ These attributes do not execute code, set cookies, contact an analytics service,
 
 The primary funnel is `qualified discovery -> gift finder guide open -> engaged guide -> merchant outbound click -> approved affiliate conversion`. Missing stages remain unknown. A merchant click is intent evidence, not a sale, satisfied reader, or profitable session.
 
+## Commercial scorecard
+
+Executive Studio derives one commercial scorecard from the latest comparable reporting window. Snapshots are joined only when their `periodStart` and `periodEnd` match. The scorecard totals observed article-level metrics and, only when both inputs exist and the denominator is greater than zero, calculates organic click-through, merchant click-through, affiliate conversion, earnings per outbound click, revenue per conversion, and social owned-site click-through.
+
+It never mixes windows, converts a missing value to zero, divides by an unobserved or zero denominator, or counts the same article metric twice. A site total remains unknown unless that metric is observed for every article represented in the selected window. It can identify the observed article leader for discovery, merchant intent, conversion, revenue, or social traffic without turning one channel into evidence for another.
+
+Revenue is not profit. The growth registry contains no operating-cost evidence, so the scorecard must continue to report profitability as unknown even after revenue appears. An AI agent may explain the observed aggregate values and propose a bounded experiment; it may not infer margin, lifetime value, reader satisfaction, or business profitability from clicks or commissions alone.
+
 ## Founder privacy decision and baseline state
 
 Lucas approved decision `privacy-measurement-20260816-v1` on 2026-08-16. The approved posture is aggregate-only measurement using the three bounded event labels above, with consent required before any client analytics begins. Client collection remains disabled: no provider, property, cookie, script, or event destination was configured by this decision.
