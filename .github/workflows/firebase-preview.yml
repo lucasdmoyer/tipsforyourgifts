@@ -3,32 +3,24 @@ name: Firebase preview
 on:
   pull_request:
 
-permissions:
-  contents: read
-  id-token: write
-
 concurrency:
   group: firebase-preview-pr-${{ github.event.number }}
   cancel-in-progress: true
 
 jobs:
-  preview:
+  classify:
     if: github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    outputs:
+      hosting_changed: ${{ steps.scope.outputs.hosting_changed }}
     steps:
       - uses: actions/checkout@v5
         with:
           fetch-depth: 0
           persist-credentials: false
-      - uses: actions/setup-node@v4
-        with:
-          node-version: "24.14.0"
-          cache: npm
-          cache-dependency-path: web/package-lock.json
-      - run: npm ci --prefix web
-      - run: npm run build
-      - run: npm run smoke
       - name: Detect a credential-free workflow-only review
         id: scope
         env:
@@ -37,59 +29,37 @@ jobs:
           hosting_changed=false
           while IFS= read -r changed_path; do
             case "$changed_path" in
-              .github/workflows/firebase-preview.yml|web/config/live-publication.json|web/releases/receipts/*.json|web/src/data/operations.json|web/src/app/generated/content.generated.ts) ;;
+              .github/workflows/firebase-preview.yml|.github/workflows/firebase-preview-deploy.yml|docs/PUBLICATION_AUTOMATION.md|web/scripts/test-publication-policy-gate.mjs|web/config/live-publication.json|web/releases/receipts/*.json|web/src/data/operations.json|web/src/app/generated/content.generated.ts) ;;
               *) hosting_changed=true ;;
             esac
           done < <(git diff --name-only "$BASE_SHA" "$GITHUB_SHA")
           echo "hosting_changed=$hosting_changed" >> "$GITHUB_OUTPUT"
-      - name: Pass workflow-only reviews without minting cloud credentials
-        if: steps.scope.outputs.hosting_changed == 'false'
-        run: test "${{ steps.scope.outputs.hosting_changed }}" = "false"
-      - name: Refuse credentials outside the founder-approved PR boundary
-        if: steps.scope.outputs.hosting_changed == 'true'
+
+  deploy_preview:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    needs: classify
+    permissions:
+      contents: read
+      id-token: write
+    uses: lucasdmoyer/tipsforyourgifts/.github/workflows/firebase-preview-deploy.yml@master
+    with:
+      hosting_changed: ${{ needs.classify.outputs.hosting_changed == 'true' }}
+      pr_number: ${{ github.event.number }}
+
+  preview:
+    name: preview
+    if: always()
+    needs:
+      - classify
+      - deploy_preview
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    permissions: {}
+    steps:
+      - name: Preserve the required preview check while delegating execution
         env:
-          APPROVED_ACTOR: lucasdmoyer
-          APPROVED_REF: refs/pull/20/merge
-          APPROVED_REPOSITORY: lucasdmoyer/tipsforyourgifts
-          GITHUB_ACTOR_VALUE: ${{ github.actor }}
-          GITHUB_REF_VALUE: ${{ github.ref }}
-          GITHUB_REPOSITORY_VALUE: ${{ github.repository }}
-          PR_NUMBER: ${{ github.event.number }}
+          CLASSIFY_RESULT: ${{ needs.classify.result }}
+          DEPLOY_PREVIEW_RESULT: ${{ needs.deploy_preview.result }}
         run: |
-          test "$GITHUB_REPOSITORY_VALUE" = "$APPROVED_REPOSITORY"
-          test "$GITHUB_ACTOR_VALUE" = "$APPROVED_ACTOR"
-          test "$GITHUB_REF_VALUE" = "$APPROVED_REF"
-          test "$PR_NUMBER" = "20"
-      - id: google_auth
-        name: Mint short-lived Google credentials through PR-20-only OIDC trust
-        if: steps.scope.outputs.hosting_changed == 'true'
-        uses: google-github-actions/auth@v3
-        with:
-          project_id: tipsforyourgifts
-          workload_identity_provider: projects/647657919626/locations/global/workloadIdentityPools/tips-github/providers/github-pr-20
-          service_account: github-action-171694140@tipsforyourgifts.iam.gserviceaccount.com
-          create_credentials_file: true
-          export_environment_variables: true
-      - name: Deploy exact PR artifact to a temporary Firebase channel
-        id: firebase_preview
-        if: steps.scope.outputs.hosting_changed == 'true'
-        env:
-          CHANNEL_ID: pr-${{ github.event.number }}
-        run: |
-          test "$CHANNEL_ID" = "pr-20"
-          npx --yes firebase-tools@15.26.0 hosting:channel:deploy "$CHANNEL_ID" \
-            --expires 7d \
-            --project tipsforyourgifts \
-            --non-interactive
-          channel_file="$RUNNER_TEMP/firebase-hosting-channels.json"
-          npx --yes firebase-tools@15.26.0 hosting:channel:list \
-            --site tipsforyourgifts \
-            --project tipsforyourgifts \
-            --json > "$channel_file"
-          preview_url="$(node -e 'const fs = require("node:fs"); const data = JSON.parse(fs.readFileSync(process.argv[1], "utf8")); const suffix = `/channels/${process.env.CHANNEL_ID}`; const channel = data?.result?.channels?.find((entry) => entry.name?.endsWith(suffix)); if (!channel?.url) throw new Error(`Firebase preview URL missing for ${process.env.CHANNEL_ID}`); process.stdout.write(channel.url);' "$channel_file")"
-          echo "preview_url=$preview_url" >> "$GITHUB_OUTPUT"
-      - name: Smoke the hosted PR-20 preview
-        if: steps.scope.outputs.hosting_changed == 'true'
-        env:
-          PREVIEW_URL: ${{ steps.firebase_preview.outputs.preview_url }}
-        run: curl --fail --silent --show-error --location --max-time 30 "$PREVIEW_URL" | grep -F "Good gifts, minus the guesswork."
+          test "$CLASSIFY_RESULT" = "success"
+          test "$DEPLOY_PREVIEW_RESULT" = "success"

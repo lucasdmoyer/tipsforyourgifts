@@ -22,6 +22,23 @@ The recorder treats the same content-set digest as a no-op, preventing a receipt
 
 The founder agenda compares the current publication-manifest content digest with the durable live digest. It removes the release decision only when those exact content sets match. A workflow completion, preview, or local build alone cannot do that.
 
+## Reusable pull-request preview trust
+
+The repository contains a dormant reusable workflow at `.github/workflows/firebase-preview-deploy.yml`. It is the planned replacement for one-provider-per-pull-request preview credentials, but adding the file does not activate it or change Google Cloud IAM. Activation requires a separate reviewed caller change and an action-time founder approval for the exact Workload Identity Federation configuration.
+
+The intended caller references the reusable workflow from `master`, never from pull-request-controlled bytes. The reusable workflow separates the untrusted build from the OIDC-enabled deploy job: the build job executes the pull request without `id-token: write`, uploads only the static `web/dist` artifact, and the deploy job downloads that artifact alongside `firebase.json` checked out from trusted `master`. The deploy job does not execute pull-request scripts after cloud authentication.
+
+The future `tips-github-preview/github-preview` provider must accept only tokens satisfying all of these claims:
+
+- repository ID `171694140`;
+- repository-owner ID `23782501`;
+- actor ID `23782501`;
+- event name `pull_request`;
+- a merge ref matching the current pull request;
+- and `job_workflow_ref` equal to `lucasdmoyer/tipsforyourgifts/.github/workflows/firebase-preview-deploy.yml@refs/heads/master`.
+
+The provider belongs in its own `tips-github-preview` pool. The existing preview service account remains limited to Firebase Hosting, receives only short-lived impersonation, has no Firebase Auth Admin role, and has no user-managed key. The workflow also repeats the repository, owner, actor, event, base-branch, head-repository, PR-number, and ref checks before authentication. Neither the provider nor the reusable workflow authorizes a production Hosting deployment.
+
 ## Proven automatic mode
 
 After at least ten successful founder-reviewed production deployments exist in the GitHub `production` environment, Lucas may run **Enable proven automatic publication**. That workflow:
