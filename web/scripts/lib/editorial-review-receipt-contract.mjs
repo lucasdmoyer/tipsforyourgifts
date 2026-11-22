@@ -4,6 +4,7 @@ import { z } from 'zod';
 
 const runIdSchema = z.string().regex(/^\d{8}-[a-z0-9-]+-[a-f0-9]{8}$/);
 const slugSchema = z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/);
+const missionIdSchema = z.string().regex(/^research-mission-[1-9]\d*-[1-9]\d*$/);
 const sha256Schema = z.string().regex(/^[a-f0-9]{64}$/);
 const sharedReceiptShape = {
   runId: runIdSchema,
@@ -37,7 +38,26 @@ const versionedReceiptSchema = z.object({
   }
 });
 
-export const editorialReviewReceiptSchema = z.union([legacyReceiptSchema, versionedReceiptSchema]).superRefine((receipt, context) => {
+const missionBoundReceiptSchema = z.object({
+  schemaVersion: z.literal('1.2.0'),
+  receiptId: z.string().regex(/^\d{8}-[a-z0-9-]+-[a-f0-9]{8}-qa-v[1-9]\d*$/),
+  receiptRevision: z.number().int().positive(),
+  workflowName: z.enum(['research-agent.yml', 'editorial-independent-review.yml']),
+  missionId: missionIdSchema.nullable(),
+  ...sharedReceiptShape
+}).strict().superRefine((receipt, context) => {
+  if (receipt.receiptId !== `${receipt.runId}-qa-v${receipt.receiptRevision}`) {
+    context.addIssue({ code: z.ZodIssueCode.custom, path: ['receiptId'], message: 'must bind the run ID and review revision' });
+  }
+  if (receipt.workflowName === 'research-agent.yml' && receipt.missionId === null) {
+    context.addIssue({ code: z.ZodIssueCode.custom, path: ['missionId'], message: 'research-agent receipts must bind the trusted mission' });
+  }
+  if (!/^[1-9]\d*$/.test(receipt.workflowRunId)) {
+    context.addIssue({ code: z.ZodIssueCode.custom, path: ['workflowRunId'], message: 'mission-bound receipts require a positive GitHub workflow run ID' });
+  }
+});
+
+export const editorialReviewReceiptSchema = z.union([legacyReceiptSchema, versionedReceiptSchema, missionBoundReceiptSchema]).superRefine((receipt, context) => {
   if (receipt.verdict === 'passed' && receipt.blockers.length > 0) {
     context.addIssue({ code: z.ZodIssueCode.custom, path: ['blockers'], message: 'a passing review cannot contain blockers' });
   }

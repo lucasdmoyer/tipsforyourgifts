@@ -34,6 +34,8 @@ idea -> researching -> drafted -> independent QA -> validated -> preview -> foun
 
 When a draft contains an explicitly classified high-risk claim, insert a founder language decision before final independent QA. The owner-only decision is an immutable, hash-bound Git artifact; it neither certifies the evidence nor authorizes publication. Rejected or stale language fails closed. Promotion and the publication manifest both require the latest approved decision to match the same reviewable content and exact high-risk claim hashes.
 
+That branch is deterministic: the initial research workflow routes high-risk drafts directly to a non-public founder-safety pull request and does not spend an independent-review model call or create a premature receipt. Auto-merge is always disabled for this route. After the approved language receipt merges, the separate editor produces a mission-bound receipt; a clean pass promotes the bundle and completes the original mission, while a failure changes neither the run nor article.
+
 A validated roundup requires at least 12 candidates, five finalists, five source classes, three research passes, two final passes below 10 percent material novelty, supported claims, an editorial score of at least 75, evidence confidence of at least 70, and a clean independent review.
 
 ## Publication architecture
@@ -44,7 +46,7 @@ Each founder-started Codex workflow is represented by a versioned research missi
 
 Founder safety decisions live under `web/research/safety-approvals/`. Only the protected owner workflow may add a versioned decision. The deterministic promotion script and publication-manifest builder independently re-evaluate it, so copying an old approval or changing the reviewed language cannot advance a bundle.
 
-Independent editorial receipts are append-only revisions. The evidence editor runs with read-only repository permission and returns structured findings only. A credential-free job creates `qa.vN`, preserves failed attempts, and promotes only a clean receipt whose hashes still match the run, article, and social pack. That job may open a pull request; it cannot merge or deploy.
+Independent editorial receipts are append-only revisions. New receipts bind both the exact review workflow and the trusted research mission when one exists. The evidence editor runs with read-only repository permission and returns structured findings only. A credential-free job creates `qa.vN`, preserves failed attempts, and promotes only a clean receipt whose hashes still match the run, article, and social pack. That job may open a pull request; it cannot merge or deploy.
 
 Mission completion advances the bundle to release preparation. While publication mode is founder reviewed, it still requires the exact-SHA pull request, Firebase preview, and founder merge decision. Once the separately approved automatic-after-proven policy is active, the same completion receipt can make the pull request eligible for required-check automatic merge.
 

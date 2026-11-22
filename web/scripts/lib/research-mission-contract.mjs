@@ -95,6 +95,15 @@ function artifactDigest(record) {
   return record?.raw == null ? null : sha256(record.raw);
 }
 
+export function reviewReceiptBelongsToMission(receipt, mission) {
+  if (receipt?.schemaVersion === '1.2.0') {
+    if (receipt.missionId !== mission.missionId) return false;
+    if (receipt.workflowName === 'research-agent.yml') return receipt.workflowRunId === mission.trigger.workflowRunId;
+    return receipt.workflowName === 'editorial-independent-review.yml';
+  }
+  return receipt?.workflowRunId === mission.trigger.workflowRunId;
+}
+
 export function validateResearchMissionRecords({
   records,
   strategy,
@@ -178,7 +187,7 @@ export function validateResearchMissionRecords({
     else {
       if (artifactDigest(reviewRecord) !== completion.reviewReceiptSha256) issues.push(`${mission.missionId}: review receipt digest mismatch`);
       if (reviewRecord.data.verdict !== 'passed' || reviewRecord.data.blockers.length > 0) issues.push(`${mission.missionId}: independent review did not pass cleanly`);
-      if (reviewRecord.data.workflowRunId !== mission.trigger.workflowRunId) issues.push(`${mission.missionId}: review receipt workflow run mismatch`);
+      if (!reviewReceiptBelongsToMission(reviewRecord.data, mission)) issues.push(`${mission.missionId}: review receipt mission provenance mismatch`);
     }
     const expectedReadiness = mission.publicationPolicySnapshot.automaticPromotionEnabled ? 'automatic_merge_eligible' : 'founder_review_required';
     if (completion.publicationReadiness !== expectedReadiness) issues.push(`${mission.missionId}: publication readiness differs from the mission policy snapshot`);

@@ -89,11 +89,13 @@ try {
 
   const failedFindings = path.join(fixtureRoot, 'failed-findings.json');
   await fs.writeFile(failedFindings, `${JSON.stringify({ schemaVersion: '1.0.0', runId: run.runId, verdict: 'failed', blockers: ['The exact current source does not support one material reader-facing claim.'], warnings: [] }, null, 2)}\n`);
-  const failed = spawnSync(process.execPath, [createScript, `--run-id=${run.runId}`, '--reviewer-id=evidence-red-team-12345', '--workflow-run-id=12345', `--findings-file=${failedFindings}`, '--reviewed-at=2026-11-22T13:00:00.000Z'], { cwd: fixtureRoot, encoding: 'utf8' });
+  const failed = spawnSync(process.execPath, [createScript, `--run-id=${run.runId}`, '--reviewer-id=evidence-red-team-12345', '--workflow-name=editorial-independent-review.yml', '--workflow-run-id=12345', `--findings-file=${failedFindings}`, '--reviewed-at=2026-11-22T13:00:00.000Z'], { cwd: fixtureRoot, encoding: 'utf8' });
   assert.equal(failed.status, 0, failed.stderr || failed.stdout);
   const firstReceipt = JSON.parse(await fs.readFile(path.join(fixtureRoot, 'research', 'reviews', reviewReceiptFilename(run.runId, 1)), 'utf8'));
   assert.equal(firstReceipt.receiptRevision, 1);
   assert.equal(firstReceipt.verdict, 'failed');
+  assert.equal(firstReceipt.workflowName, 'editorial-independent-review.yml');
+  assert.equal(firstReceipt.missionId, null);
 
   const blocked = spawnSync(process.execPath, [resolveScript, `--run-id=${run.runId}`], { cwd: fixtureRoot, encoding: 'utf8' });
   assert.notEqual(blocked.status, 0);
@@ -101,7 +103,7 @@ try {
 
   const passedFindings = path.join(fixtureRoot, 'passed-findings.json');
   await fs.writeFile(passedFindings, `${JSON.stringify({ schemaVersion: '1.0.0', runId: run.runId, verdict: 'passed', blockers: [], warnings: ['Recheck the current official label immediately before any later production release.'] }, null, 2)}\n`);
-  const passed = spawnSync(process.execPath, [createScript, `--run-id=${run.runId}`, '--reviewer-id=evidence-red-team-67890', '--workflow-run-id=67890', `--findings-file=${passedFindings}`, '--reviewed-at=2026-11-22T14:00:00.000Z'], { cwd: fixtureRoot, encoding: 'utf8' });
+  const passed = spawnSync(process.execPath, [createScript, `--run-id=${run.runId}`, '--reviewer-id=evidence-red-team-67890', '--workflow-name=editorial-independent-review.yml', '--workflow-run-id=67890', `--findings-file=${passedFindings}`, '--reviewed-at=2026-11-22T14:00:00.000Z'], { cwd: fixtureRoot, encoding: 'utf8' });
   assert.equal(passed.status, 0, passed.stderr || passed.stdout);
   const secondPath = `research/reviews/${reviewReceiptFilename(run.runId, 2)}`;
   const secondReceipt = JSON.parse(await fs.readFile(path.join(fixtureRoot, secondPath), 'utf8'));

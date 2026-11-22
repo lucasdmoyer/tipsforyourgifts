@@ -17,9 +17,13 @@ const args = Object.fromEntries(process.argv.slice(2).map((value) => {
 }));
 const runId = args['run-id'];
 const reviewerId = args['reviewer-id'];
-if (!runId || !reviewerId || (!args['findings-file'] && !['passed', 'failed'].includes(args.verdict))) {
-  throw new Error('Usage: node scripts/create-review-receipt.mjs --run-id=<id> --reviewer-id=<id> (--findings-file=<path>|--verdict=passed|failed) [--workflow-run-id=<id>]');
+const workflowName = args['workflow-name'];
+const workflowRunId = args['workflow-run-id'] || process.env.GITHUB_RUN_ID;
+if (!runId || !reviewerId || !['research-agent.yml', 'editorial-independent-review.yml'].includes(workflowName) || !/^[1-9]\d*$/.test(workflowRunId ?? '') || (!args['findings-file'] && !['passed', 'failed'].includes(args.verdict))) {
+  throw new Error('Usage: node scripts/create-review-receipt.mjs --run-id=<id> --reviewer-id=<id> --workflow-name=research-agent.yml|editorial-independent-review.yml (--findings-file=<path>|--verdict=passed|failed) [--mission-id=<id>] [--workflow-run-id=<id>]');
 }
+const missionId = args['mission-id'] || null;
+if (workflowName === 'research-agent.yml' && missionId === null) throw new Error('Research-agent reviews must bind --mission-id');
 
 const root = process.cwd();
 const runPath = path.join(root, 'research', 'runs', `${runId}.json`);
@@ -45,15 +49,17 @@ let existingNames = [];
 try { existingNames = await fs.readdir(reviewDirectory); } catch (error) { if (error.code !== 'ENOENT') throw error; }
 const receiptRevision = nextReviewRevision(existingNames, runId);
 const receipt = editorialReviewReceiptSchema.parse({
-  schemaVersion: '1.1.0',
+  schemaVersion: '1.2.0',
   receiptId: `${runId}-qa-v${receiptRevision}`,
   receiptRevision,
+  workflowName,
+  missionId,
   runId,
   articleSlug: run.article.slug,
   reviewedAt: args['reviewed-at'] ?? new Date().toISOString(),
   reviewerRole: 'independent-editor',
   reviewerId,
-  workflowRunId: args['workflow-run-id'] || process.env.GITHUB_RUN_ID || 'local-independent-review',
+  workflowRunId,
   verdict: findings.verdict,
   evidenceSha256: reviewableEvidenceSha256(run),
   articleSha256: reviewedArticleSha256(articleRaw),
