@@ -45,7 +45,18 @@ export const STUDIO_DATA = new InjectionToken<StudioData>('STUDIO_DATA');
           <div><strong>{{ content.operations.aiAutomationPolicy.spendControl.monthlyBudgetUsd === null ? '—' : ('$' + content.operations.aiAutomationPolicy.spendControl.monthlyBudgetUsd) }}</strong><span>monthly platform budget</span></div>
           <div><strong>{{ content.operations.aiAutomationPolicy.activationReady ? 'Yes' : 'No' }}</strong><span>activation ready</span></div>
         </div>
-        <p><strong>Current stop:</strong> A real OpenAI project monthly budget and platform evidence must be recorded before the policy can become active or a credential can be used.</p>
+        @if (content.operations.aiAutomationPolicy.status === 'awaiting_founder_platform_budget') {
+          <p><strong>Current stop:</strong> Lucas must first set a real monthly budget in the dedicated OpenAI project, then record the amount and credential-free platform settings URL through the exact-hash workflow below.</p>
+        } @else if (content.operations.aiAutomationPolicy.status === 'budget_approved_awaiting_credential') {
+          <p><strong>Current stop:</strong> The founder-attested budget is recorded. Credential verification and explicit policy activation remain separate gates before any model call.</p>
+        } @else {
+          <p><strong>Current posture:</strong> The versioned policy is active; every model job still requires its credential preflight and bounded workflow permissions.</p>
+        }
+        <p class="policy-digest"><strong>Exact policy SHA-256:</strong> <code>{{ content.operations.aiAutomationPolicy.policySha256 }}</code></p>
+        @if (content.operations.aiAutomationPolicy.budgetConfiguration.available) {
+          <p><a class="button" [href]="content.operations.aiAutomationPolicy.budgetConfiguration.workflowUrl" target="_blank" rel="noopener">Record Lucas-approved budget</a></p>
+          <details><summary>Copy the exact budget command</summary><p>This records a founder attestation in a review pull request. It does not create the external budget, add a credential, call a model, activate the policy, merge, or deploy.</p><p class="command">{{ content.operations.aiAutomationPolicy.budgetConfiguration.command }}</p></details>
+        }
         <details><summary>Activation blockers and shutdown rules</summary><p><strong>Activation blockers</strong></p><ul>@for (blocker of content.operations.aiAutomationPolicy.activationBlockers; track blocker) { <li>{{ blocker }}</li> }</ul><p><strong>Automatic or founder shutdown conditions</strong></p><ul>@for (condition of content.operations.aiAutomationPolicy.shutdownConditions; track condition) { <li>{{ condition }}</li> }</ul><p><a [href]="content.operations.aiAutomationPolicy.runtime.documentationUrl" target="_blank" rel="noopener">Open Codex GitHub Action documentation →</a></p></details>
       </article>
       <div class="readiness-grid">

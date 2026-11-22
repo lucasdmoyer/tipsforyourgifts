@@ -395,6 +395,24 @@ describe('App', () => {
     expect(element.textContent).not.toMatch(/\bsk-[A-Za-z0-9_-]{20,}\b/);
   });
 
+  it('renders an exact-hash founder budget handoff without granting runtime authority', () => {
+    const fixture = TestBed.createComponent(StudioPage);
+    fixture.detectChanges();
+    const element = fixture.nativeElement as HTMLElement;
+    const policy = OPERATIONS.aiAutomationPolicy;
+    expect(policy.policySha256).toMatch(/^[a-f0-9]{64}$/);
+    expect(element.textContent).toContain(policy.policySha256);
+    expect(element.textContent).toContain('Lucas must first set a real monthly budget');
+    expect(element.textContent).toContain('does not create the external budget, add a credential, call a model, activate the policy, merge, or deploy');
+    expect(policy.budgetConfiguration.available).toBe(true);
+    expect(policy.budgetConfiguration.command).toContain(`expected_policy_sha256=${policy.policySha256}`);
+    expect(policy.budgetConfiguration.command).toContain("monthly_budget_usd='<APPROVED_MONTHLY_USD>'");
+    expect(element.textContent).toContain(policy.budgetConfiguration.command);
+    expect(element.querySelector(`a[href="${policy.budgetConfiguration.workflowUrl}"]`)).not.toBeNull();
+    expect(policy.credential.valueStoredInGit).toBe(false);
+    expect(policy.activationReady).toBe(false);
+  });
+
   it('renders the fail-closed autonomous opportunity desk', () => {
     const fixture = TestBed.createComponent(StudioPage);
     fixture.detectChanges();

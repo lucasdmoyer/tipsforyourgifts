@@ -229,8 +229,7 @@ export const OPERATIONS: Operations = {
     "activationReady": false,
     "activationBlockers": [
       "Dedicated OpenAI project credential is not configured.",
-      "OpenAI project monthly budget is not configured.",
-      "Founder-approved budget amount and platform evidence are not recorded.",
+      "Founder-approved OpenAI project monthly budget and platform evidence are not recorded.",
       "Versioned automation policy is not active."
     ],
     "protectedWorkflows": 6,
@@ -341,7 +340,15 @@ export const OPERATIONS: Operations = {
       "Workflow permission, sandbox, session, or credential-placement drift fails deterministic validation.",
       "Any proposed patch outside its workflow-specific allowlist fails deterministic validation.",
       "Budget exhaustion, repeated failures, or suspected credential exposure requires the founder to disable runs and rotate the credential before resuming."
-    ]
+    ],
+    "policySha256": "f9f8f2f0f7ab2a6740eb5e6d8dc89859193bd645fdc44c64e72e046a6ec7616c",
+    "budgetConfiguration": {
+      "available": true,
+      "workflowUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/ai-automation-budget-configure.yml",
+      "confirmation": "CONFIGURE-ai-automation-budget",
+      "evidenceMode": "founder_attested_external_platform_configuration",
+      "command": "gh workflow run ai-automation-budget-configure.yml --repo lucasdmoyer/tipsforyourgifts --ref master -f expected_policy_sha256=f9f8f2f0f7ab2a6740eb5e6d8dc89859193bd645fdc44c64e72e046a6ec7616c -f monthly_budget_usd='<APPROVED_MONTHLY_USD>' -f platform_evidence_url='<OPENAI_PLATFORM_SETTINGS_URL>' -f confirmation='CONFIGURE-ai-automation-budget'"
+    }
   },
   "researchRuns": 14,
   "validatedRuns": 11,
