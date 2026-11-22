@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, InjectionToken } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import type { Growth, Operations, Strategy, StrategyIdea } from './content.types';
@@ -13,7 +14,7 @@ export interface StudioData {
 export const STUDIO_DATA = new InjectionToken<StudioData>('STUDIO_DATA');
 
 @Component({
-  imports: [RouterLink],
+  imports: [DatePipe, RouterLink],
   providers: [{
     provide: STUDIO_DATA,
     useFactory: () => inject(ActivatedRoute).snapshot.data['studioData'] as StudioData
@@ -22,6 +23,51 @@ export const STUDIO_DATA = new InjectionToken<StudioData>('STUDIO_DATA');
     <section class="shell studio-hero">
       <p class="eyebrow">Executive studio</p><h1>Set the direction. Let the system run.</h1>
       <p class="lede">This is the strategy and control surface generated from versioned operating data. It is intentionally no-index and contains no credentials or private customer data.</p>
+    </section>
+    <section id="automation-readiness" class="shell compact-section automation-readiness">
+      <div class="section-heading">
+        <div><p class="eyebrow">AI team readiness</p><h2>What can run. What needs Lucas.</h2></div>
+        <p>{{ content.operations.automationReadiness.summary }}</p>
+      </div>
+      <div class="readiness-summary" aria-label="Automation readiness summary">
+        <div><strong>{{ content.operations.automationReadiness.counts.ready }}</strong><span>fully ready</span></div>
+        <div><strong>{{ content.operations.automationReadiness.counts.limited }}</strong><span>limited or fallback</span></div>
+        <div><strong>{{ content.operations.automationReadiness.counts.blocked }}</strong><span>blocked</span></div>
+        <div><strong>{{ content.operations.automationReadiness.counts.founderActions }}</strong><span>need founder action</span></div>
+      </div>
+      <p class="readiness-snapshot"><strong>Evidence snapshot:</strong> {{ content.operations.automationReadiness.observedAt | date: 'MMMM d, y, h:mm a': 'UTC' }} UTC. This is versioned operating evidence, not a live account poll.</p>
+      <div class="readiness-grid">
+        @for (team of content.operations.automationReadiness.teams; track team.id) {
+          <article class="readiness-card">
+            <div class="experiment-header"><p class="eyebrow">{{ team.label }}</p><span class="status" [class.blocked_on_account]="team.status.startsWith('blocked') || team.status === 'founder_approval_required'" [class.approved_for_research]="team.status === 'ready'">{{ displayStatus(team.status) }}</span></div>
+            <p>{{ team.evidence }}</p>
+            <p class="readiness-next"><strong>Next:</strong> {{ team.nextAction }}</p>
+            @if (team.actionUrl) { <p><a [href]="team.actionUrl" target="_blank" rel="noopener">Open exact evidence or action →</a></p> }
+          </article>
+        }
+      </div>
+      <div class="grid two readiness-evidence">
+        <div class="panel">
+          <p class="eyebrow">External configuration</p>
+          <h3>Two bounded infrastructure gates.</h3>
+          @for (gate of content.operations.automationReadiness.externalGates; track gate.id) {
+            <details>
+              <summary>{{ gate.label }} · {{ displayStatus(gate.status) }}</summary>
+              <p>{{ gate.summary }}</p>
+              <p><strong>Founder action:</strong> {{ gate.nextAction }}</p>
+              <p><strong>Authority boundary:</strong> {{ gate.authorityBoundary }}</p>
+              <p><a [href]="gate.evidenceUrl" target="_blank" rel="noopener">Open issue</a> · <a [href]="gate.diagnosticUrl" target="_blank" rel="noopener">Open diagnostic evidence</a></p>
+            </details>
+          }
+        </div>
+        <div class="panel release-candidate-card">
+          <div class="experiment-header"><p class="eyebrow">Exact release candidate</p><span class="status">{{ displayStatus(content.operations.automationReadiness.releaseCandidate.status) }}</span></div>
+          <h3>{{ content.operations.automationReadiness.releaseCandidate.sha.slice(0, 7) }}</h3>
+          <p>{{ content.operations.automationReadiness.releaseCandidate.summary }}</p>
+          <p><strong>Next:</strong> {{ content.operations.automationReadiness.releaseCandidate.nextAction }}</p>
+          <p><a [href]="content.operations.automationReadiness.releaseCandidate.previewUrl" target="_blank" rel="noopener">Open exact Firebase preview</a> · <a [href]="content.operations.automationReadiness.releaseCandidate.reviewUrl" target="_blank" rel="noopener">Open review evidence</a></p>
+        </div>
+      </div>
     </section>
     <section class="shell compact-section"><div class="kpi-grid">
       @for (kpi of kpis; track kpi.label) { <div class="kpi"><strong>{{ kpi.value }}</strong><span>{{ kpi.label }}</span></div> }

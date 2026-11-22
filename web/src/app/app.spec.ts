@@ -350,6 +350,35 @@ describe('App', () => {
     expect(element.querySelectorAll('.agenda-card')).toHaveLength(Math.max(0, agenda.decisions.length - 1));
   });
 
+  it('renders a timestamped fail-closed AI team readiness board', () => {
+    const fixture = TestBed.createComponent(StudioPage);
+    fixture.detectChanges();
+    const element = fixture.nativeElement as HTMLElement;
+    const readiness = OPERATIONS.automationReadiness;
+    expect(element.textContent).toContain('What can run. What needs Lucas.');
+    expect(element.textContent).toContain('This is versioned operating evidence, not a live account poll.');
+    expect(element.querySelectorAll('.readiness-card')).toHaveLength(readiness.teams.length);
+    expect(element.textContent).toContain(`${readiness.counts.ready}fully ready`);
+    expect(element.textContent).toContain(`${readiness.counts.limited}limited or fallback`);
+    expect(element.textContent).toContain(`${readiness.counts.blocked}blocked`);
+    expect(element.textContent).toContain(`${readiness.counts.founderActions}need founder action`);
+    for (const team of readiness.teams) {
+      expect(element.textContent).toContain(team.label);
+      expect(element.textContent).toContain(team.evidence);
+      expect(element.textContent).toContain(team.nextAction);
+      if (team.actionUrl) expect(element.querySelector(`a[href="${team.actionUrl}"]`)).not.toBeNull();
+    }
+    for (const gate of readiness.externalGates) {
+      expect(element.textContent).toContain(gate.label);
+      expect(element.querySelector(`a[href="${gate.evidenceUrl}"]`)).not.toBeNull();
+      expect(element.querySelector(`a[href="${gate.diagnosticUrl}"]`)).not.toBeNull();
+    }
+    expect(element.textContent).toContain(readiness.releaseCandidate.sha.slice(0, 7));
+    expect(element.querySelector(`a[href="${readiness.releaseCandidate.previewUrl}"]`)).not.toBeNull();
+    expect(element.textContent).not.toContain('gho_');
+    expect(element.textContent).not.toMatch(/\bsk-[A-Za-z0-9_-]{20,}\b/);
+  });
+
   it('renders the fail-closed autonomous opportunity desk', () => {
     const fixture = TestBed.createComponent(StudioPage);
     fixture.detectChanges();

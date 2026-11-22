@@ -64,6 +64,116 @@
       }
     ]
   },
+  "automationReadiness": {
+    "schemaVersion": "1.0.0",
+    "observedAt": "2026-11-22T14:52:26.000Z",
+    "sourceMode": "versioned_snapshot_not_live_poll",
+    "posture": "founder_action_required",
+    "summary": "The operating system can validate content and run a narrow affiliate pilot today. Research generation, automated previews, distribution, measurement, and production still require explicit bounded founder actions.",
+    "counts": {
+      "teams": 7,
+      "ready": 1,
+      "limited": 2,
+      "blocked": 3,
+      "founderActions": 5
+    },
+    "teams": [
+      {
+        "id": "research-generation",
+        "label": "Research generation",
+        "status": "blocked_external_configuration",
+        "evidence": "Scheduled research workflows stop before any model call because the repository has no OPENAI_API_KEY secret configured.",
+        "nextAction": "Approve one dedicated OpenAI Platform project credential with a bounded monthly limit, stored only as the GitHub Actions secret OPENAI_API_KEY.",
+        "actionUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/issues/37",
+        "founderActionRequired": true
+      },
+      {
+        "id": "deterministic-quality",
+        "label": "Deterministic quality gates",
+        "status": "ready",
+        "evidence": "11 validated research runs and 10 publication-ready posts currently pass the versioned deterministic gates.",
+        "nextAction": "Keep drafting and independent review separate; every new research bundle must pass validation and build before release review.",
+        "actionUrl": null,
+        "founderActionRequired": false
+      },
+      {
+        "id": "affiliate-monetization",
+        "label": "Affiliate monetization",
+        "status": "limited_live",
+        "evidence": "1 independently reviewed and founder-approved paid-link overlay is active; editorial source artifacts remain unchanged.",
+        "nextAction": "Measure the narrow pilot before expanding; keep affiliate economics separate from editorial rankings.",
+        "actionUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/affiliate-link-review.yml",
+        "founderActionRequired": false
+      },
+      {
+        "id": "social-distribution",
+        "label": "Social distribution",
+        "status": "blocked_founder_configuration",
+        "evidence": "78 drafts are prepared; 0 official social channels are active.",
+        "nextAction": "Approve one official account, rights boundary, cadence, and official API configuration before any post can publish.",
+        "actionUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/social-channel-configure.yml",
+        "founderActionRequired": true
+      },
+      {
+        "id": "growth-measurement",
+        "label": "Aggregate growth measurement",
+        "status": "blocked_founder_configuration",
+        "evidence": "0 aggregate connectors are active and 0 complete measurement snapshots exist; unknown traffic is never reported as zero.",
+        "nextAction": "Configure the approved read-only Search Console page-aggregate boundary and establish the first complete baseline.",
+        "actionUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/search-console-configure.yml",
+        "founderActionRequired": true
+      },
+      {
+        "id": "preview-delivery",
+        "label": "Firebase preview delivery",
+        "status": "manual_fallback_verified",
+        "evidence": "The exact Firebase preview passed Node 24 validation, 29 Angular tests, build, smoke, artifact-hash verification, and a true 390 by 844 review of all 18 prerendered routes. Automated keyless delivery remains blocked: The reusable preview deploy cannot authenticate because its Google Workload Identity provider is missing or unavailable.",
+        "nextAction": "Create or enable the narrowly scoped tips-github-preview pool and github-preview provider for pull-request merge refs and the master-pinned reusable preview workflow.",
+        "actionUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/issues/41",
+        "founderActionRequired": true
+      },
+      {
+        "id": "production-release",
+        "label": "Production release",
+        "status": "founder_approval_required",
+        "evidence": "Exact candidate 011b110d05d334d5e9b42752b902dc17916e5504 has a reviewed Firebase preview; production remains unchanged and separately gated.",
+        "nextAction": "Lucas approves this exact SHA as the replacement release candidate and authorizes fast-forward integration into PR 33. Production remains a separate gate.",
+        "actionUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/39#issuecomment-7080869696",
+        "founderActionRequired": true
+      }
+    ],
+    "externalGates": [
+      {
+        "id": "openai-platform-credential",
+        "label": "Research model credential",
+        "status": "blocked_external_configuration",
+        "summary": "Scheduled research workflows stop before any model call because the repository has no OPENAI_API_KEY secret configured.",
+        "evidenceUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/issues/37",
+        "diagnosticUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/runs/44413289046",
+        "nextAction": "Approve one dedicated OpenAI Platform project credential with a bounded monthly limit, stored only as the GitHub Actions secret OPENAI_API_KEY.",
+        "authorityBoundary": "The credential value must never be displayed, logged, downloaded, committed, or placed in Studio data. It authorizes only the existing proposal, research, growth-review, and independent-QA workflows."
+      },
+      {
+        "id": "firebase-preview-identity",
+        "label": "Keyless Firebase preview identity",
+        "status": "blocked_external_configuration",
+        "summary": "The reusable preview deploy cannot authenticate because its Google Workload Identity provider is missing or unavailable.",
+        "evidenceUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/issues/41",
+        "diagnosticUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/runs/44998331230",
+        "nextAction": "Create or enable the narrowly scoped tips-github-preview pool and github-preview provider for pull-request merge refs and the master-pinned reusable preview workflow.",
+        "authorityBoundary": "Use short-lived impersonation for Firebase Hosting previews only. No Firebase Auth Admin, user-managed service-account key, or production Hosting authorization."
+      }
+    ],
+    "releaseCandidate": {
+      "status": "exact_preview_verified",
+      "sha": "011b110d05d334d5e9b42752b902dc17916e5504",
+      "pullRequestUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/39",
+      "reviewUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/39#issuecomment-7080869696",
+      "previewUrl": "https://tipsforyourgifts--release-011b110-20261122-gd6h6lnx.web.app/",
+      "summary": "The exact Firebase preview passed Node 24 validation, 29 Angular tests, build, smoke, artifact-hash verification, and a true 390 by 844 review of all 18 prerendered routes.",
+      "nextAction": "Lucas approves this exact SHA as the replacement release candidate and authorizes fast-forward integration into PR 33. Production remains a separate gate."
+    }
+  },
   "researchRuns": 14,
   "validatedRuns": 11,
   "publicationReadyPosts": 10,
