@@ -9,6 +9,7 @@ import {
   receiptMatchesCurrentContent,
   reviewReceiptPath
 } from './lib/editorial-review-receipt-contract.mjs';
+import { researchMissionSchema } from './lib/research-mission-contract.mjs';
 
 const args = Object.fromEntries(process.argv.slice(2).map((value) => {
   const [key, ...rest] = value.replace(/^--/, '').split('=');
@@ -17,6 +18,13 @@ const args = Object.fromEntries(process.argv.slice(2).map((value) => {
 const root = process.cwd();
 const requestedRunId = args['run-id'] || null;
 const safetyApprovalRecords = await loadEditorialSafetyApprovalRecords(root);
+const missionDirectory = path.join(root, 'research', 'missions');
+let missionNames = [];
+try { missionNames = (await fs.readdir(missionDirectory)).filter((name) => name.endsWith('.json')).sort(); } catch (error) { if (error.code !== 'ENOENT') throw error; }
+const missions = [];
+for (const name of missionNames) {
+  missions.push(researchMissionSchema.parse(JSON.parse(await fs.readFile(path.join(missionDirectory, name), 'utf8'))));
+}
 const reviewDirectory = path.join(root, 'research', 'reviews');
 let reviewNames = [];
 try { reviewNames = (await fs.readdir(reviewDirectory)).filter((name) => name.endsWith('.json')).sort(); } catch (error) { if (error.code !== 'ENOENT') throw error; }
@@ -68,9 +76,15 @@ for (const name of runNames) {
     continue;
   }
   const nextRevision = nextReviewRevision(reviewNames, run.runId);
+  const matchingMissions = missions.filter((mission) => mission.status === 'started'
+    && mission.idea?.id === run.ideaId
+    && mission.idea?.revision === run.ideaRevision
+    && mission.idea?.sha256 === run.ideaSha256);
+  if (matchingMissions.length > 1) throw new Error(`${run.runId}: multiple started missions match the research bundle`);
   eligible.push({
     runId: run.runId,
     articleSlug: run.article.slug,
+    missionId: matchingMissions[0]?.missionId ?? null,
     nextRevision,
     expectedReceiptPath: reviewReceiptPath(run.runId, nextRevision)
   });
@@ -85,7 +99,7 @@ if (!requestedRunId && eligible.length > 1) throw new Error(`Multiple bundles ar
 const target = eligible[0] ?? null;
 if (process.env.GITHUB_OUTPUT) {
   const lines = target
-    ? `eligible=true\nrun_id=${target.runId}\narticle_slug=${target.articleSlug}\nnext_revision=${target.nextRevision}\nexpected_receipt_path=${target.expectedReceiptPath}\n`
+    ? `eligible=true\nrun_id=${target.runId}\narticle_slug=${target.articleSlug}\nmission_id=${target.missionId ?? ''}\nnext_revision=${target.nextRevision}\nexpected_receipt_path=${target.expectedReceiptPath}\n`
     : 'eligible=false\n';
   await fs.appendFile(process.env.GITHUB_OUTPUT, lines);
 }

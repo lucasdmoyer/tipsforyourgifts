@@ -27,6 +27,7 @@ jobs:
       eligible: ${{ steps.target.outputs.eligible }}
       run_id: ${{ steps.target.outputs.run_id }}
       article_slug: ${{ steps.target.outputs.article_slug }}
+      mission_id: ${{ steps.target.outputs.mission_id }}
       receipt_path: ${{ steps.receipt.outputs.receipt_path }}
       receipt_revision: ${{ steps.receipt.outputs.receipt_revision }}
       verdict: ${{ steps.receipt.outputs.verdict }}
@@ -105,6 +106,7 @@ jobs:
         id: receipt
         env:
           RUN_ID: ${{ steps.target.outputs.run_id }}
+          MISSION_ID: ${{ steps.target.outputs.mission_id }}
           EXPECTED_RECEIPT_PATH: ${{ steps.target.outputs.expected_receipt_path }}
           REVIEWER_ID: evidence-red-team-${{ github.run_id }}
           WORKFLOW_RUN_ID: ${{ github.run_id }}
@@ -116,6 +118,8 @@ jobs:
           npm --prefix web run review:receipt -- \
             --run-id="$RUN_ID" \
             --reviewer-id="$REVIEWER_ID" \
+            --workflow-name=editorial-independent-review.yml \
+            --mission-id="$MISSION_ID" \
             --workflow-run-id="$WORKFLOW_RUN_ID" \
             --findings-file=../editorial-review-result.json
           test -f "web/$EXPECTED_RECEIPT_PATH"
@@ -162,6 +166,7 @@ jobs:
         env:
           RUN_ID: ${{ needs.independent_review.outputs.run_id }}
           ARTICLE_SLUG: ${{ needs.independent_review.outputs.article_slug }}
+          MISSION_ID: ${{ needs.independent_review.outputs.mission_id }}
           RECEIPT_PATH: ${{ needs.independent_review.outputs.receipt_path }}
           VERDICT: ${{ needs.independent_review.outputs.verdict }}
         run: |
@@ -170,12 +175,15 @@ jobs:
           npm --prefix web run validate:editorial-safety
           if [ "$VERDICT" = "passed" ]; then
             npm --prefix web run review:promote -- "$RUN_ID" --receipt-path="$RECEIPT_PATH"
+            if [ -n "$MISSION_ID" ]; then
+              npm --prefix web run research:mission:complete -- --mission-id="$MISSION_ID" --run-id="$RUN_ID"
+            fi
           fi
           npm --prefix web run generate
           git add -N .
           while IFS= read -r changed_path; do
             case "$changed_path" in
-              "web/$RECEIPT_PATH"|"web/research/runs/$RUN_ID.json"|"web/src/data/blog/$ARTICLE_SLUG.md"|web/src/data/operations.json|web/src/app/generated/content.generated.ts|web/src/app/generated/studio.generated.ts|web/public/publication-manifest.json|web/public/sitemap.xml) ;;
+              "web/$RECEIPT_PATH"|"web/research/runs/$RUN_ID.json"|"web/research/missions/$MISSION_ID.json"|"web/src/data/blog/$ARTICLE_SLUG.md"|web/src/data/operations.json|web/src/app/generated/content.generated.ts|web/src/app/generated/studio.generated.ts|web/public/publication-manifest.json|web/public/sitemap.xml) ;;
               *) echo "Independent review changed forbidden path: $changed_path" >&2; exit 1 ;;
             esac
           done < <(git diff --name-only HEAD)
