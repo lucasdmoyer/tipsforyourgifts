@@ -282,7 +282,7 @@ describe('App', () => {
     expect(element.textContent).toContain('promotes the same static artifact');
     expect(element.textContent).toContain('Current release candidate: publication-set-');
     const candidate = OPERATIONS.publication.currentCandidate;
-    expect(element.textContent).toContain(`${candidate.articles} articles · ${candidate.independentReviews} independent receipts · ${candidate.socialLaunchPacks} launch packs · ${candidate.socialDrafts} social drafts · ${candidate.affiliateLinks} affiliate links`);
+    expect(element.textContent).toContain(`${candidate.articles} articles · ${candidate.independentReviews} independent receipts · ${candidate.founderSafetyApprovals} founder safety receipts · ${candidate.socialLaunchPacks} launch packs · ${candidate.socialDrafts} social drafts · ${candidate.affiliateLinks} affiliate links`);
     expect(element.textContent).toContain('prepared bytes; it is not proof of a live deployment');
     expect(element.textContent).toContain('Exact candidate content digest');
     if (OPERATIONS.publication.currentLive.status === 'verified_managed_content_release') {

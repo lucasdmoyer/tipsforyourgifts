@@ -71,6 +71,14 @@ Use Studio to inspect the posture and exact thresholds. Manual recovery is avail
 - approving the first ten production content releases
 - changing Firestore or Realtime Database from deny-by-default
 
+## High-risk editorial language
+
+High-risk claims never become publication-ready because an agent checked its own box. Studio lists the exact claim text, source IDs, current article bundle hashes, and whether the latest founder decision is missing, current, rejected, or stale.
+
+Use **Record founder editorial safety decision** only after reading the exact run, article, and social draft. Enter the run ID, choose `approved` or `rejected`, and confirm `REVIEW-<run-id>-<decision>`. The protected `editorial-safety-approval` environment permits only repository owner `lucasdmoyer`; the workflow creates an immutable, versioned receipt and opens a pull request. It has no OpenAI credential, cannot merge, and cannot deploy.
+
+The receipt binds the reviewable run and article content, the social draft, and every explicitly classified high-risk claim by SHA-256. Lifecycle-only changes from draft to publication-ready do not invalidate it; any substantive source, article, social, or claim change does. Approval means only that Lucas accepted the exact reader-facing safety boundary. A separate independent editor must still issue a fresh clean receipt, and the exact-SHA preview and release approval remain separate.
+
 ## Weekly executive review
 
 Use `/studio` and the workbook to answer six questions:

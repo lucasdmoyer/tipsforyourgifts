@@ -7,13 +7,40 @@ export const OPERATIONS: Operations = {
     "schemaVersion": "1.0.0",
     "generatedAt": "2026-11-22T06:16:08.292Z",
     "posture": "founder_decisions_required",
-    "primaryDecisionId": "establish-measurement",
+    "primaryDecisionId": "review-release-candidate",
     "profitabilityEvidence": "unknown_until_aggregate_measurement",
     "operatingPrinciple": "measure_before_scaling_and_rank_before_commission",
     "decisions": [
       {
-        "id": "establish-measurement",
+        "id": "review-release-candidate",
         "rank": 1,
+        "priorityScore": 100,
+        "horizon": "now",
+        "category": "release",
+        "title": "Review the first accountable Angular release",
+        "recommendation": "Review publication-set-42500af1ebd2d773 as the first founder-controlled Firebase release candidate.",
+        "decisionQuestion": "Does this exact content set represent the site you want readers to see first?",
+        "rationale": "The research and release machinery cannot create traffic, trust, or revenue while the modern reviewed site remains only a local candidate.",
+        "evidence": [
+          "10 publication-ready articles are in the candidate set.",
+          "10 independent QA receipts are hash-bound to those articles.",
+          "60 reviewed social drafts are prepared for later distribution.",
+          "The latest Git-recorded live content set is publication-set-8e8287a5ec7db534, which differs from this candidate."
+        ],
+        "unlocks": "A protected exact-SHA preview and founder-reviewed Firebase release establish the owned destination for every later growth and affiliate action.",
+        "tradeoff": "The first release creates a public baseline and monitoring responsibility, while affiliate links and social publishing remain separately disabled.",
+        "guardrail": "Commit and review the exact candidate first; the workflow must still clone live, expose the preview, require founder approval, smoke production, and mint a manifest-bound receipt.",
+        "reversibility": "high",
+        "founderActionRequired": true,
+        "action": {
+          "label": "Open release workflow",
+          "url": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/firebase-production.yml",
+          "command": "gh workflow run firebase-production.yml -f release_sha=<approved-master-sha>"
+        }
+      },
+      {
+        "id": "establish-measurement",
+        "rank": 2,
         "priorityScore": 85,
         "horizon": "next",
         "category": "measurement",
@@ -40,7 +67,7 @@ export const OPERATIONS: Operations = {
       },
       {
         "id": "configure-first-social-channel",
-        "rank": 2,
+        "rank": 3,
         "priorityScore": 75,
         "horizon": "next",
         "category": "distribution",
@@ -213,10 +240,11 @@ export const OPERATIONS: Operations = {
   "pairingIdeas": 10,
   "recipientFrictionIdeas": 2,
   "editorialReview": {
-    "schemaVersion": "1.0.0",
+    "schemaVersion": "1.1.0",
     "counts": {
       "pendingBundles": 3,
       "founderSafetyReviewsRequired": 3,
+      "founderSafetyApprovalsCurrent": 0,
       "independentReviewsRequired": 3,
       "highRiskClaims": 7
     },
@@ -247,6 +275,8 @@ export const OPERATIONS: Operations = {
           }
         ],
         "founderSafetyReviewRequired": true,
+        "founderSafetyReviewStatus": "approval_required",
+        "safetyApproval": null,
         "independentReviewRequired": true,
         "sourcePaths": {
           "run": "research/runs/20260823-fiber-art-pause-269f700c.json",
@@ -258,7 +288,7 @@ export const OPERATIONS: Operations = {
           "article": "ec08428c406968b7719359b1d6fc26fff109ecefca5bfa8efc92a0a00b2ea9b4",
           "social": "d72f7f6a657b352a8569640ecce7449950f625b341b4c9e756a063dc5a0ee682"
         },
-        "nextGate": "Lucas reviews the exact high-risk claim language and reader-facing safety boundary; a separate independent editor then issues a new hash-bound receipt."
+        "nextGate": "Lucas records an owner-only, hash-bound decision on the exact high-risk claim language; approval still does not replace independent QA or authorize publication."
       },
       {
         "runId": "20260823-muddy-paw-arrival-e09ff303",
@@ -319,6 +349,8 @@ export const OPERATIONS: Operations = {
           }
         ],
         "founderSafetyReviewRequired": true,
+        "founderSafetyReviewStatus": "approval_required",
+        "safetyApproval": null,
         "independentReviewRequired": true,
         "sourcePaths": {
           "run": "research/runs/20260823-muddy-paw-arrival-e09ff303.json",
@@ -330,7 +362,7 @@ export const OPERATIONS: Operations = {
           "article": "2a5a2f877e5cc56cf5d5fad663e983a02794e46f70e859a2fcbdb669bed36ed8",
           "social": "91545c599b5c982e81111bbae224d9947b3f8adc33c19caccdb5e132444dad82"
         },
-        "nextGate": "Lucas reviews the exact high-risk claim language and reader-facing safety boundary; a separate independent editor then issues a new hash-bound receipt."
+        "nextGate": "Lucas records an owner-only, hash-bound decision on the exact high-risk claim language; approval still does not replace independent QA or authorize publication."
       },
       {
         "runId": "20260823-used-record-reset-53a6b604",
@@ -358,6 +390,8 @@ export const OPERATIONS: Operations = {
           }
         ],
         "founderSafetyReviewRequired": true,
+        "founderSafetyReviewStatus": "approval_required",
+        "safetyApproval": null,
         "independentReviewRequired": true,
         "sourcePaths": {
           "run": "research/runs/20260823-used-record-reset-53a6b604.json",
@@ -369,7 +403,7 @@ export const OPERATIONS: Operations = {
           "article": "c15ea7a3362ea193b9cb7fff587e42c750b4216b451aa9e97ee97786fc909f56",
           "social": "fe56464843b6f49fe43406d17df490f6fe74344d7ad26765d8c6659f16ec7637"
         },
-        "nextGate": "Lucas reviews the exact high-risk claim language and reader-facing safety boundary; a separate independent editor then issues a new hash-bound receipt."
+        "nextGate": "Lucas records an owner-only, hash-bound decision on the exact high-risk claim language; approval still does not replace independent QA or authorize publication."
       }
     ]
   },
@@ -3182,14 +3216,15 @@ export const OPERATIONS: Operations = {
       "contentSetSha256": "8e8287a5ec7db534c5c2255d15cca7c050aed88bc63df25a0fdd46aecda2dae6",
       "articles": 10,
       "affiliateLinks": 1,
-      "matchesCurrentCandidate": true
+      "matchesCurrentCandidate": false
     },
     "currentCandidate": {
       "status": "release_candidate",
-      "manifestId": "publication-set-8e8287a5ec7db534",
-      "contentSetSha256": "8e8287a5ec7db534c5c2255d15cca7c050aed88bc63df25a0fdd46aecda2dae6",
+      "manifestId": "publication-set-42500af1ebd2d773",
+      "contentSetSha256": "42500af1ebd2d773bce4ec43aa19aeba6ea3b4013d64b596b578ec57191f2210",
       "articles": 10,
       "independentReviews": 10,
+      "founderSafetyApprovals": 0,
       "socialLaunchPacks": 9,
       "socialDrafts": 60,
       "missionBoundArticles": 0,

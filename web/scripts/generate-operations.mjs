@@ -8,6 +8,8 @@ import { affiliateEnrollmentReadinessSchema, buildAffiliateEnrollmentReadiness }
 import { affiliateActivationProposalSchema, validateAffiliateActivationProposals } from './lib/affiliate-activation-proposal-contract.mjs';
 import { automationReadinessEvidenceSchema, buildAutomationReadiness } from './lib/automation-readiness-contract.mjs';
 import { buildEditorialReviewQueue } from './lib/editorial-review-queue-contract.mjs';
+import { assessEditorialSafetyApproval, reviewedContentDigests } from './lib/editorial-safety-contract.mjs';
+import { latestEditorialSafetyApproval, loadEditorialSafetyApprovalRecords } from './lib/editorial-safety-store.mjs';
 import { buildFounderAgenda } from './lib/founder-agenda-contract.mjs';
 import { loadAffiliateLinkState } from './lib/affiliate-link-contract.mjs';
 
@@ -41,19 +43,19 @@ const outputPath = path.join(root, 'src', 'data', 'operations.json');
 const runNames = (await fs.readdir(runsDir)).filter((name) => name.endsWith('.json')).sort();
 const runRecords = await Promise.all(runNames.map(async (name) => {
   const raw = await fs.readFile(path.join(runsDir, name));
-  return { name, data: JSON.parse(raw), sha256: createHash('sha256').update(raw).digest('hex') };
+  return { name, raw, data: JSON.parse(raw.toString('utf8')), sha256: createHash('sha256').update(raw).digest('hex') };
 }));
 const runs = runRecords.map((record) => record.data);
 const articleNames = (await fs.readdir(blogDir)).filter((name) => name.endsWith('.md')).sort();
 const articleRecords = await Promise.all(articleNames.map(async (name) => {
   const raw = await fs.readFile(path.join(blogDir, name));
-  return { name, data: matter(raw.toString('utf8')).data, sha256: createHash('sha256').update(raw).digest('hex') };
+  return { name, raw, data: matter(raw.toString('utf8')).data, sha256: createHash('sha256').update(raw).digest('hex') };
 }));
 const articles = articleRecords.map((record) => record.data);
 const socialNames = (await fs.readdir(socialDir)).filter((name) => name.endsWith('.json')).sort();
 const socialPacks = await Promise.all(socialNames.map(async (name) => {
   const raw = await fs.readFile(path.join(socialDir, name));
-  return { ...JSON.parse(raw), name, sha256: createHash('sha256').update(raw).digest('hex') };
+  return { ...JSON.parse(raw.toString('utf8')), name, raw, sha256: createHash('sha256').update(raw).digest('hex') };
 }));
 let socialApprovalNames = [];
 try { socialApprovalNames = (await fs.readdir(socialApprovalDir)).filter((name) => name.endsWith('.json')); } catch {}
@@ -114,6 +116,7 @@ const publicationPolicy = JSON.parse(await fs.readFile(publicationPolicyPath, 'u
 const opportunityPolicy = JSON.parse(await fs.readFile(opportunityPolicyPath, 'utf8'));
 const automationReadinessEvidence = automationReadinessEvidenceSchema.parse(JSON.parse(await fs.readFile(automationReadinessPath, 'utf8')));
 const publicationManifest = JSON.parse(await fs.readFile(publicationManifestPath, 'utf8'));
+const editorialSafetyApprovals = await loadEditorialSafetyApprovalRecords(root);
 
 const validatedRuns = runs.filter((run) => run.status === 'validated').length;
 const publicationReadyPosts = articles.filter((article) => article.status === 'publication_ready').length;
@@ -177,6 +180,18 @@ const editorialReviewQueue = buildEditorialReviewQueue(runRecords
     const articleRecord = articleRecordByRun.get(record.data.runId);
     if (!articleRecord) throw new Error(`${record.data.runId}: editorial review queue cannot find its article`);
     const socialPack = socialPackByRun.get(record.data.runId);
+    const latestSafetyApproval = latestEditorialSafetyApproval(editorialSafetyApprovals, record.data.runId);
+    const safetyAssessment = latestSafetyApproval
+      ? assessEditorialSafetyApproval({
+        approval: latestSafetyApproval.data,
+        run: record.data,
+        currentReviewedContentSha256: reviewedContentDigests({
+          run: record.data,
+          articleRaw: articleRecord.raw,
+          socialRaw: socialPack?.raw ?? null
+        })
+      })
+      : null;
     return {
       run: record.data,
       runPath: `research/runs/${record.name}`,
@@ -184,7 +199,15 @@ const editorialReviewQueue = buildEditorialReviewQueue(runRecords
       articlePath: `src/data/blog/${articleRecord.name}`,
       articleSha256: articleRecord.sha256,
       socialPath: socialPack ? `social/drafts/${socialPack.name}` : null,
-      socialSha256: socialPack?.sha256 ?? null
+      socialSha256: socialPack?.sha256 ?? null,
+      safetyApproval: latestSafetyApproval ? {
+        status: safetyAssessment.status,
+        revision: latestSafetyApproval.data.approvalRevision,
+        decision: latestSafetyApproval.data.decision,
+        reviewedAt: latestSafetyApproval.data.reviewedAt,
+        path: latestSafetyApproval.path,
+        sha256: latestSafetyApproval.sha256
+      } : null
     };
   }));
 const socialPublished = socialPublications.length;
@@ -294,6 +317,7 @@ const sourceDates = [
   ...affiliateLinkState.candidates.map((record) => record.data.createdAt),
   ...affiliateLinkState.reviews.map((record) => record.data.reviewedAt),
   ...affiliateLinkState.approvals.map((record) => record.data.approvedAt),
+  ...editorialSafetyApprovals.map((record) => record.data.reviewedAt),
   ...articles.flatMap((article) => [article.publishDate, article.updatedDate]).filter(Boolean)
 ].map((value) => new Date(value).valueOf()).filter(Number.isFinite);
 const generatedAt = new Date(Math.max(...sourceDates)).toISOString();
@@ -597,6 +621,7 @@ const operations = {
       contentSetSha256: publicationManifest.contentSetSha256,
       articles: publicationManifest.counts.articles,
       independentReviews: publicationManifest.counts.independentReviews,
+      founderSafetyApprovals: publicationManifest.counts.founderSafetyApprovals,
       socialLaunchPacks: publicationManifest.counts.socialLaunchPacks,
       socialDrafts: publicationManifest.counts.socialDrafts,
       missionBoundArticles: publicationManifest.counts.missionBoundArticles,

@@ -2,6 +2,8 @@ import fs from 'node:fs/promises';
 import crypto from 'node:crypto';
 import path from 'node:path';
 import process from 'node:process';
+import { requireCurrentFounderSafetyApproval, reviewedContentDigests } from './lib/editorial-safety-contract.mjs';
+import { loadEditorialSafetyApprovalRecords } from './lib/editorial-safety-store.mjs';
 
 const runId = process.argv[2];
 if (!runId) throw new Error('Usage: node scripts/promote-reviewed-run.mjs <run-id>');
@@ -9,7 +11,8 @@ const root = process.cwd();
 const sha256 = (value) => crypto.createHash('sha256').update(value).digest('hex');
 const runPath = path.join(root, 'research', 'runs', `${runId}.json`);
 const receiptPath = path.join(root, 'research', 'reviews', `${runId}.qa.v1.json`);
-const run = JSON.parse(await fs.readFile(runPath, 'utf8'));
+const runRaw = await fs.readFile(runPath);
+const run = JSON.parse(runRaw.toString('utf8'));
 const receipt = JSON.parse(await fs.readFile(receiptPath, 'utf8'));
 if (receipt.verdict !== 'passed' || receipt.blockers.length > 0) throw new Error('Independent review did not pass cleanly');
 if (receipt.runId !== runId || receipt.articleSlug !== run.article.slug) throw new Error('Review receipt identity mismatch');
@@ -24,9 +27,16 @@ const articlePath = path.join(root, 'src', 'data', 'blog', `${run.article.slug}.
 const articleRaw = await fs.readFile(articlePath, 'utf8');
 if (receipt.articleSha256 !== sha256(articleRaw.replace(/^status:\s*(?:draft|publication_ready)\s*$/m, 'status: review_pending'))) throw new Error('Article changed after review');
 const socialPath = path.join(root, 'social', 'drafts', `${run.article.slug}-launch.json`);
+let socialRaw = null;
 let socialSha256 = null;
-try { socialSha256 = sha256(await fs.readFile(socialPath)); } catch {}
+try { socialRaw = await fs.readFile(socialPath); socialSha256 = sha256(socialRaw); } catch (error) { if (error.code !== 'ENOENT') throw error; }
 if (receipt.socialSha256 !== socialSha256) throw new Error('Social package changed after review');
+const safetyApprovalRecords = await loadEditorialSafetyApprovalRecords(root);
+requireCurrentFounderSafetyApproval({
+  run,
+  currentReviewedContentSha256: reviewedContentDigests({ run, articleRaw, socialRaw }),
+  approvals: safetyApprovalRecords.map((record) => record.data)
+});
 run.status = 'validated';
 run.completedAt = receipt.reviewedAt;
 run.article.status = 'publication_ready';
