@@ -94,20 +94,20 @@
         "ideaId": "founder-idea-012",
         "articleSlug": "knitting-crochet-project-bag-row-counter-gift-pairs",
         "status": "qa_failed",
-        "reviewerId": "independent-evidence-audit-20261010",
+        "reviewerId": "codex-independent-editor-fiber-20261122",
         "blockers": [
-          "The repaired evidence bundle and reader article require a fresh independent review; the drafting research desk cannot certify its own work.",
           "Founder review is required for the qualified small-magnet safety boundary before publication; the cited CPSC guidance is general and is not an exact-product finding or recall for the Maker's Board."
         ],
         "warnings": [
-          "The Cocoknits counter has mixed owner reliability reports and remains a lower-scored alternative rather than a bundle anchor.",
-          "Clover's Mini item 3118 and standard item 336 are distinct variants; recheck the exact item, stock, and fulfillment timing before promotion.",
-          "Maker's Board owner reports conflict on value, stitching, durability, and magnetic-cable interaction. The stitching anecdotes do not establish a defect rate; product and pair scores were reduced, and the recipient's chart, tools, and return options require a pre-gift check."
+          "Independent editorial QA passed on exact evidence, article, and social hashes; the separate founder small-magnet approval gate remains open.",
+          "Recheck exact configuration and purchase availability immediately before promotion: Clover Mini item 3118 is currently shown backordered, and the Lands' End destination is a configurable Medium and Zip Top page.",
+          "Preserve the reduced Maker's Board score and pre-gift checks because owner reports conflict on value, stitching, durability, and magnetic-cable interaction.",
+          "All product links remain ordinary and unpaid; social publishing remains unauthorized."
         ],
         "highRiskClaims": [
           {
             "id": "claim-makers-board-magnet-boundary",
-            "text": "Cocoknits lists nine loose included magnets: four PLA-covered round magnets, two small uncovered round magnets, and three strong uncovered rectangular magnets. CPSC's general guidance for small magnets in non-toy products says to keep them away from young children or anyone likely to swallow them, inspect for missing pieces, and seek immediate medical attention if ingestion is suspected; that guidance is not an exact-product finding or recall for the Maker's Board.",
+            "text": "Cocoknits lists nine loose included magnets: four PLA-covered round magnets, two small uncovered round magnets, and three strong uncovered rectangular magnets. CPSC's general alert says small magnets in non-toy products may present the same ingestion hazard, advises keeping them away from young children, and says to seek immediate medical attention if a child may have swallowed one. This is general guidance, not an exact-product finding or recall for the Maker's Board. Count and store all nine magnets after use; skip the board where controlled storage is not realistic.",
             "sourceIds": [
               "src-makers-board-official",
               "src-cpsc-small-magnet-guidance"
@@ -122,8 +122,8 @@
           "social": "social/drafts/knitting-crochet-project-bag-row-counter-gift-pairs-launch.json"
         },
         "sourceSha256": {
-          "run": "afc512957357b2d01226bda0b3104057b616e3c2a28ab7b7f615044efa20880a",
-          "article": "ec08428c406968b7719359b1d6fc26fff109ecefca5bfa8efc92a0a00b2ea9b4",
+          "run": "729af037bf68402a509956d08280861f808236c4c782fbec722365e6795dd96a",
+          "article": "8d11738b55ebe5c75e0e8ae5e31845c9e974c928f762289222b97aa5cbffdf10",
           "social": "d72f7f6a657b352a8569640ecce7449950f625b341b4c9e756a063dc5a0ee682"
         },
         "nextGate": "Lucas reviews the exact high-risk claim language and reader-facing safety boundary; a separate independent editor then issues a new hash-bound receipt."
