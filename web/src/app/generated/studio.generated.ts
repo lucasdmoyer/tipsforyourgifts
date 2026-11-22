@@ -68,17 +68,17 @@ export const OPERATIONS: Operations = {
     ]
   },
   "automationReadiness": {
-    "schemaVersion": "1.0.0",
-    "observedAt": "2026-11-22T14:52:26.000Z",
+    "schemaVersion": "1.1.0",
+    "observedAt": "2026-11-22T15:18:34.000Z",
     "sourceMode": "versioned_snapshot_not_live_poll",
     "posture": "founder_action_required",
-    "summary": "The operating system can validate content and run a narrow affiliate pilot today. Research generation, automated previews, distribution, measurement, and production still require explicit bounded founder actions.",
+    "summary": "The operating system can validate content and run a narrow affiliate pilot today. Research generation, automated previews, distribution, measurement, release approval, and eventual keyless automatic publication still require explicit bounded founder actions.",
     "counts": {
-      "teams": 7,
+      "teams": 8,
       "ready": 1,
       "limited": 2,
-      "blocked": 3,
-      "founderActions": 5
+      "blocked": 4,
+      "founderActions": 6
     },
     "teams": [
       {
@@ -143,6 +143,15 @@ export const OPERATIONS: Operations = {
         "nextAction": "Lucas approves this exact SHA as the replacement release candidate and authorizes fast-forward integration into PR 33. Production remains a separate gate.",
         "actionUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/39#issuecomment-7080869696",
         "founderActionRequired": true
+      },
+      {
+        "id": "automatic-publication",
+        "label": "Proven automatic publication",
+        "status": "blocked_external_configuration",
+        "evidence": "Automatic-after-proven publication remains disabled, and its dedicated master-bound Google Workload Identity provider and service account have not been provisioned or verified. The founder-reviewed release ledger currently records 0 of 10 releases required before activation.",
+        "nextAction": "After ten verified founder-reviewed releases, separately approve and provision the dedicated tips-github-auto-production identity, then review the policy activation pull request and production environment boundary.",
+        "actionUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/issues/43",
+        "founderActionRequired": true
       }
     ],
     "externalGates": [
@@ -165,6 +174,16 @@ export const OPERATIONS: Operations = {
         "diagnosticUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/runs/44998331230",
         "nextAction": "Create or enable the narrowly scoped tips-github-preview pool and github-preview provider for pull-request merge refs and the master-pinned reusable preview workflow.",
         "authorityBoundary": "Use short-lived impersonation for Firebase Hosting previews only. No Firebase Auth Admin, user-managed service-account key, or production Hosting authorization."
+      },
+      {
+        "id": "firebase-auto-production-identity",
+        "label": "Keyless automatic-production identity",
+        "status": "blocked_external_configuration",
+        "summary": "Automatic-after-proven publication remains disabled, and its dedicated master-bound Google Workload Identity provider and service account have not been provisioned or verified.",
+        "evidenceUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/issues/43",
+        "diagnosticUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/firebase-auto-production.yml",
+        "nextAction": "After ten verified founder-reviewed releases, separately approve and provision the dedicated tips-github-auto-production identity, then review the policy activation pull request and production environment boundary.",
+        "authorityBoundary": "Use short-lived impersonation only for the master-pinned automatic Firebase Hosting workflow. No Firebase Auth Admin, user-managed service-account key, database access, affiliate activation, social publishing, or policy bypass."
       }
     ],
     "releaseCandidate": {

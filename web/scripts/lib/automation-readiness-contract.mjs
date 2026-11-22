@@ -12,7 +12,7 @@ const teamStatus = z.enum([
 ]);
 
 const externalGateSchema = z.object({
-  id: z.enum(['openai-platform-credential', 'firebase-preview-identity']),
+  id: z.enum(['openai-platform-credential', 'firebase-preview-identity', 'firebase-auto-production-identity']),
   label: z.string().min(12),
   status: z.literal('blocked_external_configuration'),
   summary: z.string().min(60),
@@ -33,15 +33,15 @@ const releaseCandidateSchema = z.object({
 }).strict();
 
 export const automationReadinessEvidenceSchema = z.object({
-  schemaVersion: z.literal('1.0.0'),
+  schemaVersion: z.literal('1.1.0'),
   observedAt: z.string().datetime(),
   sourceMode: z.literal('versioned_snapshot_not_live_poll'),
-  externalGates: z.array(externalGateSchema).length(2),
+  externalGates: z.array(externalGateSchema).length(3),
   releaseCandidate: releaseCandidateSchema
 }).strict().superRefine((evidence, context) => {
   const ids = evidence.externalGates.map((gate) => gate.id);
   if (new Set(ids).size !== ids.length) context.addIssue({ code: z.ZodIssueCode.custom, path: ['externalGates'], message: 'external gate IDs must be unique' });
-  for (const requiredId of ['openai-platform-credential', 'firebase-preview-identity']) {
+  for (const requiredId of ['openai-platform-credential', 'firebase-preview-identity', 'firebase-auto-production-identity']) {
     if (!ids.includes(requiredId)) context.addIssue({ code: z.ZodIssueCode.custom, path: ['externalGates'], message: `missing required gate ${requiredId}` });
   }
   if (!evidence.releaseCandidate.previewUrl.includes(`--release-${evidence.releaseCandidate.sha.slice(0, 7)}-`)) {
@@ -50,7 +50,7 @@ export const automationReadinessEvidenceSchema = z.object({
 });
 
 const teamSchema = z.object({
-  id: z.enum(['research-generation', 'deterministic-quality', 'affiliate-monetization', 'social-distribution', 'growth-measurement', 'preview-delivery', 'production-release']),
+  id: z.enum(['research-generation', 'deterministic-quality', 'affiliate-monetization', 'social-distribution', 'growth-measurement', 'preview-delivery', 'production-release', 'automatic-publication']),
   label: z.string().min(6),
   status: teamStatus,
   evidence: z.string().min(20),
@@ -60,7 +60,7 @@ const teamSchema = z.object({
 }).strict();
 
 export const automationReadinessSchema = z.object({
-  schemaVersion: z.literal('1.0.0'),
+  schemaVersion: z.literal('1.1.0'),
   observedAt: z.string().datetime(),
   sourceMode: z.literal('versioned_snapshot_not_live_poll'),
   posture: z.literal('founder_action_required'),
@@ -72,8 +72,8 @@ export const automationReadinessSchema = z.object({
     blocked: z.number().int().nonnegative(),
     founderActions: z.number().int().nonnegative()
   }).strict(),
-  teams: z.array(teamSchema).length(7),
-  externalGates: z.array(externalGateSchema).length(2),
+  teams: z.array(teamSchema).length(8),
+  externalGates: z.array(externalGateSchema).length(3),
   releaseCandidate: releaseCandidateSchema
 }).strict().superRefine((readiness, context) => {
   const ids = readiness.teams.map((team) => team.id);
@@ -89,9 +89,12 @@ export const automationReadinessSchema = z.object({
 
 export function buildAutomationReadiness(input) {
   const evidence = automationReadinessEvidenceSchema.parse(input.evidence);
+  if (!Number.isInteger(input.verifiedFounderReviewedReleases) || input.verifiedFounderReviewedReleases < 0) throw new Error('verifiedFounderReviewedReleases must be a non-negative integer');
+  if (!Number.isInteger(input.minimumFounderReviewedReleases) || input.minimumFounderReviewedReleases < 10) throw new Error('minimumFounderReviewedReleases must be an integer of at least 10');
   const gateById = new Map(evidence.externalGates.map((gate) => [gate.id, gate]));
   const openAiGate = gateById.get('openai-platform-credential');
   const firebaseGate = gateById.get('firebase-preview-identity');
+  const autoProductionGate = gateById.get('firebase-auto-production-identity');
   const teams = [
     {
       id: 'research-generation',
@@ -163,14 +166,23 @@ export function buildAutomationReadiness(input) {
       nextAction: evidence.releaseCandidate.nextAction,
       actionUrl: evidence.releaseCandidate.reviewUrl,
       founderActionRequired: true
+    },
+    {
+      id: 'automatic-publication',
+      label: 'Proven automatic publication',
+      status: autoProductionGate.status,
+      evidence: `${autoProductionGate.summary} The founder-reviewed release ledger currently records ${input.verifiedFounderReviewedReleases} of ${input.minimumFounderReviewedReleases} releases required before activation.`,
+      nextAction: autoProductionGate.nextAction,
+      actionUrl: autoProductionGate.evidenceUrl,
+      founderActionRequired: true
     }
   ];
   const readiness = {
-    schemaVersion: '1.0.0',
+    schemaVersion: '1.1.0',
     observedAt: evidence.observedAt,
     sourceMode: evidence.sourceMode,
     posture: 'founder_action_required',
-    summary: 'The operating system can validate content and run a narrow affiliate pilot today. Research generation, automated previews, distribution, measurement, and production still require explicit bounded founder actions.',
+    summary: 'The operating system can validate content and run a narrow affiliate pilot today. Research generation, automated previews, distribution, measurement, release approval, and eventual keyless automatic publication still require explicit bounded founder actions.',
     counts: {
       teams: teams.length,
       ready: teams.filter((team) => team.status === 'ready').length,

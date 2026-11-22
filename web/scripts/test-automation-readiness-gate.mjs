@@ -14,17 +14,21 @@ const base = buildAutomationReadiness({
   activeSocialChannels: 0,
   socialDrafts: 78,
   activeGrowthConnectors: 0,
-  growthSnapshots: 0
+  growthSnapshots: 0,
+  verifiedFounderReviewedReleases: 0,
+  minimumFounderReviewedReleases: 10
 });
 
-assert.equal(base.teams.length, 7);
+assert.equal(base.teams.length, 8);
 assert.equal(base.counts.ready, 1);
 assert.equal(base.counts.limited, 2);
-assert.equal(base.counts.blocked, 3);
-assert.equal(base.counts.founderActions, 5);
+assert.equal(base.counts.blocked, 4);
+assert.equal(base.counts.founderActions, 6);
 assert.equal(base.teams.find((team) => team.id === 'research-generation').status, 'blocked_external_configuration');
 assert.equal(base.teams.find((team) => team.id === 'preview-delivery').status, 'manual_fallback_verified');
 assert.equal(base.teams.find((team) => team.id === 'production-release').status, 'founder_approval_required');
+assert.equal(base.teams.find((team) => team.id === 'automatic-publication').status, 'blocked_external_configuration');
+assert.match(base.teams.find((team) => team.id === 'automatic-publication').evidence, /0 of 10/);
 assert.equal(base.releaseCandidate.sha, evidence.releaseCandidate.sha);
 
 const clone = (value) => structuredClone(value);
@@ -52,14 +56,30 @@ const fullyConfigured = buildAutomationReadiness({
   activeSocialChannels: 1,
   socialDrafts: 78,
   activeGrowthConnectors: 1,
-  growthSnapshots: 1
+  growthSnapshots: 1,
+  verifiedFounderReviewedReleases: 3,
+  minimumFounderReviewedReleases: 10
 });
 assert.equal(fullyConfigured.teams.find((team) => team.id === 'social-distribution').status, 'limited_live');
 assert.equal(fullyConfigured.teams.find((team) => team.id === 'growth-measurement').status, 'limited_live');
+assert.match(fullyConfigured.teams.find((team) => team.id === 'automatic-publication').evidence, /3 of 10/);
+
+assert.throws(() => buildAutomationReadiness({
+  evidence,
+  validatedRuns: 14,
+  publicationReadyPosts: 10,
+  activeAffiliateOverlays: 1,
+  activeSocialChannels: 0,
+  socialDrafts: 78,
+  activeGrowthConnectors: 0,
+  growthSnapshots: 0,
+  verifiedFounderReviewedReleases: -1,
+  minimumFounderReviewedReleases: 10
+}), /verifiedFounderReviewedReleases/);
 
 console.log(JSON.stringify({
   automationReadinessGateTests: 'passed',
-  negativeChecks: 6,
+  negativeChecks: 7,
   teams: base.teams.length,
   ready: base.counts.ready,
   limited: base.counts.limited,

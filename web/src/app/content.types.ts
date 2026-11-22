@@ -134,14 +134,14 @@ export type AutomationTeamStatus =
   | 'founder_approval_required';
 
 export interface AutomationReadiness {
-  schemaVersion: '1.0.0';
+  schemaVersion: '1.1.0';
   observedAt: string;
   sourceMode: 'versioned_snapshot_not_live_poll';
   posture: 'founder_action_required';
   summary: string;
   counts: { teams: number; ready: number; limited: number; blocked: number; founderActions: number };
   teams: Array<{
-    id: 'research-generation' | 'deterministic-quality' | 'affiliate-monetization' | 'social-distribution' | 'growth-measurement' | 'preview-delivery' | 'production-release';
+    id: 'research-generation' | 'deterministic-quality' | 'affiliate-monetization' | 'social-distribution' | 'growth-measurement' | 'preview-delivery' | 'production-release' | 'automatic-publication';
     label: string;
     status: AutomationTeamStatus;
     evidence: string;
@@ -150,7 +150,7 @@ export interface AutomationReadiness {
     founderActionRequired: boolean;
   }>;
   externalGates: Array<{
-    id: 'openai-platform-credential' | 'firebase-preview-identity';
+    id: 'openai-platform-credential' | 'firebase-preview-identity' | 'firebase-auto-production-identity';
     label: string;
     status: 'blocked_external_configuration';
     summary: string;

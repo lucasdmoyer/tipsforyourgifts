@@ -29,6 +29,7 @@
 - Complete at least ten successful founder-reviewed production deployments recorded in the GitHub `production` environment.
 - Review correction rate, preview failures, incident history, and rollback drills before changing the policy.
 - Enable GitHub auto-merge and retain required content-quality and Firebase-preview checks.
+- Provision the dedicated `tips-github-auto-production/github-auto-production` provider and `github-auto-production@tipsforyourgifts.iam.gserviceaccount.com` only after action-time approval. Bind it to the immutable repository and owner IDs, `push`, `refs/heads/master`, and the exact master-pinned automatic workflow path; create no user-managed key and grant no Firebase Auth Admin role.
 - Confirm the automatic release workflow clones the current Firebase live release to a unique rollback channel before live mutation and issues no success receipt before hosted smoke.
 - Merge the publication-policy pull request only after intentionally deciding whether to remove the production environment's per-release reviewer.
 - Test the emergency return to `founder_reviewed` mode and notification path.
