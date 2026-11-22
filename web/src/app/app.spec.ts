@@ -75,6 +75,9 @@ describe('App', () => {
     const image = fixture.nativeElement.querySelector('.product-context-visual img') as HTMLImageElement;
     const link = fixture.nativeElement.querySelector('[data-event-name="merchant_outbound_click"]') as HTMLAnchorElement;
     expect(image.src).toContain('/blog-images/');
+    expect(image.getAttribute('srcset')).toContain('-768.webp 768w');
+    expect(image.getAttribute('srcset')).toContain('.webp 1536w');
+    expect(image.getAttribute('sizes')).toContain('100vw');
     expect(image.alt.length).toBeGreaterThan(40);
     expect(image.getAttribute('aria-hidden')).toBeNull();
     expect(fixture.nativeElement.textContent).toContain('not a product photo');
@@ -112,6 +115,9 @@ describe('App', () => {
         expect(element.textContent).toContain('Before you buy');
         expect(pairImages).toHaveLength(1);
         expect(pairImages[0].src).toContain('/blog-images/');
+        expect(pairImages[0].getAttribute('srcset')).toContain('-768.webp 768w');
+        expect(pairImages[0].getAttribute('srcset')).toContain('.webp 1536w');
+        expect(pairImages[0].getAttribute('sizes')).toContain('100vw');
         expect((pairImages[0].getAttribute('alt') ?? '').length).toBeGreaterThan(40);
         expect(element.querySelector('.pairing-context-visual figcaption')?.textContent).toContain('not product photography');
         expect(Array.from(productLinks).map((link) => link.href)).toEqual([anchor.url, companion.url]);
