@@ -1,25 +1,17 @@
 import { DatePipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, InjectionToken } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
-import type { Growth, Operations, Strategy, StrategyIdea } from './content.types';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import type { StrategyIdea } from './content.types';
 import { assessFounderBrief, buildFounderBriefMarkdown, buildStrategyIssueUrl, EMPTY_FOUNDER_BRIEF, type FounderBriefDraft } from './founder-brief';
 import { assessFounderScoutDirection, buildFounderScoutDirectionMarkdown, buildFounderScoutIssueUrl, EMPTY_FOUNDER_SCOUT_DIRECTION, type FounderScoutDirectionDraft } from './founder-scout-direction';
 import { SeoService } from './seo.service';
+import { STUDIO_DATA, STUDIO_DATA_PROVIDER } from './studio-data';
 
-export interface StudioData {
-  operations: Operations;
-  strategy: Strategy;
-  growth: Growth;
-}
-
-export const STUDIO_DATA = new InjectionToken<StudioData>('STUDIO_DATA');
+export { STUDIO_DATA } from './studio-data';
 
 @Component({
   imports: [DatePipe, RouterLink],
-  providers: [{
-    provide: STUDIO_DATA,
-    useFactory: () => inject(ActivatedRoute).snapshot.data['studioData'] as StudioData
-  }],
+  providers: [STUDIO_DATA_PROVIDER],
   template: `
     <section class="shell studio-hero">
       <p class="eyebrow">Executive studio</p><h1>Set the direction. Let the system run.</h1>
@@ -32,7 +24,7 @@ export const STUDIO_DATA = new InjectionToken<StudioData>('STUDIO_DATA');
             <p><strong>Team recommendation:</strong> {{ firstDecision.recommendation }}</p>
           </div>
           <div class="studio-command-actions">
-            <a class="button" href="#founder-agenda">Review {{ content.operations.founderAgenda.decisions.length }} decision{{ content.operations.founderAgenda.decisions.length === 1 ? '' : 's' }}</a>
+            <a class="button" routerLink="/studio/decisions">Open decision inbox</a>
             <a class="button secondary" routerLink="/studio/brief">Give the team a direction</a>
           </div>
         </div>

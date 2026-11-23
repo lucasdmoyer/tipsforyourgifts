@@ -29,6 +29,7 @@ export const routes: Routes = [
   { path: 'standards', loadComponent: page('StandardsPage') },
   { path: 'affiliate-disclosure', loadComponent: page('AffiliateDisclosurePage') },
   { path: 'studio', loadComponent: studioPage('StudioPage'), resolve: { studioData } },
+  { path: 'studio/decisions', loadComponent: () => import('./decision-inbox-page').then(({ DecisionInboxPage }) => DecisionInboxPage), resolve: { studioData } },
   { path: 'studio/brief', loadComponent: studioPage('FounderBriefPage') },
   { path: '**', loadComponent: page('NotFoundPage') }
 ];
