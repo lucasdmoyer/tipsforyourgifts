@@ -76,6 +76,7 @@ describe('App', () => {
     const link = fixture.nativeElement.querySelector('[data-event-name="merchant_outbound_click"]') as HTMLAnchorElement;
     expect(image.src).toContain('/blog-images/');
     expect(image.getAttribute('srcset')).toContain('-768.webp 768w');
+    expect(image.getAttribute('srcset')).toContain('-1200.webp 1200w');
     expect(image.getAttribute('srcset')).toContain('.webp 1536w');
     expect(image.getAttribute('sizes')).toContain('100vw');
     expect(image.alt.length).toBeGreaterThan(40);
@@ -116,6 +117,7 @@ describe('App', () => {
         expect(pairImages).toHaveLength(1);
         expect(pairImages[0].src).toContain('/blog-images/');
         expect(pairImages[0].getAttribute('srcset')).toContain('-768.webp 768w');
+        expect(pairImages[0].getAttribute('srcset')).toContain('-1200.webp 1200w');
         expect(pairImages[0].getAttribute('srcset')).toContain('.webp 1536w');
         expect(pairImages[0].getAttribute('sizes')).toContain('100vw');
         expect((pairImages[0].getAttribute('alt') ?? '').length).toBeGreaterThan(40);

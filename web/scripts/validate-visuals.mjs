@@ -178,6 +178,15 @@ for (const asset of assets.values()) {
     } catch (error) {
       errors.push(`${asset.id}: cannot read responsive derivative ${path.relative(root, responsivePath)} (${error.message})`);
     }
+    const desktopPath = publicPath.replace(/\.webp$/, '-1200.webp');
+    try {
+      const desktopBuffer = await fs.readFile(desktopPath);
+      expect(desktopBuffer.length <= 140 * 1024, `${asset.id}: 1200px responsive WebP exceeds 140 KiB`);
+      const desktopDimensions = webpDimensions(desktopBuffer);
+      expect(desktopDimensions?.width === 1200 && desktopDimensions?.height === 800, `${asset.id}: desktop responsive WebP must be exactly 1200x800, got ${desktopDimensions ? `${desktopDimensions.width}x${desktopDimensions.height}` : 'unreadable dimensions'}`);
+    } catch (error) {
+      errors.push(`${asset.id}: cannot read desktop responsive derivative ${path.relative(root, desktopPath)} (${error.message})`);
+    }
   }
   if (isDraft) expect(!(await fileExists(publicPath)), `${asset.id}: draft-only asset must not exist under public/`);
   if (isPublic) expect(!(await fileExists(draftPath)), `${asset.id}: public asset must not have a stale draft delivery copy`);
@@ -193,12 +202,16 @@ for (const directory of await fs.readdir(publicImageRoot, { withFileTypes: true 
 }
 const registeredPublicSources = new Set([...publicAssetIds].map((id) => assets.get(id)?.src));
 const registeredResponsiveSources = new Set([...registeredPublicSources].map((src) => src?.replace(/\.webp$/, '-768.webp')));
-const originalPublicWebps = publicWebps.filter((src) => !src.endsWith('-768.webp'));
+const registeredDesktopSources = new Set([...registeredPublicSources].map((src) => src?.replace(/\.webp$/, '-1200.webp')));
+const originalPublicWebps = publicWebps.filter((src) => !src.endsWith('-768.webp') && !src.endsWith('-1200.webp'));
 const responsivePublicWebps = publicWebps.filter((src) => src.endsWith('-768.webp'));
+const desktopPublicWebps = publicWebps.filter((src) => src.endsWith('-1200.webp'));
 for (const src of originalPublicWebps) expect(registeredPublicSources.has(src), `Unregistered deployable visual: ${src}`);
 for (const src of responsivePublicWebps) expect(registeredResponsiveSources.has(src), `Unregistered responsive visual: ${src}`);
+for (const src of desktopPublicWebps) expect(registeredDesktopSources.has(src), `Unregistered desktop responsive visual: ${src}`);
 expect(originalPublicWebps.length === publicAssetIds.size, `Deployable original WebP count ${originalPublicWebps.length} must match ${publicAssetIds.size} public registry assets`);
 expect(responsivePublicWebps.length === publicAssetIds.size, `Deployable responsive WebP count ${responsivePublicWebps.length} must match ${publicAssetIds.size} public registry assets`);
+expect(desktopPublicWebps.length === publicAssetIds.size, `Deployable desktop responsive WebP count ${desktopPublicWebps.length} must match ${publicAssetIds.size} public registry assets`);
 
 const productCount = [...articles.values()].reduce((sum, article) => sum + article.products.length, 0);
 const pairCount = [...articles.values()].reduce((sum, article) => sum + article.pairs.length, 0);
@@ -215,4 +228,4 @@ if (errors.length > 0) {
   process.exit(1);
 }
 
-console.log(`Validated ${assets.size} original visuals (${publicAssetIds.size} public with 768px responsive derivatives, ${draftAssetIds.size} draft-only) across ${articles.size} articles, ${productCount} products, and ${pairCount} pairs`);
+console.log(`Validated ${assets.size} original visuals (${publicAssetIds.size} public with 768px and 1200px responsive derivatives, ${draftAssetIds.size} draft-only) across ${articles.size} articles, ${productCount} products, and ${pairCount} pairs`);
