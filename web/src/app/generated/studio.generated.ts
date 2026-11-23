@@ -123,7 +123,7 @@ export const OPERATIONS: Operations = {
   },
   "automationReadiness": {
     "schemaVersion": "1.1.0",
-    "observedAt": "2026-11-23T14:03:51.000Z",
+    "observedAt": "2026-11-23T18:30:10.000Z",
     "sourceMode": "versioned_snapshot_not_live_poll",
     "posture": "founder_action_required",
     "summary": "The operating system can validate content and run a narrow affiliate pilot today. Research generation, automated previews, distribution, measurement, release approval, and eventual keyless automatic publication still require explicit bounded founder actions.",
@@ -139,9 +139,9 @@ export const OPERATIONS: Operations = {
         "id": "research-generation",
         "label": "Research generation",
         "status": "blocked_external_configuration",
-        "evidence": "A read-only GitHub check found no repository or production-environment secret named OPENAI_API_KEY, and the versioned policy still has no founder-approved OpenAI project hard limit or earlier spend alert; scheduled research therefore stops before any model call.",
+        "evidence": "The versioned policy still records no founder-approved OpenAI project hard limit, earlier spend alert, or verified dedicated credential; scheduled research therefore remains fail-closed before any model call.",
         "nextAction": "Lucas first approves and configures an OpenAI project hard spend limit plus an earlier alert; only afterward may the dedicated project key be stored as OPENAI_API_KEY and separately verified.",
-        "actionUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/57#issuecomment-7091612791",
+        "actionUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/issues/37#issuecomment-7102214382",
         "founderActionRequired": true
       },
       {
@@ -184,18 +184,18 @@ export const OPERATIONS: Operations = {
         "id": "preview-delivery",
         "label": "Firebase preview delivery",
         "status": "manual_fallback_verified",
-        "evidence": "The exact PR-84 Firebase preview passed Node 24.14 validation, a 20-route build, static and hosted smoke checks across 11 publication-ready articles, and visual review. Mobile Lighthouse scored 100 for performance, accessibility, and best practices, with 0.8 second LCP, 60 millisecond total blocking time, and zero layout shift. Automated keyless delivery remains blocked: PR 84's protected validation and exact-artifact build pass, but automated deploy stops at Google authentication because the tips-github-preview/github-preview Workload Identity provider is missing; the exact commit was reviewed through the manual Firebase preview fallback.",
-        "nextAction": "Approve and provision GitHub OIDC trust only for repository lucasdmoyer/tipsforyourgifts, actor lucasdmoyer, and ref refs/pull/84/merge, with the existing Firebase Hosting Admin role limited to the PR-84 preview workflow.",
-        "actionUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/84#issuecomment-7103277446",
+        "evidence": "The exact PR-90 Firebase preview passed Node 24.14 validation, a 22-route static build with an 81.63 kB initial transfer, hosted smoke checks across 11 publication-ready articles, and visual review. Lighthouse scored 100 for performance, accessibility, and best practices on both the home page and canonical Studio, with 1.4 second LCP, 20 millisecond total blocking time, and zero layout shift. Automated keyless delivery remains blocked: PR 90's protected validation, exact-artifact build, and immutable preview boundary pass, but automated deploy stops at Google authentication because PR-90-specific tips-github-preview/github-preview Workload Identity trust is not provisioned; the exact commit was reviewed through the manual Firebase preview fallback.",
+        "nextAction": "Approve and provision GitHub OIDC trust only for repository lucasdmoyer/tipsforyourgifts, actor lucasdmoyer, and ref refs/pull/90/merge, with Firebase Hosting Admin usable only by the PR-90 preview workflow.",
+        "actionUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/90#issuecomment-7109024667",
         "founderActionRequired": true
       },
       {
         "id": "production-release",
         "label": "Production release",
         "status": "founder_approval_required",
-        "evidence": "Exact candidate d07ffbde27a75245985c7a03dad7c3a7f6783f05 has a reviewed Firebase preview; production remains unchanged and separately gated.",
-        "nextAction": "Provision the PR-84-only OIDC preview trust, require the protected preview workflow to pass on unchanged SHA d07ffbde27a75245985c7a03dad7c3a7f6783f05, then merge without an admin bypass; request fresh exact-master-SHA approval before any production deployment because merge identity may differ.",
-        "actionUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/84#issuecomment-7103277446",
+        "evidence": "Exact candidate 2812fe32c0618633dfae7746540da9a9fa729be6 has a reviewed Firebase preview; production remains unchanged and separately gated.",
+        "nextAction": "Provision PR-90-only OIDC preview trust, require the protected preview workflow to pass on unchanged SHA 2812fe32c0618633dfae7746540da9a9fa729be6, then merge without an admin bypass; request fresh exact-master-SHA approval before any production deployment because merge identity may differ.",
+        "actionUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/90#issuecomment-7109617164",
         "founderActionRequired": true
       },
       {
@@ -213,9 +213,9 @@ export const OPERATIONS: Operations = {
         "id": "openai-platform-credential",
         "label": "Research model credential",
         "status": "blocked_external_configuration",
-        "summary": "A read-only GitHub check found no repository or production-environment secret named OPENAI_API_KEY, and the versioned policy still has no founder-approved OpenAI project hard limit or earlier spend alert; scheduled research therefore stops before any model call.",
-        "evidenceUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/57#issuecomment-7091612791",
-        "diagnosticUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/57",
+        "summary": "The versioned policy still records no founder-approved OpenAI project hard limit, earlier spend alert, or verified dedicated credential; scheduled research therefore remains fail-closed before any model call.",
+        "evidenceUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/issues/37#issuecomment-7102214382",
+        "diagnosticUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/issues/37",
         "nextAction": "Lucas first approves and configures an OpenAI project hard spend limit plus an earlier alert; only afterward may the dedicated project key be stored as OPENAI_API_KEY and separately verified.",
         "authorityBoundary": "The proposed $50 hard limit and $25 alert are planning-only, not approved. No credential value may be displayed, logged, downloaded, committed, or placed in Studio data, and model activation remains a separate exact-policy gate."
       },
@@ -223,10 +223,10 @@ export const OPERATIONS: Operations = {
         "id": "firebase-preview-identity",
         "label": "Keyless Firebase preview identity",
         "status": "blocked_external_configuration",
-        "summary": "PR 84's protected validation and exact-artifact build pass, but automated deploy stops at Google authentication because the tips-github-preview/github-preview Workload Identity provider is missing; the exact commit was reviewed through the manual Firebase preview fallback.",
-        "evidenceUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/84#issuecomment-7103277446",
-        "diagnosticUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/runs/45179737865",
-        "nextAction": "Approve and provision GitHub OIDC trust only for repository lucasdmoyer/tipsforyourgifts, actor lucasdmoyer, and ref refs/pull/84/merge, with the existing Firebase Hosting Admin role limited to the PR-84 preview workflow.",
+        "summary": "PR 90's protected validation, exact-artifact build, and immutable preview boundary pass, but automated deploy stops at Google authentication because PR-90-specific tips-github-preview/github-preview Workload Identity trust is not provisioned; the exact commit was reviewed through the manual Firebase preview fallback.",
+        "evidenceUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/90#issuecomment-7109024667",
+        "diagnosticUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/runs/45229851048",
+        "nextAction": "Approve and provision GitHub OIDC trust only for repository lucasdmoyer/tipsforyourgifts, actor lucasdmoyer, and ref refs/pull/90/merge, with Firebase Hosting Admin usable only by the PR-90 preview workflow.",
         "authorityBoundary": "Use short-lived impersonation for Firebase Hosting previews only. No Firebase Auth Admin, user-managed service-account key, or production Hosting authorization."
       },
       {
@@ -242,12 +242,12 @@ export const OPERATIONS: Operations = {
     ],
     "releaseCandidate": {
       "status": "exact_preview_verified",
-      "sha": "d07ffbde27a75245985c7a03dad7c3a7f6783f05",
-      "pullRequestUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/84",
-      "reviewUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/84#issuecomment-7103277446",
-      "previewUrl": "https://tipsforyourgifts--pr83-d07ffbd-qpgk679y.web.app/",
-      "summary": "The exact PR-84 Firebase preview passed Node 24.14 validation, a 20-route build, static and hosted smoke checks across 11 publication-ready articles, and visual review. Mobile Lighthouse scored 100 for performance, accessibility, and best practices, with 0.8 second LCP, 60 millisecond total blocking time, and zero layout shift.",
-      "nextAction": "Provision the PR-84-only OIDC preview trust, require the protected preview workflow to pass on unchanged SHA d07ffbde27a75245985c7a03dad7c3a7f6783f05, then merge without an admin bypass; request fresh exact-master-SHA approval before any production deployment because merge identity may differ."
+      "sha": "2812fe32c0618633dfae7746540da9a9fa729be6",
+      "pullRequestUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/90",
+      "reviewUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/90#issuecomment-7109617164",
+      "previewUrl": "https://tipsforyourgifts--pr89-2812fe3-md92ks8h.web.app/",
+      "summary": "The exact PR-90 Firebase preview passed Node 24.14 validation, a 22-route static build with an 81.63 kB initial transfer, hosted smoke checks across 11 publication-ready articles, and visual review. Lighthouse scored 100 for performance, accessibility, and best practices on both the home page and canonical Studio, with 1.4 second LCP, 20 millisecond total blocking time, and zero layout shift.",
+      "nextAction": "Provision PR-90-only OIDC preview trust, require the protected preview workflow to pass on unchanged SHA 2812fe32c0618633dfae7746540da9a9fa729be6, then merge without an admin bypass; request fresh exact-master-SHA approval before any production deployment because merge identity may differ."
     }
   },
   "aiAutomationPolicy": {
