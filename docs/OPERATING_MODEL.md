@@ -76,6 +76,8 @@ The site also publishes a credential-free RSS feed generated deterministically f
 
 High-intent gift paths are also deterministic views over the publication-ready catalog. They group existing guides by public recipient signals or qualified pair coverage, require at least three shopping guides, and fail validation if a path becomes thin, duplicates another path, or includes a non-shopping editorial article. The paths create no new product claim and do not change recommendation order or affiliate eligibility.
 
+Every public article includes a reader-controlled sharing surface that uses the browser's native share sheet when available and otherwise copies only the stable first-party article URL. It carries deterministic aggregate event labels for future measurement but installs no analytics client, sends nothing automatically, and never changes or decorates merchant destinations.
+
 Track content-level impressions, clicks, engaged sessions, outbound merchant clicks, approved affiliate conversions, revenue, and article age. The first decision is whether a page helps a reader; the second is whether qualified traffic grows; revenue comes after both.
 
 Aggregate measurement lives in `web/src/data/growth.json` under the contract in `docs/GROWTH_MEASUREMENT.md`. Search Console setup uses separate hash-bound configuration and protected activation pull requests. Only an active connector allows the Friday OIDC collector to request finalized, page-filtered data with the read-only scope and propose an aggregate snapshot; the job exits before authentication otherwise. The Monday growth-review job is intentionally a proposal engine: it produces no patch when evidence is missing, and any material experiment still enters through a founder-reviewed pull request.

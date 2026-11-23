@@ -147,7 +147,7 @@ for (const article of readyArticles) {
   try { html = await fs.readFile(path.join(dist, relativePath), 'utf8'); }
   catch { failures.push(`${article.slug}: missing prerendered article`); continue; }
   const readerTitle = article.slug === 'how-we-research-gifts' ? 'The Gift Hiding in Plain Sight' : article.title;
-  for (const marker of [readerTitle, 'Start with the person', 'If you know someone', 'application/ld+json']) {
+  for (const marker of [readerTitle, 'Start with the person', 'If you know someone', 'Know who this sounds like?', 'data-event-name="article_share"', 'data-share-method="copy"', 'application/ld+json']) {
     if (!html.includes(marker)) failures.push(`${article.slug}: article HTML missing ${JSON.stringify(marker)}`);
   }
   if (!blogIndex.includes(readerTitle)) failures.push(`${article.slug}: missing from blog index`);

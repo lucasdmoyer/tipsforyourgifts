@@ -2,13 +2,14 @@ import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { PairCardComponent, ProductCardComponent } from './article-components';
+import { ArticleShareComponent } from './article-share';
 import type { Article, VisualAsset } from './content.types';
 import { readerBodyComesFirst, readerBodyHtml, readerDescription, readerEvidenceHtml, readerGiftIdea, readerLanguage, readerLead, readerTitle } from './reader-copy';
 import { responsiveImageSrcset } from './responsive-image';
 import { SeoService } from './seo.service';
 
 @Component({
-  imports: [DatePipe, RouterLink, ProductCardComponent, PairCardComponent],
+  imports: [DatePipe, RouterLink, ProductCardComponent, PairCardComponent, ArticleShareComponent],
   template: `
     @if (article) {
       <article class="article-shell">
@@ -81,6 +82,7 @@ import { SeoService } from './seo.service';
             <div class="prose" [innerHTML]="evidence(article)"></div>
           </section>
         }
+        <tfg-article-share [articleSlug]="article.slug" [articleTitle]="title(article)" [articleDescription]="description(article)" />
       </article>
     } @else {
       <section class="shell section">
