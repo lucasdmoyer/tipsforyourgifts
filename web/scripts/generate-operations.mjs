@@ -391,6 +391,7 @@ const founderAgenda = buildFounderAgenda({
   publicationPolicy,
   publicationManifest,
   livePublication,
+  automationReadinessEvidence,
   growth,
   openStrategyProposals: proposedIdeas,
   maxOpenStrategyProposals: opportunityPolicy.maxOpenProposals,

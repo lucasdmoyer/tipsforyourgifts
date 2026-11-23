@@ -76,6 +76,9 @@ export function buildFounderAgenda(input) {
   const decisions = [];
   const release = input.publicationManifest;
   const latestLiveRelease = input.livePublication.latestVerifiedContentRelease;
+  const reviewedReleaseCandidate = input.automationReadinessEvidence?.releaseCandidate?.status === 'exact_preview_verified'
+    ? input.automationReadinessEvidence.releaseCandidate
+    : null;
   const candidateContentIsVerifiedLive = input.livePublication.status === 'verified_managed_content_release' &&
     latestLiveRelease?.publicationManifest.contentSetSha256 === release.contentSetSha256;
   if (release.counts.articles > 0 && !candidateContentIsVerifiedLive) {
@@ -86,31 +89,47 @@ export function buildFounderAgenda(input) {
       priorityScore: 100,
       horizon: 'now',
       category: 'release',
-      title: hasManagedLiveRelease ? 'Review the next accountable Angular release' : 'Review the first accountable Angular release',
-      recommendation: `Review ${release.manifestId} as the ${hasManagedLiveRelease ? 'next' : 'first'} founder-controlled Firebase release candidate.`,
-      decisionQuestion: hasManagedLiveRelease ? 'Should this exact reviewed content set replace the currently verified live set?' : 'Does this exact content set represent the site you want readers to see first?',
-      rationale: hasManagedLiveRelease
-        ? 'The candidate adds reviewed content and operating improvements beyond the verified live set, but it must retain exact-SHA preview, rollback, and founder-control evidence before replacement.'
-        : 'The research and release machinery cannot create traffic, trust, or revenue while the modern reviewed site remains only a local candidate.',
+      title: reviewedReleaseCandidate
+        ? 'Unblock the reviewed exact release candidate'
+        : hasManagedLiveRelease ? 'Review the next accountable Angular release' : 'Review the first accountable Angular release',
+      recommendation: reviewedReleaseCandidate
+        ? `Keep ${release.manifestId} bound to reviewed SHA ${reviewedReleaseCandidate.sha}; clear only its stated keyless preview blocker before merge.`
+        : `Review ${release.manifestId} as the ${hasManagedLiveRelease ? 'next' : 'first'} founder-controlled Firebase release candidate.`,
+      decisionQuestion: reviewedReleaseCandidate
+        ? 'Will you authorize only the pull-request-scoped keyless preview trust needed for this unchanged candidate to satisfy its required check?'
+        : hasManagedLiveRelease ? 'Should this exact reviewed content set replace the currently verified live set?' : 'Does this exact content set represent the site you want readers to see first?',
+      rationale: reviewedReleaseCandidate
+        ? 'The exact manual Firebase preview and founder review are recorded, while the protected preview workflow still stops before Firebase authentication; the next decision is identity scope, not production deployment.'
+        : hasManagedLiveRelease
+          ? 'The candidate adds reviewed content and operating improvements beyond the verified live set, but it must retain exact-SHA preview, rollback, and founder-control evidence before replacement.'
+          : 'The research and release machinery cannot create traffic, trust, or revenue while the modern reviewed site remains only a local candidate.',
       evidence: [
         `${release.counts.articles} publication-ready articles are in the candidate set.`,
         `${release.counts.independentReviews} independent QA receipts are hash-bound to those articles.`,
-        `${release.counts.socialDrafts} reviewed social drafts are prepared for later distribution.`,
+        reviewedReleaseCandidate
+          ? `Reviewed candidate ${reviewedReleaseCandidate.sha} is recorded at ${reviewedReleaseCandidate.pullRequestUrl}.`
+          : `${release.counts.socialDrafts} reviewed social drafts are prepared for later distribution.`,
         latestLiveRelease
           ? `The latest Git-recorded live content set is ${latestLiveRelease.publicationManifest.manifestId}, which differs from this candidate.`
           : 'No managed Firebase content-release receipt is durably recorded in Git yet.'
       ],
-      unlocks: 'A protected exact-SHA preview and founder-reviewed Firebase release establish the owned destination for every later growth and affiliate action.',
-      tradeoff: hasManagedLiveRelease
-        ? 'Replacing the live set advances the publication but creates a new monitoring and rollback obligation; affiliate and social authority remain separately bounded.'
-        : 'The first release creates a public baseline and monitoring responsibility, while affiliate links and social publishing remain separately disabled.',
-      guardrail: 'Commit and review the exact candidate first; the workflow must still clone live, expose the preview, require founder approval, smoke production, and mint a manifest-bound receipt.',
+      unlocks: reviewedReleaseCandidate
+        ? 'A passing protected preview check permits the unchanged candidate to merge without bypass; production preview and deployment authority remain separate.'
+        : 'A protected exact-SHA preview and founder-reviewed Firebase release establish the owned destination for every later growth and affiliate action.',
+      tradeoff: reviewedReleaseCandidate
+        ? 'Provisioning pull-request trust adds a narrow cloud identity boundary that must be removed or rotated when obsolete, but it avoids a long-lived key and grants no live-channel authority.'
+        : hasManagedLiveRelease
+          ? 'Replacing the live set advances the publication but creates a new monitoring and rollback obligation; affiliate and social authority remain separately bounded.'
+          : 'The first release creates a public baseline and monitoring responsibility, while affiliate links and social publishing remain separately disabled.',
+      guardrail: reviewedReleaseCandidate
+        ? reviewedReleaseCandidate.nextAction
+        : 'Commit and review the exact candidate first; the workflow must still clone live, expose the preview, require founder approval, smoke production, and mint a manifest-bound receipt.',
       reversibility: 'high',
       founderActionRequired: true,
       action: {
-        label: 'Open release workflow',
-        url: 'https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/firebase-production.yml',
-        command: 'gh workflow run firebase-production.yml -f release_sha=<approved-master-sha>'
+        label: reviewedReleaseCandidate ? 'Open exact release candidate' : 'Open release workflow',
+        url: reviewedReleaseCandidate?.pullRequestUrl ?? 'https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/firebase-production.yml',
+        command: reviewedReleaseCandidate ? null : 'gh workflow run firebase-production.yml -f release_sha=<approved-master-sha>'
       }
     });
   }

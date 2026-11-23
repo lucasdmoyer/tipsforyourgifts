@@ -14,25 +14,25 @@
         "priorityScore": 100,
         "horizon": "now",
         "category": "release",
-        "title": "Review the next accountable Angular release",
-        "recommendation": "Review publication-set-8f82fd7548201471 as the next founder-controlled Firebase release candidate.",
-        "decisionQuestion": "Should this exact reviewed content set replace the currently verified live set?",
-        "rationale": "The candidate adds reviewed content and operating improvements beyond the verified live set, but it must retain exact-SHA preview, rollback, and founder-control evidence before replacement.",
+        "title": "Unblock the reviewed exact release candidate",
+        "recommendation": "Keep publication-set-8f82fd7548201471 bound to reviewed SHA 2812fe32c0618633dfae7746540da9a9fa729be6; clear only its stated keyless preview blocker before merge.",
+        "decisionQuestion": "Will you authorize only the pull-request-scoped keyless preview trust needed for this unchanged candidate to satisfy its required check?",
+        "rationale": "The exact manual Firebase preview and founder review are recorded, while the protected preview workflow still stops before Firebase authentication; the next decision is identity scope, not production deployment.",
         "evidence": [
           "11 publication-ready articles are in the candidate set.",
           "11 independent QA receipts are hash-bound to those articles.",
-          "66 reviewed social drafts are prepared for later distribution.",
+          "Reviewed candidate 2812fe32c0618633dfae7746540da9a9fa729be6 is recorded at https://github.com/lucasdmoyer/tipsforyourgifts/pull/90.",
           "The latest Git-recorded live content set is publication-set-8e8287a5ec7db534, which differs from this candidate."
         ],
-        "unlocks": "A protected exact-SHA preview and founder-reviewed Firebase release establish the owned destination for every later growth and affiliate action.",
-        "tradeoff": "Replacing the live set advances the publication but creates a new monitoring and rollback obligation; affiliate and social authority remain separately bounded.",
-        "guardrail": "Commit and review the exact candidate first; the workflow must still clone live, expose the preview, require founder approval, smoke production, and mint a manifest-bound receipt.",
+        "unlocks": "A passing protected preview check permits the unchanged candidate to merge without bypass; production preview and deployment authority remain separate.",
+        "tradeoff": "Provisioning pull-request trust adds a narrow cloud identity boundary that must be removed or rotated when obsolete, but it avoids a long-lived key and grants no live-channel authority.",
+        "guardrail": "Provision PR-90-only OIDC preview trust, require the protected preview workflow to pass on unchanged SHA 2812fe32c0618633dfae7746540da9a9fa729be6, then merge without an admin bypass; request fresh exact-master-SHA approval before any production deployment because merge identity may differ.",
         "reversibility": "high",
         "founderActionRequired": true,
         "action": {
-          "label": "Open release workflow",
-          "url": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/firebase-production.yml",
-          "command": "gh workflow run firebase-production.yml -f release_sha=<approved-master-sha>"
+          "label": "Open exact release candidate",
+          "url": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/90",
+          "command": null
         }
       },
       {

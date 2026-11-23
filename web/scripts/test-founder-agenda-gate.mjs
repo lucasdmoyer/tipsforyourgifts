@@ -15,6 +15,7 @@ const socialChannelsSha256 = createHash('sha256').update(socialChannelsRaw).dige
 const livePublication = await readJson('config/live-publication.json');
 const publicationPolicy = await readJson('config/publication-policy.json');
 const publicationManifest = await readJson('public/publication-manifest.json');
+const automationReadinessEvidence = await readJson('config/automation-readiness.json');
 const growthRaw = await fs.readFile(path.join(root, 'src/data/growth.json'));
 const growth = JSON.parse(growthRaw.toString('utf8'));
 const growthSha256 = createHash('sha256').update(growthRaw).digest('hex');
@@ -31,6 +32,7 @@ const baseInput = {
   publicationPolicy,
   publicationManifest,
   livePublication,
+  automationReadinessEvidence,
   growth,
   openStrategyProposals: proposedIdeas.length,
   maxOpenStrategyProposals: 5,
@@ -47,7 +49,12 @@ const currentContentIsVerified = livePublication.status === 'verified_managed_co
 assert.equal(base.primaryDecisionId, currentContentIsVerified ? 'establish-measurement' : 'review-release-candidate');
 assert.equal(base.decisions.some((decision) => decision.id === 'review-release-candidate'), !currentContentIsVerified);
 if (!currentContentIsVerified && livePublication.latestVerifiedContentRelease) {
-  assert.equal(base.decisions.find((decision) => decision.id === 'review-release-candidate').title, 'Review the next accountable Angular release');
+  const releaseDecision = base.decisions.find((decision) => decision.id === 'review-release-candidate');
+  assert.equal(releaseDecision.title, 'Unblock the reviewed exact release candidate');
+  assert.equal(releaseDecision.action.url, automationReadinessEvidence.releaseCandidate.pullRequestUrl);
+  assert.equal(releaseDecision.action.command, null);
+  assert.ok(releaseDecision.evidence.some((item) => item.includes(automationReadinessEvidence.releaseCandidate.sha)));
+  assert.doesNotMatch(releaseDecision.action.label, /production|workflow/i);
 }
 assert.equal(base.profitabilityEvidence, 'unknown_until_aggregate_measurement');
 const currentMeasurementDecision = base.decisions.find((decision) => decision.id === 'establish-measurement');
@@ -99,7 +106,7 @@ verifiedLiveInput.livePublication = {
 const verifiedLiveAgenda = buildFounderAgenda(verifiedLiveInput);
 assert.equal(verifiedLiveAgenda.decisions.some((decision) => decision.id === 'review-release-candidate'), false, 'current verified live content must not be proposed for release again');
 
-const noManagedReleaseAgenda = buildFounderAgenda({ ...structuredClone(baseInput), livePublication: {
+const noManagedReleaseAgenda = buildFounderAgenda({ ...structuredClone(baseInput), automationReadinessEvidence: null, livePublication: {
   schemaVersion: livePublication.schemaVersion,
   projectId: livePublication.projectId,
   siteId: livePublication.siteId,
