@@ -76,7 +76,7 @@ jobs:
           npm run build
           npm run smoke
           git diff --check
-          test "$(find web/affiliate/candidates -type f 2>/dev/null | wc -l | tr -d ' ')" -eq 1
+          test "$(find web/affiliate/candidates -type f -name '*.json' 2>/dev/null | wc -l | tr -d ' ')" -eq 1
       - name: Commit the founder-controlled scope branch
         env:
           RUN_ID: ${{ github.run_id }}
