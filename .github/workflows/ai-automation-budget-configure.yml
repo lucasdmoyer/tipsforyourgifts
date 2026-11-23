@@ -8,7 +8,15 @@ on:
         required: true
         type: string
       monthly_budget_usd:
-        description: "Founder-approved OpenAI project monthly budget in USD"
+        description: "Founder-approved OpenAI project monthly hard spend limit in USD"
+        required: true
+        type: string
+      hard_limit_enabled:
+        description: "Confirm OpenAI project hard-limit enforcement is enabled (must be true)"
+        required: true
+        type: boolean
+      alert_threshold_usd:
+        description: "Earlier monthly spend alert in USD; must be below the hard limit"
         required: true
         type: string
       platform_evidence_url:
@@ -61,13 +69,15 @@ jobs:
         env:
           EXPECTED_POLICY_SHA256: ${{ inputs.expected_policy_sha256 }}
           MONTHLY_BUDGET_USD: ${{ inputs.monthly_budget_usd }}
+          HARD_LIMIT_ENABLED: ${{ inputs.hard_limit_enabled }}
+          ALERT_THRESHOLD_USD: ${{ inputs.alert_threshold_usd }}
           PLATFORM_EVIDENCE_URL: ${{ inputs.platform_evidence_url }}
           CONFIRMATION: ${{ inputs.confirmation }}
           FOUNDER_LOGIN: ${{ github.actor }}
         run: |
           npm ci --prefix web
           npm run validate
-          npm --prefix web run ai:budget:configure -- --expected-policy-sha256="$EXPECTED_POLICY_SHA256" --monthly-budget-usd="$MONTHLY_BUDGET_USD" --platform-evidence-url="$PLATFORM_EVIDENCE_URL" --confirmation="$CONFIRMATION" --founder-login="$FOUNDER_LOGIN"
+          npm --prefix web run ai:budget:configure -- --expected-policy-sha256="$EXPECTED_POLICY_SHA256" --monthly-budget-usd="$MONTHLY_BUDGET_USD" --hard-limit-enabled="$HARD_LIMIT_ENABLED" --alert-threshold-usd="$ALERT_THRESHOLD_USD" --platform-evidence-url="$PLATFORM_EVIDENCE_URL" --confirmation="$CONFIRMATION" --founder-login="$FOUNDER_LOGIN"
           npm --prefix web run generate
       - name: Prove the proposal has no model, credential, or production authority
         run: |
@@ -141,4 +151,4 @@ jobs:
           RUN_ATTEMPT: ${{ github.run_attempt }}
         run: |
           branch="codex/configure-ai-budget-$RUN_ID-$RUN_ATTEMPT"
-          gh pr create --base master --head "$branch" --title "Record founder-approved AI automation budget" --body "This owner-dispatched, exact-hash proposal records a founder-attested OpenAI project monthly budget and credential-free platform settings URL. It does not create or modify the external budget, add an API key, call a model, activate the policy, merge, deploy Firebase, publish content, activate affiliate links, post to social media, or send email. Credential verification and explicit policy activation remain separate reviewed gates."
+          gh pr create --base master --head "$branch" --title "Record founder-approved AI automation budget" --body "This owner-dispatched, exact-hash proposal records a founder-attested OpenAI project monthly hard spend limit, confirms hard-limit enforcement, records an earlier spend alert, and stores a credential-free platform settings URL. OpenAI documents that hard-limit enforcement is not instantaneous, so small overage remains possible. This workflow does not create or modify the external controls, add an API key, call a model, activate the policy, merge, deploy Firebase, publish content, activate affiliate links, post to social media, or send email. Credential verification and explicit policy activation remain separate reviewed gates."

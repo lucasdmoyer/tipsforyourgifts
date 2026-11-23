@@ -32,6 +32,8 @@ inactivePolicy.credential.verification.status = 'not_verified';
 for (const key of ['method', 'endpoint', 'verifiedAt', 'evidenceUrl', 'receiptPath', 'receiptSha256']) inactivePolicy.credential.verification[key] = null;
 inactivePolicy.spendControl.status = 'not_configured';
 inactivePolicy.spendControl.monthlyBudgetUsd = null;
+inactivePolicy.spendControl.hardLimitEnabled = false;
+inactivePolicy.spendControl.alertThresholdUsd = null;
 inactivePolicy.spendControl.evidenceUrl = null;
 const inactivePolicyPath = path.join(temporaryDirectory, 'inactive-policy.json');
 await fs.writeFile(inactivePolicyPath, `${JSON.stringify(inactivePolicy, null, 2)}\n`);
@@ -59,6 +61,8 @@ Object.assign(activePolicy.credential.verification, {
 });
 activePolicy.spendControl.status = 'configured_external';
 activePolicy.spendControl.monthlyBudgetUsd = 25;
+activePolicy.spendControl.hardLimitEnabled = true;
+activePolicy.spendControl.alertThresholdUsd = 10;
 activePolicy.spendControl.evidenceUrl = 'https://platform.openai.com/settings/organization/limits';
 const activePolicyPath = path.join(temporaryDirectory, 'active-policy.json');
 await fs.writeFile(activePolicyPath, `${JSON.stringify(activePolicy, null, 2)}\n`);
@@ -108,6 +112,9 @@ for (const workflowName of workflowNames) {
       }
       if (step.with?.['safety-strategy'] !== 'drop-sudo' || step.with?.sandbox !== 'workspace-write') {
         throw new Error(`${workflowName}:${jobName} must use the explicit reviewed privilege boundary.`);
+      }
+      if (step.with?.model !== 'gpt-6.2-sol' || step.with?.effort !== 'high') {
+        throw new Error(`${workflowName}:${jobName} must pin the reviewed model and reasoning effort.`);
       }
       const codexArgs = JSON.parse(step.with?.['codex-args'] ?? '[]');
       if (!codexArgs.includes('--ephemeral')) {

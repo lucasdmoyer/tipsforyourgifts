@@ -28,6 +28,19 @@ if (!Number.isFinite(monthlyBudgetUsd) || monthlyBudgetUsd <= 0 || monthlyBudget
   throw new Error('monthly-budget-usd must be greater than zero and no more than 10000');
 }
 
+if (args['hard-limit-enabled'] !== 'true') {
+  throw new Error('hard-limit-enabled must be true; a spend alert or unenforced budget is not a cap');
+}
+
+const alertText = args['alert-threshold-usd'] ?? '';
+if (!/^(?:0\.\d{1,2}|[1-9]\d{0,4}(?:\.\d{1,2})?)$/.test(alertText)) {
+  throw new Error('alert-threshold-usd must be a positive USD amount with at most two decimal places');
+}
+const alertThresholdUsd = Number(alertText);
+if (!Number.isFinite(alertThresholdUsd) || alertThresholdUsd <= 0 || alertThresholdUsd >= monthlyBudgetUsd) {
+  throw new Error('alert-threshold-usd must be greater than zero and lower than monthly-budget-usd');
+}
+
 let evidenceUrl;
 try {
   evidenceUrl = new URL(args['platform-evidence-url'] ?? '');
@@ -56,13 +69,15 @@ if (policy.status !== 'awaiting_founder_platform_budget') {
 if (policy.credential.status !== 'not_configured') {
   throw new Error('Credential must remain unconfigured while the budget is recorded');
 }
-if (policy.spendControl.status !== 'not_configured' || policy.spendControl.monthlyBudgetUsd !== null || policy.spendControl.evidenceUrl !== null) {
+if (policy.spendControl.status !== 'not_configured' || policy.spendControl.monthlyBudgetUsd !== null || policy.spendControl.hardLimitEnabled || policy.spendControl.alertThresholdUsd !== null || policy.spendControl.evidenceUrl !== null) {
   throw new Error('AI automation budget has already been configured');
 }
 
 policy.status = 'budget_approved_awaiting_credential';
 policy.spendControl.status = 'configured_external';
 policy.spendControl.monthlyBudgetUsd = monthlyBudgetUsd;
+policy.spendControl.hardLimitEnabled = true;
+policy.spendControl.alertThresholdUsd = alertThresholdUsd;
 policy.spendControl.evidenceUrl = evidenceUrl.toString();
 parseAiAutomationPolicy(policy);
 
@@ -71,6 +86,8 @@ console.log(JSON.stringify({
   budgetRecorded: true,
   policyStatus: policy.status,
   monthlyBudgetUsd,
+  hardLimitEnabled: policy.spendControl.hardLimitEnabled,
+  alertThresholdUsd,
   platformEvidenceUrl: policy.spendControl.evidenceUrl,
   credentialConfigured: false,
   credentialValueStored: false,

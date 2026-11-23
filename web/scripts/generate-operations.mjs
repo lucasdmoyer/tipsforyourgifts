@@ -132,7 +132,7 @@ const aiAutomationPolicy = {
     workflowUrl: aiAutomationBudgetWorkflowUrl,
     confirmation: 'CONFIGURE-ai-automation-budget',
     evidenceMode: 'founder_attested_external_platform_configuration',
-    command: `gh workflow run ai-automation-budget-configure.yml --repo lucasdmoyer/tipsforyourgifts --ref master -f expected_policy_sha256=${aiAutomationPolicySha256} -f monthly_budget_usd='<APPROVED_MONTHLY_USD>' -f platform_evidence_url='<OPENAI_PLATFORM_SETTINGS_URL>' -f confirmation='CONFIGURE-ai-automation-budget'`
+    command: `gh workflow run ai-automation-budget-configure.yml --repo lucasdmoyer/tipsforyourgifts --ref master -f expected_policy_sha256=${aiAutomationPolicySha256} -f monthly_budget_usd='<APPROVED_HARD_LIMIT_USD>' -f hard_limit_enabled=true -f alert_threshold_usd='<APPROVED_ALERT_USD>' -f platform_evidence_url='<OPENAI_PLATFORM_SETTINGS_URL>' -f confirmation='CONFIGURE-ai-automation-budget'`
   },
   credentialVerification: {
     available: aiAutomationPolicySummary.status === 'budget_approved_awaiting_credential',

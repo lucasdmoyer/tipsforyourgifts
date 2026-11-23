@@ -34,6 +34,8 @@ console.log(JSON.stringify({
   activationReady: summary.activationReady,
   activationBlockers: summary.activationBlockers,
   spendLimitRecorded: policy.spendControl.monthlyBudgetUsd !== null,
+  hardSpendLimitEnabled: policy.spendControl.hardLimitEnabled,
+  earlySpendAlertRecorded: policy.spendControl.alertThresholdUsd !== null,
   credentialReceiptVerified,
   repositoryHardCapClaimed: policy.spendControl.repositoryHardCap,
   ...workflowValidation,

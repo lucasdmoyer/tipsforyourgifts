@@ -42,11 +42,11 @@ export const STUDIO_DATA = new InjectionToken<StudioData>('STUDIO_DATA');
         <div class="readiness-summary" aria-label="AI policy summary">
           <div><strong>{{ content.operations.aiAutomationPolicy.protectedWorkflows }}</strong><span>protected workflows</span></div>
           <div><strong>{{ content.operations.aiAutomationPolicy.protectedModelCalls }}</strong><span>bounded model steps</span></div>
-          <div><strong>{{ content.operations.aiAutomationPolicy.spendControl.monthlyBudgetUsd === null ? '—' : ('$' + content.operations.aiAutomationPolicy.spendControl.monthlyBudgetUsd) }}</strong><span>monthly platform budget</span></div>
+          <div><strong>{{ content.operations.aiAutomationPolicy.spendControl.monthlyBudgetUsd === null ? '—' : ('$' + content.operations.aiAutomationPolicy.spendControl.monthlyBudgetUsd) }}</strong><span>monthly hard limit</span></div>
           <div><strong>{{ content.operations.aiAutomationPolicy.activationReady ? 'Yes' : 'No' }}</strong><span>activation ready</span></div>
         </div>
         @if (content.operations.aiAutomationPolicy.status === 'awaiting_founder_platform_budget') {
-          <p><strong>Current stop:</strong> Lucas must first set a real monthly budget in the dedicated OpenAI project, then record the amount and credential-free platform settings URL through the exact-hash workflow below.</p>
+          <p><strong>Current stop:</strong> Lucas must first set a real monthly project spend limit in OpenAI, turn on hard-limit enforcement, and add an earlier alert. Then record those controls and the credential-free settings URL through the exact-hash workflow below.</p>
         } @else if (content.operations.aiAutomationPolicy.status === 'budget_approved_awaiting_credential') {
           <p><strong>Current stop:</strong> The founder-attested budget is recorded. Lucas must add the dedicated project key as the repository secret, then run the protected verification below. Verification calls the documented models endpoint once, discards the response body, and does not call a model.</p>
         } @else if (content.operations.aiAutomationPolicy.status === 'credential_verified_awaiting_activation') {
@@ -56,8 +56,9 @@ export const STUDIO_DATA = new InjectionToken<StudioData>('STUDIO_DATA');
         }
         <p class="policy-digest"><strong>Exact policy SHA-256:</strong> <code>{{ content.operations.aiAutomationPolicy.policySha256 }}</code></p>
         @if (content.operations.aiAutomationPolicy.budgetConfiguration.available) {
-          <p><a class="button" [href]="content.operations.aiAutomationPolicy.budgetConfiguration.workflowUrl" target="_blank" rel="noopener">Record Lucas-approved budget</a></p>
-          <details><summary>Copy the exact budget command</summary><p>This records a founder attestation in a review pull request. It does not create the external budget, add a credential, call a model, activate the policy, merge, or deploy.</p><p class="command">{{ content.operations.aiAutomationPolicy.budgetConfiguration.command }}</p></details>
+          <div class="panel"><p class="eyebrow">Team recommendation · not approved</p><h3>&#36;{{ content.operations.aiAutomationPolicy.spendControl.recommendation.monthlyHardLimitUsd }} hard limit · &#36;{{ content.operations.aiAutomationPolicy.spendControl.recommendation.alertThresholdUsd }} alert</h3><p>{{ content.operations.aiAutomationPolicy.spendControl.recommendation.rationale }}</p><p class="quiet">Model is pinned to {{ content.operations.aiAutomationPolicy.runtime.modelPolicy }} at {{ content.operations.aiAutomationPolicy.runtime.effortPolicy }} effort. OpenAI warns that hard-limit enforcement is not instantaneous, so a small overage can occur.</p><p><a [href]="content.operations.aiAutomationPolicy.spendControl.documentationUrl" target="_blank" rel="noopener">Read the official spend-limit behavior →</a></p></div>
+          <p><a class="button" [href]="content.operations.aiAutomationPolicy.budgetConfiguration.workflowUrl" target="_blank" rel="noopener">Record Lucas-approved controls</a></p>
+          <details><summary>Copy the exact budget command</summary><p>This records a founder attestation in a review pull request. It does not create the external limit or alert, add a credential, call a model, activate the policy, merge, or deploy.</p><p class="command">{{ content.operations.aiAutomationPolicy.budgetConfiguration.command }}</p></details>
         }
         @if (content.operations.aiAutomationPolicy.credentialVerification.available) {
           <p><a class="button" [href]="content.operations.aiAutomationPolicy.credentialVerification.workflowUrl" target="_blank" rel="noopener">Verify dedicated AI credential</a></p>

@@ -30,7 +30,7 @@ const workflowPolicySchema = z.object({
 });
 
 export const aiAutomationPolicySchema = z.object({
-  schemaVersion: z.literal('1.0.0'),
+  schemaVersion: z.literal('1.1.0'),
   status: z.enum(['awaiting_founder_platform_budget', 'budget_approved_awaiting_credential', 'credential_verified_awaiting_activation', 'active']),
   credential: z.object({
     secretName: z.literal('OPENAI_API_KEY'),
@@ -51,11 +51,22 @@ export const aiAutomationPolicySchema = z.object({
   }).strict(),
   spendControl: z.object({
     status: z.enum(['not_configured', 'configured_external']),
-    enforcement: z.literal('openai_project_monthly_budget'),
+    enforcement: z.literal('openai_project_hard_spend_limit'),
     monthlyBudgetUsd: z.number().positive().max(10000).nullable(),
+    hardLimitEnabled: z.boolean(),
+    alertThresholdUsd: z.number().positive().max(10000).nullable(),
     evidenceUrl: httpsUrl.nullable(),
     repositoryHardCap: z.literal(false),
-    activationRule: z.string().min(100)
+    enforcementLagAcknowledged: z.literal(true),
+    documentationUrl: z.literal('https://developers.openai.com/api/docs/guides/spend-limits'),
+    activationRule: z.string().min(100),
+    recommendation: z.object({
+      status: z.literal('planning_only_not_approved'),
+      monthlyHardLimitUsd: z.number().positive().max(10000),
+      alertThresholdUsd: z.number().positive().max(10000),
+      rationale: z.string().min(100),
+      reviewedAt: z.string().datetime({ offset: true })
+    }).strict()
   }).strict(),
   runtime: z.object({
     action: z.literal('openai/codex-action@v1'),
@@ -63,8 +74,8 @@ export const aiAutomationPolicySchema = z.object({
     safetyStrategy: z.literal('drop-sudo'),
     sandbox: z.literal('workspace-write'),
     sessionMode: z.literal('ephemeral'),
-    modelPolicy: z.literal('action_default'),
-    effortPolicy: z.literal('action_default'),
+    modelPolicy: z.literal('gpt-6.2-sol'),
+    effortPolicy: z.literal('high'),
     trustedInitiators: z.literal('repository_write_collaborators_and_bounded_github_automation')
   }).strict(),
   authority: z.object({
@@ -98,6 +109,8 @@ export const aiAutomationPolicySchema = z.object({
 
   const budgetConfigured = policy.spendControl.status === 'configured_external'
     && policy.spendControl.monthlyBudgetUsd !== null
+    && policy.spendControl.hardLimitEnabled
+    && policy.spendControl.alertThresholdUsd !== null
     && policy.spendControl.evidenceUrl !== null;
   const verification = policy.credential.verification;
   const verificationValues = [verification.method, verification.endpoint, verification.verifiedAt, verification.evidenceUrl, verification.receiptPath, verification.receiptSha256];
@@ -105,11 +118,17 @@ export const aiAutomationPolicySchema = z.object({
     && verification.status === 'verified_external'
     && verificationValues.every((value) => value !== null);
   const activationReady = credentialVerified && budgetConfigured;
-  if (policy.spendControl.status === 'not_configured' && (policy.spendControl.monthlyBudgetUsd !== null || policy.spendControl.evidenceUrl !== null)) {
-    context.addIssue({ code: z.ZodIssueCode.custom, path: ['spendControl'], message: 'An unconfigured budget cannot retain an amount or platform evidence URL' });
+  if (policy.spendControl.status === 'not_configured' && (policy.spendControl.monthlyBudgetUsd !== null || policy.spendControl.hardLimitEnabled || policy.spendControl.alertThresholdUsd !== null || policy.spendControl.evidenceUrl !== null)) {
+    context.addIssue({ code: z.ZodIssueCode.custom, path: ['spendControl'], message: 'An unconfigured spend control cannot retain a limit, hard-limit claim, alert, or platform evidence URL' });
   }
   if (policy.spendControl.status === 'configured_external' && !budgetConfigured) {
-    context.addIssue({ code: z.ZodIssueCode.custom, path: ['spendControl'], message: 'A configured budget requires both an amount and platform evidence URL' });
+    context.addIssue({ code: z.ZodIssueCode.custom, path: ['spendControl'], message: 'A configured spend control requires an amount, hard-limit enforcement, an earlier alert, and platform evidence URL' });
+  }
+  if (policy.spendControl.alertThresholdUsd !== null && policy.spendControl.monthlyBudgetUsd !== null && policy.spendControl.alertThresholdUsd >= policy.spendControl.monthlyBudgetUsd) {
+    context.addIssue({ code: z.ZodIssueCode.custom, path: ['spendControl', 'alertThresholdUsd'], message: 'Spend alert threshold must be lower than the monthly hard limit' });
+  }
+  if (policy.spendControl.recommendation.alertThresholdUsd >= policy.spendControl.recommendation.monthlyHardLimitUsd) {
+    context.addIssue({ code: z.ZodIssueCode.custom, path: ['spendControl', 'recommendation', 'alertThresholdUsd'], message: 'Recommended alert threshold must be lower than the recommended hard limit' });
   }
   if (verification.status === 'not_verified' && verificationValues.some((value) => value !== null)) {
     context.addIssue({ code: z.ZodIssueCode.custom, path: ['credential', 'verification'], message: 'An unverified credential cannot retain verification evidence' });
@@ -135,8 +154,9 @@ export const aiAutomationPolicySchema = z.object({
   if (policy.status === 'active' && !activationReady) {
     context.addIssue({ code: z.ZodIssueCode.custom, path: ['status'], message: 'Active policy requires an externally configured credential and founder-approved platform budget evidence' });
   }
-  if ((policy.spendControl.monthlyBudgetUsd === null) !== (policy.spendControl.evidenceUrl === null)) {
-    context.addIssue({ code: z.ZodIssueCode.custom, path: ['spendControl'], message: 'Budget amount and platform evidence URL must be recorded together' });
+  const spendEvidenceValues = [policy.spendControl.monthlyBudgetUsd, policy.spendControl.alertThresholdUsd, policy.spendControl.evidenceUrl];
+  if (spendEvidenceValues.some((value) => value === null) && spendEvidenceValues.some((value) => value !== null)) {
+    context.addIssue({ code: z.ZodIssueCode.custom, path: ['spendControl'], message: 'Hard limit, early alert, and platform evidence URL must be recorded together' });
   }
 });
 
@@ -150,7 +170,7 @@ export function buildAiAutomationPolicySummary(value) {
   const activationBlockers = [];
   if (policy.credential.status !== 'configured_external') activationBlockers.push('Dedicated OpenAI project credential is not configured.');
   else if (policy.credential.verification.status !== 'verified_external') activationBlockers.push('Dedicated OpenAI project credential is not externally verified.');
-  if (policy.spendControl.status !== 'configured_external' || policy.spendControl.monthlyBudgetUsd === null || policy.spendControl.evidenceUrl === null) activationBlockers.push('Founder-approved OpenAI project monthly budget and platform evidence are not recorded.');
+  if (policy.spendControl.status !== 'configured_external' || policy.spendControl.monthlyBudgetUsd === null || !policy.spendControl.hardLimitEnabled || policy.spendControl.alertThresholdUsd === null || policy.spendControl.evidenceUrl === null) activationBlockers.push('Founder-approved OpenAI project hard spend limit, earlier alert, and platform evidence are not recorded.');
   if (policy.status !== 'active') activationBlockers.push('Versioned automation policy is not active.');
 
   return {
@@ -159,6 +179,8 @@ export function buildAiAutomationPolicySummary(value) {
     activationReady: policy.credential.verification.status === 'verified_external'
       && policy.spendControl.status === 'configured_external'
       && policy.spendControl.monthlyBudgetUsd !== null
+      && policy.spendControl.hardLimitEnabled
+      && policy.spendControl.alertThresholdUsd !== null
       && policy.spendControl.evidenceUrl !== null,
     activationBlockers,
     protectedWorkflows: policy.workflows.length,
@@ -245,8 +267,11 @@ export function validateAiWorkflowDocument({ policy, workflowPolicy, workflow })
         if (allowBots !== workflowPolicy.githubActionsBotAllowed) {
           throw new Error(`${workflowPolicy.file}:${jobName} GitHub Actions bot authority does not match the versioned policy.`);
         }
-        if ('model' in (step.with ?? {}) || 'effort' in (step.with ?? {})) {
-          throw new Error(`${workflowPolicy.file}:${jobName} cannot override the policy's action-default model or effort.`);
+        if (step.with?.model !== policy.runtime.modelPolicy) {
+          throw new Error(`${workflowPolicy.file}:${jobName} must pin model ${policy.runtime.modelPolicy}.`);
+        }
+        if (step.with?.effort !== policy.runtime.effortPolicy) {
+          throw new Error(`${workflowPolicy.file}:${jobName} must pin reasoning effort ${policy.runtime.effortPolicy}.`);
         }
       }
 

@@ -24,7 +24,7 @@ const policyPath = requestedPolicyPath || defaultPolicyPath;
 const policy = parseAiAutomationPolicy(JSON.parse(await fs.readFile(policyPath, 'utf8')));
 
 if (policy.status !== 'active') {
-  console.error('::error title=AI automation policy not active::The versioned policy is waiting for a founder-approved OpenAI project monthly budget and external evidence. No model call was attempted.');
+  console.error('::error title=AI automation policy not active::The versioned policy is waiting for a founder-approved OpenAI project hard spend limit, an earlier alert, and external evidence. No model call was attempted.');
   process.exit(1);
 }
 

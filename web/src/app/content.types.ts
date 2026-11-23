@@ -171,7 +171,7 @@ export interface AutomationReadiness {
 }
 
 export interface AiAutomationPolicy {
-  schemaVersion: '1.0.0';
+  schemaVersion: '1.1.0';
   status: 'awaiting_founder_platform_budget' | 'budget_approved_awaiting_credential' | 'credential_verified_awaiting_activation' | 'active';
   policySha256: string;
   budgetConfiguration: {
@@ -218,11 +218,22 @@ export interface AiAutomationPolicy {
   };
   spendControl: {
     status: 'not_configured' | 'configured_external';
-    enforcement: 'openai_project_monthly_budget';
+    enforcement: 'openai_project_hard_spend_limit';
     monthlyBudgetUsd: number | null;
+    hardLimitEnabled: boolean;
+    alertThresholdUsd: number | null;
     evidenceUrl: string | null;
     repositoryHardCap: false;
+    enforcementLagAcknowledged: true;
+    documentationUrl: 'https://developers.openai.com/api/docs/guides/spend-limits';
     activationRule: string;
+    recommendation: {
+      status: 'planning_only_not_approved';
+      monthlyHardLimitUsd: number;
+      alertThresholdUsd: number;
+      rationale: string;
+      reviewedAt: string;
+    };
   };
   runtime: {
     action: 'openai/codex-action@v1';
@@ -230,8 +241,8 @@ export interface AiAutomationPolicy {
     safetyStrategy: 'drop-sudo';
     sandbox: 'workspace-write';
     sessionMode: 'ephemeral';
-    modelPolicy: 'action_default';
-    effortPolicy: 'action_default';
+    modelPolicy: 'gpt-6.2-sol';
+    effortPolicy: 'high';
     trustedInitiators: 'repository_write_collaborators_and_bounded_github_automation';
   };
   authority: {

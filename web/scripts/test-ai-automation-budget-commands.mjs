@@ -23,6 +23,8 @@ awaitingPolicy.credential.verification.status = 'not_verified';
 for (const key of ['method', 'endpoint', 'verifiedAt', 'evidenceUrl', 'receiptPath', 'receiptSha256']) awaitingPolicy.credential.verification[key] = null;
 awaitingPolicy.spendControl.status = 'not_configured';
 awaitingPolicy.spendControl.monthlyBudgetUsd = null;
+awaitingPolicy.spendControl.hardLimitEnabled = false;
+awaitingPolicy.spendControl.alertThresholdUsd = null;
 awaitingPolicy.spendControl.evidenceUrl = null;
 const awaitingPolicyRaw = Buffer.from(`${JSON.stringify(parseAiAutomationPolicy(awaitingPolicy), null, 2)}\n`);
 const awaitingPolicySha256 = createHash('sha256').update(awaitingPolicyRaw).digest('hex');
@@ -38,6 +40,8 @@ function run(directory, overrides = {}) {
   const values = {
     'expected-policy-sha256': awaitingPolicySha256,
     'monthly-budget-usd': '25',
+    'hard-limit-enabled': 'true',
+    'alert-threshold-usd': '10',
     'platform-evidence-url': 'https://platform.openai.com/settings/organization/limits',
     confirmation: 'CONFIGURE-ai-automation-budget',
     'founder-login': 'lucasdmoyer',
@@ -57,6 +61,8 @@ const configured = parseAiAutomationPolicy(JSON.parse(configuredRaw.toString('ut
 assert.equal(configured.status, 'budget_approved_awaiting_credential');
 assert.equal(configured.spendControl.status, 'configured_external');
 assert.equal(configured.spendControl.monthlyBudgetUsd, 25);
+assert.equal(configured.spendControl.hardLimitEnabled, true);
+assert.equal(configured.spendControl.alertThresholdUsd, 10);
 assert.equal(configured.spendControl.evidenceUrl, 'https://platform.openai.com/settings/organization/limits');
 assert.deepEqual(configured.credential, awaitingPolicy.credential);
 assert.deepEqual(configured.runtime, awaitingPolicy.runtime);
@@ -70,6 +76,8 @@ assert.deepEqual(configuredSummary.activationBlockers, [
 ]);
 const safeOutput = JSON.parse(happy.stdout);
 assert.equal(safeOutput.credentialConfigured, false);
+assert.equal(safeOutput.hardLimitEnabled, true);
+assert.equal(safeOutput.alertThresholdUsd, 10);
 assert.equal(safeOutput.credentialValueStored, false);
 assert.equal(safeOutput.modelCalled, false);
 assert.equal(safeOutput.externalApiCalled, false);
@@ -102,6 +110,16 @@ for (const invalidBudget of ['0', '-1', '0.001', '10000.01', '25.999', 'not-mone
   assert.notEqual(result.status, 0, invalidBudget);
 }
 
+for (const invalidHardLimit of ['false', 'FALSE', '1', 'yes', '']) {
+  const result = run(await createFixture(), { 'hard-limit-enabled': invalidHardLimit });
+  assert.notEqual(result.status, 0, invalidHardLimit);
+}
+
+for (const invalidAlert of ['0', '-1', '0.001', '25', '26', '10000.01', 'not-money']) {
+  const result = run(await createFixture(), { 'alert-threshold-usd': invalidAlert });
+  assert.notEqual(result.status, 0, invalidAlert);
+}
+
 const repeatedSha256 = createHash('sha256').update(configuredRaw).digest('hex');
 const repeated = run(happyDirectory, { 'expected-policy-sha256': repeatedSha256 });
 assert.notEqual(repeated.status, 0);
@@ -121,7 +139,7 @@ assert.doesNotMatch(workflowSource, /OPENAI_API_KEY|CODEX_API_KEY|codex-action|f
 
 console.log(JSON.stringify({
   aiAutomationBudgetCommandTests: 'passed',
-  commandNegativeChecks: 16,
+  commandNegativeChecks: 28,
   workflowSafetyChecks: 9,
   transition: `${awaitingPolicy.status} -> ${configured.status}`,
   credentialValueStored: false,

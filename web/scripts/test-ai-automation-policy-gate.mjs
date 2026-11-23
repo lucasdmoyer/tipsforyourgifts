@@ -28,16 +28,20 @@ awaitingPolicy.credential.verification.status = 'not_verified';
 for (const key of ['method', 'endpoint', 'verifiedAt', 'evidenceUrl', 'receiptPath', 'receiptSha256']) awaitingPolicy.credential.verification[key] = null;
 awaitingPolicy.spendControl.status = 'not_configured';
 awaitingPolicy.spendControl.monthlyBudgetUsd = null;
+awaitingPolicy.spendControl.hardLimitEnabled = false;
+awaitingPolicy.spendControl.alertThresholdUsd = null;
 awaitingPolicy.spendControl.evidenceUrl = null;
 parseAiAutomationPolicy(awaitingPolicy);
 assert.throws(() => parseAiAutomationPolicy({ ...clone(awaitingPolicy), status: 'active' }), /Active policy requires/);
 const mismatchedBudget = clone(awaitingPolicy);
 mismatchedBudget.spendControl.monthlyBudgetUsd = 25;
-assert.throws(() => parseAiAutomationPolicy(mismatchedBudget), /Budget amount and platform evidence URL/);
+assert.throws(() => parseAiAutomationPolicy(mismatchedBudget), /Hard limit, early alert, and platform evidence URL/);
 const budgetApprovedPolicy = clone(awaitingPolicy);
 budgetApprovedPolicy.status = 'budget_approved_awaiting_credential';
 budgetApprovedPolicy.spendControl.status = 'configured_external';
 budgetApprovedPolicy.spendControl.monthlyBudgetUsd = 25;
+budgetApprovedPolicy.spendControl.hardLimitEnabled = true;
+budgetApprovedPolicy.spendControl.alertThresholdUsd = 10;
 budgetApprovedPolicy.spendControl.evidenceUrl = 'https://platform.openai.com/settings/organization/limits';
 assert.deepEqual(buildAiAutomationPolicySummary(budgetApprovedPolicy).activationBlockers, [
   'Dedicated OpenAI project credential is not configured.',
@@ -62,6 +66,12 @@ assert.throws(() => validateAiWorkflowDocument({ policy, workflowPolicy, workflo
 const botExpandedWorkflow = clone(workflow);
 botExpandedWorkflow.jobs.analyze.steps.find((step) => step.uses === policy.runtime.action).with['allow-bots'] = true;
 assert.throws(() => validateAiWorkflowDocument({ policy, workflowPolicy, workflow: botExpandedWorkflow }), /bot authority/);
+const modelDriftWorkflow = clone(workflow);
+modelDriftWorkflow.jobs.analyze.steps.find((step) => step.uses === policy.runtime.action).with.model = 'gpt-6.2-astra';
+assert.throws(() => validateAiWorkflowDocument({ policy, workflowPolicy, workflow: modelDriftWorkflow }), /must pin model/);
+const effortDriftWorkflow = clone(workflow);
+effortDriftWorkflow.jobs.analyze.steps.find((step) => step.uses === policy.runtime.action).with.effort = 'medium';
+assert.throws(() => validateAiWorkflowDocument({ policy, workflowPolicy, workflow: effortDriftWorkflow }), /must pin reasoning effort/);
 
 const activePolicy = clone(budgetApprovedPolicy);
 activePolicy.status = 'active';
@@ -77,6 +87,8 @@ Object.assign(activePolicy.credential.verification, {
 });
 activePolicy.spendControl.status = 'configured_external';
 activePolicy.spendControl.monthlyBudgetUsd = 25;
+activePolicy.spendControl.hardLimitEnabled = true;
+activePolicy.spendControl.alertThresholdUsd = 10;
 activePolicy.spendControl.evidenceUrl = 'https://platform.openai.com/settings/organization/limits';
 assert.equal(buildAiAutomationPolicySummary(activePolicy).activationReady, true);
 
@@ -86,7 +98,7 @@ await fs.writeFile(activePolicyPath, `${JSON.stringify(activePolicy, null, 2)}\n
 
 console.log(JSON.stringify({
   aiAutomationPolicyGateTests: 'passed',
-  negativeChecks: 9,
+  negativeChecks: 11,
   protectedWorkflows: validation.protectedWorkflows,
   protectedModelCalls: validation.protectedModelCalls,
   currentActivationReady: summary.activationReady,

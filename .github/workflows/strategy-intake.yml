@@ -62,6 +62,8 @@ jobs:
         uses: openai/codex-action@v1
         with:
           openai-api-key: ${{ secrets.OPENAI_API_KEY }}
+          model: gpt-6.2-sol
+          effort: high
           safety-strategy: drop-sudo
           sandbox: workspace-write
           codex-args: '["--ephemeral"]'
