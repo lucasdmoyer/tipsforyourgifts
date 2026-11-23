@@ -83,6 +83,7 @@ describe('App', () => {
     const image = fixture.nativeElement.querySelector('.product-context-visual img') as HTMLImageElement;
     const link = fixture.nativeElement.querySelector('[data-event-name="merchant_outbound_click"]') as HTMLAnchorElement;
     expect(image.src).toContain('/blog-images/');
+    expect(image.getAttribute('src')).toMatch(/-1200\.webp$/);
     expect(image.getAttribute('srcset')).toContain('-480.webp 480w');
     expect(image.getAttribute('srcset')).toContain('-768.webp 768w');
     expect(image.getAttribute('srcset')).toContain('-1200.webp 1200w');
@@ -125,6 +126,7 @@ describe('App', () => {
         expect(element.textContent).toContain('Before you buy');
         expect(pairImages).toHaveLength(1);
         expect(pairImages[0].src).toContain('/blog-images/');
+        expect(pairImages[0].getAttribute('src')).toMatch(/-1200\.webp$/);
         expect(pairImages[0].getAttribute('srcset')).toContain('-480.webp 480w');
         expect(pairImages[0].getAttribute('srcset')).toContain('-768.webp 768w');
         expect(pairImages[0].getAttribute('srcset')).toContain('-1200.webp 1200w');
