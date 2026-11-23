@@ -17,7 +17,7 @@ if (!missionId || !runId) throw new Error('Usage: node scripts/mark-research-mis
 const root = process.cwd();
 const missionPath = path.join(root, 'research', 'missions', `${missionId}.json`);
 const mission = researchMissionSchema.parse(JSON.parse(await fs.readFile(missionPath, 'utf8')));
-if (mission.status !== 'started' || mission.qaFailureHandoff !== null || mission.visualHandoff !== null || mission.completion !== null) throw new Error('Only a started mission can enter visual production');
+if (mission.status !== 'started' || mission.researchFailureHandoff !== null || mission.qaFailureHandoff !== null || mission.visualHandoff !== null || mission.completion !== null) throw new Error('Only a started mission can enter visual production');
 
 const runPath = path.join(root, 'research', 'runs', `${runId}.json`);
 const runRaw = await fs.readFile(runPath);

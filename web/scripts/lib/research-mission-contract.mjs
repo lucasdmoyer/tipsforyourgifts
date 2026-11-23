@@ -8,7 +8,7 @@ const runIdSchema = z.string().regex(/^\d{8}-[a-z0-9-]+-[a-f0-9]{8}$/);
 const slugSchema = z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/);
 
 const missionStageSchema = z.discriminatedUnion('id', [
-  z.object({ id: z.literal('research'), role: z.literal('research-editorial-team'), authority: z.literal('draft_only'), status: z.enum(['queued', 'in_progress', 'completed']) }).strict(),
+  z.object({ id: z.literal('research'), role: z.literal('research-editorial-team'), authority: z.literal('draft_only'), status: z.enum(['queued', 'in_progress', 'completed', 'blocked']) }).strict(),
   z.object({ id: z.literal('quality_review'), role: z.literal('independent-evidence-editor'), authority: z.literal('review_receipt_only'), status: z.enum(['queued', 'in_progress', 'completed', 'blocked']) }).strict(),
   z.object({ id: z.literal('visual_production'), role: z.literal('visual-production-team'), authority: z.literal('original_assets_and_visual_receipt_only'), status: z.enum(['queued', 'in_progress', 'completed']) }).strict(),
   z.object({ id: z.literal('release_preparation'), role: z.literal('release-operator'), authority: z.literal('preview_and_pr_only'), status: z.enum(['queued', 'ready', 'completed']) }).strict(),
@@ -58,10 +58,16 @@ const qaFailureHandoffSchema = z.object({
   nextGate: z.string().min(40)
 }).strict();
 
+const researchFailureHandoffSchema = z.object({
+  reasonCode: z.enum(['model_step_failed', 'draft_bundle_invalid']),
+  workflowRunUrl: z.string().url(),
+  nextGate: z.string().min(40)
+}).strict();
+
 export const researchMissionSchema = z.object({
-  schemaVersion: z.literal('1.2.0'),
+  schemaVersion: z.literal('1.3.0'),
   missionId: missionIdSchema,
-  status: z.enum(['started', 'qa_failed', 'visual_pending', 'completed']),
+  status: z.enum(['started', 'research_failed', 'qa_failed', 'visual_pending', 'completed']),
   createdAt: z.string().datetime(),
   failedAt: z.string().datetime().nullable(),
   completedAt: z.string().datetime().nullable(),
@@ -105,6 +111,7 @@ export const researchMissionSchema = z.object({
     verifiedSuccessfulReleaseCount: z.number().int().nonnegative(),
     minimumSuccessfulFounderReviewedReleases: z.number().int().positive()
   }).strict(),
+  researchFailureHandoff: researchFailureHandoffSchema.nullable(),
   qaFailureHandoff: qaFailureHandoffSchema.nullable(),
   visualHandoff: visualHandoffSchema.nullable(),
   completion: completionSchema.nullable()
@@ -183,7 +190,7 @@ export function validateResearchMissionRecords({
     if (mission.status === 'started') {
       if (activeIdeas.has(mission.idea.id)) issues.push(`${mission.missionId}: another active mission already exists for this idea`);
       activeIdeas.add(mission.idea.id);
-      if (mission.failedAt !== null || mission.completedAt !== null || mission.qaFailureHandoff !== null || mission.visualHandoff !== null || mission.completion !== null) issues.push(`${mission.missionId}: started mission cannot contain handoff or completion evidence`);
+      if (mission.failedAt !== null || mission.completedAt !== null || mission.researchFailureHandoff !== null || mission.qaFailureHandoff !== null || mission.visualHandoff !== null || mission.completion !== null) issues.push(`${mission.missionId}: started mission cannot contain handoff or completion evidence`);
       const statuses = Object.fromEntries(mission.teamStages.map((stage) => [stage.id, stage.status]));
       if (statuses.research !== 'in_progress' || statuses.quality_review !== 'queued' || statuses.visual_production !== 'queued' || statuses.release_preparation !== 'queued' || statuses.growth_follow_up !== 'queued') issues.push(`${mission.missionId}: started mission stage statuses are invalid`);
       const snapshot = mission.publicationPolicySnapshot;
@@ -191,8 +198,21 @@ export function validateResearchMissionRecords({
       continue;
     }
 
+    if (mission.status === 'research_failed') {
+      if (mission.failedAt === null || mission.completedAt !== null || mission.researchFailureHandoff === null || mission.qaFailureHandoff !== null || mission.visualHandoff !== null || mission.completion !== null) {
+        issues.push(`${mission.missionId}: research-failed mission needs one failure handoff and no editorial, visual, or completion evidence`);
+        continue;
+      }
+      if (new Date(mission.failedAt) < new Date(mission.createdAt)) issues.push(`${mission.missionId}: research failure precedes mission creation`);
+      const statuses = Object.fromEntries(mission.teamStages.map((stage) => [stage.id, stage.status]));
+      if (statuses.research !== 'blocked' || statuses.quality_review !== 'queued' || statuses.visual_production !== 'queued' || statuses.release_preparation !== 'queued' || statuses.growth_follow_up !== 'queued') issues.push(`${mission.missionId}: research-failed mission stage statuses are invalid`);
+      const expectedRunUrl = `https://github.com/lucasdmoyer/tipsforyourgifts/actions/runs/${mission.trigger.workflowRunId}`;
+      if (mission.researchFailureHandoff.workflowRunUrl !== expectedRunUrl) issues.push(`${mission.missionId}: research failure workflow URL does not match the triggering run`);
+      continue;
+    }
+
     if (mission.status === 'qa_failed') {
-      if (mission.failedAt === null || mission.completedAt !== null || mission.qaFailureHandoff === null || mission.visualHandoff !== null || mission.completion !== null) {
+      if (mission.failedAt === null || mission.completedAt !== null || mission.researchFailureHandoff !== null || mission.qaFailureHandoff === null || mission.visualHandoff !== null || mission.completion !== null) {
         issues.push(`${mission.missionId}: qa-failed mission needs one failure handoff and no visual or completion evidence`);
         continue;
       }
@@ -231,7 +251,7 @@ export function validateResearchMissionRecords({
     if (mission.status === 'visual_pending') {
       if (activeIdeas.has(mission.idea.id)) issues.push(`${mission.missionId}: another active mission already exists for this idea`);
       activeIdeas.add(mission.idea.id);
-      if (mission.failedAt !== null || mission.completedAt !== null || mission.qaFailureHandoff !== null || mission.completion !== null || mission.visualHandoff === null) {
+      if (mission.failedAt !== null || mission.completedAt !== null || mission.researchFailureHandoff !== null || mission.qaFailureHandoff !== null || mission.completion !== null || mission.visualHandoff === null) {
         issues.push(`${mission.missionId}: visual-pending mission needs one handoff and no completion evidence`);
         continue;
       }
@@ -270,7 +290,7 @@ export function validateResearchMissionRecords({
       continue;
     }
 
-    if (mission.failedAt !== null || mission.qaFailureHandoff !== null || mission.completedAt === null || mission.completion === null) {
+    if (mission.failedAt !== null || mission.researchFailureHandoff !== null || mission.qaFailureHandoff !== null || mission.completedAt === null || mission.completion === null) {
       issues.push(`${mission.missionId}: completed mission needs completion evidence`);
       continue;
     }

@@ -12,7 +12,7 @@ if (!args['mission-id'] || !args['run-id']) throw new Error('Usage: node scripts
 const root = process.cwd();
 const missionPath = path.join(root, 'research/missions', `${args['mission-id']}.json`);
 const mission = researchMissionSchema.parse(JSON.parse(await fs.readFile(missionPath, 'utf8')));
-if (!['started', 'visual_pending'].includes(mission.status) || mission.qaFailureHandoff !== null || mission.completion !== null) throw new Error('Only a started or visual-pending mission can be completed');
+if (!['started', 'visual_pending'].includes(mission.status) || mission.researchFailureHandoff !== null || mission.qaFailureHandoff !== null || mission.completion !== null) throw new Error('Only a started or visual-pending mission can be completed');
 const runPath = path.join(root, 'research/runs', `${args['run-id']}.json`);
 const runRaw = await fs.readFile(runPath);
 const run = JSON.parse(runRaw);

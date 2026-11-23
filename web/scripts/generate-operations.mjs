@@ -303,6 +303,7 @@ const runById = new Map(runs.map((run) => [run.runId, run]));
 const visualRequestByRun = new Map(visualRequests.map((request) => [request.runId, request]));
 const activeResearchMissions = researchMissions.filter((mission) => ['started', 'visual_pending'].includes(mission.status)).length;
 const completedResearchMissions = researchMissions.filter((mission) => mission.status === 'completed').length;
+const researchFailedResearchMissions = researchMissions.filter((mission) => mission.status === 'research_failed').length;
 const qaFailedResearchMissions = researchMissions.filter((mission) => mission.status === 'qa_failed').length;
 const ideaStages = strategy.ideas.map((idea) => {
   const ideaRuns = runs.filter((run) => run.ideaId === idea.id);
@@ -375,7 +376,7 @@ const sourceDates = [
   publicationManifest.generatedAt,
   livePublication.updatedAt,
   ...runs.map((run) => run.completedAt ?? run.startedAt).filter(Boolean),
-  ...researchMissions.flatMap((mission) => [mission.createdAt, mission.completedAt]).filter(Boolean),
+  ...researchMissions.flatMap((mission) => [mission.createdAt, mission.failedAt, mission.completedAt]).filter(Boolean),
   ...opportunityMissions.flatMap((mission) => [mission.createdAt, mission.completedAt]).filter(Boolean),
   ...opportunityReports.map((report) => report.createdAt),
   ...opportunityReviews.map((review) => review.reviewedAt),
@@ -454,6 +455,7 @@ const operations = {
     total: researchMissions.length,
     active: activeResearchMissions,
     completed: completedResearchMissions,
+    researchFailed: researchFailedResearchMissions,
     qaFailed: qaFailedResearchMissions,
     visualPending: visualRequests.length,
     founderReviewRequired: researchMissions.filter((mission) => mission.completion?.publicationReadiness === 'founder_review_required').length,
@@ -474,11 +476,13 @@ const operations = {
         createdAt: mission.createdAt,
         completedAt: mission.completedAt,
         workflowRunId: mission.trigger.workflowRunId,
-        activeStage: mission.status === 'qa_failed' ? 'quality_review' : pendingVisual ? 'visual_production' : mission.teamStages.find((stage) => ['in_progress', 'ready'].includes(stage.status))?.id ?? 'growth_follow_up',
+        failureReasonCode: mission.researchFailureHandoff?.reasonCode ?? null,
+        failureWorkflowRunUrl: mission.researchFailureHandoff?.workflowRunUrl ?? null,
+        activeStage: mission.status === 'research_failed' ? 'research' : mission.status === 'qa_failed' ? 'quality_review' : pendingVisual ? 'visual_production' : mission.teamStages.find((stage) => ['in_progress', 'ready'].includes(stage.status))?.id ?? 'growth_follow_up',
         runId: mission.qaFailureHandoff?.runId ?? pendingVisual?.runId ?? mission.completion?.runId ?? null,
         articleSlug: mission.qaFailureHandoff?.articleSlug ?? pendingVisual?.articleSlug ?? mission.completion?.articleSlug ?? null,
-        publicationReadiness: mission.status === 'qa_failed' ? 'qa_failed' : pendingVisual ? 'visual_pending' : mission.completion?.publicationReadiness ?? 'research_in_progress',
-        nextGate: mission.qaFailureHandoff?.nextGate ?? pendingVisual?.nextGate ?? mission.completion?.nextGate ?? 'Complete the evidence bundle, independent QA receipt, deterministic gates, and mission completion receipt.'
+        publicationReadiness: mission.status === 'research_failed' ? 'research_failed' : mission.status === 'qa_failed' ? 'qa_failed' : pendingVisual ? 'visual_pending' : mission.completion?.publicationReadiness ?? 'research_in_progress',
+        nextGate: mission.researchFailureHandoff?.nextGate ?? mission.qaFailureHandoff?.nextGate ?? pendingVisual?.nextGate ?? mission.completion?.nextGate ?? 'Complete the evidence bundle, independent QA receipt, deterministic gates, and mission completion receipt.'
       };
     })
   },
