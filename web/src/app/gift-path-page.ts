@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { ContentService } from './content.service';
-import { ArticleCardComponent } from './public-pages';
+import { ArticleCardComponent } from './article-card';
 import { findGiftPath, giftPathArticles, giftPathUrl } from './gift-paths';
 import { SeoService } from './seo.service';
 

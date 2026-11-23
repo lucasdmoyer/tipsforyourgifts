@@ -18,7 +18,7 @@ const articleData = (route: ActivatedRouteSnapshot) =>
   import('./generated/article-loaders.generated').then(({ loadArticle }) => loadArticle(route.paramMap.get('slug')));
 
 export const routes: Routes = [
-  { path: '', loadComponent: page('HomePage') },
+  { path: '', loadComponent: () => import('./home-page').then(({ HomePage }) => HomePage) },
   { path: 'gift-finder', loadComponent: page('GiftFinderPage') },
   { path: 'gifts/curious-adults', loadComponent: giftPathPage, data: { giftPath: 'curious-adults' } },
   { path: 'gifts/hobby-lovers', loadComponent: giftPathPage, data: { giftPath: 'hobby-lovers' } },
