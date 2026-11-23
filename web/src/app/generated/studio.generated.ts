@@ -664,7 +664,7 @@ export const OPERATIONS: Operations = {
         "articleSlug": "read-it-then-play-it-gift-pairs",
         "requestedProducts": 9,
         "paidUrlsCollected": 0,
-        "currentArticleMatchesIndependentReview": false,
+        "currentArticleMatchesIndependentReview": true,
         "nextGate": "Lucas approves this exact nine-book scope, then supplies a founder-attested Bookshop export containing partner-issued URLs."
       }
     ],

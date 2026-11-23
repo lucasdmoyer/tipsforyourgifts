@@ -324,7 +324,7 @@ export const STUDIO_DATA = new InjectionToken<StudioData>('STUDIO_DATA');
               <div><p class="eyebrow">Bookshop expansion handoff</p><strong>{{ request.requestedProducts }} editions identified. {{ request.paidUrlsCollected }} partner-issued paid URLs collected.</strong></div>
               <span class="status blocked_on_account">Awaiting Lucas</span>
               <p class="connector-gate">The existing Sapiens pilot remains the only active Bookshop product. This request does not expand the activation list, alter editorial rankings, or authorize production.</p>
-              <p class="connector-gate"><strong>Independent review:</strong> {{ request.currentArticleMatchesIndependentReview ? 'current' : 'stale after the article rewrite; a fresh review is mandatory before any new link can be approved' }}.</p>
+              <p class="connector-gate"><strong>Article review:</strong> {{ request.currentArticleMatchesIndependentReview ? 'current and canonically hash-bound' : 'stale; a fresh review is mandatory before any new link can be created' }}. Every imported paid destination still requires its own independent tracking and purchase-action review.</p>
               <p class="connector-gate"><strong>Next gate:</strong> {{ request.nextGate }}</p>
             </article>
           }

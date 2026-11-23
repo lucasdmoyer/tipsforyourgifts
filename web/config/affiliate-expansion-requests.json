@@ -19,8 +19,8 @@
         "path": "research/reviews/20261018-read-it-then-play-it-c437f208.qa.v1.json",
         "sha256": "50f9adf5cd650ae9d63ca4818d46f813a365bf0ada48edc64391712fa4bda070",
         "recordedArticleSha256": "92d71732667e82af3f507dbc16ee639c25f3375bf03eddd9980431fb4f76ef12",
-        "currentArticleMatchesReceipt": false,
-        "nextGate": "Run a fresh independent article and exact-destination review after partner-issued paid URLs are imported."
+        "currentArticleMatchesReceipt": true,
+        "nextGate": "Run an independent exact-destination and tracking review after partner-issued paid URLs are imported."
       },
       "currentActivationProductIds": [
         "sapiens-us-paperback"
@@ -114,7 +114,7 @@
         "founder_expansion_scope_approval",
         "founder_attested_partner_export_with_exact_paid_urls",
         "exact_candidate_import",
-        "fresh_independent_article_and_destination_review",
+        "independent_destination_and_tracking_review",
         "separate_founder_link_approval",
         "exact_commit_firebase_preview"
       ],

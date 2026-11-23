@@ -3,6 +3,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import { z } from 'zod';
 import matter from './front-matter.mjs';
+import { reviewedArticleSha256 } from './editorial-review-receipt-contract.mjs';
 
 const slug = z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/);
 const sha256 = z.string().regex(/^[a-f0-9]{64}$/);
@@ -49,7 +50,7 @@ export const affiliateExpansionRequestSchema = z.object({
       'founder_expansion_scope_approval',
       'founder_attested_partner_export_with_exact_paid_urls',
       'exact_candidate_import',
-      'fresh_independent_article_and_destination_review',
+      'independent_destination_and_tracking_review',
       'separate_founder_link_approval',
       'exact_commit_firebase_preview'
     ])).length(6),
@@ -94,7 +95,7 @@ export async function validateAffiliateExpansionRequests({ root, document: input
     if (run.runId !== request.researchRun.id || run.article?.slug !== request.articleSlug) throw new Error(`${request.id} research run identity differs`);
     const review = await readBoundJson(root, request.independentReview);
     if (review.articleSha256 !== request.independentReview.recordedArticleSha256) throw new Error(`${request.id} independent review article digest differs`);
-    if ((review.articleSha256 === articleDigest) !== request.independentReview.currentArticleMatchesReceipt) throw new Error(`${request.id} independent review freshness assertion differs`);
+    if ((review.articleSha256 === reviewedArticleSha256(articleRaw)) !== request.independentReview.currentArticleMatchesReceipt) throw new Error(`${request.id} independent review freshness assertion differs`);
 
     const currentActivation = program.activationProductSelection?.eligibleProductIds ?? [];
     if (JSON.stringify(currentActivation) !== JSON.stringify(request.currentActivationProductIds)) throw new Error(`${request.id} current activation scope changed`);
