@@ -76,18 +76,25 @@ const researchJob = research.parsed.jobs?.research;
 const researchFailureJob = research.parsed.jobs?.record_research_failure;
 const researchFailureWriterJob = research.parsed.jobs?.open_research_failure_pull_request;
 const qualityJob = research.parsed.jobs?.quality_review;
+const reviewFailureJob = research.parsed.jobs?.record_review_failure;
+const reviewFailureWriterJob = research.parsed.jobs?.open_review_failure_pull_request;
 const writerJob = research.parsed.jobs?.open_pull_request;
-assert.ok(researchJob && researchFailureJob && researchFailureWriterJob && qualityJob && writerJob, 'research, failure recorder, independent QA, and detached writer jobs are all required');
+assert.ok(researchJob && researchFailureJob && researchFailureWriterJob && qualityJob && reviewFailureJob && reviewFailureWriterJob && writerJob, 'research, failure recorders, independent QA, and detached writer jobs are all required');
 assert.equal(writerJob.permissions?.contents, 'write', 'only the detached writer may push the reviewed branch');
 assert.equal(writerJob.permissions?.['pull-requests'], 'write', 'only the detached writer may open the review pull request');
 const researchModelStep = researchJob.steps.find((step) => step.uses === 'openai/codex-action@v1');
 assert.ok(researchModelStep, 'research drafting needs exactly one Codex step');
 assert.equal(researchJob.steps.filter((step) => step.uses === 'openai/codex-action@v1').length, 1, 'research drafting needs exactly one Codex step');
 assert.equal(researchModelStep['continue-on-error'], true, 'a model-step failure must reach the trusted failure classifier');
+const reviewModelStep = qualityJob.steps.find((step) => step.uses === 'openai/codex-action@v1');
+assert.ok(reviewModelStep, 'independent QA needs exactly one separate Codex step');
 assert.equal(qualityJob.steps.filter((step) => step.uses === 'openai/codex-action@v1').length, 1, 'independent QA needs exactly one separate Codex step');
+assert.equal(reviewModelStep['continue-on-error'], true, 'a reviewer-model failure must reach the trusted review-output classifier');
 assert.equal(writerJob.steps.filter((step) => step.uses === 'openai/codex-action@v1').length, 0, 'the GitHub writer must never receive a model step');
 assert.equal(researchFailureJob.steps.filter((step) => step.uses === 'openai/codex-action@v1').length, 0, 'the clean research-failure recorder must never receive a model step');
 assert.equal(researchFailureWriterJob.steps.filter((step) => step.uses === 'openai/codex-action@v1').length, 0, 'the research-failure pull-request writer must never receive a model step');
+assert.equal(reviewFailureJob.steps.filter((step) => step.uses === 'openai/codex-action@v1').length, 0, 'the clean review-failure recorder must never receive a model step');
+assert.equal(reviewFailureWriterJob.steps.filter((step) => step.uses === 'openai/codex-action@v1').length, 0, 'the review-failure pull-request writer must never receive a model step');
 const classifyDraftStep = findStep(researchJob, 'Classify and serialize only a complete draft bundle');
 const recordResearchFailureStep = findStep(researchFailureJob, 'Record only the credential-free research failure handoff');
 const openResearchFailurePrStep = findStep(researchFailureWriterJob, 'Open the correction pull request with auto-merge disabled');
@@ -97,6 +104,17 @@ assert.match(classifyDraftStep.run, /if \[ "\$draft_outcome" = "ready" \][\s\S]*
 assert.match(recordResearchFailureStep.run, /research:mission:research-failed/, 'a clean credential-free job must create the durable research-failed mission state');
 assert.match(openResearchFailurePrStep.run, /does not preserve a partial draft/, 'the failure pull request must state that untrusted partial output was discarded');
 assert.doesNotMatch(openResearchFailurePrStep.run, /gh pr merge/, 'research failure receipts must never request auto-merge');
+const classifyReviewStep = findStep(qualityJob, 'Classify the isolated reviewer output before creating any receipt');
+const recordReviewFailureStep = findStep(reviewFailureJob, 'Record the credential-free independent-review failure handoff');
+const proveReviewFailureStep = findStep(reviewFailureJob, 'Prove and serialize the clean review-failure packet');
+const openReviewFailurePrStep = findStep(reviewFailureWriterJob, 'Open the independent-review correction pull request with auto-merge disabled');
+assert.ok(classifyReviewStep && recordReviewFailureStep && proveReviewFailureStep && openReviewFailurePrStep, 'review execution failure must have a complete trusted handoff');
+assert.match(classifyReviewStep.run, /research:mission:review:classify/, 'reviewer output must be classified before any signed receipt is created');
+assert.match(classifyReviewStep.run, /Partial or malformed reviewer output was discarded/, 'invalid reviewer output must be discarded rather than serialized');
+assert.match(recordReviewFailureStep.run, /research:mission:review-failed/, 'a clean credential-free job must create the durable review-failed mission state');
+assert.match(proveReviewFailureStep.run, /find web\/research\/reviews[\s\S]*= "0"/, 'review execution failure must prove no QA receipt was fabricated');
+assert.match(openReviewFailurePrStep.run, /refused to create a QA receipt/, 'the review-failure pull request must state that no editorial verdict was invented');
+assert.doesNotMatch(openReviewFailurePrStep.run, /gh pr merge/, 'review failure packets must never request auto-merge');
 assert.match(research.raw, /web\/visuals\/requests\/<run-id>-visuals\.json/, 'research drafting must create a versioned visual-production request when approved art is absent');
 assert.match(research.raw, /generation\.attempted false/, 'research drafting must not generate or claim visual output');
 assert.doesNotMatch(research.raw, /web\/visuals\/article-visuals\.json\|web\/public\/blog-images/, 'draft and review allowlists must not permit registry or public-image mutation');
@@ -155,6 +173,7 @@ console.log(JSON.stringify({
     'strategy_approval_to_research_dispatch',
     'research_failure_to_clean_correction_packet',
     'research_to_independent_qa',
+    'review_failure_to_clean_correction_packet',
     'editorial_qa_to_visual_production_queue',
     'qa_to_detached_pr_writer',
     'proven_policy_to_check_gated_merge',

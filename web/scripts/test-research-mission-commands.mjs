@@ -23,7 +23,11 @@ try {
     id: 'founder-idea-007', revision: 1, ideaType: 'content', thesisType: 'recipient_friction', founderDisposition: 'approved_for_research',
     title: 'A careful retry path for a stalled gift research mission'
   };
-  const strategy = { schemaVersion: '1.1.0', thoughtfulnessFramework: { minimumPairCoherenceScore: 80 }, ideas: [idea, failedIdea, executionFailedIdea] };
+  const reviewFailedIdea = {
+    id: 'founder-idea-008', revision: 1, ideaType: 'content', thesisType: 'recipient_friction', founderDisposition: 'approved_for_research',
+    title: 'A durable handoff when the independent editor cannot finish'
+  };
+  const strategy = { schemaVersion: '1.1.0', thoughtfulnessFramework: { minimumPairCoherenceScore: 80 }, ideas: [idea, failedIdea, executionFailedIdea, reviewFailedIdea] };
   const policy = { mode: 'founder_reviewed', automaticPromotion: { enabled: false, verifiedSuccessfulReleaseCount: 0, minimumSuccessfulFounderReviewedReleases: 10 } };
   await fs.writeFile(path.join(fixtureRoot, 'src/data/strategy.json'), `${JSON.stringify(strategy, null, 2)}\n`);
   await fs.writeFile(path.join(fixtureRoot, 'config/publication-policy.json'), `${JSON.stringify(policy, null, 2)}\n`);
@@ -83,7 +87,24 @@ try {
   await execFileAsync(process.execPath, [path.join(scriptRoot, 'scripts/mark-research-mission-research-failed.mjs'), `--mission-id=${executionFailedMissionId}`, '--reason-code=model_step_failed', '--failed-at=2026-08-03T13:05:00.000Z'], { cwd: fixtureRoot });
   const executionFailedMission = researchMissionSchema.parse(JSON.parse(await fs.readFile(executionFailedMissionPath, 'utf8')));
   if (executionFailedMission.status !== 'research_failed' || executionFailedMission.researchFailureHandoff?.reasonCode !== 'model_step_failed' || executionFailedMission.qaFailureHandoff !== null) throw new Error('Research-failed command did not preserve the clean execution failure handoff');
-  console.log(JSON.stringify({ researchMissionCommandIntegration: 'passed', commands: 9, missionId, receiptSchemaVersion: review.schemaVersion, completionStatus: completed.status, publicationReadiness: completed.completion.publicationReadiness, failedMissionStatus: failedMission.status, failedReceiptPreserved: true, researchFailedMissionStatus: executionFailedMission.status, partialDraftPreserved: false }, null, 2));
+
+  await execFileAsync(process.execPath, [path.join(scriptRoot, 'scripts/start-research-mission.mjs'), '--idea-id=founder-idea-008', `--base-sha=${'d'.repeat(40)}`, '--workflow-run-id=12348', '--workflow-run-attempt=1', '--actor=github-actions[bot]', '--created-at=2026-08-03T14:00:00.000Z'], { cwd: fixtureRoot });
+  const reviewFailedMissionId = 'research-mission-12348-1';
+  const reviewFailedMissionPath = path.join(fixtureRoot, 'research/missions', `${reviewFailedMissionId}.json`);
+  const reviewFailedRunId = '20260803-review-retry-c1d2e3f4';
+  const reviewFailedSlug = 'review-retry-gift-pair';
+  const reviewFailedRun = {
+    runId: reviewFailedRunId, ideaId: reviewFailedIdea.id, ideaRevision: reviewFailedIdea.revision, ideaSha256: canonicalIdeaSha256(reviewFailedIdea), draftAuthor: 'research-drafter-fixture-three',
+    status: 'drafted', claims: [], article: { slug: reviewFailedSlug, status: 'draft' },
+    qa: { passed: false, reviewerRole: 'independent-editor', reviewerId: 'pending-independent-review', receiptPath: `research/reviews/${reviewFailedRunId}.qa.v1.json`, blockers: [], warnings: [] }
+  };
+  await fs.writeFile(path.join(fixtureRoot, 'research/runs', `${reviewFailedRunId}.json`), `${JSON.stringify(reviewFailedRun, null, 2)}\n`);
+  await fs.writeFile(path.join(fixtureRoot, `src/data/blog/${reviewFailedSlug}.md`), '---\nstatus: draft\n---\nExact draft preserved without a reviewer receipt.\n');
+  await fs.writeFile(path.join(fixtureRoot, `social/drafts/${reviewFailedSlug}-launch.json`), `${JSON.stringify({ packId: `${reviewFailedSlug}-launch`, researchRun: reviewFailedRunId }, null, 2)}\n`);
+  await execFileAsync(process.execPath, [path.join(scriptRoot, 'scripts/mark-research-mission-review-failed.mjs'), `--mission-id=${reviewFailedMissionId}`, `--run-id=${reviewFailedRunId}`, '--reason-code=review_result_invalid', '--failed-at=2026-08-03T14:40:00.000Z'], { cwd: fixtureRoot });
+  const reviewFailedMission = researchMissionSchema.parse(JSON.parse(await fs.readFile(reviewFailedMissionPath, 'utf8')));
+  if (reviewFailedMission.status !== 'review_failed' || reviewFailedMission.reviewFailureHandoff?.reasonCode !== 'review_result_invalid' || reviewFailedMission.qaFailureHandoff !== null) throw new Error('Review-failed command did not preserve the exact draft without fabricating a QA receipt');
+  console.log(JSON.stringify({ researchMissionCommandIntegration: 'passed', commands: 11, missionId, receiptSchemaVersion: review.schemaVersion, completionStatus: completed.status, publicationReadiness: completed.completion.publicationReadiness, failedMissionStatus: failedMission.status, failedReceiptPreserved: true, researchFailedMissionStatus: executionFailedMission.status, partialDraftPreserved: false, reviewFailedMissionStatus: reviewFailedMission.status, partialReviewPreserved: false, reviewReceiptFabricated: false }, null, 2));
 } finally {
   await fs.rm(fixtureRoot, { recursive: true, force: true });
 }

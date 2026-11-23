@@ -16,7 +16,7 @@ if (!missionId || !['model_step_failed', 'draft_bundle_invalid'].includes(reason
 const root = process.cwd();
 const missionPath = path.join(root, 'research', 'missions', `${missionId}.json`);
 const mission = researchMissionSchema.parse(JSON.parse(await fs.readFile(missionPath, 'utf8')));
-if (mission.status !== 'started' || mission.researchFailureHandoff !== null || mission.qaFailureHandoff !== null || mission.visualHandoff !== null || mission.completion !== null) {
+if (mission.status !== 'started' || mission.researchFailureHandoff !== null || mission.reviewFailureHandoff !== null || mission.qaFailureHandoff !== null || mission.visualHandoff !== null || mission.completion !== null) {
   throw new Error('Only a pristine started mission can record a research execution failure');
 }
 

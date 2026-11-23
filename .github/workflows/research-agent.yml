@@ -257,6 +257,12 @@ jobs:
     outputs:
       has_patch: ${{ steps.reviewed_diff.outputs.has_patch }}
       review_route: ${{ steps.identify.outputs.review_route }}
+      review_outcome: ${{ steps.review_result.outputs.review_outcome }}
+      review_failure_code: ${{ steps.review_result.outputs.review_failure_code }}
+      run_id: ${{ steps.identify.outputs.run_id }}
+      article_slug: ${{ steps.identify.outputs.article_slug }}
+      source_patch_sha: ${{ steps.identify.outputs.source_patch_sha }}
+      draft_patch_sha: ${{ steps.identify.outputs.draft_patch_sha }}
       release_route: ${{ steps.assess_visual.outputs.release_route || steps.safety.outputs.release_route }}
     steps:
       - uses: actions/checkout@v5
@@ -309,6 +315,8 @@ jobs:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: node web/scripts/require-openai-api-key.mjs
       - name: Run a separate independent editorial review
+        id: review_agent
+        continue-on-error: true
         if: steps.identify.outputs.review_route == 'independent_review'
         uses: openai/codex-action@v1
         with:
@@ -333,9 +341,32 @@ jobs:
             }
 
             Pass only when the exact bundle has no blocker. A failed result must name at least one concrete blocker. Do not create the signed receipt, promote the article, open a pull request, publish, deploy, or change external state.
+      - name: Classify the isolated reviewer output before creating any receipt
+        id: review_result
+        if: always() && steps.identify.outputs.review_route == 'independent_review'
+        env:
+          RUN_ID: ${{ steps.identify.outputs.run_id }}
+          ARTICLE_SLUG: ${{ steps.identify.outputs.article_slug }}
+          MODEL_OUTCOME: ${{ steps.review_agent.outcome }}
+          EXPECTED_SOURCE_PATCH_SHA: ${{ steps.identify.outputs.source_patch_sha }}
+          EXPECTED_DRAFT_PATCH_SHA: ${{ steps.identify.outputs.draft_patch_sha }}
+        run: |
+          route_file="$RUNNER_TEMP/research-review-route.json"
+          npm --prefix web run research:mission:review:classify -- \
+            --run-id="$RUN_ID" \
+            --article-slug="$ARTICLE_SLUG" \
+            --model-outcome="$MODEL_OUTCOME" \
+            --expected-source-patch-sha="$EXPECTED_SOURCE_PATCH_SHA" \
+            --expected-draft-patch-sha="$EXPECTED_DRAFT_PATCH_SHA" \
+            --output="$route_file"
+          review_outcome="$(node -p "JSON.parse(require('fs').readFileSync('$route_file','utf8')).reviewOutcome")"
+          if [ "$review_outcome" = "failed" ]; then
+            rm -f editorial-review-result.json
+            echo "Partial or malformed reviewer output was discarded. A clean credential-free job will preserve the original draft bundle and review-failure handoff without creating a receipt."
+          fi
       - name: Record the isolated review and route the exact handoff
         id: assess_visual
-        if: steps.identify.outputs.review_route == 'independent_review'
+        if: steps.identify.outputs.review_route == 'independent_review' && steps.review_result.outputs.review_outcome == 'ready'
         env:
           MISSION_ID: ${{ steps.identify.outputs.mission_id }}
           RUN_ID: ${{ steps.identify.outputs.run_id }}
@@ -415,6 +446,7 @@ jobs:
           npm run smoke
       - name: Serialize the independently reviewed or safety-routed patch
         id: reviewed_diff
+        if: steps.identify.outputs.review_route == 'founder_safety' || steps.review_result.outputs.review_outcome == 'ready'
         run: |
           git add -N .
           git diff --check
@@ -422,11 +454,135 @@ jobs:
           test -s reviewed-research.patch
           echo "has_patch=true" >> "$GITHUB_OUTPUT"
       - uses: actions/upload-artifact@v7
+        if: steps.reviewed_diff.outputs.has_patch == 'true'
         with:
           name: reviewed-research-patch-${{ github.run_id }}
           path: reviewed-research.patch
           if-no-files-found: error
           retention-days: 7
+
+  record_review_failure:
+    needs: [research, quality_review]
+    if: always() && needs.research.result == 'success' && needs.quality_review.outputs.review_outcome == 'failed'
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    outputs:
+      has_patch: ${{ steps.failure_diff.outputs.has_patch }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/download-artifact@v8
+        with:
+          name: research-patch-${{ github.run_id }}
+      - name: Apply only the pre-review research bundle
+        run: |
+          git apply research.patch
+          git add -N .
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "24.14.0"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - name: Record the credential-free independent-review failure handoff
+        env:
+          MISSION_ID: ${{ needs.research.outputs.mission_id }}
+          MISSION_PATH: ${{ needs.research.outputs.mission_path }}
+          EXPECTED_MISSION_SHA256: ${{ needs.research.outputs.mission_sha256 }}
+          RUN_ID: ${{ needs.quality_review.outputs.run_id }}
+          ARTICLE_SLUG: ${{ needs.quality_review.outputs.article_slug }}
+          EXPECTED_SOURCE_PATCH_SHA: ${{ needs.quality_review.outputs.source_patch_sha }}
+          EXPECTED_DRAFT_PATCH_SHA: ${{ needs.quality_review.outputs.draft_patch_sha }}
+          FAILURE_CODE: ${{ needs.quality_review.outputs.review_failure_code }}
+        run: |
+          npm ci --prefix web
+          test "$(shasum -a 256 "$MISSION_PATH" | cut -d ' ' -f 1)" = "$EXPECTED_MISSION_SHA256"
+          test "$(node -p "JSON.parse(require('fs').readFileSync('$MISSION_PATH','utf8')).missionId")" = "$MISSION_ID"
+          actual_draft_patch_sha="$(git diff --binary HEAD | shasum -a 256 | cut -d ' ' -f 1)"
+          test "$actual_draft_patch_sha" = "$EXPECTED_DRAFT_PATCH_SHA"
+          actual_source_patch_sha="$(git diff --binary HEAD -- "web/research/runs/$RUN_ID.json" "web/src/data/blog/$ARTICLE_SLUG.md" "web/social/drafts/$ARTICLE_SLUG-launch.json" "web/visuals/requests/$RUN_ID-visuals.json" | shasum -a 256 | cut -d ' ' -f 1)"
+          test "$actual_source_patch_sha" = "$EXPECTED_SOURCE_PATCH_SHA"
+          npm --prefix web run research:mission:review-failed -- --mission-id="$MISSION_ID" --run-id="$RUN_ID" --reason-code="$FAILURE_CODE"
+          npm --prefix web run generate
+      - name: Prove and serialize the clean review-failure packet
+        id: failure_diff
+        env:
+          MISSION_PATH: ${{ needs.research.outputs.mission_path }}
+        run: |
+          git add -N .
+          while IFS= read -r changed_path; do
+            case "$changed_path" in
+              "$MISSION_PATH"|web/research/runs/*.json|web/social/drafts/*.json|web/src/data/blog/*.md|web/visuals/requests/*.json|web/src/data/operations.json|web/src/app/generated/content.generated.ts|web/src/app/generated/studio.generated.ts|web/public/publication-manifest.json|web/public/sitemap.xml) ;;
+              *) echo "Review failure recorder changed forbidden path: $changed_path" >&2; exit 1 ;;
+            esac
+          done < <(git diff --name-only HEAD)
+          test "$(find web/research/reviews -maxdepth 1 -type f -name "${{ needs.quality_review.outputs.run_id }}.qa.v*.json" | wc -l | tr -d ' ')" = "0"
+          npm run validate
+          npm run build
+          npm run smoke
+          git diff --check
+          git diff --binary HEAD > review-failure.patch
+          test -s review-failure.patch
+          echo "has_patch=true" >> "$GITHUB_OUTPUT"
+      - uses: actions/upload-artifact@v7
+        with:
+          name: review-failure-patch-${{ github.run_id }}
+          path: review-failure.patch
+          if-no-files-found: error
+          retention-days: 30
+
+  open_review_failure_pull_request:
+    needs: [research, quality_review, record_review_failure]
+    if: always() && needs.record_review_failure.result == 'success' && needs.record_review_failure.outputs.has_patch == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/download-artifact@v8
+        with:
+          name: review-failure-patch-${{ github.run_id }}
+      - name: Apply the isolated review-failure packet
+        run: git apply --index review-failure.patch
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "24.14.0"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - name: Re-run all gates without the reviewer credential
+        run: |
+          npm ci --prefix web
+          npm run validate
+          npm run build
+          npm run smoke
+          git diff --check --cached
+          git diff --exit-code
+      - name: Push the review-failure branch
+        env:
+          MISSION_ID: ${{ needs.research.outputs.mission_id }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          branch="codex/review-failure-$MISSION_ID"
+          git switch -c "$branch"
+          git commit -m "Record independent-review execution failure for $MISSION_ID"
+          git push origin "$branch"
+      - name: Open the independent-review correction pull request with auto-merge disabled
+        env:
+          GH_TOKEN: ${{ github.token }}
+          MISSION_ID: ${{ needs.research.outputs.mission_id }}
+          FAILURE_CODE: ${{ needs.quality_review.outputs.review_failure_code }}
+        run: |
+          gh pr create \
+            --base master \
+            --head "codex/review-failure-$MISSION_ID" \
+            --title "Independent review execution correction required for $MISSION_ID" \
+            --body "The trusted workflow preserved the exact pre-review research bundle for $MISSION_ID but refused to create a QA receipt because $FAILURE_CODE. A clean credential-free job discarded all reviewer output and recorded only the versioned draft plus its review-failure handoff. Merging this pull request exposes the correction packet in Studio. It does not imply an editorial verdict, approve the draft, start visual production, activate affiliate links, publish social content, deploy Firebase, or enable auto-merge. Retry requires a new workflow run after the reviewer failure is corrected."
 
   open_pull_request:
     needs: [research, quality_review]

@@ -138,7 +138,7 @@ try {
   request.bindings.researchRunSha256 = sha256(fixtureRunRaw);
   request.bindings.articleSha256 = sha256(articleRaw);
   const mission = {
-    schemaVersion: '1.3.0', missionId, status: 'started', createdAt: '2026-11-23T11:00:00.000Z', failedAt: null, completedAt: null,
+    schemaVersion: '1.4.0', missionId, status: 'started', createdAt: '2026-11-23T11:00:00.000Z', failedAt: null, completedAt: null,
     trigger: { type: 'approved_strategy_dispatch', workflow: 'research-agent.yml', workflowRunId: '12345', workflowRunAttempt: 1, actor: 'lucasdmoyer', baseSha: 'a'.repeat(40) },
     idea: { ...idea, sha256: run.ideaSha256 },
     teamStages: [
@@ -156,6 +156,7 @@ try {
     },
     publicationPolicySnapshot: { mode: 'founder_reviewed', automaticPromotionEnabled: false, verifiedSuccessfulReleaseCount: 0, minimumSuccessfulFounderReviewedReleases: 10 },
     researchFailureHandoff: null,
+    reviewFailureHandoff: null,
     qaFailureHandoff: null,
     visualHandoff: null,
     completion: null

@@ -64,10 +64,22 @@ const researchFailureHandoffSchema = z.object({
   nextGate: z.string().min(40)
 }).strict();
 
+const reviewFailureHandoffSchema = z.object({
+  runId: runIdSchema,
+  runSha256: sha256Schema,
+  articleSlug: slugSchema,
+  articleSha256: sha256Schema,
+  socialPackId: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*-launch$/),
+  socialPackSha256: sha256Schema,
+  reasonCode: z.enum(['review_model_step_failed', 'review_result_invalid']),
+  workflowRunUrl: z.string().url(),
+  nextGate: z.string().min(40)
+}).strict();
+
 export const researchMissionSchema = z.object({
-  schemaVersion: z.literal('1.3.0'),
+  schemaVersion: z.literal('1.4.0'),
   missionId: missionIdSchema,
-  status: z.enum(['started', 'research_failed', 'qa_failed', 'visual_pending', 'completed']),
+  status: z.enum(['started', 'research_failed', 'review_failed', 'qa_failed', 'visual_pending', 'completed']),
   createdAt: z.string().datetime(),
   failedAt: z.string().datetime().nullable(),
   completedAt: z.string().datetime().nullable(),
@@ -112,6 +124,7 @@ export const researchMissionSchema = z.object({
     minimumSuccessfulFounderReviewedReleases: z.number().int().positive()
   }).strict(),
   researchFailureHandoff: researchFailureHandoffSchema.nullable(),
+  reviewFailureHandoff: reviewFailureHandoffSchema.nullable(),
   qaFailureHandoff: qaFailureHandoffSchema.nullable(),
   visualHandoff: visualHandoffSchema.nullable(),
   completion: completionSchema.nullable()
@@ -190,7 +203,7 @@ export function validateResearchMissionRecords({
     if (mission.status === 'started') {
       if (activeIdeas.has(mission.idea.id)) issues.push(`${mission.missionId}: another active mission already exists for this idea`);
       activeIdeas.add(mission.idea.id);
-      if (mission.failedAt !== null || mission.completedAt !== null || mission.researchFailureHandoff !== null || mission.qaFailureHandoff !== null || mission.visualHandoff !== null || mission.completion !== null) issues.push(`${mission.missionId}: started mission cannot contain handoff or completion evidence`);
+      if (mission.failedAt !== null || mission.completedAt !== null || mission.researchFailureHandoff !== null || mission.reviewFailureHandoff !== null || mission.qaFailureHandoff !== null || mission.visualHandoff !== null || mission.completion !== null) issues.push(`${mission.missionId}: started mission cannot contain handoff or completion evidence`);
       const statuses = Object.fromEntries(mission.teamStages.map((stage) => [stage.id, stage.status]));
       if (statuses.research !== 'in_progress' || statuses.quality_review !== 'queued' || statuses.visual_production !== 'queued' || statuses.release_preparation !== 'queued' || statuses.growth_follow_up !== 'queued') issues.push(`${mission.missionId}: started mission stage statuses are invalid`);
       const snapshot = mission.publicationPolicySnapshot;
@@ -199,7 +212,7 @@ export function validateResearchMissionRecords({
     }
 
     if (mission.status === 'research_failed') {
-      if (mission.failedAt === null || mission.completedAt !== null || mission.researchFailureHandoff === null || mission.qaFailureHandoff !== null || mission.visualHandoff !== null || mission.completion !== null) {
+      if (mission.failedAt === null || mission.completedAt !== null || mission.researchFailureHandoff === null || mission.reviewFailureHandoff !== null || mission.qaFailureHandoff !== null || mission.visualHandoff !== null || mission.completion !== null) {
         issues.push(`${mission.missionId}: research-failed mission needs one failure handoff and no editorial, visual, or completion evidence`);
         continue;
       }
@@ -211,8 +224,38 @@ export function validateResearchMissionRecords({
       continue;
     }
 
+    if (mission.status === 'review_failed') {
+      if (mission.failedAt === null || mission.completedAt !== null || mission.researchFailureHandoff !== null || mission.reviewFailureHandoff === null || mission.qaFailureHandoff !== null || mission.visualHandoff !== null || mission.completion !== null) {
+        issues.push(`${mission.missionId}: review-failed mission needs one execution-failure handoff and no review receipt, visual, or completion evidence`);
+        continue;
+      }
+      if (new Date(mission.failedAt) < new Date(mission.createdAt)) issues.push(`${mission.missionId}: review execution failure precedes mission creation`);
+      const statuses = Object.fromEntries(mission.teamStages.map((stage) => [stage.id, stage.status]));
+      if (statuses.research !== 'completed' || statuses.quality_review !== 'blocked' || statuses.visual_production !== 'queued' || statuses.release_preparation !== 'queued' || statuses.growth_follow_up !== 'queued') issues.push(`${mission.missionId}: review-failed mission stage statuses are invalid`);
+      const handoff = mission.reviewFailureHandoff;
+      const runRecord = runsById.get(handoff.runId);
+      const articleRecord = articlesBySlug.get(handoff.articleSlug);
+      const socialRecord = socialByRunId.get(handoff.runId);
+      if (!runRecord) issues.push(`${mission.missionId}: review-failure research run is missing`);
+      else {
+        if (artifactDigest(runRecord) !== handoff.runSha256) issues.push(`${mission.missionId}: review-failure run digest mismatch`);
+        if (runRecord.data.status !== 'drafted' || runRecord.data.article?.status !== 'draft' || runRecord.data.qa?.passed !== false) issues.push(`${mission.missionId}: review-failure run must remain an unpromoted draft`);
+        if (runRecord.data.ideaId !== mission.idea.id || runRecord.data.ideaRevision !== mission.idea.revision || runRecord.data.ideaSha256 !== mission.idea.sha256) issues.push(`${mission.missionId}: review-failure run is not bound to the mission idea`);
+      }
+      if (!articleRecord) issues.push(`${mission.missionId}: review-failure article is missing`);
+      else if (artifactDigest(articleRecord) !== handoff.articleSha256) issues.push(`${mission.missionId}: review-failure article digest mismatch`);
+      if (!socialRecord) issues.push(`${mission.missionId}: review-failure social pack is missing`);
+      else {
+        if (socialRecord.data.packId !== handoff.socialPackId) issues.push(`${mission.missionId}: review-failure social pack ID mismatch`);
+        if (artifactDigest(socialRecord) !== handoff.socialPackSha256) issues.push(`${mission.missionId}: review-failure social pack digest mismatch`);
+      }
+      const expectedRunUrl = `https://github.com/lucasdmoyer/tipsforyourgifts/actions/runs/${mission.trigger.workflowRunId}`;
+      if (handoff.workflowRunUrl !== expectedRunUrl) issues.push(`${mission.missionId}: review failure workflow URL does not match the triggering run`);
+      continue;
+    }
+
     if (mission.status === 'qa_failed') {
-      if (mission.failedAt === null || mission.completedAt !== null || mission.researchFailureHandoff !== null || mission.qaFailureHandoff === null || mission.visualHandoff !== null || mission.completion !== null) {
+      if (mission.failedAt === null || mission.completedAt !== null || mission.researchFailureHandoff !== null || mission.reviewFailureHandoff !== null || mission.qaFailureHandoff === null || mission.visualHandoff !== null || mission.completion !== null) {
         issues.push(`${mission.missionId}: qa-failed mission needs one failure handoff and no visual or completion evidence`);
         continue;
       }
@@ -251,7 +294,7 @@ export function validateResearchMissionRecords({
     if (mission.status === 'visual_pending') {
       if (activeIdeas.has(mission.idea.id)) issues.push(`${mission.missionId}: another active mission already exists for this idea`);
       activeIdeas.add(mission.idea.id);
-      if (mission.failedAt !== null || mission.completedAt !== null || mission.researchFailureHandoff !== null || mission.qaFailureHandoff !== null || mission.completion !== null || mission.visualHandoff === null) {
+      if (mission.failedAt !== null || mission.completedAt !== null || mission.researchFailureHandoff !== null || mission.reviewFailureHandoff !== null || mission.qaFailureHandoff !== null || mission.completion !== null || mission.visualHandoff === null) {
         issues.push(`${mission.missionId}: visual-pending mission needs one handoff and no completion evidence`);
         continue;
       }
@@ -290,7 +333,7 @@ export function validateResearchMissionRecords({
       continue;
     }
 
-    if (mission.failedAt !== null || mission.researchFailureHandoff !== null || mission.qaFailureHandoff !== null || mission.completedAt === null || mission.completion === null) {
+    if (mission.failedAt !== null || mission.researchFailureHandoff !== null || mission.reviewFailureHandoff !== null || mission.qaFailureHandoff !== null || mission.completedAt === null || mission.completion === null) {
       issues.push(`${mission.missionId}: completed mission needs completion evidence`);
       continue;
     }
