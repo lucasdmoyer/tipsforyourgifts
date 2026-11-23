@@ -56,6 +56,16 @@ export const automationReadinessEvidenceSchema = z.object({
   if (!evidence.latestVerifiedPreview.reviewUrl.startsWith(`${evidence.latestVerifiedPreview.pullRequestUrl}#`)) {
     context.addIssue({ code: z.ZodIssueCode.custom, path: ['latestVerifiedPreview', 'reviewUrl'], message: 'review evidence must be an anchored receipt on the exact preview pull request' });
   }
+  const previewGate = evidence.externalGates.find((gate) => gate.id === 'firebase-preview-identity');
+  if (previewGate && !previewGate.evidenceUrl.startsWith(`${evidence.latestVerifiedPreview.pullRequestUrl}#`)) {
+    context.addIssue({ code: z.ZodIssueCode.custom, path: ['externalGates'], message: 'preview identity evidence must belong to the exact latest verified preview pull request' });
+  }
+  if (previewGate && !previewGate.summary.includes(evidence.latestVerifiedPreview.sha)) {
+    context.addIssue({ code: z.ZodIssueCode.custom, path: ['externalGates'], message: 'preview identity summary must name the exact latest verified preview SHA' });
+  }
+  if (previewGate && !previewGate.nextAction.includes(evidence.latestVerifiedPreview.sha)) {
+    context.addIssue({ code: z.ZodIssueCode.custom, path: ['externalGates'], message: 'preview identity next action must remain bound to the exact latest verified preview SHA' });
+  }
 });
 
 const teamSchema = z.object({
@@ -171,7 +181,7 @@ export function buildAutomationReadiness(input) {
       id: 'production-release',
       label: 'Production release',
       status: 'founder_approval_required',
-      evidence: `Current prepared bytes still require their own exact-SHA preview and founder approval. The latest verified preview was ${evidence.latestVerifiedPreview.sha}; it is historical evidence only.`,
+      evidence: `No master release is authorized by pull-request preview evidence. The latest verified preview was ${evidence.latestVerifiedPreview.sha}; after that reviewed pull request merges, the resulting exact master SHA still requires its own preview, readback, and action-time production approval.`,
       nextAction: evidence.latestVerifiedPreview.nextAction,
       actionUrl: evidence.latestVerifiedPreview.reviewUrl,
       founderActionRequired: true
