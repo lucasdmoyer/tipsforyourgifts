@@ -454,6 +454,7 @@ export interface Operations {
     reviewFailed: number;
     qaFailed: number;
     visualPending: number;
+    visualFailed: number;
     founderReviewRequired: number;
     automaticMergeEligible: number;
     queue: Array<{
@@ -467,12 +468,12 @@ export interface Operations {
       createdAt: string;
       completedAt: string | null;
       workflowRunId: string;
-      failureReasonCode: 'model_step_failed' | 'draft_bundle_invalid' | 'review_model_step_failed' | 'review_result_invalid' | null;
+      failureReasonCode: 'model_step_failed' | 'draft_bundle_invalid' | 'review_model_step_failed' | 'review_result_invalid' | 'production_step_failed' | 'production_bundle_invalid' | 'review_step_failed' | 'review_findings_invalid' | 'review_verdict_failed' | null;
       failureWorkflowRunUrl: string | null;
       activeStage: 'research' | 'quality_review' | 'visual_production' | 'release_preparation' | 'growth_follow_up';
       runId: string | null;
       articleSlug: string | null;
-      publicationReadiness: 'research_in_progress' | 'research_failed' | 'review_failed' | 'qa_failed' | 'visual_pending' | 'founder_review_required' | 'automatic_merge_eligible';
+      publicationReadiness: 'research_in_progress' | 'research_failed' | 'review_failed' | 'qa_failed' | 'visual_pending' | 'visual_failed' | 'founder_review_required' | 'automatic_merge_eligible';
       nextGate: string;
     }>;
   };
