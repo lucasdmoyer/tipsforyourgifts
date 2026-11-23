@@ -297,6 +297,21 @@ h3 { font-size: 1.35rem; }
 .command { overflow-x: auto; padding: 16px; border-radius: 14px; color: #f5f7f2; background: #19332c; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.88rem; }
 
 .brief-hero h1 { max-width: 15ch; }
+.scout-shortcut { display: grid; gap: 22px; border-color: #c8d9cf; background: linear-gradient(135deg, var(--paper), #f1f8f3); }
+.scout-shortcut-heading { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: start; gap: 24px; }
+.scout-shortcut-heading h2 { max-width: 24ch; }
+.scout-shortcut-heading p:last-child { max-width: 78ch; margin-bottom: 0; color: var(--ink-soft); }
+.scout-shortcut-form { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.scout-shortcut-form > label { display: grid; gap: 7px; color: var(--evergreen-dark); font-weight: 800; }
+.scout-shortcut-form input:not([type="checkbox"]), .scout-shortcut-form textarea { width: 100%; border: 1px solid #bfcac1; border-radius: 12px; padding: 11px 13px; color: var(--ink); background: white; }
+.scout-shortcut-form textarea { resize: vertical; line-height: 1.5; }
+.scout-shortcut-form input:focus, .scout-shortcut-form textarea:focus { outline: 3px solid rgba(31, 91, 72, 0.2); border-color: var(--evergreen); }
+.scout-authority-checks { grid-column: 1 / -1; }
+.scout-shortcut-footer { display: grid; grid-template-columns: minmax(0, 1fr) minmax(260px, 0.65fr); align-items: end; gap: 22px; }
+.scout-shortcut-footer .brief-checks { grid-template-columns: repeat(2, minmax(0, 1fr)); margin-bottom: 0; }
+.scout-shortcut-footer .button { width: 100%; margin: 0; text-align: center; }
+.scout-shortcut-footer .quiet { margin: 10px 0 0; }
+.scout-shortcut-preview summary { cursor: pointer; color: var(--evergreen); font-weight: 850; }
 .brief-layout { display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(300px, 0.55fr); align-items: start; gap: 22px; }
 .brief-form { display: grid; gap: 20px; }
 .brief-form-heading { display: flex; align-items: start; justify-content: space-between; gap: 20px; }
@@ -340,6 +355,7 @@ h3 { font-size: 1.35rem; }
   .idea-proof-grid { grid-template-columns: 1fr; }
   .experiment-grid, .mission-grid, .agenda-proof-grid, .agenda-grid { grid-template-columns: 1fr; }
   .brief-layout { grid-template-columns: 1fr; }
+  .scout-shortcut-heading, .scout-shortcut-footer { grid-template-columns: 1fr; }
   .brief-sidebar { position: static; }
   .finder-hero, .finder-layout { grid-template-columns: 1fr; }
   .gift-path-closing { grid-template-columns: 1fr; }
@@ -380,6 +396,7 @@ h3 { font-size: 1.35rem; }
   .affiliate-decision-packet > .status { grid-column: 1; justify-self: start; }
   .pair-roles { grid-template-columns: 1fr; }
   .brief-field-grid { grid-template-columns: 1fr; }
+  .scout-shortcut-form, .scout-shortcut-footer .brief-checks { grid-template-columns: 1fr; }
   .finder-result { grid-template-columns: 1fr; }
   .finder-result-visual { min-height: 0; aspect-ratio: 3 / 2; }
   .finder-result-copy { padding: 22px; }

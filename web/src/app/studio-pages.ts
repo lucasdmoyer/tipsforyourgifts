@@ -3,6 +3,7 @@ import { ChangeDetectionStrategy, Component, inject, InjectionToken } from '@ang
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import type { Growth, Operations, Strategy, StrategyIdea } from './content.types';
 import { assessFounderBrief, buildFounderBriefMarkdown, buildStrategyIssueUrl, EMPTY_FOUNDER_BRIEF, type FounderBriefDraft } from './founder-brief';
+import { assessFounderScoutDirection, buildFounderScoutDirectionMarkdown, buildFounderScoutIssueUrl, EMPTY_FOUNDER_SCOUT_DIRECTION, type FounderScoutDirectionDraft } from './founder-scout-direction';
 import { SeoService } from './seo.service';
 
 export interface StudioData {
@@ -648,14 +649,68 @@ export class StudioPage {
     <section class="shell studio-hero brief-hero">
       <p class="eyebrow">Founder brief builder</p>
       <h1>Notice the gift before naming the product.</h1>
-      <p class="lede">Give the AI team a high-level direction. This private-in-your-browser worksheet checks the thoughtfulness logic, then opens a reviewable owner-authored GitHub issue. It does not start research or publish anything by itself.</p>
+      <p class="lede">Give the AI team a high-level direction. Start with the executive shortcut and let the scout find the evidence, or use the detailed brief when you already know the recipient logic. Both paths stay proposal-only.</p>
       <p><a routerLink="/studio">← Return to Executive Studio</a></p>
+    </section>
+
+    <section class="shell compact-section">
+      <div class="panel scout-shortcut">
+        <div class="scout-shortcut-heading">
+          <div>
+            <p class="eyebrow">Executive shortcut</p>
+            <h2>Give the team three things. Let research do the rest.</h2>
+            <p>Name the direction, the person, and one signal worth investigating. The opportunity desk must then prove—or reject—the idea with qualifying public evidence before it can propose anything.</p>
+          </div>
+          <span class="status" [class.approved_for_research]="scoutAssessment.ready">{{ scoutAssessment.passed }}/{{ scoutAssessment.total }} complete</span>
+        </div>
+        <form class="scout-shortcut-form" (submit)="$event.preventDefault()">
+          <label>Direction
+            <input name="scoutDirection" [value]="scoutDraft.direction" (input)="updateScoutText('direction', $event)" maxlength="180" placeholder="Find thoughtful upgrades for a friend who is always golfing">
+          </label>
+          <label>Recipient or audience
+            <input name="scoutAudience" [value]="scoutDraft.audience" (input)="updateScoutText('audience', $event)" maxlength="180" placeholder="A recreational golfer who plays most weekends">
+          </label>
+          <label>What have you noticed—or what is your hunch?
+            <textarea name="scoutObservedSignal" [value]="scoutDraft.observedSignal" (input)="updateScoutText('observedSignal', $event)" rows="3" maxlength="1200" placeholder="They tolerate small course-day annoyances and keep using improvised fixes."></textarea>
+          </label>
+          <label>Optional boundaries
+            <textarea name="scoutBoundaries" [value]="scoutDraft.boundaries" (input)="updateScoutText('boundaries', $event)" rows="2" maxlength="1000" placeholder="Evergreen gifts under $100. Avoid fit-sensitive equipment."></textarea>
+          </label>
+          <fieldset class="authority-checks scout-authority-checks">
+            <legend>Keep authority explicit</legend>
+            <label><input type="checkbox" name="scoutAuthorityConfirmed" [checked]="scoutDraft.authorityConfirmed" (change)="updateScoutBoolean('authorityConfirmed', $event)"> I understand this starts only one public opportunity-scout mission and can create at most one proposal for later review.</label>
+            <label><input type="checkbox" name="scoutNoSensitiveDataConfirmed" [checked]="scoutDraft.noSensitiveDataConfirmed" (change)="updateScoutBoolean('noSensitiveDataConfirmed', $event)"> I included no credentials, tracking IDs, private customer data, or private-group content.</label>
+          </fieldset>
+          @if (scoutAssessment.credentialLikeTextDetected) {
+            <p class="brief-warning"><strong>Stop:</strong> credential-like text was detected. Remove it before opening GitHub.</p>
+          }
+        </form>
+        <div class="scout-shortcut-footer">
+          <ul class="brief-checks">
+            @for (check of scoutAssessment.checks; track check.id) {
+              <li [class.passed]="check.passed"><span aria-hidden="true">{{ check.passed ? '✓' : '○' }}</span>{{ check.label }}</li>
+            }
+          </ul>
+          <div>
+            @if (scoutIssueUrl) {
+              <a class="button" [href]="scoutIssueUrl" target="_blank" rel="noopener">Review scout mission in GitHub →</a>
+            } @else {
+              <span class="button disabled" aria-disabled="true">Add the three founder signals</span>
+            }
+            <p class="quiet">GitHub shows the exact issue before submission. The AI policy and credential gates must be active before any model call.</p>
+          </div>
+        </div>
+        <details class="scout-shortcut-preview">
+          <summary>Preview the exact scout direction</summary>
+          <pre class="brief-preview">{{ scoutMarkdown }}</pre>
+        </details>
+      </div>
     </section>
 
     <section class="shell compact-section brief-layout">
       <form class="panel brief-form" (submit)="$event.preventDefault()">
         <div class="brief-form-heading">
-          <div><p class="eyebrow">1 · Frame the direction</p><h2>What should the team investigate?</h2></div>
+          <div><p class="eyebrow">Detailed brief</p><h2>Already know the recipient logic?</h2></div>
           <span class="status" [class.approved_for_research]="assessment.ready">{{ assessment.passed }}/{{ assessment.total }} complete</span>
         </div>
 
@@ -772,6 +827,7 @@ export class StudioPage {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FounderBriefPage {
+  readonly scoutDraft: FounderScoutDirectionDraft = { ...EMPTY_FOUNDER_SCOUT_DIRECTION };
   readonly draft: FounderBriefDraft = { ...EMPTY_FOUNDER_BRIEF };
   private readonly seo = inject(SeoService);
   constructor() {
@@ -780,11 +836,20 @@ export class FounderBriefPage {
   get assessment() { return assessFounderBrief(this.draft); }
   get issueUrl() { return buildStrategyIssueUrl(this.draft); }
   get briefMarkdown() { return buildFounderBriefMarkdown(this.draft); }
+  get scoutAssessment() { return assessFounderScoutDirection(this.scoutDraft); }
+  get scoutIssueUrl() { return buildFounderScoutIssueUrl(this.scoutDraft); }
+  get scoutMarkdown() { return buildFounderScoutDirectionMarkdown(this.scoutDraft); }
   updateMode(event: Event) { this.draft.mode = (event.target as HTMLSelectElement).value as FounderBriefDraft['mode']; }
   updateText(field: Exclude<keyof FounderBriefDraft, 'mode' | 'authorityConfirmed' | 'noSensitiveDataConfirmed'>, event: Event) {
     this.draft[field] = (event.target as HTMLInputElement | HTMLTextAreaElement).value;
   }
   updateBoolean(field: 'authorityConfirmed' | 'noSensitiveDataConfirmed', event: Event) {
     this.draft[field] = (event.target as HTMLInputElement).checked;
+  }
+  updateScoutText(field: Exclude<keyof FounderScoutDirectionDraft, 'authorityConfirmed' | 'noSensitiveDataConfirmed'>, event: Event) {
+    this.scoutDraft[field] = (event.target as HTMLInputElement | HTMLTextAreaElement).value;
+  }
+  updateScoutBoolean(field: 'authorityConfirmed' | 'noSensitiveDataConfirmed', event: Event) {
+    this.scoutDraft[field] = (event.target as HTMLInputElement).checked;
   }
 }

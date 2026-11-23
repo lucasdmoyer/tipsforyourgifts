@@ -30,6 +30,39 @@ try {
   const mission = opportunityScoutMissionSchema.parse(JSON.parse(await fs.readFile(missionPath, 'utf8')));
   if (mission.expectedProposalId !== 'founder-idea-002' || mission.authority.mayApproveResearch || mission.authority.mayPublish) throw new Error('mission authority or expected proposal binding is wrong');
 
+  const founderDirectionBody = [
+    '## Founder direction',
+    'Find thoughtful upgrades for a friend who is always golfing',
+    '',
+    '## Recipient or audience',
+    'Recreational golfers who play most weekends',
+    '',
+    '## Signal or hunch to investigate',
+    'They keep improvising around small course-day annoyances instead of researching a better setup.',
+    '',
+    '## Boundaries',
+    'Evergreen gifts under $100. Avoid personalized equipment and fit-sensitive clubs.',
+    '',
+    '## Authority boundary',
+    '- [x] Proposal only.'
+  ].join('\n');
+  await fs.writeFile(path.join(fixtureRoot, 'founder-direction.json'), `${JSON.stringify({
+    number: 77,
+    title: '[Scout] Find thoughtful upgrades for a friend who is always golfing',
+    body: founderDirectionBody,
+    html_url: 'https://github.com/lucasdmoyer/tipsforyourgifts/issues/77',
+    user: { login: 'lucasdmoyer' },
+    author_association: 'OWNER'
+  }, null, 2)}\n`);
+  const directedScoutId = 'opportunity-scout-12347-1';
+  await execFileAsync(process.execPath, [path.join(scriptRoot, 'scripts/start-opportunity-scout.mjs'), `--base-sha=${'c'.repeat(40)}`, '--workflow-run-id=12347', '--workflow-run-attempt=1', '--actor=lucasdmoyer', '--trigger=founder_direction', '--directive-path=founder-direction.json', '--created-at=2026-08-03T10:50:00.000Z'], { cwd: fixtureRoot });
+  const directedMissionPath = path.join(fixtureRoot, 'research/opportunity-missions', `${directedScoutId}.json`);
+  const directedMission = opportunityScoutMissionSchema.parse(JSON.parse(await fs.readFile(directedMissionPath, 'utf8')));
+  if (directedMission.trigger.type !== 'founder_direction' || directedMission.directive?.issueNumber !== 77 || directedMission.directive.direction !== 'Find thoughtful upgrades for a friend who is always golfing') throw new Error('founder direction was not bound into the trusted scout mission');
+  if (directedMission.directive.sourceBodySha256.length !== 64 || directedMission.directive.issueUrl !== 'https://github.com/lucasdmoyer/tipsforyourgifts/issues/77') throw new Error('founder direction provenance was not hash-bound');
+  await fs.rm(directedMissionPath);
+  await fs.rm(path.join(fixtureRoot, 'founder-direction.json'));
+
   const proposal = { id: 'founder-idea-002', revision: 1, founderDisposition: 'proposed', ideaType: 'editorial', thesisType: 'ritual_pairing', title: 'Make a weather-watching ritual easier to begin' };
   strategy.ideas.push(proposal);
   strategy.updatedAt = '2026-08-03T11:30:00.000Z';
@@ -53,7 +86,7 @@ try {
   if (!backlogResult.stdout.includes('"shouldScout": false') || !backlogResult.stdout.includes('founder_backlog_full')) throw new Error('full founder backlog did not stop the scout before model work');
   const missionNames = (await fs.readdir(path.join(fixtureRoot, 'research/opportunity-missions'))).filter((name) => name.endsWith('.json'));
   if (missionNames.length !== 1) throw new Error('backlog-full start created an unauthorized mission file');
-  console.log(JSON.stringify({ opportunityScoutCommandIntegration: 'passed', commands: 5, scoutId, completionStatus: completed.status, nextGate: 'founder_review', backlogGate: 'founder_backlog_full' }, null, 2));
+  console.log(JSON.stringify({ opportunityScoutCommandIntegration: 'passed', commands: 6, scoutId, directedScoutId, completionStatus: completed.status, nextGate: 'founder_review', backlogGate: 'founder_backlog_full' }, null, 2));
 } finally {
   await fs.rm(fixtureRoot, { recursive: true, force: true });
 }
