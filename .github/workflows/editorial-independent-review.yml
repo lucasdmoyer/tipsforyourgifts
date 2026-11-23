@@ -74,6 +74,9 @@ jobs:
       - name: Bind the exact reviewed base
         id: provenance
         run: echo "base_sha=$GITHUB_SHA" >> "$GITHUB_OUTPUT"
+      - name: Authorize AI automation runtime
+        if: steps.target.outputs.eligible == 'true'
+        run: node web/scripts/check-ai-runtime-authorization.mjs
       - name: Verify autonomous agent credential
         if: steps.target.outputs.eligible == 'true'
         env:

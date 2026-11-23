@@ -50,7 +50,7 @@ Independent editorial receipts are append-only revisions. New receipts bind both
 
 Mission completion advances the bundle to release preparation. While publication mode is founder reviewed, it still requires the exact-SHA pull request, Firebase preview, and founder merge decision. Once the separately approved automatic-after-proven policy is active, the same completion receipt can make the pull request eligible for required-check automatic merge.
 
-The GitHub research job has read-only repository permission while the OpenAI key is present. It serializes a patch, rejects edits outside content-only paths, and discards the credential. A second job with write permission applies the patch, reruns every gate without the AI credential, pushes a branch, and opens a pull request.
+The GitHub research job has read-only repository permission while the OpenAI key is present. Before the key is injected, a credential-free guard proves the versioned AI policy is active and the exact workflow/job is allowlisted; a second guard then verifies the credential immediately before the model action. The job serializes a patch, rejects edits outside content-only paths, and discards the credential. A second job with write permission applies the patch, reruns every gate without the AI credential, pushes a branch, and opens a pull request.
 
 The strategy-intake job follows the same separation. It accepts only an owner-authored `[Strategy]` issue, exposes the issue to the AI as untrusted data, permits at most one appended `proposed` idea, and regenerates only deterministic operating files. Approval is a different workflow with no AI credential; it advances the exact proposed revision and opens a founder-controlled pull request.
 

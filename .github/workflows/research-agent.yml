@@ -68,6 +68,8 @@ jobs:
           path: ${{ steps.mission.outputs.mission_path }}
           if-no-files-found: error
           retention-days: 30
+      - name: Authorize AI automation runtime
+        run: node web/scripts/check-ai-runtime-authorization.mjs
       - name: Verify autonomous agent credential
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
@@ -168,6 +170,9 @@ jobs:
           echo "source_patch_sha=$source_patch_sha" >> "$GITHUB_OUTPUT"
           echo "mission_id=$EXPECTED_MISSION_ID" >> "$GITHUB_OUTPUT"
           npm --prefix web run research:review:route -- --run-id="$run_id" --mission-id="$EXPECTED_MISSION_ID"
+      - name: Authorize AI automation runtime
+        if: steps.identify.outputs.review_route == 'independent_review'
+        run: node web/scripts/check-ai-runtime-authorization.mjs
       - name: Verify autonomous agent credential
         if: steps.identify.outputs.review_route == 'independent_review'
         env:

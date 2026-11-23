@@ -45,6 +45,8 @@ jobs:
         run: |
           npm ci --prefix web
           npm run validate
+      - name: Authorize AI automation runtime
+        run: node web/scripts/check-ai-runtime-authorization.mjs
       - name: Verify autonomous agent credential
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}

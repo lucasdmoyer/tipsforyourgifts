@@ -66,6 +66,9 @@ jobs:
           path: ${{ steps.scout.outputs.mission_path }}
           if-no-files-found: error
           retention-days: 30
+      - name: Authorize AI automation runtime
+        if: steps.scout.outputs.should_scout == 'true'
+        run: node web/scripts/check-ai-runtime-authorization.mjs
       - name: Verify autonomous agent credential
         if: steps.scout.outputs.should_scout == 'true'
         env:
@@ -177,6 +180,8 @@ jobs:
           npm run validate
           source_patch_sha="$(git diff --binary HEAD -- "$MISSION_PATH" "web/research/opportunities/$MISSION_ID.json" web/src/data/strategy.json | shasum -a 256 | cut -d ' ' -f 1)"
           echo "source_patch_sha=$source_patch_sha" >> "$GITHUB_OUTPUT"
+      - name: Authorize AI automation runtime
+        run: node web/scripts/check-ai-runtime-authorization.mjs
       - name: Verify autonomous agent credential
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
