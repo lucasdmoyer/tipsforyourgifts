@@ -202,7 +202,7 @@ jobs:
             Act only as the independent evidence and compliance editor for mission ${{ steps.identify.outputs.mission_id }} and run ${{ steps.identify.outputs.run_id }}.
             Read the repository research skill and review the exact run, matching article, social launch pack, and any pending visual request. Challenge source independence, product fit, benefits, drawbacks, safety, unsupported experience, merchant links, affiliate posture, social policy, observed-friction specificity, self-purchase logic, recipient-fit signals, duplicate and clutter risk, ownership burden, pair coherence, and every compatibility check. Reject a companion that only increases basket size or rescues a weak anchor. Treat the visual request only as a draft brief: check that it does not invent a product appearance, brand mark, hands-on experience, or unsupported recipient behavior, but do not certify image rights or visual quality. Do not modify any existing file and do not draft new copy.
 
-            Do not modify any repository file. Create exactly one file at repository root named editorial-review-result.json with this strict shape:
+            Do not modify any tracked repository file. Create exactly one untracked file at repository root named editorial-review-result.json with this strict shape:
             {
               "schemaVersion": "1.0.0",
               "runId": "${{ steps.identify.outputs.run_id }}",
