@@ -598,6 +598,7 @@ export const OPERATIONS: Operations = {
     "reviewFailed": 0,
     "qaFailed": 0,
     "visualPending": 0,
+    "visualFailed": 0,
     "founderReviewRequired": 0,
     "automaticMergeEligible": 0,
     "queue": []

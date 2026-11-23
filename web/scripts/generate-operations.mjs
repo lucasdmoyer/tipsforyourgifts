@@ -22,6 +22,7 @@ const root = process.cwd();
 const runsDir = path.join(root, 'research', 'runs');
 const missionsDir = path.join(root, 'research', 'missions');
 const visualRequestsDir = path.join(root, 'visuals', 'requests');
+const visualFailuresDir = path.join(root, 'visuals', 'failures');
 const opportunityMissionsDir = path.join(root, 'research', 'opportunity-missions');
 const opportunityReportsDir = path.join(root, 'research', 'opportunities');
 const opportunityReviewsDir = path.join(root, 'research', 'opportunity-reviews');
@@ -84,6 +85,7 @@ const socialPublications = await loadHashedJsonRecords(socialPublicationDir);
 const socialCandidates = await loadHashedJsonRecords(socialCandidateDir);
 const researchMissions = await loadHashedJsonRecords(missionsDir);
 const visualRequests = await loadHashedJsonRecords(visualRequestsDir);
+const visualFailures = await loadHashedJsonRecords(visualFailuresDir);
 const opportunityMissions = await loadHashedJsonRecords(opportunityMissionsDir);
 const opportunityReports = await loadHashedJsonRecords(opportunityReportsDir);
 const opportunityReviews = await loadHashedJsonRecords(opportunityReviewsDir);
@@ -301,11 +303,14 @@ const latestMissionByIdea = new Map();
 for (const mission of [...researchMissions].sort((left, right) => left.createdAt.localeCompare(right.createdAt))) latestMissionByIdea.set(mission.idea.id, mission);
 const runById = new Map(runs.map((run) => [run.runId, run]));
 const visualRequestByRun = new Map(visualRequests.map((request) => [request.runId, request]));
+const latestVisualFailureByRequest = new Map();
+for (const failure of [...visualFailures].sort((left, right) => left.recordedAt.localeCompare(right.recordedAt))) latestVisualFailureByRequest.set(failure.bindings.requestId, failure);
 const activeResearchMissions = researchMissions.filter((mission) => ['started', 'visual_pending'].includes(mission.status)).length;
 const completedResearchMissions = researchMissions.filter((mission) => mission.status === 'completed').length;
 const researchFailedResearchMissions = researchMissions.filter((mission) => mission.status === 'research_failed').length;
 const reviewFailedResearchMissions = researchMissions.filter((mission) => mission.status === 'review_failed').length;
 const qaFailedResearchMissions = researchMissions.filter((mission) => mission.status === 'qa_failed').length;
+const visualFailedResearchMissions = visualRequests.filter((request) => latestVisualFailureByRequest.has(request.requestId)).length;
 const ideaStages = strategy.ideas.map((idea) => {
   const ideaRuns = runs.filter((run) => run.ideaId === idea.id);
   const latestRun = [...ideaRuns].sort((left, right) => String(right.startedAt).localeCompare(String(left.startedAt)))[0];
@@ -378,6 +383,7 @@ const sourceDates = [
   livePublication.updatedAt,
   ...runs.map((run) => run.completedAt ?? run.startedAt).filter(Boolean),
   ...researchMissions.flatMap((mission) => [mission.createdAt, mission.failedAt, mission.completedAt]).filter(Boolean),
+  ...visualFailures.map((failure) => failure.recordedAt),
   ...opportunityMissions.flatMap((mission) => [mission.createdAt, mission.completedAt]).filter(Boolean),
   ...opportunityReports.map((report) => report.createdAt),
   ...opportunityReviews.map((review) => review.reviewedAt),
@@ -460,6 +466,7 @@ const operations = {
     reviewFailed: reviewFailedResearchMissions,
     qaFailed: qaFailedResearchMissions,
     visualPending: visualRequests.length,
+    visualFailed: visualFailedResearchMissions,
     founderReviewRequired: researchMissions.filter((mission) => mission.completion?.publicationReadiness === 'founder_review_required').length,
     automaticMergeEligible: researchMissions.filter((mission) => mission.completion?.publicationReadiness === 'automatic_merge_eligible').length,
     queue: [...researchMissions].sort((left, right) => right.createdAt.localeCompare(left.createdAt)).map((mission) => {
@@ -467,6 +474,7 @@ const operations = {
         const run = runById.get(request.runId);
         return run?.ideaId === mission.idea.id && run?.ideaRevision === mission.idea.revision && run?.ideaSha256 === mission.idea.sha256;
       });
+      const visualFailure = pendingVisual ? latestVisualFailureByRequest.get(pendingVisual.requestId) : null;
       return {
         missionId: mission.missionId,
         recordSha256: mission.sha256,
@@ -478,13 +486,13 @@ const operations = {
         createdAt: mission.createdAt,
         completedAt: mission.completedAt,
         workflowRunId: mission.trigger.workflowRunId,
-        failureReasonCode: mission.researchFailureHandoff?.reasonCode ?? mission.reviewFailureHandoff?.reasonCode ?? null,
-        failureWorkflowRunUrl: mission.researchFailureHandoff?.workflowRunUrl ?? mission.reviewFailureHandoff?.workflowRunUrl ?? null,
+        failureReasonCode: mission.researchFailureHandoff?.reasonCode ?? mission.reviewFailureHandoff?.reasonCode ?? visualFailure?.reasonCode ?? null,
+        failureWorkflowRunUrl: mission.researchFailureHandoff?.workflowRunUrl ?? mission.reviewFailureHandoff?.workflowRunUrl ?? visualFailure?.workflow.url ?? null,
         activeStage: mission.status === 'research_failed' ? 'research' : ['review_failed', 'qa_failed'].includes(mission.status) ? 'quality_review' : pendingVisual ? 'visual_production' : mission.teamStages.find((stage) => ['in_progress', 'ready'].includes(stage.status))?.id ?? 'growth_follow_up',
         runId: mission.reviewFailureHandoff?.runId ?? mission.qaFailureHandoff?.runId ?? pendingVisual?.runId ?? mission.completion?.runId ?? null,
         articleSlug: mission.reviewFailureHandoff?.articleSlug ?? mission.qaFailureHandoff?.articleSlug ?? pendingVisual?.articleSlug ?? mission.completion?.articleSlug ?? null,
-        publicationReadiness: mission.status === 'research_failed' ? 'research_failed' : mission.status === 'review_failed' ? 'review_failed' : mission.status === 'qa_failed' ? 'qa_failed' : pendingVisual ? 'visual_pending' : mission.completion?.publicationReadiness ?? 'research_in_progress',
-        nextGate: mission.researchFailureHandoff?.nextGate ?? mission.reviewFailureHandoff?.nextGate ?? mission.qaFailureHandoff?.nextGate ?? pendingVisual?.nextGate ?? mission.completion?.nextGate ?? 'Complete the evidence bundle, independent QA receipt, deterministic gates, and mission completion receipt.'
+        publicationReadiness: mission.status === 'research_failed' ? 'research_failed' : mission.status === 'review_failed' ? 'review_failed' : mission.status === 'qa_failed' ? 'qa_failed' : visualFailure ? 'visual_failed' : pendingVisual ? 'visual_pending' : mission.completion?.publicationReadiness ?? 'research_in_progress',
+        nextGate: mission.researchFailureHandoff?.nextGate ?? mission.reviewFailureHandoff?.nextGate ?? mission.qaFailureHandoff?.nextGate ?? visualFailure?.nextGate ?? pendingVisual?.nextGate ?? mission.completion?.nextGate ?? 'Complete the evidence bundle, independent QA receipt, deterministic gates, and mission completion receipt.'
       };
     })
   },

@@ -15,6 +15,7 @@ import {
   VISUAL_PRODUCER_MODEL,
   VISUAL_REVIEW_MODEL
 } from './lib/visual-production-contract.mjs';
+import { visualFailureReceiptSchema } from './lib/visual-failure-contract.mjs';
 import { parseAiAutomationPolicy, validateDirectApiWorkflowDocument } from './lib/ai-automation-policy-contract.mjs';
 
 const webRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -67,6 +68,27 @@ assert.equal(visualReviewFindingsSchema.safeParse({
   privacy: { rawApiResponseStored: false, secretValueStored: false, personalDataSent: false }
 }).success, true);
 
+const failureReceipt = {
+  schemaVersion: '1.0.0',
+  failureId: '20261123-sample-aaaaaaaa-visuals-run123-attempt1',
+  status: 'retry_required',
+  stage: 'independent_review',
+  reasonCode: 'review_verdict_failed',
+  recordedAt: '2026-11-23T00:01:00.000Z',
+  workflow: { name: 'visual-production.yml', runId: '123', runAttempt: 1, url: 'https://github.com/lucasdmoyer/tipsforyourgifts/actions/runs/123' },
+  bindings: {
+    requestId: '20261123-sample-aaaaaaaa-visuals', requestPath: 'visuals/requests/20261123-sample-aaaaaaaa-visuals.json', requestSha256: 'a'.repeat(64),
+    missionId: 'research-mission-123-1', missionPath: 'research/missions/research-mission-123-1.json', missionSha256: 'b'.repeat(64),
+    runId: '20261123-sample-aaaaaaaa', articleSlug: 'sample-article'
+  },
+  evidence: { manifestSha256: 'c'.repeat(64), findingsSha256: 'd'.repeat(64), reviewVerdict: 'failed', blockers: ['sample-hero: mobileLegibility failed the independent visual review.'], warnings: [] },
+  handling: { partialOutputPreserved: false, generatedAssetsPromoted: false, reviewReceiptCreated: false, productionDeploymentAuthorized: false },
+  nextGate: 'Open the visual-failure correction pull request and retry only after the failed independent review is corrected.'
+};
+assert.equal(visualFailureReceiptSchema.parse(failureReceipt).reasonCode, 'review_verdict_failed');
+assert.equal(visualFailureReceiptSchema.safeParse({ ...failureReceipt, evidence: { ...failureReceipt.evidence, blockers: [] } }).success, false);
+assert.equal(visualFailureReceiptSchema.safeParse({ ...failureReceipt, reasonCode: 'review_step_failed', evidence: { ...failureReceipt.evidence, reviewVerdict: null } }).success, false);
+
 const policy = parseAiAutomationPolicy(JSON.parse(await fs.readFile(path.join(webRoot, 'config', 'ai-automation-policy.json'), 'utf8')));
 const workflow = parseYaml(await fs.readFile(path.join(repoRoot, '.github', 'workflows', 'visual-production.yml'), 'utf8'));
 const workflowPolicy = policy.directApiWorkflows[0];
@@ -79,16 +101,23 @@ assert.deepEqual(validation.modelJobs.sort(), ['independent_review', 'produce'])
 assert.deepEqual(validation.detachedWriterJobs, ['detached_writer']);
 const workflowSource = await fs.readFile(path.join(repoRoot, '.github', 'workflows', 'visual-production.yml'), 'utf8');
 assert.doesNotMatch(workflowSource, /firebase deploy/);
-assert.match(workflowSource, /needs\.independent_review\.outputs\.verdict == 'passed'/);
+assert.match(workflowSource, /visual:classify-production/);
+assert.match(workflowSource, /visual:classify-review/);
+assert.match(workflowSource, /visual:failure:record/);
+assert.match(workflowSource, /review_verdict_failed/);
 assert.match(workflowSource, /review:promote/);
 assert.match(workflowSource, /research:mission:complete/);
 const writerText = JSON.stringify(workflow.jobs.detached_writer);
 assert.doesNotMatch(writerText, /OPENAI_API_KEY/);
 assert.match(writerText, /contents":"write/);
 assert.match(writerText, /pull-requests":"write/);
+assert.match(writerText, /partial generation or reviewer output/);
+assert.match(writerText, /generatedAssetsPromoted|promoted no images/i);
+assert.equal(workflow.jobs.produce.steps.find((step) => step.id === 'visual_producer')['continue-on-error'], true);
+assert.equal(workflow.jobs.independent_review.steps.find((step) => step.id === 'visual_reviewer')['continue-on-error'], true);
 for (const jobName of ['produce', 'independent_review']) {
   assert.equal(workflow.jobs[jobName].permissions.contents, 'read');
   assert.doesNotMatch(JSON.stringify(workflow.jobs[jobName].permissions), /write/);
 }
 
-console.log(JSON.stringify({ gate: 'passed', credentialedModelSteps: 2, maximumApiCallsPerRun: 13, maximumGeneratedAssetsPerRun: 12, usageEvidenceRequired: true, dollarCostInvented: false, independentReviewRequired: true, failedReviewPromotionBlocked: true, writerReceivesOpenAiKey: false, firebaseDeploymentAuthorized: false }, null, 2));
+console.log(JSON.stringify({ gate: 'passed', credentialedModelSteps: 2, maximumApiCallsPerRun: 13, maximumGeneratedAssetsPerRun: 12, usageEvidenceRequired: true, dollarCostInvented: false, independentReviewRequired: true, failedReviewPromotionBlocked: true, generationFailureRecorded: true, reviewFailureRecorded: true, partialVisualOutputPreserved: false, reviewReceiptFabricated: false, writerReceivesOpenAiKey: false, firebaseDeploymentAuthorized: false }, null, 2));
