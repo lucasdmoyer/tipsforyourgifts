@@ -286,7 +286,9 @@ describe('App', () => {
     expect(element.textContent).toContain('Strategy proposals');
     expect(element.querySelector('a[href*="strategy-approval.yml"]')).not.toBeNull();
     expect(element.querySelector('a[href*="strategy-idea.yml"]')).not.toBeNull();
-    expect(element.querySelector('a[href="/studio/brief"]')?.textContent).toContain('Compose a thoughtful brief');
+    const briefLinks = Array.from(element.querySelectorAll<HTMLAnchorElement>('a[href="/studio/brief"]'));
+    expect(briefLinks.some((link) => link.textContent?.includes('Give the team a direction'))).toBe(true);
+    expect(briefLinks.some((link) => link.textContent?.includes('Compose a thoughtful brief'))).toBe(true);
     const proposedIdeas = STRATEGY.ideas.filter((idea) => idea.founderDisposition === 'proposed').sort((left, right) => ({ high: 0, medium: 1, low: 2 }[left.priority] ?? 3) - ({ high: 0, medium: 1, low: 2 }[right.priority] ?? 3) || (right.pairing?.coherenceScore ?? 0) - (left.pairing?.coherenceScore ?? 0) || left.id.localeCompare(right.id));
     if (proposedIdeas[0]) {
       expect(element.textContent).toContain(`${proposedIdeas.length} thoughtful ${proposedIdeas.length === 1 ? 'thesis awaits' : 'theses await'} your decision`);
@@ -365,6 +367,11 @@ describe('App', () => {
     fixture.detectChanges();
     const element = fixture.nativeElement as HTMLElement;
     const agenda = OPERATIONS.founderAgenda;
+    expect(element.querySelector('#founder-agenda')).not.toBeNull();
+    expect(element.querySelector('.studio-command-brief')?.textContent).toContain(agenda.decisions[0].title);
+    expect(element.querySelector('.studio-command-brief')?.textContent).toContain(agenda.decisions[0].recommendation);
+    expect(element.querySelector('a[href="#founder-agenda"]')?.textContent).toContain(`Review ${agenda.decisions.length}`);
+    expect(element.querySelector('.studio-command-brief a[href="/studio/brief"]')?.textContent).toContain('Give the team a direction');
     expect(element.textContent).toContain(`${agenda.decisions.length} ${agenda.decisions.length === 1 ? 'decision' : 'decisions'}. One clear order.`);
     expect(element.textContent).toContain('Profitability remains unknown until aggregate measurement.');
     for (const decision of agenda.decisions) {

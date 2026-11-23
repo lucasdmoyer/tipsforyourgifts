@@ -22,7 +22,21 @@ export const STUDIO_DATA = new InjectionToken<StudioData>('STUDIO_DATA');
   template: `
     <section class="shell studio-hero">
       <p class="eyebrow">Executive studio</p><h1>Set the direction. Let the system run.</h1>
-      <p class="lede">This is the strategy and control surface generated from versioned operating data. It is intentionally no-index and contains no credentials or private customer data.</p>
+      <p class="lede">Start with the decision, not the machinery. The team can handle research, review, visuals, affiliate preparation, and release evidence; Lucas chooses what deserves attention and where authority begins.</p>
+      @if (content.operations.founderAgenda.decisions[0]; as firstDecision) {
+        <div class="studio-command-brief">
+          <div>
+            <p class="eyebrow">First call</p>
+            <h2>{{ firstDecision.title }}</h2>
+            <p><strong>Team recommendation:</strong> {{ firstDecision.recommendation }}</p>
+          </div>
+          <div class="studio-command-actions">
+            <a class="button" href="#founder-agenda">Review {{ content.operations.founderAgenda.decisions.length }} decision{{ content.operations.founderAgenda.decisions.length === 1 ? '' : 's' }}</a>
+            <a class="button secondary" routerLink="/studio/brief">Give the team a direction</a>
+          </div>
+        </div>
+      }
+      <p class="quiet">Generated from versioned operating evidence. This page is no-index and contains no credentials or private customer data.</p>
     </section>
     <section id="automation-readiness" class="shell compact-section automation-readiness">
       <div class="section-heading">
@@ -106,7 +120,7 @@ export const STUDIO_DATA = new InjectionToken<StudioData>('STUDIO_DATA');
     <section class="shell compact-section"><div class="kpi-grid">
       @for (kpi of kpis; track kpi.label) { <div class="kpi"><strong>{{ kpi.value }}</strong><span>{{ kpi.label }}</span></div> }
     </div></section>
-    <section class="shell compact-section founder-agenda">
+    <section id="founder-agenda" class="shell compact-section founder-agenda">
       <div class="section-heading">
         <div><p class="eyebrow">Founder agenda</p><h2>{{ content.operations.founderAgenda.decisions.length }} decision{{ content.operations.founderAgenda.decisions.length === 1 ? '' : 's' }}. One clear order.</h2></div>
         <p>Ranked from versioned operating evidence—not revenue guesses. Profitability remains {{ displayStatus(content.operations.founderAgenda.profitabilityEvidence) }}.</p>
