@@ -55,6 +55,25 @@ export interface ArticleVisual {
   pairSceneIds: Record<string, string>;
 }
 
+export interface ArticleSummary {
+  slug: string;
+  title: string;
+  description: string;
+  publishDate: string;
+  status: 'publication_ready';
+  audience: string;
+  occasion: string;
+  priceBand: string;
+  tags: string[];
+  researchRun: string;
+  evidenceScore: number;
+  featured: boolean;
+  productCount: number;
+  pairCount: number;
+  paidLinkCount: number;
+  visual: Pick<ArticleVisual, 'hero'>;
+}
+
 export interface Article {
   slug: string;
   title: string;

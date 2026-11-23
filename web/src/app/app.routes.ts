@@ -1,4 +1,4 @@
-import { Routes } from '@angular/router';
+import { ActivatedRouteSnapshot, Routes } from '@angular/router';
 
 const page = <T extends keyof typeof import('./public-pages')>(name: T) =>
   () => import('./public-pages').then((pages) => pages[name]);
@@ -12,12 +12,15 @@ const studioData = () => import('./generated/studio.generated').then(({ OPERATIO
   growth: GROWTH
 }));
 
+const articleData = (route: ActivatedRouteSnapshot) =>
+  import('./generated/article-loaders.generated').then(({ loadArticle }) => loadArticle(route.paramMap.get('slug')));
+
 export const routes: Routes = [
   { path: '', loadComponent: page('HomePage') },
   { path: 'gift-finder', loadComponent: page('GiftFinderPage') },
   { path: 'gifts', loadComponent: page('GiftsPage') },
   { path: 'blog', loadComponent: page('BlogPage') },
-  { path: 'blog/:slug', loadComponent: page('ArticlePage') },
+  { path: 'blog/:slug', loadComponent: () => import('./article-page').then(({ ArticlePage }) => ArticlePage), resolve: { article: articleData } },
   { path: 'standards', loadComponent: page('StandardsPage') },
   { path: 'affiliate-disclosure', loadComponent: page('AffiliateDisclosurePage') },
   { path: 'studio', loadComponent: studioPage('StudioPage'), resolve: { studioData } },

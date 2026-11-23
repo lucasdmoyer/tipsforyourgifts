@@ -1,9 +1,12 @@
 import { TestBed } from '@angular/core/testing';
-import { provideRouter, Router } from '@angular/router';
+import { provideRouter, Router, type ActivatedRouteSnapshot } from '@angular/router';
 import { App } from './app';
+import { PairCardComponent, ProductCardComponent } from './article-components';
+import { ArticlePage } from './article-page';
+import { loadArticle } from './generated/article-loaders.generated';
 import { ARTICLES } from './generated/content.generated';
 import { GROWTH, OPERATIONS, STRATEGY } from './generated/studio.generated';
-import { ArticlePage, GiftFinderPage, PairCardComponent, ProductCardComponent } from './public-pages';
+import { GiftFinderPage } from './public-pages';
 import { FounderBriefPage, STUDIO_DATA, StudioPage } from './studio-pages';
 import { readerBodyComesFirst, readerBodyHtml, readerEvidenceHtml, readerLanguage, readerLead } from './reader-copy';
 
@@ -15,7 +18,7 @@ describe('App', () => {
     await TestBed.configureTestingModule({
       imports: [App, ArticlePage, StudioPage, FounderBriefPage, GiftFinderPage, ProductCardComponent, PairCardComponent],
       providers: [
-        provideRouter([{ path: 'blog/:slug', component: ArticlePage }])
+        provideRouter([{ path: 'blog/:slug', component: ArticlePage, resolve: { article: (route: ActivatedRouteSnapshot) => loadArticle(route.paramMap.get('slug')) } }])
       ]
     }).compileComponents();
   });
@@ -173,7 +176,8 @@ describe('App', () => {
   });
 
   it('places a plain disclosure before a paid recommendation', async () => {
-    const article = ARTICLES.find((candidate) => candidate.pairs.length > 0)!;
+    const sourceArticle = ARTICLES.find((candidate) => candidate.pairs.length > 0)!;
+    const article = (await loadArticle(sourceArticle.slug))!;
     const product = article.products.find((candidate) => candidate.id === article.pairs[0].anchorProductId)!;
     const originalDisclosure = article.affiliateDisclosure;
     const originalAffiliate = product.affiliate;
