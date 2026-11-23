@@ -14,7 +14,7 @@
     "$20-$60",
     "$60-$130"
   ],
-  "riskClass": "medium",
+  "riskClass": "high",
   "draftAuthor": "fiber-art-pause-drafting-research-desk",
   "startedAt": "2026-08-23T20:15:00.000Z",
   "researchPasses": [
@@ -154,7 +154,7 @@
       "id": "src-lands-end-tote-reddit-2026",
       "url": "https://www.reddit.com/r/knitting/comments/1wtinbl/tell_me_about_the_knitting_bags_you_love/",
       "publisher": "Reddit r/knitting",
-      "title": "Owner describes zip-top pocket-tote organization and keeping projects contained",
+      "title": "Owner praises a zippered Lands' End pocket tote but reports that it is heavy",
       "accessedAt": "2026-10-10",
       "sourceClass": "independent-review",
       "trustTier": "C",
@@ -208,7 +208,7 @@
       "accessedAt": "2026-10-10",
       "sourceClass": "manufacturer",
       "trustTier": "A",
-      "independenceGroup": "cocoknits-makers-board"
+      "independenceGroup": "cocoknits"
     },
     {
       "id": "src-makers-board-reddit-2023",
@@ -288,7 +288,7 @@
       "accessedAt": "2026-10-10",
       "sourceClass": "manufacturer",
       "trustTier": "A",
-      "independenceGroup": "cocoknits-row-counter"
+      "independenceGroup": "cocoknits"
     },
     {
       "id": "src-cocoknits-counter-reddit-2022",
@@ -391,12 +391,11 @@
     {
       "id": "claim-lands-end-drawback",
       "kind": "product_drawback",
-      "text": "The product page is configurable, so a buyer must actively select Medium and Zip Top; owners describe the tote as general-purpose storage and warn that exposed yarn can catch near the zipper unless the project is settled before closing.",
+      "text": "The product page is configurable, so a buyer must actively select Medium and Zip Top; one current owner likes the zippered Lands' End tote but calls it heavy, so the recipient's carrying tolerance and actual project load need a check.",
       "risk": "medium",
       "status": "supported",
       "sourceIds": [
         "src-lands-end-tote-official",
-        "src-lands-end-tote-reddit-2024",
         "src-lands-end-tote-reddit-2026"
       ]
     },
@@ -490,7 +489,7 @@
     {
       "id": "claim-makers-board-magnet-boundary",
       "kind": "compatibility",
-      "text": "Cocoknits lists nine loose included magnets: four PLA-covered round magnets, two small uncovered round magnets, and three strong uncovered rectangular magnets. CPSC's general guidance for small magnets in non-toy products says to keep them away from young children or anyone likely to swallow them, inspect for missing pieces, and seek immediate medical attention if ingestion is suspected; that guidance is not an exact-product finding or recall for the Maker's Board.",
+      "text": "Cocoknits lists nine loose included magnets: four PLA-covered round magnets, two small uncovered round magnets, and three strong uncovered rectangular magnets. CPSC's general alert says small magnets in non-toy products may present the same ingestion hazard, advises keeping them away from young children, and says to seek immediate medical attention if a child may have swallowed one. This is general guidance, not an exact-product finding or recall for the Maker's Board. Count and store all nine magnets after use; skip the board where controlled storage is not realistic.",
       "risk": "high",
       "status": "supported",
       "sourceIds": [
@@ -566,7 +565,7 @@
     },
     {
       "id": "zipper-versus-yarn-contact",
-      "summary": "A zip top helps contain a paused project but can catch exposed yarn; the bundle instructions require an inner project pouch or settling all yarn clear before closing."
+      "summary": "A zip top helps contain a paused project. The exact Lands' End owner evidence supports capacity, organization, and a weight drawback—not a yarn-snag finding—so the guide treats closure clearance as a general packing practice rather than an exact-product defect."
     },
     {
       "id": "clover-mini-versus-standard",
@@ -659,7 +658,7 @@
       "editorialScore": 80,
       "evidenceConfidence": 80,
       "drawbacks": [
-        "The page requires selecting Medium and Zip Top, and owners report exposed yarn can catch near the zipper unless the project is settled before closing."
+        "The page requires selecting Medium and Zip Top, and one current owner says the zippered tote is heavy; confirm the recipient wants that carrying weight before adding yarn and tools."
       ],
       "primarySourceIds": [
         "src-lands-end-tote-official"
@@ -682,7 +681,7 @@
         "physicalGiftBoundary": "welcome_when_verified",
         "selfPurchase": {
           "reason": "research_burden",
-          "rationale": "A reusable tote is easy to postpone because the recipient has to compare size, pockets, closure, storage, and yarn-snag risk.",
+          "rationale": "A reusable tote is easy to postpone because the recipient has to compare size, pockets, closure, storage, and carrying weight.",
           "basis": "recipient_observation_prompt",
           "claimIds": [
             "claim-fiber-self-purchase"
@@ -709,7 +708,7 @@
           {
             "dimension": "space_or_storage",
             "status": "verified",
-            "requirement": "Confirm the recipient wants a zipper and will use an inner pouch or settle exposed yarn before closing.",
+            "requirement": "Confirm the recipient wants a zipper and can comfortably carry the tote plus the named project.",
             "claimIds": [
               "claim-lands-end-drawback"
             ]
@@ -878,7 +877,7 @@
           {
             "dimension": "space_or_storage",
             "status": "verified",
-            "requirement": "Keep all nine included magnets away from young children or anyone likely to swallow them, inspect for missing pieces, and follow CPSC's general small-magnet guidance; this is a general precaution, not an exact-product finding.",
+            "requirement": "Keep all nine included magnets away from young children, count and store them after use, and follow CPSC's general small-magnet guidance; this is a general precaution, not an exact-product finding.",
             "claimIds": [
               "claim-makers-board-magnet-boundary"
             ]
@@ -1135,7 +1134,7 @@
       "editorialScore": 80,
       "evidenceConfidence": 80,
       "drawbacks": [
-        "The page requires selecting Medium and Zip Top, and owners report exposed yarn can catch near the zipper unless the project is settled before closing."
+        "The page requires selecting Medium and Zip Top, and one current owner says the zippered tote is heavy; confirm the recipient wants that carrying weight before adding yarn and tools."
       ],
       "primarySourceIds": [
         "src-lands-end-tote-official"
@@ -1158,7 +1157,7 @@
         "physicalGiftBoundary": "welcome_when_verified",
         "selfPurchase": {
           "reason": "research_burden",
-          "rationale": "A reusable tote is easy to postpone because the recipient has to compare size, pockets, closure, storage, and yarn-snag risk.",
+          "rationale": "A reusable tote is easy to postpone because the recipient has to compare size, pockets, closure, storage, and carrying weight.",
           "basis": "recipient_observation_prompt",
           "claimIds": [
             "claim-fiber-self-purchase"
@@ -1185,7 +1184,7 @@
           {
             "dimension": "space_or_storage",
             "status": "verified",
-            "requirement": "Confirm the recipient wants a zipper and will use an inner pouch or settle exposed yarn before closing.",
+            "requirement": "Confirm the recipient wants a zipper and can comfortably carry the tote plus the named project.",
             "claimIds": [
               "claim-lands-end-drawback"
             ]
@@ -1354,7 +1353,7 @@
           {
             "dimension": "space_or_storage",
             "status": "verified",
-            "requirement": "Keep all nine included magnets away from young children or anyone likely to swallow them, inspect for missing pieces, and follow CPSC's general small-magnet guidance; this is a general precaution, not an exact-product finding.",
+            "requirement": "Keep all nine included magnets away from young children, count and store them after use, and follow CPSC's general small-magnet guidance; this is a general precaution, not an exact-product finding.",
             "claimIds": [
               "claim-makers-board-magnet-boundary"
             ]
@@ -1514,7 +1513,7 @@
       "recipientJob": "Contain a sweater or travel set while preserving the visible line and next instruction on its paper pattern or chart.",
       "coherenceType": "organizes",
       "whyTogether": "The medium zip-top tote keeps a larger project, pattern, and tools together. The Maker's Board holds the paper chart and preserves the active line. Each remains useful on its own.",
-      "interactionMoment": "Move the chart marker to the next instruction, fold the board, place it in the tote, contain the project in a smooth inner pouch, and close the zipper clear of yarn.",
+      "interactionMoment": "Move the chart marker to the next instruction, fold the board, place it in the tote, place the project and working yarn fully inside, then close the zipper without forcing the load.",
       "compatibilityChecks": [
         {
           "dimension": "size_or_fit",
@@ -1538,7 +1537,7 @@
         {
           "dimension": "space_or_storage",
           "status": "verified",
-          "requirement": "Keep all nine included magnets away from young children or anyone likely to swallow them, inspect for missing pieces, and follow CPSC's general small-magnet guidance; this is a general precaution, not an exact-product finding.",
+          "requirement": "Keep all nine included magnets away from young children, count and store them after use, and follow CPSC's general small-magnet guidance; this is a general precaution, not an exact-product finding.",
           "claimIds": [
             "claim-makers-board-magnet-boundary"
           ]
@@ -1583,16 +1582,16 @@
   "qa": {
     "passed": false,
     "reviewerRole": "independent-editor",
-    "reviewerId": "independent-evidence-audit-20261010",
+    "reviewerId": "codex-independent-editor-fiber-20261122",
     "receiptPath": "research/reviews/20260823-fiber-art-pause-269f700c.qa.v1.json",
     "blockers": [
-      "The repaired evidence bundle and reader article require a fresh independent review; the drafting research desk cannot certify its own work.",
       "Founder review is required for the qualified small-magnet safety boundary before publication; the cited CPSC guidance is general and is not an exact-product finding or recall for the Maker's Board."
     ],
     "warnings": [
-      "The Cocoknits counter has mixed owner reliability reports and remains a lower-scored alternative rather than a bundle anchor.",
-      "Clover's Mini item 3118 and standard item 336 are distinct variants; recheck the exact item, stock, and fulfillment timing before promotion.",
-      "Maker's Board owner reports conflict on value, stitching, durability, and magnetic-cable interaction. The stitching anecdotes do not establish a defect rate; product and pair scores were reduced, and the recipient's chart, tools, and return options require a pre-gift check."
+      "Independent editorial QA passed on exact evidence, article, and social hashes; the separate founder small-magnet approval gate remains open.",
+      "Recheck exact configuration and purchase availability immediately before promotion: Clover Mini item 3118 is currently shown backordered, and the Lands' End destination is a configurable Medium and Zip Top page.",
+      "Preserve the reduced Maker's Board score and pre-gift checks because owner reports conflict on value, stitching, durability, and magnetic-cable interaction.",
+      "All product links remain ordinary and unpaid; social publishing remains unauthorized."
     ]
   }
 }

@@ -1,0 +1,21 @@
+{
+  "schemaVersion": "1.0.0",
+  "receiptId": "20260823-fiber-art-pause-269f700c-qa",
+  "runId": "20260823-fiber-art-pause-269f700c",
+  "articleSlug": "knitting-crochet-project-bag-row-counter-gift-pairs",
+  "reviewedAt": "2026-11-22T13:54:11.655Z",
+  "reviewerRole": "independent-editor",
+  "reviewerId": "codex-independent-editor-fiber-20261122",
+  "workflowRunId": "local-independent-fiber-repair-qa-20261122",
+  "verdict": "passed",
+  "evidenceSha256": "64162d6af5a2921b844b8aab017ccca8edbfbffa11761408cb0330a657d685ff",
+  "articleSha256": "73a6fee2594bd4a6f9fa3ee16e401a5d86f3d767e8289f0739f019370d5e2f52",
+  "socialSha256": "d72f7f6a657b352a8569640ecce7449950f625b341b4c9e756a063dc5a0ee682",
+  "blockers": [],
+  "warnings": [
+    "Founder approval remains required for the qualified small-magnet boundary; this independent pass does not clear that gate.",
+    "Recheck exact configuration and purchase availability immediately before promotion: Clover Mini item 3118 is currently shown backordered, and the Lands' End destination is a configurable Medium and Zip Top page.",
+    "Preserve the reduced Maker's Board score and pre-gift checks because owner reports conflict on value, stitching, durability, and magnetic-cable interaction.",
+    "All product links remain ordinary and unpaid; social publishing remains unauthorized."
+  ]
+}
