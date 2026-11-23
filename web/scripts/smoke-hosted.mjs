@@ -64,8 +64,15 @@ await Promise.all(paths.map(async (pathname) => {
     failures.push(`${pathname}: no matching publication-ready source article`);
     return;
   }
-  for (const marker of ['Start with the person', 'If you know someone', 'Original illustration', 'Know who this sounds like?', 'data-event-name="article_share"']) {
+  for (const marker of ['Start with the person', 'If you know someone', 'Original illustration', 'Keep following the clue', 'data-event-name="related_guide_open"', 'BreadcrumbList', 'Know who this sounds like?', 'data-event-name="article_share"']) {
     if (!html.includes(marker)) failures.push(`${pathname}: missing ${JSON.stringify(marker)}`);
+  }
+  const relatedDestinations = [...html.matchAll(/data-destination-guide-slug="([^"]+)"/g)].map((match) => match[1]);
+  if (relatedDestinations.length !== 3) failures.push(`${pathname}: expected 3 related guides, found ${relatedDestinations.length}`);
+  if (new Set(relatedDestinations).size !== relatedDestinations.length) failures.push(`${pathname}: related guides contain a duplicate destination`);
+  if (relatedDestinations.includes(slug)) failures.push(`${pathname}: related guides include the current article`);
+  for (const destination of relatedDestinations) {
+    if (!articles.has(destination)) failures.push(`${pathname}: related guide ${destination} is not publication ready`);
   }
   for (const product of article.products ?? []) {
     if (!html.includes(escapeHtml(product.name))) failures.push(`${pathname}: missing product ${product.id}`);

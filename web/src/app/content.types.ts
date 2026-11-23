@@ -74,6 +74,20 @@ export interface ArticleSummary {
   visual: Pick<ArticleVisual, 'hero'>;
 }
 
+export interface RelatedGuide {
+  slug: string;
+  title: string;
+  description: string;
+  occasion: string;
+  priceBand: string;
+  visual: Pick<ArticleVisual, 'hero'>;
+}
+
+export interface ArticleJourney {
+  path: { slug: string; title: string; description: string } | null;
+  guides: RelatedGuide[];
+}
+
 export interface Article {
   slug: string;
   title: string;
@@ -97,6 +111,10 @@ export interface Article {
   pairs: ProductPair[];
   visual: ArticleVisual;
   contentHtml: string;
+}
+
+export interface ArticlePageData extends Article {
+  journey: ArticleJourney;
 }
 
 export interface StrategyIdea {
