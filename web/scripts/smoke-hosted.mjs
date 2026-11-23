@@ -64,7 +64,7 @@ await Promise.all(paths.map(async (pathname) => {
     failures.push(`${pathname}: no matching publication-ready source article`);
     return;
   }
-  for (const marker of ['Start with the person', 'If you know someone', 'Original illustration']) {
+  for (const marker of ['Start with the person', 'If you know someone', 'Original illustration', 'Know who this sounds like?', 'data-event-name="article_share"']) {
     if (!html.includes(marker)) failures.push(`${pathname}: missing ${JSON.stringify(marker)}`);
   }
   for (const product of article.products ?? []) {
