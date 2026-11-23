@@ -105,7 +105,7 @@ jobs:
           git add -N .
           while IFS= read -r changed_path; do
             case "$changed_path" in
-              "$CANDIDATE_PATH"|web/src/data/operations.json|web/src/app/generated/content.generated.ts|web/public/publication-manifest.json|web/public/sitemap.xml) ;;
+              "$CANDIDATE_PATH"|web/src/data/operations.json|web/src/app/generated/content.generated.ts|web/src/app/generated/studio.generated.ts|web/public/publication-manifest.json|web/public/sitemap.xml) ;;
               *) echo "Affiliate candidate changed forbidden path: $changed_path" >&2; exit 1 ;;
             esac
           done < <(git diff --name-only HEAD)
@@ -122,7 +122,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git switch -c "codex/affiliate-link-candidate-$RUN_ID"
-          git add "$CANDIDATE_PATH" web/src/data/operations.json web/src/app/generated/content.generated.ts web/public/publication-manifest.json web/public/sitemap.xml
+          git add "$CANDIDATE_PATH" web/src/data/operations.json web/src/app/generated/content.generated.ts web/src/app/generated/studio.generated.ts web/public/publication-manifest.json web/public/sitemap.xml
           git commit -m "Record affiliate link candidate ${{ steps.candidate.outputs.candidate_id }}"
           git push origin "codex/affiliate-link-candidate-$RUN_ID"
       - name: Open independent-review pull request

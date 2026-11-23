@@ -119,7 +119,7 @@ jobs:
           git add -N .
           while IFS= read -r changed_path; do
             case "$changed_path" in
-              "$MISSION_PATH"|"web/research/opportunities/$MISSION_ID.json"|web/src/data/strategy.json|web/src/data/operations.json|web/src/app/generated/content.generated.ts|web/public/sitemap.xml) ;;
+              "$MISSION_PATH"|"web/research/opportunities/$MISSION_ID.json"|web/src/data/strategy.json|web/src/data/operations.json|web/src/app/generated/content.generated.ts|web/src/app/generated/studio.generated.ts|web/public/sitemap.xml) ;;
               *) echo "Opportunity scout changed forbidden path: $changed_path" >&2; exit 1 ;;
             esac
           done < <(git diff --name-only HEAD)
@@ -208,7 +208,7 @@ jobs:
           test -f "web/research/opportunity-reviews/$MISSION_ID.qa.v1.json"
           while IFS= read -r changed_path; do
             case "$changed_path" in
-              "$MISSION_PATH"|"web/research/opportunities/$MISSION_ID.json"|"web/research/opportunity-reviews/$MISSION_ID.qa.v1.json"|web/src/data/strategy.json|web/src/data/operations.json|web/src/app/generated/content.generated.ts|web/public/sitemap.xml) ;;
+              "$MISSION_PATH"|"web/research/opportunities/$MISSION_ID.json"|"web/research/opportunity-reviews/$MISSION_ID.qa.v1.json"|web/src/data/strategy.json|web/src/data/operations.json|web/src/app/generated/content.generated.ts|web/src/app/generated/studio.generated.ts|web/public/sitemap.xml) ;;
               *) echo "Opportunity reviewer changed forbidden path: $changed_path" >&2; exit 1 ;;
             esac
           done < <(git status --short | cut -c4-)
