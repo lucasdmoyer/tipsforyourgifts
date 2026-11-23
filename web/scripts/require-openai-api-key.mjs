@@ -32,8 +32,9 @@ if (process.env.GITHUB_ACTIONS === 'true') {
   const workflowRef = process.env.GITHUB_WORKFLOW_REF ?? '';
   const workflowFile = workflowRef.match(/\/\.github\/workflows\/([^/@]+)@/)?.[1];
   const jobName = process.env.GITHUB_JOB ?? '';
-  const workflow = policy.workflows.find((candidate) => candidate.file === workflowFile);
-  if (!workflow || !workflow.codexJobs.includes(jobName)) {
+  const codexWorkflow = policy.workflows.find((candidate) => candidate.file === workflowFile);
+  const directWorkflow = policy.directApiWorkflows.find((candidate) => candidate.file === workflowFile);
+  if ((!codexWorkflow || !codexWorkflow.codexJobs.includes(jobName)) && (!directWorkflow || !directWorkflow.modelJobs.includes(jobName))) {
     console.error('::error title=Unregistered AI automation context::This workflow or job is outside the versioned model-call allowlist. No model call was attempted.');
     process.exit(1);
   }

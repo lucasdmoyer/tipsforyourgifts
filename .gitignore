@@ -2,6 +2,7 @@ node_modules/
 web/node_modules/
 web/dist/
 web/.angular/
+web/visuals/production/
 .firebase/
 firebase-debug.log
 firebase-debug.*.log

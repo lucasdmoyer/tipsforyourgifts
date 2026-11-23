@@ -17,6 +17,7 @@ expectFailure('content set digest must bind article evidence', (manifest) => { m
 expectFailure('content set digest must bind article visuals', (manifest) => { manifest.articles[0].visualAssetIds[0] = 'unbound-visual'; });
 expectFailure('visual registry digest cannot drift', (manifest) => { manifest.visualPosture.registrySha256 = 'f'.repeat(64); });
 expectFailure('visual file digest cannot drift', (manifest) => { manifest.visualPosture.assets[0].sha256 = 'f'.repeat(64); });
+expectFailure('visual review digest cannot drift', (manifest) => { manifest.visualPosture.assets[0].reviewSha256 = 'f'.repeat(64); });
 expectFailure('article count cannot drift', (manifest) => { manifest.counts.articles += 1; });
 expectFailure('review count cannot drift', (manifest) => { manifest.counts.independentReviews -= 1; });
 expectFailure('founder safety approval count cannot drift', (manifest) => { manifest.counts.founderSafetyApprovals += 1; });
@@ -33,4 +34,4 @@ expectFailure('article route must bind slug', (manifest) => { manifest.articles[
 expectFailure('duplicate article slug rejected', (manifest) => { manifest.articles[1].articleSlug = manifest.articles[0].articleSlug; manifest.articles[1].route = manifest.articles[0].route; });
 expectFailure('duplicate research run rejected', (manifest) => { manifest.articles[1].researchRunId = manifest.articles[0].researchRunId; });
 expectFailure('unexpected fields rejected', (manifest) => { manifest.unverifiedNote = 'trust me'; });
-console.log(JSON.stringify({ publicationManifestNegativeGateTests: 'passed', checks: 22, articles: base.counts.articles, hashBoundReviews: base.counts.independentReviews, hashBoundSafetyApprovals: base.counts.founderSafetyApprovals, legacyHighRiskIndependentReviewOnly: base.counts.legacyHighRiskIndependentReviewOnly, hashBoundVisuals: base.counts.visualAssets, hashBoundAffiliateOverlays: base.counts.affiliateLinks }, null, 2));
+console.log(JSON.stringify({ publicationManifestNegativeGateTests: 'passed', checks: 23, articles: base.counts.articles, hashBoundReviews: base.counts.independentReviews, hashBoundSafetyApprovals: base.counts.founderSafetyApprovals, legacyHighRiskIndependentReviewOnly: base.counts.legacyHighRiskIndependentReviewOnly, hashBoundVisuals: base.counts.visualAssets, hashBoundAffiliateOverlays: base.counts.affiliateLinks }, null, 2));

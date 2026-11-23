@@ -18,7 +18,7 @@ export const OPERATIONS: Operations = {
         "horizon": "now",
         "category": "release",
         "title": "Review the next accountable Angular release",
-        "recommendation": "Review publication-set-4bc6216cd2440947 as the next founder-controlled Firebase release candidate.",
+        "recommendation": "Review publication-set-8f82fd7548201471 as the next founder-controlled Firebase release candidate.",
         "decisionQuestion": "Should this exact reviewed content set replace the currently verified live set?",
         "rationale": "The candidate adds reviewed content and operating improvements beyond the verified live set, but it must retain exact-SHA preview, rollback, and founder-control evidence before replacement.",
         "evidence": [
@@ -251,7 +251,7 @@ export const OPERATIONS: Operations = {
     }
   },
   "aiAutomationPolicy": {
-    "schemaVersion": "1.1.0",
+    "schemaVersion": "1.2.0",
     "status": "awaiting_founder_platform_budget",
     "activationReady": false,
     "activationBlockers": [
@@ -259,8 +259,8 @@ export const OPERATIONS: Operations = {
       "Founder-approved OpenAI project hard spend limit, earlier alert, and platform evidence are not recorded.",
       "Versioned automation policy is not active."
     ],
-    "protectedWorkflows": 6,
-    "protectedModelCalls": 8,
+    "protectedWorkflows": 7,
+    "protectedModelCalls": 10,
     "credential": {
       "secretName": "OPENAI_API_KEY",
       "status": "not_configured",
@@ -382,6 +382,24 @@ export const OPERATIONS: Operations = {
         "purpose": "Independently review one exact paid-link candidate without approving or activating it."
       }
     ],
+    "directApiWorkflows": [
+      {
+        "file": "visual-production.yml",
+        "modelJobs": [
+          "produce",
+          "independent_review"
+        ],
+        "modelCalls": 2,
+        "endpoint": "https://api.openai.com/v1/responses",
+        "responseModel": "gpt-6.2-sol",
+        "imageToolModel": "gpt-image-2.5-sunburst-2026-09-08",
+        "commands": {
+          "produce": "visual:produce",
+          "independent_review": "visual:review"
+        },
+        "purpose": "Generate one hash-bound visual batch and run a separate multimodal review before any credential-free Git promotion."
+      }
+    ],
     "shutdownConditions": [
       "A missing repository secret stops the job before a model call.",
       "A policy that is not active stops the job even if a credential appears.",
@@ -390,13 +408,13 @@ export const OPERATIONS: Operations = {
       "Any proposed patch outside its workflow-specific allowlist fails deterministic validation.",
       "A project hard-limit response, repeated failures, or suspected credential exposure requires the founder to disable runs and rotate the credential before resuming."
     ],
-    "policySha256": "2ca0948879b814321b07dbc7bbf13f0b11311b8d0606aa1c9419681a20ed5fb8",
+    "policySha256": "33eb36d548d43f44dcfbf2f17babacd418a1d6eb1d1f34cfe565e82cd118c9a6",
     "budgetConfiguration": {
       "available": true,
       "workflowUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/ai-automation-budget-configure.yml",
       "confirmation": "CONFIGURE-ai-automation-budget",
       "evidenceMode": "founder_attested_external_platform_configuration",
-      "command": "gh workflow run ai-automation-budget-configure.yml --repo lucasdmoyer/tipsforyourgifts --ref master -f expected_policy_sha256=2ca0948879b814321b07dbc7bbf13f0b11311b8d0606aa1c9419681a20ed5fb8 -f monthly_budget_usd='<APPROVED_HARD_LIMIT_USD>' -f hard_limit_enabled=true -f alert_threshold_usd='<APPROVED_ALERT_USD>' -f platform_evidence_url='<OPENAI_PLATFORM_SETTINGS_URL>' -f confirmation='CONFIGURE-ai-automation-budget'"
+      "command": "gh workflow run ai-automation-budget-configure.yml --repo lucasdmoyer/tipsforyourgifts --ref master -f expected_policy_sha256=33eb36d548d43f44dcfbf2f17babacd418a1d6eb1d1f34cfe565e82cd118c9a6 -f monthly_budget_usd='<APPROVED_HARD_LIMIT_USD>' -f hard_limit_enabled=true -f alert_threshold_usd='<APPROVED_ALERT_USD>' -f platform_evidence_url='<OPENAI_PLATFORM_SETTINGS_URL>' -f confirmation='CONFIGURE-ai-automation-budget'"
     },
     "credentialVerification": {
       "available": false,
@@ -404,13 +422,13 @@ export const OPERATIONS: Operations = {
       "confirmation": "VERIFY-ai-automation-credential",
       "method": "openai_models_endpoint",
       "endpoint": "https://api.openai.com/v1/models",
-      "command": "gh workflow run ai-automation-credential-verify.yml --repo lucasdmoyer/tipsforyourgifts --ref master -f expected_policy_sha256=2ca0948879b814321b07dbc7bbf13f0b11311b8d0606aa1c9419681a20ed5fb8 -f confirmation='VERIFY-ai-automation-credential'"
+      "command": "gh workflow run ai-automation-credential-verify.yml --repo lucasdmoyer/tipsforyourgifts --ref master -f expected_policy_sha256=33eb36d548d43f44dcfbf2f17babacd418a1d6eb1d1f34cfe565e82cd118c9a6 -f confirmation='VERIFY-ai-automation-credential'"
     },
     "policyActivation": {
       "available": false,
       "workflowUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/ai-automation-activate.yml",
       "confirmation": "ACTIVATE-ai-automation",
-      "command": "gh workflow run ai-automation-activate.yml --repo lucasdmoyer/tipsforyourgifts --ref master -f expected_policy_sha256=2ca0948879b814321b07dbc7bbf13f0b11311b8d0606aa1c9419681a20ed5fb8 -f confirmation='ACTIVATE-ai-automation'"
+      "command": "gh workflow run ai-automation-activate.yml --repo lucasdmoyer/tipsforyourgifts --ref master -f expected_policy_sha256=33eb36d548d43f44dcfbf2f17babacd418a1d6eb1d1f34cfe565e82cd118c9a6 -f confirmation='ACTIVATE-ai-automation'"
     }
   },
   "researchRuns": 14,
@@ -3397,8 +3415,8 @@ export const OPERATIONS: Operations = {
     },
     "currentCandidate": {
       "status": "release_candidate",
-      "manifestId": "publication-set-4bc6216cd2440947",
-      "contentSetSha256": "4bc6216cd244094741ce91798355d8682d5438fcfe92e316f192937983409414",
+      "manifestId": "publication-set-8f82fd7548201471",
+      "contentSetSha256": "8f82fd75482014719e5c59602ae819d06eb326b339d7e4cc10f8ab32d0cfc90f",
       "articles": 11,
       "independentReviews": 11,
       "founderSafetyApprovals": 0,

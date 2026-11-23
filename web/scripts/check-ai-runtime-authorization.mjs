@@ -23,8 +23,9 @@ export function assessAiRuntimeAuthorization(policyInput, context = {}) {
   if (context.githubActions) {
     workflowFile = context.workflowRef?.match(/\/\.github\/workflows\/([^/@]+)@/)?.[1] ?? null;
     jobName = context.jobName ?? null;
-    const workflow = policy.workflows.find((candidate) => candidate.file === workflowFile);
-    if (!workflow || !workflow.codexJobs.includes(jobName)) {
+    const codexWorkflow = policy.workflows.find((candidate) => candidate.file === workflowFile);
+    const directWorkflow = policy.directApiWorkflows.find((candidate) => candidate.file === workflowFile);
+    if ((!codexWorkflow || !codexWorkflow.codexJobs.includes(jobName)) && (!directWorkflow || !directWorkflow.modelJobs.includes(jobName))) {
       return {
         authorized: false,
         reason: 'unregistered_runtime_context',

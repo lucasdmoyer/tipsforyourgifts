@@ -29,8 +29,22 @@ const workflowPolicySchema = z.object({
   }
 });
 
+const directApiWorkflowPolicySchema = z.object({
+  file: z.literal('visual-production.yml'),
+  modelJobs: z.tuple([z.literal('produce'), z.literal('independent_review')]),
+  modelCalls: z.literal(2),
+  endpoint: z.literal('https://api.openai.com/v1/responses'),
+  responseModel: z.literal('gpt-6.2-sol'),
+  imageToolModel: z.literal('gpt-image-2.5-sunburst-2026-09-08'),
+  commands: z.object({
+    produce: z.literal('visual:produce'),
+    independent_review: z.literal('visual:review')
+  }).strict(),
+  purpose: z.string().min(50)
+}).strict();
+
 export const aiAutomationPolicySchema = z.object({
-  schemaVersion: z.literal('1.1.0'),
+  schemaVersion: z.literal('1.2.0'),
   status: z.enum(['awaiting_founder_platform_budget', 'budget_approved_awaiting_credential', 'credential_verified_awaiting_activation', 'active']),
   credential: z.object({
     secretName: z.literal('OPENAI_API_KEY'),
@@ -90,6 +104,7 @@ export const aiAutomationPolicySchema = z.object({
     canCreateCredentials: z.literal(false)
   }).strict(),
   workflows: z.array(workflowPolicySchema).length(6),
+  directApiWorkflows: z.array(directApiWorkflowPolicySchema).length(1),
   shutdownConditions: z.array(z.string().min(50)).min(6)
 }).strict().superRefine((policy, context) => {
   const expectedFiles = workflowFile.options;
@@ -167,6 +182,7 @@ export function parseAiAutomationPolicy(value) {
 export function buildAiAutomationPolicySummary(value) {
   const policy = parseAiAutomationPolicy(value);
   const codexSteps = policy.workflows.reduce((total, workflow) => total + workflow.codexSteps, 0);
+  const directApiCalls = policy.directApiWorkflows.reduce((total, workflow) => total + workflow.modelCalls, 0);
   const activationBlockers = [];
   if (policy.credential.status !== 'configured_external') activationBlockers.push('Dedicated OpenAI project credential is not configured.');
   else if (policy.credential.verification.status !== 'verified_external') activationBlockers.push('Dedicated OpenAI project credential is not externally verified.');
@@ -183,13 +199,14 @@ export function buildAiAutomationPolicySummary(value) {
       && policy.spendControl.alertThresholdUsd !== null
       && policy.spendControl.evidenceUrl !== null,
     activationBlockers,
-    protectedWorkflows: policy.workflows.length,
-    protectedModelCalls: codexSteps,
+    protectedWorkflows: policy.workflows.length + policy.directApiWorkflows.length,
+    protectedModelCalls: codexSteps + directApiCalls,
     credential: policy.credential,
     spendControl: policy.spendControl,
     runtime: policy.runtime,
     authority: policy.authority,
     workflows: policy.workflows,
+    directApiWorkflows: policy.directApiWorkflows,
     shutdownConditions: policy.shutdownConditions
   };
 }
@@ -318,6 +335,47 @@ export function validateAiWorkflowDocument({ policy, workflowPolicy, workflow })
   return { file: workflowPolicy.file, codexSteps, modelJobs: [...observedJobs], detachedWriterJobs: detachedWriterJobs.map(([name]) => name) };
 }
 
+export function validateDirectApiWorkflowDocument({ policy, workflowPolicy, workflow }) {
+  const secretExpression = '${{ secrets.OPENAI_API_KEY }}';
+  const expectedJobs = new Set(workflowPolicy.modelJobs);
+  const observedJobs = new Set();
+  let modelCalls = 0;
+  for (const [jobName, job] of Object.entries(workflow.jobs ?? {})) {
+    const steps = job.steps ?? [];
+    const jobText = JSON.stringify(job);
+    const permissions = effectivePermissions(workflow, job);
+    const hasWritePermission = Object.values(permissions).some((value) => value === 'write');
+    const registeredCommand = workflowPolicy.commands[jobName];
+    const modelSteps = registeredCommand
+      ? steps.filter((step) => typeof step.run === 'string' && step.run.includes(`npm --prefix web run ${registeredCommand}`))
+      : [];
+    if (modelSteps.length > 0) {
+      observedJobs.add(jobName);
+      if (!expectedJobs.has(jobName) || modelSteps.length !== 1) throw new Error(`${workflowPolicy.file}:${jobName} must contain exactly one registered direct API call.`);
+      if (permissions.contents !== policy.authority.modelJobGithubContents || hasWritePermission) throw new Error(`${workflowPolicy.file}:${jobName} must have effective contents: read and no GitHub write permission.`);
+      const modelIndex = steps.indexOf(modelSteps[0]);
+      const runtimeAuthorization = steps[modelIndex - 2];
+      const preflight = steps[modelIndex - 1];
+      if (runtimeAuthorization?.name !== 'Authorize AI automation runtime' || runtimeAuthorization.run?.trim() !== 'node web/scripts/check-ai-runtime-authorization.mjs') throw new Error(`${workflowPolicy.file}:${jobName} must authorize the versioned runtime before credential access.`);
+      if (preflight?.name !== 'Verify autonomous agent credential' || preflight.run?.trim() !== 'node web/scripts/require-openai-api-key.mjs') throw new Error(`${workflowPolicy.file}:${jobName} must put the reviewed credential preflight immediately before the direct API call.`);
+      if (preflight.env?.OPENAI_API_KEY !== secretExpression || modelSteps[0].env?.OPENAI_API_KEY !== secretExpression) throw new Error(`${workflowPolicy.file}:${jobName} must bind only secrets.OPENAI_API_KEY to the guard and registered direct API call.`);
+      if (JSON.stringify(runtimeAuthorization).includes(secretExpression)) throw new Error(`${workflowPolicy.file}:${jobName} runtime authorization must not receive OPENAI_API_KEY.`);
+      const secretReferences = jobText.split(secretExpression).length - 1;
+      if (secretReferences !== 2) throw new Error(`${workflowPolicy.file}:${jobName} exposes the model credential outside the guard and registered direct API call.`);
+      modelCalls += 1;
+    } else if (jobText.includes(secretExpression)) {
+      throw new Error(`${workflowPolicy.file}:${jobName} receives OPENAI_API_KEY without one registered direct API call.`);
+    }
+  }
+  if (modelCalls !== workflowPolicy.modelCalls) throw new Error(`${workflowPolicy.file} expected ${workflowPolicy.modelCalls} direct API calls, found ${modelCalls}.`);
+  for (const expectedJob of expectedJobs) if (!observedJobs.has(expectedJob)) throw new Error(`${workflowPolicy.file} is missing protected job ${expectedJob}.`);
+  const detachedWriterJobs = Object.entries(workflow.jobs ?? {}).filter(([, job]) => Object.values(effectivePermissions(workflow, job)).some((value) => value === 'write'));
+  if (detachedWriterJobs.length !== 1) throw new Error(`${workflowPolicy.file} must have exactly one detached write-capable job.`);
+  for (const [jobName, job] of detachedWriterJobs) if (JSON.stringify(job).includes(secretExpression)) throw new Error(`${workflowPolicy.file}:${jobName} cannot receive OPENAI_API_KEY in a write-capable job.`);
+  if (JSON.stringify(workflow).includes('firebase deploy')) throw new Error(`${workflowPolicy.file} cannot deploy Firebase.`);
+  return { file: workflowPolicy.file, directApiCalls: modelCalls, modelJobs: [...observedJobs], detachedWriterJobs: detachedWriterJobs.map(([name]) => name) };
+}
+
 export async function validateAiAutomationWorkflows({ repoRoot, policy: value }) {
   const policy = parseAiAutomationPolicy(value);
   const workflows = [];
@@ -326,10 +384,16 @@ export async function validateAiAutomationWorkflows({ repoRoot, policy: value })
     const workflow = parseYaml(await fs.readFile(workflowPath, 'utf8'));
     workflows.push(validateAiWorkflowDocument({ policy, workflowPolicy, workflow }));
   }
+  const directApiWorkflows = [];
+  for (const workflowPolicy of policy.directApiWorkflows) {
+    const workflowPath = path.join(repoRoot, '.github', 'workflows', workflowPolicy.file);
+    const workflow = parseYaml(await fs.readFile(workflowPath, 'utf8'));
+    directApiWorkflows.push(validateDirectApiWorkflowDocument({ policy, workflowPolicy, workflow }));
+  }
   return {
-    workflows,
-    protectedWorkflows: workflows.length,
-    protectedModelCalls: workflows.reduce((total, workflow) => total + workflow.codexSteps, 0),
+    workflows: [...workflows, ...directApiWorkflows],
+    protectedWorkflows: workflows.length + directApiWorkflows.length,
+    protectedModelCalls: workflows.reduce((total, workflow) => total + workflow.codexSteps, 0) + directApiWorkflows.reduce((total, workflow) => total + workflow.directApiCalls, 0),
     modelJobsWithGithubWrite: 0,
     writerJobsReceivingOpenAiKey: 0
   };

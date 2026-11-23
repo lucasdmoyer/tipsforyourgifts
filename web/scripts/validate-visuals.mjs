@@ -4,16 +4,18 @@ import path from 'node:path';
 import process from 'node:process';
 import matter from './lib/front-matter.mjs';
 import { visualRequestSchema } from './lib/visual-request-contract.mjs';
+import { canonicalSha256, legacyVisualReviewReceiptSchema, visualReviewReceiptSchema } from './lib/visual-production-contract.mjs';
 
 const root = process.cwd();
 const visualRegistryPath = path.join(root, 'visuals', 'article-visuals.json');
-const independentReviewPath = path.join(root, 'visuals', 'reviews', 'gift-thread-v1.qa.json');
 const visualRequestDir = path.join(root, 'visuals', 'requests');
 const blogDir = path.join(root, 'src', 'data', 'blog');
 const visualRegistrySource = await fs.readFile(visualRegistryPath);
 const registry = JSON.parse(visualRegistrySource.toString('utf8'));
 const promptBook = await fs.readFile(path.join(root, registry.promptBookPath ?? ''), 'utf8');
-const independentReview = JSON.parse(await fs.readFile(independentReviewPath, 'utf8'));
+const legacyReviewMetadata = registry.legacyReview ?? {};
+const independentReviewPath = path.join(root, legacyReviewMetadata.receiptPath ?? 'visuals/reviews/gift-thread-v1.qa.json');
+const independentReview = legacyVisualReviewReceiptSchema.parse(JSON.parse(await fs.readFile(independentReviewPath, 'utf8')));
 const errors = [];
 
 const expect = (condition, message) => { if (!condition) errors.push(message); };
@@ -29,9 +31,9 @@ expect(independentReview.verdict === 'passed', 'Independent visual review verdic
 expect(Array.isArray(independentReview.blockers) && independentReview.blockers.length === 0, 'Independent visual review must have no blockers');
 expect(typeof independentReview.reviewedAt === 'string' && !Number.isNaN(Date.parse(independentReview.reviewedAt)), 'Independent visual review needs a valid reviewedAt timestamp');
 expect(independentReview.registryPath === 'visuals/article-visuals.json', 'Independent visual review must bind the visual registry');
-expect(independentReview.registrySha256 === sha256(visualRegistrySource), 'Independent visual review registrySha256 is stale');
+expect(independentReview.registrySha256 === legacyReviewMetadata.registrySha256, 'Legacy visual review registry digest differs from the immutable migration record');
 expect(independentReview.promptBookPath === registry.promptBookPath, 'Independent visual review must bind the prompt book');
-expect(independentReview.promptBookSha256 === sha256(Buffer.from(promptBook)), 'Independent visual review promptBookSha256 is stale');
+expect(independentReview.promptBookSha256 === legacyReviewMetadata.promptBookSha256, 'Legacy visual review prompt digest differs from the immutable migration record');
 for (const requiredCheck of ['sourceAndPromptProvenance', 'fileIntegrity', 'productContextTruth', 'copyrightAndTradeDressBoundary', 'accessibilitySemantics', 'responsiveLayout', 'draftIsolation']) {
   expect(independentReview.checks?.[requiredCheck] === true, `Independent visual review must pass ${requiredCheck}`);
 }
@@ -87,6 +89,9 @@ const promptSections = new Map(promptBook.split(/^## /m).slice(1).map((section) 
   const newline = section.indexOf('\n');
   return [section.slice(0, newline).trim(), section.slice(newline + 1).trim()];
 }));
+const legacyAssetIds = new Set(legacyReviewMetadata.assetIds ?? []);
+expect(legacyAssetIds.size === (legacyReviewMetadata.assetIds ?? []).length, 'Legacy visual review asset IDs must be unique');
+expect(legacyAssetIds.size === independentReview.scope.sourceAssetsReviewed, 'Legacy visual review asset count differs from its immutable migration scope');
 const articleFiles = (await fs.readdir(blogDir)).filter((name) => name.endsWith('.md')).sort();
 const articles = new Map();
 for (const fileName of articleFiles) {
@@ -112,6 +117,7 @@ for (const name of visualRequestNames) {
 }
 
 const assets = new Map();
+const incrementalReceipts = new Map();
 for (const asset of registry.assets ?? []) {
   expect(typeof asset.id === 'string' && /^[a-z0-9-]+$/.test(asset.id), `Invalid visual asset id: ${asset.id}`);
   expect(!assets.has(asset.id), `Duplicate visual asset id: ${asset.id}`);
@@ -131,7 +137,20 @@ for (const asset of registry.assets ?? []) {
   } catch (error) {
     errors.push(`${asset.id}: cannot read retained source ${path.relative(root, sourcePath)} (${error.message})`);
   }
+  if (legacyAssetIds.has(asset.id)) {
+    expect(asset.reviewReceiptPath === undefined, `${asset.id}: legacy-reviewed asset must not claim an incremental receipt`);
+  } else {
+    expect(typeof asset.reviewReceiptPath === 'string' && /^visuals\/reviews\/.+\.qa\.v1\.json$/.test(asset.reviewReceiptPath), `${asset.id}: incremental asset needs an immutable visual review receipt`);
+    if (asset.reviewReceiptPath && !incrementalReceipts.has(asset.reviewReceiptPath)) {
+      try {
+        incrementalReceipts.set(asset.reviewReceiptPath, visualReviewReceiptSchema.parse(JSON.parse(await fs.readFile(path.join(root, asset.reviewReceiptPath), 'utf8'))));
+      } catch (error) {
+        errors.push(`${asset.id}: cannot validate visual receipt ${asset.reviewReceiptPath} (${error.message})`);
+      }
+    }
+  }
 }
+for (const assetId of legacyAssetIds) expect(assets.has(assetId), `Legacy visual review references missing asset ${assetId}`);
 
 const visualArticles = new Map();
 const publicAssetIds = new Set();
@@ -162,6 +181,33 @@ for (const entry of registry.articles ?? []) {
   for (const pair of article.pairs) {
     const resolvedAssetId = entry.pairSceneIds?.[pair.id] ?? entry.heroId;
     expect(assets.has(resolvedAssetId), `${entry.slug}: pair ${pair.id} does not resolve to a visual`);
+  }
+}
+
+for (const [receiptPath, receipt] of incrementalReceipts) {
+  expect(receipt.verdict === 'passed' && receipt.sourcePromotionAuthorized === true && receipt.productionDeploymentAuthorized === false, `${receiptPath}: visual receipt authority is invalid`);
+  const mapping = registry.articles.find((entry) => entry.slug === receipt.articleSlug);
+  expect(Boolean(mapping), `${receiptPath}: reviewed article mapping is missing`);
+  if (mapping) expect(receipt.articleMappingSha256 === canonicalSha256(mapping), `${receiptPath}: article mapping changed after visual review`);
+  for (const reviewed of receipt.assets) {
+    const asset = assets.get(reviewed.assetId);
+    expect(Boolean(asset), `${receiptPath}: reviewed asset ${reviewed.assetId} is missing`);
+    if (!asset) continue;
+    expect(asset.reviewReceiptPath === receiptPath, `${reviewed.assetId}: asset points to a different visual receipt`);
+    expect(reviewed.assetRecordSha256 === canonicalSha256(asset), `${reviewed.assetId}: registry record changed after visual review`);
+    expect(reviewed.promptSectionSha256 === sha256(Buffer.from(`${promptSections.get(reviewed.assetId) ?? ''}\n`)), `${reviewed.assetId}: prompt section changed after visual review`);
+    expect(reviewed.sourcePath === registry.sourcePathPattern.replace('{assetId}', reviewed.assetId), `${reviewed.assetId}: receipt source path is invalid`);
+    expect(reviewed.sourceSha256 === asset.sourceSha256, `${reviewed.assetId}: receipt source digest differs from the registry`);
+    expect(reviewed.publicPaths[0] === `public${asset.src}`, `${reviewed.assetId}: receipt delivery path differs from the registry`);
+    expect(reviewed.publicSha256[0] === asset.fileSha256, `${reviewed.assetId}: receipt delivery digest differs from the registry`);
+    for (let index = 0; index < reviewed.publicPaths.length; index += 1) {
+      try {
+        const bytes = await fs.readFile(path.join(root, reviewed.publicPaths[index]));
+        expect(sha256(bytes) === reviewed.publicSha256[index], `${reviewed.assetId}: reviewed public file digest changed for ${reviewed.publicPaths[index]}`);
+      } catch (error) {
+        errors.push(`${reviewed.assetId}: cannot read reviewed public file ${reviewed.publicPaths[index]} (${error.message})`);
+      }
+    }
   }
 }
 
@@ -251,12 +297,7 @@ expect(desktopPublicWebps.length === publicAssetIds.size, `Deployable desktop re
 const mappedArticles = [...visualArticles.keys()].map((slug) => articles.get(slug)).filter(Boolean);
 const productCount = mappedArticles.reduce((sum, article) => sum + article.products.length, 0);
 const pairCount = mappedArticles.reduce((sum, article) => sum + article.pairs.length, 0);
-expect(independentReview.scope?.sourceAssetsReviewed === assets.size, 'Independent visual review source asset count is stale');
-expect(independentReview.scope?.publicAssetsReviewed === publicAssetIds.size, 'Independent visual review public asset count is stale');
-expect(independentReview.scope?.draftOnlyAssetsReviewed === draftAssetIds.size, 'Independent visual review draft-only asset count is stale');
-expect(independentReview.scope?.articleMappingsReviewed === visualArticles.size, 'Independent visual review article mapping count is stale');
-expect(independentReview.scope?.productMappingsReviewed === productCount, 'Independent visual review product mapping count is stale');
-expect(independentReview.scope?.pairMappingsReviewed === pairCount, 'Independent visual review pair mapping count is stale');
+for (const [key, value] of Object.entries(legacyReviewMetadata.scope ?? {})) expect(independentReview.scope?.[key] === value, `Legacy independent visual review scope ${key} differs from the immutable migration record`);
 
 if (errors.length > 0) {
   console.error(`Visual validation failed with ${errors.length} error${errors.length === 1 ? '' : 's'}:`);
