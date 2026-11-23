@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 const httpsUrl = z.string().url().refine((value) => value.startsWith('https://'), 'must use HTTPS');
+const searchConsoleDecisionPacketUrl = 'https://github.com/lucasdmoyer/tipsforyourgifts/issues/59';
 const decisionSchema = z.object({
   id: z.enum(['review-release-candidate', 'choose-next-thesis', 'establish-measurement', 'configure-first-social-channel', 'choose-affiliate-pilot']),
   rank: z.number().int().min(1).max(5),
@@ -160,7 +161,7 @@ export function buildFounderAgenda(input) {
         ? 'Run the read-only finalized Search Console collector and let its aggregate snapshot pass the full pull-request gates.'
         : configured
           ? 'Activate the exact reviewed Search Console configuration so its scheduled read-only collector can begin.'
-          : 'Start with the exact canonical URL-prefix property and read-only page aggregates before adding broader analytics.',
+          : 'Review the credential-free issue 59 decision packet, then configure only its exact URL-prefix property and read-only page-aggregate boundary.',
       decisionQuestion: active
         ? 'Do you want the team to collect the first finalized seven-day organic-search snapshot now?'
         : configured
@@ -179,17 +180,17 @@ export function buildFounderAgenda(input) {
       reversibility: 'high',
       founderActionRequired: true,
       action: {
-        label: active ? 'Collect first snapshot' : configured ? 'Open measurement activation' : 'Open measurement setup',
+        label: active ? 'Collect first snapshot' : configured ? 'Open measurement activation' : 'Open measurement decision packet',
         url: active
           ? 'https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/search-console-collect.yml'
           : configured
             ? 'https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/search-console-activate.yml'
-            : 'https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/search-console-configure.yml',
+            : searchConsoleDecisionPacketUrl,
         command: active
           ? 'gh workflow run search-console-collect.yml'
           : configured
             ? `gh workflow run search-console-activate.yml -f expected_growth_sha256=${input.growthSha256} -f confirmation=ACTIVATE-search-console`
-            : `gh workflow run search-console-configure.yml -f expected_growth_sha256=${input.growthSha256} -f property_reference=https://tipsforyourgifts.web.app/ -f configuration_evidence_url=https://github.com/lucasdmoyer/tipsforyourgifts/issues/REPLACE_WITH_ISSUE_NUMBER -f confirmation=CONFIGURE-search-console`
+            : `gh workflow run search-console-configure.yml -f expected_growth_sha256=${input.growthSha256} -f property_reference=https://tipsforyourgifts.web.app/ -f configuration_evidence_url=${searchConsoleDecisionPacketUrl} -f confirmation=CONFIGURE-search-console`
       }
     });
   }

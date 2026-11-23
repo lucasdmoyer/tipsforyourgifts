@@ -45,7 +45,7 @@ export const OPERATIONS: Operations = {
         "horizon": "next",
         "category": "measurement",
         "title": "Configure the first aggregate measurement source",
-        "recommendation": "Start with the exact canonical URL-prefix property and read-only page aggregates before adding broader analytics.",
+        "recommendation": "Review the credential-free issue 59 decision packet, then configure only its exact URL-prefix property and read-only page-aggregate boundary.",
         "decisionQuestion": "Do you approve configuring the low-data first measurement path for organic discovery?",
         "rationale": "Traffic, conversions, and revenue are currently unknown. Measurement must exist before the team can distinguish useful growth work from activity.",
         "evidence": [
@@ -60,9 +60,9 @@ export const OPERATIONS: Operations = {
         "reversibility": "high",
         "founderActionRequired": true,
         "action": {
-          "label": "Open measurement setup",
-          "url": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/search-console-configure.yml",
-          "command": "gh workflow run search-console-configure.yml -f expected_growth_sha256=346381274ded976f220327d0de058fbc5cce77c764998cdf09e7cd6116515728 -f property_reference=https://tipsforyourgifts.web.app/ -f configuration_evidence_url=https://github.com/lucasdmoyer/tipsforyourgifts/issues/REPLACE_WITH_ISSUE_NUMBER -f confirmation=CONFIGURE-search-console"
+          "label": "Open measurement decision packet",
+          "url": "https://github.com/lucasdmoyer/tipsforyourgifts/issues/59",
+          "command": "gh workflow run search-console-configure.yml -f expected_growth_sha256=346381274ded976f220327d0de058fbc5cce77c764998cdf09e7cd6116515728 -f property_reference=https://tipsforyourgifts.web.app/ -f configuration_evidence_url=https://github.com/lucasdmoyer/tipsforyourgifts/issues/59 -f confirmation=CONFIGURE-search-console"
         }
       },
       {
