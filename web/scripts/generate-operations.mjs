@@ -17,6 +17,7 @@ import { latestEditorialSafetyApproval, loadEditorialSafetyApprovalRecords } fro
 import { buildFounderAgenda } from './lib/founder-agenda-contract.mjs';
 import { loadAffiliateLinkState } from './lib/affiliate-link-contract.mjs';
 import { summarizeDurableFounderReviewedReleaseReceipts } from './lib/publication-receipt-contract.mjs';
+import { loadReleaseApprovals, summarizeReleaseApprovals } from './lib/release-approval-contract.mjs';
 
 const root = process.cwd();
 const runsDir = path.join(root, 'research', 'runs');
@@ -177,6 +178,8 @@ const publicationManifest = JSON.parse(await fs.readFile(publicationManifestPath
 const publicationReceiptNames = (await fs.readdir(publicationReceiptDir)).filter((name) => name.endsWith('.json')).sort();
 const publicationReceipts = await Promise.all(publicationReceiptNames.map(async (name) => JSON.parse(await fs.readFile(path.join(publicationReceiptDir, name), 'utf8'))));
 const durableFounderReviewedReleaseSummary = summarizeDurableFounderReviewedReleaseReceipts(publicationReceipts);
+const releaseApprovalRecords = await loadReleaseApprovals(root);
+const releaseApprovalSummary = summarizeReleaseApprovals(releaseApprovalRecords, publicationManifest);
 const editorialSafetyApprovals = await loadEditorialSafetyApprovalRecords(root);
 
 const validatedRuns = runs.filter((run) => run.status === 'validated').length;
@@ -401,6 +404,7 @@ const sourceDates = [
   ...affiliateLinkState.candidates.map((record) => record.data.createdAt),
   ...affiliateLinkState.reviews.map((record) => record.data.reviewedAt),
   ...affiliateLinkState.approvals.map((record) => record.data.approvedAt),
+  ...releaseApprovalRecords.map((record) => record.data.approval.approvedAt),
   ...editorialSafetyApprovals.map((record) => record.data.reviewedAt),
   ...articles.flatMap((article) => [article.publishDate, article.updatedDate]).filter(Boolean)
 ].map((value) => new Date(value).valueOf()).filter(Number.isFinite);
@@ -413,6 +417,7 @@ const founderAgenda = buildFounderAgenda({
   publicationPolicy,
   publicationManifest,
   livePublication,
+  releaseApprovals: releaseApprovalSummary,
   automationReadinessEvidence,
   growth,
   openStrategyProposals: proposedIdeas,
@@ -726,6 +731,7 @@ const operations = {
     receiptRetentionDays: 90,
     releaseEvidenceSource: 'github_production_deployments_at_enable_time',
     durableReceiptEvidenceSource: 'repository_verified_publication_receipts',
+    exactReleaseApprovals: releaseApprovalSummary,
     currentLive: {
       status: livePublication.status,
       updatedAt: livePublication.updatedAt,

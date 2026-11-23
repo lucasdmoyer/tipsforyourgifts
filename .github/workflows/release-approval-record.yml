@@ -1,0 +1,156 @@
+name: Record exact release approval
+
+on:
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: "Exact open pull request number targeting master"
+        required: true
+        type: string
+      expected_head_sha:
+        description: "Full exact pull request head SHA approved by Lucas"
+        required: true
+        type: string
+      approval_comment_id:
+        description: "Numeric GitHub issue-comment ID containing the immutable owner approval"
+        required: true
+        type: string
+      confirmation:
+        description: "RECORD-PR- followed by the PR number, a dash, and the full head SHA"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  issues: read
+  pull-requests: read
+
+concurrency:
+  group: release-approval-record-${{ inputs.pr_number }}
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    outputs:
+      approval_id: ${{ steps.record.outputs.approval_id }}
+      approval_file: ${{ steps.record.outputs.approval_file }}
+    steps:
+      - name: Require repository-owner action and exact confirmation
+        env:
+          ACTOR: ${{ github.actor }}
+          OWNER: ${{ github.repository_owner }}
+          PR_NUMBER: ${{ inputs.pr_number }}
+          EXPECTED_HEAD_SHA: ${{ inputs.expected_head_sha }}
+          CONFIRMATION: ${{ inputs.confirmation }}
+        run: |
+          test "$ACTOR" = "$OWNER" || { echo "Only the repository owner may record a release approval." >&2; exit 1; }
+          test "$CONFIRMATION" = "RECORD-PR-$PR_NUMBER-$EXPECTED_HEAD_SHA" || { echo "Confirmation does not bind the exact pull request head." >&2; exit 1; }
+      - uses: actions/checkout@v5
+        with:
+          ref: master
+          fetch-depth: 1
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "24.14.0"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - name: Fetch immutable GitHub evidence without checking out pull request code
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ inputs.pr_number }}
+          COMMENT_ID: ${{ inputs.approval_comment_id }}
+          EXPECTED_HEAD_SHA: ${{ inputs.expected_head_sha }}
+        run: |
+          npm ci --prefix web
+          gh api "repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER" > "$RUNNER_TEMP/pull-request.json"
+          gh api "repos/$GITHUB_REPOSITORY/issues/comments/$COMMENT_ID" > "$RUNNER_TEMP/approval-comment.json"
+          gh api "repos/$GITHUB_REPOSITORY/contents/web/public/publication-manifest.json?ref=$EXPECTED_HEAD_SHA" > "$RUNNER_TEMP/manifest-api.json"
+          node -e 'const fs=require("node:fs"); const input=JSON.parse(fs.readFileSync(process.argv[1],"utf8")); fs.writeFileSync(process.argv[2], Buffer.from(input.content.replace(/\n/g,""),"base64"));' "$RUNNER_TEMP/manifest-api.json" "$RUNNER_TEMP/publication-manifest.json"
+      - name: Create one fail-closed exact-head approval record
+        id: record
+        env:
+          EXPECTED_HEAD_SHA: ${{ inputs.expected_head_sha }}
+          CONFIRMATION: ${{ inputs.confirmation }}
+        run: |
+          observed_at="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          node web/scripts/create-release-approval-from-github.mjs \
+            --pull-request-json="$RUNNER_TEMP/pull-request.json" \
+            --approval-comment-json="$RUNNER_TEMP/approval-comment.json" \
+            --publication-manifest="$RUNNER_TEMP/publication-manifest.json" \
+            --expected-head-sha="$EXPECTED_HEAD_SHA" \
+            --observed-at="$observed_at" \
+            --confirmation="$CONFIRMATION" \
+            --output="$RUNNER_TEMP/release-approval.json"
+          cp "$RUNNER_TEMP/release-approval.json" "$RUNNER_TEMP/$(node -p 'require(process.argv[1]).approvalId + ".json"' "$RUNNER_TEMP/release-approval.json")"
+      - uses: actions/upload-artifact@v7
+        with:
+          name: exact-release-approval-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/${{ steps.record.outputs.approval_file }}
+          if-no-files-found: error
+          retention-days: 30
+
+  propose:
+    needs: verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: master
+          fetch-depth: 0
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "24.14.0"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - uses: actions/download-artifact@v8
+        with:
+          name: exact-release-approval-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/exact-release-approval
+      - name: Validate the isolated receipt and generated executive view
+        env:
+          APPROVAL_FILE: ${{ needs.verify.outputs.approval_file }}
+        run: |
+          npm ci --prefix web
+          test ! -e "web/releases/approvals/$APPROVAL_FILE" || { echo "Approval record already exists." >&2; exit 1; }
+          cp "$RUNNER_TEMP/exact-release-approval/$APPROVAL_FILE" "web/releases/approvals/$APPROVAL_FILE"
+          npm --prefix web run generate
+          git add -N .
+          while IFS= read -r changed_path; do
+            case "$changed_path" in
+              "web/releases/approvals/$APPROVAL_FILE"|web/src/data/operations.json|web/src/app/generated/studio.generated.ts) ;;
+              *) echo "Release approval recording changed forbidden path: $changed_path" >&2; exit 1 ;;
+            esac
+          done < <(git diff --name-only HEAD)
+          npm run validate
+          npm run build
+          npm run smoke
+          git diff --check
+      - name: Commit the exact approval branch
+        env:
+          RUN_ID: ${{ github.run_id }}
+          APPROVAL_ID: ${{ needs.verify.outputs.approval_id }}
+          APPROVAL_FILE: ${{ needs.verify.outputs.approval_file }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -c "codex/release-approval-$RUN_ID"
+          git add "web/releases/approvals/$APPROVAL_FILE" web/src/data/operations.json web/src/app/generated/studio.generated.ts
+          git commit -m "Record exact release approval $APPROVAL_ID"
+          git push origin "codex/release-approval-$RUN_ID"
+      - name: Open the approval evidence pull request
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ github.run_id }}
+          APPROVAL_ID: ${{ needs.verify.outputs.approval_id }}
+        run: |
+          gh pr create \
+            --base master \
+            --head "codex/release-approval-$RUN_ID" \
+            --title "Record exact release approval $APPROVAL_ID" \
+            --body "This deterministic receipt records one repository-owner GitHub approval for one exact pull request head and reviewed Firebase preview. It authorizes merge of that unchanged head only. It does not authorize IAM, credentials, Firebase production deployment, affiliate expansion, social publishing, email, spend, a changed head, a merge commit, a replay, or a later artifact."

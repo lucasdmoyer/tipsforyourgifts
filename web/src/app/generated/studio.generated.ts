@@ -2,10 +2,10 @@
 import type { Growth, Operations, Strategy } from '../content.types';
 
 export const OPERATIONS: Operations = {
-  "generatedAt": "2026-11-23T10:03:56.000Z",
+  "generatedAt": "2026-11-23T21:43:27.000Z",
   "founderAgenda": {
     "schemaVersion": "1.0.0",
-    "generatedAt": "2026-11-23T10:03:56.000Z",
+    "generatedAt": "2026-11-23T21:43:27.000Z",
     "posture": "founder_decisions_required",
     "primaryDecisionId": "review-release-candidate",
     "profitabilityEvidence": "unknown_until_aggregate_measurement",
@@ -17,25 +17,25 @@ export const OPERATIONS: Operations = {
         "priorityScore": 100,
         "horizon": "now",
         "category": "release",
-        "title": "Review the next accountable Angular release",
-        "recommendation": "Review publication-set-8f82fd7548201471 as the next founder-controlled Firebase release candidate.",
-        "decisionQuestion": "Should this exact reviewed content set replace the currently verified live set?",
-        "rationale": "The candidate adds reviewed content and operating improvements beyond the verified live set, but it must retain exact-SHA preview, rollback, and founder-control evidence before replacement.",
+        "title": "Unblock the approved exact release",
+        "recommendation": "Preserve the merge-only approval for PR 104 head 7b2cddada414eea957add384c4a04fe3301093ee; authorize only the missing keyless preview trust if you want the protected check rerun.",
+        "decisionQuestion": "Do you authorize the narrow PR-104-only OIDC trust required to rerun its protected preview check?",
+        "rationale": "The founder decision and hosted preview review are already recorded against one immutable pull request head. The merge remains blocked only because the required GitHub preview check cannot obtain its missing short-lived Google identity.",
         "evidence": [
-          "11 publication-ready articles are in the candidate set.",
-          "11 independent QA receipts are hash-bound to those articles.",
-          "The latest verified preview was 7b2cddada414eea957add384c4a04fe3301093ee at https://github.com/lucasdmoyer/tipsforyourgifts/pull/104; that receipt does not authorize this build.",
-          "The latest Git-recorded live content set is publication-set-8e8287a5ec7db534, which differs from this candidate."
+          "Lucas approved PR 104 head 7b2cddada414eea957add384c4a04fe3301093ee for merge only on 2026-11-23T21:43:27.000Z.",
+          "The approved content set is publication-set-8f82fd7548201471, matching this candidate manifest.",
+          "The exact Firebase preview remains https://tipsforyourgifts--pr-104-7b2cdda-47bzlrvs.web.app/.",
+          "The latest Git-recorded live content set is publication-set-8e8287a5ec7db534, so production has not advanced to the approved candidate."
         ],
         "unlocks": "A protected exact-SHA preview and founder-reviewed Firebase release establish the owned destination for every later growth and affiliate action.",
-        "tradeoff": "Replacing the live set advances the publication but creates a new monitoring and rollback obligation; affiliate and social authority remain separately bounded.",
-        "guardrail": "Commit and review the exact candidate first; the workflow must still clone live, expose the preview, require founder approval, smoke production, and mint a manifest-bound receipt. The prior 7b2cddada414eea957add384c4a04fe3301093ee receipt is historical evidence only.",
+        "tradeoff": "Creating a tightly scoped keyless preview identity adds IAM configuration, but it does not grant production authority and can remain limited to this one pull request merge ref.",
+        "guardrail": "The approval applies only to 7b2cddada414eea957add384c4a04fe3301093ee and merge of PR 104. It does not transfer to a changed head, merge commit, replay, later artifact, IAM change, credential, or Firebase production deployment.",
         "reversibility": "high",
         "founderActionRequired": true,
         "action": {
-          "label": "Open release workflow",
-          "url": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/firebase-production.yml",
-          "command": "gh workflow run firebase-production.yml -f release_sha=<approved-master-sha>"
+          "label": "Open approved release",
+          "url": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/104",
+          "command": "Approve creation of Workload Identity pool tips-github-preview and provider github-preview for repository ID 171694140, repository-owner ID 23782501, actor ID 23782501, event pull_request, ref refs/pull/104/merge, and job_workflow_ref lucasdmoyer/tipsforyourgifts/.github/workflows/firebase-preview-deploy.yml@refs/heads/master. Grant roles/iam.workloadIdentityUser on github-action-171694140@tipsforyourgifts.iam.gserviceaccount.com. Retain Firebase Hosting Admin only. No Firebase Auth Admin, no user-managed key, no production-provider changes, and no production deployment."
         }
       },
       {
@@ -123,7 +123,7 @@ export const OPERATIONS: Operations = {
   },
   "automationReadiness": {
     "schemaVersion": "1.2.0",
-    "observedAt": "2026-11-23T21:47:08.000Z",
+    "observedAt": "2026-11-23T23:34:17.000Z",
     "sourceMode": "versioned_snapshot_not_live_poll",
     "posture": "founder_action_required",
     "summary": "The operating system can validate content and run a narrow affiliate pilot today. Research generation, automated previews, distribution, measurement, release approval, and eventual keyless automatic publication still require explicit bounded founder actions.",
@@ -184,9 +184,9 @@ export const OPERATIONS: Operations = {
         "id": "preview-delivery",
         "label": "Firebase preview delivery",
         "status": "manual_fallback_verified",
-        "evidence": "The exact PR-104 Firebase preview passed Node 24.14 validation, a 23-route static build with an 81.91 kB initial transfer, hosted smoke across 20 routes and 11 publication-ready articles, mobile visual review, affiliate disclosure checks, and security-header review. Lighthouse scored 100 for performance, accessibility, and best practices on both the home page and Studio, with 1.0 second LCP and zero layout shift. This is the latest verified preview, not authority for the current build. Automated keyless delivery remains blocked: PR 104 head 7b2cddada414eea957add384c4a04fe3301093ee passed protected validation, an exact-artifact build, the immutable pull-request boundary, and manual hosted preview review. Automated deploy stops before Firebase at Google authentication because the tips-github-preview/github-preview Workload Identity pool and provider do not exist.",
-        "nextAction": "After fresh action-time founder IAM approval, create the PR-104-only keyless preview pool and provider, rerun the required preview check, and merge only if the head remains exactly 7b2cddada414eea957add384c4a04fe3301093ee.",
-        "actionUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/104#issuecomment-7114914873",
+        "evidence": "The exact PR-104 Firebase preview passed Node 24.14 validation, a 23-route static build with an 81.91 kB initial transfer, hosted smoke across 20 routes and 11 publication-ready articles, mobile visual review, affiliate disclosure checks, and security-header review. Lighthouse scored 100 for performance, accessibility, and best practices on both the home page and Studio, with 1.0 second LCP and zero layout shift. This is the latest verified preview, not authority for the current build. Automated keyless delivery remains blocked: PR 104 head 7b2cddada414eea957add384c4a04fe3301093ee passed protected validation, an exact-artifact build, the immutable pull-request boundary, and manual hosted preview review. A live read-only Google Cloud audit confirmed that tips-github-preview does not exist; the intended service account exists with Firebase Hosting Admin only, no Firebase Auth Admin, and no user-managed key. Existing providers are restricted to PR 1, PR 20, or the master production workflow and cannot authenticate PR 104.",
+        "nextAction": "After fresh action-time founder IAM approval, create tips-github-preview/github-preview restricted to repository ID 171694140, repository-owner ID 23782501, actor ID 23782501, pull_request, refs/pull/104/merge, and the master-pinned reusable preview workflow; then rerun the required preview check and merge only if the head remains exactly 7b2cddada414eea957add384c4a04fe3301093ee.",
+        "actionUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/104#issuecomment-7117003721",
         "founderActionRequired": true
       },
       {
@@ -223,11 +223,11 @@ export const OPERATIONS: Operations = {
         "id": "firebase-preview-identity",
         "label": "Keyless Firebase preview identity",
         "status": "blocked_external_configuration",
-        "summary": "PR 104 head 7b2cddada414eea957add384c4a04fe3301093ee passed protected validation, an exact-artifact build, the immutable pull-request boundary, and manual hosted preview review. Automated deploy stops before Firebase at Google authentication because the tips-github-preview/github-preview Workload Identity pool and provider do not exist.",
-        "evidenceUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/104#issuecomment-7114914873",
+        "summary": "PR 104 head 7b2cddada414eea957add384c4a04fe3301093ee passed protected validation, an exact-artifact build, the immutable pull-request boundary, and manual hosted preview review. A live read-only Google Cloud audit confirmed that tips-github-preview does not exist; the intended service account exists with Firebase Hosting Admin only, no Firebase Auth Admin, and no user-managed key. Existing providers are restricted to PR 1, PR 20, or the master production workflow and cannot authenticate PR 104.",
+        "evidenceUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/104#issuecomment-7117003721",
         "diagnosticUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/runs/45265510887",
-        "nextAction": "After fresh action-time founder IAM approval, create the PR-104-only keyless preview pool and provider, rerun the required preview check, and merge only if the head remains exactly 7b2cddada414eea957add384c4a04fe3301093ee.",
-        "authorityBoundary": "Use short-lived impersonation for Firebase Hosting previews only. No Firebase Auth Admin, user-managed service-account key, or production Hosting authorization."
+        "nextAction": "After fresh action-time founder IAM approval, create tips-github-preview/github-preview restricted to repository ID 171694140, repository-owner ID 23782501, actor ID 23782501, pull_request, refs/pull/104/merge, and the master-pinned reusable preview workflow; then rerun the required preview check and merge only if the head remains exactly 7b2cddada414eea957add384c4a04fe3301093ee.",
+        "authorityBoundary": "Grant only short-lived workload-identity impersonation to the existing Firebase Hosting Admin service account. No Firebase Auth Admin, user-managed service-account key, production-provider change, or production Hosting authorization."
       },
       {
         "id": "firebase-auto-production-identity",
@@ -3439,6 +3439,26 @@ export const OPERATIONS: Operations = {
     "receiptRetentionDays": 90,
     "releaseEvidenceSource": "github_production_deployments_at_enable_time",
     "durableReceiptEvidenceSource": "repository_verified_publication_receipts",
+    "exactReleaseApprovals": {
+      "total": 1,
+      "active": 1,
+      "currentContentSetApprovedRelease": {
+        "approvalId": "release-approval-pr-104-7b2cdda",
+        "approvalRecordPath": "releases/approvals/pr-104-7b2cdda.json",
+        "approvalRecordSha256": "e53b02ae94c17c78c2f969506621853cfb75e110a139148954f7d0323822c563",
+        "pullRequestNumber": 104,
+        "pullRequestUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/104",
+        "headSha": "7b2cddada414eea957add384c4a04fe3301093ee",
+        "manifestId": "publication-set-8f82fd7548201471",
+        "contentSetSha256": "8f82fd75482014719e5c59602ae819d06eb326b339d7e4cc10f8ab32d0cfc90f",
+        "approvedBy": "lucasdmoyer",
+        "approvedAt": "2026-11-23T21:43:27.000Z",
+        "evidenceUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/104#issuecomment-7114834768",
+        "previewUrl": "https://tipsforyourgifts--pr-104-7b2cdda-47bzlrvs.web.app/",
+        "scope": "approved_for_exact_head_merge_only",
+        "nextGate": "Obtain fresh action-time approval for PR-104-only keyless preview identity, rerun the required preview check, and merge only if the pull request head remains exactly 7b2cddada414eea957add384c4a04fe3301093ee."
+      }
+    },
     "currentLive": {
       "status": "verified_managed_content_release",
       "updatedAt": "2026-11-22T06:16:08.292Z",

@@ -4,6 +4,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import process from 'node:process';
 import { buildFounderAgenda, parseFounderAgenda } from './lib/founder-agenda-contract.mjs';
+import { loadReleaseApprovals, summarizeReleaseApprovals } from './lib/release-approval-contract.mjs';
 
 const root = process.cwd();
 const readJson = async (relativePath) => JSON.parse(await fs.readFile(path.join(root, relativePath), 'utf8'));
@@ -15,6 +16,7 @@ const socialChannelsSha256 = createHash('sha256').update(socialChannelsRaw).dige
 const livePublication = await readJson('config/live-publication.json');
 const publicationPolicy = await readJson('config/publication-policy.json');
 const publicationManifest = await readJson('public/publication-manifest.json');
+const releaseApprovals = summarizeReleaseApprovals(await loadReleaseApprovals(root), publicationManifest);
 const automationReadinessEvidence = await readJson('config/automation-readiness.json');
 const growthRaw = await fs.readFile(path.join(root, 'src/data/growth.json'));
 const growth = JSON.parse(growthRaw.toString('utf8'));
@@ -32,6 +34,7 @@ const baseInput = {
   publicationPolicy,
   publicationManifest,
   livePublication,
+  releaseApprovals,
   automationReadinessEvidence,
   growth,
   openStrategyProposals: proposedIdeas.length,
@@ -50,11 +53,22 @@ assert.equal(base.primaryDecisionId, currentContentIsVerified ? 'establish-measu
 assert.equal(base.decisions.some((decision) => decision.id === 'review-release-candidate'), !currentContentIsVerified);
 if (!currentContentIsVerified && livePublication.latestVerifiedContentRelease) {
   const releaseDecision = base.decisions.find((decision) => decision.id === 'review-release-candidate');
-  assert.equal(releaseDecision.title, 'Review the next accountable Angular release');
-  assert.equal(releaseDecision.action.url, 'https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/firebase-production.yml');
-  assert.match(releaseDecision.action.command, /release_sha=<approved-master-sha>/);
-  assert.ok(releaseDecision.evidence.some((item) => item.includes(automationReadinessEvidence.latestVerifiedPreview.sha)));
-  assert.match(releaseDecision.guardrail, /historical evidence only/);
+  if (releaseApprovals.currentContentSetApprovedRelease) {
+    assert.equal(releaseDecision.title, 'Unblock the approved exact release');
+    assert.equal(releaseDecision.action.url, releaseApprovals.currentContentSetApprovedRelease.pullRequestUrl);
+    assert.match(releaseDecision.action.command, /tips-github-preview/);
+    assert.match(releaseDecision.action.command, new RegExp(`refs/pull/${releaseApprovals.currentContentSetApprovedRelease.pullRequestNumber}/merge`));
+    assert.match(releaseDecision.action.command, /job_workflow_ref lucasdmoyer\/tipsforyourgifts\/\.github\/workflows\/firebase-preview-deploy\.yml@refs\/heads\/master/);
+    assert.match(releaseDecision.action.command, /No Firebase Auth Admin, no user-managed key, no production-provider changes, and no production deployment/);
+    assert.ok(releaseDecision.evidence.some((item) => item.includes(releaseApprovals.currentContentSetApprovedRelease.headSha)));
+    assert.match(releaseDecision.guardrail, /does not transfer/);
+  } else {
+    assert.equal(releaseDecision.title, 'Review the next accountable Angular release');
+    assert.equal(releaseDecision.action.url, 'https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/firebase-production.yml');
+    assert.match(releaseDecision.action.command, /release_sha=<approved-master-sha>/);
+    assert.ok(releaseDecision.evidence.some((item) => item.includes(automationReadinessEvidence.latestVerifiedPreview.sha)));
+    assert.match(releaseDecision.guardrail, /historical evidence only/);
+  }
 }
 assert.equal(base.profitabilityEvidence, 'unknown_until_aggregate_measurement');
 const currentMeasurementDecision = base.decisions.find((decision) => decision.id === 'establish-measurement');
@@ -106,7 +120,7 @@ verifiedLiveInput.livePublication = {
 const verifiedLiveAgenda = buildFounderAgenda(verifiedLiveInput);
 assert.equal(verifiedLiveAgenda.decisions.some((decision) => decision.id === 'review-release-candidate'), false, 'current verified live content must not be proposed for release again');
 
-const noManagedReleaseAgenda = buildFounderAgenda({ ...structuredClone(baseInput), automationReadinessEvidence: null, livePublication: {
+const noManagedReleaseAgenda = buildFounderAgenda({ ...structuredClone(baseInput), releaseApprovals: { total: 0, active: 0, currentContentSetApprovedRelease: null }, automationReadinessEvidence: null, livePublication: {
   schemaVersion: livePublication.schemaVersion,
   projectId: livePublication.projectId,
   siteId: livePublication.siteId,

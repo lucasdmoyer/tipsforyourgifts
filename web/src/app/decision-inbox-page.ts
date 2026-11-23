@@ -1,10 +1,11 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { CopyTextButtonComponent } from './copy-text-button';
 import { SeoService } from './seo.service';
 import { STUDIO_DATA, STUDIO_DATA_PROVIDER } from './studio-data';
 
 @Component({
-  imports: [RouterLink],
+  imports: [CopyTextButtonComponent, RouterLink],
   providers: [STUDIO_DATA_PROVIDER],
   template: `
     <section class="shell studio-hero decision-hero">
@@ -51,9 +52,12 @@ import { STUDIO_DATA, STUDIO_DATA_PROVIDER } from './studio-data';
             <div class="actions">
               <a class="button" [href]="decision.action.url" target="_blank" rel="noopener">{{ decision.action.label }}</a>
               <details>
-                <summary>Show evidence and exact command</summary>
+                <summary>Show evidence and exact action</summary>
                 <ul>@for (item of decision.evidence; track item) { <li>{{ item }}</li> }</ul>
-                @if (decision.action.command) { <div class="command">{{ decision.action.command }}</div> }
+                @if (decision.action.command; as exactAction) {
+                  <div class="command">{{ exactAction }}</div>
+                  <tfg-copy-text-button [value]="exactAction" />
+                }
               </details>
             </div>
           </article>
@@ -88,8 +92,10 @@ import { STUDIO_DATA, STUDIO_DATA_PROVIDER } from './studio-data';
                 @if (review.founderDecisionPacket) {
                   <p><strong>Approve exact language</strong></p>
                   <div class="command">{{ review.founderDecisionPacket.approveCommand }}</div>
+                  <tfg-copy-text-button [value]="review.founderDecisionPacket.approveCommand" label="Copy approval" />
                   <p><strong>Reject exact language</strong></p>
                   <div class="command">{{ review.founderDecisionPacket.rejectCommand }}</div>
+                  <tfg-copy-text-button [value]="review.founderDecisionPacket.rejectCommand" label="Copy rejection" />
                   <p class="quiet">{{ review.founderDecisionPacket.authorityBoundary }}</p>
                   <p><a class="button secondary" [href]="review.founderDecisionPacket.workflowUrl" target="_blank" rel="noopener">Open founder safety workflow</a></p>
                 }
