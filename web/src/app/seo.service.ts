@@ -27,7 +27,10 @@ export class SeoService {
 
     this.title.setTitle(fullTitle);
     this.meta.updateTag({ name: 'description', content: options.description });
-    this.meta.updateTag({ name: 'robots', content: options.noindex ? 'noindex,nofollow' : 'index,follow' });
+    this.meta.updateTag({
+      name: 'robots',
+      content: options.noindex ? 'noindex,nofollow' : 'index,follow,max-image-preview:large'
+    });
     this.meta.updateTag({ property: 'og:type', content: options.type ?? 'website' });
     this.meta.updateTag({ property: 'og:site_name', content: this.siteName });
     this.meta.updateTag({ property: 'og:title', content: fullTitle });

@@ -10,6 +10,7 @@ import { GROWTH, OPERATIONS, STRATEGY } from './generated/studio.generated';
 import { GiftFinderPage } from './public-pages';
 import { FounderBriefPage, STUDIO_DATA, StudioPage } from './studio-pages';
 import { readerBodyComesFirst, readerBodyHtml, readerEvidenceHtml, readerLanguage, readerLead } from './reader-copy';
+import { SeoService } from './seo.service';
 
 describe('App', () => {
   beforeEach(async () => {
@@ -36,6 +37,17 @@ describe('App', () => {
     expect(element.querySelectorAll('.nav-links a')).toHaveLength(4);
     expect(element.querySelector('a[href="/gift-finder"]')?.textContent).toContain('Gift finder');
     expect(element.querySelector('a[href="/studio"]')).toBeNull();
+  });
+
+  it('allows large search image previews on public pages while preserving private noindex rules', () => {
+    const seo = TestBed.inject(SeoService);
+    seo.set({ title: 'Public guide', description: 'A public gift guide.', path: '/blog/public-guide' });
+    expect(document.head.querySelector<HTMLMetaElement>('meta[name="robots"]')?.content)
+      .toBe('index,follow,max-image-preview:large');
+
+    seo.set({ title: 'Executive studio', description: 'A private operating surface.', path: '/studio', noindex: true });
+    expect(document.head.querySelector<HTMLMetaElement>('meta[name="robots"]')?.content)
+      .toBe('noindex,nofollow');
   });
 
   it('ships a founder-approved visual for every public article, product, and pair', () => {
