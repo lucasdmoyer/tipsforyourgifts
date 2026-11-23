@@ -73,14 +73,30 @@ const researchDispatch = research.parsed.on?.workflow_dispatch;
 assert.equal(researchDispatch?.inputs?.idea_id?.required, true, 'research workflow requires the founder-approved idea ID');
 assert.equal(research.parsed.permissions?.contents, 'read', 'model workflow default contents authority must remain read-only');
 const researchJob = research.parsed.jobs?.research;
+const researchFailureJob = research.parsed.jobs?.record_research_failure;
+const researchFailureWriterJob = research.parsed.jobs?.open_research_failure_pull_request;
 const qualityJob = research.parsed.jobs?.quality_review;
 const writerJob = research.parsed.jobs?.open_pull_request;
-assert.ok(researchJob && qualityJob && writerJob, 'research, independent QA, and detached writer jobs are all required');
+assert.ok(researchJob && researchFailureJob && researchFailureWriterJob && qualityJob && writerJob, 'research, failure recorder, independent QA, and detached writer jobs are all required');
 assert.equal(writerJob.permissions?.contents, 'write', 'only the detached writer may push the reviewed branch');
 assert.equal(writerJob.permissions?.['pull-requests'], 'write', 'only the detached writer may open the review pull request');
+const researchModelStep = researchJob.steps.find((step) => step.uses === 'openai/codex-action@v1');
+assert.ok(researchModelStep, 'research drafting needs exactly one Codex step');
 assert.equal(researchJob.steps.filter((step) => step.uses === 'openai/codex-action@v1').length, 1, 'research drafting needs exactly one Codex step');
+assert.equal(researchModelStep['continue-on-error'], true, 'a model-step failure must reach the trusted failure classifier');
 assert.equal(qualityJob.steps.filter((step) => step.uses === 'openai/codex-action@v1').length, 1, 'independent QA needs exactly one separate Codex step');
 assert.equal(writerJob.steps.filter((step) => step.uses === 'openai/codex-action@v1').length, 0, 'the GitHub writer must never receive a model step');
+assert.equal(researchFailureJob.steps.filter((step) => step.uses === 'openai/codex-action@v1').length, 0, 'the clean research-failure recorder must never receive a model step');
+assert.equal(researchFailureWriterJob.steps.filter((step) => step.uses === 'openai/codex-action@v1').length, 0, 'the research-failure pull-request writer must never receive a model step');
+const classifyDraftStep = findStep(researchJob, 'Classify and serialize only a complete draft bundle');
+const recordResearchFailureStep = findStep(researchFailureJob, 'Record only the credential-free research failure handoff');
+const openResearchFailurePrStep = findStep(researchFailureWriterJob, 'Open the correction pull request with auto-merge disabled');
+assert.ok(classifyDraftStep && recordResearchFailureStep && openResearchFailurePrStep, 'research execution failure must have a complete trusted handoff');
+assert.match(classifyDraftStep.run, /research:mission:draft:classify/, 'the trusted classifier must inspect draft completeness before serialization');
+assert.match(classifyDraftStep.run, /if \[ "\$draft_outcome" = "ready" \][\s\S]*else[\s\S]*untrusted model workspace is not being promoted/i, 'invalid model output must be discarded rather than serialized');
+assert.match(recordResearchFailureStep.run, /research:mission:research-failed/, 'a clean credential-free job must create the durable research-failed mission state');
+assert.match(openResearchFailurePrStep.run, /does not preserve a partial draft/, 'the failure pull request must state that untrusted partial output was discarded');
+assert.doesNotMatch(openResearchFailurePrStep.run, /gh pr merge/, 'research failure receipts must never request auto-merge');
 assert.match(research.raw, /web\/visuals\/requests\/<run-id>-visuals\.json/, 'research drafting must create a versioned visual-production request when approved art is absent');
 assert.match(research.raw, /generation\.attempted false/, 'research drafting must not generate or claim visual output');
 assert.doesNotMatch(research.raw, /web\/visuals\/article-visuals\.json\|web\/public\/blog-images/, 'draft and review allowlists must not permit registry or public-image mutation');
@@ -137,6 +153,7 @@ console.log(JSON.stringify({
   handoffs: [
     'founder_direction_to_opportunity_scout',
     'strategy_approval_to_research_dispatch',
+    'research_failure_to_clean_correction_packet',
     'research_to_independent_qa',
     'editorial_qa_to_visual_production_queue',
     'qa_to_detached_pr_writer',

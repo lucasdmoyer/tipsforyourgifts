@@ -38,6 +38,8 @@ Before the first evidence-editor call, a trusted router checks the run's explici
 
 Review receipts use immutable revisions and bind their workflow plus mission provenance. A failed `qa.vN` remains in Git; a later review writes `qa.vN+1` and cannot overwrite the earlier evidence. Promotion records the exact passing receipt path in the run and, when a mission exists, in the mission completion record.
 
+If the drafting model step fails or its workspace does not contain exactly one complete, mission-bound draft bundle, the trusted classifier refuses to serialize that workspace. A separate clean job downloads only the pre-model mission envelope, records `research_failed` with a bounded reason code and exact workflow URL, reruns the deterministic gates, and opens a correction pull request with auto-merge disabled. Partial model output is discarded and never becomes editorial evidence.
+
 ## Team handoffs
 
 1. **Research editorial team — draft only.** Deep public research, typed claim ledger, qualified finalists, thoughtful-fit analysis, article, and draft social pack.
@@ -57,6 +59,7 @@ The current publication policy is `founder_reviewed`. After ten verified founder
 
 - Concurrency is keyed by idea ID so two missions cannot research the same approved thesis simultaneously.
 - The initial mission envelope is uploaded before the model runs, preserving the intended scope when research fails or returns no patch.
+- A model execution failure or malformed bundle becomes a credential-free `research_failed` correction packet in Studio; no partial draft, model log, credential, or inferred failure detail is preserved.
 - A retry receives a new mission ID because the workflow attempt is part of the identity.
 - The quality job rejects a changed envelope, multiple run artifacts, forbidden paths, self-review, changed evidence after review, or a failed deterministic gate.
 - A high-risk draft is preserved as a reviewable Git handoff rather than disappearing when immediate promotion is forbidden; its mission remains started until the post-approval editor passes it.

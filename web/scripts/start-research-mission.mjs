@@ -28,7 +28,7 @@ if (!/^[A-Za-z0-9-]+(?:\[bot\])?$/.test(args.actor)) throw new Error('Actor must
 const missionId = `research-mission-${args['workflow-run-id']}-${workflowRunAttempt}`;
 const createdAt = args['created-at'] ?? new Date().toISOString();
 const mission = researchMissionSchema.parse({
-  schemaVersion: '1.2.0',
+  schemaVersion: '1.3.0',
   missionId,
   status: 'started',
   createdAt,
@@ -59,6 +59,7 @@ const mission = researchMissionSchema.parse({
     verifiedSuccessfulReleaseCount: publicationPolicy.automaticPromotion.verifiedSuccessfulReleaseCount,
     minimumSuccessfulFounderReviewedReleases: publicationPolicy.automaticPromotion.minimumSuccessfulFounderReviewedReleases
   },
+  researchFailureHandoff: null,
   qaFailureHandoff: null,
   visualHandoff: null,
   completion: null

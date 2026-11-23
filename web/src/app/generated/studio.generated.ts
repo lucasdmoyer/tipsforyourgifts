@@ -594,6 +594,7 @@ export const OPERATIONS: Operations = {
     "total": 0,
     "active": 0,
     "completed": 0,
+    "researchFailed": 0,
     "qaFailed": 0,
     "visualPending": 0,
     "founderReviewRequired": 0,

@@ -456,7 +456,7 @@ export { STUDIO_DATA } from './studio-data';
         <article class="principle-card"><span>05</span><h3>Growth analyst</h3><p>Waits for complete aggregate reporting windows, then measures traffic, engagement, merchant clicks, conversions, and revenue.</p></article>
       </div>
       <div class="grid two mission-summary">
-        <div class="panel"><p class="eyebrow">Mission receipts</p><h2>{{ content.operations.researchMissions.completed }} completed · {{ content.operations.researchMissions.active }} active · {{ content.operations.researchMissions.qaFailed }} need correction</h2><p>{{ content.operations.researchMissions.visualPending }} await visual production; {{ content.operations.researchMissions.founderReviewRequired }} await founder release review; {{ content.operations.researchMissions.automaticMergeEligible }} qualify for the separately approved automatic-merge policy.</p></div>
+        <div class="panel"><p class="eyebrow">Mission receipts</p><h2>{{ content.operations.researchMissions.completed }} completed · {{ content.operations.researchMissions.active }} active · {{ content.operations.researchMissions.researchFailed }} research retries · {{ content.operations.researchMissions.qaFailed }} editorial corrections</h2><p>{{ content.operations.researchMissions.visualPending }} await visual production; {{ content.operations.researchMissions.founderReviewRequired }} await founder release review; {{ content.operations.researchMissions.automaticMergeEligible }} qualify for the separately approved automatic-merge policy.</p></div>
         <div class="panel"><p class="eyebrow">Completion boundary</p><h2>Research done is not production live.</h2><p>A completed mission hands one validated article to release preparation. Production is proven only by the exact deployment receipt and post-release checks.</p></div>
       </div>
       @if (content.operations.researchMissions.queue.length > 0) {
@@ -465,8 +465,10 @@ export { STUDIO_DATA } from './studio-data';
             <article class="experiment-card">
               <div class="experiment-header"><p class="eyebrow">{{ mission.ideaId }} · revision {{ mission.ideaRevision }}</p><span class="status">{{ displayStatus(mission.status) }}</span></div>
               <h3>{{ mission.ideaTitle }}</h3>
+              @if (mission.failureWorkflowRunUrl) { <p><a class="button secondary" [href]="mission.failureWorkflowRunUrl" target="_blank" rel="noopener">Open failed research run</a></p> }
               <p><strong>Active handoff:</strong> {{ displayStatus(mission.activeStage) }}</p>
               <p><strong>Publication readiness:</strong> {{ displayStatus(mission.publicationReadiness) }}</p>
+              @if (mission.failureReasonCode) { <p><strong>Failure class:</strong> {{ displayStatus(mission.failureReasonCode) }}</p> }
               <p><strong>Next gate:</strong> {{ mission.nextGate }}</p>
               <details><summary>Exact mission identifiers</summary><div class="command">mission: {{ mission.missionId }}<br>record sha256: {{ mission.recordSha256 }}<br>idea sha256: {{ mission.ideaSha256 }}<br>workflow run: {{ mission.workflowRunId }}<br>research run: {{ mission.runId ?? 'not completed' }}<br>article: {{ mission.articleSlug ?? 'not completed' }}</div></details>
             </article>

@@ -19,7 +19,11 @@ try {
     id: 'founder-idea-006', revision: 1, ideaType: 'content', thesisType: 'recipient_friction', founderDisposition: 'approved_for_research',
     title: 'Observation upgrade for a careful neighborhood naturalist'
   };
-  const strategy = { schemaVersion: '1.1.0', thoughtfulnessFramework: { minimumPairCoherenceScore: 80 }, ideas: [idea, failedIdea] };
+  const executionFailedIdea = {
+    id: 'founder-idea-007', revision: 1, ideaType: 'content', thesisType: 'recipient_friction', founderDisposition: 'approved_for_research',
+    title: 'A careful retry path for a stalled gift research mission'
+  };
+  const strategy = { schemaVersion: '1.1.0', thoughtfulnessFramework: { minimumPairCoherenceScore: 80 }, ideas: [idea, failedIdea, executionFailedIdea] };
   const policy = { mode: 'founder_reviewed', automaticPromotion: { enabled: false, verifiedSuccessfulReleaseCount: 0, minimumSuccessfulFounderReviewedReleases: 10 } };
   await fs.writeFile(path.join(fixtureRoot, 'src/data/strategy.json'), `${JSON.stringify(strategy, null, 2)}\n`);
   await fs.writeFile(path.join(fixtureRoot, 'config/publication-policy.json'), `${JSON.stringify(policy, null, 2)}\n`);
@@ -72,7 +76,14 @@ try {
   await execFileAsync(process.execPath, [path.join(scriptRoot, 'scripts/mark-research-mission-qa-failed.mjs'), `--mission-id=${failedMissionId}`, `--run-id=${failedRunId}`, `--receipt-path=${failedReviewPath}`, '--failed-at=2026-08-03T12:46:00.000Z'], { cwd: fixtureRoot });
   const failedMission = researchMissionSchema.parse(JSON.parse(await fs.readFile(failedMissionPath, 'utf8')));
   if (failedMission.status !== 'qa_failed' || failedMission.qaFailureHandoff?.blockers.length !== 1 || failedMission.completion !== null) throw new Error('QA-failed command did not preserve the correction handoff');
-  console.log(JSON.stringify({ researchMissionCommandIntegration: 'passed', commands: 7, missionId, receiptSchemaVersion: review.schemaVersion, completionStatus: completed.status, publicationReadiness: completed.completion.publicationReadiness, failedMissionStatus: failedMission.status, failedReceiptPreserved: true }, null, 2));
+
+  await execFileAsync(process.execPath, [path.join(scriptRoot, 'scripts/start-research-mission.mjs'), '--idea-id=founder-idea-007', `--base-sha=${'c'.repeat(40)}`, '--workflow-run-id=12347', '--workflow-run-attempt=1', '--actor=github-actions[bot]', '--created-at=2026-08-03T13:00:00.000Z'], { cwd: fixtureRoot });
+  const executionFailedMissionId = 'research-mission-12347-1';
+  const executionFailedMissionPath = path.join(fixtureRoot, 'research/missions', `${executionFailedMissionId}.json`);
+  await execFileAsync(process.execPath, [path.join(scriptRoot, 'scripts/mark-research-mission-research-failed.mjs'), `--mission-id=${executionFailedMissionId}`, '--reason-code=model_step_failed', '--failed-at=2026-08-03T13:05:00.000Z'], { cwd: fixtureRoot });
+  const executionFailedMission = researchMissionSchema.parse(JSON.parse(await fs.readFile(executionFailedMissionPath, 'utf8')));
+  if (executionFailedMission.status !== 'research_failed' || executionFailedMission.researchFailureHandoff?.reasonCode !== 'model_step_failed' || executionFailedMission.qaFailureHandoff !== null) throw new Error('Research-failed command did not preserve the clean execution failure handoff');
+  console.log(JSON.stringify({ researchMissionCommandIntegration: 'passed', commands: 9, missionId, receiptSchemaVersion: review.schemaVersion, completionStatus: completed.status, publicationReadiness: completed.completion.publicationReadiness, failedMissionStatus: failedMission.status, failedReceiptPreserved: true, researchFailedMissionStatus: executionFailedMission.status, partialDraftPreserved: false }, null, 2));
 } finally {
   await fs.rm(fixtureRoot, { recursive: true, force: true });
 }

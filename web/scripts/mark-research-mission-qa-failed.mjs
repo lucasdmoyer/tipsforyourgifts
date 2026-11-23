@@ -16,7 +16,7 @@ if (!missionId || !runId || !reviewPath) throw new Error('Usage: node scripts/ma
 const root = process.cwd();
 const missionPath = path.join(root, 'research', 'missions', `${missionId}.json`);
 const mission = researchMissionSchema.parse(JSON.parse(await fs.readFile(missionPath, 'utf8')));
-if (mission.status !== 'started' || mission.qaFailureHandoff !== null || mission.visualHandoff !== null || mission.completion !== null) throw new Error('Only a started mission can record its initial QA failure');
+if (mission.status !== 'started' || mission.researchFailureHandoff !== null || mission.qaFailureHandoff !== null || mission.visualHandoff !== null || mission.completion !== null) throw new Error('Only a started mission can record its initial QA failure');
 
 const runPath = path.join(root, 'research', 'runs', `${runId}.json`);
 const runRaw = await fs.readFile(runPath);

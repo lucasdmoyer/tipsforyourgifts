@@ -24,7 +24,7 @@ const reviewRaw = Buffer.from(JSON.stringify(review));
 
 function startedMission(workflowRunId = '123') {
   return {
-    schemaVersion: '1.2.0', missionId: `research-mission-${workflowRunId}-1`, status: 'started',
+    schemaVersion: '1.3.0', missionId: `research-mission-${workflowRunId}-1`, status: 'started',
     createdAt: '2026-08-03T10:00:00.000Z', failedAt: null, completedAt: null,
     trigger: { type: 'approved_strategy_dispatch', workflow: 'research-agent.yml', workflowRunId, workflowRunAttempt: 1, actor: 'lucasdmoyer', baseSha: 'a'.repeat(40) },
     idea: { id: idea.id, revision: idea.revision, sha256: canonicalIdeaSha256(idea), title: idea.title, thesisType: idea.thesisType },
@@ -42,6 +42,7 @@ function startedMission(workflowRunId = '123') {
       independentReviewerRequired: true, affiliatePosture: 'enabled_registry_only'
     },
     publicationPolicySnapshot: { mode: 'founder_reviewed', automaticPromotionEnabled: false, verifiedSuccessfulReleaseCount: 0, minimumSuccessfulFounderReviewedReleases: 10 },
+    researchFailureHandoff: null,
     qaFailureHandoff: null,
     visualHandoff: null,
     completion: null
@@ -63,6 +64,19 @@ function completedMission() {
     nextGate: 'Open the exact-SHA pull request and review its Firebase preview before the founder merge decision.'
   };
   return mission;
+}
+
+function researchFailedModel() {
+  const mission = startedMission();
+  mission.status = 'research_failed';
+  mission.failedAt = '2026-08-03T10:20:00.000Z';
+  mission.teamStages[0].status = 'blocked';
+  mission.researchFailureHandoff = {
+    reasonCode: 'model_step_failed',
+    workflowRunUrl: `https://github.com/lucasdmoyer/tipsforyourgifts/actions/runs/${mission.trigger.workflowRunId}`,
+    nextGate: 'Open the research failure pull request, inspect the credential-free evidence, and retry from a new workflow run after correction.'
+  };
+  return model(mission);
 }
 
 function model(mission = completedMission()) {
@@ -159,6 +173,7 @@ function expectFailure(name, mutate, expected) {
 }
 
 assertValid('valid started mission', model(startedMission()));
+assertValid('valid research-failed mission', researchFailedModel());
 assertValid('valid visual-pending mission', visualPendingModel());
 assertValid('valid qa-failed mission', qaFailedModel());
 assertValid('valid completed mission', model());
@@ -177,6 +192,13 @@ expectFailure('review mission binding', (input) => { input.reviewsByPath.get(run
 expectFailure('research-agent workflow run binding', (input) => { const receipt = input.reviewsByPath.get(run.qa.receiptPath).data; receipt.workflowName = 'research-agent.yml'; receipt.workflowRunId = '999'; }, 'mission provenance mismatch');
 expectFailure('publication readiness', (input) => { input.records[0].data.completion.publicationReadiness = 'automatic_merge_eligible'; }, 'readiness differs');
 {
+  const input = researchFailedModel();
+  input.records[0].data.researchFailureHandoff.workflowRunUrl = 'https://github.com/lucasdmoyer/tipsforyourgifts/actions/runs/999';
+  const result = validateResearchMissionRecords(input);
+  if (!result.issues.join(' ').includes('workflow URL does not match')) throw new Error(`research failure workflow identity did not fail closed: ${result.issues.join('; ')}`);
+  checks += 1;
+}
+{
   const input = qaFailedModel();
   input.reviewsByPath.get(run.qa.receiptPath).data.blockers = [];
   const result = validateResearchMissionRecords(input);
@@ -191,4 +213,4 @@ expectFailure('publication readiness', (input) => { input.records[0].data.comple
   checks += 1;
 }
 
-console.log(JSON.stringify({ researchMissionNegativeGateTests: 'passed', checks, validStartedMission: 'passed', validQaFailedMission: 'passed', validVisualPendingMission: 'passed', validCompletedMission: 'passed' }, null, 2));
+console.log(JSON.stringify({ researchMissionNegativeGateTests: 'passed', checks, validStartedMission: 'passed', validResearchFailedMission: 'passed', validQaFailedMission: 'passed', validVisualPendingMission: 'passed', validCompletedMission: 'passed' }, null, 2));
