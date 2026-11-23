@@ -7,6 +7,7 @@ import { affiliateCoverageSchema } from './lib/affiliate-coverage-contract.mjs';
 import { affiliateEnrollmentReadinessSchema, buildAffiliateEnrollmentReadiness } from './lib/affiliate-enrollment-contract.mjs';
 import { affiliateActivationProposalSchema, validateAffiliateActivationProposals } from './lib/affiliate-activation-proposal-contract.mjs';
 import { validateAffiliateExpansionRequests } from './lib/affiliate-expansion-request-contract.mjs';
+import { validateAffiliateReportingRequests } from './lib/affiliate-reporting-request-contract.mjs';
 import { buildAiAutomationPolicySummary, parseAiAutomationPolicy } from './lib/ai-automation-policy-contract.mjs';
 import { automationReadinessEvidenceSchema, buildAutomationReadiness } from './lib/automation-readiness-contract.mjs';
 import { buildCommercialScorecard } from './lib/commercial-scorecard.mjs';
@@ -38,6 +39,7 @@ const affiliateEnrollmentPath = path.join(root, 'public', 'affiliate-enrollment-
 const affiliateEnrollmentPlanPath = path.join(root, 'config', 'affiliate-enrollment-plans.json');
 const affiliateActivationProposalPath = path.join(root, 'config', 'affiliate-activation-proposals.json');
 const affiliateExpansionRequestPath = path.join(root, 'config', 'affiliate-expansion-requests.json');
+const affiliateReportingRequestPath = path.join(root, 'config', 'affiliate-reporting-requests.json');
 const socialChannelsPath = path.join(root, 'config', 'social-channels.json');
 const livePublicationPath = path.join(root, 'config', 'live-publication.json');
 const publicationPolicyPath = path.join(root, 'config', 'publication-policy.json');
@@ -116,12 +118,19 @@ const affiliateActivationProposals = validateAffiliateActivationProposals({
   articles: articleRecords.map((record) => ({ ...record.data, slug: record.name.replace(/\.md$/, '') })),
   evidenceRecords: affiliateActivationEvidenceRecords
 });
+const affiliateExpansionDocument = JSON.parse(await fs.readFile(affiliateExpansionRequestPath, 'utf8'));
 const affiliateExpansionRequests = await validateAffiliateExpansionRequests({
   root,
-  document: JSON.parse(await fs.readFile(affiliateExpansionRequestPath, 'utf8')),
+  document: affiliateExpansionDocument,
   affiliate
 });
 const affiliateLinkState = await loadAffiliateLinkState(root);
+const affiliateReportingRequests = validateAffiliateReportingRequests({
+  document: JSON.parse(await fs.readFile(affiliateReportingRequestPath, 'utf8')),
+  affiliate,
+  expansionDocument: affiliateExpansionRequests.document,
+  linkState: affiliateLinkState
+});
 const socialChannelsRaw = await fs.readFile(socialChannelsPath);
 const socialChannels = JSON.parse(socialChannelsRaw.toString('utf8'));
 const socialChannelsSha256 = createHash('sha256').update(socialChannelsRaw).digest('hex');
@@ -545,6 +554,7 @@ const operations = {
     activeOverlays: affiliateLinkState.counts.activeOverlays,
     activationProposals: affiliateActivationProposals.proposals,
     expansionRequests: affiliateExpansionRequests.summaries,
+    reportingRequests: affiliateReportingRequests.summaries,
     approvedOverlaySetSha256: publicationManifest.affiliatePosture.approvedOverlaySetSha256,
     linkQueue: affiliateLinkQueue,
     programs: [...affiliate.programs].sort((left, right) => left.priority - right.priority).map((program) => ({

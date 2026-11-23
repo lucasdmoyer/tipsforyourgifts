@@ -369,6 +369,8 @@ h3 { font-size: 1.35rem; }
   .executive-actions { justify-content: flex-start; margin-top: 20px; }
   .idea-card-header { display: block; }
   .idea-card-header .status { margin-top: 12px; }
+  .affiliate-decision-packet { grid-template-columns: 1fr; }
+  .affiliate-decision-packet > .status { grid-column: 1; justify-self: start; }
   .pair-roles { grid-template-columns: 1fr; }
   .brief-field-grid { grid-template-columns: 1fr; }
   .finder-result { grid-template-columns: 1fr; }
