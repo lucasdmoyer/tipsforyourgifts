@@ -426,6 +426,13 @@ describe('App', () => {
       if (decision.action.command) expect(element.textContent).toContain(decision.action.command);
       expect(element.querySelector(`a[href="${decision.action.url}"]`)).not.toBeNull();
     }
+    const releaseApproval = OPERATIONS.publication.exactReleaseApprovals.currentContentSetApprovedRelease;
+    if (releaseApproval) {
+      expect(element.textContent).toContain(`PR ${releaseApproval.pullRequestNumber} head ${releaseApproval.headSha.slice(0, 7)} is approved for exact-head merge only.`);
+      expect(element.textContent).toContain(releaseApproval.nextGate);
+      expect(element.querySelector(`a[href="${releaseApproval.evidenceUrl}"]`)).not.toBeNull();
+      expect(element.querySelector(`a[href="${releaseApproval.previewUrl}"]`)).not.toBeNull();
+    }
     expect(element.querySelectorAll('.agenda-card')).toHaveLength(Math.max(0, agenda.decisions.length - 1));
   });
 

@@ -776,6 +776,26 @@ export interface Operations {
     receiptRetentionDays: number;
     releaseEvidenceSource: 'github_production_deployments_at_enable_time';
     durableReceiptEvidenceSource: 'repository_verified_publication_receipts';
+    exactReleaseApprovals: {
+      total: number;
+      active: number;
+      currentContentSetApprovedRelease: {
+        approvalId: string;
+        approvalRecordPath: string;
+        approvalRecordSha256: string;
+        pullRequestNumber: number;
+        pullRequestUrl: string;
+        headSha: string;
+        manifestId: string;
+        contentSetSha256: string;
+        approvedBy: string;
+        approvedAt: string;
+        evidenceUrl: string;
+        previewUrl: string;
+        scope: 'approved_for_exact_head_merge_only';
+        nextGate: string;
+      } | null;
+    };
     currentLive: {
       status: 'no_verified_managed_release' | 'verified_managed_content_release';
       updatedAt: string | null;

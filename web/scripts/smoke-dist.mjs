@@ -139,6 +139,15 @@ if (operations.publication.currentLive.status === 'verified_managed_content_rele
 } else if (!studioHtml.includes('no verified managed release is recorded')) {
   failures.push('studio: missing truthful no-managed-release posture');
 }
+const exactReleaseApproval = operations.publication.exactReleaseApprovals.currentContentSetApprovedRelease;
+if (exactReleaseApproval) {
+  for (const marker of [exactReleaseApproval.approvalId, exactReleaseApproval.headSha, exactReleaseApproval.contentSetSha256, exactReleaseApproval.nextGate]) {
+    if (!studioHtml.includes(marker)) failures.push(`studio: missing exact release-approval marker ${JSON.stringify(marker)}`);
+  }
+  for (const url of [exactReleaseApproval.pullRequestUrl, exactReleaseApproval.evidenceUrl, exactReleaseApproval.previewUrl]) {
+    if (!studioHtml.includes(url)) failures.push(`studio: missing exact release-approval link ${JSON.stringify(url)}`);
+  }
+}
 if (publicationManifest) {
   const readySlugs = [...readyArticles.map((article) => article.slug)].sort();
   const manifestSlugs = [...publicationManifest.articles.map((article) => article.articleSlug)].sort();

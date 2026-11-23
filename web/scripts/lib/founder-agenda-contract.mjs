@@ -79,6 +79,7 @@ export function buildFounderAgenda(input) {
   const latestVerifiedPreview = input.automationReadinessEvidence?.latestVerifiedPreview?.status === 'exact_preview_verified'
     ? input.automationReadinessEvidence.latestVerifiedPreview
     : null;
+  const approvedExactRelease = input.releaseApprovals?.currentContentSetApprovedRelease ?? null;
   const candidateContentIsVerifiedLive = input.livePublication.status === 'verified_managed_content_release' &&
     latestLiveRelease?.publicationManifest.contentSetSha256 === release.contentSetSha256;
   if (release.counts.articles > 0 && !candidateContentIsVerifiedLive) {
@@ -89,13 +90,28 @@ export function buildFounderAgenda(input) {
       priorityScore: 100,
       horizon: 'now',
       category: 'release',
-      title: hasManagedLiveRelease ? 'Review the next accountable Angular release' : 'Review the first accountable Angular release',
-      recommendation: `Review ${release.manifestId} as the ${hasManagedLiveRelease ? 'next' : 'first'} founder-controlled Firebase release candidate.`,
-      decisionQuestion: hasManagedLiveRelease ? 'Should this exact reviewed content set replace the currently verified live set?' : 'Does this exact content set represent the site you want readers to see first?',
-      rationale: hasManagedLiveRelease
+      title: approvedExactRelease
+        ? 'Unblock the approved exact release'
+        : hasManagedLiveRelease ? 'Review the next accountable Angular release' : 'Review the first accountable Angular release',
+      recommendation: approvedExactRelease
+        ? `Preserve the merge-only approval for PR ${approvedExactRelease.pullRequestNumber} head ${approvedExactRelease.headSha}; authorize only the missing keyless preview trust if you want the protected check rerun.`
+        : `Review ${release.manifestId} as the ${hasManagedLiveRelease ? 'next' : 'first'} founder-controlled Firebase release candidate.`,
+      decisionQuestion: approvedExactRelease
+        ? `Do you authorize the narrow PR-${approvedExactRelease.pullRequestNumber}-only OIDC trust required to rerun its protected preview check?`
+        : hasManagedLiveRelease ? 'Should this exact reviewed content set replace the currently verified live set?' : 'Does this exact content set represent the site you want readers to see first?',
+      rationale: approvedExactRelease
+        ? 'The founder decision and hosted preview review are already recorded against one immutable pull request head. The merge remains blocked only because the required GitHub preview check cannot obtain its missing short-lived Google identity.'
+        : hasManagedLiveRelease
           ? 'The candidate adds reviewed content and operating improvements beyond the verified live set, but it must retain exact-SHA preview, rollback, and founder-control evidence before replacement.'
           : 'The research and release machinery cannot create traffic, trust, or revenue while the modern reviewed site remains only a local candidate.',
-      evidence: [
+      evidence: approvedExactRelease ? [
+        `Lucas approved PR ${approvedExactRelease.pullRequestNumber} head ${approvedExactRelease.headSha} for merge only on ${approvedExactRelease.approvedAt}.`,
+        `The approved content set is ${approvedExactRelease.manifestId}, matching this candidate manifest.`,
+        `The exact Firebase preview remains ${approvedExactRelease.previewUrl}.`,
+        latestLiveRelease
+          ? `The latest Git-recorded live content set is ${latestLiveRelease.publicationManifest.manifestId}, so production has not advanced to the approved candidate.`
+          : 'No managed Firebase content-release receipt is durably recorded in Git yet.'
+      ] : [
         `${release.counts.articles} publication-ready articles are in the candidate set.`,
         `${release.counts.independentReviews} independent QA receipts are hash-bound to those articles.`,
         latestVerifiedPreview
@@ -106,16 +122,20 @@ export function buildFounderAgenda(input) {
           : 'No managed Firebase content-release receipt is durably recorded in Git yet.'
       ],
       unlocks: 'A protected exact-SHA preview and founder-reviewed Firebase release establish the owned destination for every later growth and affiliate action.',
-      tradeoff: hasManagedLiveRelease
+      tradeoff: approvedExactRelease
+        ? 'Creating a tightly scoped keyless preview identity adds IAM configuration, but it does not grant production authority and can remain limited to this one pull request merge ref.'
+        : hasManagedLiveRelease
           ? 'Replacing the live set advances the publication but creates a new monitoring and rollback obligation; affiliate and social authority remain separately bounded.'
           : 'The first release creates a public baseline and monitoring responsibility, while affiliate links and social publishing remain separately disabled.',
-      guardrail: `Commit and review the exact candidate first; the workflow must still clone live, expose the preview, require founder approval, smoke production, and mint a manifest-bound receipt.${latestVerifiedPreview ? ` The prior ${latestVerifiedPreview.sha} receipt is historical evidence only.` : ''}`,
+      guardrail: approvedExactRelease
+        ? `The approval applies only to ${approvedExactRelease.headSha} and merge of PR ${approvedExactRelease.pullRequestNumber}. It does not transfer to a changed head, merge commit, replay, later artifact, IAM change, credential, or Firebase production deployment.`
+        : `Commit and review the exact candidate first; the workflow must still clone live, expose the preview, require founder approval, smoke production, and mint a manifest-bound receipt.${latestVerifiedPreview ? ` The prior ${latestVerifiedPreview.sha} receipt is historical evidence only.` : ''}`,
       reversibility: 'high',
       founderActionRequired: true,
       action: {
-        label: 'Open release workflow',
-        url: 'https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/firebase-production.yml',
-        command: 'gh workflow run firebase-production.yml -f release_sha=<approved-master-sha>'
+        label: approvedExactRelease ? 'Open approved release' : 'Open release workflow',
+        url: approvedExactRelease ? approvedExactRelease.pullRequestUrl : 'https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/firebase-production.yml',
+        command: approvedExactRelease ? null : 'gh workflow run firebase-production.yml -f release_sha=<approved-master-sha>'
       }
     });
   }
