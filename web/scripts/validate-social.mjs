@@ -2,10 +2,12 @@ import { createHash } from 'node:crypto';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import process from 'node:process';
+import { publicationManifestSchema } from './lib/publication-manifest-contract.mjs';
 import { validateSocialModel } from './lib/social-contract.mjs';
 
 const root = process.cwd();
 const config = JSON.parse(await fs.readFile(path.join(root, 'config', 'social-channels.json'), 'utf8'));
+const publicationManifest = publicationManifestSchema.parse(JSON.parse(await fs.readFile(path.join(root, 'public', 'publication-manifest.json'), 'utf8')));
 const draftsDir = path.join(root, 'social', 'drafts');
 const approvalsDir = path.join(root, 'social', 'approvals');
 const candidatesDir = path.join(root, 'social', 'candidates');
@@ -31,7 +33,7 @@ async function loadHashedRecords(directory) {
 const assets = await loadHashedRecords(assetsDir);
 const publications = await loadHashedRecords(publicationsDir);
 const candidates = await loadHashedRecords(candidatesDir);
-const issues = validateSocialModel(config, packs, receipts, assets, publications, candidates);
+const issues = validateSocialModel(config, packs, receipts, assets, publications, candidates, publicationManifest);
 
 function readJpegDimensions(bytes) {
   if (bytes.length < 4 || bytes[0] !== 0xff || bytes[1] !== 0xd8) throw new Error('invalid JPEG signature');
