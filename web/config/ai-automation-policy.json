@@ -112,7 +112,9 @@
     {
       "file": "visual-production.yml",
       "modelJobs": ["produce", "independent_review"],
-      "modelCalls": 2,
+      "modelSteps": 2,
+      "maximumApiCallsPerRun": 13,
+      "maximumGeneratedAssetsPerRun": 12,
       "endpoint": "https://api.openai.com/v1/responses",
       "responseModel": "gpt-6.2-sol",
       "imageToolModel": "gpt-image-2.5-sunburst-2026-09-08",

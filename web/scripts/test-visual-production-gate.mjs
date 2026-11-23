@@ -63,7 +63,7 @@ assert.equal(visualReviewFindingsSchema.safeParse({
   manifestPath: 'visuals/production/20261123-sample-aaaaaaaa-visuals/manifest.json',
   manifestSha256: 'a'.repeat(64),
   reviewedAt: '2026-11-23T00:00:00.000Z',
-  reviewer: { role: 'independent-visual-editor', model: VISUAL_REVIEW_MODEL, workflow: 'visual-production.yml', workflowRunId: '123', workflowRunAttempt: 1, responseId: 'resp_12345678' },
+  reviewer: { role: 'independent-visual-editor', model: VISUAL_REVIEW_MODEL, workflow: 'visual-production.yml', workflowRunId: '123', workflowRunAttempt: 1, responseId: 'resp_12345678', usage: { totalTokens: 30, inputTokens: 20, outputTokens: 10 } },
   privacy: { rawApiResponseStored: false, secretValueStored: false, personalDataSent: false }
 }).success, true);
 
@@ -71,7 +71,10 @@ const policy = parseAiAutomationPolicy(JSON.parse(await fs.readFile(path.join(we
 const workflow = parseYaml(await fs.readFile(path.join(repoRoot, '.github', 'workflows', 'visual-production.yml'), 'utf8'));
 const workflowPolicy = policy.directApiWorkflows[0];
 const validation = validateDirectApiWorkflowDocument({ policy, workflowPolicy, workflow });
-assert.equal(validation.directApiCalls, 2);
+assert.equal(validation.directApiModelSteps, 2);
+assert.equal(validation.maximumApiCallsPerRun, 13);
+assert.equal(validation.maximumGeneratedAssetsPerRun, 12);
+assert.equal(validation.maximumApiCallsPerRun, validation.maximumGeneratedAssetsPerRun + 1);
 assert.deepEqual(validation.modelJobs.sort(), ['independent_review', 'produce']);
 assert.deepEqual(validation.detachedWriterJobs, ['detached_writer']);
 const workflowSource = await fs.readFile(path.join(repoRoot, '.github', 'workflows', 'visual-production.yml'), 'utf8');
@@ -88,4 +91,4 @@ for (const jobName of ['produce', 'independent_review']) {
   assert.doesNotMatch(JSON.stringify(workflow.jobs[jobName].permissions), /write/);
 }
 
-console.log(JSON.stringify({ gate: 'passed', directApiModelCalls: 2, independentReviewRequired: true, failedReviewPromotionBlocked: true, writerReceivesOpenAiKey: false, firebaseDeploymentAuthorized: false }, null, 2));
+console.log(JSON.stringify({ gate: 'passed', credentialedModelSteps: 2, maximumApiCallsPerRun: 13, maximumGeneratedAssetsPerRun: 12, usageEvidenceRequired: true, dollarCostInvented: false, independentReviewRequired: true, failedReviewPromotionBlocked: true, writerReceivesOpenAiKey: false, firebaseDeploymentAuthorized: false }, null, 2));

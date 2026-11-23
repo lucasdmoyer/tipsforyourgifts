@@ -32,7 +32,9 @@ const workflowPolicySchema = z.object({
 const directApiWorkflowPolicySchema = z.object({
   file: z.literal('visual-production.yml'),
   modelJobs: z.tuple([z.literal('produce'), z.literal('independent_review')]),
-  modelCalls: z.literal(2),
+  modelSteps: z.literal(2),
+  maximumApiCallsPerRun: z.literal(13),
+  maximumGeneratedAssetsPerRun: z.literal(12),
   endpoint: z.literal('https://api.openai.com/v1/responses'),
   responseModel: z.literal('gpt-6.2-sol'),
   imageToolModel: z.literal('gpt-image-2.5-sunburst-2026-09-08'),
@@ -182,7 +184,7 @@ export function parseAiAutomationPolicy(value) {
 export function buildAiAutomationPolicySummary(value) {
   const policy = parseAiAutomationPolicy(value);
   const codexSteps = policy.workflows.reduce((total, workflow) => total + workflow.codexSteps, 0);
-  const directApiCalls = policy.directApiWorkflows.reduce((total, workflow) => total + workflow.modelCalls, 0);
+  const directApiCalls = policy.directApiWorkflows.reduce((total, workflow) => total + workflow.maximumApiCallsPerRun, 0);
   const activationBlockers = [];
   if (policy.credential.status !== 'configured_external') activationBlockers.push('Dedicated OpenAI project credential is not configured.');
   else if (policy.credential.verification.status !== 'verified_external') activationBlockers.push('Dedicated OpenAI project credential is not externally verified.');
@@ -367,13 +369,20 @@ export function validateDirectApiWorkflowDocument({ policy, workflowPolicy, work
       throw new Error(`${workflowPolicy.file}:${jobName} receives OPENAI_API_KEY without one registered direct API call.`);
     }
   }
-  if (modelCalls !== workflowPolicy.modelCalls) throw new Error(`${workflowPolicy.file} expected ${workflowPolicy.modelCalls} direct API calls, found ${modelCalls}.`);
+  if (modelCalls !== workflowPolicy.modelSteps) throw new Error(`${workflowPolicy.file} expected ${workflowPolicy.modelSteps} credentialed model steps, found ${modelCalls}.`);
   for (const expectedJob of expectedJobs) if (!observedJobs.has(expectedJob)) throw new Error(`${workflowPolicy.file} is missing protected job ${expectedJob}.`);
   const detachedWriterJobs = Object.entries(workflow.jobs ?? {}).filter(([, job]) => Object.values(effectivePermissions(workflow, job)).some((value) => value === 'write'));
   if (detachedWriterJobs.length !== 1) throw new Error(`${workflowPolicy.file} must have exactly one detached write-capable job.`);
   for (const [jobName, job] of detachedWriterJobs) if (JSON.stringify(job).includes(secretExpression)) throw new Error(`${workflowPolicy.file}:${jobName} cannot receive OPENAI_API_KEY in a write-capable job.`);
   if (JSON.stringify(workflow).includes('firebase deploy')) throw new Error(`${workflowPolicy.file} cannot deploy Firebase.`);
-  return { file: workflowPolicy.file, directApiCalls: modelCalls, modelJobs: [...observedJobs], detachedWriterJobs: detachedWriterJobs.map(([name]) => name) };
+  return {
+    file: workflowPolicy.file,
+    directApiModelSteps: modelCalls,
+    maximumApiCallsPerRun: workflowPolicy.maximumApiCallsPerRun,
+    maximumGeneratedAssetsPerRun: workflowPolicy.maximumGeneratedAssetsPerRun,
+    modelJobs: [...observedJobs],
+    detachedWriterJobs: detachedWriterJobs.map(([name]) => name)
+  };
 }
 
 export async function validateAiAutomationWorkflows({ repoRoot, policy: value }) {
@@ -393,7 +402,7 @@ export async function validateAiAutomationWorkflows({ repoRoot, policy: value })
   return {
     workflows: [...workflows, ...directApiWorkflows],
     protectedWorkflows: workflows.length + directApiWorkflows.length,
-    protectedModelCalls: workflows.reduce((total, workflow) => total + workflow.codexSteps, 0) + directApiWorkflows.reduce((total, workflow) => total + workflow.directApiCalls, 0),
+    protectedModelCalls: workflows.reduce((total, workflow) => total + workflow.codexSteps, 0) + directApiWorkflows.reduce((total, workflow) => total + workflow.maximumApiCallsPerRun, 0),
     modelJobsWithGithubWrite: 0,
     writerJobsReceivingOpenAiKey: 0
   };

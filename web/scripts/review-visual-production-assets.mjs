@@ -109,7 +109,12 @@ const findings = visualReviewFindingsSchema.parse({
     workflow: 'visual-production.yml',
     workflowRunId,
     workflowRunAttempt,
-    responseId: response.id
+    responseId: response.id,
+    usage: {
+      totalTokens: response.usage?.total_tokens ?? null,
+      inputTokens: response.usage?.input_tokens ?? null,
+      outputTokens: response.usage?.output_tokens ?? null
+    }
   },
   verdict: modelOutput.verdict,
   assets: modelOutput.assets,

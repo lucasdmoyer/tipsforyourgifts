@@ -97,6 +97,10 @@ for (const entry of promoted) promptBook += `\n\n## ${entry.generated.assetId}\n
 promptBook += '\n';
 const registryRaw = `${JSON.stringify(registry, null, 2)}\n`;
 const reviewedAt = findings.reviewedAt;
+function completeUsageSum(key) {
+  const values = manifest.assets.map((asset) => asset.usage[key]);
+  return values.every((value) => value !== null) ? values.reduce((total, value) => total + value, 0) : null;
+}
 const receipt = visualReviewReceiptSchema.parse({
   schemaVersion: '1.0.0',
   receiptId: `${requestId}-visual-qa-v1`,
@@ -148,6 +152,24 @@ const receipt = visualReviewReceiptSchema.parse({
   },
   blockers: [],
   warnings: findings.warnings,
+  usage: {
+    production: {
+      apiCalls: manifest.assets.length,
+      assetsGenerated: manifest.assets.length,
+      totalTokens: completeUsageSum('totalTokens'),
+      inputTokens: completeUsageSum('inputTokens'),
+      outputTokens: completeUsageSum('outputTokens')
+    },
+    independentReview: {
+      apiCalls: 1,
+      totalTokens: findings.reviewer.usage.totalTokens,
+      inputTokens: findings.reviewer.usage.inputTokens,
+      outputTokens: findings.reviewer.usage.outputTokens
+    },
+    maximumApiCallsAllowed: 13,
+    pricedCostUsd: null,
+    pricingStatus: 'not_priced_requires_external_billing_evidence'
+  },
   sourcePromotionAuthorized: true,
   productionDeploymentAuthorized: false
 });

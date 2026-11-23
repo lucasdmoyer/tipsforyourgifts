@@ -137,7 +137,12 @@ export const visualReviewFindingsSchema = z.object({
     workflow: z.literal('visual-production.yml'),
     workflowRunId: z.string().regex(/^[1-9]\d*$/),
     workflowRunAttempt: z.number().int().positive(),
-    responseId: z.string().min(8)
+    responseId: z.string().min(8),
+    usage: z.object({
+      totalTokens: z.number().int().nonnegative().nullable(),
+      inputTokens: z.number().int().nonnegative().nullable(),
+      outputTokens: z.number().int().nonnegative().nullable()
+    }).strict()
   }).strict(),
   verdict: z.enum(['passed', 'failed']),
   assets: visualReviewModelOutputSchema.shape.assets,
@@ -205,12 +210,36 @@ export const visualReviewReceiptSchema = z.object({
   }).strict(),
   blockers: z.array(z.never()).length(0),
   warnings: z.array(z.string().min(12)),
+  usage: z.object({
+    production: z.object({
+      apiCalls: z.number().int().min(1).max(12),
+      assetsGenerated: z.number().int().min(1).max(12),
+      totalTokens: z.number().int().nonnegative().nullable(),
+      inputTokens: z.number().int().nonnegative().nullable(),
+      outputTokens: z.number().int().nonnegative().nullable()
+    }).strict(),
+    independentReview: z.object({
+      apiCalls: z.literal(1),
+      totalTokens: z.number().int().nonnegative().nullable(),
+      inputTokens: z.number().int().nonnegative().nullable(),
+      outputTokens: z.number().int().nonnegative().nullable()
+    }).strict(),
+    maximumApiCallsAllowed: z.literal(13),
+    pricedCostUsd: z.null(),
+    pricingStatus: z.literal('not_priced_requires_external_billing_evidence')
+  }).strict(),
   sourcePromotionAuthorized: z.literal(true),
   productionDeploymentAuthorized: z.literal(false)
 }).strict().superRefine((receipt, context) => {
   if (receipt.receiptId !== `${receipt.requestId}-visual-qa-v1`) context.addIssue({ code: z.ZodIssueCode.custom, path: ['receiptId'], message: 'must bind the request ID' });
   if (receipt.requestId !== `${receipt.runId}-visuals`) context.addIssue({ code: z.ZodIssueCode.custom, path: ['runId'], message: 'must bind the request run ID' });
   if (new Set(receipt.assets.map((asset) => asset.assetId)).size !== receipt.assets.length) context.addIssue({ code: z.ZodIssueCode.custom, path: ['assets'], message: 'asset IDs must be unique' });
+  if (receipt.usage.production.assetsGenerated !== receipt.assets.length || receipt.usage.production.apiCalls !== receipt.assets.length) {
+    context.addIssue({ code: z.ZodIssueCode.custom, path: ['usage', 'production'], message: 'production usage must record exactly one API call per reviewed asset' });
+  }
+  if (receipt.usage.production.apiCalls + receipt.usage.independentReview.apiCalls > receipt.usage.maximumApiCallsAllowed) {
+    context.addIssue({ code: z.ZodIssueCode.custom, path: ['usage', 'maximumApiCallsAllowed'], message: 'recorded API calls exceed the approved per-run ceiling' });
+  }
 });
 
 export const legacyVisualReviewReceiptSchema = z.object({

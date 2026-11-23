@@ -260,7 +260,7 @@ export const OPERATIONS: Operations = {
       "Versioned automation policy is not active."
     ],
     "protectedWorkflows": 7,
-    "protectedModelCalls": 10,
+    "protectedModelCalls": 21,
     "credential": {
       "secretName": "OPENAI_API_KEY",
       "status": "not_configured",
@@ -389,7 +389,9 @@ export const OPERATIONS: Operations = {
           "produce",
           "independent_review"
         ],
-        "modelCalls": 2,
+        "modelSteps": 2,
+        "maximumApiCallsPerRun": 13,
+        "maximumGeneratedAssetsPerRun": 12,
         "endpoint": "https://api.openai.com/v1/responses",
         "responseModel": "gpt-6.2-sol",
         "imageToolModel": "gpt-image-2.5-sunburst-2026-09-08",
@@ -408,13 +410,13 @@ export const OPERATIONS: Operations = {
       "Any proposed patch outside its workflow-specific allowlist fails deterministic validation.",
       "A project hard-limit response, repeated failures, or suspected credential exposure requires the founder to disable runs and rotate the credential before resuming."
     ],
-    "policySha256": "33eb36d548d43f44dcfbf2f17babacd418a1d6eb1d1f34cfe565e82cd118c9a6",
+    "policySha256": "d3c37458d9dfcc89f440794e64e73993c9a38d2e2c560adcb1358c13770a1b11",
     "budgetConfiguration": {
       "available": true,
       "workflowUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/ai-automation-budget-configure.yml",
       "confirmation": "CONFIGURE-ai-automation-budget",
       "evidenceMode": "founder_attested_external_platform_configuration",
-      "command": "gh workflow run ai-automation-budget-configure.yml --repo lucasdmoyer/tipsforyourgifts --ref master -f expected_policy_sha256=33eb36d548d43f44dcfbf2f17babacd418a1d6eb1d1f34cfe565e82cd118c9a6 -f monthly_budget_usd='<APPROVED_HARD_LIMIT_USD>' -f hard_limit_enabled=true -f alert_threshold_usd='<APPROVED_ALERT_USD>' -f platform_evidence_url='<OPENAI_PLATFORM_SETTINGS_URL>' -f confirmation='CONFIGURE-ai-automation-budget'"
+      "command": "gh workflow run ai-automation-budget-configure.yml --repo lucasdmoyer/tipsforyourgifts --ref master -f expected_policy_sha256=d3c37458d9dfcc89f440794e64e73993c9a38d2e2c560adcb1358c13770a1b11 -f monthly_budget_usd='<APPROVED_HARD_LIMIT_USD>' -f hard_limit_enabled=true -f alert_threshold_usd='<APPROVED_ALERT_USD>' -f platform_evidence_url='<OPENAI_PLATFORM_SETTINGS_URL>' -f confirmation='CONFIGURE-ai-automation-budget'"
     },
     "credentialVerification": {
       "available": false,
@@ -422,13 +424,13 @@ export const OPERATIONS: Operations = {
       "confirmation": "VERIFY-ai-automation-credential",
       "method": "openai_models_endpoint",
       "endpoint": "https://api.openai.com/v1/models",
-      "command": "gh workflow run ai-automation-credential-verify.yml --repo lucasdmoyer/tipsforyourgifts --ref master -f expected_policy_sha256=33eb36d548d43f44dcfbf2f17babacd418a1d6eb1d1f34cfe565e82cd118c9a6 -f confirmation='VERIFY-ai-automation-credential'"
+      "command": "gh workflow run ai-automation-credential-verify.yml --repo lucasdmoyer/tipsforyourgifts --ref master -f expected_policy_sha256=d3c37458d9dfcc89f440794e64e73993c9a38d2e2c560adcb1358c13770a1b11 -f confirmation='VERIFY-ai-automation-credential'"
     },
     "policyActivation": {
       "available": false,
       "workflowUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/ai-automation-activate.yml",
       "confirmation": "ACTIVATE-ai-automation",
-      "command": "gh workflow run ai-automation-activate.yml --repo lucasdmoyer/tipsforyourgifts --ref master -f expected_policy_sha256=33eb36d548d43f44dcfbf2f17babacd418a1d6eb1d1f34cfe565e82cd118c9a6 -f confirmation='ACTIVATE-ai-automation'"
+      "command": "gh workflow run ai-automation-activate.yml --repo lucasdmoyer/tipsforyourgifts --ref master -f expected_policy_sha256=d3c37458d9dfcc89f440794e64e73993c9a38d2e2c560adcb1358c13770a1b11 -f confirmation='ACTIVATE-ai-automation'"
     }
   },
   "researchRuns": 14,
