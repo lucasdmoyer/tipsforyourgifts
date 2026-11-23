@@ -134,6 +134,30 @@ assert.match(growthFailureProofStep.run, /git diff --exit-code HEAD -- web\/src\
 assert.match(growthFailurePrStep.run, /does not infer missing metrics/, 'growth correction PR must preserve the aggregate-only evidence boundary');
 assert.doesNotMatch(growthFailurePrStep.run, /gh pr merge/, 'growth correction PR must never auto-merge');
 
+const affiliateWorkflow = await readWorkflow('affiliate-link-review.yml');
+const affiliateReviewJob = affiliateWorkflow.parsed.jobs?.review;
+const affiliateFailureJob = affiliateWorkflow.parsed.jobs?.record_failure;
+const affiliateFailureWriterJob = affiliateWorkflow.parsed.jobs?.open_failure_pull_request;
+assert.ok(affiliateReviewJob && affiliateFailureJob && affiliateFailureWriterJob, 'affiliate review needs exact-candidate review, clean failure recording, and a detached correction writer');
+const affiliateModelStep = affiliateReviewJob.steps.find((step) => step.uses === 'openai/codex-action@v1');
+const affiliateTargetStep = findStep(affiliateReviewJob, 'Bind the exact affiliate candidate before credential access');
+const affiliateRouteStep = findStep(affiliateReviewJob, 'Route the exact affiliate-review result');
+const affiliateFailureRecordStep = findStep(affiliateFailureJob, 'Record only the credential-free affiliate-review failure receipt');
+const affiliateFailureProofStep = findStep(affiliateFailureJob, 'Prove and serialize the clean affiliate-review failure packet');
+const affiliateFailurePrStep = findStep(affiliateFailureWriterJob, 'Open the affiliate-review correction pull request with auto-merge disabled');
+assert.equal(affiliateModelStep?.['continue-on-error'], true, 'affiliate reviewer model failures must reach the trusted classifier');
+assert.equal(affiliateFailureJob.steps.filter((step) => step.uses === 'openai/codex-action@v1').length, 0, 'affiliate failure recording must be credential-free');
+assert.equal(affiliateFailureWriterJob.steps.filter((step) => step.uses === 'openai/codex-action@v1').length, 0, 'affiliate correction writing must be credential-free');
+assert.ok(affiliateTargetStep && affiliateRouteStep && affiliateFailureRecordStep && affiliateFailureProofStep && affiliateFailurePrStep, 'affiliate review failure needs a complete exact-candidate retry handoff');
+assert.match(affiliateTargetStep.run, /target_sha256=\$actual_sha256/, 'affiliate failure evidence must preserve the exact candidate digest');
+assert.match(affiliateTargetStep.run, /blob\/\$base_sha\/\$candidate_path/, 'affiliate failure evidence must bind the candidate source URL to the exact base SHA');
+assert.match(affiliateRouteStep.run, /runtime_policy_failed[\s\S]*credential_preflight_failed[\s\S]*model_step_failed[\s\S]*output_invalid/, 'affiliate failure routing must distinguish runtime, credential, model, and output failures');
+assert.match(affiliateFailureRecordStep.run, /automation:failure:record[\s\S]*--target-kind=affiliate_link_candidate/, 'affiliate failure state must be created only by the deterministic recorder');
+assert.match(affiliateFailureProofStep.run, /git diff --exit-code HEAD --[\s\S]*web\/affiliate\/reviews[\s\S]*web\/affiliate\/approvals[\s\S]*web\/config\/affiliate-programs\.json[\s\S]*web\/src\/data\/blog/, 'affiliate failure recording must prove no verdict, approval, activation, or article mutation survived');
+assert.match(affiliateFailurePrStep.run, /Partial reviewer output was discarded/, 'affiliate correction PR must state that partial reviewer output was discarded');
+assert.match(affiliateFailurePrStep.run, /does not create or preserve a review receipt, verdict, approval, paid-link overlay/, 'affiliate correction PR must deny every monetization promotion effect');
+assert.doesNotMatch(affiliateFailurePrStep.run, /gh pr merge/, 'affiliate correction PR must never auto-merge');
+
 const researchDispatch = research.parsed.on?.workflow_dispatch;
 assert.equal(researchDispatch?.inputs?.idea_id?.required, true, 'research workflow requires the founder-approved idea ID');
 assert.equal(research.parsed.permissions?.contents, 'read', 'model workflow default contents authority must remain read-only');
@@ -240,6 +264,7 @@ console.log(JSON.stringify({
     'strategy_approval_to_research_dispatch',
     'strategy_intake_failure_to_clean_correction_packet',
     'growth_analysis_failure_to_clean_correction_packet',
+    'affiliate_review_failure_to_clean_correction_packet',
     'research_failure_to_clean_correction_packet',
     'research_to_independent_qa',
     'review_failure_to_clean_correction_packet',

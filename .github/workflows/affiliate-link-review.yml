@@ -23,6 +23,13 @@ jobs:
   review:
     runs-on: ubuntu-latest
     timeout-minutes: 35
+    outputs:
+      failure_outcome: ${{ steps.route.outputs.failure_outcome }}
+      failure_code: ${{ steps.route.outputs.failure_code }}
+      target_id: ${{ steps.target.outputs.target_id }}
+      target_sha256: ${{ steps.target.outputs.target_sha256 }}
+      target_url: ${{ steps.target.outputs.target_url }}
+      base_sha: ${{ steps.target.outputs.base_sha }}
     steps:
       - uses: actions/checkout@v5
         with:
@@ -34,6 +41,7 @@ jobs:
           CANDIDATE_ID: ${{ inputs.candidate_id }}
           EXPECTED_CANDIDATE_SHA256: ${{ inputs.expected_candidate_sha256 }}
         run: |
+          test "$GITHUB_REF" = "refs/heads/master" || { echo "Affiliate review must be dispatched from trusted master workflow bytes." >&2; exit 1; }
           [[ "$CANDIDATE_ID" =~ ^[a-z0-9]+(-[a-z0-9]+)*$ ]] || { echo "Invalid candidate ID." >&2; exit 1; }
           [[ "$EXPECTED_CANDIDATE_SHA256" =~ ^[a-f0-9]{64}$ ]] || { echo "Invalid candidate SHA-256." >&2; exit 1; }
       - uses: actions/setup-node@v7
@@ -45,13 +53,34 @@ jobs:
         run: |
           npm ci --prefix web
           npm run validate
+      - name: Bind the exact affiliate candidate before credential access
+        id: target
+        env:
+          CANDIDATE_ID: ${{ inputs.candidate_id }}
+          EXPECTED_CANDIDATE_SHA256: ${{ inputs.expected_candidate_sha256 }}
+        run: |
+          candidate_path="web/affiliate/candidates/$CANDIDATE_ID.json"
+          test -f "$candidate_path"
+          actual_sha256="$(shasum -a 256 "$candidate_path" | cut -d ' ' -f 1)"
+          test "$actual_sha256" = "$EXPECTED_CANDIDATE_SHA256"
+          test "$(node -p "require('./$candidate_path').candidateId")" = "$CANDIDATE_ID"
+          base_sha="$(git rev-parse HEAD)"
+          test "${#base_sha}" = "40"
+          echo "target_id=$CANDIDATE_ID" >> "$GITHUB_OUTPUT"
+          echo "target_sha256=$actual_sha256" >> "$GITHUB_OUTPUT"
+          echo "target_url=https://github.com/$GITHUB_REPOSITORY/blob/$base_sha/$candidate_path" >> "$GITHUB_OUTPUT"
+          echo "base_sha=$base_sha" >> "$GITHUB_OUTPUT"
       - name: Authorize AI automation runtime
+        id: runtime
         run: node web/scripts/check-ai-runtime-authorization.mjs
       - name: Verify autonomous agent credential
+        id: credential
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: node web/scripts/require-openai-api-key.mjs
       - name: Run the isolated affiliate evidence editor
+        id: affiliate_editor
+        continue-on-error: true
         uses: openai/codex-action@v1
         with:
           openai-api-key: ${{ secrets.OPENAI_API_KEY }}
@@ -70,6 +99,9 @@ jobs:
 
             If any check fails or the live destination cannot be verified, run the same command with --verdict=failed and one specific --blocker argument. Never turn uncertainty into a pass. Do not approve or publish the link.
       - name: Prove reviewer isolation and deterministic state
+        id: boundary
+        if: always() && steps.affiliate_editor.outcome == 'success'
+        continue-on-error: true
         env:
           CANDIDATE_ID: ${{ inputs.candidate_id }}
         run: |
@@ -85,7 +117,35 @@ jobs:
           npm run build
           npm run smoke
           git diff --check
+      - name: Route the exact affiliate-review result
+        id: route
+        if: always() && steps.target.outcome == 'success'
+        env:
+          RUNTIME_OUTCOME: ${{ steps.runtime.outcome }}
+          CREDENTIAL_OUTCOME: ${{ steps.credential.outcome }}
+          MODEL_OUTCOME: ${{ steps.affiliate_editor.outcome }}
+          BOUNDARY_OUTCOME: ${{ steps.boundary.outcome }}
+        run: |
+          if [ "$RUNTIME_OUTCOME" != "success" ]; then
+            outcome="failed"
+            code="runtime_policy_failed"
+          elif [ "$CREDENTIAL_OUTCOME" != "success" ]; then
+            outcome="failed"
+            code="credential_preflight_failed"
+          elif [ "$MODEL_OUTCOME" != "success" ]; then
+            outcome="failed"
+            code="model_step_failed"
+          elif [ "$BOUNDARY_OUTCOME" != "success" ]; then
+            outcome="failed"
+            code="output_invalid"
+          else
+            outcome="ready"
+            code=""
+          fi
+          echo "failure_outcome=$outcome" >> "$GITHUB_OUTPUT"
+          echo "failure_code=$code" >> "$GITHUB_OUTPUT"
       - name: Upload the isolated review receipt
+        if: steps.route.outputs.failure_outcome == 'ready'
         uses: actions/upload-artifact@v7
         with:
           name: affiliate-link-review-${{ github.run_id }}
@@ -93,8 +153,136 @@ jobs:
           if-no-files-found: error
           retention-days: 30
 
+  record_failure:
+    needs: review
+    if: always() && needs.review.outputs.failure_outcome == 'failed'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ needs.review.outputs.base_sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "24.14.0"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - name: Record only the credential-free affiliate-review failure receipt
+        id: record
+        env:
+          FAILURE_CODE: ${{ needs.review.outputs.failure_code }}
+          TARGET_ID: ${{ needs.review.outputs.target_id }}
+          TARGET_SHA256: ${{ needs.review.outputs.target_sha256 }}
+          TARGET_URL: ${{ needs.review.outputs.target_url }}
+          GITHUB_SHA: ${{ needs.review.outputs.base_sha }}
+          GITHUB_REF: refs/heads/master
+        run: |
+          npm ci --prefix web
+          npm --prefix web run automation:failure:record -- \
+            --workflow=affiliate-link-review.yml \
+            --stage=affiliate_review \
+            --reason-code="$FAILURE_CODE" \
+            --target-kind=affiliate_link_candidate \
+            --target-id="$TARGET_ID" \
+            --target-sha256="$TARGET_SHA256" \
+            --target-url="$TARGET_URL"
+          npm --prefix web run generate
+      - name: Prove and serialize the clean affiliate-review failure packet
+        env:
+          FAILURE_PATH: ${{ steps.record.outputs.failure_path }}
+          TARGET_ID: ${{ needs.review.outputs.target_id }}
+          TARGET_SHA256: ${{ needs.review.outputs.target_sha256 }}
+          TARGET_URL: ${{ needs.review.outputs.target_url }}
+        run: |
+          test -f "$FAILURE_PATH"
+          test "$(node -p "require('./$FAILURE_PATH').target.id")" = "$TARGET_ID"
+          test "$(node -p "require('./$FAILURE_PATH').target.sourceSha256")" = "$TARGET_SHA256"
+          test "$(node -p "require('./$FAILURE_PATH').target.url")" = "$TARGET_URL"
+          npm run validate
+          npm run build
+          npm run smoke
+          git add -N .
+          while IFS= read -r changed_path; do
+            case "$changed_path" in
+              "$FAILURE_PATH"|web/src/data/operations.json|web/src/app/generated/content.generated.ts|web/src/app/generated/studio.generated.ts|web/public/sitemap.xml) ;;
+              *) echo "Affiliate-review failure recorder changed forbidden path: $changed_path" >&2; exit 1 ;;
+            esac
+          done < <(git diff --name-only HEAD)
+          git diff --exit-code HEAD -- \
+            web/affiliate/candidates \
+            web/affiliate/reviews \
+            web/affiliate/approvals \
+            web/affiliate/evidence \
+            web/config/affiliate-programs.json \
+            web/research \
+            web/src/data/blog \
+            web/public/affiliate-product-coverage.json \
+            web/public/affiliate-enrollment-readiness.json
+          git diff --check
+          git diff --binary HEAD > affiliate-review-failure.patch
+          test -s affiliate-review-failure.patch
+      - uses: actions/upload-artifact@v7
+        with:
+          name: affiliate-review-failure-${{ github.run_id }}-${{ github.run_attempt }}
+          path: affiliate-review-failure.patch
+          if-no-files-found: error
+          retention-days: 30
+
+  open_failure_pull_request:
+    needs: [review, record_failure]
+    if: always() && needs.record_failure.result == 'success'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ needs.review.outputs.base_sha }}
+          fetch-depth: 0
+      - uses: actions/download-artifact@v8
+        with:
+          name: affiliate-review-failure-${{ github.run_id }}-${{ github.run_attempt }}
+      - run: git apply --index affiliate-review-failure.patch
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "24.14.0"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - name: Re-run failure gates without an AI credential
+        run: |
+          npm ci --prefix web
+          npm run validate
+          npm run build
+          npm run smoke
+          git diff --check --cached
+          git diff --exit-code
+      - name: Commit the affiliate-review retry branch
+        env:
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -c "codex/affiliate-review-failure-$RUN_ID-${GITHUB_RUN_ATTEMPT}"
+          git commit -m "Record affiliate review failure $RUN_ID"
+          git push origin "codex/affiliate-review-failure-$RUN_ID-${GITHUB_RUN_ATTEMPT}"
+      - name: Open the affiliate-review correction pull request with auto-merge disabled
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ github.run_id }}
+          TARGET_ID: ${{ needs.review.outputs.target_id }}
+        run: |
+          gh pr create \
+            --base master \
+            --head "codex/affiliate-review-failure-$RUN_ID-${GITHUB_RUN_ATTEMPT}" \
+            --title "Affiliate review retry required for $TARGET_ID" \
+            --body "The independent affiliate-link review failed before it could produce a clean bounded verdict. This correction packet preserves only the exact hash-bound candidate and workflow failure. Partial reviewer output was discarded. It does not create or preserve a review receipt, verdict, approval, paid-link overlay, program activation, article edit, publication, external affiliate mutation, or Firebase deployment. It does not merge automatically. Inspect the failed run and retry from a new workflow attempt; do not reuse partial model output."
+
   open_review_pull_request:
     needs: review
+    if: needs.review.outputs.failure_outcome == 'ready'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     permissions:
@@ -103,7 +291,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
         with:
-          ref: master
+          ref: ${{ needs.review.outputs.base_sha }}
           fetch-depth: 0
           persist-credentials: false
       - uses: actions/setup-node@v7

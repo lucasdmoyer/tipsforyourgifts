@@ -64,12 +64,43 @@ try {
   assert.equal(growthReceipt.handling.partialModelOutputPreserved, false);
   assert.equal(growthReceipt.handling.authoritativeProposalPreserved, false);
   assert.equal(growthReceipt.handling.reviewReceiptCreated, false);
+  const candidateSha = 'e'.repeat(64);
+  const candidateId = 'affiliate-link-sapiens-bookshop-v2';
+  const candidateUrl = `https://github.com/lucasdmoyer/tipsforyourgifts/blob/${'f'.repeat(40)}/web/affiliate/candidates/${candidateId}.json`;
+  await execFileAsync(process.execPath, [
+    path.join(scriptRoot, 'scripts/record-automation-failure.mjs'),
+    '--workflow=affiliate-link-review.yml',
+    '--stage=affiliate_review',
+    '--reason-code=credential_preflight_failed',
+    '--target-kind=affiliate_link_candidate',
+    `--target-id=${candidateId}`,
+    `--target-sha256=${candidateSha}`,
+    `--target-url=${candidateUrl}`,
+    '--workflow-run-id=12348',
+    '--workflow-run-attempt=3',
+    '--actor=lucasdmoyer',
+    `--base-sha=${'f'.repeat(40)}`,
+    '--ref=refs/heads/master',
+    '--event-name=workflow_dispatch',
+    '--recorded-at=2026-11-23T20:32:00.000Z'
+  ], { cwd: fixtureRoot, env: commandEnv });
+  const affiliateFailureId = 'automation-failure-affiliate-link-review-run12348-attempt3';
+  const affiliateReceipt = automationFailureReceiptSchema.parse(JSON.parse(await fs.readFile(path.join(fixtureRoot, 'automation/failures', `${affiliateFailureId}.json`), 'utf8')));
+  assert.equal(affiliateReceipt.target.kind, 'affiliate_link_candidate');
+  assert.equal(affiliateReceipt.target.id, candidateId);
+  assert.equal(affiliateReceipt.target.sourceSha256, candidateSha);
+  assert.equal(affiliateReceipt.target.url, candidateUrl);
+  assert.equal(affiliateReceipt.handling.partialModelOutputPreserved, false);
+  assert.equal(affiliateReceipt.handling.authoritativeProposalPreserved, false);
+  assert.equal(affiliateReceipt.handling.reviewReceiptCreated, false);
+  assert.equal(affiliateReceipt.handling.externalStateChanged, false);
+  assert.equal(affiliateReceipt.handling.productionDeploymentAuthorized, false);
   await execFileAsync(process.execPath, [path.join(scriptRoot, 'scripts/validate-automation-failures.mjs')], { cwd: fixtureRoot, env: commandEnv });
   await assert.rejects(execFileAsync(process.execPath, [
     path.join(scriptRoot, 'scripts/record-automation-failure.mjs'),
     '--workflow=strategy-intake.yml', '--stage=growth_analysis', '--reason-code=output_invalid', '--target-kind=founder_strategy_issue', '--target-id=77', `--target-sha256=${issueSha}`, '--target-url=https://github.com/lucasdmoyer/tipsforyourgifts/issues/77', '--workflow-run-id=12346', '--workflow-run-attempt=1', '--actor=lucasdmoyer', `--base-sha=${'b'.repeat(40)}`, '--ref=refs/heads/master', '--event-name=issues'
   ], { cwd: fixtureRoot, env: commandEnv }));
-  console.log(JSON.stringify({ automationFailureCommandTests: 'passed', failureIds: [failureId, growthFailureId], workflows: [receipt.workflow.name, growthReceipt.workflow.name], stages: [receipt.stage, growthReceipt.stage], reasonCodes: [receipt.reasonCode, growthReceipt.reasonCode], partialModelOutputPreserved: false, authoritativeProposalPreserved: false, reviewReceiptFabricated: false, externalStateChanged: false, productionAuthorized: false }, null, 2));
+  console.log(JSON.stringify({ automationFailureCommandTests: 'passed', failureIds: [failureId, growthFailureId, affiliateFailureId], workflows: [receipt.workflow.name, growthReceipt.workflow.name, affiliateReceipt.workflow.name], stages: [receipt.stage, growthReceipt.stage, affiliateReceipt.stage], reasonCodes: [receipt.reasonCode, growthReceipt.reasonCode, affiliateReceipt.reasonCode], partialModelOutputPreserved: false, authoritativeProposalPreserved: false, reviewReceiptFabricated: false, externalStateChanged: false, productionAuthorized: false }, null, 2));
 } finally {
   await fs.rm(fixtureRoot, { recursive: true, force: true });
 }
