@@ -381,6 +381,23 @@ export interface Operations {
   };
   automationReadiness: AutomationReadiness;
   aiAutomationPolicy: AiAutomationPolicy;
+  automationFailures: {
+    total: number;
+    queue: Array<{
+      failureId: string;
+      recordSha256: string;
+      status: 'retry_required';
+      stage: 'strategy_proposal' | 'growth_analysis' | 'affiliate_review' | 'editorial_review';
+      reasonCode: 'runtime_policy_failed' | 'credential_preflight_failed' | 'model_step_failed' | 'output_invalid';
+      recordedAt: string;
+      workflowName: 'strategy-intake.yml' | 'growth-review.yml' | 'affiliate-link-review.yml' | 'editorial-independent-review.yml';
+      workflowRunUrl: string;
+      targetKind: 'founder_strategy_issue' | 'growth_snapshot' | 'affiliate_link_candidate' | 'editorial_run';
+      targetId: string;
+      targetUrl: string | null;
+      nextGate: string;
+    }>;
+  };
   researchRuns: number;
   validatedRuns: number;
   publicationReadyPosts: number;

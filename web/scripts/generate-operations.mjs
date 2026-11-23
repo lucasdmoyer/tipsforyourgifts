@@ -26,6 +26,7 @@ const visualFailuresDir = path.join(root, 'visuals', 'failures');
 const opportunityMissionsDir = path.join(root, 'research', 'opportunity-missions');
 const opportunityReportsDir = path.join(root, 'research', 'opportunities');
 const opportunityReviewsDir = path.join(root, 'research', 'opportunity-reviews');
+const automationFailuresDir = path.join(root, 'automation', 'failures');
 const blogDir = path.join(root, 'src', 'data', 'blog');
 const socialDir = path.join(root, 'social', 'drafts');
 const socialApprovalDir = path.join(root, 'social', 'approvals');
@@ -89,6 +90,7 @@ const visualFailures = await loadHashedJsonRecords(visualFailuresDir);
 const opportunityMissions = await loadHashedJsonRecords(opportunityMissionsDir);
 const opportunityReports = await loadHashedJsonRecords(opportunityReportsDir);
 const opportunityReviews = await loadHashedJsonRecords(opportunityReviewsDir);
+const automationFailures = await loadHashedJsonRecords(automationFailuresDir);
 const assetByPost = new Map(socialAssets.map((asset) => [asset.postId, asset]));
 const publicationByPost = new Map(socialPublications.map((publication) => [publication.postId, publication]));
 const candidateByPost = new Map();
@@ -390,6 +392,7 @@ const sourceDates = [
   ...opportunityMissions.flatMap((mission) => [mission.createdAt, mission.completedAt, mission.failedAt]).filter(Boolean),
   ...opportunityReports.map((report) => report.createdAt),
   ...opportunityReviews.map((review) => review.reviewedAt),
+  ...automationFailures.map((failure) => failure.recordedAt),
   ...growth.snapshots.map((snapshot) => snapshot.collectedAt),
   ...socialApprovals.map((approval) => approval.approvedAt),
   ...socialCandidates.map((candidate) => candidate.generatedAt),
@@ -444,6 +447,23 @@ const operations = {
   founderAgenda,
   automationReadiness,
   aiAutomationPolicy,
+  automationFailures: {
+    total: automationFailures.length,
+    queue: [...automationFailures].sort((left, right) => right.recordedAt.localeCompare(left.recordedAt)).map((failure) => ({
+      failureId: failure.failureId,
+      recordSha256: failure.sha256,
+      status: failure.status,
+      stage: failure.stage,
+      reasonCode: failure.reasonCode,
+      recordedAt: failure.recordedAt,
+      workflowName: failure.workflow.name,
+      workflowRunUrl: failure.workflow.url,
+      targetKind: failure.target.kind,
+      targetId: failure.target.id,
+      targetUrl: failure.target.url,
+      nextGate: failure.nextGate
+    }))
+  },
   researchRuns: runs.length,
   validatedRuns,
   publicationReadyPosts,
