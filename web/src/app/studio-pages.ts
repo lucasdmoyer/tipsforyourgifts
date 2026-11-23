@@ -177,6 +177,9 @@ export { STUDIO_DATA } from './studio-data';
         <div class="panel scout-posture">
           <div class="experiment-header"><p class="eyebrow">Current posture</p><span class="status" [class.blocked_on_account]="content.operations.opportunityScouting.posture === 'founder_backlog_full'">{{ displayStatus(content.operations.opportunityScouting.posture) }}</span></div>
           <h2>{{ content.operations.opportunityScouting.openProposals }}/{{ content.operations.opportunityScouting.maxOpenProposals }} founder proposals open.</h2>
+          @if (content.operations.opportunityScouting.discoveryFailedMissions + content.operations.opportunityScouting.reviewFailedMissions > 0) {
+            <p><strong>{{ content.operations.opportunityScouting.discoveryFailedMissions + content.operations.opportunityScouting.reviewFailedMissions }} clean {{ content.operations.opportunityScouting.discoveryFailedMissions + content.operations.opportunityScouting.reviewFailedMissions === 1 ? 'retry' : 'retries' }} required.</strong> Partial model output was discarded; each card below points to the exact failed run.</p>
+          }
           @if (content.operations.opportunityScouting.posture === 'founder_backlog_full') {
             <p>The weekly run stops before calling a model. Resolve one proposal and the next scheduled scout regains capacity automatically.</p>
           } @else {
@@ -201,11 +204,12 @@ export { STUDIO_DATA } from './studio-data';
           @for (scout of content.operations.opportunityScouting.queue; track scout.scoutId) {
             <article class="experiment-card">
               <div class="experiment-header"><p class="eyebrow">{{ scout.expectedProposalId }}</p><span class="status">{{ displayStatus(scout.status) }}</span></div>
-              <h3>{{ scout.selectedTitle ?? 'Opportunity research in progress' }}</h3>
+              <h3>{{ scout.selectedTitle ?? (scout.failureReasonCode ? 'Opportunity scout needs a clean retry' : 'Opportunity research in progress') }}</h3>
+              @if (scout.failureWorkflowRunUrl) { <p><a class="button secondary" [href]="scout.failureWorkflowRunUrl" target="_blank" rel="noopener">Open failed workflow run</a></p> }
               <p><strong>Evidence field:</strong> {{ scout.sources }} sources · {{ scout.sourceClasses }} classes · {{ scout.candidates }} candidates.</p>
               <p><strong>Selected scores:</strong> {{ scout.evidenceConfidence ?? 'Pending' }} evidence · {{ scout.thoughtfulnessPotential ?? 'Pending' }} thoughtfulness.</p>
               <p><strong>Next gate:</strong> {{ scout.nextGate }}</p>
-              <details><summary>Exact scout identifiers</summary><div class="command">scout: {{ scout.scoutId }}<br>mission sha256: {{ scout.missionRecordSha256 }}<br>report sha256: {{ scout.reportRecordSha256 ?? 'not drafted' }}<br>review: {{ scout.reviewVerdict ?? 'not reviewed' }}</div></details>
+              <details><summary>Exact scout identifiers</summary><div class="command">scout: {{ scout.scoutId }}<br>mission sha256: {{ scout.missionRecordSha256 }}<br>report sha256: {{ scout.reportRecordSha256 ?? 'not drafted' }}<br>review: {{ scout.reviewVerdict ?? 'not reviewed' }}<br>failure: {{ scout.failureReasonCode ?? 'none' }}</div></details>
             </article>
           }
         </div>

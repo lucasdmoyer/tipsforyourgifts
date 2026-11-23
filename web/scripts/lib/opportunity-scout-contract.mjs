@@ -53,10 +53,11 @@ export const opportunityScoutPolicySchema = opportunityScoutPolicyBaseSchema.sup
 const policySnapshotSchema = opportunityScoutPolicyBaseSchema.omit({ updatedAt: true });
 
 export const opportunityScoutMissionSchema = z.object({
-  schemaVersion: z.literal('1.0.0'),
+  schemaVersion: z.literal('1.1.0'),
   missionId: scoutIdSchema,
-  status: z.enum(['started', 'completed']),
+  status: z.enum(['started', 'discovery_failed', 'review_failed', 'completed']),
   createdAt: z.string().datetime(),
+  failedAt: z.string().datetime().nullable(),
   completedAt: z.string().datetime().nullable(),
   trigger: z.object({
     type: z.enum(['scheduled', 'manual', 'founder_direction']),
@@ -76,6 +77,20 @@ export const opportunityScoutMissionSchema = z.object({
     mayChangeAccountsOrSpend: z.literal(false)
   }).strict(),
   policySnapshot: policySnapshotSchema,
+  failureHandoff: z.object({
+    stage: z.enum(['discovery', 'independent_review']),
+    reasonCode: z.enum(['discovery_model_step_failed', 'discovery_bundle_invalid', 'review_model_step_failed', 'review_result_invalid']),
+    recordedAt: z.string().datetime(),
+    startedMissionSha256: sha256Schema,
+    workflowRunId: z.string().regex(/^[1-9]\d*$/),
+    workflowRunAttempt: z.number().int().positive(),
+    workflowRunUrl: z.string().url().regex(/^https:\/\/github\.com\/lucasdmoyer\/tipsforyourgifts\/actions\/runs\/[1-9]\d*$/),
+    partialOutputPreserved: z.literal(false),
+    proposalPreserved: z.literal(false),
+    reviewReceiptCreated: z.literal(false),
+    productionDeploymentAuthorized: z.literal(false),
+    nextGate: z.string().min(50)
+  }).strict().nullable(),
   completion: z.object({
     reportId: scoutIdSchema,
     proposalId: ideaIdSchema,
@@ -87,6 +102,29 @@ export const opportunityScoutMissionSchema = z.object({
   }
   if (mission.trigger.type !== 'founder_direction' && mission.directive !== null) {
     context.addIssue({ code: z.ZodIssueCode.custom, path: ['directive'], message: 'scheduled and manual missions cannot inherit a founder directive' });
+  }
+  if (mission.status === 'started' && (mission.failedAt !== null || mission.completedAt !== null || mission.failureHandoff !== null || mission.completion !== null)) {
+    context.addIssue({ code: z.ZodIssueCode.custom, path: ['status'], message: 'started missions cannot contain terminal evidence' });
+  }
+  if (['discovery_failed', 'review_failed'].includes(mission.status)) {
+    if (mission.failedAt === null || mission.completedAt !== null || mission.failureHandoff === null || mission.completion !== null) {
+      context.addIssue({ code: z.ZodIssueCode.custom, path: ['failureHandoff'], message: 'failed missions require only a failure handoff' });
+    } else {
+      const expectedStage = mission.status === 'discovery_failed' ? 'discovery' : 'independent_review';
+      if (mission.failureHandoff.stage !== expectedStage || !mission.failureHandoff.reasonCode.startsWith(mission.status === 'discovery_failed' ? 'discovery_' : 'review_')) {
+        context.addIssue({ code: z.ZodIssueCode.custom, path: ['failureHandoff'], message: 'failure stage and reason must match mission status' });
+      }
+      if (mission.failureHandoff.recordedAt !== mission.failedAt) context.addIssue({ code: z.ZodIssueCode.custom, path: ['failedAt'], message: 'failedAt must match the handoff timestamp' });
+      if (mission.failureHandoff.workflowRunId !== mission.trigger.workflowRunId || mission.failureHandoff.workflowRunAttempt !== mission.trigger.workflowRunAttempt) {
+        context.addIssue({ code: z.ZodIssueCode.custom, path: ['failureHandoff'], message: 'failure workflow identity must match the mission trigger' });
+      }
+      if (mission.failureHandoff.workflowRunUrl !== `https://github.com/lucasdmoyer/tipsforyourgifts/actions/runs/${mission.trigger.workflowRunId}`) {
+        context.addIssue({ code: z.ZodIssueCode.custom, path: ['failureHandoff', 'workflowRunUrl'], message: 'failure URL must bind the exact mission workflow run' });
+      }
+    }
+  }
+  if (mission.status === 'completed' && (mission.failedAt !== null || mission.completedAt === null || mission.failureHandoff !== null || mission.completion === null)) {
+    context.addIssue({ code: z.ZodIssueCode.custom, path: ['completion'], message: 'completed missions require completion evidence and no failure handoff' });
   }
 });
 
@@ -283,12 +321,9 @@ export function validateOpportunityScoutRecords({ policy, missions, reports, rev
     missionIds.add(mission.missionId);
     if (mission.missionId !== `opportunity-scout-${mission.trigger.workflowRunId}-${mission.trigger.workflowRunAttempt}`) issues.push(`${mission.missionId}: mission ID must match workflow run and attempt`);
     if (mission.status === 'started') {
-      if (mission.completedAt !== null || mission.completion !== null) issues.push(`${mission.missionId}: started mission cannot contain completion evidence`);
       const snapshot = { ...currentPolicy };
       delete snapshot.updatedAt;
       if (JSON.stringify(mission.policySnapshot) !== JSON.stringify(snapshot)) issues.push(`${mission.missionId}: active mission policy snapshot is stale`);
-    } else if (mission.completedAt === null || mission.completion === null) {
-      issues.push(`${mission.missionId}: completed mission needs completion evidence`);
     }
   }
 
@@ -431,6 +466,10 @@ export function validateOpportunityScoutRecords({ policy, missions, reports, rev
 
   for (const missionRecord of parsedMissions.filter((record) => record.data.status === 'completed')) {
     if (!reportIds.has(missionRecord.data.missionId)) issues.push(`${missionRecord.data.missionId}: completed mission report is missing`);
+  }
+  for (const missionRecord of parsedMissions.filter((record) => ['discovery_failed', 'review_failed'].includes(record.data.status))) {
+    if (reportIds.has(missionRecord.data.missionId)) issues.push(`${missionRecord.data.missionId}: failed mission cannot preserve an unreviewed report`);
+    if (reviewsByScout.has(missionRecord.data.missionId)) issues.push(`${missionRecord.data.missionId}: failed mission cannot preserve a review receipt`);
   }
 
   return {

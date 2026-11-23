@@ -84,10 +84,11 @@ if (!shouldScout) {
   const policySnapshot = structuredClone(policy);
   delete policySnapshot.updatedAt;
   const mission = opportunityScoutMissionSchema.parse({
-    schemaVersion: '1.0.0',
+    schemaVersion: '1.1.0',
     missionId,
     status: 'started',
     createdAt: args['created-at'] ?? new Date().toISOString(),
+    failedAt: null,
     completedAt: null,
     trigger: {
       type: args.trigger,
@@ -107,6 +108,7 @@ if (!shouldScout) {
       mayChangeAccountsOrSpend: false
     },
     policySnapshot,
+    failureHandoff: null,
     completion: null
   });
   const directory = path.join(root, 'research/opportunity-missions');

@@ -613,6 +613,8 @@ export const OPERATIONS: Operations = {
     "totalMissions": 0,
     "activeMissions": 0,
     "completedMissions": 0,
+    "discoveryFailedMissions": 0,
+    "reviewFailedMissions": 0,
     "draftedReports": 0,
     "validatedReports": 0,
     "passedReviews": 0,

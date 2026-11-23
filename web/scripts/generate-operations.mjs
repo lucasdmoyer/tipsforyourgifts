@@ -290,6 +290,8 @@ const proposedIdeas = strategy.ideas.filter((idea) => idea.founderDisposition ==
 const opportunityCapacityRemaining = Math.max(0, opportunityPolicy.maxOpenProposals - proposedIdeas);
 const activeOpportunityMissions = opportunityMissions.filter((mission) => mission.status === 'started').length;
 const completedOpportunityMissions = opportunityMissions.filter((mission) => mission.status === 'completed').length;
+const discoveryFailedOpportunityMissions = opportunityMissions.filter((mission) => mission.status === 'discovery_failed').length;
+const reviewFailedOpportunityMissions = opportunityMissions.filter((mission) => mission.status === 'review_failed').length;
 const opportunityPosture = !opportunityPolicy.enabled
   ? 'policy_disabled'
   : proposedIdeas >= opportunityPolicy.maxOpenProposals
@@ -364,6 +366,7 @@ if (proposedGrowthExperiments > 0) alerts.push(`${proposedGrowthExperiments} gro
 if (proposedIdeas > 0) alerts.push(`${proposedIdeas} strategy proposal${proposedIdeas === 1 ? ' awaits' : 's await'} a founder approval decision before research can start.`);
 if (opportunityPosture === 'founder_backlog_full') alerts.push(`Autonomous opportunity scouting is paused at the ${proposedIdeas}/${opportunityPolicy.maxOpenProposals} founder proposal cap; no model call is made until a proposal is resolved.`);
 if (activeOpportunityMissions > 0) alerts.push(`${activeOpportunityMissions} autonomous opportunity scout mission${activeOpportunityMissions === 1 ? ' is' : 's are'} awaiting a drafted report or independent review.`);
+if (discoveryFailedOpportunityMissions + reviewFailedOpportunityMissions > 0) alerts.push(`${discoveryFailedOpportunityMissions + reviewFailedOpportunityMissions} opportunity scout mission${discoveryFailedOpportunityMissions + reviewFailedOpportunityMissions === 1 ? ' needs' : 's need'} a clean retry; unreviewed output was discarded.`);
 if (!publicationPolicy.automaticPromotion.enabled) {
   alerts.push(`Production promotion remains founder-reviewed; automatic release requires ${publicationPolicy.automaticPromotion.minimumSuccessfulFounderReviewedReleases} verified successful releases and a separate founder approval.`);
 }
@@ -384,7 +387,7 @@ const sourceDates = [
   ...runs.map((run) => run.completedAt ?? run.startedAt).filter(Boolean),
   ...researchMissions.flatMap((mission) => [mission.createdAt, mission.failedAt, mission.completedAt]).filter(Boolean),
   ...visualFailures.map((failure) => failure.recordedAt),
-  ...opportunityMissions.flatMap((mission) => [mission.createdAt, mission.completedAt]).filter(Boolean),
+  ...opportunityMissions.flatMap((mission) => [mission.createdAt, mission.completedAt, mission.failedAt]).filter(Boolean),
   ...opportunityReports.map((report) => report.createdAt),
   ...opportunityReviews.map((review) => review.reviewedAt),
   ...growth.snapshots.map((snapshot) => snapshot.collectedAt),
@@ -506,6 +509,8 @@ const operations = {
     totalMissions: opportunityMissions.length,
     activeMissions: activeOpportunityMissions,
     completedMissions: completedOpportunityMissions,
+    discoveryFailedMissions: discoveryFailedOpportunityMissions,
+    reviewFailedMissions: reviewFailedOpportunityMissions,
     draftedReports: opportunityReports.filter((report) => report.status === 'drafted').length,
     validatedReports: opportunityReports.filter((report) => report.status === 'validated').length,
     passedReviews: opportunityReviews.filter((review) => review.verdict === 'passed').length,
@@ -543,11 +548,13 @@ const operations = {
         evidenceConfidence: selectedCandidate?.score.evidenceConfidence ?? null,
         thoughtfulnessPotential: selectedCandidate?.score.thoughtfulnessPotential ?? null,
         reviewVerdict: review?.verdict ?? null,
-        nextGate: report?.status === 'validated'
+        failureReasonCode: mission.failureHandoff?.reasonCode ?? null,
+        failureWorkflowRunUrl: mission.failureHandoff?.workflowRunUrl ?? null,
+        nextGate: mission.failureHandoff?.nextGate ?? (report?.status === 'validated'
           ? 'Founder reviews the proposal; approval is a separate exact-revision workflow.'
           : report
             ? 'Independent opportunity editor must issue a hash-bound clean review receipt.'
-            : 'Opportunity research desk must draft one policy-compliant report and one proposed strategy idea.'
+            : 'Opportunity research desk must draft one policy-compliant report and one proposed strategy idea.')
       };
     })
   },

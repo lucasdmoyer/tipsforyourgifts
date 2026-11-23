@@ -80,16 +80,18 @@ const candidates = Array.from({ length: 3 }, (_, index) => ({
   }
 }));
 const startedMission = {
-  schemaVersion: '1.0.0',
+  schemaVersion: '1.1.0',
   missionId: scoutId,
   status: 'started',
   createdAt: '2026-08-03T10:45:00.000Z',
+  failedAt: null,
   completedAt: null,
   trigger: { type: 'scheduled', workflow: 'opportunity-scout.yml', workflowRunId: '12345', workflowRunAttempt: 1, actor: 'github-actions[bot]', baseSha: 'a'.repeat(40) },
   expectedProposalId: proposal.id,
   openProposalCountAtStart: 4,
   authority: { mayAppendOneProposedIdea: true, mayApproveResearch: false, mayPublish: false, mayChangeAccountsOrSpend: false },
   policySnapshot,
+  failureHandoff: null,
   completion: null
 };
 const draftedReport = {
@@ -161,6 +163,37 @@ function commercialModel() {
   return upgradeToCommerciallyQualifiedReport(model());
 }
 
+function failedModel(stage = 'discovery') {
+  const failedAt = '2026-08-03T11:45:00.000Z';
+  const reasonCode = stage === 'discovery' ? 'discovery_model_step_failed' : 'review_result_invalid';
+  const mission = {
+    ...copy(startedMission),
+    status: stage === 'discovery' ? 'discovery_failed' : 'review_failed',
+    failedAt,
+    failureHandoff: {
+      stage,
+      reasonCode,
+      recordedAt: failedAt,
+      startedMissionSha256: sha256(Buffer.from(JSON.stringify(startedMission))),
+      workflowRunId: startedMission.trigger.workflowRunId,
+      workflowRunAttempt: startedMission.trigger.workflowRunAttempt,
+      workflowRunUrl: `https://github.com/lucasdmoyer/tipsforyourgifts/actions/runs/${startedMission.trigger.workflowRunId}`,
+      partialOutputPreserved: false,
+      proposalPreserved: false,
+      reviewReceiptCreated: false,
+      productionDeploymentAuthorized: false,
+      nextGate: 'Inspect the exact failed workflow stage, correct the recorded failure, and start a new opportunity scout without reusing unreviewed output.'
+    }
+  };
+  return {
+    policy: copy(policy),
+    strategy: { ideas: [] },
+    missions: [{ filename: `${scoutId}.json`, raw: Buffer.from(JSON.stringify(mission)), data: mission }],
+    reports: [],
+    reviews: []
+  };
+}
+
 function assertValid(name, input) {
   const result = validateOpportunityScoutRecords(input);
   if (result.issues.length > 0) throw new Error(`${name} should pass: ${result.issues.join('; ')}`);
@@ -192,6 +225,17 @@ function attachDraftReview(input, overrides = {}) {
 
 assertValid('valid drafted scout', model());
 assertValid('valid schema 1.1 commercially qualified scout', commercialModel());
+assertValid('valid discovery failure handoff', failedModel('discovery'));
+assertValid('valid review failure handoff', failedModel('independent_review'));
+expectFailure('failed mission status needs handoff', (input) => { input.missions[0].data.status = 'discovery_failed'; }, 'failed missions require only a failure handoff');
+{
+  const input = failedModel('discovery');
+  input.reports = [{ filename: `${scoutId}.json`, raw: Buffer.from(JSON.stringify(draftedReport)), data: copy(draftedReport) }];
+  input.strategy.ideas = [copy(proposal)];
+  const result = validateOpportunityScoutRecords(input);
+  if (!result.issues.join(' ').includes('failed mission cannot preserve an unreviewed report')) throw new Error(`failed mission retained report: ${result.issues.join('; ')}`);
+  checks += 1;
+}
 expectFailure('mission filename binding', (input) => { input.missions[0].filename = 'wrong.json'; }, 'filename must match');
 expectFailure('mission run binding', (input) => { input.missions[0].data.missionId = 'opportunity-scout-999-1'; }, 'mission ID must match');
 expectFailure('stale policy', (input) => { input.missions[0].data.policySnapshot.minimumSources = 11; }, 'snapshot is stale');
