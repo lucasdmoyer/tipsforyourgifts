@@ -40,6 +40,8 @@ Review receipts use immutable revisions and bind their workflow plus mission pro
 
 If the drafting model step fails or its workspace does not contain exactly one complete, mission-bound draft bundle, the trusted classifier refuses to serialize that workspace. A separate clean job downloads only the pre-model mission envelope, records `research_failed` with a bounded reason code and exact workflow URL, reruns the deterministic gates, and opens a correction pull request with auto-merge disabled. Partial model output is discarded and never becomes editorial evidence.
 
+If the independent reviewer fails or returns malformed findings, the trusted review classifier refuses to create a QA receipt. A separate credential-free job reapplies only the exact pre-review research patch, records `review_failed` with the draft hashes, bounded reason code, and workflow URL, reruns every deterministic gate, and opens a correction pull request with auto-merge disabled. Reviewer output is discarded; no verdict or receipt is inferred.
+
 ## Team handoffs
 
 1. **Research editorial team — draft only.** Deep public research, typed claim ledger, qualified finalists, thoughtful-fit analysis, article, and draft social pack.
@@ -60,6 +62,7 @@ The current publication policy is `founder_reviewed`. After ten verified founder
 - Concurrency is keyed by idea ID so two missions cannot research the same approved thesis simultaneously.
 - The initial mission envelope is uploaded before the model runs, preserving the intended scope when research fails or returns no patch.
 - A model execution failure or malformed bundle becomes a credential-free `research_failed` correction packet in Studio; no partial draft, model log, credential, or inferred failure detail is preserved.
+- A reviewer execution failure or malformed finding becomes a credential-free `review_failed` correction packet in Studio; the exact draft is preserved, but no partial reviewer output, invented verdict, or fabricated receipt is retained.
 - A retry receives a new mission ID because the workflow attempt is part of the identity.
 - The quality job rejects a changed envelope, multiple run artifacts, forbidden paths, self-review, changed evidence after review, or a failed deterministic gate.
 - A high-risk draft is preserved as a reviewable Git handoff rather than disappearing when immediate promotion is forbidden; its mission remains started until the post-approval editor passes it.

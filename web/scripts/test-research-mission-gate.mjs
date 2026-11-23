@@ -24,7 +24,7 @@ const reviewRaw = Buffer.from(JSON.stringify(review));
 
 function startedMission(workflowRunId = '123') {
   return {
-    schemaVersion: '1.3.0', missionId: `research-mission-${workflowRunId}-1`, status: 'started',
+    schemaVersion: '1.4.0', missionId: `research-mission-${workflowRunId}-1`, status: 'started',
     createdAt: '2026-08-03T10:00:00.000Z', failedAt: null, completedAt: null,
     trigger: { type: 'approved_strategy_dispatch', workflow: 'research-agent.yml', workflowRunId, workflowRunAttempt: 1, actor: 'lucasdmoyer', baseSha: 'a'.repeat(40) },
     idea: { id: idea.id, revision: idea.revision, sha256: canonicalIdeaSha256(idea), title: idea.title, thesisType: idea.thesisType },
@@ -43,6 +43,7 @@ function startedMission(workflowRunId = '123') {
     },
     publicationPolicySnapshot: { mode: 'founder_reviewed', automaticPromotionEnabled: false, verifiedSuccessfulReleaseCount: 0, minimumSuccessfulFounderReviewedReleases: 10 },
     researchFailureHandoff: null,
+    reviewFailureHandoff: null,
     qaFailureHandoff: null,
     visualHandoff: null,
     completion: null
@@ -77,6 +78,35 @@ function researchFailedModel() {
     nextGate: 'Open the research failure pull request, inspect the credential-free evidence, and retry from a new workflow run after correction.'
   };
   return model(mission);
+}
+
+function reviewFailedModel() {
+  const mission = startedMission();
+  const failedRun = copy(run);
+  failedRun.status = 'drafted';
+  failedRun.article.status = 'draft';
+  failedRun.qa.passed = false;
+  const failedRunRaw = Buffer.from(JSON.stringify(failedRun));
+  const failedArticleRaw = Buffer.from('---\nstatus: draft\n---\nEvidence-backed article.\n');
+  mission.status = 'review_failed';
+  mission.failedAt = '2026-08-03T10:40:00.000Z';
+  mission.teamStages[0].status = 'completed';
+  mission.teamStages[1].status = 'blocked';
+  mission.reviewFailureHandoff = {
+    runId: run.runId, runSha256: sha256(failedRunRaw), articleSlug: run.article.slug, articleSha256: sha256(failedArticleRaw),
+    socialPackId: social.packId, socialPackSha256: sha256(socialRaw), reasonCode: 'review_result_invalid',
+    workflowRunUrl: `https://github.com/lucasdmoyer/tipsforyourgifts/actions/runs/${mission.trigger.workflowRunId}`,
+    nextGate: 'Open the review-failure pull request, inspect the credential-free draft, and retry the independent review in a new workflow run.'
+  };
+  return {
+    records: [{ filename: `${mission.missionId}.json`, raw: Buffer.from(JSON.stringify(mission)), data: mission }],
+    strategy: copy(strategy), publicationPolicy: copy(publicationPolicy),
+    runsById: new Map([[run.runId, { raw: failedRunRaw, data: failedRun }]]),
+    articlesBySlug: new Map([[run.article.slug, { raw: failedArticleRaw, data: { slug: run.article.slug } }]]),
+    socialByRunId: new Map([[run.runId, { raw: socialRaw, data: copy(social) }]]),
+    reviewsByPath: new Map(),
+    visualRequestsByPath: new Map()
+  };
 }
 
 function model(mission = completedMission()) {
@@ -174,6 +204,7 @@ function expectFailure(name, mutate, expected) {
 
 assertValid('valid started mission', model(startedMission()));
 assertValid('valid research-failed mission', researchFailedModel());
+assertValid('valid review-failed mission', reviewFailedModel());
 assertValid('valid visual-pending mission', visualPendingModel());
 assertValid('valid qa-failed mission', qaFailedModel());
 assertValid('valid completed mission', model());
@@ -199,6 +230,13 @@ expectFailure('publication readiness', (input) => { input.records[0].data.comple
   checks += 1;
 }
 {
+  const input = reviewFailedModel();
+  input.records[0].data.reviewFailureHandoff.workflowRunUrl = 'https://github.com/lucasdmoyer/tipsforyourgifts/actions/runs/999';
+  const result = validateResearchMissionRecords(input);
+  if (!result.issues.join(' ').includes('review failure workflow URL does not match')) throw new Error(`review failure workflow identity did not fail closed: ${result.issues.join('; ')}`);
+  checks += 1;
+}
+{
   const input = qaFailedModel();
   input.reviewsByPath.get(run.qa.receiptPath).data.blockers = [];
   const result = validateResearchMissionRecords(input);
@@ -213,4 +251,4 @@ expectFailure('publication readiness', (input) => { input.records[0].data.comple
   checks += 1;
 }
 
-console.log(JSON.stringify({ researchMissionNegativeGateTests: 'passed', checks, validStartedMission: 'passed', validResearchFailedMission: 'passed', validQaFailedMission: 'passed', validVisualPendingMission: 'passed', validCompletedMission: 'passed' }, null, 2));
+console.log(JSON.stringify({ researchMissionNegativeGateTests: 'passed', checks, validStartedMission: 'passed', validResearchFailedMission: 'passed', validReviewFailedMission: 'passed', validQaFailedMission: 'passed', validVisualPendingMission: 'passed', validCompletedMission: 'passed' }, null, 2));

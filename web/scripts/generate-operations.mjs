@@ -304,6 +304,7 @@ const visualRequestByRun = new Map(visualRequests.map((request) => [request.runI
 const activeResearchMissions = researchMissions.filter((mission) => ['started', 'visual_pending'].includes(mission.status)).length;
 const completedResearchMissions = researchMissions.filter((mission) => mission.status === 'completed').length;
 const researchFailedResearchMissions = researchMissions.filter((mission) => mission.status === 'research_failed').length;
+const reviewFailedResearchMissions = researchMissions.filter((mission) => mission.status === 'review_failed').length;
 const qaFailedResearchMissions = researchMissions.filter((mission) => mission.status === 'qa_failed').length;
 const ideaStages = strategy.ideas.map((idea) => {
   const ideaRuns = runs.filter((run) => run.ideaId === idea.id);
@@ -456,6 +457,7 @@ const operations = {
     active: activeResearchMissions,
     completed: completedResearchMissions,
     researchFailed: researchFailedResearchMissions,
+    reviewFailed: reviewFailedResearchMissions,
     qaFailed: qaFailedResearchMissions,
     visualPending: visualRequests.length,
     founderReviewRequired: researchMissions.filter((mission) => mission.completion?.publicationReadiness === 'founder_review_required').length,
@@ -476,13 +478,13 @@ const operations = {
         createdAt: mission.createdAt,
         completedAt: mission.completedAt,
         workflowRunId: mission.trigger.workflowRunId,
-        failureReasonCode: mission.researchFailureHandoff?.reasonCode ?? null,
-        failureWorkflowRunUrl: mission.researchFailureHandoff?.workflowRunUrl ?? null,
-        activeStage: mission.status === 'research_failed' ? 'research' : mission.status === 'qa_failed' ? 'quality_review' : pendingVisual ? 'visual_production' : mission.teamStages.find((stage) => ['in_progress', 'ready'].includes(stage.status))?.id ?? 'growth_follow_up',
-        runId: mission.qaFailureHandoff?.runId ?? pendingVisual?.runId ?? mission.completion?.runId ?? null,
-        articleSlug: mission.qaFailureHandoff?.articleSlug ?? pendingVisual?.articleSlug ?? mission.completion?.articleSlug ?? null,
-        publicationReadiness: mission.status === 'research_failed' ? 'research_failed' : mission.status === 'qa_failed' ? 'qa_failed' : pendingVisual ? 'visual_pending' : mission.completion?.publicationReadiness ?? 'research_in_progress',
-        nextGate: mission.researchFailureHandoff?.nextGate ?? mission.qaFailureHandoff?.nextGate ?? pendingVisual?.nextGate ?? mission.completion?.nextGate ?? 'Complete the evidence bundle, independent QA receipt, deterministic gates, and mission completion receipt.'
+        failureReasonCode: mission.researchFailureHandoff?.reasonCode ?? mission.reviewFailureHandoff?.reasonCode ?? null,
+        failureWorkflowRunUrl: mission.researchFailureHandoff?.workflowRunUrl ?? mission.reviewFailureHandoff?.workflowRunUrl ?? null,
+        activeStage: mission.status === 'research_failed' ? 'research' : ['review_failed', 'qa_failed'].includes(mission.status) ? 'quality_review' : pendingVisual ? 'visual_production' : mission.teamStages.find((stage) => ['in_progress', 'ready'].includes(stage.status))?.id ?? 'growth_follow_up',
+        runId: mission.reviewFailureHandoff?.runId ?? mission.qaFailureHandoff?.runId ?? pendingVisual?.runId ?? mission.completion?.runId ?? null,
+        articleSlug: mission.reviewFailureHandoff?.articleSlug ?? mission.qaFailureHandoff?.articleSlug ?? pendingVisual?.articleSlug ?? mission.completion?.articleSlug ?? null,
+        publicationReadiness: mission.status === 'research_failed' ? 'research_failed' : mission.status === 'review_failed' ? 'review_failed' : mission.status === 'qa_failed' ? 'qa_failed' : pendingVisual ? 'visual_pending' : mission.completion?.publicationReadiness ?? 'research_in_progress',
+        nextGate: mission.researchFailureHandoff?.nextGate ?? mission.reviewFailureHandoff?.nextGate ?? mission.qaFailureHandoff?.nextGate ?? pendingVisual?.nextGate ?? mission.completion?.nextGate ?? 'Complete the evidence bundle, independent QA receipt, deterministic gates, and mission completion receipt.'
       };
     })
   },

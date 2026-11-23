@@ -47,6 +47,7 @@ console.log(JSON.stringify({
   missions: result.missions.length,
   activeMissions: result.missions.filter((mission) => ['started', 'visual_pending'].includes(mission.status)).length,
   researchFailedMissions: result.missions.filter((mission) => mission.status === 'research_failed').length,
+  reviewFailedMissions: result.missions.filter((mission) => mission.status === 'review_failed').length,
   qaFailedMissions: result.missions.filter((mission) => mission.status === 'qa_failed').length,
   visualPendingMissions: result.missions.filter((mission) => mission.status === 'visual_pending').length,
   completedMissions: result.missions.filter((mission) => mission.status === 'completed').length,

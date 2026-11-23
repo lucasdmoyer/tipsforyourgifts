@@ -451,6 +451,7 @@ export interface Operations {
     active: number;
     completed: number;
     researchFailed: number;
+    reviewFailed: number;
     qaFailed: number;
     visualPending: number;
     founderReviewRequired: number;
@@ -458,7 +459,7 @@ export interface Operations {
     queue: Array<{
       missionId: string;
       recordSha256: string;
-      status: 'started' | 'research_failed' | 'qa_failed' | 'visual_pending' | 'completed';
+      status: 'started' | 'research_failed' | 'review_failed' | 'qa_failed' | 'visual_pending' | 'completed';
       ideaId: string;
       ideaTitle: string;
       ideaRevision: number;
@@ -466,12 +467,12 @@ export interface Operations {
       createdAt: string;
       completedAt: string | null;
       workflowRunId: string;
-      failureReasonCode: 'model_step_failed' | 'draft_bundle_invalid' | null;
+      failureReasonCode: 'model_step_failed' | 'draft_bundle_invalid' | 'review_model_step_failed' | 'review_result_invalid' | null;
       failureWorkflowRunUrl: string | null;
       activeStage: 'research' | 'quality_review' | 'visual_production' | 'release_preparation' | 'growth_follow_up';
       runId: string | null;
       articleSlug: string | null;
-      publicationReadiness: 'research_in_progress' | 'research_failed' | 'qa_failed' | 'visual_pending' | 'founder_review_required' | 'automatic_merge_eligible';
+      publicationReadiness: 'research_in_progress' | 'research_failed' | 'review_failed' | 'qa_failed' | 'visual_pending' | 'founder_review_required' | 'automatic_merge_eligible';
       nextGate: string;
     }>;
   };
