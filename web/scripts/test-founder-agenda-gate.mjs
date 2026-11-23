@@ -50,6 +50,12 @@ if (!currentContentIsVerified && livePublication.latestVerifiedContentRelease) {
   assert.equal(base.decisions.find((decision) => decision.id === 'review-release-candidate').title, 'Review the next accountable Angular release');
 }
 assert.equal(base.profitabilityEvidence, 'unknown_until_aggregate_measurement');
+const currentMeasurementDecision = base.decisions.find((decision) => decision.id === 'establish-measurement');
+if (currentMeasurementDecision?.title === 'Configure the first aggregate measurement source') {
+  assert.equal(currentMeasurementDecision.action.url, 'https://github.com/lucasdmoyer/tipsforyourgifts/issues/59');
+  assert.match(currentMeasurementDecision.action.command, /configuration_evidence_url=https:\/\/github\.com\/lucasdmoyer\/tipsforyourgifts\/issues\/59/);
+  assert.doesNotMatch(currentMeasurementDecision.action.command, /REPLACE_WITH_ISSUE_NUMBER/);
+}
 assert.deepEqual(base.decisions.map((decision) => decision.rank), base.decisions.map((_decision, index) => index + 1));
 const priorityWeight = { high: 3, medium: 2, low: 1 };
 const expectedStrategyCandidate = [...proposedIdeas].sort((left, right) => (priorityWeight[right.priority] ?? 0) - (priorityWeight[left.priority] ?? 0) || (right.pairing?.coherenceScore ?? 0) - (left.pairing?.coherenceScore ?? 0) || left.id.localeCompare(right.id))[0];
