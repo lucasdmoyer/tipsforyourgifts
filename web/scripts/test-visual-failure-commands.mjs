@@ -17,6 +17,8 @@ const runId = '20261123-visual-failure-a1b2c3d4';
 const requestId = `${runId}-visuals`;
 const missionId = 'research-mission-123-1';
 const articleSlug = 'visual-failure-fixture';
+const commandEnv = { ...process.env };
+for (const name of ['GITHUB_RUN_ID', 'GITHUB_RUN_ATTEMPT', 'GITHUB_OUTPUT']) delete commandEnv[name];
 const write = async (relativePath, value) => {
   const filePath = path.join(webRoot, relativePath);
   await fs.mkdir(path.dirname(filePath), { recursive: true });
@@ -107,7 +109,7 @@ try {
   const reviewRoute = JSON.parse(reviewClassify.stdout);
   if (reviewRoute.reviewOutcome !== 'ready' || reviewRoute.verdict !== 'failed' || reviewRoute.failureCode !== 'review_verdict_failed') throw new Error('failed independent visual verdict did not route to the correction packet');
 
-  await execFileAsync(process.execPath, [path.join(scriptRoot, 'scripts/record-visual-production-failure.mjs'), `--request-id=${requestId}`, '--stage=independent_review', '--reason-code=review_verdict_failed', '--workflow-run-id=123', '--workflow-run-attempt=1', '--recorded-at=2026-11-23T00:04:00.000Z'], { cwd: webRoot });
+  await execFileAsync(process.execPath, [path.join(scriptRoot, 'scripts/record-visual-production-failure.mjs'), `--request-id=${requestId}`, '--stage=independent_review', '--reason-code=review_verdict_failed', '--workflow-run-id=123', '--workflow-run-attempt=1', '--recorded-at=2026-11-23T00:04:00.000Z'], { cwd: webRoot, env: commandEnv });
   const failureId = `${requestId}-run123-attempt1`;
   const receipt = visualFailureReceiptSchema.parse(JSON.parse(await fs.readFile(path.join(webRoot, 'visuals/failures', `${failureId}.json`), 'utf8')));
   if (receipt.evidence.blockers.length === 0 || receipt.handling.generatedAssetsPromoted || receipt.handling.reviewReceiptCreated) throw new Error('visual failure receipt did not preserve the safe correction boundary');
