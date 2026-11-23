@@ -165,6 +165,7 @@ export class ArticlePage {
       return;
     }
     const path = `/blog/${this.article.slug}`;
+    const socialImagePath = `/social-cards/${this.article.slug}.jpg`;
     const giftPath = this.article.journey.path;
     const breadcrumbItems = [
       { '@type': 'ListItem', position: 1, name: 'Tips for Your Gifts', item: 'https://tipsforyourgifts.web.app/' },
@@ -181,7 +182,11 @@ export class ArticlePage {
       description: readerDescription(this.article),
       path,
       type: 'article',
-      image: this.article.visual.hero.src,
+      image: socialImagePath,
+      imageAlt: this.article.visual.hero.alt,
+      imageType: 'image/jpeg',
+      imageWidth: 1200,
+      imageHeight: 630,
       structuredData: {
         '@context': 'https://schema.org',
         '@graph': [
@@ -192,7 +197,7 @@ export class ArticlePage {
             author: { '@type': 'Organization', name: 'Tips for Your Gifts Editorial Team' },
             publisher: { '@type': 'Organization', name: 'Tips for Your Gifts' },
             mainEntityOfPage: `https://tipsforyourgifts.web.app${path}`,
-            image: `https://tipsforyourgifts.web.app${this.article.visual.hero.src}`,
+            image: `https://tipsforyourgifts.web.app${socialImagePath}`,
             about: this.article.tags
           },
           { '@type': 'BreadcrumbList', itemListElement: breadcrumbItems }

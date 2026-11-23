@@ -2,13 +2,14 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import process from 'node:process';
 import matter from './lib/front-matter.mjs';
+import sharp from 'sharp';
 import { affiliateEnrollmentReadinessSchema, buildAffiliateEnrollmentReadiness } from './lib/affiliate-enrollment-contract.mjs';
 import { buildPublicationManifest, parsePublicationManifest, sha256 } from './lib/publication-manifest-contract.mjs';
 
 const root = process.cwd();
 const dist = path.join(root, 'dist');
 const checks = [
-  ['home', 'index.html', ['Good gifts, minus the guesswork.', 'THE REAL GIFT', 'Give them permission to enjoy it.', 'rel="canonical"', 'tfg-root']],
+  ['home', 'index.html', ['Good gifts, minus the guesswork.', 'THE REAL GIFT', 'Give them permission to enjoy it.', 'rel="canonical"', 'social-card.jpg', 'og:image:type" content="image/jpeg"', 'og:image:alt', 'twitter:image:alt', 'tfg-root']],
   ['gift finder', 'gift-finder/index.html', ['Who are they when no one is shopping for them?', 'Places to begin', 'Do not invent a new person for them.', 'gift_finder_guide_open']],
   ['curious adult gift path', 'gifts/curious-adults/index.html', ['Gifts for curious adults', 'Start with what you have noticed.', 'application/ld+json']],
   ['hobby lover gift path', 'gifts/hobby-lovers/index.html', ['Gifts for hobby lovers', 'Look for the repeated annoyance', 'application/ld+json']],
@@ -97,6 +98,22 @@ const readyArticles = sourceArticles.filter((article) => article.status === 'pub
 const readyArticleSlugs = new Set(readyArticles.map((article) => article.slug));
 const draftArticles = sourceArticles.filter((article) => article.status === 'draft');
 const operations = JSON.parse(await fs.readFile(path.join(root, 'src', 'data', 'operations.json'), 'utf8'));
+
+const expectedSocialCards = [
+  ['site default', 'social-card.jpg'],
+  ...readyArticles.map((article) => [article.slug, path.join('social-cards', `${article.slug}.jpg`)])
+];
+for (const [label, relativePath] of expectedSocialCards) {
+  const filePath = path.join(dist, relativePath);
+  try {
+    const stat = await fs.stat(filePath);
+    const metadata = await sharp(filePath).metadata();
+    if (metadata.format !== 'jpeg' || metadata.width !== 1200 || metadata.height !== 630) failures.push(`${label}: social card must be a 1200x630 JPEG`);
+    if (stat.size > 350 * 1024) failures.push(`${label}: social card exceeds the 350 KiB delivery budget`);
+  } catch (error) {
+    failures.push(`${label}: missing or unreadable social card ${relativePath} (${error instanceof Error ? error.message : String(error)})`);
+  }
+}
 const studioHtml = await fs.readFile(path.join(dist, 'studio', 'index.html'), 'utf8');
 for (const marker of [
   'public application packets ready',
@@ -149,7 +166,7 @@ for (const article of readyArticles) {
   try { html = await fs.readFile(path.join(dist, relativePath), 'utf8'); }
   catch { failures.push(`${article.slug}: missing prerendered article`); continue; }
   const readerTitle = article.slug === 'how-we-research-gifts' ? 'The Gift Hiding in Plain Sight' : article.title;
-  for (const marker of [readerTitle, 'Start with the person', 'If you know someone', 'Keep following the clue', 'data-event-name="related_guide_open"', 'BreadcrumbList', 'Know who this sounds like?', 'data-event-name="article_share"', 'data-share-method="copy"', 'application/ld+json']) {
+  for (const marker of [readerTitle, 'Start with the person', 'If you know someone', 'Keep following the clue', 'data-event-name="related_guide_open"', 'BreadcrumbList', 'Know who this sounds like?', 'data-event-name="article_share"', 'data-share-method="copy"', `/social-cards/${article.slug}.jpg`, 'og:image:type" content="image/jpeg"', 'og:image:width" content="1200"', 'og:image:height" content="630"', 'og:image:alt', 'twitter:image:alt', 'application/ld+json']) {
     if (!html.includes(marker)) failures.push(`${article.slug}: article HTML missing ${JSON.stringify(marker)}`);
   }
   const relatedDestinations = [...html.matchAll(/data-destination-guide-slug="([^"]+)"/g)].map((match) => match[1]);

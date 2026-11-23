@@ -10,6 +10,7 @@ import { GROWTH, OPERATIONS, STRATEGY } from './generated/studio.generated';
 import { GiftFinderPage } from './public-pages';
 import { FounderBriefPage, STUDIO_DATA, StudioPage } from './studio-pages';
 import { readerBodyComesFirst, readerBodyHtml, readerEvidenceHtml, readerLanguage, readerLead } from './reader-copy';
+import { SeoService } from './seo.service';
 
 describe('App', () => {
   beforeEach(async () => {
@@ -36,6 +37,21 @@ describe('App', () => {
     expect(element.querySelectorAll('.nav-links a')).toHaveLength(4);
     expect(element.querySelector('a[href="/gift-finder"]')?.textContent).toContain('Gift finder');
     expect(element.querySelector('a[href="/studio"]')).toBeNull();
+  });
+
+  it('emits platform-safe social image metadata with useful alternative text', () => {
+    const seo = TestBed.inject(SeoService);
+    seo.set({ title: 'Tips for Your Gifts', description: 'A thoughtful gift starts with a person.', path: '/' });
+    const meta = (property: string) => document.head.querySelector<HTMLMetaElement>(`meta[property="${property}"]`)?.content;
+    const namedMeta = (name: string) => document.head.querySelector<HTMLMetaElement>(`meta[name="${name}"]`)?.content;
+    expect(meta('og:image')).toBe('https://tipsforyourgifts.web.app/social-card.jpg');
+    expect(meta('og:image:secure_url')).toBe(meta('og:image'));
+    expect(meta('og:image:type')).toBe('image/jpeg');
+    expect(meta('og:image:width')).toBe('1200');
+    expect(meta('og:image:height')).toBe('630');
+    expect(meta('og:image:alt')).toContain('Good gifts, minus the guesswork.');
+    expect(namedMeta('twitter:image')).toBe(meta('og:image'));
+    expect(namedMeta('twitter:image:alt')).toBe(meta('og:image:alt'));
   });
 
   it('ships a founder-approved visual for every public article, product, and pair', () => {
