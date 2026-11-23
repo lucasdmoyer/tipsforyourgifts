@@ -1,0 +1,48 @@
+{
+  "schemaVersion": "1.0.0",
+  "missionId": "opportunity-scout-2026112201-1",
+  "status": "completed",
+  "createdAt": "2026-11-22T14:10:00.000Z",
+  "completedAt": "2026-11-22T14:30:00.000Z",
+  "trigger": {
+    "type": "manual",
+    "workflow": "opportunity-scout.yml",
+    "workflowRunId": "2026112201",
+    "workflowRunAttempt": 1,
+    "actor": "lucasdmoyer",
+    "baseSha": "655d4f25bc1f26a78a379aef624abc40d7039632"
+  },
+  "expectedProposalId": "founder-idea-014",
+  "openProposalCountAtStart": 0,
+  "authority": {
+    "mayAppendOneProposedIdea": true,
+    "mayApproveResearch": false,
+    "mayPublish": false,
+    "mayChangeAccountsOrSpend": false
+  },
+  "policySnapshot": {
+    "schemaVersion": "1.0.0",
+    "enabled": true,
+    "cadence": "weekly",
+    "maxOpenProposals": 5,
+    "minimumResearchPasses": 3,
+    "minimumSources": 10,
+    "minimumSourceClasses": 5,
+    "minimumPublicSocialOrCommunitySources": 2,
+    "minimumCandidates": 3,
+    "maximumCandidates": 7,
+    "minimumSignals": 6,
+    "minimumEvidenceConfidence": 70,
+    "minimumThoughtfulnessPotential": 80,
+    "diminishingReturnThreshold": 0.1,
+    "requiredConsecutiveLowNoveltyPasses": 2,
+    "geography": "United States",
+    "language": "English",
+    "socialEvidencePolicy": "public_only_no_personal_identifiers"
+  },
+  "completion": {
+    "reportId": "opportunity-scout-2026112201-1",
+    "proposalId": "founder-idea-014",
+    "reviewReceiptPath": "research/opportunity-reviews/opportunity-scout-2026112201-1.qa.v1.json"
+  }
+}

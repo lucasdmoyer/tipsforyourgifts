@@ -110,6 +110,7 @@ export function buildFounderAgenda(input) {
 
   const strategyCandidate = selectStrategyCandidate(input.strategy);
   if (strategyCandidate) {
+    const strategyQueueFull = input.openStrategyProposals >= input.maxOpenStrategyProposals;
     decisions.push({
       id: 'choose-next-thesis',
       rank: 0,
@@ -119,14 +120,20 @@ export function buildFounderAgenda(input) {
       title: 'Choose the next recipient problem to research',
       recommendation: `Approve ${strategyCandidate.id} revision ${strategyCandidate.revision}: ${strategyCandidate.title}.`,
       decisionQuestion: 'Should this be the next bounded research mission for the editorial team?',
-      rationale: 'The founder proposal queue is full, so one decision both chooses the next article direction and restores capacity to the autonomous opportunity scout.',
+      rationale: strategyQueueFull
+        ? 'The founder proposal queue is full, so one decision both chooses the next article direction and restores capacity to the autonomous opportunity scout.'
+        : 'This proposal passed the separate opportunity-review gate, and founder selection is the deliberate boundary before the team spends product-research capacity.',
       evidence: [
         `${input.openStrategyProposals}/${input.maxOpenStrategyProposals} founder proposal slots are occupied.`,
         `The recommended thesis has ${strategyCandidate.priority} strategic priority.`,
-        `Its pair-coherence hypothesis scores ${strategyCandidate.pairing?.coherenceScore ?? 'not applicable'}/100 before product research.`,
+        strategyCandidate.pairing
+          ? `Its pair-coherence hypothesis scores ${strategyCandidate.pairing.coherenceScore}/100 before product research.`
+          : 'It is a single-product thesis, so the team will not force a pair before product research.',
         `The brief requires ${strategyCandidate.deliverables.minimumFinalists} finalists, ${strategyCandidate.deliverables.minimumQualifiedPairs} qualified pairs, and ${strategyCandidate.deliverables.minimumSocialAngles} social angles.`
       ],
-      unlocks: 'Merging the deterministic approval pull request starts one hash-bound research mission and reopens one weekly opportunity-scout slot.',
+      unlocks: strategyQueueFull
+        ? 'Merging the deterministic approval pull request starts one hash-bound research mission and reopens one weekly opportunity-scout slot.'
+        : 'Merging the deterministic approval pull request starts one hash-bound research mission while leaving the remaining proposal slots available.',
       tradeoff: 'Approval spends research capacity on one audience and ritual before product evidence has been collected; the mission may still reject the thesis.',
       guardrail: 'This action authorizes research only. It cannot approve evidence, add affiliate tracking, publish content, spend money, or deploy Firebase.',
       reversibility: 'high',

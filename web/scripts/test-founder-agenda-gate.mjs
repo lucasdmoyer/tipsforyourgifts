@@ -44,12 +44,17 @@ const base = buildFounderAgenda(baseInput);
 
 const currentContentIsVerified = livePublication.status === 'verified_managed_content_release'
   && livePublication.latestVerifiedContentRelease?.publicationManifest?.contentSetSha256 === publicationManifest.contentSetSha256;
-assert.equal(base.primaryDecisionId, currentContentIsVerified ? 'establish-measurement' : 'review-release-candidate');
+const priorityWeight = { high: 3, medium: 2, low: 1 };
+const expectedStrategyCandidate = [...proposedIdeas].sort((left, right) => (priorityWeight[right.priority] ?? 0) - (priorityWeight[left.priority] ?? 0) || (right.pairing?.coherenceScore ?? 0) - (left.pairing?.coherenceScore ?? 0) || left.id.localeCompare(right.id))[0];
+const expectedPrimaryDecisionId = !currentContentIsVerified
+  ? 'review-release-candidate'
+  : expectedStrategyCandidate
+    ? 'choose-next-thesis'
+    : 'establish-measurement';
+assert.equal(base.primaryDecisionId, expectedPrimaryDecisionId);
 assert.equal(base.decisions.some((decision) => decision.id === 'review-release-candidate'), !currentContentIsVerified);
 assert.equal(base.profitabilityEvidence, 'unknown_until_aggregate_measurement');
 assert.deepEqual(base.decisions.map((decision) => decision.rank), base.decisions.map((_decision, index) => index + 1));
-const priorityWeight = { high: 3, medium: 2, low: 1 };
-const expectedStrategyCandidate = [...proposedIdeas].sort((left, right) => (priorityWeight[right.priority] ?? 0) - (priorityWeight[left.priority] ?? 0) || (right.pairing?.coherenceScore ?? 0) - (left.pairing?.coherenceScore ?? 0) || left.id.localeCompare(right.id))[0];
 if (expectedStrategyCandidate) assert.match(base.decisions.find((decision) => decision.id === 'choose-next-thesis').recommendation, new RegExp(`${expectedStrategyCandidate.id} revision ${expectedStrategyCandidate.revision}`));
 
 const verifiedLiveInput = structuredClone(baseInput);
