@@ -123,7 +123,7 @@ export const OPERATIONS: Operations = {
   },
   "automationReadiness": {
     "schemaVersion": "1.2.0",
-    "observedAt": "2026-11-23T21:47:08.000Z",
+    "observedAt": "2026-11-23T23:34:17.000Z",
     "sourceMode": "versioned_snapshot_not_live_poll",
     "posture": "founder_action_required",
     "summary": "The operating system can validate content and run a narrow affiliate pilot today. Research generation, automated previews, distribution, measurement, release approval, and eventual keyless automatic publication still require explicit bounded founder actions.",
@@ -184,9 +184,9 @@ export const OPERATIONS: Operations = {
         "id": "preview-delivery",
         "label": "Firebase preview delivery",
         "status": "manual_fallback_verified",
-        "evidence": "The exact PR-104 Firebase preview passed Node 24.14 validation, a 23-route static build with an 81.91 kB initial transfer, hosted smoke across 20 routes and 11 publication-ready articles, mobile visual review, affiliate disclosure checks, and security-header review. Lighthouse scored 100 for performance, accessibility, and best practices on both the home page and Studio, with 1.0 second LCP and zero layout shift. This is the latest verified preview, not authority for the current build. Automated keyless delivery remains blocked: PR 104 head 7b2cddada414eea957add384c4a04fe3301093ee passed protected validation, an exact-artifact build, the immutable pull-request boundary, and manual hosted preview review. Automated deploy stops before Firebase at Google authentication because the tips-github-preview/github-preview Workload Identity pool and provider do not exist.",
-        "nextAction": "After fresh action-time founder IAM approval, create the PR-104-only keyless preview pool and provider, rerun the required preview check, and merge only if the head remains exactly 7b2cddada414eea957add384c4a04fe3301093ee.",
-        "actionUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/104#issuecomment-7114914873",
+        "evidence": "The exact PR-104 Firebase preview passed Node 24.14 validation, a 23-route static build with an 81.91 kB initial transfer, hosted smoke across 20 routes and 11 publication-ready articles, mobile visual review, affiliate disclosure checks, and security-header review. Lighthouse scored 100 for performance, accessibility, and best practices on both the home page and Studio, with 1.0 second LCP and zero layout shift. This is the latest verified preview, not authority for the current build. Automated keyless delivery remains blocked: PR 104 head 7b2cddada414eea957add384c4a04fe3301093ee passed protected validation, an exact-artifact build, the immutable pull-request boundary, and manual hosted preview review. A live read-only Google Cloud audit confirmed that tips-github-preview does not exist; the intended service account exists with Firebase Hosting Admin only, no Firebase Auth Admin, and no user-managed key. Existing providers are restricted to PR 1, PR 20, or the master production workflow and cannot authenticate PR 104.",
+        "nextAction": "After fresh action-time founder IAM approval, create tips-github-preview/github-preview restricted to repository ID 171694140, repository-owner ID 23782501, actor ID 23782501, pull_request, refs/pull/104/merge, and the master-pinned reusable preview workflow; then rerun the required preview check and merge only if the head remains exactly 7b2cddada414eea957add384c4a04fe3301093ee.",
+        "actionUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/104#issuecomment-7117003721",
         "founderActionRequired": true
       },
       {
@@ -223,11 +223,11 @@ export const OPERATIONS: Operations = {
         "id": "firebase-preview-identity",
         "label": "Keyless Firebase preview identity",
         "status": "blocked_external_configuration",
-        "summary": "PR 104 head 7b2cddada414eea957add384c4a04fe3301093ee passed protected validation, an exact-artifact build, the immutable pull-request boundary, and manual hosted preview review. Automated deploy stops before Firebase at Google authentication because the tips-github-preview/github-preview Workload Identity pool and provider do not exist.",
-        "evidenceUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/104#issuecomment-7114914873",
+        "summary": "PR 104 head 7b2cddada414eea957add384c4a04fe3301093ee passed protected validation, an exact-artifact build, the immutable pull-request boundary, and manual hosted preview review. A live read-only Google Cloud audit confirmed that tips-github-preview does not exist; the intended service account exists with Firebase Hosting Admin only, no Firebase Auth Admin, and no user-managed key. Existing providers are restricted to PR 1, PR 20, or the master production workflow and cannot authenticate PR 104.",
+        "evidenceUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/104#issuecomment-7117003721",
         "diagnosticUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/runs/45265510887",
-        "nextAction": "After fresh action-time founder IAM approval, create the PR-104-only keyless preview pool and provider, rerun the required preview check, and merge only if the head remains exactly 7b2cddada414eea957add384c4a04fe3301093ee.",
-        "authorityBoundary": "Use short-lived impersonation for Firebase Hosting previews only. No Firebase Auth Admin, user-managed service-account key, or production Hosting authorization."
+        "nextAction": "After fresh action-time founder IAM approval, create tips-github-preview/github-preview restricted to repository ID 171694140, repository-owner ID 23782501, actor ID 23782501, pull_request, refs/pull/104/merge, and the master-pinned reusable preview workflow; then rerun the required preview check and merge only if the head remains exactly 7b2cddada414eea957add384c4a04fe3301093ee.",
+        "authorityBoundary": "Grant only short-lived workload-identity impersonation to the existing Firebase Hosting Admin service account. No Firebase Auth Admin, user-managed service-account key, production-provider change, or production Hosting authorization."
       },
       {
         "id": "firebase-auto-production-identity",
