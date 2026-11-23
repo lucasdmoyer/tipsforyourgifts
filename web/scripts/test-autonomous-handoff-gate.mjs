@@ -22,9 +22,32 @@ function stepIndex(job, name) {
 }
 
 const strategy = await readWorkflow('strategy-approved-launch.yml');
+const opportunity = await readWorkflow('opportunity-scout.yml');
 const research = await readWorkflow('research-agent.yml');
 const automatic = await readWorkflow('firebase-auto-production.yml');
 const policy = JSON.parse(await fs.readFile(path.join(webRoot, 'config', 'publication-policy.json'), 'utf8'));
+
+const opportunityIssues = opportunity.parsed.on?.issues;
+assert.deepEqual(opportunityIssues?.types, ['opened', 'reopened'], 'founder-directed scouting must react only to opened or reopened issues');
+assert.equal(opportunity.parsed.permissions?.contents, 'read', 'opportunity model jobs need read-only repository contents');
+assert.equal(opportunity.parsed.permissions?.issues, 'read', 'directed scouting needs read-only issue access');
+const opportunityJob = opportunity.parsed.jobs?.discover;
+assert.ok(opportunityJob, 'opportunity discovery job is missing');
+assert.match(opportunityJob.if, /author_association == 'OWNER'/, 'directed scouting must require a repository-owner issue');
+assert.match(opportunityJob.if, /startsWith\(github\.event\.issue\.title, '\[Scout\] '\)/, 'directed scouting must require the bounded scout title');
+const captureDirectionStep = findStep(opportunityJob, 'Capture only an owner-authored scout direction');
+const startScoutStep = findStep(opportunityJob, 'Open a mission only when the founder queue has capacity');
+const scoutModelStep = opportunityJob.steps.find((step) => step.uses === 'openai/codex-action@v1');
+assert.ok(captureDirectionStep && startScoutStep && scoutModelStep, 'directed scouting must capture, bind, and research one founder direction');
+assert.ok(stepIndex(opportunityJob, captureDirectionStep.name) < stepIndex(opportunityJob, startScoutStep.name), 'owner issue capture must precede mission creation');
+assert.ok(stepIndex(opportunityJob, startScoutStep.name) < opportunityJob.steps.indexOf(scoutModelStep), 'capacity-bound mission creation must precede the model call');
+assert.match(captureDirectionStep.run, /author_association[\s\S]*OWNER/, 'the issue capture must recheck repository-owner authority');
+assert.match(captureDirectionStep.run, /startswith\("\[Scout\] "\)/, 'the issue capture must recheck the bounded title');
+assert.match(startScoutStep.env?.TRIGGER ?? '', /founder_direction/, 'issue events must become founder_direction missions');
+assert.match(startScoutStep.run, /--directive-path="\$DIRECTIVE_PATH"/, 'the mission command must receive only the captured direction file');
+assert.match(scoutModelStep.with?.prompt ?? '', /bounded research question[\s\S]*not product evidence/, 'the model must treat founder direction as a question rather than evidence');
+assert.match(scoutModelStep.with?.prompt ?? '', /Reject the premise and make no proposal/, 'unsupported founder premises must fail closed');
+assert.match(scoutModelStep.with?.prompt ?? '', /append exactly one strategy idea[\s\S]*founderDisposition proposed/, 'the scout may create at most one proposed idea');
 
 const strategyPush = strategy.parsed.on?.push;
 assert.deepEqual(strategyPush?.branches, ['master'], 'strategy approval handoff must observe only master');
@@ -100,6 +123,7 @@ assert.equal(policy.automaticPromotion.minimumSuccessfulFounderReviewedReleases,
 console.log(JSON.stringify({
   autonomousHandoffGateTests: 'passed',
   handoffs: [
+    'founder_direction_to_opportunity_scout',
     'strategy_approval_to_research_dispatch',
     'research_to_independent_qa',
     'editorial_qa_to_visual_production_queue',
