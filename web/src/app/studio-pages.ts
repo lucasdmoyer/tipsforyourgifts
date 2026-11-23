@@ -329,6 +329,17 @@ export const STUDIO_DATA = new InjectionToken<StudioData>('STUDIO_DATA');
               @if (request.status === 'awaiting_founder_scope_approval_and_partner_export') { <p class="connector-gate"><a href="https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/affiliate-expansion-approve.yml" target="_blank" rel="noopener">Open founder scope approval workflow</a></p> }
             </article>
           }
+          @for (request of content.operations.affiliate.reportingRequests; track request.id) {
+            <article class="connector-row affiliate-decision-packet">
+              <div><p class="eyebrow">Aggregate revenue measurement</p><strong>{{ request.livePaidLinks }} live paid link · {{ request.liveArticles }} article · conversions and commission revenue only.</strong></div>
+              <span class="status blocked_on_account">Queued behind revision {{ request.reservedExpansionRevision }}</span>
+              <p class="connector-gate">Bookshop is currently revision {{ request.observedProgramRevision }}. The expansion packet already reserves revision {{ request.reservedExpansionRevision }}, so reporting can be revision {{ request.earliestReportingRevision }} at the earliest unless Lucas explicitly re-sequences the decisions.</p>
+              <p class="connector-gate"><strong>Privacy boundary:</strong> {{ request.minimumWindowDays }}-day-or-longer aggregate windows. Customer data, customer lists, raw order rows, order identifiers, and email addresses remain prohibited. No connector or report export has been activated.</p>
+              <p class="connector-gate"><strong>Next gate:</strong> {{ request.nextGate }}</p>
+              <p class="connector-gate"><a [href]="request.officialSources.dashboardGuideUrl" target="_blank" rel="noopener">Official dashboard guide</a> · <a [href]="request.officialSources.reportingGuideUrl" target="_blank" rel="noopener">Official reporting guide</a> · <a [href]="request.officialSources.viewsRemovalUrl" target="_blank" rel="noopener">Official storefront-views note</a></p>
+              <details class="connector-gate"><summary>Exact request boundary</summary><div class="command">blocked by: {{ request.blockedByExpansionRequestId }}<br>allowed metrics: {{ request.allowedMetrics.join(', ') }}<br>sha256: {{ request.requestBoundarySha256 }}</div></details>
+            </article>
+          }
           <p><a href="https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/affiliate-program-approval.yml" target="_blank" rel="noopener">Program onboarding approval</a> · <a href="https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/affiliate-program-activate.yml" target="_blank" rel="noopener">Program activation</a> · <a href="https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/affiliate-link-candidate.yml" target="_blank" rel="noopener">Exact-link candidate</a> · <a href="https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/affiliate-link-review.yml" target="_blank" rel="noopener">Independent link review</a> · <a href="https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/affiliate-link-approval.yml" target="_blank" rel="noopener">Founder link approval</a></p>
           <details><summary>Exact approved-overlay digest</summary><div class="command">{{ content.operations.affiliate.approvedOverlaySetSha256 }}</div></details>
           @for (proposal of content.operations.affiliate.activationProposals; track proposal.id) {

@@ -593,6 +593,27 @@ export interface Operations {
       currentArticleMatchesIndependentReview: boolean;
       nextGate: string;
     }>;
+    reportingRequests: Array<{
+      id: string;
+      status: 'queued_behind_existing_program_revision';
+      programId: string;
+      observedProgramRevision: number;
+      reservedExpansionRevision: number;
+      earliestReportingRevision: number;
+      blockedByExpansionRequestId: string;
+      liveArticles: number;
+      livePaidLinks: number;
+      allowedMetrics: ['affiliateConversions', 'revenueUsd'];
+      minimumWindowDays: number;
+      customerDataAllowed: false;
+      requestBoundarySha256: string;
+      officialSources: {
+        dashboardGuideUrl: string;
+        reportingGuideUrl: string;
+        viewsRemovalUrl: string;
+      };
+      nextGate: string;
+    }>;
     linkQueue: Array<{
       candidateId: string;
       candidateRevision: number;
