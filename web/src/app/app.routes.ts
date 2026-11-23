@@ -6,6 +6,8 @@ const page = <T extends keyof typeof import('./public-pages')>(name: T) =>
 const studioPage = <T extends keyof typeof import('./studio-pages')>(name: T) =>
   () => import('./studio-pages').then((pages) => pages[name]);
 
+const giftPathPage = () => import('./gift-path-page').then(({ GiftPathPage }) => GiftPathPage);
+
 const studioData = () => import('./generated/studio.generated').then(({ OPERATIONS, STRATEGY, GROWTH }) => ({
   operations: OPERATIONS,
   strategy: STRATEGY,
@@ -18,6 +20,9 @@ const articleData = (route: ActivatedRouteSnapshot) =>
 export const routes: Routes = [
   { path: '', loadComponent: page('HomePage') },
   { path: 'gift-finder', loadComponent: page('GiftFinderPage') },
+  { path: 'gifts/curious-adults', loadComponent: giftPathPage, data: { giftPath: 'curious-adults' } },
+  { path: 'gifts/hobby-lovers', loadComponent: giftPathPage, data: { giftPath: 'hobby-lovers' } },
+  { path: 'gifts/thoughtful-pairs', loadComponent: giftPathPage, data: { giftPath: 'thoughtful-pairs' } },
   { path: 'gifts', loadComponent: page('GiftsPage') },
   { path: 'blog', loadComponent: page('BlogPage') },
   { path: 'blog/:slug', loadComponent: () => import('./article-page').then(({ ArticlePage }) => ArticlePage), resolve: { article: articleData } },

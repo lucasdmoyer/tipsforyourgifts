@@ -10,6 +10,9 @@ const dist = path.join(root, 'dist');
 const checks = [
   ['home', 'index.html', ['Good gifts, minus the guesswork.', 'THE REAL GIFT', 'Give them permission to enjoy it.', 'rel="canonical"', 'tfg-root']],
   ['gift finder', 'gift-finder/index.html', ['Who are they when no one is shopping for them?', 'Places to begin', 'Do not invent a new person for them.', 'gift_finder_guide_open']],
+  ['curious adult gift path', 'gifts/curious-adults/index.html', ['Gifts for curious adults', 'Start with what you have noticed.', 'application/ld+json']],
+  ['hobby lover gift path', 'gifts/hobby-lovers/index.html', ['Gifts for hobby lovers', 'Look for the repeated annoyance', 'application/ld+json']],
+  ['thoughtful pairs gift path', 'gifts/thoughtful-pairs/index.html', ['Thoughtful gift pairs', 'Two things, one good reason', 'application/ld+json']],
   ['blog index', 'blog/index.html', ['A gift starts before the shopping.', 'The Gift Hiding in Plain Sight']],
   ['standards', 'standards/index.html', ['Buy the thing they would talk themselves out of.', 'A thoughtful gift says: I noticed the part of your life you keep putting second.']],
   ['studio', 'studio/index.html', ['Executive studio', 'Founder agenda', 'unknown until aggregate measurement', 'noindex,nofollow']],
@@ -127,6 +130,12 @@ const blogIndex = await fs.readFile(path.join(dist, 'blog', 'index.html'), 'utf8
 const giftsIndex = await fs.readFile(path.join(dist, 'gifts', 'index.html'), 'utf8');
 const sitemap = await fs.readFile(path.join(dist, 'sitemap.xml'), 'utf8');
 const rss = await fs.readFile(path.join(dist, 'rss.xml'), 'utf8');
+const giftPathConfig = JSON.parse(await fs.readFile(path.join(root, 'src', 'data', 'gift-paths.json'), 'utf8'));
+const giftPathHtml = await Promise.all(giftPathConfig.paths.map(async (giftPath) => {
+  const route = `/gifts/${giftPath.slug}`;
+  if (!sitemap.includes(route)) failures.push(`gift path ${giftPath.id}: missing from sitemap`);
+  return fs.readFile(path.join(dist, 'gifts', giftPath.slug, 'index.html'), 'utf8');
+}));
 const rssItemCount = [...rss.matchAll(/<item>/g)].length;
 if (rssItemCount !== readyArticles.length) failures.push(`rss feed: expected ${readyArticles.length} items, found ${rssItemCount}`);
 for (const marker of ['/studio', 'researchRun', 'affiliate=true', 'data-paid-link']) {
@@ -187,6 +196,7 @@ const readerFacingHtml = [
   await fs.readFile(path.join(dist, 'gifts', 'index.html'), 'utf8'),
   await fs.readFile(path.join(dist, 'blog', 'index.html'), 'utf8'),
   await fs.readFile(path.join(dist, 'standards', 'index.html'), 'utf8'),
+  ...giftPathHtml,
   ...await Promise.all(readyArticles.map((article) => fs.readFile(path.join(dist, 'blog', article.slug, 'index.html'), 'utf8')))
 ].join('\n');
 for (const marker of [
