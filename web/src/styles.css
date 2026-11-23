@@ -198,6 +198,11 @@ h3 { font-size: 1.35rem; }
 .finder-method { margin-top: 20px; }
 
 .studio-hero { padding: 64px 0 32px; }
+.studio-command-brief { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 28px; margin-top: 30px; padding: 24px; border: 1px solid #c8d9cf; border-radius: 20px; background: linear-gradient(135deg, var(--paper), #f1f8f3); }
+.studio-command-brief h2 { max-width: 22ch; margin-bottom: 10px; font-size: clamp(1.55rem, 3vw, 2.35rem); }
+.studio-command-brief p:last-child { margin-bottom: 0; }
+.studio-command-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 10px; }
+.studio-command-actions .button { margin: 0; text-align: center; }
 .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px; }
 .kpi { padding: 20px; }
 .kpi strong { display: block; font-size: 2rem; line-height: 1; margin-bottom: 8px; }
@@ -328,6 +333,8 @@ h3 { font-size: 1.35rem; }
 
 @media (max-width: 860px) {
   .hero { grid-template-columns: 1fr; padding-top: 56px; }
+  .studio-command-brief { grid-template-columns: 1fr; align-items: start; }
+  .studio-command-actions { justify-content: flex-start; }
   .gift-stack { min-height: 350px; }
   .grid.three, .grid.two, .kpi-grid { grid-template-columns: 1fr 1fr; }
   .idea-proof-grid { grid-template-columns: 1fr; }
