@@ -23,13 +23,19 @@ const root = await fs.mkdtemp(path.join(os.tmpdir(), 'tfyg-affiliate-expansion-a
 for (const relative of ['config', 'src/data/blog', 'research/runs', 'research/reviews', 'scripts']) await fs.mkdir(path.join(root, relative), { recursive: true });
 await fs.copyFile(path.join(webRoot, 'config', 'affiliate-programs.json'), path.join(root, 'config', 'affiliate-programs.json'));
 await fs.copyFile(path.join(webRoot, 'config', 'affiliate-expansion-requests.json'), path.join(root, 'config', 'affiliate-expansion-requests.json'));
+const initialDocument = JSON.parse(await fs.readFile(path.join(root, 'config', 'affiliate-expansion-requests.json'), 'utf8'));
+for (const request of initialDocument.requests) {
+  const source = path.join(webRoot, request.catalogObservation.path);
+  const destination = path.join(root, request.catalogObservation.path);
+  await fs.mkdir(path.dirname(destination), { recursive: true });
+  await fs.copyFile(source, destination);
+}
 await fs.cp(path.join(webRoot, 'src', 'data', 'blog'), path.join(root, 'src', 'data', 'blog'), { recursive: true });
 await fs.cp(path.join(webRoot, 'research', 'runs'), path.join(root, 'research', 'runs'), { recursive: true });
 await fs.cp(path.join(webRoot, 'research', 'reviews'), path.join(root, 'research', 'reviews'), { recursive: true });
 await fs.cp(path.join(webRoot, 'scripts'), path.join(root, 'scripts'), { recursive: true });
 await fs.symlink(path.join(webRoot, 'node_modules'), path.join(root, 'node_modules'));
 
-const initialDocument = JSON.parse(await fs.readFile(path.join(root, 'config', 'affiliate-expansion-requests.json'), 'utf8'));
 const initialAffiliate = JSON.parse(await fs.readFile(path.join(root, 'config', 'affiliate-programs.json'), 'utf8'));
 const clean = await validateAffiliateExpansionRequests({ root, document: initialDocument, affiliate: initialAffiliate });
 assert.equal(clean.summaries.length, 1);

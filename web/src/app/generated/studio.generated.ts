@@ -690,6 +690,7 @@ export const OPERATIONS: Operations = {
         "programId": "bookshop-org-us-media",
         "articleSlug": "read-it-then-play-it-gift-pairs",
         "requestedProducts": 9,
+        "catalogProductsVerified": 9,
         "paidUrlsCollected": 0,
         "currentArticleMatchesIndependentReview": true,
         "nextGate": "Lucas approves this exact nine-book scope, then supplies a founder-attested Bookshop export containing partner-issued URLs."

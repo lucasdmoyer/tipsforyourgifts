@@ -25,6 +25,31 @@ const productSchema = z.object({
   cleanBookshopCatalogUrl: httpsUrl.nullable()
 }).strict();
 
+const catalogObservationSchema = z.object({
+  schemaVersion: z.literal('1.0.0'),
+  receiptId: slug,
+  observerId: safeIdentity,
+  observationMethod: z.literal('independent_browser_observation'),
+  observedAt: z.string().datetime(),
+  programId: slug,
+  articleSlug: slug,
+  records: z.array(z.object({
+    productId: slug,
+    isbn13: z.string().regex(/^97[89]\d{10}$/).refine(isbn13IsValid, 'invalid ISBN-13 check digit'),
+    catalogUrl: httpsUrl,
+    pageRendered: z.literal(true),
+    isbnObserved: z.literal(true)
+  }).strict()).min(1),
+  assertions: z.object({
+    cleanCatalogUrlsOnly: z.literal(true),
+    trackingIdentityUsed: z.literal(false),
+    paidUrlsGenerated: z.literal(false),
+    availabilityAssessed: z.literal(false),
+    activationScopeChanged: z.literal(false),
+    productionDeploymentAuthorized: z.literal(false)
+  }).strict()
+}).strict();
+
 export const affiliateExpansionRequestSchema = z.object({
   schemaVersion: z.literal('1.0.0'),
   updatedAt: z.string().datetime(),
@@ -43,6 +68,12 @@ export const affiliateExpansionRequestSchema = z.object({
       recordedArticleSha256: sha256,
       currentArticleMatchesReceipt: z.boolean(),
       nextGate: z.string().min(30)
+    }).strict(),
+    catalogObservation: z.object({
+      path: z.string().regex(/^affiliate\/evidence\/[a-z0-9]+(?:-[a-z0-9]+)*\.json$/),
+      sha256,
+      observedAt: z.string().datetime(),
+      recordCount: z.number().int().positive()
     }).strict(),
     currentActivationProductIds: z.array(slug).min(1),
     requestedProductIds: z.array(slug).min(1),
@@ -111,6 +142,11 @@ export async function validateAffiliateExpansionRequests({ root, document: input
     const review = await readBoundJson(root, request.independentReview);
     if (review.articleSha256 !== request.independentReview.recordedArticleSha256) throw new Error(`${request.id} independent review article digest differs`);
     if ((review.articleSha256 === reviewedArticleSha256(articleRaw)) !== request.independentReview.currentArticleMatchesReceipt) throw new Error(`${request.id} independent review freshness assertion differs`);
+    const catalogObservation = catalogObservationSchema.parse(await readBoundJson(root, request.catalogObservation));
+    if (catalogObservation.programId !== request.programId || catalogObservation.articleSlug !== request.articleSlug) throw new Error(`${request.id} catalog observation identity differs`);
+    if (catalogObservation.observedAt !== request.catalogObservation.observedAt || catalogObservation.records.length !== request.catalogObservation.recordCount) throw new Error(`${request.id} catalog observation summary differs`);
+    if (catalogObservation.observedAt > document.updatedAt) throw new Error(`${request.id} catalog observation is newer than the request update`);
+    const catalogByProductId = new Map(catalogObservation.records.map((record) => [record.productId, record]));
 
     const currentActivation = program.activationProductSelection?.eligibleProductIds ?? [];
     const requestedSet = new Set(request.requestedProductIds);
@@ -132,7 +168,10 @@ export async function validateAffiliateExpansionRequests({ root, document: input
         const catalog = new URL(product.cleanBookshopCatalogUrl);
         if (catalog.hostname !== 'bookshop.org' || catalog.search || catalog.hash || !catalog.pathname.startsWith('/p/books/')) throw new Error(`${product.productId} Bookshop catalog URL is not clean`);
       }
+      const catalogEvidence = catalogByProductId.get(product.productId);
+      if (!catalogEvidence || catalogEvidence.isbn13 !== product.isbn13 || catalogEvidence.catalogUrl !== product.cleanBookshopCatalogUrl) throw new Error(`${product.productId} catalog observation differs from the requested edition`);
     }
+    if (catalogByProductId.size !== request.products.length) throw new Error(`${request.id} catalog observation product set is incomplete`);
 
     const approvalBoundarySha256 = affiliateExpansionApprovalBoundarySha256(request);
     if (scopePending) {
@@ -155,6 +194,7 @@ export async function validateAffiliateExpansionRequests({ root, document: input
       programId: request.programId,
       articleSlug: request.articleSlug,
       requestedProducts: request.products.length,
+      catalogProductsVerified: catalogObservation.records.length,
       paidUrlsCollected: 0,
       currentArticleMatchesIndependentReview: request.independentReview.currentArticleMatchesReceipt,
       nextGate: scopePending ? 'Lucas approves this exact nine-book scope, then supplies a founder-attested Bookshop export containing partner-issued URLs.' : 'Supply a founder-attested Bookshop export containing exact partner-issued URLs; every destination still requires independent review and separate founder approval.'
