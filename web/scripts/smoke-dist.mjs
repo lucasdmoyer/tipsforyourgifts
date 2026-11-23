@@ -20,7 +20,7 @@ const checks = [
   ['founder brief builder', 'studio/brief/index.html', ['Founder brief builder', 'Notice the gift before naming the product.', 'Complete the missing decisions', 'noindex,nofollow']],
   ['founder decision inbox', 'studio/decisions/index.html', ['Founder decision inbox', 'calls. One order.', 'Sensitive editorial calls', 'noindex,nofollow']],
   ['robots', 'robots.txt', ['Disallow: /studio', 'Sitemap:']],
-  ['sitemap', 'sitemap.xml', ['blog/how-we-research-gifts', 'standards']],
+  ['sitemap', 'sitemap.xml', ['blog/how-we-research-gifts', 'standards', 'xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"']],
   ['rss feed', 'rss.xml', ['<rss version="2.0"', '<title>Tips for Your Gifts</title>', '<atom:link href="https://tipsforyourgifts.web.app/rss.xml"']],
   ['publication manifest', 'publication-manifest.json', ['"status": "release_candidate"', '"projectId": "tipsforyourgifts"']],
   ['affiliate enrollment readiness', 'affiliate-enrollment-readiness.json', ['"publicApplicationPacketsReady": 5', '"externalEnrollmentAllowedByRegistry": 1', '"externalSubmissionStillRequiresActionTimeApproval": true']]
@@ -97,6 +97,9 @@ const sourceArticles = await Promise.all(articleNames.map(async (name) => ({
 const readyArticles = sourceArticles.filter((article) => article.status === 'publication_ready');
 const readyArticleSlugs = new Set(readyArticles.map((article) => article.slug));
 const draftArticles = sourceArticles.filter((article) => article.status === 'draft');
+const visualRegistry = JSON.parse(await fs.readFile(path.join(root, 'visuals', 'article-visuals.json'), 'utf8'));
+const visualAssets = new Map(visualRegistry.assets.map((asset) => [asset.id, asset]));
+const articleVisuals = new Map(visualRegistry.articles.map((article) => [article.slug, article]));
 const operations = JSON.parse(await fs.readFile(path.join(root, 'src', 'data', 'operations.json'), 'utf8'));
 
 const expectedSocialCards = [
@@ -157,6 +160,11 @@ const giftPathHtml = await Promise.all(giftPathConfig.paths.map(async (giftPath)
 }));
 const rssItemCount = [...rss.matchAll(/<item>/g)].length;
 if (rssItemCount !== readyArticles.length) failures.push(`rss feed: expected ${readyArticles.length} items, found ${rssItemCount}`);
+const sitemapImageCount = [...sitemap.matchAll(/<image:image>/g)].length;
+if (sitemapImageCount !== readyArticles.length) failures.push(`sitemap: expected ${readyArticles.length} image entries, found ${sitemapImageCount}`);
+for (const deprecatedTag of ['<image:caption>', '<image:title>', '<image:license>', '<image:geo_location>']) {
+  if (sitemap.includes(deprecatedTag)) failures.push(`sitemap: contains deprecated Google image tag ${JSON.stringify(deprecatedTag)}`);
+}
 for (const marker of ['/studio', 'researchRun', 'affiliate=true', 'data-paid-link']) {
   if (rss.includes(marker)) failures.push(`rss feed: contains private or commercial marker ${JSON.stringify(marker)}`);
 }
@@ -178,6 +186,16 @@ for (const article of readyArticles) {
   }
   if (!blogIndex.includes(readerTitle)) failures.push(`${article.slug}: missing from blog index`);
   if (!sitemap.includes(`/blog/${article.slug}`)) failures.push(`${article.slug}: missing from sitemap`);
+  const visualEntry = articleVisuals.get(article.slug);
+  const hero = visualEntry ? visualAssets.get(visualEntry.heroId) : undefined;
+  if (!hero) {
+    failures.push(`${article.slug}: approved hero visual cannot be resolved for sitemap smoke`);
+  } else {
+    const heroPath = hero.src.replace(/\.webp$/, '-1200.webp');
+    if (!sitemap.includes(`<image:loc>https://tipsforyourgifts.web.app${heroPath}</image:loc>`)) failures.push(`${article.slug}: sitemap missing its 1200px approved hero`);
+    try { await fs.access(path.join(dist, heroPath.replace(/^\//, ''))); }
+    catch { failures.push(`${article.slug}: sitemap hero does not exist in the built artifact`); }
+  }
   for (const marker of [escapeHtmlText(article.title), `/blog/${article.slug}`]) {
     if (!rss.includes(marker)) failures.push(`${article.slug}: missing RSS marker ${JSON.stringify(marker)}`);
   }
@@ -216,7 +234,7 @@ for (const article of readyArticles) {
   }
 }
 
-const readerFacingHtml = [
+const readerFacingDocuments = [
   await fs.readFile(path.join(dist, 'index.html'), 'utf8'),
   await fs.readFile(path.join(dist, 'gift-finder', 'index.html'), 'utf8'),
   await fs.readFile(path.join(dist, 'gifts', 'index.html'), 'utf8'),
@@ -224,7 +242,11 @@ const readerFacingHtml = [
   await fs.readFile(path.join(dist, 'standards', 'index.html'), 'utf8'),
   ...giftPathHtml,
   ...await Promise.all(readyArticles.map((article) => fs.readFile(path.join(dist, 'blog', article.slug, 'index.html'), 'utf8')))
-].join('\n');
+];
+for (const html of readerFacingDocuments) {
+  if (!html.includes('content="index,follow,max-image-preview:large"')) failures.push('reader SEO: a public page does not authorize large image previews');
+}
+const readerFacingHtml = readerFacingDocuments.join('\n');
 for (const marker of [
   'Advice that earns the click.',
   'minimum editorial score',
