@@ -90,7 +90,11 @@ assert.ok(exactHandoffStep, 'independent QA must record and route passed or fail
 assert.match(exactHandoffStep.run, /editorial-review-result\.json/, 'independent QA must preserve structured findings before creating the receipt');
 assert.match(exactHandoffStep.run, /research:mission:qa-failed/, 'a failed independent review must become durable mission state');
 assert.match(exactHandoffStep.run, /release_route="qa_failed"/, 'a failed independent review must enter the correction route');
-assert.doesNotMatch(exactHandoffStep.run.match(/elif \[ "\$verdict" = "failed" \][\s\S]*?else/)?.[0] ?? '', /review:promote|research:mission:complete/, 'failed QA must not promote or complete the mission');
+const failedQaBranch = exactHandoffStep.run.match(/elif \[ "\$verdict" = "failed" \][\s\S]*?else/)?.[0] ?? '';
+assert.doesNotMatch(failedQaBranch, /review:promote|research:mission:complete/, 'failed QA must not promote or complete the mission');
+assert.match(failedQaBranch, /post_failure_source_patch_sha=.*git diff --binary HEAD/, 'failed QA must recompute the exact source-bundle patch after recording its handoff');
+assert.match(failedQaBranch, /test "\$post_failure_source_patch_sha" = "\$EXPECTED_SOURCE_PATCH_SHA"/, 'failed QA must prove the post-review source bundle still matches its pre-review hash');
+assert.doesNotMatch(failedQaBranch, /git diff --exit-code HEAD/, 'failed QA must not compare a legitimate new draft directly with HEAD');
 assert.match(research.raw, /git add -N \./, 'the applied research patch must expose new files to deterministic diff inspection');
 const visualAssessmentStep = exactHandoffStep;
 assert.match(visualAssessmentStep.run, /research:visual:assess/, 'visual readiness must be classified by the deterministic contract');
