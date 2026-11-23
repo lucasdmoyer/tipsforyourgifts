@@ -45,6 +45,9 @@ expectEvidenceFailure('preview must name exact SHA prefix', (candidate) => { can
 expectEvidenceFailure('preview must use the owned Firebase site', (candidate) => { candidate.latestVerifiedPreview.previewUrl = `https://example--${candidate.latestVerifiedPreview.sha.slice(0, 7)}.web.app/`; });
 expectEvidenceFailure('verified preview must name an owned pull request', (candidate) => { candidate.latestVerifiedPreview.pullRequestUrl = 'https://example.com/lucasdmoyer/tipsforyourgifts/pull/999'; });
 expectEvidenceFailure('review receipt must belong to the exact preview PR', (candidate) => { candidate.latestVerifiedPreview.reviewUrl = 'https://github.com/lucasdmoyer/tipsforyourgifts/pull/83#issuecomment-1'; });
+expectEvidenceFailure('preview identity evidence cannot point at a stale PR', (candidate) => { candidate.externalGates.find((gate) => gate.id === 'firebase-preview-identity').evidenceUrl = 'https://github.com/lucasdmoyer/tipsforyourgifts/pull/90#issuecomment-1'; });
+expectEvidenceFailure('preview identity summary must name the current SHA', (candidate) => { candidate.externalGates.find((gate) => gate.id === 'firebase-preview-identity').summary = 'A different exact preview passed every protected check, but the current Workload Identity Federation provider remains absent and automated Firebase delivery is blocked before authentication.'; });
+expectEvidenceFailure('preview identity action cannot target a stale SHA', (candidate) => { candidate.externalGates.find((gate) => gate.id === 'firebase-preview-identity').nextAction = 'After fresh action-time founder approval, create the pull-request-only keyless preview provider for a stale release candidate and rerun its required preview check.'; });
 expectEvidenceFailure('unexpected secret values are rejected', (candidate) => { candidate.externalGates[0].secretValue = 'not-allowed'; });
 expectEvidenceFailure('verified preview SHA must be exact', (candidate) => { candidate.latestVerifiedPreview.sha = '011b110'; });
 
@@ -83,7 +86,7 @@ assert.throws(() => buildAutomationReadiness({
 
 console.log(JSON.stringify({
   automationReadinessGateTests: 'passed',
-  negativeChecks: 10,
+  negativeChecks: 13,
   teams: base.teams.length,
   ready: base.counts.ready,
   limited: base.counts.limited,

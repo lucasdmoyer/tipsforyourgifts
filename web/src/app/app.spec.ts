@@ -282,6 +282,15 @@ describe('App', () => {
     expect(experimentGrids[experimentGrids.length - 1].querySelectorAll('.experiment-card')).toHaveLength(GROWTH.experiments.length);
   });
 
+  it('renders AI operating counts from the validated policy instead of stale prose', () => {
+    const fixture = TestBed.createComponent(StudioPage);
+    fixture.detectChanges();
+    const element = fixture.nativeElement as HTMLElement;
+    const policy = OPERATIONS.aiAutomationPolicy;
+    expect(element.textContent).toContain(`${policy.protectedWorkflows} protected workflows. ${policy.protectedModelCalls} bounded model steps. Zero production authority.`);
+    expect(element.textContent).not.toContain('Six workflows. Eight model calls.');
+  });
+
   it('renders the founder strategy intake and approval controls', () => {
     const fixture = TestBed.createComponent(StudioPage);
     fixture.detectChanges();
