@@ -73,6 +73,12 @@ const expectedStrategyCandidate = [...proposedIdeas].sort((left, right) => (prio
 if (expectedStrategyCandidate) {
   const currentStrategyDecision = base.decisions.find((decision) => decision.id === 'choose-next-thesis');
   assert.match(currentStrategyDecision.recommendation, new RegExp(`${expectedStrategyCandidate.id} revision ${expectedStrategyCandidate.revision}`));
+  if (expectedStrategyCandidate.pairing) {
+    assert.ok(currentStrategyDecision.evidence.includes(`Its pair-coherence hypothesis scores ${expectedStrategyCandidate.pairing.coherenceScore}/100 before product research.`));
+  } else {
+    assert.ok(currentStrategyDecision.evidence.includes('This is a single-product or category thesis; no pair-coherence claim is being made before product research.'));
+    assert.doesNotMatch(currentStrategyDecision.evidence.join(' '), /not applicable\/100/);
+  }
   if (baseInput.openStrategyProposals < baseInput.maxOpenStrategyProposals) {
     assert.doesNotMatch(currentStrategyDecision.rationale, /queue (?:is|has reached).*full|configured cap/i, 'available proposal capacity must not be reported as full');
     assert.match(currentStrategyDecision.rationale, new RegExp(`${baseInput.maxOpenStrategyProposals - baseInput.openStrategyProposals} of ${baseInput.maxOpenStrategyProposals} proposal slots remain available`));
