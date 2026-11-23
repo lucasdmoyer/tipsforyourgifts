@@ -56,7 +56,10 @@ if (!currentContentIsVerified && livePublication.latestVerifiedContentRelease) {
   if (releaseApprovals.currentContentSetApprovedRelease) {
     assert.equal(releaseDecision.title, 'Unblock the approved exact release');
     assert.equal(releaseDecision.action.url, releaseApprovals.currentContentSetApprovedRelease.pullRequestUrl);
-    assert.equal(releaseDecision.action.command, null);
+    assert.match(releaseDecision.action.command, /tips-github-preview/);
+    assert.match(releaseDecision.action.command, new RegExp(`refs/pull/${releaseApprovals.currentContentSetApprovedRelease.pullRequestNumber}/merge`));
+    assert.match(releaseDecision.action.command, /job_workflow_ref lucasdmoyer\/tipsforyourgifts\/\.github\/workflows\/firebase-preview-deploy\.yml@refs\/heads\/master/);
+    assert.match(releaseDecision.action.command, /No Firebase Auth Admin, no user-managed key, no production-provider changes, and no production deployment/);
     assert.ok(releaseDecision.evidence.some((item) => item.includes(releaseApprovals.currentContentSetApprovedRelease.headSha)));
     assert.match(releaseDecision.guardrail, /does not transfer/);
   } else {

@@ -72,6 +72,10 @@ function selectAffiliatePilot(affiliate) {
     })[0];
 }
 
+function previewIdentityApprovalPrompt(pullRequestNumber) {
+  return `Approve creation of Workload Identity pool tips-github-preview and provider github-preview for repository ID 171694140, repository-owner ID 23782501, actor ID 23782501, event pull_request, ref refs/pull/${pullRequestNumber}/merge, and job_workflow_ref lucasdmoyer/tipsforyourgifts/.github/workflows/firebase-preview-deploy.yml@refs/heads/master. Grant roles/iam.workloadIdentityUser on github-action-171694140@tipsforyourgifts.iam.gserviceaccount.com. Retain Firebase Hosting Admin only. No Firebase Auth Admin, no user-managed key, no production-provider changes, and no production deployment.`;
+}
+
 export function buildFounderAgenda(input) {
   const decisions = [];
   const release = input.publicationManifest;
@@ -135,7 +139,9 @@ export function buildFounderAgenda(input) {
       action: {
         label: approvedExactRelease ? 'Open approved release' : 'Open release workflow',
         url: approvedExactRelease ? approvedExactRelease.pullRequestUrl : 'https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/firebase-production.yml',
-        command: approvedExactRelease ? null : 'gh workflow run firebase-production.yml -f release_sha=<approved-master-sha>'
+        command: approvedExactRelease
+          ? previewIdentityApprovalPrompt(approvedExactRelease.pullRequestNumber)
+          : 'gh workflow run firebase-production.yml -f release_sha=<approved-master-sha>'
       }
     });
   }
