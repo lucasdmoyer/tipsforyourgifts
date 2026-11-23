@@ -123,7 +123,7 @@ export const OPERATIONS: Operations = {
   },
   "automationReadiness": {
     "schemaVersion": "1.1.0",
-    "observedAt": "2026-11-23T07:25:48.000Z",
+    "observedAt": "2026-11-23T10:27:16.000Z",
     "sourceMode": "versioned_snapshot_not_live_poll",
     "posture": "founder_action_required",
     "summary": "The operating system can validate content and run a narrow affiliate pilot today. Research generation, automated previews, distribution, measurement, release approval, and eventual keyless automatic publication still require explicit bounded founder actions.",
@@ -139,7 +139,7 @@ export const OPERATIONS: Operations = {
         "id": "research-generation",
         "label": "Research generation",
         "status": "blocked_external_configuration",
-        "evidence": "Scheduled research workflows stop before any model call because no founder-approved OpenAI project hard limit, earlier spend alert, or dedicated OPENAI_API_KEY is configured.",
+        "evidence": "A read-only GitHub check found no repository or production-environment secret named OPENAI_API_KEY, and the versioned policy still has no founder-approved OpenAI project hard limit or earlier spend alert; scheduled research therefore stops before any model call.",
         "nextAction": "Lucas first approves and configures an OpenAI project hard spend limit plus an earlier alert; only afterward may the dedicated project key be stored as OPENAI_API_KEY and separately verified.",
         "actionUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/57#issuecomment-7091612791",
         "founderActionRequired": true
@@ -184,18 +184,18 @@ export const OPERATIONS: Operations = {
         "id": "preview-delivery",
         "label": "Firebase preview delivery",
         "status": "manual_fallback_verified",
-        "evidence": "The exact optimized Firebase preview passed Node 24 validation, build, smoke, hosted smoke across 17 routes and 11 articles, and final visual review. Home transfer fell from 299 KiB to 218 KiB while Lighthouse performance, accessibility, and best practices remained 100 on the reviewed routes. Automated keyless delivery remains blocked: PR 67's protected validation and exact-artifact build pass, but deploy stops at Google authentication because the tips-github-preview/github-preview Workload Identity provider is missing.",
-        "nextAction": "Approve and provision GitHub OIDC trust only for repository lucasdmoyer/tipsforyourgifts, actor lucasdmoyer, and ref refs/pull/67/merge, with Firebase Hosting Admin limited to the PR-67 preview workflow.",
-        "actionUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/67#issuecomment-7092964553",
+        "evidence": "The exact PR-74 Firebase preview passed Node 24.14 validation, a 19-route build, smoke and hosted HTTP checks, plus visual review of the home page, flagship read-and-play guide, and executive Studio. The public-pages payload fell from 265.64 KiB to 34.07 KiB raw, an 87.2 percent reduction. Automated keyless delivery remains blocked: PR 74's protected validation and exact-artifact build pass, but automated deploy stops at Google authentication because the tips-github-preview/github-preview Workload Identity provider is missing; the exact commit was reviewed through the manual Firebase preview fallback.",
+        "nextAction": "Approve and provision GitHub OIDC trust only for repository lucasdmoyer/tipsforyourgifts, actor lucasdmoyer, and ref refs/pull/74/merge, with Firebase Hosting Admin limited to the PR-74 preview workflow.",
+        "actionUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/74",
         "founderActionRequired": true
       },
       {
         "id": "production-release",
         "label": "Production release",
         "status": "founder_approval_required",
-        "evidence": "Exact candidate 5a60eb521b9f64a9b3fbdd38116852b26698885e has a reviewed Firebase preview; production remains unchanged and separately gated.",
-        "nextAction": "Provision the PR-67-only OIDC preview trust, require the protected preview to pass on unchanged SHA 5a60eb521b9f64a9b3fbdd38116852b26698885e, then merge without an admin bypass; production remains a separate action-time gate.",
-        "actionUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/67#issuecomment-7092964553",
+        "evidence": "Exact candidate 9e0dfd556fa556b604e4e7d479c30747be09dc54 has a reviewed Firebase preview; production remains unchanged and separately gated.",
+        "nextAction": "Provision the PR-74-only OIDC preview trust, require the protected preview workflow to pass on unchanged SHA 9e0dfd556fa556b604e4e7d479c30747be09dc54, then merge without an admin bypass; production remains a separate exact-master-SHA action-time gate.",
+        "actionUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/74",
         "founderActionRequired": true
       },
       {
@@ -213,7 +213,7 @@ export const OPERATIONS: Operations = {
         "id": "openai-platform-credential",
         "label": "Research model credential",
         "status": "blocked_external_configuration",
-        "summary": "Scheduled research workflows stop before any model call because no founder-approved OpenAI project hard limit, earlier spend alert, or dedicated OPENAI_API_KEY is configured.",
+        "summary": "A read-only GitHub check found no repository or production-environment secret named OPENAI_API_KEY, and the versioned policy still has no founder-approved OpenAI project hard limit or earlier spend alert; scheduled research therefore stops before any model call.",
         "evidenceUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/57#issuecomment-7091612791",
         "diagnosticUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/57",
         "nextAction": "Lucas first approves and configures an OpenAI project hard spend limit plus an earlier alert; only afterward may the dedicated project key be stored as OPENAI_API_KEY and separately verified.",
@@ -223,10 +223,10 @@ export const OPERATIONS: Operations = {
         "id": "firebase-preview-identity",
         "label": "Keyless Firebase preview identity",
         "status": "blocked_external_configuration",
-        "summary": "PR 67's protected validation and exact-artifact build pass, but deploy stops at Google authentication because the tips-github-preview/github-preview Workload Identity provider is missing.",
-        "evidenceUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/67#issuecomment-7092964553",
-        "diagnosticUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/runs/45121359814",
-        "nextAction": "Approve and provision GitHub OIDC trust only for repository lucasdmoyer/tipsforyourgifts, actor lucasdmoyer, and ref refs/pull/67/merge, with Firebase Hosting Admin limited to the PR-67 preview workflow.",
+        "summary": "PR 74's protected validation and exact-artifact build pass, but automated deploy stops at Google authentication because the tips-github-preview/github-preview Workload Identity provider is missing; the exact commit was reviewed through the manual Firebase preview fallback.",
+        "evidenceUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/74",
+        "diagnosticUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/runs/45144566370",
+        "nextAction": "Approve and provision GitHub OIDC trust only for repository lucasdmoyer/tipsforyourgifts, actor lucasdmoyer, and ref refs/pull/74/merge, with Firebase Hosting Admin limited to the PR-74 preview workflow.",
         "authorityBoundary": "Use short-lived impersonation for Firebase Hosting previews only. No Firebase Auth Admin, user-managed service-account key, or production Hosting authorization."
       },
       {
@@ -242,12 +242,12 @@ export const OPERATIONS: Operations = {
     ],
     "releaseCandidate": {
       "status": "exact_preview_verified",
-      "sha": "5a60eb521b9f64a9b3fbdd38116852b26698885e",
-      "pullRequestUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/67",
-      "reviewUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/67#issuecomment-7092964553",
-      "previewUrl": "https://tipsforyourgifts--pr-67-5a60eb52-21eq8qrw.web.app/",
-      "summary": "The exact optimized Firebase preview passed Node 24 validation, build, smoke, hosted smoke across 17 routes and 11 articles, and final visual review. Home transfer fell from 299 KiB to 218 KiB while Lighthouse performance, accessibility, and best practices remained 100 on the reviewed routes.",
-      "nextAction": "Provision the PR-67-only OIDC preview trust, require the protected preview to pass on unchanged SHA 5a60eb521b9f64a9b3fbdd38116852b26698885e, then merge without an admin bypass; production remains a separate action-time gate."
+      "sha": "9e0dfd556fa556b604e4e7d479c30747be09dc54",
+      "pullRequestUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/74",
+      "reviewUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/74",
+      "previewUrl": "https://tipsforyourgifts--pr-74-9e0dfd5-uosqaecm.web.app/",
+      "summary": "The exact PR-74 Firebase preview passed Node 24.14 validation, a 19-route build, smoke and hosted HTTP checks, plus visual review of the home page, flagship read-and-play guide, and executive Studio. The public-pages payload fell from 265.64 KiB to 34.07 KiB raw, an 87.2 percent reduction.",
+      "nextAction": "Provision the PR-74-only OIDC preview trust, require the protected preview workflow to pass on unchanged SHA 9e0dfd556fa556b604e4e7d479c30747be09dc54, then merge without an admin bypass; production remains a separate exact-master-SHA action-time gate."
     }
   },
   "aiAutomationPolicy": {
