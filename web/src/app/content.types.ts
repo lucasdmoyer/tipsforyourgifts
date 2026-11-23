@@ -538,6 +538,7 @@ export interface Operations {
       programId: string;
       articleSlug: string;
       requestedProducts: number;
+      catalogProductsVerified: number;
       paidUrlsCollected: number;
       currentArticleMatchesIndependentReview: boolean;
       nextGate: string;

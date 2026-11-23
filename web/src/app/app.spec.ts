@@ -499,6 +499,10 @@ describe('App', () => {
     expect(element.textContent).toContain(OPERATIONS.affiliate.siteApplicationDescription);
     expect(element.textContent).toContain(OPERATIONS.affiliate.sensitiveDataPolicy);
     expect(element.textContent).toContain(`${OPERATIONS.affiliate.linkCandidates} exact candidates · ${OPERATIONS.affiliate.linkReviewsPassed} clean independent reviews · ${OPERATIONS.affiliate.linkApprovals} founder approvals.`);
+    for (const request of OPERATIONS.affiliate.expansionRequests) {
+      expect(element.textContent).toContain('Bookshop expansion handoff');
+      expect(element.textContent).toContain(`${request.requestedProducts} editions identified. ${request.catalogProductsVerified} clean catalog pages independently verified. ${request.paidUrlsCollected} partner-issued paid URLs collected.`);
+    }
     for (const proposal of OPERATIONS.affiliate.activationProposals) {
       expect(element.textContent).toContain('Bookshop decision packet');
       expect(element.textContent).toContain(
