@@ -287,8 +287,10 @@ describe('App', () => {
       expect(element.textContent).toContain(proposedIdeas[0].title);
     }
     expect(element.textContent).toContain(`Publication mode: ${OPERATIONS.publication.mode.replaceAll('_', ' ')}`);
-    expect(element.textContent).toContain(`policy snapshot ${OPERATIONS.publication.verifiedSuccessfulReleaseCount}/${OPERATIONS.publication.minimumSuccessfulFounderReviewedReleases}`);
+    expect(element.textContent).toContain(`Durable verified founder-reviewed receipts: ${OPERATIONS.publication.durableVerifiedFounderReviewedReleaseCount}/${OPERATIONS.publication.minimumSuccessfulFounderReviewedReleases}`);
+    expect(element.textContent).toContain(`Activation audit snapshot: ${OPERATIONS.publication.verifiedSuccessfulReleaseCount}`);
     expect(element.textContent).toContain('recounts unique successful GitHub production deployments');
+    expect(element.textContent).toContain('neither this repository count nor the frozen snapshot grants publication authority');
     expect(element.querySelector('a[href*="publication-policy-enable.yml"]')).not.toBeNull();
     expect(element.querySelector('a[href*="firebase-production.yml"]')).not.toBeNull();
     expect(element.textContent).toContain('pauses with its preview URL for production approval');

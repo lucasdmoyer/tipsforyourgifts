@@ -652,10 +652,12 @@ export interface Operations {
     mode: 'founder_reviewed' | 'automatic_after_proven';
     automaticPromotionEnabled: boolean;
     verifiedSuccessfulReleaseCount: number;
+    durableVerifiedFounderReviewedReleaseCount: number;
     minimumSuccessfulFounderReviewedReleases: number;
     verifiedReleaseReceiptRequired: true;
     receiptRetentionDays: number;
     releaseEvidenceSource: 'github_production_deployments_at_enable_time';
+    durableReceiptEvidenceSource: 'repository_verified_publication_receipts';
     currentLive: {
       status: 'no_verified_managed_release' | 'verified_managed_content_release';
       updatedAt: string | null;

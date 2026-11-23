@@ -90,7 +90,7 @@ export const automationReadinessSchema = z.object({
 
 export function buildAutomationReadiness(input) {
   const evidence = automationReadinessEvidenceSchema.parse(input.evidence);
-  if (!Number.isInteger(input.verifiedFounderReviewedReleases) || input.verifiedFounderReviewedReleases < 0) throw new Error('verifiedFounderReviewedReleases must be a non-negative integer');
+  if (!Number.isInteger(input.durableFounderReviewedReleases) || input.durableFounderReviewedReleases < 0) throw new Error('durableFounderReviewedReleases must be a non-negative integer');
   if (!Number.isInteger(input.minimumFounderReviewedReleases) || input.minimumFounderReviewedReleases < 10) throw new Error('minimumFounderReviewedReleases must be an integer of at least 10');
   const gateById = new Map(evidence.externalGates.map((gate) => [gate.id, gate]));
   const openAiGate = gateById.get('openai-platform-credential');
@@ -172,7 +172,7 @@ export function buildAutomationReadiness(input) {
       id: 'automatic-publication',
       label: 'Proven automatic publication',
       status: autoProductionGate.status,
-      evidence: `${autoProductionGate.summary} The founder-reviewed release ledger currently records ${input.verifiedFounderReviewedReleases} of ${input.minimumFounderReviewedReleases} releases required before activation.`,
+      evidence: `${autoProductionGate.summary} The repository ledger contains ${input.durableFounderReviewedReleases} of ${input.minimumFounderReviewedReleases} durable verified founder-reviewed release receipts. Final activation still requires the live GitHub deployment recount and separate founder approval.`,
       nextAction: autoProductionGate.nextAction,
       actionUrl: autoProductionGate.evidenceUrl,
       founderActionRequired: true

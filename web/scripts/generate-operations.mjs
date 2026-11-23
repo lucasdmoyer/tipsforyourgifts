@@ -14,6 +14,7 @@ import { assessEditorialSafetyApproval, reviewedContentDigests } from './lib/edi
 import { latestEditorialSafetyApproval, loadEditorialSafetyApprovalRecords } from './lib/editorial-safety-store.mjs';
 import { buildFounderAgenda } from './lib/founder-agenda-contract.mjs';
 import { loadAffiliateLinkState } from './lib/affiliate-link-contract.mjs';
+import { summarizeDurableFounderReviewedReleaseReceipts } from './lib/publication-receipt-contract.mjs';
 
 const root = process.cwd();
 const runsDir = path.join(root, 'research', 'runs');
@@ -41,6 +42,7 @@ const opportunityPolicyPath = path.join(root, 'config', 'opportunity-scout-polic
 const automationReadinessPath = path.join(root, 'config', 'automation-readiness.json');
 const aiAutomationPolicyPath = path.join(root, 'config', 'ai-automation-policy.json');
 const publicationManifestPath = path.join(root, 'public', 'publication-manifest.json');
+const publicationReceiptDir = path.join(root, 'releases', 'receipts');
 const outputPath = path.join(root, 'src', 'data', 'operations.json');
 
 const runNames = (await fs.readdir(runsDir)).filter((name) => name.endsWith('.json')).sort();
@@ -150,6 +152,9 @@ const aiAutomationPolicy = {
   }
 };
 const publicationManifest = JSON.parse(await fs.readFile(publicationManifestPath, 'utf8'));
+const publicationReceiptNames = (await fs.readdir(publicationReceiptDir)).filter((name) => name.endsWith('.json')).sort();
+const publicationReceipts = await Promise.all(publicationReceiptNames.map(async (name) => JSON.parse(await fs.readFile(path.join(publicationReceiptDir, name), 'utf8'))));
+const durableFounderReviewedReleaseSummary = summarizeDurableFounderReviewedReleaseReceipts(publicationReceipts);
 const editorialSafetyApprovals = await loadEditorialSafetyApprovalRecords(root);
 
 const validatedRuns = runs.filter((run) => run.status === 'validated').length;
@@ -388,7 +393,7 @@ const automationReadiness = buildAutomationReadiness({
   socialDrafts,
   activeGrowthConnectors,
   growthSnapshots: growth.snapshots.length,
-  verifiedFounderReviewedReleases: publicationPolicy.automaticPromotion.verifiedSuccessfulReleaseCount,
+  durableFounderReviewedReleases: durableFounderReviewedReleaseSummary.uniqueReleaseCount,
   minimumFounderReviewedReleases: publicationPolicy.automaticPromotion.minimumSuccessfulFounderReviewedReleases
 });
 
@@ -633,10 +638,12 @@ const operations = {
     mode: publicationPolicy.mode,
     automaticPromotionEnabled: publicationPolicy.automaticPromotion.enabled,
     verifiedSuccessfulReleaseCount: publicationPolicy.automaticPromotion.verifiedSuccessfulReleaseCount,
+    durableVerifiedFounderReviewedReleaseCount: durableFounderReviewedReleaseSummary.uniqueReleaseCount,
     minimumSuccessfulFounderReviewedReleases: publicationPolicy.automaticPromotion.minimumSuccessfulFounderReviewedReleases,
     verifiedReleaseReceiptRequired: publicationPolicy.requiredGates.verifiedReleaseReceipt,
     receiptRetentionDays: 90,
     releaseEvidenceSource: 'github_production_deployments_at_enable_time',
+    durableReceiptEvidenceSource: 'repository_verified_publication_receipts',
     currentLive: {
       status: livePublication.status,
       updatedAt: livePublication.updatedAt,
