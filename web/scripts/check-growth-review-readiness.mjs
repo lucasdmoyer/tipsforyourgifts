@@ -1,4 +1,5 @@
 import fs from 'node:fs/promises';
+import { createHash } from 'node:crypto';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 import process from 'node:process';
@@ -14,6 +15,8 @@ export function assessGrowthReviewReadiness(input) {
       reason: 'no_complete_aggregate_snapshot',
       snapshotCount,
       latestSnapshotId: null,
+      latestSnapshotSha256: null,
+      latestSnapshotUrl: null,
       modelInvocationAuthorized: false
     };
   }
@@ -26,6 +29,8 @@ export function assessGrowthReviewReadiness(input) {
     reason: 'complete_aggregate_snapshot_available',
     snapshotCount,
     latestSnapshotId: latestSnapshot.id,
+    latestSnapshotSha256: createHash('sha256').update(JSON.stringify(latestSnapshot)).digest('hex'),
+    latestSnapshotUrl: latestSnapshot.sourceEvidenceUrl,
     modelInvocationAuthorized: true
   };
 }
@@ -44,6 +49,8 @@ async function run() {
       `reason=${assessment.reason}`,
       `snapshot_count=${assessment.snapshotCount}`,
       `latest_snapshot_id=${assessment.latestSnapshotId ?? ''}`,
+      `latest_snapshot_sha256=${assessment.latestSnapshotSha256 ?? ''}`,
+      `latest_snapshot_url=${assessment.latestSnapshotUrl ?? ''}`,
       `model_invocation_authorized=${assessment.modelInvocationAuthorized}`,
       ''
     ].join('\n'));

@@ -114,6 +114,26 @@ assert.match(strategyFailureProofStep.run, /git diff --exit-code HEAD -- web\/sr
 assert.match(strategyFailurePrStep.run, /does not preserve partial model output/, 'strategy correction PR must state that partial output was discarded');
 assert.doesNotMatch(strategyFailurePrStep.run, /gh pr merge/, 'strategy correction PR must never auto-merge');
 
+const growthWorkflow = await readWorkflow('growth-review.yml');
+const growthAnalysisJob = growthWorkflow.parsed.jobs?.analyze;
+const growthFailureJob = growthWorkflow.parsed.jobs?.record_failure;
+const growthFailureWriterJob = growthWorkflow.parsed.jobs?.open_failure_pull_request;
+assert.ok(growthAnalysisJob && growthFailureJob && growthFailureWriterJob, 'growth review needs analysis, clean failure recording, and a detached correction writer');
+const growthModelStep = growthAnalysisJob.steps.find((step) => step.uses === 'openai/codex-action@v1');
+const growthRouteStep = findStep(growthAnalysisJob, 'Route the exact growth-analysis result');
+const growthFailureRecordStep = findStep(growthFailureJob, 'Record only the credential-free growth failure receipt');
+const growthFailureProofStep = findStep(growthFailureJob, 'Prove and serialize the clean growth failure packet');
+const growthFailurePrStep = findStep(growthFailureWriterJob, 'Open the growth correction pull request with auto-merge disabled');
+assert.equal(growthModelStep?.['continue-on-error'], true, 'growth model failures must reach the trusted classifier');
+assert.equal(growthFailureJob.steps.filter((step) => step.uses === 'openai/codex-action@v1').length, 0, 'growth failure recording must be credential-free');
+assert.equal(growthFailureWriterJob.steps.filter((step) => step.uses === 'openai/codex-action@v1').length, 0, 'growth correction writing must be credential-free');
+assert.ok(growthRouteStep && growthFailureRecordStep && growthFailureProofStep && growthFailurePrStep, 'growth analysis failure needs a complete aggregate-only retry handoff');
+assert.match(growthRouteStep.run, /runtime_policy_failed[\s\S]*credential_preflight_failed[\s\S]*model_step_failed[\s\S]*output_invalid/, 'growth failure routing must distinguish runtime, credential, model, and output failures');
+assert.match(growthFailureRecordStep.run, /automation:failure:record/, 'growth failure state must be created only by the deterministic recorder');
+assert.match(growthFailureProofStep.run, /git diff --exit-code HEAD -- web\/src\/data\/growth\.json/, 'growth failure recording must prove no aggregate snapshot or experiment survived');
+assert.match(growthFailurePrStep.run, /does not infer missing metrics/, 'growth correction PR must preserve the aggregate-only evidence boundary');
+assert.doesNotMatch(growthFailurePrStep.run, /gh pr merge/, 'growth correction PR must never auto-merge');
+
 const researchDispatch = research.parsed.on?.workflow_dispatch;
 assert.equal(researchDispatch?.inputs?.idea_id?.required, true, 'research workflow requires the founder-approved idea ID');
 assert.equal(research.parsed.permissions?.contents, 'read', 'model workflow default contents authority must remain read-only');
@@ -219,6 +239,7 @@ console.log(JSON.stringify({
     'opportunity_review_failure_to_clean_correction_packet',
     'strategy_approval_to_research_dispatch',
     'strategy_intake_failure_to_clean_correction_packet',
+    'growth_analysis_failure_to_clean_correction_packet',
     'research_failure_to_clean_correction_packet',
     'research_to_independent_qa',
     'review_failure_to_clean_correction_packet',
