@@ -96,7 +96,7 @@ export const OPERATIONS: Operations = {
   },
   "automationReadiness": {
     "schemaVersion": "1.1.0",
-    "observedAt": "2026-11-23T04:34:09.000Z",
+    "observedAt": "2026-11-23T07:25:48.000Z",
     "sourceMode": "versioned_snapshot_not_live_poll",
     "posture": "founder_action_required",
     "summary": "The operating system can validate content and run a narrow affiliate pilot today. Research generation, automated previews, distribution, measurement, release approval, and eventual keyless automatic publication still require explicit bounded founder actions.",
@@ -157,18 +157,18 @@ export const OPERATIONS: Operations = {
         "id": "preview-delivery",
         "label": "Firebase preview delivery",
         "status": "manual_fallback_verified",
-        "evidence": "The exact Firebase preview passed Node 24 validation, build, smoke, hosted smoke across 17 routes and 11 articles, and final visual review. Its 1200 pixel WebP tier reduces the affected 20 public visual files by 73.1 percent. Automated keyless delivery remains blocked: PR 54's protected build and validation pass, but deploy stops at Google authentication because the tips-github-preview/github-preview Workload Identity provider is missing.",
-        "nextAction": "Approve and provision GitHub OIDC trust only for repository lucasdmoyer/tipsforyourgifts, actor lucasdmoyer, and ref refs/pull/54/merge, with Firebase Hosting Admin limited to the PR-54 preview workflow.",
-        "actionUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/54#issuecomment-7091635371",
+        "evidence": "The exact optimized Firebase preview passed Node 24 validation, build, smoke, hosted smoke across 17 routes and 11 articles, and final visual review. Home transfer fell from 299 KiB to 218 KiB while Lighthouse performance, accessibility, and best practices remained 100 on the reviewed routes. Automated keyless delivery remains blocked: PR 67's protected validation and exact-artifact build pass, but deploy stops at Google authentication because the tips-github-preview/github-preview Workload Identity provider is missing.",
+        "nextAction": "Approve and provision GitHub OIDC trust only for repository lucasdmoyer/tipsforyourgifts, actor lucasdmoyer, and ref refs/pull/67/merge, with Firebase Hosting Admin limited to the PR-67 preview workflow.",
+        "actionUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/67#issuecomment-7092964553",
         "founderActionRequired": true
       },
       {
         "id": "production-release",
         "label": "Production release",
         "status": "founder_approval_required",
-        "evidence": "Exact candidate 2984e0c2a0dc31d7c8c29c61781f503a50032490 has a reviewed Firebase preview; production remains unchanged and separately gated.",
-        "nextAction": "The founder approved only this unchanged SHA. Provision the PR-54-only OIDC preview trust, require the protected preview to pass, then merge without an admin bypass; production remains a separate gate.",
-        "actionUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/54#issuecomment-7091635371",
+        "evidence": "Exact candidate 5a60eb521b9f64a9b3fbdd38116852b26698885e has a reviewed Firebase preview; production remains unchanged and separately gated.",
+        "nextAction": "Provision the PR-67-only OIDC preview trust, require the protected preview to pass on unchanged SHA 5a60eb521b9f64a9b3fbdd38116852b26698885e, then merge without an admin bypass; production remains a separate action-time gate.",
+        "actionUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/67#issuecomment-7092964553",
         "founderActionRequired": true
       },
       {
@@ -196,10 +196,10 @@ export const OPERATIONS: Operations = {
         "id": "firebase-preview-identity",
         "label": "Keyless Firebase preview identity",
         "status": "blocked_external_configuration",
-        "summary": "PR 54's protected build and validation pass, but deploy stops at Google authentication because the tips-github-preview/github-preview Workload Identity provider is missing.",
-        "evidenceUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/54#issuecomment-7091635371",
-        "diagnosticUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/runs/45109399969",
-        "nextAction": "Approve and provision GitHub OIDC trust only for repository lucasdmoyer/tipsforyourgifts, actor lucasdmoyer, and ref refs/pull/54/merge, with Firebase Hosting Admin limited to the PR-54 preview workflow.",
+        "summary": "PR 67's protected validation and exact-artifact build pass, but deploy stops at Google authentication because the tips-github-preview/github-preview Workload Identity provider is missing.",
+        "evidenceUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/67#issuecomment-7092964553",
+        "diagnosticUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/runs/45121359814",
+        "nextAction": "Approve and provision GitHub OIDC trust only for repository lucasdmoyer/tipsforyourgifts, actor lucasdmoyer, and ref refs/pull/67/merge, with Firebase Hosting Admin limited to the PR-67 preview workflow.",
         "authorityBoundary": "Use short-lived impersonation for Firebase Hosting previews only. No Firebase Auth Admin, user-managed service-account key, or production Hosting authorization."
       },
       {
@@ -215,12 +215,12 @@ export const OPERATIONS: Operations = {
     ],
     "releaseCandidate": {
       "status": "exact_preview_verified",
-      "sha": "2984e0c2a0dc31d7c8c29c61781f503a50032490",
-      "pullRequestUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/54",
-      "reviewUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/54#issuecomment-7091635371",
-      "previewUrl": "https://tipsforyourgifts--pr-54-2984e0c2-v6jaivyw.web.app/",
-      "summary": "The exact Firebase preview passed Node 24 validation, build, smoke, hosted smoke across 17 routes and 11 articles, and final visual review. Its 1200 pixel WebP tier reduces the affected 20 public visual files by 73.1 percent.",
-      "nextAction": "The founder approved only this unchanged SHA. Provision the PR-54-only OIDC preview trust, require the protected preview to pass, then merge without an admin bypass; production remains a separate gate."
+      "sha": "5a60eb521b9f64a9b3fbdd38116852b26698885e",
+      "pullRequestUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/67",
+      "reviewUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/67#issuecomment-7092964553",
+      "previewUrl": "https://tipsforyourgifts--pr-67-5a60eb52-21eq8qrw.web.app/",
+      "summary": "The exact optimized Firebase preview passed Node 24 validation, build, smoke, hosted smoke across 17 routes and 11 articles, and final visual review. Home transfer fell from 299 KiB to 218 KiB while Lighthouse performance, accessibility, and best practices remained 100 on the reviewed routes.",
+      "nextAction": "Provision the PR-67-only OIDC preview trust, require the protected preview to pass on unchanged SHA 5a60eb521b9f64a9b3fbdd38116852b26698885e, then merge without an admin bypass; production remains a separate action-time gate."
     }
   },
   "aiAutomationPolicy": {
