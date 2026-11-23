@@ -8,6 +8,7 @@ import { reviewedArticleSha256 } from './editorial-review-receipt-contract.mjs';
 const slug = z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/);
 const sha256 = z.string().regex(/^[a-f0-9]{64}$/);
 const httpsUrl = z.string().url().refine((value) => new URL(value).protocol === 'https:', 'must use HTTPS');
+const safeIdentity = z.string().regex(/^[A-Za-z0-9][A-Za-z0-9._-]{2,79}$/);
 
 function isbn13IsValid(value) {
   const digits = [...value].map(Number);
@@ -29,7 +30,7 @@ export const affiliateExpansionRequestSchema = z.object({
   updatedAt: z.string().datetime(),
   requests: z.array(z.object({
     id: slug,
-    status: z.literal('awaiting_founder_scope_approval_and_partner_export'),
+    status: z.enum(['awaiting_founder_scope_approval_and_partner_export', 'scope_approved_awaiting_partner_export']),
     programId: slug,
     expectedProgramRevision: z.number().int().positive(),
     proposedProgramRevision: z.number().int().positive(),
@@ -61,9 +62,20 @@ export const affiliateExpansionRequestSchema = z.object({
       affiliateCandidatesCreated: z.literal(false),
       editorialRankingChanged: z.literal(false),
       productionDeploymentAuthorized: z.literal(false)
-    }).strict()
+    }).strict(),
+    scopeApproval: z.object({
+      approvedBy: safeIdentity,
+      approvedAt: z.string().datetime(),
+      evidenceUrl: httpsUrl,
+      approvalBoundarySha256: sha256
+    }).strict().nullable().optional()
   }).strict()).min(1)
 }).strict();
+
+export function affiliateExpansionApprovalBoundarySha256(request) {
+  const { status: _status, scopeApproval: _scopeApproval, ...boundary } = request;
+  return createHash('sha256').update(`${JSON.stringify(boundary, null, 2)}\n`).digest('hex');
+}
 
 async function readBoundJson(root, reference) {
   const raw = await fs.readFile(path.join(root, reference.path));
@@ -80,7 +92,10 @@ export async function validateAffiliateExpansionRequests({ root, document: input
   for (const request of document.requests) {
     const program = programById.get(request.programId);
     if (!program?.enabled || program.status !== 'enabled') throw new Error(`${request.id} requires an enabled program`);
-    if (program.revision !== request.expectedProgramRevision || request.proposedProgramRevision !== program.revision + 1) throw new Error(`${request.id} program revision boundary is stale`);
+    const scopePending = request.status === 'awaiting_founder_scope_approval_and_partner_export';
+    if (request.proposedProgramRevision !== request.expectedProgramRevision + 1) throw new Error(`${request.id} proposed program revision is not the next revision`);
+    if (scopePending && program.revision !== request.expectedProgramRevision) throw new Error(`${request.id} pending program revision boundary is stale`);
+    if (!scopePending && program.revision !== request.proposedProgramRevision) throw new Error(`${request.id} approved program revision boundary is stale`);
     if (program.sourceReviewExpiresAt < document.updatedAt.slice(0, 10)) throw new Error(`${request.id} program source review is expired`);
 
     const articlePath = path.join(root, 'src', 'data', 'blog', `${request.articleSlug}.md`);
@@ -98,7 +113,6 @@ export async function validateAffiliateExpansionRequests({ root, document: input
     if ((review.articleSha256 === reviewedArticleSha256(articleRaw)) !== request.independentReview.currentArticleMatchesReceipt) throw new Error(`${request.id} independent review freshness assertion differs`);
 
     const currentActivation = program.activationProductSelection?.eligibleProductIds ?? [];
-    if (JSON.stringify(currentActivation) !== JSON.stringify(request.currentActivationProductIds)) throw new Error(`${request.id} current activation scope changed`);
     const requestedSet = new Set(request.requestedProductIds);
     if (requestedSet.size !== request.requestedProductIds.length || request.products.length !== requestedSet.size) throw new Error(`${request.id} requested products must be unique and complete`);
     if (request.currentActivationProductIds.some((id) => requestedSet.has(id))) throw new Error(`${request.id} requested products overlap the current activation scope`);
@@ -120,6 +134,21 @@ export async function validateAffiliateExpansionRequests({ root, document: input
       }
     }
 
+    const approvalBoundarySha256 = affiliateExpansionApprovalBoundarySha256(request);
+    if (scopePending) {
+      if (request.scopeApproval != null) throw new Error(`${request.id} pending request cannot contain scope approval evidence`);
+      if (JSON.stringify(currentActivation) !== JSON.stringify(request.currentActivationProductIds)) throw new Error(`${request.id} current activation scope changed before founder approval`);
+    } else {
+      if (!request.scopeApproval) throw new Error(`${request.id} approved request is missing scope approval evidence`);
+      if (request.scopeApproval.approvalBoundarySha256 !== approvalBoundarySha256) throw new Error(`${request.id} scope approval boundary differs`);
+      if (request.scopeApproval.approvedBy !== affiliate.policy.founderApproverLogin) throw new Error(`${request.id} scope approval actor differs from the configured founder`);
+      if (request.scopeApproval.approvedAt !== document.updatedAt) throw new Error(`${request.id} scope approval timestamp differs from the document update`);
+      const evidenceUrl = new URL(request.scopeApproval.evidenceUrl);
+      if (evidenceUrl.hostname !== 'github.com' || evidenceUrl.search || evidenceUrl.hash || !evidenceUrl.pathname.startsWith('/lucasdmoyer/tipsforyourgifts/actions/runs/')) throw new Error(`${request.id} scope approval evidence URL is not an exact GitHub workflow run`);
+      const expandedActivation = [...request.currentActivationProductIds, ...request.requestedProductIds];
+      if (JSON.stringify(currentActivation) !== JSON.stringify(expandedActivation)) throw new Error(`${request.id} approved activation scope does not equal the exact requested union`);
+    }
+
     summaries.push({
       id: request.id,
       status: request.status,
@@ -128,7 +157,7 @@ export async function validateAffiliateExpansionRequests({ root, document: input
       requestedProducts: request.products.length,
       paidUrlsCollected: 0,
       currentArticleMatchesIndependentReview: request.independentReview.currentArticleMatchesReceipt,
-      nextGate: 'Lucas approves this exact nine-book scope, then supplies a founder-attested Bookshop export containing partner-issued URLs.'
+      nextGate: scopePending ? 'Lucas approves this exact nine-book scope, then supplies a founder-attested Bookshop export containing partner-issued URLs.' : 'Supply a founder-attested Bookshop export containing exact partner-issued URLs; every destination still requires independent review and separate founder approval.'
     });
   }
   return { document, summaries };
