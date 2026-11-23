@@ -1,7 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import process from 'node:process';
-import { nextStrategyIdeaId, opportunityScoutMissionSchema, opportunityScoutPolicySchema, sha256 } from './lib/opportunity-scout-contract.mjs';
+import { founderOpportunityDirectiveSchema, nextStrategyIdeaId, opportunityScoutMissionSchema, opportunityScoutPolicySchema, sha256 } from './lib/opportunity-scout-contract.mjs';
 
 const args = Object.fromEntries(process.argv.slice(2).map((value) => {
   const [key, ...rest] = value.replace(/^--/, '').split('=');
@@ -14,12 +14,58 @@ if (!/^[1-9]\d*$/.test(args['workflow-run-id'])) throw new Error('Workflow run I
 const workflowRunAttempt = Number(args['workflow-run-attempt']);
 if (!Number.isInteger(workflowRunAttempt) || workflowRunAttempt < 1) throw new Error('Workflow run attempt must be a positive integer');
 if (!/^[A-Za-z0-9-]+(?:\[bot\])?$/.test(args.actor)) throw new Error('Actor must be a GitHub login or bot actor');
-if (!['scheduled', 'manual'].includes(args.trigger)) throw new Error('Trigger must be scheduled or manual');
+if (!['scheduled', 'manual', 'founder_direction'].includes(args.trigger)) throw new Error('Trigger must be scheduled, manual, or founder_direction');
+
+const credentialPattern = /(?:-----BEGIN [A-Z ]+ PRIVATE KEY-----|gh[pousr]_[A-Za-z0-9]{20,}|sk-[A-Za-z0-9_-]{20,}|AIza[A-Za-z0-9_-]{20,}|(?:api[_ -]?key|password|secret|token)\s*[:=]\s*\S{8,})/i;
+const normalizeParagraph = (value) => value.replaceAll('\r', '').trim().replace(/\n{3,}/g, '\n\n');
+const normalizeLine = (value) => normalizeParagraph(value).replace(/\s+/g, ' ');
+
+function section(body, heading) {
+  const escaped = heading.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const match = new RegExp(`(?:^|\\n)## ${escaped}\\s*\\n([\\s\\S]*?)(?=\\n## |$)`, 'i').exec(body);
+  return normalizeParagraph(match?.[1] ?? '');
+}
+
+async function loadFounderDirective(root) {
+  if (args.trigger !== 'founder_direction') {
+    if (args['directive-path']) throw new Error('Only founder_direction missions may provide --directive-path');
+    return null;
+  }
+  if (args['directive-path'] !== 'founder-direction.json') throw new Error('Founder direction requires --directive-path=founder-direction.json');
+  const source = JSON.parse(await fs.readFile(path.join(root, args['directive-path']), 'utf8'));
+  const issueNumber = Number(source.number);
+  const issueTitle = normalizeLine(source.title ?? '');
+  const body = normalizeParagraph(source.body ?? '');
+  const author = source.user?.login ?? '';
+  if (!Number.isInteger(issueNumber) || issueNumber < 1) throw new Error('Founder direction issue number must be a positive integer');
+  if (source.author_association !== 'OWNER' || author !== args.actor) throw new Error('Founder direction must come from the repository owner who triggered the workflow');
+  if (!issueTitle.startsWith('[Scout] ')) throw new Error('Founder direction title must start with [Scout]');
+  if (!/^https:\/\/github\.com\/lucasdmoyer\/tipsforyourgifts\/issues\/[1-9]\d*$/.test(source.html_url ?? '')) throw new Error('Founder direction must reference this repository issue');
+  if (body.length > 6000) throw new Error('Founder direction issue body exceeds the bounded intake size');
+  if (credentialPattern.test(`${issueTitle}\n${body}`)) throw new Error('Founder direction contains credential-like text');
+  const direction = section(body, 'Founder direction');
+  const audience = section(body, 'Recipient or audience');
+  const observedSignal = section(body, 'Signal or hunch to investigate');
+  const boundaries = section(body, 'Boundaries');
+  if (normalizeLine(direction) !== issueTitle.slice('[Scout] '.length)) throw new Error('Founder direction title must match the body direction exactly');
+  return founderOpportunityDirectiveSchema.parse({
+    source: 'founder_github_issue',
+    issueNumber,
+    issueUrl: source.html_url,
+    issueTitle,
+    direction,
+    audience,
+    observedSignal,
+    boundaries,
+    sourceBodySha256: sha256(`${source.body ?? ''}`)
+  });
+}
 
 const root = process.cwd();
-const [policy, strategy] = await Promise.all([
+const [policy, strategy, directive] = await Promise.all([
   fs.readFile(path.join(root, 'config/opportunity-scout-policy.json'), 'utf8').then(JSON.parse).then((value) => opportunityScoutPolicySchema.parse(value)),
-  fs.readFile(path.join(root, 'src/data/strategy.json'), 'utf8').then(JSON.parse)
+  fs.readFile(path.join(root, 'src/data/strategy.json'), 'utf8').then(JSON.parse),
+  loadFounderDirective(root)
 ]);
 const openProposalCount = strategy.ideas.filter((idea) => idea.founderDisposition === 'proposed').length;
 const shouldScout = policy.enabled && openProposalCount < policy.maxOpenProposals;
@@ -53,6 +99,7 @@ if (!shouldScout) {
     },
     expectedProposalId: nextStrategyIdeaId(strategy.ideas),
     openProposalCountAtStart: openProposalCount,
+    directive,
     authority: {
       mayAppendOneProposedIdea: true,
       mayApproveResearch: false,

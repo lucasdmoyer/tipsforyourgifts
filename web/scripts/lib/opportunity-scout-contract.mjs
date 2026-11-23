@@ -10,6 +10,18 @@ const sourceIdSchema = z.string().regex(/^opp-source-[a-z0-9]+(?:-[a-z0-9]+)*$/)
 const signalIdSchema = z.string().regex(/^opp-signal-[a-z0-9]+(?:-[a-z0-9]+)*$/);
 const candidateIdSchema = z.string().regex(/^opp-candidate-[a-z0-9]+(?:-[a-z0-9]+)*$/);
 
+export const founderOpportunityDirectiveSchema = z.object({
+  source: z.literal('founder_github_issue'),
+  issueNumber: z.number().int().positive(),
+  issueUrl: z.string().url().regex(/^https:\/\/github\.com\/lucasdmoyer\/tipsforyourgifts\/issues\/[1-9]\d*$/),
+  issueTitle: z.string().min(10).max(220),
+  direction: z.string().min(8).max(180),
+  audience: z.string().min(6).max(180),
+  observedSignal: z.string().min(12).max(1200),
+  boundaries: z.string().max(1000),
+  sourceBodySha256: sha256Schema
+}).strict();
+
 const opportunityScoutPolicyBaseSchema = z.object({
   schemaVersion: z.literal('1.0.0'),
   updatedAt: z.string().datetime(),
@@ -47,7 +59,7 @@ export const opportunityScoutMissionSchema = z.object({
   createdAt: z.string().datetime(),
   completedAt: z.string().datetime().nullable(),
   trigger: z.object({
-    type: z.enum(['scheduled', 'manual']),
+    type: z.enum(['scheduled', 'manual', 'founder_direction']),
     workflow: z.literal('opportunity-scout.yml'),
     workflowRunId: z.string().regex(/^[1-9]\d*$/),
     workflowRunAttempt: z.number().int().positive(),
@@ -56,6 +68,7 @@ export const opportunityScoutMissionSchema = z.object({
   }).strict(),
   expectedProposalId: ideaIdSchema,
   openProposalCountAtStart: z.number().int().nonnegative(),
+  directive: founderOpportunityDirectiveSchema.nullable().default(null),
   authority: z.object({
     mayAppendOneProposedIdea: z.literal(true),
     mayApproveResearch: z.literal(false),
@@ -68,7 +81,14 @@ export const opportunityScoutMissionSchema = z.object({
     proposalId: ideaIdSchema,
     reviewReceiptPath: z.string().regex(/^research\/opportunity-reviews\/opportunity-scout-[1-9]\d*-[1-9]\d*\.qa\.v1\.json$/)
   }).strict().nullable()
-}).strict();
+}).strict().superRefine((mission, context) => {
+  if (mission.trigger.type === 'founder_direction' && mission.directive === null) {
+    context.addIssue({ code: z.ZodIssueCode.custom, path: ['directive'], message: 'founder_direction missions require one parsed founder directive' });
+  }
+  if (mission.trigger.type !== 'founder_direction' && mission.directive !== null) {
+    context.addIssue({ code: z.ZodIssueCode.custom, path: ['directive'], message: 'scheduled and manual missions cannot inherit a founder directive' });
+  }
+});
 
 const sourceClassSchema = z.enum([
   'manufacturer_category',

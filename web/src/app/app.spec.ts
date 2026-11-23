@@ -325,7 +325,10 @@ describe('App', () => {
     fixture.detectChanges();
     const element = fixture.nativeElement as HTMLElement;
     expect(element.textContent).toContain('Notice the gift before naming the product.');
+    expect(element.textContent).toContain('Give the team three things. Let research do the rest.');
+    expect(element.textContent).toContain('1/6 complete');
     expect(element.textContent).toContain('1/12 complete');
+    expect(element.textContent).toContain('Add the three founder signals');
     expect(element.textContent).toContain('Complete the missing decisions');
     expect(element.querySelector('a[href*="github.com/lucasdmoyer/tipsforyourgifts/issues/new"]')).toBeNull();
     expect(element.textContent).toContain('proposal workflow');
