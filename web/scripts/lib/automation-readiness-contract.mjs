@@ -22,7 +22,7 @@ const externalGateSchema = z.object({
   authorityBoundary: z.string().min(80)
 }).strict();
 
-const releaseCandidateSchema = z.object({
+const latestVerifiedPreviewSchema = z.object({
   status: z.literal('exact_preview_verified'),
   sha: sha40,
   pullRequestUrl: httpsUrl,
@@ -33,34 +33,28 @@ const releaseCandidateSchema = z.object({
 }).strict();
 
 export const automationReadinessEvidenceSchema = z.object({
-  schemaVersion: z.literal('1.1.0'),
+  schemaVersion: z.literal('1.2.0'),
   observedAt: z.string().datetime(),
   sourceMode: z.literal('versioned_snapshot_not_live_poll'),
   externalGates: z.array(externalGateSchema).length(3),
-  releaseCandidate: releaseCandidateSchema
+  latestVerifiedPreview: latestVerifiedPreviewSchema
 }).strict().superRefine((evidence, context) => {
   const ids = evidence.externalGates.map((gate) => gate.id);
   if (new Set(ids).size !== ids.length) context.addIssue({ code: z.ZodIssueCode.custom, path: ['externalGates'], message: 'external gate IDs must be unique' });
   for (const requiredId of ['openai-platform-credential', 'firebase-preview-identity', 'firebase-auto-production-identity']) {
     if (!ids.includes(requiredId)) context.addIssue({ code: z.ZodIssueCode.custom, path: ['externalGates'], message: `missing required gate ${requiredId}` });
   }
-  const previewHost = new URL(evidence.releaseCandidate.previewUrl).hostname;
-  if (!previewHost.startsWith('tipsforyourgifts--') || !previewHost.endsWith('.web.app') || !previewHost.includes(evidence.releaseCandidate.sha.slice(0, 7))) {
-    context.addIssue({ code: z.ZodIssueCode.custom, path: ['releaseCandidate', 'previewUrl'], message: 'preview URL must identify the exact candidate SHA prefix' });
+  const previewHost = new URL(evidence.latestVerifiedPreview.previewUrl).hostname;
+  if (!previewHost.startsWith('tipsforyourgifts--') || !previewHost.endsWith('.web.app') || !previewHost.includes(evidence.latestVerifiedPreview.sha.slice(0, 7))) {
+    context.addIssue({ code: z.ZodIssueCode.custom, path: ['latestVerifiedPreview', 'previewUrl'], message: 'preview URL must identify the exact verified SHA prefix' });
   }
-  const pullRequestMatch = evidence.releaseCandidate.pullRequestUrl.match(/^https:\/\/github\.com\/lucasdmoyer\/tipsforyourgifts\/pull\/(\d+)$/);
+  const pullRequestMatch = evidence.latestVerifiedPreview.pullRequestUrl.match(/^https:\/\/github\.com\/lucasdmoyer\/tipsforyourgifts\/pull\/(\d+)$/);
   if (!pullRequestMatch) {
-    context.addIssue({ code: z.ZodIssueCode.custom, path: ['releaseCandidate', 'pullRequestUrl'], message: 'release candidate must name an exact pull request in the owned repository' });
+    context.addIssue({ code: z.ZodIssueCode.custom, path: ['latestVerifiedPreview', 'pullRequestUrl'], message: 'verified preview must name an exact pull request in the owned repository' });
     return;
   }
-  const pullRequestNumber = pullRequestMatch[1];
-  if (!evidence.releaseCandidate.reviewUrl.startsWith(`${evidence.releaseCandidate.pullRequestUrl}#`)) {
-    context.addIssue({ code: z.ZodIssueCode.custom, path: ['releaseCandidate', 'reviewUrl'], message: 'review evidence must be an anchored receipt on the exact release pull request' });
-  }
-  const firebasePreviewGateIndex = evidence.externalGates.findIndex((gate) => gate.id === 'firebase-preview-identity');
-  const firebasePreviewGate = evidence.externalGates[firebasePreviewGateIndex];
-  if (firebasePreviewGate && !firebasePreviewGate.nextAction.includes(`refs/pull/${pullRequestNumber}/merge`)) {
-    context.addIssue({ code: z.ZodIssueCode.custom, path: ['externalGates', firebasePreviewGateIndex, 'nextAction'], message: 'preview identity boundary must match the exact release pull request' });
+  if (!evidence.latestVerifiedPreview.reviewUrl.startsWith(`${evidence.latestVerifiedPreview.pullRequestUrl}#`)) {
+    context.addIssue({ code: z.ZodIssueCode.custom, path: ['latestVerifiedPreview', 'reviewUrl'], message: 'review evidence must be an anchored receipt on the exact preview pull request' });
   }
 });
 
@@ -75,7 +69,7 @@ const teamSchema = z.object({
 }).strict();
 
 export const automationReadinessSchema = z.object({
-  schemaVersion: z.literal('1.1.0'),
+  schemaVersion: z.literal('1.2.0'),
   observedAt: z.string().datetime(),
   sourceMode: z.literal('versioned_snapshot_not_live_poll'),
   posture: z.literal('founder_action_required'),
@@ -89,7 +83,7 @@ export const automationReadinessSchema = z.object({
   }).strict(),
   teams: z.array(teamSchema).length(8),
   externalGates: z.array(externalGateSchema).length(3),
-  releaseCandidate: releaseCandidateSchema
+  latestVerifiedPreview: latestVerifiedPreviewSchema
 }).strict().superRefine((readiness, context) => {
   const ids = readiness.teams.map((team) => team.id);
   if (new Set(ids).size !== ids.length) context.addIssue({ code: z.ZodIssueCode.custom, path: ['teams'], message: 'team IDs must be unique' });
@@ -168,7 +162,7 @@ export function buildAutomationReadiness(input) {
       id: 'preview-delivery',
       label: 'Firebase preview delivery',
       status: 'manual_fallback_verified',
-      evidence: `${evidence.releaseCandidate.summary} Automated keyless delivery remains blocked: ${firebaseGate.summary}`,
+      evidence: `${evidence.latestVerifiedPreview.summary} This is the latest verified preview, not authority for the current build. Automated keyless delivery remains blocked: ${firebaseGate.summary}`,
       nextAction: firebaseGate.nextAction,
       actionUrl: firebaseGate.evidenceUrl,
       founderActionRequired: true
@@ -177,9 +171,9 @@ export function buildAutomationReadiness(input) {
       id: 'production-release',
       label: 'Production release',
       status: 'founder_approval_required',
-      evidence: `Exact candidate ${evidence.releaseCandidate.sha} has a reviewed Firebase preview; production remains unchanged and separately gated.`,
-      nextAction: evidence.releaseCandidate.nextAction,
-      actionUrl: evidence.releaseCandidate.reviewUrl,
+      evidence: `Current prepared bytes still require their own exact-SHA preview and founder approval. The latest verified preview was ${evidence.latestVerifiedPreview.sha}; it is historical evidence only.`,
+      nextAction: evidence.latestVerifiedPreview.nextAction,
+      actionUrl: evidence.latestVerifiedPreview.reviewUrl,
       founderActionRequired: true
     },
     {
@@ -193,7 +187,7 @@ export function buildAutomationReadiness(input) {
     }
   ];
   const readiness = {
-    schemaVersion: '1.1.0',
+    schemaVersion: '1.2.0',
     observedAt: evidence.observedAt,
     sourceMode: evidence.sourceMode,
     posture: 'founder_action_required',
@@ -207,7 +201,7 @@ export function buildAutomationReadiness(input) {
     },
     teams,
     externalGates: evidence.externalGates,
-    releaseCandidate: evidence.releaseCandidate
+    latestVerifiedPreview: evidence.latestVerifiedPreview
   };
   return automationReadinessSchema.parse(readiness);
 }

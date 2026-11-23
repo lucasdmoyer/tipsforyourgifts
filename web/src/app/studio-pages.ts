@@ -117,11 +117,12 @@ export { STUDIO_DATA } from './studio-data';
           }
         </div>
         <div class="panel release-candidate-card">
-          <div class="experiment-header"><p class="eyebrow">Exact release candidate</p><span class="status">{{ displayStatus(content.operations.automationReadiness.releaseCandidate.status) }}</span></div>
-          <h3>{{ content.operations.automationReadiness.releaseCandidate.sha.slice(0, 7) }}</h3>
-          <p>{{ content.operations.automationReadiness.releaseCandidate.summary }}</p>
-          <p><strong>Next:</strong> {{ content.operations.automationReadiness.releaseCandidate.nextAction }}</p>
-          <p><a [href]="content.operations.automationReadiness.releaseCandidate.previewUrl" target="_blank" rel="noopener">Open exact Firebase preview</a> · <a [href]="content.operations.automationReadiness.releaseCandidate.reviewUrl" target="_blank" rel="noopener">Open review evidence</a></p>
+          <div class="experiment-header"><p class="eyebrow">Latest verified preview</p><span class="status">Historical evidence</span></div>
+          <h3>{{ content.operations.automationReadiness.latestVerifiedPreview.sha.slice(0, 7) }}</h3>
+          <p>{{ content.operations.automationReadiness.latestVerifiedPreview.summary }}</p>
+          <p><strong>Boundary:</strong> This receipt proves only the named historical commit. It does not approve this build or any later commit.</p>
+          <p><strong>Next:</strong> {{ content.operations.automationReadiness.latestVerifiedPreview.nextAction }}</p>
+          <p><a [href]="content.operations.automationReadiness.latestVerifiedPreview.previewUrl" target="_blank" rel="noopener">Open verified Firebase preview</a> · <a [href]="content.operations.automationReadiness.latestVerifiedPreview.reviewUrl" target="_blank" rel="noopener">Open review evidence</a></p>
         </div>
       </div>
     </section>

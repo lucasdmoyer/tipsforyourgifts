@@ -50,11 +50,11 @@ assert.equal(base.primaryDecisionId, currentContentIsVerified ? 'establish-measu
 assert.equal(base.decisions.some((decision) => decision.id === 'review-release-candidate'), !currentContentIsVerified);
 if (!currentContentIsVerified && livePublication.latestVerifiedContentRelease) {
   const releaseDecision = base.decisions.find((decision) => decision.id === 'review-release-candidate');
-  assert.equal(releaseDecision.title, 'Unblock the reviewed exact release candidate');
-  assert.equal(releaseDecision.action.url, automationReadinessEvidence.releaseCandidate.pullRequestUrl);
-  assert.equal(releaseDecision.action.command, null);
-  assert.ok(releaseDecision.evidence.some((item) => item.includes(automationReadinessEvidence.releaseCandidate.sha)));
-  assert.doesNotMatch(releaseDecision.action.label, /production|workflow/i);
+  assert.equal(releaseDecision.title, 'Review the next accountable Angular release');
+  assert.equal(releaseDecision.action.url, 'https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/firebase-production.yml');
+  assert.match(releaseDecision.action.command, /release_sha=<approved-master-sha>/);
+  assert.ok(releaseDecision.evidence.some((item) => item.includes(automationReadinessEvidence.latestVerifiedPreview.sha)));
+  assert.match(releaseDecision.guardrail, /historical evidence only/);
 }
 assert.equal(base.profitabilityEvidence, 'unknown_until_aggregate_measurement');
 const currentMeasurementDecision = base.decisions.find((decision) => decision.id === 'establish-measurement');

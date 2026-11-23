@@ -11,7 +11,7 @@ console.log(JSON.stringify({
   sourceMode: evidence.sourceMode,
   observedAt: evidence.observedAt,
   externalGates: evidence.externalGates.map(({ id, status }) => ({ id, status })),
-  releaseCandidate: { status: evidence.releaseCandidate.status, sha: evidence.releaseCandidate.sha },
+  latestVerifiedPreview: { status: evidence.latestVerifiedPreview.status, sha: evidence.latestVerifiedPreview.sha },
   sensitiveValuesStored: false,
   externalStateChanged: false
 }, null, 2));
