@@ -60,6 +60,14 @@ export const automationFailureReceiptSchema = z.object({
     const expected = `https://github.com/lucasdmoyer/tipsforyourgifts/issues/${receipt.target.id}`;
     if (receipt.target.url !== expected) context.addIssue({ code: z.ZodIssueCode.custom, path: ['target', 'url'], message: 'founder strategy issue URL must bind the exact owned issue' });
   }
+  if (receipt.target.kind === 'affiliate_link_candidate') {
+    const expected = `https://github.com/lucasdmoyer/tipsforyourgifts/blob/${receipt.workflow.baseSha}/web/affiliate/candidates/${receipt.target.id}.json`;
+    if (receipt.target.url !== expected) context.addIssue({ code: z.ZodIssueCode.custom, path: ['target', 'url'], message: 'affiliate candidate URL must bind the exact owned candidate at the workflow base SHA' });
+  }
+  if (receipt.target.kind === 'editorial_run') {
+    const expected = `https://github.com/lucasdmoyer/tipsforyourgifts/blob/${receipt.workflow.baseSha}/web/research/runs/${receipt.target.id}.json`;
+    if (receipt.target.url !== expected) context.addIssue({ code: z.ZodIssueCode.custom, path: ['target', 'url'], message: 'editorial run URL must bind the exact owned run at the workflow base SHA' });
+  }
 });
 
 export function parseAutomationFailureReceipt(value) {

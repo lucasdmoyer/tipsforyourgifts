@@ -33,6 +33,11 @@ jobs:
       verdict: ${{ steps.receipt.outputs.verdict }}
       has_patch: ${{ steps.receipt.outputs.has_patch }}
       base_sha: ${{ steps.provenance.outputs.base_sha }}
+      failure_outcome: ${{ steps.route.outputs.failure_outcome }}
+      failure_code: ${{ steps.route.outputs.failure_code }}
+      target_id: ${{ steps.provenance.outputs.target_id }}
+      target_sha256: ${{ steps.provenance.outputs.target_sha256 }}
+      target_url: ${{ steps.provenance.outputs.target_url }}
     steps:
       - uses: actions/checkout@v5
         with:
@@ -55,6 +60,9 @@ jobs:
           EVENT_NAME: ${{ github.event_name }}
           BEFORE_SHA: ${{ github.event.before }}
         run: |
+          if [ "$EVENT_NAME" = "workflow_dispatch" ]; then
+            test "$GITHUB_REF" = "refs/heads/master" || { echo "Editorial recheck must be dispatched from trusted master workflow bytes." >&2; exit 1; }
+          fi
           run_id="$REQUESTED_RUN_ID"
           if [ -z "$run_id" ] && [ "$EVENT_NAME" = "push" ]; then
             mapfile -t approval_files < <(git diff --diff-filter=A --name-only "$BEFORE_SHA" "$GITHUB_SHA" -- 'web/research/safety-approvals/*.json')
@@ -71,19 +79,39 @@ jobs:
             run_id="$(node -p "JSON.parse(require('fs').readFileSync('${approval_files[0]}','utf8')).runId")"
           fi
           npm --prefix web run editorial:review:resolve -- --run-id="$run_id"
-      - name: Bind the exact reviewed base
+      - name: Bind the exact editorial run before credential access
         id: provenance
-        run: echo "base_sha=$GITHUB_SHA" >> "$GITHUB_OUTPUT"
+        env:
+          ELIGIBLE: ${{ steps.target.outputs.eligible }}
+          RUN_ID: ${{ steps.target.outputs.run_id }}
+        run: |
+          base_sha="$GITHUB_SHA"
+          test "${#base_sha}" = "40"
+          echo "base_sha=$base_sha" >> "$GITHUB_OUTPUT"
+          if [ "$ELIGIBLE" != "true" ]; then
+            exit 0
+          fi
+          run_path="web/research/runs/$RUN_ID.json"
+          test -f "$run_path"
+          test "$(node -p "require('./$run_path').runId")" = "$RUN_ID"
+          target_sha256="$(shasum -a 256 "$run_path" | cut -d ' ' -f 1)"
+          echo "target_id=$RUN_ID" >> "$GITHUB_OUTPUT"
+          echo "target_sha256=$target_sha256" >> "$GITHUB_OUTPUT"
+          echo "target_url=https://github.com/$GITHUB_REPOSITORY/blob/$base_sha/$run_path" >> "$GITHUB_OUTPUT"
       - name: Authorize AI automation runtime
+        id: runtime
         if: steps.target.outputs.eligible == 'true'
         run: node web/scripts/check-ai-runtime-authorization.mjs
       - name: Verify autonomous agent credential
+        id: credential
         if: steps.target.outputs.eligible == 'true'
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: node web/scripts/require-openai-api-key.mjs
       - name: Run a separate independent evidence editor
+        id: evidence_editor
         if: steps.target.outputs.eligible == 'true'
+        continue-on-error: true
         uses: openai/codex-action@v1
         with:
           openai-api-key: ${{ secrets.OPENAI_API_KEY }}
@@ -109,8 +137,9 @@ jobs:
 
             Pass only when the exact current bundle has no blocker. A failed result must name at least one concrete blocker. Do not create the signed receipt, promote the article, open a pull request, publish, deploy, or change external state.
       - name: Validate findings and create one immutable receipt revision
-        if: steps.target.outputs.eligible == 'true'
+        if: always() && steps.target.outputs.eligible == 'true' && steps.evidence_editor.outcome == 'success'
         id: receipt
+        continue-on-error: true
         env:
           RUN_ID: ${{ steps.target.outputs.run_id }}
           MISSION_ID: ${{ steps.target.outputs.mission_id }}
@@ -138,17 +167,171 @@ jobs:
           git diff --binary HEAD -- "web/$EXPECTED_RECEIPT_PATH" > editorial-review.patch
           test -s editorial-review.patch
           echo "has_patch=true" >> "$GITHUB_OUTPUT"
+      - name: Route the exact editorial-review result
+        id: route
+        if: always() && steps.target.outputs.eligible == 'true'
+        env:
+          RUNTIME_OUTCOME: ${{ steps.runtime.outcome }}
+          CREDENTIAL_OUTCOME: ${{ steps.credential.outcome }}
+          MODEL_OUTCOME: ${{ steps.evidence_editor.outcome }}
+          BOUNDARY_OUTCOME: ${{ steps.receipt.outcome }}
+        run: |
+          if [ "$RUNTIME_OUTCOME" != "success" ]; then
+            outcome="failed"
+            code="runtime_policy_failed"
+          elif [ "$CREDENTIAL_OUTCOME" != "success" ]; then
+            outcome="failed"
+            code="credential_preflight_failed"
+          elif [ "$MODEL_OUTCOME" != "success" ]; then
+            outcome="failed"
+            code="model_step_failed"
+          elif [ "$BOUNDARY_OUTCOME" != "success" ]; then
+            outcome="failed"
+            code="output_invalid"
+          else
+            outcome="ready"
+            code=""
+          fi
+          echo "failure_outcome=$outcome" >> "$GITHUB_OUTPUT"
+          echo "failure_code=$code" >> "$GITHUB_OUTPUT"
       - uses: actions/upload-artifact@v7
-        if: steps.receipt.outputs.has_patch == 'true'
+        if: steps.route.outputs.failure_outcome == 'ready' && steps.receipt.outputs.has_patch == 'true'
         with:
           name: editorial-review-${{ steps.target.outputs.run_id }}-${{ github.run_id }}
           path: editorial-review.patch
           if-no-files-found: error
           retention-days: 14
 
+  record_failure:
+    needs: independent_review
+    if: always() && needs.independent_review.outputs.failure_outcome == 'failed'
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ needs.independent_review.outputs.base_sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "24.14.0"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - name: Record only the credential-free editorial-review failure receipt
+        id: record
+        env:
+          FAILURE_CODE: ${{ needs.independent_review.outputs.failure_code }}
+          TARGET_ID: ${{ needs.independent_review.outputs.target_id }}
+          TARGET_SHA256: ${{ needs.independent_review.outputs.target_sha256 }}
+          TARGET_URL: ${{ needs.independent_review.outputs.target_url }}
+          GITHUB_SHA: ${{ needs.independent_review.outputs.base_sha }}
+          GITHUB_REF: refs/heads/master
+        run: |
+          npm ci --prefix web
+          npm --prefix web run automation:failure:record -- \
+            --workflow=editorial-independent-review.yml \
+            --stage=editorial_review \
+            --reason-code="$FAILURE_CODE" \
+            --target-kind=editorial_run \
+            --target-id="$TARGET_ID" \
+            --target-sha256="$TARGET_SHA256" \
+            --target-url="$TARGET_URL"
+          npm --prefix web run generate
+      - name: Prove and serialize the clean editorial-review failure packet
+        env:
+          FAILURE_PATH: ${{ steps.record.outputs.failure_path }}
+          TARGET_ID: ${{ needs.independent_review.outputs.target_id }}
+          TARGET_SHA256: ${{ needs.independent_review.outputs.target_sha256 }}
+          TARGET_URL: ${{ needs.independent_review.outputs.target_url }}
+        run: |
+          test -f "$FAILURE_PATH"
+          test "$(node -p "require('./$FAILURE_PATH').target.id")" = "$TARGET_ID"
+          test "$(node -p "require('./$FAILURE_PATH').target.sourceSha256")" = "$TARGET_SHA256"
+          test "$(node -p "require('./$FAILURE_PATH').target.url")" = "$TARGET_URL"
+          npm run validate
+          npm run build
+          npm run smoke
+          git add -N .
+          while IFS= read -r changed_path; do
+            case "$changed_path" in
+              "$FAILURE_PATH"|web/src/data/operations.json|web/src/app/generated/content.generated.ts|web/src/app/generated/studio.generated.ts|web/public/sitemap.xml) ;;
+              *) echo "Editorial-review failure recorder changed forbidden path: $changed_path" >&2; exit 1 ;;
+            esac
+          done < <(git diff --name-only HEAD)
+          git diff --exit-code HEAD -- \
+            web/research/runs \
+            web/research/reviews \
+            web/research/missions \
+            web/research/safety-approvals \
+            web/src/data/blog \
+            web/social \
+            web/visuals \
+            web/affiliate \
+            web/config/affiliate-programs.json
+          git diff --check
+          git diff --binary HEAD > editorial-review-failure.patch
+          test -s editorial-review-failure.patch
+      - uses: actions/upload-artifact@v7
+        with:
+          name: editorial-review-failure-${{ github.run_id }}-${{ github.run_attempt }}
+          path: editorial-review-failure.patch
+          if-no-files-found: error
+          retention-days: 30
+
+  open_failure_pull_request:
+    needs: [independent_review, record_failure]
+    if: always() && needs.record_failure.result == 'success'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ needs.independent_review.outputs.base_sha }}
+          fetch-depth: 0
+      - uses: actions/download-artifact@v8
+        with:
+          name: editorial-review-failure-${{ github.run_id }}-${{ github.run_attempt }}
+      - run: git apply --index editorial-review-failure.patch
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "24.14.0"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - name: Re-run failure gates without an AI credential
+        run: |
+          npm ci --prefix web
+          npm run validate
+          npm run build
+          npm run smoke
+          git diff --check --cached
+          git diff --exit-code
+      - name: Commit the editorial-review retry branch
+        env:
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -c "codex/editorial-review-failure-$RUN_ID-${GITHUB_RUN_ATTEMPT}"
+          git commit -m "Record editorial review failure $RUN_ID"
+          git push origin "codex/editorial-review-failure-$RUN_ID-${GITHUB_RUN_ATTEMPT}"
+      - name: Open the editorial-review correction pull request with auto-merge disabled
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ github.run_id }}
+          TARGET_ID: ${{ needs.independent_review.outputs.target_id }}
+        run: |
+          gh pr create \
+            --base master \
+            --head "codex/editorial-review-failure-$RUN_ID-${GITHUB_RUN_ATTEMPT}" \
+            --title "Editorial review retry required for $TARGET_ID" \
+            --body "The independent editorial recheck failed before it could produce a clean bounded verdict. This correction packet preserves only the exact hash-bound research run and workflow failure. Partial reviewer output was discarded. It does not create or preserve an editorial finding, QA receipt, verdict, source edit, mission transition, visual promotion, affiliate change, publication, external mutation, or Firebase deployment. It does not merge automatically. Inspect the failed run and retry from a new workflow attempt; do not reuse partial model output."
+
   propose_result:
     needs: independent_review
-    if: needs.independent_review.outputs.has_patch == 'true'
+    if: needs.independent_review.outputs.failure_outcome == 'ready' && needs.independent_review.outputs.has_patch == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 30
     permissions:

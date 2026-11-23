@@ -158,6 +158,30 @@ assert.match(affiliateFailurePrStep.run, /Partial reviewer output was discarded/
 assert.match(affiliateFailurePrStep.run, /does not create or preserve a review receipt, verdict, approval, paid-link overlay/, 'affiliate correction PR must deny every monetization promotion effect');
 assert.doesNotMatch(affiliateFailurePrStep.run, /gh pr merge/, 'affiliate correction PR must never auto-merge');
 
+const editorialWorkflow = await readWorkflow('editorial-independent-review.yml');
+const editorialReviewJob = editorialWorkflow.parsed.jobs?.independent_review;
+const editorialFailureJob = editorialWorkflow.parsed.jobs?.record_failure;
+const editorialFailureWriterJob = editorialWorkflow.parsed.jobs?.open_failure_pull_request;
+assert.ok(editorialReviewJob && editorialFailureJob && editorialFailureWriterJob, 'editorial recheck needs exact-run review, clean failure recording, and a detached correction writer');
+const editorialModelStep = editorialReviewJob.steps.find((step) => step.uses === 'openai/codex-action@v1');
+const editorialTargetStep = findStep(editorialReviewJob, 'Bind the exact editorial run before credential access');
+const editorialRouteStep = findStep(editorialReviewJob, 'Route the exact editorial-review result');
+const editorialFailureRecordStep = findStep(editorialFailureJob, 'Record only the credential-free editorial-review failure receipt');
+const editorialFailureProofStep = findStep(editorialFailureJob, 'Prove and serialize the clean editorial-review failure packet');
+const editorialFailurePrStep = findStep(editorialFailureWriterJob, 'Open the editorial-review correction pull request with auto-merge disabled');
+assert.equal(editorialModelStep?.['continue-on-error'], true, 'editorial reviewer model failures must reach the trusted classifier');
+assert.equal(editorialFailureJob.steps.filter((step) => step.uses === 'openai/codex-action@v1').length, 0, 'editorial failure recording must be credential-free');
+assert.equal(editorialFailureWriterJob.steps.filter((step) => step.uses === 'openai/codex-action@v1').length, 0, 'editorial correction writing must be credential-free');
+assert.ok(editorialTargetStep && editorialRouteStep && editorialFailureRecordStep && editorialFailureProofStep && editorialFailurePrStep, 'editorial review failure needs a complete exact-run retry handoff');
+assert.match(editorialTargetStep.run, /target_sha256=\$target_sha256/, 'editorial failure evidence must preserve the exact run digest');
+assert.match(editorialTargetStep.run, /blob\/\$base_sha\/\$run_path/, 'editorial failure evidence must bind the run source URL to the exact base SHA');
+assert.match(editorialRouteStep.run, /runtime_policy_failed[\s\S]*credential_preflight_failed[\s\S]*model_step_failed[\s\S]*output_invalid/, 'editorial failure routing must distinguish runtime, credential, model, and output failures');
+assert.match(editorialFailureRecordStep.run, /automation:failure:record[\s\S]*--target-kind=editorial_run/, 'editorial failure state must be created only by the deterministic recorder');
+assert.match(editorialFailureProofStep.run, /git diff --exit-code HEAD --[\s\S]*web\/research\/runs[\s\S]*web\/research\/reviews[\s\S]*web\/src\/data\/blog[\s\S]*web\/visuals[\s\S]*web\/affiliate/, 'editorial failure recording must prove no source, verdict, visual, or affiliate mutation survived');
+assert.match(editorialFailurePrStep.run, /Partial reviewer output was discarded/, 'editorial correction PR must state that partial reviewer output was discarded');
+assert.match(editorialFailurePrStep.run, /does not create or preserve an editorial finding, QA receipt, verdict, source edit, mission transition, visual promotion, affiliate change/, 'editorial correction PR must deny every editorial promotion effect');
+assert.doesNotMatch(editorialFailurePrStep.run, /gh pr merge/, 'editorial correction PR must never auto-merge');
+
 const researchDispatch = research.parsed.on?.workflow_dispatch;
 assert.equal(researchDispatch?.inputs?.idea_id?.required, true, 'research workflow requires the founder-approved idea ID');
 assert.equal(research.parsed.permissions?.contents, 'read', 'model workflow default contents authority must remain read-only');
@@ -265,6 +289,7 @@ console.log(JSON.stringify({
     'strategy_intake_failure_to_clean_correction_packet',
     'growth_analysis_failure_to_clean_correction_packet',
     'affiliate_review_failure_to_clean_correction_packet',
+    'editorial_review_failure_to_clean_correction_packet',
     'research_failure_to_clean_correction_packet',
     'research_to_independent_qa',
     'review_failure_to_clean_correction_packet',
