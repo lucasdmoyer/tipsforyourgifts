@@ -69,7 +69,14 @@ if (currentSocialDecision?.title === 'Complete the first Pinterest operating pac
 assert.deepEqual(base.decisions.map((decision) => decision.rank), base.decisions.map((_decision, index) => index + 1));
 const priorityWeight = { high: 3, medium: 2, low: 1 };
 const expectedStrategyCandidate = [...proposedIdeas].sort((left, right) => (priorityWeight[right.priority] ?? 0) - (priorityWeight[left.priority] ?? 0) || (right.pairing?.coherenceScore ?? 0) - (left.pairing?.coherenceScore ?? 0) || left.id.localeCompare(right.id))[0];
-if (expectedStrategyCandidate) assert.match(base.decisions.find((decision) => decision.id === 'choose-next-thesis').recommendation, new RegExp(`${expectedStrategyCandidate.id} revision ${expectedStrategyCandidate.revision}`));
+if (expectedStrategyCandidate) {
+  const currentStrategyDecision = base.decisions.find((decision) => decision.id === 'choose-next-thesis');
+  assert.match(currentStrategyDecision.recommendation, new RegExp(`${expectedStrategyCandidate.id} revision ${expectedStrategyCandidate.revision}`));
+  if (baseInput.openStrategyProposals < baseInput.maxOpenStrategyProposals) {
+    assert.doesNotMatch(currentStrategyDecision.rationale, /queue (?:is|has reached).*full|configured cap/i, 'available proposal capacity must not be reported as full');
+    assert.match(currentStrategyDecision.rationale, new RegExp(`${baseInput.maxOpenStrategyProposals - baseInput.openStrategyProposals} of ${baseInput.maxOpenStrategyProposals} proposal slots remain available`));
+  }
+}
 
 const verifiedLiveInput = structuredClone(baseInput);
 verifiedLiveInput.livePublication = {
@@ -162,6 +169,11 @@ fixtureInput.affiliate.programs[0].status = 'proposed';
 fixtureInput.affiliate.programs[0].founderDisposition = 'proposed';
 const fullAgenda = buildFounderAgenda(fixtureInput);
 assert.equal(fullAgenda.decisions.length, 5, 'full founder decision fixture must exercise every decision category');
+const fullProposalQueueInput = clone(fixtureInput);
+fullProposalQueueInput.openStrategyProposals = fullProposalQueueInput.maxOpenStrategyProposals;
+const fullProposalQueueDecision = buildFounderAgenda(fullProposalQueueInput).decisions.find((decision) => decision.id === 'choose-next-thesis');
+assert.match(fullProposalQueueDecision.rationale, /configured cap/);
+assert.match(fullProposalQueueDecision.unlocks, /reopens one weekly opportunity-scout slot/);
 
 function expectFailure(label, mutate) {
   const candidate = clone(fullAgenda);
