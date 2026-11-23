@@ -1,14 +1,14 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import type { Article, Product, ProductPair, VisualAsset } from './content.types';
 import { readerLanguage } from './reader-copy';
-import { responsiveImageSrcset } from './responsive-image';
+import { responsiveImageFallback, responsiveImageSrcset } from './responsive-image';
 
 @Component({
   selector: 'tfg-product-card',
   template: `
     <article class="product-card" [id]="product().id">
       <figure class="product-context-visual">
-        <img [src]="visual().src" [attr.srcset]="imageSrcset(visual().src)" sizes="(max-width: 620px) calc(100vw - 68px), (max-width: 1080px) calc(100vw - 92px), 988px" [alt]="visual().alt" width="1536" height="1024" loading="lazy" decoding="async">
+        <img [src]="imageFallback(visual().src)" [attr.srcset]="imageSrcset(visual().src)" sizes="(max-width: 620px) calc(100vw - 68px), (max-width: 1080px) calc(100vw - 92px), 988px" [alt]="visual().alt" width="1536" height="1024" loading="lazy" decoding="async">
         <figcaption>Original illustration of the gift idea—not a product photo.</figcaption>
       </figure>
       <p class="eyebrow">A gift to consider</p>
@@ -27,6 +27,7 @@ export class ProductCardComponent {
   readonly product = input.required<Product>();
   readonly articleSlug = input.required<string>();
   readonly visual = input.required<VisualAsset>();
+  readonly imageFallback = responsiveImageFallback;
   readonly imageSrcset = responsiveImageSrcset;
   readonly display = readerLanguage;
 }
@@ -38,7 +39,7 @@ export class ProductCardComponent {
       <p class="eyebrow">A thoughtful pair</p>
       <h2>{{ pair().name }}</h2>
       <figure class="pairing-context-visual">
-        <img [src]="pairVisual().src" [attr.srcset]="imageSrcset(pairVisual().src)" sizes="(max-width: 620px) calc(100vw - 68px), (max-width: 1080px) calc(100vw - 100px), 978px" [alt]="pairVisual().alt" width="1536" height="1024" loading="lazy" decoding="async">
+        <img [src]="imageFallback(pairVisual().src)" [attr.srcset]="imageSrcset(pairVisual().src)" sizes="(max-width: 620px) calc(100vw - 68px), (max-width: 1080px) calc(100vw - 100px), 978px" [alt]="pairVisual().alt" width="1536" height="1024" loading="lazy" decoding="async">
         <figcaption>{{ display(pairVisual().caption) }} Original illustration of the gift idea—not product photography.</figcaption>
       </figure>
       <div class="reader-pair-products">
@@ -79,6 +80,7 @@ export class ProductCardComponent {
 export class PairCardComponent {
   readonly article = input.required<Article>();
   readonly pair = input.required<ProductPair>();
+  readonly imageFallback = responsiveImageFallback;
   readonly imageSrcset = responsiveImageSrcset;
   readonly display = readerLanguage;
 
