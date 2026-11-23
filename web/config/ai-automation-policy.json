@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "1.0.0",
+  "schemaVersion": "1.1.0",
   "status": "awaiting_founder_platform_budget",
   "credential": {
     "secretName": "OPENAI_API_KEY",
@@ -20,11 +20,22 @@
   },
   "spendControl": {
     "status": "not_configured",
-    "enforcement": "openai_project_monthly_budget",
+    "enforcement": "openai_project_hard_spend_limit",
     "monthlyBudgetUsd": null,
+    "hardLimitEnabled": false,
+    "alertThresholdUsd": null,
     "evidenceUrl": null,
     "repositoryHardCap": false,
-    "activationRule": "Record the founder-approved OpenAI project monthly budget and its platform evidence before activating this policy or adding the repository secret."
+    "enforcementLagAcknowledged": true,
+    "documentationUrl": "https://developers.openai.com/api/docs/guides/spend-limits",
+    "activationRule": "Record a founder-approved OpenAI project monthly spend limit with hard-limit enforcement enabled, an earlier spend alert, and credential-free platform evidence before activating this policy or adding the repository secret.",
+    "recommendation": {
+      "status": "planning_only_not_approved",
+      "monthlyHardLimitUsd": 50,
+      "alertThresholdUsd": 25,
+      "rationale": "Start with a deliberately small, reversible project cap and a halfway warning while real per-mission usage is measured. This is an operating guardrail, not a revenue forecast or approval.",
+      "reviewedAt": "2026-11-23T04:16:34Z"
+    }
   },
   "runtime": {
     "action": "openai/codex-action@v1",
@@ -32,8 +43,8 @@
     "safetyStrategy": "drop-sudo",
     "sandbox": "workspace-write",
     "sessionMode": "ephemeral",
-    "modelPolicy": "action_default",
-    "effortPolicy": "action_default",
+    "modelPolicy": "gpt-6.2-sol",
+    "effortPolicy": "high",
     "trustedInitiators": "repository_write_collaborators_and_bounded_github_automation"
   },
   "authority": {
@@ -100,9 +111,9 @@
   "shutdownConditions": [
     "A missing repository secret stops the job before a model call.",
     "A policy that is not active stops the job even if a credential appears.",
-    "Missing platform budget evidence prevents policy activation.",
+    "Missing project hard-limit, early-alert, or platform evidence prevents policy activation.",
     "Workflow permission, sandbox, session, or credential-placement drift fails deterministic validation.",
     "Any proposed patch outside its workflow-specific allowlist fails deterministic validation.",
-    "Budget exhaustion, repeated failures, or suspected credential exposure requires the founder to disable runs and rotate the credential before resuming."
+    "A project hard-limit response, repeated failures, or suspected credential exposure requires the founder to disable runs and rotate the credential before resuming."
   ]
 }

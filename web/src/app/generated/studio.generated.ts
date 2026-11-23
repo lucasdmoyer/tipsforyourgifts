@@ -224,12 +224,12 @@ export const OPERATIONS: Operations = {
     }
   },
   "aiAutomationPolicy": {
-    "schemaVersion": "1.0.0",
+    "schemaVersion": "1.1.0",
     "status": "awaiting_founder_platform_budget",
     "activationReady": false,
     "activationBlockers": [
       "Dedicated OpenAI project credential is not configured.",
-      "Founder-approved OpenAI project monthly budget and platform evidence are not recorded.",
+      "Founder-approved OpenAI project hard spend limit, earlier alert, and platform evidence are not recorded.",
       "Versioned automation policy is not active."
     ],
     "protectedWorkflows": 6,
@@ -253,11 +253,22 @@ export const OPERATIONS: Operations = {
     },
     "spendControl": {
       "status": "not_configured",
-      "enforcement": "openai_project_monthly_budget",
+      "enforcement": "openai_project_hard_spend_limit",
       "monthlyBudgetUsd": null,
+      "hardLimitEnabled": false,
+      "alertThresholdUsd": null,
       "evidenceUrl": null,
       "repositoryHardCap": false,
-      "activationRule": "Record the founder-approved OpenAI project monthly budget and its platform evidence before activating this policy or adding the repository secret."
+      "enforcementLagAcknowledged": true,
+      "documentationUrl": "https://developers.openai.com/api/docs/guides/spend-limits",
+      "activationRule": "Record a founder-approved OpenAI project monthly spend limit with hard-limit enforcement enabled, an earlier spend alert, and credential-free platform evidence before activating this policy or adding the repository secret.",
+      "recommendation": {
+        "status": "planning_only_not_approved",
+        "monthlyHardLimitUsd": 50,
+        "alertThresholdUsd": 25,
+        "rationale": "Start with a deliberately small, reversible project cap and a halfway warning while real per-mission usage is measured. This is an operating guardrail, not a revenue forecast or approval.",
+        "reviewedAt": "2026-11-23T04:16:34Z"
+      }
     },
     "runtime": {
       "action": "openai/codex-action@v1",
@@ -265,8 +276,8 @@ export const OPERATIONS: Operations = {
       "safetyStrategy": "drop-sudo",
       "sandbox": "workspace-write",
       "sessionMode": "ephemeral",
-      "modelPolicy": "action_default",
-      "effortPolicy": "action_default",
+      "modelPolicy": "gpt-6.2-sol",
+      "effortPolicy": "high",
       "trustedInitiators": "repository_write_collaborators_and_bounded_github_automation"
     },
     "authority": {
@@ -347,18 +358,18 @@ export const OPERATIONS: Operations = {
     "shutdownConditions": [
       "A missing repository secret stops the job before a model call.",
       "A policy that is not active stops the job even if a credential appears.",
-      "Missing platform budget evidence prevents policy activation.",
+      "Missing project hard-limit, early-alert, or platform evidence prevents policy activation.",
       "Workflow permission, sandbox, session, or credential-placement drift fails deterministic validation.",
       "Any proposed patch outside its workflow-specific allowlist fails deterministic validation.",
-      "Budget exhaustion, repeated failures, or suspected credential exposure requires the founder to disable runs and rotate the credential before resuming."
+      "A project hard-limit response, repeated failures, or suspected credential exposure requires the founder to disable runs and rotate the credential before resuming."
     ],
-    "policySha256": "b01d9b13eaac26020069e28b712f958dd8642343b173c1d5cfc19044d2baf46d",
+    "policySha256": "2ca0948879b814321b07dbc7bbf13f0b11311b8d0606aa1c9419681a20ed5fb8",
     "budgetConfiguration": {
       "available": true,
       "workflowUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/ai-automation-budget-configure.yml",
       "confirmation": "CONFIGURE-ai-automation-budget",
       "evidenceMode": "founder_attested_external_platform_configuration",
-      "command": "gh workflow run ai-automation-budget-configure.yml --repo lucasdmoyer/tipsforyourgifts --ref master -f expected_policy_sha256=b01d9b13eaac26020069e28b712f958dd8642343b173c1d5cfc19044d2baf46d -f monthly_budget_usd='<APPROVED_MONTHLY_USD>' -f platform_evidence_url='<OPENAI_PLATFORM_SETTINGS_URL>' -f confirmation='CONFIGURE-ai-automation-budget'"
+      "command": "gh workflow run ai-automation-budget-configure.yml --repo lucasdmoyer/tipsforyourgifts --ref master -f expected_policy_sha256=2ca0948879b814321b07dbc7bbf13f0b11311b8d0606aa1c9419681a20ed5fb8 -f monthly_budget_usd='<APPROVED_HARD_LIMIT_USD>' -f hard_limit_enabled=true -f alert_threshold_usd='<APPROVED_ALERT_USD>' -f platform_evidence_url='<OPENAI_PLATFORM_SETTINGS_URL>' -f confirmation='CONFIGURE-ai-automation-budget'"
     },
     "credentialVerification": {
       "available": false,
@@ -366,13 +377,13 @@ export const OPERATIONS: Operations = {
       "confirmation": "VERIFY-ai-automation-credential",
       "method": "openai_models_endpoint",
       "endpoint": "https://api.openai.com/v1/models",
-      "command": "gh workflow run ai-automation-credential-verify.yml --repo lucasdmoyer/tipsforyourgifts --ref master -f expected_policy_sha256=b01d9b13eaac26020069e28b712f958dd8642343b173c1d5cfc19044d2baf46d -f confirmation='VERIFY-ai-automation-credential'"
+      "command": "gh workflow run ai-automation-credential-verify.yml --repo lucasdmoyer/tipsforyourgifts --ref master -f expected_policy_sha256=2ca0948879b814321b07dbc7bbf13f0b11311b8d0606aa1c9419681a20ed5fb8 -f confirmation='VERIFY-ai-automation-credential'"
     },
     "policyActivation": {
       "available": false,
       "workflowUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/ai-automation-activate.yml",
       "confirmation": "ACTIVATE-ai-automation",
-      "command": "gh workflow run ai-automation-activate.yml --repo lucasdmoyer/tipsforyourgifts --ref master -f expected_policy_sha256=b01d9b13eaac26020069e28b712f958dd8642343b173c1d5cfc19044d2baf46d -f confirmation='ACTIVATE-ai-automation'"
+      "command": "gh workflow run ai-automation-activate.yml --repo lucasdmoyer/tipsforyourgifts --ref master -f expected_policy_sha256=2ca0948879b814321b07dbc7bbf13f0b11311b8d0606aa1c9419681a20ed5fb8 -f confirmation='ACTIVATE-ai-automation'"
     }
   },
   "researchRuns": 14,
