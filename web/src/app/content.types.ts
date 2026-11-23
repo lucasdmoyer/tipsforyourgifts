@@ -414,6 +414,15 @@ export interface Operations {
       reviewerId: string;
       blockers: string[];
       warnings: string[];
+      failedReview: {
+        missionId: string;
+        failedAt: string;
+        receiptPath: string;
+        receiptSha256: string;
+        reviewedAt: string;
+        workflowRunUrl: string;
+        correctionPullRequestSearchUrl: string;
+      } | null;
       highRiskClaims: Array<{ id: string; text: string; sourceIds: string[] }>;
       founderDecisionPacket: {
         workflowUrl: string;
@@ -441,13 +450,14 @@ export interface Operations {
     total: number;
     active: number;
     completed: number;
+    qaFailed: number;
     visualPending: number;
     founderReviewRequired: number;
     automaticMergeEligible: number;
     queue: Array<{
       missionId: string;
       recordSha256: string;
-      status: 'started' | 'visual_pending' | 'completed';
+      status: 'started' | 'qa_failed' | 'visual_pending' | 'completed';
       ideaId: string;
       ideaTitle: string;
       ideaRevision: number;
@@ -458,7 +468,7 @@ export interface Operations {
       activeStage: 'research' | 'quality_review' | 'visual_production' | 'release_preparation' | 'growth_follow_up';
       runId: string | null;
       articleSlug: string | null;
-      publicationReadiness: 'research_in_progress' | 'visual_pending' | 'founder_review_required' | 'automatic_merge_eligible';
+      publicationReadiness: 'research_in_progress' | 'qa_failed' | 'visual_pending' | 'founder_review_required' | 'automatic_merge_eligible';
       nextGate: string;
     }>;
   };

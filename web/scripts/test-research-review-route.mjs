@@ -10,7 +10,7 @@ const fixtureRoot = await fs.mkdtemp(path.join(os.tmpdir(), 'tips-review-route-'
 const missionId = 'research-mission-12345-1';
 const ideaSha256 = 'a'.repeat(64);
 const mission = {
-  schemaVersion: '1.1.0', missionId, status: 'started', createdAt: '2026-11-22T12:00:00.000Z', completedAt: null,
+  schemaVersion: '1.2.0', missionId, status: 'started', createdAt: '2026-11-22T12:00:00.000Z', failedAt: null, completedAt: null,
   trigger: { type: 'approved_strategy_dispatch', workflow: 'research-agent.yml', workflowRunId: '12345', workflowRunAttempt: 1, actor: 'lucasdmoyer', baseSha: 'b'.repeat(40) },
   idea: { id: 'founder-idea-999', revision: 1, sha256: ideaSha256, title: 'A thoughtful safety handoff fixture', thesisType: 'recipient_friction' },
   teamStages: [
@@ -27,6 +27,7 @@ const mission = {
     independentReviewerRequired: true, affiliatePosture: 'enabled_registry_only'
   },
   publicationPolicySnapshot: { mode: 'founder_reviewed', automaticPromotionEnabled: false, verifiedSuccessfulReleaseCount: 0, minimumSuccessfulFounderReviewedReleases: 10 },
+  qaFailureHandoff: null,
   visualHandoff: null,
   completion: null
 };

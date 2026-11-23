@@ -85,8 +85,18 @@ assert.match(research.raw, /web\/visuals\/requests\/<run-id>-visuals\.json/, 're
 assert.match(research.raw, /generation\.attempted false/, 'research drafting must not generate or claim visual output');
 assert.doesNotMatch(research.raw, /web\/visuals\/article-visuals\.json\|web\/public\/blog-images/, 'draft and review allowlists must not permit registry or public-image mutation');
 
-const visualAssessmentStep = findStep(qualityJob, 'Prove reviewer isolation and route the visual handoff');
-assert.ok(visualAssessmentStep, 'independent QA must route the visual handoff');
+const exactHandoffStep = findStep(qualityJob, 'Record the isolated review and route the exact handoff');
+assert.ok(exactHandoffStep, 'independent QA must record and route passed or failed review findings');
+assert.match(exactHandoffStep.run, /editorial-review-result\.json/, 'independent QA must preserve structured findings before creating the receipt');
+assert.match(exactHandoffStep.run, /research:mission:qa-failed/, 'a failed independent review must become durable mission state');
+assert.match(exactHandoffStep.run, /release_route="qa_failed"/, 'a failed independent review must enter the correction route');
+const failedQaBranch = exactHandoffStep.run.match(/elif \[ "\$verdict" = "failed" \][\s\S]*?else/)?.[0] ?? '';
+assert.doesNotMatch(failedQaBranch, /review:promote|research:mission:complete/, 'failed QA must not promote or complete the mission');
+assert.match(failedQaBranch, /post_failure_source_patch_sha=.*git diff --binary HEAD/, 'failed QA must recompute the exact source-bundle patch after recording its handoff');
+assert.match(failedQaBranch, /test "\$post_failure_source_patch_sha" = "\$EXPECTED_SOURCE_PATCH_SHA"/, 'failed QA must prove the post-review source bundle still matches its pre-review hash');
+assert.doesNotMatch(failedQaBranch, /git diff --exit-code HEAD/, 'failed QA must not compare a legitimate new draft directly with HEAD');
+assert.match(research.raw, /git add -N \./, 'the applied research patch must expose new files to deterministic diff inspection');
+const visualAssessmentStep = exactHandoffStep;
 assert.match(visualAssessmentStep.run, /research:visual:assess/, 'visual readiness must be classified by the deterministic contract');
 assert.match(visualAssessmentStep.run, /release_route" = "publication_ready"[\s\S]*review:promote/, 'only a visually ready bundle may be promoted');
 assert.match(visualAssessmentStep.run, /release_route" = "visual_pending"[\s\S]*remain unpromoted/, 'visual-pending drafts must remain unpromoted');
@@ -98,9 +108,11 @@ assert.ok(openPrStep && autoMergeStep, 'research handoff must open a review PR a
 assert.match(openPrStep.run, /--base master/, 'research output must return through a master-based review pull request');
 assert.match(openPrStep.run, /gh pr create/, 'detached writer must create the review pull request');
 assert.match(openPrStep.run, /RELEASE_ROUTE" = "visual_pending"[\s\S]*Visual production handoff/, 'visual-pending work must open an explicit queue handoff PR');
+assert.match(openPrStep.run, /RELEASE_ROUTE" = "qa_failed"[\s\S]*Editorial correction required/, 'failed QA must open an explicit correction PR');
 assert.match(autoMergeStep.run, /publication-policy\.json/, 'auto-merge decision must read the founder-controlled publication policy');
 assert.match(autoMergeStep.run, /REVIEW_ROUTE" = "founder_safety"[\s\S]*auto-merge is disabled/, 'high-risk research must never request auto-merge');
 assert.match(autoMergeStep.run, /RELEASE_ROUTE" = "visual_pending"[\s\S]*cannot auto-merge/, 'visual-pending research must never request auto-merge');
+assert.match(autoMergeStep.run, /RELEASE_ROUTE" = "qa_failed"[\s\S]*cannot auto-merge/, 'QA-failed research must never request auto-merge');
 assert.match(autoMergeStep.run, /gh pr merge --auto --squash "\$PR_URL"/, 'only the proven policy may request check-gated squash auto-merge');
 
 const automaticPush = automatic.parsed.on?.push;

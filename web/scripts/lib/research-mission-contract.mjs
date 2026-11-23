@@ -9,7 +9,7 @@ const slugSchema = z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/);
 
 const missionStageSchema = z.discriminatedUnion('id', [
   z.object({ id: z.literal('research'), role: z.literal('research-editorial-team'), authority: z.literal('draft_only'), status: z.enum(['queued', 'in_progress', 'completed']) }).strict(),
-  z.object({ id: z.literal('quality_review'), role: z.literal('independent-evidence-editor'), authority: z.literal('review_receipt_only'), status: z.enum(['queued', 'in_progress', 'completed']) }).strict(),
+  z.object({ id: z.literal('quality_review'), role: z.literal('independent-evidence-editor'), authority: z.literal('review_receipt_only'), status: z.enum(['queued', 'in_progress', 'completed', 'blocked']) }).strict(),
   z.object({ id: z.literal('visual_production'), role: z.literal('visual-production-team'), authority: z.literal('original_assets_and_visual_receipt_only'), status: z.enum(['queued', 'in_progress', 'completed']) }).strict(),
   z.object({ id: z.literal('release_preparation'), role: z.literal('release-operator'), authority: z.literal('preview_and_pr_only'), status: z.enum(['queued', 'ready', 'completed']) }).strict(),
   z.object({ id: z.literal('growth_follow_up'), role: z.literal('growth-analyst'), authority: z.literal('aggregate_measurement_only'), status: z.enum(['queued', 'ready', 'completed']) }).strict()
@@ -42,11 +42,28 @@ const visualHandoffSchema = z.object({
   nextGate: z.string().min(40)
 }).strict();
 
+const qaFailureHandoffSchema = z.object({
+  runId: runIdSchema,
+  runSha256: sha256Schema,
+  articleSlug: slugSchema,
+  articleSha256: sha256Schema,
+  socialPackId: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*-launch$/),
+  socialPackSha256: sha256Schema,
+  reviewReceiptPath: z.string().regex(/^research\/reviews\/[a-z0-9-]+\.qa\.v[1-9]\d*\.json$/),
+  reviewReceiptSha256: sha256Schema,
+  reviewerId: z.string().min(3),
+  reviewedAt: z.string().datetime(),
+  blockers: z.array(z.string().min(12)).min(1),
+  warnings: z.array(z.string().min(12)),
+  nextGate: z.string().min(40)
+}).strict();
+
 export const researchMissionSchema = z.object({
-  schemaVersion: z.literal('1.1.0'),
+  schemaVersion: z.literal('1.2.0'),
   missionId: missionIdSchema,
-  status: z.enum(['started', 'visual_pending', 'completed']),
+  status: z.enum(['started', 'qa_failed', 'visual_pending', 'completed']),
   createdAt: z.string().datetime(),
+  failedAt: z.string().datetime().nullable(),
   completedAt: z.string().datetime().nullable(),
   trigger: z.object({
     type: z.literal('approved_strategy_dispatch'),
@@ -88,6 +105,7 @@ export const researchMissionSchema = z.object({
     verifiedSuccessfulReleaseCount: z.number().int().nonnegative(),
     minimumSuccessfulFounderReviewedReleases: z.number().int().positive()
   }).strict(),
+  qaFailureHandoff: qaFailureHandoffSchema.nullable(),
   visualHandoff: visualHandoffSchema.nullable(),
   completion: completionSchema.nullable()
 }).strict();
@@ -165,7 +183,7 @@ export function validateResearchMissionRecords({
     if (mission.status === 'started') {
       if (activeIdeas.has(mission.idea.id)) issues.push(`${mission.missionId}: another active mission already exists for this idea`);
       activeIdeas.add(mission.idea.id);
-      if (mission.completedAt !== null || mission.visualHandoff !== null || mission.completion !== null) issues.push(`${mission.missionId}: started mission cannot contain handoff or completion evidence`);
+      if (mission.failedAt !== null || mission.completedAt !== null || mission.qaFailureHandoff !== null || mission.visualHandoff !== null || mission.completion !== null) issues.push(`${mission.missionId}: started mission cannot contain handoff or completion evidence`);
       const statuses = Object.fromEntries(mission.teamStages.map((stage) => [stage.id, stage.status]));
       if (statuses.research !== 'in_progress' || statuses.quality_review !== 'queued' || statuses.visual_production !== 'queued' || statuses.release_preparation !== 'queued' || statuses.growth_follow_up !== 'queued') issues.push(`${mission.missionId}: started mission stage statuses are invalid`);
       const snapshot = mission.publicationPolicySnapshot;
@@ -173,10 +191,47 @@ export function validateResearchMissionRecords({
       continue;
     }
 
+    if (mission.status === 'qa_failed') {
+      if (mission.failedAt === null || mission.completedAt !== null || mission.qaFailureHandoff === null || mission.visualHandoff !== null || mission.completion !== null) {
+        issues.push(`${mission.missionId}: qa-failed mission needs one failure handoff and no visual or completion evidence`);
+        continue;
+      }
+      if (new Date(mission.failedAt) < new Date(mission.createdAt)) issues.push(`${mission.missionId}: QA failure precedes mission creation`);
+      const statuses = Object.fromEntries(mission.teamStages.map((stage) => [stage.id, stage.status]));
+      if (statuses.research !== 'completed' || statuses.quality_review !== 'blocked' || statuses.visual_production !== 'queued' || statuses.release_preparation !== 'queued' || statuses.growth_follow_up !== 'queued') issues.push(`${mission.missionId}: qa-failed mission stage statuses are invalid`);
+      const handoff = mission.qaFailureHandoff;
+      const runRecord = runsById.get(handoff.runId);
+      const articleRecord = articlesBySlug.get(handoff.articleSlug);
+      const socialRecord = socialByRunId.get(handoff.runId);
+      const reviewRecord = reviewsByPath.get(handoff.reviewReceiptPath);
+      if (!runRecord) issues.push(`${mission.missionId}: QA failure research run is missing`);
+      else {
+        if (artifactDigest(runRecord) !== handoff.runSha256) issues.push(`${mission.missionId}: QA failure run digest mismatch`);
+        if (!['drafted', 'qa_failed'].includes(runRecord.data.status) || runRecord.data.article?.status !== 'draft' || runRecord.data.qa?.passed !== false) issues.push(`${mission.missionId}: QA failure run must remain an unpromoted draft`);
+        if (runRecord.data.ideaId !== mission.idea.id || runRecord.data.ideaRevision !== mission.idea.revision || runRecord.data.ideaSha256 !== mission.idea.sha256) issues.push(`${mission.missionId}: QA failure run is not bound to the mission idea`);
+      }
+      if (!articleRecord) issues.push(`${mission.missionId}: QA failure article is missing`);
+      else if (artifactDigest(articleRecord) !== handoff.articleSha256) issues.push(`${mission.missionId}: QA failure article digest mismatch`);
+      if (!socialRecord) issues.push(`${mission.missionId}: QA failure social pack is missing`);
+      else {
+        if (socialRecord.data.packId !== handoff.socialPackId) issues.push(`${mission.missionId}: QA failure social pack ID mismatch`);
+        if (artifactDigest(socialRecord) !== handoff.socialPackSha256) issues.push(`${mission.missionId}: QA failure social pack digest mismatch`);
+      }
+      if (!reviewRecord) issues.push(`${mission.missionId}: QA failure review receipt is missing`);
+      else {
+        if (artifactDigest(reviewRecord) !== handoff.reviewReceiptSha256) issues.push(`${mission.missionId}: QA failure review receipt digest mismatch`);
+        if (reviewRecord.data.verdict !== 'failed' || reviewRecord.data.blockers.length === 0) issues.push(`${mission.missionId}: QA failure receipt must contain a failed verdict and blockers`);
+        if (!reviewReceiptBelongsToMission(reviewRecord.data, mission)) issues.push(`${mission.missionId}: QA failure review mission provenance mismatch`);
+        if (reviewRecord.data.reviewerId !== handoff.reviewerId || reviewRecord.data.reviewedAt !== handoff.reviewedAt) issues.push(`${mission.missionId}: QA failure reviewer identity differs from the receipt`);
+        if (JSON.stringify(reviewRecord.data.blockers) !== JSON.stringify(handoff.blockers) || JSON.stringify(reviewRecord.data.warnings) !== JSON.stringify(handoff.warnings)) issues.push(`${mission.missionId}: QA failure findings differ from the receipt`);
+      }
+      continue;
+    }
+
     if (mission.status === 'visual_pending') {
       if (activeIdeas.has(mission.idea.id)) issues.push(`${mission.missionId}: another active mission already exists for this idea`);
       activeIdeas.add(mission.idea.id);
-      if (mission.completedAt !== null || mission.completion !== null || mission.visualHandoff === null) {
+      if (mission.failedAt !== null || mission.completedAt !== null || mission.qaFailureHandoff !== null || mission.completion !== null || mission.visualHandoff === null) {
         issues.push(`${mission.missionId}: visual-pending mission needs one handoff and no completion evidence`);
         continue;
       }
@@ -215,7 +270,7 @@ export function validateResearchMissionRecords({
       continue;
     }
 
-    if (mission.completedAt === null || mission.completion === null) {
+    if (mission.failedAt !== null || mission.qaFailureHandoff !== null || mission.completedAt === null || mission.completion === null) {
       issues.push(`${mission.missionId}: completed mission needs completion evidence`);
       continue;
     }

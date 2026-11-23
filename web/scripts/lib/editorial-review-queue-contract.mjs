@@ -14,6 +14,16 @@ const founderDecisionPacketSchema = z.object({
   authorityBoundary: z.literal('This decision binds only the exact current run, article, social, and high-risk claim hashes. It does not replace independent QA, merge a pull request, or authorize publication.')
 }).strict();
 
+const failedReviewSchema = z.object({
+  missionId: z.string().regex(/^research-mission-[1-9]\d*-[1-9]\d*$/),
+  failedAt: z.string().datetime(),
+  receiptPath: z.string().regex(/^research\/reviews\/[a-z0-9-]+\.qa\.v[1-9]\d*\.json$/),
+  receiptSha256: sha256Schema,
+  reviewedAt: z.string().datetime(),
+  workflowRunUrl: z.string().url(),
+  correctionPullRequestSearchUrl: z.string().url()
+}).strict();
+
 const queueEntrySchema = z.object({
   runId: z.string().regex(/^\d{8}-[a-z0-9-]+-[a-f0-9]{8}$/),
   ideaId: z.string().min(3),
@@ -22,6 +32,7 @@ const queueEntrySchema = z.object({
   reviewerId: z.string().min(3),
   blockers: z.array(z.string().min(12)).min(1),
   warnings: z.array(z.string().min(12)),
+  failedReview: failedReviewSchema.nullable(),
   highRiskClaims: z.array(highRiskClaimSchema),
   founderDecisionPacket: founderDecisionPacketSchema.nullable(),
   founderSafetyReviewRequired: z.boolean(),
@@ -85,6 +96,9 @@ const queueEntrySchema = z.object({
   if ((entry.sourcePaths.social === null) !== (entry.sourceSha256.social === null)) {
     context.addIssue({ code: z.ZodIssueCode.custom, path: ['sourceSha256', 'social'], message: 'social path and digest must be present or absent together' });
   }
+  if (entry.failedReview !== null && entry.status !== 'qa_failed') {
+    context.addIssue({ code: z.ZodIssueCode.custom, path: ['status'], message: 'a mission-bound failed review must surface as qa_failed' });
+  }
 });
 
 export const editorialReviewQueueSchema = z.object({
@@ -116,11 +130,13 @@ export const editorialReviewQueueSchema = z.object({
 export function buildEditorialReviewQueue(records) {
   const queue = records
     .filter(({ run }) => ['drafted', 'qa_failed'].includes(run.status))
-    .map(({ run, runPath, runSha256, articlePath, articleSha256, socialPath, socialSha256, safetyApproval }) => {
+    .map(({ run, runPath, runSha256, articlePath, articleSha256, socialPath, socialSha256, safetyApproval, qaFailureHandoff = null }) => {
+      const effectiveBlockers = qaFailureHandoff?.blockers ?? run.qa.blockers;
+      const effectiveWarnings = qaFailureHandoff?.warnings ?? run.qa.warnings;
       const highRiskClaims = (run.claims ?? [])
         .filter((claim) => claim.risk === 'high')
         .map((claim) => ({ id: claim.id, text: claim.text, sourceIds: claim.sourceIds }));
-      const carriesSafetyBoundary = highRiskClaims.length > 0 || run.qa.blockers.some((blocker) => /founder review|lucas must review|safety/i.test(blocker));
+      const carriesSafetyBoundary = highRiskClaims.length > 0 || effectiveBlockers.some((blocker) => /founder review|lucas must review|safety/i.test(blocker));
       const founderSafetyReviewStatus = !carriesSafetyBoundary ? 'not_required' : safetyApproval?.status ?? 'approval_required';
       const founderSafetyReviewRequired = carriesSafetyBoundary && founderSafetyReviewStatus !== 'approved_current';
       const founderDecisionPacket = highRiskClaims.length === 0 ? null : {
@@ -129,14 +145,24 @@ export function buildEditorialReviewQueue(records) {
         rejectCommand: `gh workflow run editorial-safety-approval.yml -f run_id=${run.runId} -f decision=rejected -f confirmation=REVIEW-${run.runId}-rejected`,
         authorityBoundary: 'This decision binds only the exact current run, article, social, and high-risk claim hashes. It does not replace independent QA, merge a pull request, or authorize publication.'
       };
+      const failedReview = qaFailureHandoff ? {
+        missionId: qaFailureHandoff.missionId,
+        failedAt: qaFailureHandoff.failedAt,
+        receiptPath: qaFailureHandoff.reviewReceiptPath,
+        receiptSha256: qaFailureHandoff.reviewReceiptSha256,
+        reviewedAt: qaFailureHandoff.reviewedAt,
+        workflowRunUrl: `https://github.com/lucasdmoyer/tipsforyourgifts/actions/runs/${qaFailureHandoff.workflowRunId}`,
+        correctionPullRequestSearchUrl: `https://github.com/lucasdmoyer/tipsforyourgifts/pulls?q=is%3Apr+head%3Acodex%2Fcontent-${qaFailureHandoff.missionId}`
+      } : null;
       return {
         runId: run.runId,
         ideaId: run.ideaId,
         articleSlug: run.article.slug,
-        status: run.status,
-        reviewerId: run.qa.reviewerId,
-        blockers: run.qa.blockers,
-        warnings: run.qa.warnings,
+        status: failedReview ? 'qa_failed' : run.status,
+        reviewerId: qaFailureHandoff?.reviewerId ?? run.qa.reviewerId,
+        blockers: effectiveBlockers,
+        warnings: effectiveWarnings,
+        failedReview,
         highRiskClaims,
         founderDecisionPacket,
         founderSafetyReviewRequired,
@@ -145,7 +171,9 @@ export function buildEditorialReviewQueue(records) {
         independentReviewRequired: true,
         sourcePaths: { run: runPath, article: articlePath, social: socialPath },
         sourceSha256: { run: runSha256, article: articleSha256, social: socialSha256 },
-        nextGate: founderSafetyReviewStatus === 'approved_current'
+        nextGate: failedReview
+          ? 'Open the exact correction pull request, resolve every recorded blocker without deleting the failed receipt, then require a new independent review before visual production or promotion.'
+          : founderSafetyReviewStatus === 'approved_current'
           ? 'Founder safety approval matches the current bytes; merging that decision dispatches the separate independent editor automatically, with the Studio workflow available for recovery before promotion.'
           : founderSafetyReviewStatus === 'rejected_current'
             ? 'Do not publish this bundle. Revise or remove the rejected high-risk claim language, then request a new founder safety review on the changed bytes.'
