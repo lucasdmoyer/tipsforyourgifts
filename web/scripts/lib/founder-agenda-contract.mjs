@@ -222,7 +222,7 @@ export function buildFounderAgenda(input) {
       rationale: 'The team has reusable decision-first creative, but drafts cannot drive traffic until one official channel has a founder-approved and measurable publishing boundary.',
       evidence: [
         `${input.socialDraftCount} reviewed social drafts are prepared.`,
-        `${input.socialCreativeCandidateCount} original creative candidate is locally verified.`,
+        `${input.socialCreativeCandidateCount} original creative candidate${input.socialCreativeCandidateCount === 1 ? ' is' : 's are'} locally verified.`,
         `${activeChannels.length}/${input.socialChannels.channels.length} official social channels are active.`,
         `${firstChannel.id} is channel priority ${firstChannel.priority}.`
       ],

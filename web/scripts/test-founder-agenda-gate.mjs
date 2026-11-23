@@ -65,6 +65,7 @@ if (currentSocialDecision?.title === 'Complete the first Pinterest operating pac
   assert.match(currentSocialDecision.action.command, /max_posts_per_week=3/);
   assert.match(currentSocialDecision.action.command, /configuration_evidence_url=https:\/\/github\.com\/lucasdmoyer\/tipsforyourgifts\/issues\/61/);
   assert.doesNotMatch(currentSocialDecision.action.command, /REPLACE_WITH_ISSUE_NUMBER/);
+  assert.ok(currentSocialDecision.evidence.includes(`${socialCandidateCount} original creative candidate${socialCandidateCount === 1 ? ' is' : 's are'} locally verified.`));
 }
 assert.deepEqual(base.decisions.map((decision) => decision.rank), base.decisions.map((_decision, index) => index + 1));
 const priorityWeight = { high: 3, medium: 2, low: 1 };
