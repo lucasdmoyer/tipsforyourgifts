@@ -40,9 +40,10 @@ const articleModuleNames = (await fs.readdir(articleModuleDirectory)).filter((na
 const loaderCount = [...loaders.matchAll(/: \(\) => import\('\.\/articles\//g)].length;
 expect(articleModuleNames.length > 0, 'no route-split article modules were generated');
 expect(loaderCount === articleModuleNames.length, 'article loader map and route-split module set differ');
+expect(loaders.includes("import type { ArticlePageData }"), 'article loaders must use the route-only article page data contract');
 for (const name of articleModuleNames) {
   const source = await fs.readFile(path.join(articleModuleDirectory, name), 'utf8');
-  expect(source.includes('export const ARTICLE: Article ='), `${name} does not export one typed article`);
+  expect(source.includes('export const ARTICLE: ArticlePageData ='), `${name} does not export one typed article page payload`);
 }
 
 const summaryBytes = Buffer.byteLength(summaries);

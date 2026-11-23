@@ -93,6 +93,7 @@ const sourceArticles = await Promise.all(articleNames.map(async (name) => ({
   ...matter(await fs.readFile(path.join(blogDir, name), 'utf8')).data
 })));
 const readyArticles = sourceArticles.filter((article) => article.status === 'publication_ready');
+const readyArticleSlugs = new Set(readyArticles.map((article) => article.slug));
 const draftArticles = sourceArticles.filter((article) => article.status === 'draft');
 const operations = JSON.parse(await fs.readFile(path.join(root, 'src', 'data', 'operations.json'), 'utf8'));
 const studioHtml = await fs.readFile(path.join(dist, 'studio', 'index.html'), 'utf8');
@@ -147,8 +148,15 @@ for (const article of readyArticles) {
   try { html = await fs.readFile(path.join(dist, relativePath), 'utf8'); }
   catch { failures.push(`${article.slug}: missing prerendered article`); continue; }
   const readerTitle = article.slug === 'how-we-research-gifts' ? 'The Gift Hiding in Plain Sight' : article.title;
-  for (const marker of [readerTitle, 'Start with the person', 'If you know someone', 'Know who this sounds like?', 'data-event-name="article_share"', 'data-share-method="copy"', 'application/ld+json']) {
+  for (const marker of [readerTitle, 'Start with the person', 'If you know someone', 'Keep following the clue', 'data-event-name="related_guide_open"', 'BreadcrumbList', 'Know who this sounds like?', 'data-event-name="article_share"', 'data-share-method="copy"', 'application/ld+json']) {
     if (!html.includes(marker)) failures.push(`${article.slug}: article HTML missing ${JSON.stringify(marker)}`);
+  }
+  const relatedDestinations = [...html.matchAll(/data-destination-guide-slug="([^"]+)"/g)].map((match) => match[1]);
+  if (relatedDestinations.length !== 3) failures.push(`${article.slug}: expected 3 related guides, found ${relatedDestinations.length}`);
+  if (new Set(relatedDestinations).size !== relatedDestinations.length) failures.push(`${article.slug}: related guides contain a duplicate destination`);
+  if (relatedDestinations.includes(article.slug)) failures.push(`${article.slug}: related guides include the current article`);
+  for (const destination of relatedDestinations) {
+    if (!readyArticleSlugs.has(destination)) failures.push(`${article.slug}: related guide ${destination} is not publication ready`);
   }
   if (!blogIndex.includes(readerTitle)) failures.push(`${article.slug}: missing from blog index`);
   if (!sitemap.includes(`/blog/${article.slug}`)) failures.push(`${article.slug}: missing from sitemap`);
