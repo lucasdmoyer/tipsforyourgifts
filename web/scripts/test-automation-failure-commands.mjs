@@ -38,12 +38,38 @@ try {
   assert.equal(receipt.handling.partialModelOutputPreserved, false);
   assert.equal(receipt.handling.authoritativeProposalPreserved, false);
   assert.equal(receipt.handling.reviewReceiptCreated, false);
+  const snapshotSha = 'c'.repeat(64);
+  await execFileAsync(process.execPath, [
+    path.join(scriptRoot, 'scripts/record-automation-failure.mjs'),
+    '--workflow=growth-review.yml',
+    '--stage=growth_analysis',
+    '--reason-code=output_invalid',
+    '--target-kind=growth_snapshot',
+    '--target-id=growth-snapshot-20261122-search-console',
+    `--target-sha256=${snapshotSha}`,
+    '--target-url=https://github.com/lucasdmoyer/tipsforyourgifts/actions/runs/12345',
+    '--workflow-run-id=12347',
+    '--workflow-run-attempt=1',
+    '--actor=lucasdmoyer',
+    `--base-sha=${'d'.repeat(40)}`,
+    '--ref=refs/heads/master',
+    '--event-name=schedule',
+    '--recorded-at=2026-11-23T20:31:00.000Z'
+  ], { cwd: fixtureRoot, env: commandEnv });
+  const growthFailureId = 'automation-failure-growth-review-run12347-attempt1';
+  const growthReceipt = automationFailureReceiptSchema.parse(JSON.parse(await fs.readFile(path.join(fixtureRoot, 'automation/failures', `${growthFailureId}.json`), 'utf8')));
+  assert.equal(growthReceipt.target.kind, 'growth_snapshot');
+  assert.equal(growthReceipt.target.sourceSha256, snapshotSha);
+  assert.equal(growthReceipt.target.url, 'https://github.com/lucasdmoyer/tipsforyourgifts/actions/runs/12345');
+  assert.equal(growthReceipt.handling.partialModelOutputPreserved, false);
+  assert.equal(growthReceipt.handling.authoritativeProposalPreserved, false);
+  assert.equal(growthReceipt.handling.reviewReceiptCreated, false);
   await execFileAsync(process.execPath, [path.join(scriptRoot, 'scripts/validate-automation-failures.mjs')], { cwd: fixtureRoot, env: commandEnv });
   await assert.rejects(execFileAsync(process.execPath, [
     path.join(scriptRoot, 'scripts/record-automation-failure.mjs'),
     '--workflow=strategy-intake.yml', '--stage=growth_analysis', '--reason-code=output_invalid', '--target-kind=founder_strategy_issue', '--target-id=77', `--target-sha256=${issueSha}`, '--target-url=https://github.com/lucasdmoyer/tipsforyourgifts/issues/77', '--workflow-run-id=12346', '--workflow-run-attempt=1', '--actor=lucasdmoyer', `--base-sha=${'b'.repeat(40)}`, '--ref=refs/heads/master', '--event-name=issues'
   ], { cwd: fixtureRoot, env: commandEnv }));
-  console.log(JSON.stringify({ automationFailureCommandTests: 'passed', failureId, workflow: receipt.workflow.name, stage: receipt.stage, reasonCode: receipt.reasonCode, partialModelOutputPreserved: false, authoritativeProposalPreserved: false, reviewReceiptFabricated: false, externalStateChanged: false, productionAuthorized: false }, null, 2));
+  console.log(JSON.stringify({ automationFailureCommandTests: 'passed', failureIds: [failureId, growthFailureId], workflows: [receipt.workflow.name, growthReceipt.workflow.name], stages: [receipt.stage, growthReceipt.stage], reasonCodes: [receipt.reasonCode, growthReceipt.reasonCode], partialModelOutputPreserved: false, authoritativeProposalPreserved: false, reviewReceiptFabricated: false, externalStateChanged: false, productionAuthorized: false }, null, 2));
 } finally {
   await fs.rm(fixtureRoot, { recursive: true, force: true });
 }

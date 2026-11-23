@@ -20,6 +20,11 @@ jobs:
       has_patch: ${{ steps.diff.outputs.has_patch }}
       should_review: ${{ steps.preflight.outputs.should_review }}
       reason: ${{ steps.preflight.outputs.reason }}
+      failure_outcome: ${{ steps.route.outputs.failure_outcome }}
+      failure_code: ${{ steps.route.outputs.failure_code }}
+      target_id: ${{ steps.preflight.outputs.latest_snapshot_id }}
+      target_sha256: ${{ steps.preflight.outputs.latest_snapshot_sha256 }}
+      target_url: ${{ steps.preflight.outputs.latest_snapshot_url }}
     steps:
       - uses: actions/checkout@v5
         with:
@@ -48,15 +53,19 @@ jobs:
         run: |
           cp web/src/data/growth.json growth.base.json
       - name: Authorize AI automation runtime
+        id: runtime
         if: steps.preflight.outputs.should_review == 'true'
         run: node web/scripts/check-ai-runtime-authorization.mjs
       - name: Verify autonomous agent credential
+        id: credential
         if: steps.preflight.outputs.should_review == 'true'
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: node web/scripts/require-openai-api-key.mjs
       - name: Let the growth team propose the next measured experiment
+        id: growth_agent
         if: steps.preflight.outputs.should_review == 'true'
+        continue-on-error: true
         uses: openai/codex-action@v1
         with:
           openai-api-key: ${{ secrets.OPENAI_API_KEY }}
@@ -72,7 +81,9 @@ jobs:
 
             If there is no new complete aggregate snapshot that materially supports a decision, make no changes. Otherwise, create or revise only proposed experiments in web/src/data/growth.json. Every proposal must state a falsifiable hypothesis, one primary metric, a comparable reporting window, a decision rule, two stop conditions, the exact source snapshot IDs, and the affected publication-ready article slugs. Leave status and founderDisposition as proposed. Do not approve or start an experiment, change connector state, alter snapshots or measurement policy, modify strategy, post social content, enroll an affiliate, spend money, deploy, or touch any other file.
       - name: Prove the AI patch stayed inside the proposal boundary
-        if: steps.preflight.outputs.should_review == 'true'
+        id: boundary
+        if: always() && steps.preflight.outputs.should_review == 'true' && steps.growth_agent.outcome == 'success'
+        continue-on-error: true
         run: |
           npm --prefix web run generate
           node web/scripts/verify-growth-review-patch.mjs growth.base.json web/src/data/growth.json
@@ -85,9 +96,36 @@ jobs:
             esac
           done < <(git diff --name-only HEAD)
           npm --prefix web run validate:growth
+      - name: Route the exact growth-analysis result
+        id: route
+        if: always() && steps.preflight.outputs.should_review == 'true'
+        env:
+          RUNTIME_OUTCOME: ${{ steps.runtime.outcome }}
+          CREDENTIAL_OUTCOME: ${{ steps.credential.outcome }}
+          MODEL_OUTCOME: ${{ steps.growth_agent.outcome }}
+          BOUNDARY_OUTCOME: ${{ steps.boundary.outcome }}
+        run: |
+          if [ "$RUNTIME_OUTCOME" != "success" ]; then
+            outcome="failed"
+            code="runtime_policy_failed"
+          elif [ "$CREDENTIAL_OUTCOME" != "success" ]; then
+            outcome="failed"
+            code="credential_preflight_failed"
+          elif [ "$MODEL_OUTCOME" != "success" ]; then
+            outcome="failed"
+            code="model_step_failed"
+          elif [ "$BOUNDARY_OUTCOME" != "success" ]; then
+            outcome="failed"
+            code="output_invalid"
+          else
+            outcome="ready"
+            code=""
+          fi
+          echo "failure_outcome=$outcome" >> "$GITHUB_OUTPUT"
+          echo "failure_code=$code" >> "$GITHUB_OUTPUT"
       - name: Serialize the review proposal
         id: diff
-        if: steps.preflight.outputs.should_review == 'true'
+        if: steps.route.outputs.failure_outcome == 'ready'
         run: |
           git diff --check
           git diff --binary HEAD > growth-review.patch
@@ -103,6 +141,117 @@ jobs:
           path: growth-review.patch
           if-no-files-found: error
           retention-days: 7
+
+  record_failure:
+    needs: analyze
+    if: always() && needs.analyze.outputs.failure_outcome == 'failed'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "24.14.0"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - name: Record only the credential-free growth failure receipt
+        id: record
+        env:
+          FAILURE_CODE: ${{ needs.analyze.outputs.failure_code }}
+          TARGET_ID: ${{ needs.analyze.outputs.target_id }}
+          TARGET_SHA256: ${{ needs.analyze.outputs.target_sha256 }}
+          TARGET_URL: ${{ needs.analyze.outputs.target_url }}
+        run: |
+          npm ci --prefix web
+          npm --prefix web run automation:failure:record -- \
+            --workflow=growth-review.yml \
+            --stage=growth_analysis \
+            --reason-code="$FAILURE_CODE" \
+            --target-kind=growth_snapshot \
+            --target-id="$TARGET_ID" \
+            --target-sha256="$TARGET_SHA256" \
+            --target-url="$TARGET_URL"
+          npm --prefix web run generate
+      - name: Prove and serialize the clean growth failure packet
+        env:
+          FAILURE_PATH: ${{ steps.record.outputs.failure_path }}
+          TARGET_ID: ${{ needs.analyze.outputs.target_id }}
+        run: |
+          test -f "$FAILURE_PATH"
+          test "$(node -p "require('./$FAILURE_PATH').target.id")" = "$TARGET_ID"
+          npm run validate
+          npm run build
+          npm run smoke
+          git add -N .
+          while IFS= read -r changed_path; do
+            case "$changed_path" in
+              "$FAILURE_PATH"|web/src/data/operations.json|web/src/app/generated/content.generated.ts|web/src/app/generated/studio.generated.ts|web/public/sitemap.xml) ;;
+              *) echo "Growth failure recorder changed forbidden path: $changed_path" >&2; exit 1 ;;
+            esac
+          done < <(git diff --name-only HEAD)
+          git diff --exit-code HEAD -- web/src/data/growth.json
+          git diff --check
+          git diff --binary HEAD > growth-failure.patch
+          test -s growth-failure.patch
+      - uses: actions/upload-artifact@v7
+        with:
+          name: growth-failure-${{ github.run_id }}-${{ github.run_attempt }}
+          path: growth-failure.patch
+          if-no-files-found: error
+          retention-days: 30
+
+  open_failure_pull_request:
+    needs: [analyze, record_failure]
+    if: always() && needs.record_failure.result == 'success'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/download-artifact@v8
+        with:
+          name: growth-failure-${{ github.run_id }}-${{ github.run_attempt }}
+      - run: git apply --index growth-failure.patch
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "24.14.0"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - name: Re-run failure gates without an AI credential
+        run: |
+          npm ci --prefix web
+          npm run validate
+          npm run build
+          npm run smoke
+          git diff --check --cached
+          git diff --exit-code
+      - name: Commit the growth retry branch
+        env:
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -c "codex/growth-failure-$RUN_ID-${GITHUB_RUN_ATTEMPT}"
+          git commit -m "Record growth review failure $RUN_ID"
+          git push origin "codex/growth-failure-$RUN_ID-${GITHUB_RUN_ATTEMPT}"
+      - name: Open the growth correction pull request with auto-merge disabled
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ github.run_id }}
+          TARGET_ID: ${{ needs.analyze.outputs.target_id }}
+        run: |
+          gh pr create \
+            --base master \
+            --head "codex/growth-failure-$RUN_ID-${GITHUB_RUN_ATTEMPT}" \
+            --title "Growth review retry required for $TARGET_ID" \
+            --body "The aggregate growth review failed before it could produce a clean bounded experiment proposal. This correction packet preserves only the hash-bound aggregate snapshot and exact workflow failure. It does not preserve partial model output, a growth experiment, or a review receipt. It does not infer missing metrics, approve an experiment, merge automatically, publish, spend, activate an affiliate, post social content, or deploy Firebase. Inspect the failed run and retry from a new workflow attempt; do not reuse partial model output."
 
   open_pull_request:
     needs: analyze
