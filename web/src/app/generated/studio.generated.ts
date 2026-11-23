@@ -474,6 +474,7 @@ export const OPERATIONS: Operations = {
           "The HubPages mat account is owner-purchased but appears on a platform that may compensate product-link content; it is used only as subjective experience.",
           "The Absorber replacement uses one exact-product independent retailer corpus and one same-brand, same-size PVA product-line retailer corpus; the latter is not treated as dog-use evidence."
         ],
+        "failedReview": null,
         "highRiskClaims": [
           {
             "id": "claim-mudbuster-fit",
@@ -554,6 +555,7 @@ export const OPERATIONS: Operations = {
           "The Big Fudge manufacturer page was marked sold out during review; the reader link uses the exact 12-inch 50-count product at Binaural Records and availability still requires a pre-publication recheck.",
           "Every product link remains ordinary and unpaid; no affiliate tracking was added."
         ],
+        "failedReview": null,
         "highRiskClaims": [
           {
             "id": "claim-groovewasher-g2-label-boundary",
@@ -592,6 +594,7 @@ export const OPERATIONS: Operations = {
     "total": 0,
     "active": 0,
     "completed": 0,
+    "qaFailed": 0,
     "visualPending": 0,
     "founderReviewRequired": 0,
     "automaticMergeEligible": 0,

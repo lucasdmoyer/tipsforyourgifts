@@ -249,6 +249,7 @@ const editorialReviewQueue = buildEditorialReviewQueue(runRecords
         })
       })
       : null;
+    const failedMission = researchMissions.find((mission) => mission.status === 'qa_failed' && mission.qaFailureHandoff?.runId === record.data.runId);
     return {
       run: record.data,
       runPath: `research/runs/${record.name}`,
@@ -257,6 +258,12 @@ const editorialReviewQueue = buildEditorialReviewQueue(runRecords
       articleSha256: articleRecord.sha256,
       socialPath: socialPack ? `social/drafts/${socialPack.name}` : null,
       socialSha256: socialPack?.sha256 ?? null,
+      qaFailureHandoff: failedMission ? {
+        missionId: failedMission.missionId,
+        failedAt: failedMission.failedAt,
+        workflowRunId: failedMission.trigger.workflowRunId,
+        ...failedMission.qaFailureHandoff
+      } : null,
       safetyApproval: latestSafetyApproval ? {
         status: safetyAssessment.status,
         revision: latestSafetyApproval.data.approvalRevision,
@@ -296,6 +303,7 @@ const runById = new Map(runs.map((run) => [run.runId, run]));
 const visualRequestByRun = new Map(visualRequests.map((request) => [request.runId, request]));
 const activeResearchMissions = researchMissions.filter((mission) => ['started', 'visual_pending'].includes(mission.status)).length;
 const completedResearchMissions = researchMissions.filter((mission) => mission.status === 'completed').length;
+const qaFailedResearchMissions = researchMissions.filter((mission) => mission.status === 'qa_failed').length;
 const ideaStages = strategy.ideas.map((idea) => {
   const ideaRuns = runs.filter((run) => run.ideaId === idea.id);
   const latestRun = [...ideaRuns].sort((left, right) => String(right.startedAt).localeCompare(String(left.startedAt)))[0];
@@ -446,6 +454,7 @@ const operations = {
     total: researchMissions.length,
     active: activeResearchMissions,
     completed: completedResearchMissions,
+    qaFailed: qaFailedResearchMissions,
     visualPending: visualRequests.length,
     founderReviewRequired: researchMissions.filter((mission) => mission.completion?.publicationReadiness === 'founder_review_required').length,
     automaticMergeEligible: researchMissions.filter((mission) => mission.completion?.publicationReadiness === 'automatic_merge_eligible').length,
@@ -465,11 +474,11 @@ const operations = {
         createdAt: mission.createdAt,
         completedAt: mission.completedAt,
         workflowRunId: mission.trigger.workflowRunId,
-        activeStage: pendingVisual ? 'visual_production' : mission.teamStages.find((stage) => ['in_progress', 'ready'].includes(stage.status))?.id ?? 'growth_follow_up',
-        runId: pendingVisual?.runId ?? mission.completion?.runId ?? null,
-        articleSlug: pendingVisual?.articleSlug ?? mission.completion?.articleSlug ?? null,
-        publicationReadiness: pendingVisual ? 'visual_pending' : mission.completion?.publicationReadiness ?? 'research_in_progress',
-        nextGate: pendingVisual?.nextGate ?? mission.completion?.nextGate ?? 'Complete the evidence bundle, independent QA receipt, deterministic gates, and mission completion receipt.'
+        activeStage: mission.status === 'qa_failed' ? 'quality_review' : pendingVisual ? 'visual_production' : mission.teamStages.find((stage) => ['in_progress', 'ready'].includes(stage.status))?.id ?? 'growth_follow_up',
+        runId: mission.qaFailureHandoff?.runId ?? pendingVisual?.runId ?? mission.completion?.runId ?? null,
+        articleSlug: mission.qaFailureHandoff?.articleSlug ?? pendingVisual?.articleSlug ?? mission.completion?.articleSlug ?? null,
+        publicationReadiness: mission.status === 'qa_failed' ? 'qa_failed' : pendingVisual ? 'visual_pending' : mission.completion?.publicationReadiness ?? 'research_in_progress',
+        nextGate: mission.qaFailureHandoff?.nextGate ?? pendingVisual?.nextGate ?? mission.completion?.nextGate ?? 'Complete the evidence bundle, independent QA receipt, deterministic gates, and mission completion receipt.'
       };
     })
   },

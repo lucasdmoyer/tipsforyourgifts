@@ -46,6 +46,7 @@ console.log(JSON.stringify({
   gate: 'passed',
   missions: result.missions.length,
   activeMissions: result.missions.filter((mission) => ['started', 'visual_pending'].includes(mission.status)).length,
+  qaFailedMissions: result.missions.filter((mission) => mission.status === 'qa_failed').length,
   visualPendingMissions: result.missions.filter((mission) => mission.status === 'visual_pending').length,
   completedMissions: result.missions.filter((mission) => mission.status === 'completed').length,
   founderReviewRequired: result.missions.filter((mission) => mission.completion?.publicationReadiness === 'founder_review_required').length,

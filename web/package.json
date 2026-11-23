@@ -50,6 +50,7 @@
     "research:visual:assess": "node scripts/assess-visual-release-readiness.mjs",
     "research:mission:start": "node scripts/start-research-mission.mjs",
     "research:mission:visual-pending": "node scripts/mark-research-mission-visual-pending.mjs",
+    "research:mission:qa-failed": "node scripts/mark-research-mission-qa-failed.mjs",
     "research:mission:complete": "node scripts/complete-research-mission.mjs",
     "visual:target": "node scripts/resolve-visual-production-target.mjs",
     "visual:produce": "node scripts/generate-visual-production-assets.mjs",

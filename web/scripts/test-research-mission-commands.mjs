@@ -15,7 +15,11 @@ try {
     id: 'founder-idea-005', revision: 1, ideaType: 'content', thesisType: 'ritual_pairing', founderDisposition: 'approved_for_research',
     title: 'Field guide and observation tool for a curious friend'
   };
-  const strategy = { schemaVersion: '1.1.0', thoughtfulnessFramework: { minimumPairCoherenceScore: 80 }, ideas: [idea] };
+  const failedIdea = {
+    id: 'founder-idea-006', revision: 1, ideaType: 'content', thesisType: 'recipient_friction', founderDisposition: 'approved_for_research',
+    title: 'Observation upgrade for a careful neighborhood naturalist'
+  };
+  const strategy = { schemaVersion: '1.1.0', thoughtfulnessFramework: { minimumPairCoherenceScore: 80 }, ideas: [idea, failedIdea] };
   const policy = { mode: 'founder_reviewed', automaticPromotion: { enabled: false, verifiedSuccessfulReleaseCount: 0, minimumSuccessfulFounderReviewedReleases: 10 } };
   await fs.writeFile(path.join(fixtureRoot, 'src/data/strategy.json'), `${JSON.stringify(strategy, null, 2)}\n`);
   await fs.writeFile(path.join(fixtureRoot, 'config/publication-policy.json'), `${JSON.stringify(policy, null, 2)}\n`);
@@ -47,7 +51,28 @@ try {
   await execFileAsync(process.execPath, [path.join(scriptRoot, 'scripts/complete-research-mission.mjs'), `--mission-id=${missionId}`, `--run-id=${runId}`, '--completed-at=2026-08-03T11:00:00.000Z'], { cwd: fixtureRoot });
   const completed = researchMissionSchema.parse(JSON.parse(await fs.readFile(missionPath, 'utf8')));
   if (completed.status !== 'completed' || completed.completion?.publicationReadiness !== 'founder_review_required' || completed.completion?.runId !== runId) throw new Error('complete command did not bind the expected outputs');
-  console.log(JSON.stringify({ researchMissionCommandIntegration: 'passed', commands: 4, missionId, receiptSchemaVersion: review.schemaVersion, completionStatus: completed.status, publicationReadiness: completed.completion.publicationReadiness }, null, 2));
+
+  await execFileAsync(process.execPath, [path.join(scriptRoot, 'scripts/start-research-mission.mjs'), '--idea-id=founder-idea-006', `--base-sha=${'b'.repeat(40)}`, '--workflow-run-id=12346', '--workflow-run-attempt=1', '--actor=github-actions[bot]', '--created-at=2026-08-03T12:00:00.000Z'], { cwd: fixtureRoot });
+  const failedMissionId = 'research-mission-12346-1';
+  const failedMissionPath = path.join(fixtureRoot, 'research/missions', `${failedMissionId}.json`);
+  const failedRunId = '20260803-naturalist-observation-b1c2d3e4';
+  const failedReviewPath = `research/reviews/${failedRunId}.qa.v1.json`;
+  const failedRun = {
+    runId: failedRunId, ideaId: failedIdea.id, ideaRevision: failedIdea.revision, ideaSha256: canonicalIdeaSha256(failedIdea), draftAuthor: 'research-drafter-fixture-two',
+    status: 'drafted', claims: [], article: { slug: 'naturalist-observation-tool', status: 'draft' },
+    qa: { passed: false, reviewerRole: 'independent-editor', reviewerId: 'pending-independent-review', receiptPath: failedReviewPath, blockers: [], warnings: [] }
+  };
+  const failedSocial = { packId: 'naturalist-observation-tool-launch', researchRun: failedRunId };
+  await fs.writeFile(path.join(fixtureRoot, 'research/runs', `${failedRunId}.json`), `${JSON.stringify(failedRun, null, 2)}\n`);
+  await fs.writeFile(path.join(fixtureRoot, 'src/data/blog/naturalist-observation-tool.md'), '---\nstatus: draft\n---\nDraft with an evidence gap.\n');
+  await fs.writeFile(path.join(fixtureRoot, 'social/drafts/naturalist-observation-tool-launch.json'), `${JSON.stringify(failedSocial, null, 2)}\n`);
+  const findingsPath = path.join(fixtureRoot, 'editorial-review-result.json');
+  await fs.writeFile(findingsPath, `${JSON.stringify({ schemaVersion: '1.0.0', runId: failedRunId, verdict: 'failed', blockers: ['The central recipient-fit claim needs a second exact-product independent source.'], warnings: ['Keep the article draft-only until the evidence gap is resolved.'] }, null, 2)}\n`);
+  await execFileAsync(process.execPath, [path.join(scriptRoot, 'scripts/create-review-receipt.mjs'), `--run-id=${failedRunId}`, '--reviewer-id=evidence-red-team-12346', '--workflow-name=research-agent.yml', `--mission-id=${failedMissionId}`, '--workflow-run-id=12346', '--findings-file=editorial-review-result.json', '--reviewed-at=2026-08-03T12:45:00.000Z'], { cwd: fixtureRoot });
+  await execFileAsync(process.execPath, [path.join(scriptRoot, 'scripts/mark-research-mission-qa-failed.mjs'), `--mission-id=${failedMissionId}`, `--run-id=${failedRunId}`, `--receipt-path=${failedReviewPath}`, '--failed-at=2026-08-03T12:46:00.000Z'], { cwd: fixtureRoot });
+  const failedMission = researchMissionSchema.parse(JSON.parse(await fs.readFile(failedMissionPath, 'utf8')));
+  if (failedMission.status !== 'qa_failed' || failedMission.qaFailureHandoff?.blockers.length !== 1 || failedMission.completion !== null) throw new Error('QA-failed command did not preserve the correction handoff');
+  console.log(JSON.stringify({ researchMissionCommandIntegration: 'passed', commands: 7, missionId, receiptSchemaVersion: review.schemaVersion, completionStatus: completed.status, publicationReadiness: completed.completion.publicationReadiness, failedMissionStatus: failedMission.status, failedReceiptPreserved: true }, null, 2));
 } finally {
   await fs.rm(fixtureRoot, { recursive: true, force: true });
 }
