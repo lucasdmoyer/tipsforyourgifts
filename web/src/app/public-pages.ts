@@ -125,10 +125,13 @@ export class HomePage {
         <label>
           <span>Strongest clue</span>
           <select name="signal" [value]="signal" (change)="updateSignal($event)">
-            <option value="unsure">Show me a few ways to think</option>
-            <option value="observed_friction">Something they tolerate instead of replacing</option>
-            <option value="golf_routine">A little annoyance in their golf routine</option>
-            <option value="shared_curiosity">An interest that could become an experience</option>
+            <option value="unsure">Show me four thoughtful starting points</option>
+            <option value="practical_relief">They keep working around a small annoyance</option>
+            <option value="maker_pause">They make, paint, knit, or puzzle</option>
+            <option value="learning_by_doing">They love learning by doing</option>
+            <option value="look_closer">They notice nature, trees, or the night sky</option>
+            <option value="family_story">They light up around family stories and old photos</option>
+            <option value="golf_routine">They play golf and have a course-day workaround</option>
           </select>
         </label>
         <label>
@@ -160,8 +163,11 @@ export class HomePage {
           <div class="finder-result-list">
             @for (result of results; track result.article.slug; let rank = $index) {
               <article class="finder-result">
-                <div class="finder-result-rank" aria-hidden="true">0{{ rank + 1 }}</div>
-                <div>
+                <a class="finder-result-visual" [routerLink]="['/blog', result.article.slug]" [attr.aria-label]="'Read ' + result.article.title">
+                  <span class="finder-result-rank" aria-hidden="true">0{{ rank + 1 }}</span>
+                  <img [src]="result.article.visual.hero.src" [attr.srcset]="imageSrcset(result.article.visual.hero.src)" sizes="(max-width: 620px) calc(100vw - 56px), 240px" [alt]="result.article.visual.hero.alt" width="1536" height="1024" loading="lazy" decoding="async">
+                </a>
+                <div class="finder-result-copy">
                   <p class="eyebrow">{{ result.article.priceBand }} · {{ result.article.productCount }} idea{{ result.article.productCount === 1 ? '' : 's' }}@if (result.article.pairCount > 0) { · {{ result.article.pairCount }} pairing{{ result.article.pairCount === 1 ? '' : 's' }} }</p>
                   <h3>{{ result.article.title }}</h3>
                   <p class="finder-reason">{{ result.matchReason }}</p>
@@ -205,6 +211,7 @@ export class GiftFinderPage {
   signal: RecipientSignal = 'unsure';
   shape: GiftShape = 'either';
   readonly description = readerDescription;
+  readonly imageSrcset = responsiveImageSrcset;
 
   get results() { return findGiftGuides(this.content.articles, this.signal, this.shape); }
 

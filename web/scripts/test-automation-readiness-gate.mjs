@@ -43,6 +43,8 @@ expectEvidenceFailure('gate IDs cannot duplicate', (candidate) => { candidate.ex
 expectEvidenceFailure('evidence links must use HTTPS', (candidate) => { candidate.externalGates[0].evidenceUrl = 'http://example.com'; });
 expectEvidenceFailure('preview must name exact SHA prefix', (candidate) => { candidate.releaseCandidate.previewUrl = 'https://tipsforyourgifts--release-wrong.web.app/'; });
 expectEvidenceFailure('preview must use the owned Firebase site', (candidate) => { candidate.releaseCandidate.previewUrl = `https://example--${candidate.releaseCandidate.sha.slice(0, 7)}.web.app/`; });
+expectEvidenceFailure('release PR and OIDC ref cannot drift apart', (candidate) => { candidate.releaseCandidate.pullRequestUrl = 'https://github.com/lucasdmoyer/tipsforyourgifts/pull/999'; });
+expectEvidenceFailure('review receipt must belong to the exact release PR', (candidate) => { candidate.releaseCandidate.reviewUrl = 'https://github.com/lucasdmoyer/tipsforyourgifts/pull/83#issuecomment-1'; });
 expectEvidenceFailure('unexpected secret values are rejected', (candidate) => { candidate.externalGates[0].secretValue = 'not-allowed'; });
 expectEvidenceFailure('release SHA must be exact', (candidate) => { candidate.releaseCandidate.sha = '011b110'; });
 
@@ -81,7 +83,7 @@ assert.throws(() => buildAutomationReadiness({
 
 console.log(JSON.stringify({
   automationReadinessGateTests: 'passed',
-  negativeChecks: 8,
+  negativeChecks: 10,
   teams: base.teams.length,
   ready: base.counts.ready,
   limited: base.counts.limited,

@@ -48,6 +48,20 @@ export const automationReadinessEvidenceSchema = z.object({
   if (!previewHost.startsWith('tipsforyourgifts--') || !previewHost.endsWith('.web.app') || !previewHost.includes(evidence.releaseCandidate.sha.slice(0, 7))) {
     context.addIssue({ code: z.ZodIssueCode.custom, path: ['releaseCandidate', 'previewUrl'], message: 'preview URL must identify the exact candidate SHA prefix' });
   }
+  const pullRequestMatch = evidence.releaseCandidate.pullRequestUrl.match(/^https:\/\/github\.com\/lucasdmoyer\/tipsforyourgifts\/pull\/(\d+)$/);
+  if (!pullRequestMatch) {
+    context.addIssue({ code: z.ZodIssueCode.custom, path: ['releaseCandidate', 'pullRequestUrl'], message: 'release candidate must name an exact pull request in the owned repository' });
+    return;
+  }
+  const pullRequestNumber = pullRequestMatch[1];
+  if (!evidence.releaseCandidate.reviewUrl.startsWith(`${evidence.releaseCandidate.pullRequestUrl}#`)) {
+    context.addIssue({ code: z.ZodIssueCode.custom, path: ['releaseCandidate', 'reviewUrl'], message: 'review evidence must be an anchored receipt on the exact release pull request' });
+  }
+  const firebasePreviewGateIndex = evidence.externalGates.findIndex((gate) => gate.id === 'firebase-preview-identity');
+  const firebasePreviewGate = evidence.externalGates[firebasePreviewGateIndex];
+  if (firebasePreviewGate && !firebasePreviewGate.nextAction.includes(`refs/pull/${pullRequestNumber}/merge`)) {
+    context.addIssue({ code: z.ZodIssueCode.custom, path: ['externalGates', firebasePreviewGateIndex, 'nextAction'], message: 'preview identity boundary must match the exact release pull request' });
+  }
 });
 
 const teamSchema = z.object({

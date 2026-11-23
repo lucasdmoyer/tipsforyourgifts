@@ -120,7 +120,7 @@
   },
   "automationReadiness": {
     "schemaVersion": "1.1.0",
-    "observedAt": "2026-11-23T10:27:16.000Z",
+    "observedAt": "2026-11-23T14:03:51.000Z",
     "sourceMode": "versioned_snapshot_not_live_poll",
     "posture": "founder_action_required",
     "summary": "The operating system can validate content and run a narrow affiliate pilot today. Research generation, automated previews, distribution, measurement, release approval, and eventual keyless automatic publication still require explicit bounded founder actions.",
@@ -181,18 +181,18 @@
         "id": "preview-delivery",
         "label": "Firebase preview delivery",
         "status": "manual_fallback_verified",
-        "evidence": "The exact PR-74 Firebase preview passed Node 24.14 validation, a 19-route build, smoke and hosted HTTP checks, plus visual review of the home page, flagship read-and-play guide, and executive Studio. The public-pages payload fell from 265.64 KiB to 34.07 KiB raw, an 87.2 percent reduction. Automated keyless delivery remains blocked: PR 74's protected validation and exact-artifact build pass, but automated deploy stops at Google authentication because the tips-github-preview/github-preview Workload Identity provider is missing; the exact commit was reviewed through the manual Firebase preview fallback.",
-        "nextAction": "Approve and provision GitHub OIDC trust only for repository lucasdmoyer/tipsforyourgifts, actor lucasdmoyer, and ref refs/pull/74/merge, with Firebase Hosting Admin limited to the PR-74 preview workflow.",
-        "actionUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/74",
+        "evidence": "The exact PR-84 Firebase preview passed Node 24.14 validation, a 20-route build, static and hosted smoke checks across 11 publication-ready articles, and visual review. Mobile Lighthouse scored 100 for performance, accessibility, and best practices, with 0.8 second LCP, 60 millisecond total blocking time, and zero layout shift. Automated keyless delivery remains blocked: PR 84's protected validation and exact-artifact build pass, but automated deploy stops at Google authentication because the tips-github-preview/github-preview Workload Identity provider is missing; the exact commit was reviewed through the manual Firebase preview fallback.",
+        "nextAction": "Approve and provision GitHub OIDC trust only for repository lucasdmoyer/tipsforyourgifts, actor lucasdmoyer, and ref refs/pull/84/merge, with the existing Firebase Hosting Admin role limited to the PR-84 preview workflow.",
+        "actionUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/84#issuecomment-7103277446",
         "founderActionRequired": true
       },
       {
         "id": "production-release",
         "label": "Production release",
         "status": "founder_approval_required",
-        "evidence": "Exact candidate 9e0dfd556fa556b604e4e7d479c30747be09dc54 has a reviewed Firebase preview; production remains unchanged and separately gated.",
-        "nextAction": "Provision the PR-74-only OIDC preview trust, require the protected preview workflow to pass on unchanged SHA 9e0dfd556fa556b604e4e7d479c30747be09dc54, then merge without an admin bypass; production remains a separate exact-master-SHA action-time gate.",
-        "actionUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/74",
+        "evidence": "Exact candidate d07ffbde27a75245985c7a03dad7c3a7f6783f05 has a reviewed Firebase preview; production remains unchanged and separately gated.",
+        "nextAction": "Provision the PR-84-only OIDC preview trust, require the protected preview workflow to pass on unchanged SHA d07ffbde27a75245985c7a03dad7c3a7f6783f05, then merge without an admin bypass; request fresh exact-master-SHA approval before any production deployment because merge identity may differ.",
+        "actionUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/84#issuecomment-7103277446",
         "founderActionRequired": true
       },
       {
@@ -220,10 +220,10 @@
         "id": "firebase-preview-identity",
         "label": "Keyless Firebase preview identity",
         "status": "blocked_external_configuration",
-        "summary": "PR 74's protected validation and exact-artifact build pass, but automated deploy stops at Google authentication because the tips-github-preview/github-preview Workload Identity provider is missing; the exact commit was reviewed through the manual Firebase preview fallback.",
-        "evidenceUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/74",
-        "diagnosticUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/runs/45144566370",
-        "nextAction": "Approve and provision GitHub OIDC trust only for repository lucasdmoyer/tipsforyourgifts, actor lucasdmoyer, and ref refs/pull/74/merge, with Firebase Hosting Admin limited to the PR-74 preview workflow.",
+        "summary": "PR 84's protected validation and exact-artifact build pass, but automated deploy stops at Google authentication because the tips-github-preview/github-preview Workload Identity provider is missing; the exact commit was reviewed through the manual Firebase preview fallback.",
+        "evidenceUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/84#issuecomment-7103277446",
+        "diagnosticUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/runs/45179737865",
+        "nextAction": "Approve and provision GitHub OIDC trust only for repository lucasdmoyer/tipsforyourgifts, actor lucasdmoyer, and ref refs/pull/84/merge, with the existing Firebase Hosting Admin role limited to the PR-84 preview workflow.",
         "authorityBoundary": "Use short-lived impersonation for Firebase Hosting previews only. No Firebase Auth Admin, user-managed service-account key, or production Hosting authorization."
       },
       {
@@ -239,12 +239,12 @@
     ],
     "releaseCandidate": {
       "status": "exact_preview_verified",
-      "sha": "9e0dfd556fa556b604e4e7d479c30747be09dc54",
-      "pullRequestUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/74",
-      "reviewUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/74",
-      "previewUrl": "https://tipsforyourgifts--pr-74-9e0dfd5-uosqaecm.web.app/",
-      "summary": "The exact PR-74 Firebase preview passed Node 24.14 validation, a 19-route build, smoke and hosted HTTP checks, plus visual review of the home page, flagship read-and-play guide, and executive Studio. The public-pages payload fell from 265.64 KiB to 34.07 KiB raw, an 87.2 percent reduction.",
-      "nextAction": "Provision the PR-74-only OIDC preview trust, require the protected preview workflow to pass on unchanged SHA 9e0dfd556fa556b604e4e7d479c30747be09dc54, then merge without an admin bypass; production remains a separate exact-master-SHA action-time gate."
+      "sha": "d07ffbde27a75245985c7a03dad7c3a7f6783f05",
+      "pullRequestUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/84",
+      "reviewUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/84#issuecomment-7103277446",
+      "previewUrl": "https://tipsforyourgifts--pr83-d07ffbd-qpgk679y.web.app/",
+      "summary": "The exact PR-84 Firebase preview passed Node 24.14 validation, a 20-route build, static and hosted smoke checks across 11 publication-ready articles, and visual review. Mobile Lighthouse scored 100 for performance, accessibility, and best practices, with 0.8 second LCP, 60 millisecond total blocking time, and zero layout shift.",
+      "nextAction": "Provision the PR-84-only OIDC preview trust, require the protected preview workflow to pass on unchanged SHA d07ffbde27a75245985c7a03dad7c3a7f6783f05, then merge without an admin bypass; request fresh exact-master-SHA approval before any production deployment because merge identity may differ."
     }
   },
   "aiAutomationPolicy": {
