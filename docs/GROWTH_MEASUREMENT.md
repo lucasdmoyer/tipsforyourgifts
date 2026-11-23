@@ -69,7 +69,7 @@ Until Lucas completes these external account and credential steps and merges bot
 
 ## AI growth-team boundary
 
-The weekly workflow runs on Monday and may also be started manually. The OpenAI credential is present only in a read-only job. The agent may use committed aggregate snapshots to create or revise proposed experiments in `growth.json`; it cannot approve or run an experiment, change a connector, rewrite a snapshot, alter strategy, publish social content, add affiliate tracking, spend money, or deploy.
+The weekly workflow runs on Monday and may also be started manually. A deterministic preflight reads the validated growth ledger first: when no complete aggregate snapshot exists, the job stops before reading the OpenAI credential or invoking a model. The OpenAI credential is present only in the read-only analysis path after that gate. The agent may use committed aggregate snapshots to create or revise proposed experiments in `growth.json`; it cannot approve or run an experiment, change a connector, rewrite a snapshot, alter strategy, publish social content, add affiliate tracking, spend money, or deploy.
 
 A separate job without the AI credential verifies the patch boundary, reruns all deterministic gates, and opens a founder-review pull request. If no new complete snapshot supports a material decision, the correct output is no patch and no pull request.
 
