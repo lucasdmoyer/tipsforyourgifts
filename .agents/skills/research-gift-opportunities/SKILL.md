@@ -35,6 +35,7 @@ Resolve or reasonably infer the audience, occasion, target publish window, budge
 - Use independent reviews, labs, public discussions, and safety authorities for corroboration and tradeoffs.
 - Tier-D sources such as snippets, generic aggregators, affiliate listicles, and AI summaries may discover leads but cannot substantiate claims.
 - A supplied product, sponsorship, unknown commercial relationship, category-level match, or same-line substitute cannot count as a finalist source. A disclosed affiliate-supported first-person or comparative review may count only as Tier C, with an exact-product match and a conflict-ledger entry. Merchant-hosted reviews count only as an exact-product owner corpus with their hosting relationship disclosed.
+- For upstream opportunity scouting, use report schema 1.1. Record every source's commercial relationship, evidence-use decision, and qualification rationale; commercial catalogs and conflicted or unknown sources may reveal leads but cannot qualify signals, candidate scores, or the selected proposal.
 - Stop after minimum coverage and two consecutive passes each add less than 10 percent material novelty.
 - Require founder review for sensitive categories, safety claims, children, ingestibles, health, electrical products, recalls, sponsored or free products, and changed affiliate terms.
 

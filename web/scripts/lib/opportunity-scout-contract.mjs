@@ -91,7 +91,18 @@ const opportunitySourceSchema = z.object({
   trustTier: z.enum(['A', 'B', 'C', 'D']),
   independenceGroup: z.string().min(2),
   publicContent: z.literal(true),
-  containsPersonalIdentifiers: z.literal(false)
+  containsPersonalIdentifiers: z.literal(false),
+  commercialRelationship: z.enum([
+    'first_party',
+    'none_observed',
+    'affiliate_links',
+    'merchant_catalog',
+    'supplied_product',
+    'sponsored',
+    'unknown'
+  ]).optional(),
+  evidenceUse: z.enum(['qualifying', 'context_only', 'excluded']).optional(),
+  qualificationRationale: z.string().min(30).optional()
 }).strict();
 
 const opportunitySignalSchema = z.object({
@@ -143,7 +154,7 @@ const opportunityCandidateSchema = z.object({
 });
 
 export const opportunityReportSchema = z.object({
-  schemaVersion: z.literal('1.0.0'),
+  schemaVersion: z.enum(['1.0.0', '1.1.0']),
   scoutId: scoutIdSchema,
   missionId: scoutIdSchema,
   status: z.enum(['drafted', 'validated']),
@@ -290,12 +301,28 @@ export function validateOpportunityScoutRecords({ policy, missions, reports, rev
     if (tail.length < currentPolicy.requiredConsecutiveLowNoveltyPasses || tail.some((pass) => pass.materialNoveltyRate >= currentPolicy.diminishingReturnThreshold)) issues.push(`${report.scoutId}: research did not reach two consecutive low-novelty passes`);
 
     const sourceIds = new Set(report.sources.map((source) => source.id));
+    const sourcesById = new Map(report.sources.map((source) => [source.id, source]));
     if (sourceIds.size !== report.sources.length) issues.push(`${report.scoutId}: source IDs must be unique`);
     if (report.sources.length < currentPolicy.minimumSources) issues.push(`${report.scoutId}: too few sources`);
     if (new Set(report.sources.map((source) => source.sourceClass)).size < currentPolicy.minimumSourceClasses) issues.push(`${report.scoutId}: too few source classes`);
     const socialSources = report.sources.filter((source) => ['public_social', 'public_community'].includes(source.sourceClass));
     if (socialSources.length < currentPolicy.minimumPublicSocialOrCommunitySources) issues.push(`${report.scoutId}: too few public social or community sources`);
     if (new Set(socialSources.map((source) => source.independenceGroup)).size < Math.min(2, currentPolicy.minimumPublicSocialOrCommunitySources)) issues.push(`${report.scoutId}: social or community sources need distinct independence groups`);
+
+    const usesQualifiedSources = report.schemaVersion === '1.1.0';
+    if (usesQualifiedSources) {
+      for (const source of report.sources) {
+        if (!source.commercialRelationship) issues.push(`${report.scoutId}: source ${source.id} is missing its commercial relationship`);
+        if (!source.evidenceUse) issues.push(`${report.scoutId}: source ${source.id} is missing its evidence-use decision`);
+        if (!source.qualificationRationale) issues.push(`${report.scoutId}: source ${source.id} is missing its qualification rationale`);
+        if (source.sourceClass === 'manufacturer_category' && source.commercialRelationship !== 'first_party') issues.push(`${report.scoutId}: manufacturer source ${source.id} must disclose a first-party relationship`);
+        if (source.sourceClass === 'merchant_catalog' && !['merchant_catalog', 'affiliate_links'].includes(source.commercialRelationship)) issues.push(`${report.scoutId}: merchant source ${source.id} must disclose its catalog or affiliate relationship`);
+        if (source.trustTier === 'D' && source.evidenceUse === 'qualifying') issues.push(`${report.scoutId}: Tier-D source ${source.id} cannot qualify`);
+        if (['affiliate_links', 'merchant_catalog', 'supplied_product', 'sponsored', 'unknown'].includes(source.commercialRelationship) && source.evidenceUse === 'qualifying') {
+          issues.push(`${report.scoutId}: commercially conflicted or unknown source ${source.id} cannot qualify opportunity evidence`);
+        }
+      }
+    }
 
     const assertSourceRefs = (label, ids, minimum) => {
       if (ids.length < minimum) issues.push(`${report.scoutId}: ${label} has too few source references`);
@@ -304,11 +331,30 @@ export function validateOpportunityScoutRecords({ policy, missions, reports, rev
     if (report.signals.length < currentPolicy.minimumSignals) issues.push(`${report.scoutId}: too few opportunity signals`);
     const signalKinds = new Set(report.signals.map((signal) => signal.kind));
     for (const required of ['recipient_language', 'observed_workaround', 'self_purchase_gap', 'editorial_gap']) if (!signalKinds.has(required)) issues.push(`${report.scoutId}: missing ${required} signal`);
-    for (const signal of report.signals) assertSourceRefs(`signal ${signal.id}`, signal.sourceIds, 2);
+    for (const signal of report.signals) {
+      assertSourceRefs(`signal ${signal.id}`, signal.sourceIds, 2);
+      if (usesQualifiedSources) {
+        const signalSources = signal.sourceIds.map((sourceId) => sourcesById.get(sourceId)).filter(Boolean);
+        if (signalSources.some((source) => source.evidenceUse !== 'qualifying')) issues.push(`${report.scoutId}: signal ${signal.id} relies on context-only or excluded evidence`);
+        if (['recipient_language', 'observed_workaround', 'self_purchase_gap'].includes(signal.kind) && !signalSources.some((source) => ['public_social', 'public_community'].includes(source.sourceClass))) {
+          issues.push(`${report.scoutId}: signal ${signal.id} needs qualifying public social or community evidence`);
+        }
+      }
+    }
     if (report.candidates.length < currentPolicy.minimumCandidates || report.candidates.length > currentPolicy.maximumCandidates) issues.push(`${report.scoutId}: candidate count is outside policy`);
     const candidateIds = new Set(report.candidates.map((candidate) => candidate.id));
     if (candidateIds.size !== report.candidates.length) issues.push(`${report.scoutId}: candidate IDs must be unique`);
-    for (const candidate of report.candidates) assertSourceRefs(`candidate ${candidate.id}`, candidate.sourceIds, 3);
+    for (const candidate of report.candidates) {
+      assertSourceRefs(`candidate ${candidate.id}`, candidate.sourceIds, 3);
+      if (usesQualifiedSources) {
+        const candidateSources = candidate.sourceIds.map((sourceId) => sourcesById.get(sourceId)).filter(Boolean);
+        if (candidateSources.some((source) => source.evidenceUse !== 'qualifying')) issues.push(`${report.scoutId}: candidate ${candidate.id} relies on context-only or excluded evidence`);
+        const independentGroups = new Set(candidateSources
+          .filter((source) => source.commercialRelationship === 'none_observed')
+          .map((source) => source.independenceGroup));
+        if (independentGroups.size < 2) issues.push(`${report.scoutId}: candidate ${candidate.id} needs two commercially independent qualifying source groups`);
+      }
+    }
     const selected = report.candidates.find((candidate) => candidate.id === report.selectedProposal.candidateId);
     if (!selected) issues.push(`${report.scoutId}: selected candidate is missing`);
     else {
@@ -317,6 +363,9 @@ export function validateOpportunityScoutRecords({ policy, missions, reports, rev
       if (proposal && ['story_pairing', 'ritual_pairing'].includes(proposal.thesisType) && (!selected.pairingHypothesis || !signalKinds.has('pairing_behavior'))) issues.push(`${report.scoutId}: pairing proposal lacks pairing evidence`);
     }
     assertSourceRefs('selected proposal', report.selectedProposal.sourceIds, 3);
+    if (usesQualifiedSources && report.selectedProposal.sourceIds.some((sourceId) => sourcesById.get(sourceId)?.evidenceUse !== 'qualifying')) {
+      issues.push(`${report.scoutId}: selected proposal relies on context-only or excluded evidence`);
+    }
 
     if (report.status === 'drafted') {
       if (report.qa !== null) issues.push(`${report.scoutId}: drafted report cannot contain QA approval`);
