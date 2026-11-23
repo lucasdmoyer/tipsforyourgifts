@@ -107,7 +107,7 @@ assert.match(previewDeployJob, /test "\$BASE_REF" = "master"/, 'preview deploy m
 assert.match(previewDeployJob, /test "\$HEAD_REPOSITORY_ID" = "\$REPOSITORY_ID"/, 'preview deploy must reject fork-controlled heads');
 assert.match(previewDeployJob, /test "\$REF_VALUE" = "refs\/pull\/\$PR_NUMBER\/merge"/, 'preview deploy must bind the current merge ref and PR number');
 assert.match(previewDeployJob, /ref: master[\s\S]*path: trusted-config[\s\S]*sparse-checkout: firebase\.json/, 'preview deploy must read Firebase configuration from trusted master');
-assert.ok(previewDeployJob.indexOf('actions/download-artifact@v4') < previewAuthIndex, 'preview artifact must be downloaded before cloud authentication');
+assert.ok(previewDeployJob.indexOf('actions/download-artifact@v8') < previewAuthIndex, 'preview artifact must be downloaded with the Node 24 action before cloud authentication');
 assert.match(previewDeployJob, /tips-github-preview\/providers\/github-preview/, 'preview deploy must use the isolated reusable-workflow provider');
 assert.match(previewDeployJob, /service_account: github-action-171694140@tipsforyourgifts\.iam\.gserviceaccount\.com/, 'preview deploy must use the dedicated Hosting preview service account');
 assert.doesNotMatch(previewAfterAuth, /actions\/checkout|npm (?:ci|run)|npm --prefix web/, 'preview deploy must not check out or execute pull-request application code after authentication');
