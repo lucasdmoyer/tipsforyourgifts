@@ -14,13 +14,13 @@ Resolve or reasonably infer the audience, occasion, target publish window, budge
 ## Workflow
 
 1. Read `AGENTS.md`, `web/config/affiliate-programs.json`, and [editorial policy](references/editorial-policy.md).
-2. Resolve an approved strategy idea with `npm --prefix web run strategy:resolve -- <idea-id>` when an idea ID exists. Bind new schema 1.1 runs to its revision and SHA-256 digest.
+2. Resolve an approved strategy idea with `npm --prefix web run strategy:resolve -- <idea-id>` when an idea ID exists. Bind new schema 1.2 runs to its revision and SHA-256 digest.
 3. Create one run ID: `YYYYMMDD-<slug>-<brief_hash_8>`.
 4. Research in at least three passes. For roundups, collect at least 12 candidates and five qualified finalists across five source classes.
 5. Treat social and forum content as demand and language evidence, not objective product truth. Never store private-group content or unnecessary personal identifiers.
 6. Build a typed claim ledger. Connect every material product, friction, self-purchase, compatibility, clutter, and pair-coherence claim to source IDs; record conflicts and omit unsupported claims.
-7. Score products before affiliate economics. Require editorial score `>= 75`, evidence confidence `>= 70`, one drawback, one primary source, and two independent sources for each roundup finalist.
-8. Give every schema 1.1 finalist a thoughtfulness scorecard: observation prompt, friction evidence, welcomed physical-gift boundary, defensible self-purchase gap, duplicate and clutter risk, ownership burden, compatibility checks, and score `>= 15/20` with no component below 3.
+7. Score products before affiliate economics. Require editorial score `>= 75`, evidence confidence `>= 70`, one drawback, one primary source, and two independent sources for each roundup finalist. In schema 1.2, qualify every primary and independent source against the exact product, source format, commercial relationship, and conflict ledger before it can count.
+8. Give every schema 1.2 finalist a thoughtfulness scorecard: observation prompt, friction evidence, welcomed physical-gift boundary, defensible self-purchase gap, duplicate and clutter risk, ownership burden, compatibility checks, and score `>= 15/20` with no component below 3.
 9. For gift pairs, require two independently qualified items with different roles, one interaction loop, an observable recipient trigger, independent usefulness, resolved compatibility, and coherence `>= 80/100`. Name why the recipient may prefer only the anchor.
 10. Use only founder-enabled affiliate programs. Never invent tracking parameters, exact prices, availability, ratings, quotes, reviews, or image rights. Omit paid tracking when validation is unavailable.
 11. Draft `web/src/data/blog/<slug>.md` in the reader format below. Use `desk_research` unless hands-on evidence is documented. Never imply first-hand use without that evidence.
@@ -34,6 +34,8 @@ Resolve or reasonably infer the audience, occasion, target publish window, budge
 - Use authoritative product pages for specifications and current official policies.
 - Use independent reviews, labs, public discussions, and safety authorities for corroboration and tradeoffs.
 - Tier-D sources such as snippets, generic aggregators, affiliate listicles, and AI summaries may discover leads but cannot substantiate claims.
+- A supplied product, sponsorship, unknown commercial relationship, category-level match, or same-line substitute cannot count as a finalist source. A disclosed affiliate-supported first-person or comparative review may count only as Tier C, with an exact-product match and a conflict-ledger entry. Merchant-hosted reviews count only as an exact-product owner corpus with their hosting relationship disclosed.
+- For upstream opportunity scouting, use report schema 1.1. Record every source's commercial relationship, evidence-use decision, and qualification rationale; commercial catalogs and conflicted or unknown sources may reveal leads but cannot qualify signals, candidate scores, or the selected proposal.
 - Stop after minimum coverage and two consecutive passes each add less than 10 percent material novelty.
 - Require founder review for sensitive categories, safety claims, children, ingestibles, health, electrical products, recalls, sponsored or free products, and changed affiliate terms.
 
