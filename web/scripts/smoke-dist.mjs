@@ -16,6 +16,7 @@ const checks = [
   ['founder brief builder', 'studio/brief/index.html', ['Founder brief builder', 'Notice the gift before naming the product.', 'Complete the missing decisions', 'noindex,nofollow']],
   ['robots', 'robots.txt', ['Disallow: /studio', 'Sitemap:']],
   ['sitemap', 'sitemap.xml', ['blog/how-we-research-gifts', 'standards']],
+  ['rss feed', 'rss.xml', ['<rss version="2.0"', '<title>Tips for Your Gifts</title>', '<atom:link href="https://tipsforyourgifts.web.app/rss.xml"']],
   ['publication manifest', 'publication-manifest.json', ['"status": "release_candidate"', '"projectId": "tipsforyourgifts"']],
   ['affiliate enrollment readiness', 'affiliate-enrollment-readiness.json', ['"publicApplicationPacketsReady": 5', '"externalEnrollmentAllowedByRegistry": 1', '"externalSubmissionStillRequiresActionTimeApproval": true']]
 ];
@@ -125,6 +126,12 @@ if (publicationManifest) {
 const blogIndex = await fs.readFile(path.join(dist, 'blog', 'index.html'), 'utf8');
 const giftsIndex = await fs.readFile(path.join(dist, 'gifts', 'index.html'), 'utf8');
 const sitemap = await fs.readFile(path.join(dist, 'sitemap.xml'), 'utf8');
+const rss = await fs.readFile(path.join(dist, 'rss.xml'), 'utf8');
+const rssItemCount = [...rss.matchAll(/<item>/g)].length;
+if (rssItemCount !== readyArticles.length) failures.push(`rss feed: expected ${readyArticles.length} items, found ${rssItemCount}`);
+for (const marker of ['/studio', 'researchRun', 'affiliate=true', 'data-paid-link']) {
+  if (rss.includes(marker)) failures.push(`rss feed: contains private or commercial marker ${JSON.stringify(marker)}`);
+}
 for (const article of readyArticles) {
   const relativePath = path.join('blog', article.slug, 'index.html');
   let html;
@@ -136,6 +143,9 @@ for (const article of readyArticles) {
   }
   if (!blogIndex.includes(readerTitle)) failures.push(`${article.slug}: missing from blog index`);
   if (!sitemap.includes(`/blog/${article.slug}`)) failures.push(`${article.slug}: missing from sitemap`);
+  for (const marker of [escapeHtmlText(article.title), `/blog/${article.slug}`]) {
+    if (!rss.includes(marker)) failures.push(`${article.slug}: missing RSS marker ${JSON.stringify(marker)}`);
+  }
   const products = Array.isArray(article.products) ? article.products : [];
   if (products.length > 0 && !giftsIndex.includes(article.title)) failures.push(`${article.slug}: roundup missing from gifts index`);
   for (const product of products) {
@@ -211,6 +221,7 @@ const jsNames = (await fs.readdir(dist)).filter((name) => name.endsWith('.js'));
 const publicJs = (await Promise.all(jsNames.map((name) => fs.readFile(path.join(dist, name), 'utf8')))).join('\n');
 for (const article of draftArticles) {
   if (publicJs.includes(article.title)) failures.push(`${article.slug}: draft content leaked into the public JavaScript bundle`);
+  if (rss.includes(`/blog/${article.slug}`) || rss.includes(escapeHtmlText(article.title))) failures.push(`${article.slug}: draft content leaked into the RSS feed`);
 }
 
 const deployTextPaths = (await fs.readdir(dist, { recursive: true }))

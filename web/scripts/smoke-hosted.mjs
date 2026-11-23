@@ -27,6 +27,22 @@ const escapeHtml = (value) => String(value)
   .replaceAll('"', '&quot;');
 
 const failures = [];
+try {
+  const response = await fetch(new URL('/rss.xml', baseUrl), { redirect: 'follow', signal: AbortSignal.timeout(30_000) });
+  const contents = await response.text();
+  if (!response.ok) failures.push(`/rss.xml: HTTP ${response.status}`);
+  const contentType = response.headers.get('content-type') ?? '';
+  if (!/(?:application|text)\/(?:rss\+)?xml/i.test(contentType)) failures.push(`/rss.xml: unexpected content type ${JSON.stringify(contentType)}`);
+  for (const marker of ['<rss version="2.0"', '<title>Tips for Your Gifts</title>', '<atom:link href="https://tipsforyourgifts.web.app/rss.xml"']) {
+    if (!contents.includes(marker)) failures.push(`/rss.xml: missing ${JSON.stringify(marker)}`);
+  }
+  if ([...contents.matchAll(/<item>/g)].length !== articles.size) failures.push(`/rss.xml: item count differs from ${articles.size} publication-ready articles`);
+  for (const slug of articles.keys()) {
+    if (!contents.includes(`/blog/${slug}`)) failures.push(`/rss.xml: missing publication-ready article ${slug}`);
+  }
+} catch (error) {
+  failures.push(`/rss.xml: request failed: ${error instanceof Error ? error.message : String(error)}`);
+}
 await Promise.all(paths.map(async (pathname) => {
   const url = new URL(pathname, baseUrl).toString();
   let response;

@@ -18,6 +18,7 @@ const operationsPath = path.join(root, 'src', 'data', 'operations.json');
 const growthPath = path.join(root, 'src', 'data', 'growth.json');
 const visualsPath = path.join(root, 'visuals', 'article-visuals.json');
 const sitemapPath = path.join(root, 'public', 'sitemap.xml');
+const rssPath = path.join(root, 'public', 'rss.xml');
 const affiliateLinkState = await loadAffiliateLinkState(root);
 const visualRegistry = JSON.parse(await fs.readFile(visualsPath, 'utf8'));
 const visualAssets = new Map(
@@ -93,6 +94,9 @@ for (const fileName of fileNames) {
   articles.push(applyAffiliateLinkOverlays(article, affiliateLinkState));
 }
 const publicArticles = articles.filter((article) => article.status === 'publication_ready');
+const feedArticles = [...publicArticles].sort((left, right) =>
+  right.publishDate.localeCompare(left.publishDate) || left.slug.localeCompare(right.slug)
+);
 const publicArticleSummaries = publicArticles.map((article) => ({
   slug: article.slug,
   title: article.title,
@@ -162,5 +166,46 @@ const sitemap = [
   '</urlset>',
   ''
 ].join('\n');
-await fs.writeFile(sitemapPath, sitemap);
-console.log(`Generated ${path.relative(root, publicOutputPath)}, lightweight summaries, ${publicArticles.length} route-split article module${publicArticles.length === 1 ? '' : 's'}, and deferred ${path.relative(root, studioOutputPath)}`);
+const escapeXml = (value) => String(value)
+  .replaceAll('&', '&amp;')
+  .replaceAll('<', '&lt;')
+  .replaceAll('>', '&gt;')
+  .replaceAll('"', '&quot;')
+  .replaceAll("'", '&apos;');
+const siteUrl = 'https://tipsforyourgifts.web.app';
+const latestArticleDate = feedArticles
+  .flatMap((article) => [article.publishDate, article.updatedDate])
+  .sort()
+  .at(-1);
+const rss = [
+  '<?xml version="1.0" encoding="UTF-8"?>',
+  '<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">',
+  '  <channel>',
+  '    <title>Tips for Your Gifts</title>',
+  `    <link>${siteUrl}/</link>`,
+  '    <description>Thoughtful gift ideas for the people you know well—even when you do not know their hobby well.</description>',
+  '    <language>en-us</language>',
+  ...(latestArticleDate ? [`    <lastBuildDate>${new Date(latestArticleDate).toUTCString()}</lastBuildDate>`] : []),
+  `    <atom:link href="${siteUrl}/rss.xml" rel="self" type="application/rss+xml" />`,
+  ...feedArticles.flatMap((article) => {
+    const articleUrl = `${siteUrl}/blog/${article.slug}`;
+    return [
+      '    <item>',
+      `      <title>${escapeXml(article.title)}</title>`,
+      `      <link>${articleUrl}</link>`,
+      `      <guid isPermaLink="true">${articleUrl}</guid>`,
+      `      <pubDate>${new Date(article.publishDate).toUTCString()}</pubDate>`,
+      `      <description>${escapeXml(article.description)}</description>`,
+      ...article.tags.map((tag) => `      <category>${escapeXml(tag)}</category>`),
+      '    </item>'
+    ];
+  }),
+  '  </channel>',
+  '</rss>',
+  ''
+].join('\n');
+await Promise.all([
+  fs.writeFile(sitemapPath, sitemap),
+  fs.writeFile(rssPath, rss)
+]);
+console.log(`Generated ${path.relative(root, publicOutputPath)}, lightweight summaries, ${publicArticles.length} route-split article module${publicArticles.length === 1 ? '' : 's'}, ${path.relative(root, rssPath)}, and deferred ${path.relative(root, studioOutputPath)}`);
