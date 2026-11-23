@@ -21,12 +21,12 @@
         "evidence": [
           "11 publication-ready articles are in the candidate set.",
           "11 independent QA receipts are hash-bound to those articles.",
-          "The latest verified preview was 2812fe32c0618633dfae7746540da9a9fa729be6 at https://github.com/lucasdmoyer/tipsforyourgifts/pull/90; that receipt does not authorize this build.",
+          "The latest verified preview was 7b2cddada414eea957add384c4a04fe3301093ee at https://github.com/lucasdmoyer/tipsforyourgifts/pull/104; that receipt does not authorize this build.",
           "The latest Git-recorded live content set is publication-set-8e8287a5ec7db534, which differs from this candidate."
         ],
         "unlocks": "A protected exact-SHA preview and founder-reviewed Firebase release establish the owned destination for every later growth and affiliate action.",
         "tradeoff": "Replacing the live set advances the publication but creates a new monitoring and rollback obligation; affiliate and social authority remain separately bounded.",
-        "guardrail": "Commit and review the exact candidate first; the workflow must still clone live, expose the preview, require founder approval, smoke production, and mint a manifest-bound receipt. The prior 2812fe32c0618633dfae7746540da9a9fa729be6 receipt is historical evidence only.",
+        "guardrail": "Commit and review the exact candidate first; the workflow must still clone live, expose the preview, require founder approval, smoke production, and mint a manifest-bound receipt. The prior 7b2cddada414eea957add384c4a04fe3301093ee receipt is historical evidence only.",
         "reversibility": "high",
         "founderActionRequired": true,
         "action": {
@@ -120,7 +120,7 @@
   },
   "automationReadiness": {
     "schemaVersion": "1.2.0",
-    "observedAt": "2026-11-23T18:30:10.000Z",
+    "observedAt": "2026-11-23T21:47:00.000Z",
     "sourceMode": "versioned_snapshot_not_live_poll",
     "posture": "founder_action_required",
     "summary": "The operating system can validate content and run a narrow affiliate pilot today. Research generation, automated previews, distribution, measurement, release approval, and eventual keyless automatic publication still require explicit bounded founder actions.",
@@ -181,18 +181,18 @@
         "id": "preview-delivery",
         "label": "Firebase preview delivery",
         "status": "manual_fallback_verified",
-        "evidence": "The exact PR-90 Firebase preview passed Node 24.14 validation, a 22-route static build with an 81.63 kB initial transfer, hosted smoke checks across 11 publication-ready articles, and visual review. Lighthouse scored 100 for performance, accessibility, and best practices on both the home page and canonical Studio, with 1.4 second LCP, 20 millisecond total blocking time, and zero layout shift. This is the latest verified preview, not authority for the current build. Automated keyless delivery remains blocked: PR 90's protected validation, exact-artifact build, and immutable preview boundary pass, but automated deploy stops at Google authentication because PR-90-specific tips-github-preview/github-preview Workload Identity trust is not provisioned; the exact commit was reviewed through the manual Firebase preview fallback.",
-        "nextAction": "Retire the obsolete PR-90 identity request. Freeze the next master-based release candidate, review its exact preview, and propose a new pull-request-scoped OIDC boundary; never reuse this snapshot as authority for later commits.",
-        "actionUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/90#issuecomment-7109024667",
+        "evidence": "The exact PR-104 GitHub artifact passed the trusted build and static smoke, and its SHA-256-matched manual Firebase preview passed hosted smoke across 20 routes and 11 publication-ready articles plus mobile visual review of home, gift finder, the flagship guide, and Studio. Lighthouse 13.6.0 scored 100 for performance, accessibility, and best practices on both home and Studio; home recorded 1.0 second LCP, 10 millisecond total blocking time, and zero layout shift, while Studio recorded 1.0 second LCP, 50 millisecond total blocking time, and zero layout shift. This is the latest verified preview, not authority for the current build. Automated keyless delivery remains blocked: PR 104's protected validation, exact-artifact build, static smoke, manual exact-artifact Firebase preview, hosted smoke, visual review, and Lighthouse review pass. The required automated preview check remains red because the dedicated tips-github-preview pool and github-preview provider do not exist; GitHub therefore refused the exact-head merge without a branch-protection bypass.",
+        "nextAction": "Lucas approves creation of the keyless tips-github-preview/github-preview trust for repository lucasdmoyer/tipsforyourgifts, actor lucasdmoyer, and ref refs/pull/104/merge only; then rerun the required preview check and merge only if the head remains 7b2cddada414eea957add384c4a04fe3301093ee.",
+        "actionUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/104#issuecomment-7114914873",
         "founderActionRequired": true
       },
       {
         "id": "production-release",
         "label": "Production release",
         "status": "founder_approval_required",
-        "evidence": "Current prepared bytes still require their own exact-SHA preview and founder approval. The latest verified preview was 2812fe32c0618633dfae7746540da9a9fa729be6; it is historical evidence only.",
-        "nextAction": "Treat this as historical preview evidence only. Any changed commit needs its own exact preview and founder approval; do not merge or deploy a later build from this snapshot.",
-        "actionUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/90#issuecomment-7109617164",
+        "evidence": "Current prepared bytes still require their own exact-SHA preview and founder approval. The latest verified preview was 7b2cddada414eea957add384c4a04fe3301093ee; it is historical evidence only.",
+        "nextAction": "This approval applies only to unchanged PR-104 head 7b2cddada414eea957add384c4a04fe3301093ee for merge. The resulting master commit is a new identity and still requires its own exact preview, hosted readback, and action-time production approval.",
+        "actionUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/104#issuecomment-7114834768",
         "founderActionRequired": true
       },
       {
@@ -220,10 +220,10 @@
         "id": "firebase-preview-identity",
         "label": "Keyless Firebase preview identity",
         "status": "blocked_external_configuration",
-        "summary": "PR 90's protected validation, exact-artifact build, and immutable preview boundary pass, but automated deploy stops at Google authentication because PR-90-specific tips-github-preview/github-preview Workload Identity trust is not provisioned; the exact commit was reviewed through the manual Firebase preview fallback.",
-        "evidenceUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/90#issuecomment-7109024667",
-        "diagnosticUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/runs/45229851048",
-        "nextAction": "Retire the obsolete PR-90 identity request. Freeze the next master-based release candidate, review its exact preview, and propose a new pull-request-scoped OIDC boundary; never reuse this snapshot as authority for later commits.",
+        "summary": "PR 104's protected validation, exact-artifact build, static smoke, manual exact-artifact Firebase preview, hosted smoke, visual review, and Lighthouse review pass. The required automated preview check remains red because the dedicated tips-github-preview pool and github-preview provider do not exist; GitHub therefore refused the exact-head merge without a branch-protection bypass.",
+        "evidenceUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/104#issuecomment-7114914873",
+        "diagnosticUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/runs/45265510887",
+        "nextAction": "Lucas approves creation of the keyless tips-github-preview/github-preview trust for repository lucasdmoyer/tipsforyourgifts, actor lucasdmoyer, and ref refs/pull/104/merge only; then rerun the required preview check and merge only if the head remains 7b2cddada414eea957add384c4a04fe3301093ee.",
         "authorityBoundary": "Use short-lived impersonation for Firebase Hosting previews only. No Firebase Auth Admin, user-managed service-account key, or production Hosting authorization."
       },
       {
@@ -239,12 +239,12 @@
     ],
     "latestVerifiedPreview": {
       "status": "exact_preview_verified",
-      "sha": "2812fe32c0618633dfae7746540da9a9fa729be6",
-      "pullRequestUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/90",
-      "reviewUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/90#issuecomment-7109617164",
-      "previewUrl": "https://tipsforyourgifts--pr89-2812fe3-md92ks8h.web.app/",
-      "summary": "The exact PR-90 Firebase preview passed Node 24.14 validation, a 22-route static build with an 81.63 kB initial transfer, hosted smoke checks across 11 publication-ready articles, and visual review. Lighthouse scored 100 for performance, accessibility, and best practices on both the home page and canonical Studio, with 1.4 second LCP, 20 millisecond total blocking time, and zero layout shift.",
-      "nextAction": "Treat this as historical preview evidence only. Any changed commit needs its own exact preview and founder approval; do not merge or deploy a later build from this snapshot."
+      "sha": "7b2cddada414eea957add384c4a04fe3301093ee",
+      "pullRequestUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/104",
+      "reviewUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/104#issuecomment-7114834768",
+      "previewUrl": "https://tipsforyourgifts--pr-104-7b2cdda-47bzlrvs.web.app/",
+      "summary": "The exact PR-104 GitHub artifact passed the trusted build and static smoke, and its SHA-256-matched manual Firebase preview passed hosted smoke across 20 routes and 11 publication-ready articles plus mobile visual review of home, gift finder, the flagship guide, and Studio. Lighthouse 13.6.0 scored 100 for performance, accessibility, and best practices on both home and Studio; home recorded 1.0 second LCP, 10 millisecond total blocking time, and zero layout shift, while Studio recorded 1.0 second LCP, 50 millisecond total blocking time, and zero layout shift.",
+      "nextAction": "This approval applies only to unchanged PR-104 head 7b2cddada414eea957add384c4a04fe3301093ee for merge. The resulting master commit is a new identity and still requires its own exact preview, hosted readback, and action-time production approval."
     }
   },
   "aiAutomationPolicy": {
