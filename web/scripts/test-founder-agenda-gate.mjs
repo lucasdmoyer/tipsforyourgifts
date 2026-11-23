@@ -46,6 +46,9 @@ const currentContentIsVerified = livePublication.status === 'verified_managed_co
   && livePublication.latestVerifiedContentRelease?.publicationManifest?.contentSetSha256 === publicationManifest.contentSetSha256;
 assert.equal(base.primaryDecisionId, currentContentIsVerified ? 'establish-measurement' : 'review-release-candidate');
 assert.equal(base.decisions.some((decision) => decision.id === 'review-release-candidate'), !currentContentIsVerified);
+if (!currentContentIsVerified && livePublication.latestVerifiedContentRelease) {
+  assert.equal(base.decisions.find((decision) => decision.id === 'review-release-candidate').title, 'Review the next accountable Angular release');
+}
 assert.equal(base.profitabilityEvidence, 'unknown_until_aggregate_measurement');
 assert.deepEqual(base.decisions.map((decision) => decision.rank), base.decisions.map((_decision, index) => index + 1));
 const priorityWeight = { high: 3, medium: 2, low: 1 };
@@ -65,6 +68,18 @@ verifiedLiveInput.livePublication = {
 };
 const verifiedLiveAgenda = buildFounderAgenda(verifiedLiveInput);
 assert.equal(verifiedLiveAgenda.decisions.some((decision) => decision.id === 'review-release-candidate'), false, 'current verified live content must not be proposed for release again');
+
+const noManagedReleaseAgenda = buildFounderAgenda({ ...structuredClone(baseInput), livePublication: {
+  schemaVersion: livePublication.schemaVersion,
+  projectId: livePublication.projectId,
+  siteId: livePublication.siteId,
+  hostingChannel: livePublication.hostingChannel,
+  productionUrl: livePublication.productionUrl,
+  status: 'no_verified_managed_release',
+  updatedAt: null,
+  latestVerifiedContentRelease: null
+} });
+assert.equal(noManagedReleaseAgenda.decisions.find((decision) => decision.id === 'review-release-candidate').title, 'Review the first accountable Angular release');
 
 const configuredMeasurementInput = structuredClone(baseInput);
 const configuredSearch = configuredMeasurementInput.growth.connectors.find((connector) => connector.id === 'search-console');

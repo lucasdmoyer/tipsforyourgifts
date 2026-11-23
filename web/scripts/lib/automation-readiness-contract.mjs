@@ -44,7 +44,8 @@ export const automationReadinessEvidenceSchema = z.object({
   for (const requiredId of ['openai-platform-credential', 'firebase-preview-identity', 'firebase-auto-production-identity']) {
     if (!ids.includes(requiredId)) context.addIssue({ code: z.ZodIssueCode.custom, path: ['externalGates'], message: `missing required gate ${requiredId}` });
   }
-  if (!evidence.releaseCandidate.previewUrl.includes(`--release-${evidence.releaseCandidate.sha.slice(0, 7)}-`)) {
+  const previewHost = new URL(evidence.releaseCandidate.previewUrl).hostname;
+  if (!previewHost.startsWith('tipsforyourgifts--') || !previewHost.endsWith('.web.app') || !previewHost.includes(evidence.releaseCandidate.sha.slice(0, 7))) {
     context.addIssue({ code: z.ZodIssueCode.custom, path: ['releaseCandidate', 'previewUrl'], message: 'preview URL must identify the exact candidate SHA prefix' });
   }
 });

@@ -41,6 +41,7 @@ function expectEvidenceFailure(label, mutate) {
 expectEvidenceFailure('gate IDs cannot duplicate', (candidate) => { candidate.externalGates[1].id = candidate.externalGates[0].id; });
 expectEvidenceFailure('evidence links must use HTTPS', (candidate) => { candidate.externalGates[0].evidenceUrl = 'http://example.com'; });
 expectEvidenceFailure('preview must name exact SHA prefix', (candidate) => { candidate.releaseCandidate.previewUrl = 'https://tipsforyourgifts--release-wrong.web.app/'; });
+expectEvidenceFailure('preview must use the owned Firebase site', (candidate) => { candidate.releaseCandidate.previewUrl = `https://example--${candidate.releaseCandidate.sha.slice(0, 7)}.web.app/`; });
 expectEvidenceFailure('unexpected secret values are rejected', (candidate) => { candidate.externalGates[0].secretValue = 'not-allowed'; });
 expectEvidenceFailure('release SHA must be exact', (candidate) => { candidate.releaseCandidate.sha = '011b110'; });
 
@@ -79,7 +80,7 @@ assert.throws(() => buildAutomationReadiness({
 
 console.log(JSON.stringify({
   automationReadinessGateTests: 'passed',
-  negativeChecks: 7,
+  negativeChecks: 8,
   teams: base.teams.length,
   ready: base.counts.ready,
   limited: base.counts.limited,
