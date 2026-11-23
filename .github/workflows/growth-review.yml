@@ -18,6 +18,8 @@ jobs:
     timeout-minutes: 35
     outputs:
       has_patch: ${{ steps.diff.outputs.has_patch }}
+      should_review: ${{ steps.preflight.outputs.should_review }}
+      reason: ${{ steps.preflight.outputs.reason }}
     steps:
       - uses: actions/checkout@v5
         with:
@@ -32,12 +34,26 @@ jobs:
         run: |
           npm ci --prefix web
           npm run validate
+      - name: Stop before credentials when no complete aggregate snapshot exists
+        id: preflight
+        run: npm --prefix web run growth:review:preflight
+      - name: Record the no-data posture
+        if: steps.preflight.outputs.should_review != 'true'
+        env:
+          REASON: ${{ steps.preflight.outputs.reason }}
+          SNAPSHOT_COUNT: ${{ steps.preflight.outputs.snapshot_count }}
+        run: echo "Growth review stopped before credential access and model execution because $REASON; complete snapshots=$SNAPSHOT_COUNT."
+      - name: Capture the exact pre-review ledger
+        if: steps.preflight.outputs.should_review == 'true'
+        run: |
           cp web/src/data/growth.json growth.base.json
       - name: Verify autonomous agent credential
+        if: steps.preflight.outputs.should_review == 'true'
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: node web/scripts/require-openai-api-key.mjs
       - name: Let the growth team propose the next measured experiment
+        if: steps.preflight.outputs.should_review == 'true'
         uses: openai/codex-action@v1
         with:
           openai-api-key: ${{ secrets.OPENAI_API_KEY }}
@@ -53,6 +69,7 @@ jobs:
 
             If there is no new complete aggregate snapshot that materially supports a decision, make no changes. Otherwise, create or revise only proposed experiments in web/src/data/growth.json. Every proposal must state a falsifiable hypothesis, one primary metric, a comparable reporting window, a decision rule, two stop conditions, the exact source snapshot IDs, and the affected publication-ready article slugs. Leave status and founderDisposition as proposed. Do not approve or start an experiment, change connector state, alter snapshots or measurement policy, modify strategy, post social content, enroll an affiliate, spend money, deploy, or touch any other file.
       - name: Prove the AI patch stayed inside the proposal boundary
+        if: steps.preflight.outputs.should_review == 'true'
         run: |
           npm --prefix web run generate
           node web/scripts/verify-growth-review-patch.mjs growth.base.json web/src/data/growth.json
@@ -67,6 +84,7 @@ jobs:
           npm --prefix web run validate:growth
       - name: Serialize the review proposal
         id: diff
+        if: steps.preflight.outputs.should_review == 'true'
         run: |
           git diff --check
           git diff --binary HEAD > growth-review.patch
