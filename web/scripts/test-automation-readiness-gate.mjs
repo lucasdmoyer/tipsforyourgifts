@@ -15,7 +15,7 @@ const base = buildAutomationReadiness({
   socialDrafts: 78,
   activeGrowthConnectors: 0,
   growthSnapshots: 0,
-  verifiedFounderReviewedReleases: 0,
+  durableFounderReviewedReleases: 2,
   minimumFounderReviewedReleases: 10
 });
 
@@ -28,7 +28,8 @@ assert.equal(base.teams.find((team) => team.id === 'research-generation').status
 assert.equal(base.teams.find((team) => team.id === 'preview-delivery').status, 'manual_fallback_verified');
 assert.equal(base.teams.find((team) => team.id === 'production-release').status, 'founder_approval_required');
 assert.equal(base.teams.find((team) => team.id === 'automatic-publication').status, 'blocked_external_configuration');
-assert.match(base.teams.find((team) => team.id === 'automatic-publication').evidence, /0 of 10/);
+assert.match(base.teams.find((team) => team.id === 'automatic-publication').evidence, /2 of 10/);
+assert.match(base.teams.find((team) => team.id === 'automatic-publication').evidence, /live GitHub deployment recount/);
 assert.equal(base.releaseCandidate.sha, evidence.releaseCandidate.sha);
 
 const clone = (value) => structuredClone(value);
@@ -58,7 +59,7 @@ const fullyConfigured = buildAutomationReadiness({
   socialDrafts: 78,
   activeGrowthConnectors: 1,
   growthSnapshots: 1,
-  verifiedFounderReviewedReleases: 3,
+  durableFounderReviewedReleases: 3,
   minimumFounderReviewedReleases: 10
 });
 assert.equal(fullyConfigured.teams.find((team) => team.id === 'social-distribution').status, 'limited_live');
@@ -74,9 +75,9 @@ assert.throws(() => buildAutomationReadiness({
   socialDrafts: 78,
   activeGrowthConnectors: 0,
   growthSnapshots: 0,
-  verifiedFounderReviewedReleases: -1,
+  durableFounderReviewedReleases: -1,
   minimumFounderReviewedReleases: 10
-}), /verifiedFounderReviewedReleases/);
+}), /durableFounderReviewedReleases/);
 
 console.log(JSON.stringify({
   automationReadinessGateTests: 'passed',

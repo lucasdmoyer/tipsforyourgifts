@@ -175,7 +175,7 @@ export const OPERATIONS: Operations = {
         "id": "automatic-publication",
         "label": "Proven automatic publication",
         "status": "blocked_external_configuration",
-        "evidence": "Automatic-after-proven publication remains disabled, and its dedicated master-bound Google Workload Identity provider and service account have not been provisioned or verified. The founder-reviewed release ledger currently records 0 of 10 releases required before activation.",
+        "evidence": "Automatic-after-proven publication remains disabled, and its dedicated master-bound Google Workload Identity provider and service account have not been provisioned or verified. The repository ledger contains 2 of 10 durable verified founder-reviewed release receipts. Final activation still requires the live GitHub deployment recount and separate founder approval.",
         "nextAction": "After ten verified founder-reviewed releases, separately approve and provision the dedicated tips-github-auto-production identity, then review the policy activation pull request and production environment boundary.",
         "actionUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/issues/43",
         "founderActionRequired": true
@@ -3334,10 +3334,12 @@ export const OPERATIONS: Operations = {
     "mode": "founder_reviewed",
     "automaticPromotionEnabled": false,
     "verifiedSuccessfulReleaseCount": 0,
+    "durableVerifiedFounderReviewedReleaseCount": 2,
     "minimumSuccessfulFounderReviewedReleases": 10,
     "verifiedReleaseReceiptRequired": true,
     "receiptRetentionDays": 90,
     "releaseEvidenceSource": "github_production_deployments_at_enable_time",
+    "durableReceiptEvidenceSource": "repository_verified_publication_receipts",
     "currentLive": {
       "status": "verified_managed_content_release",
       "updatedAt": "2026-11-22T06:16:08.292Z",
