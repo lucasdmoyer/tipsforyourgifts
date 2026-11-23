@@ -2,10 +2,10 @@
 import type { Growth, Operations, Strategy } from '../content.types';
 
 export const OPERATIONS: Operations = {
-  "generatedAt": "2026-11-22T06:16:08.292Z",
+  "generatedAt": "2026-11-23T02:39:22.000Z",
   "founderAgenda": {
     "schemaVersion": "1.0.0",
-    "generatedAt": "2026-11-22T06:16:08.292Z",
+    "generatedAt": "2026-11-23T02:39:22.000Z",
     "posture": "founder_decisions_required",
     "primaryDecisionId": "review-release-candidate",
     "profitabilityEvidence": "unknown_until_aggregate_measurement",
@@ -18,13 +18,13 @@ export const OPERATIONS: Operations = {
         "horizon": "now",
         "category": "release",
         "title": "Review the first accountable Angular release",
-        "recommendation": "Review publication-set-42500af1ebd2d773 as the first founder-controlled Firebase release candidate.",
+        "recommendation": "Review publication-set-4bc6216cd2440947 as the first founder-controlled Firebase release candidate.",
         "decisionQuestion": "Does this exact content set represent the site you want readers to see first?",
         "rationale": "The research and release machinery cannot create traffic, trust, or revenue while the modern reviewed site remains only a local candidate.",
         "evidence": [
-          "10 publication-ready articles are in the candidate set.",
-          "10 independent QA receipts are hash-bound to those articles.",
-          "60 reviewed social drafts are prepared for later distribution.",
+          "11 publication-ready articles are in the candidate set.",
+          "11 independent QA receipts are hash-bound to those articles.",
+          "66 reviewed social drafts are prepared for later distribution.",
           "The latest Git-recorded live content set is publication-set-8e8287a5ec7db534, which differs from this candidate."
         ],
         "unlocks": "A protected exact-SHA preview and founder-reviewed Firebase release establish the owned destination for every later growth and affiliate action.",
@@ -121,7 +121,7 @@ export const OPERATIONS: Operations = {
         "id": "deterministic-quality",
         "label": "Deterministic quality gates",
         "status": "ready",
-        "evidence": "11 validated research runs and 10 publication-ready posts currently pass the versioned deterministic gates.",
+        "evidence": "12 validated research runs and 11 publication-ready posts currently pass the versioned deterministic gates.",
         "nextAction": "Keep drafting and independent review separate; every new research bundle must pass validation and build before release review.",
         "actionUrl": null,
         "founderActionRequired": false
@@ -376,9 +376,9 @@ export const OPERATIONS: Operations = {
     }
   },
   "researchRuns": 14,
-  "validatedRuns": 11,
-  "publicationReadyPosts": 10,
-  "draftPosts": 3,
+  "validatedRuns": 12,
+  "publicationReadyPosts": 11,
+  "draftPosts": 2,
   "affiliateProgramsEnabled": 1,
   "affiliateProgramsProposed": 4,
   "affiliateProgramsFounderApproved": 0,
@@ -394,60 +394,13 @@ export const OPERATIONS: Operations = {
   "editorialReview": {
     "schemaVersion": "1.1.0",
     "counts": {
-      "pendingBundles": 3,
-      "founderSafetyReviewsRequired": 3,
+      "pendingBundles": 2,
+      "founderSafetyReviewsRequired": 2,
       "founderSafetyApprovalsCurrent": 0,
-      "independentReviewsRequired": 3,
-      "highRiskClaims": 7
+      "independentReviewsRequired": 2,
+      "highRiskClaims": 6
     },
     "queue": [
-      {
-        "runId": "20260823-fiber-art-pause-269f700c",
-        "ideaId": "founder-idea-012",
-        "articleSlug": "knitting-crochet-project-bag-row-counter-gift-pairs",
-        "status": "qa_failed",
-        "reviewerId": "independent-evidence-audit-20261010",
-        "blockers": [
-          "The repaired evidence bundle and reader article require a fresh independent review; the drafting research desk cannot certify its own work.",
-          "Founder review is required for the qualified small-magnet safety boundary before publication; the cited CPSC guidance is general and is not an exact-product finding or recall for the Maker's Board."
-        ],
-        "warnings": [
-          "The Cocoknits counter has mixed owner reliability reports and remains a lower-scored alternative rather than a bundle anchor.",
-          "Clover's Mini item 3118 and standard item 336 are distinct variants; recheck the exact item, stock, and fulfillment timing before promotion.",
-          "Maker's Board owner reports conflict on value, stitching, durability, and magnetic-cable interaction. The stitching anecdotes do not establish a defect rate; product and pair scores were reduced, and the recipient's chart, tools, and return options require a pre-gift check."
-        ],
-        "highRiskClaims": [
-          {
-            "id": "claim-makers-board-magnet-boundary",
-            "text": "Cocoknits lists nine loose included magnets: four PLA-covered round magnets, two small uncovered round magnets, and three strong uncovered rectangular magnets. CPSC's general guidance for small magnets in non-toy products says to keep them away from young children or anyone likely to swallow them, inspect for missing pieces, and seek immediate medical attention if ingestion is suspected; that guidance is not an exact-product finding or recall for the Maker's Board.",
-            "sourceIds": [
-              "src-makers-board-official",
-              "src-cpsc-small-magnet-guidance"
-            ]
-          }
-        ],
-        "founderDecisionPacket": {
-          "workflowUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/editorial-safety-approval.yml",
-          "approveCommand": "gh workflow run editorial-safety-approval.yml -f run_id=20260823-fiber-art-pause-269f700c -f decision=approved -f confirmation=REVIEW-20260823-fiber-art-pause-269f700c-approved",
-          "rejectCommand": "gh workflow run editorial-safety-approval.yml -f run_id=20260823-fiber-art-pause-269f700c -f decision=rejected -f confirmation=REVIEW-20260823-fiber-art-pause-269f700c-rejected",
-          "authorityBoundary": "This decision binds only the exact current run, article, social, and high-risk claim hashes. It does not replace independent QA, merge a pull request, or authorize publication."
-        },
-        "founderSafetyReviewRequired": true,
-        "founderSafetyReviewStatus": "approval_required",
-        "safetyApproval": null,
-        "independentReviewRequired": true,
-        "sourcePaths": {
-          "run": "research/runs/20260823-fiber-art-pause-269f700c.json",
-          "article": "src/data/blog/knitting-crochet-project-bag-row-counter-gift-pairs.md",
-          "social": "social/drafts/knitting-crochet-project-bag-row-counter-gift-pairs-launch.json"
-        },
-        "sourceSha256": {
-          "run": "afc512957357b2d01226bda0b3104057b616e3c2a28ab7b7f615044efa20880a",
-          "article": "ec08428c406968b7719359b1d6fc26fff109ecefca5bfa8efc92a0a00b2ea9b4",
-          "social": "d72f7f6a657b352a8569640ecce7449950f625b341b4c9e756a063dc5a0ee682"
-        },
-        "nextGate": "Lucas records an owner-only, hash-bound decision on the exact high-risk claim language; approval still does not replace independent QA or authorize publication."
-      },
       {
         "runId": "20260823-muddy-paw-arrival-e09ff303",
         "ideaId": "founder-idea-011",
@@ -618,10 +571,10 @@ export const OPERATIONS: Operations = {
     "founderApprovedPrograms": 0,
     "externallyVerifiedPrograms": 0,
     "enabledPrograms": 1,
-    "publicationReadyProductLinksCataloged": 60,
+    "publicationReadyProductLinksCataloged": 65,
     "publicationReadyPaidLinksVerified": 1,
-    "publicationReadyOrdinaryLinks": 59,
-    "productsAssignedToPartnerResearch": 60,
+    "publicationReadyOrdinaryLinks": 64,
+    "productsAssignedToPartnerResearch": 65,
     "productsWithoutPartnerResearch": 0,
     "productCoverageArtifactPath": "/affiliate-product-coverage.json",
     "productCoverageDefinition": "Program assignments are research queues only. They do not assert exact-product availability, account acceptance, tracking validity, or commission eligibility.",
@@ -782,7 +735,7 @@ export const OPERATIONS: Operations = {
         "founderDisposition": "proposed",
         "eligibleArticleSlugs": [],
         "productSelectionMode": "all_publication_ready_products",
-        "productResearchCandidates": 60,
+        "productResearchCandidates": 65,
         "verifiedPaidLinks": 0,
         "enrollmentStage": "founder_approval_required",
         "publicApplicationPacketReady": true,
@@ -830,7 +783,7 @@ export const OPERATIONS: Operations = {
         "founderDisposition": "proposed",
         "eligibleArticleSlugs": [],
         "productSelectionMode": "all_publication_ready_products",
-        "productResearchCandidates": 60,
+        "productResearchCandidates": 65,
         "verifiedPaidLinks": 0,
         "enrollmentStage": "founder_approval_required",
         "publicApplicationPacketReady": true,
@@ -878,7 +831,7 @@ export const OPERATIONS: Operations = {
         "founderDisposition": "proposed",
         "eligibleArticleSlugs": [],
         "productSelectionMode": "all_publication_ready_products",
-        "productResearchCandidates": 60,
+        "productResearchCandidates": 65,
         "verifiedPaidLinks": 0,
         "enrollmentStage": "founder_approval_required",
         "publicApplicationPacketReady": true,
@@ -928,7 +881,7 @@ export const OPERATIONS: Operations = {
         "founderDisposition": "proposed",
         "eligibleArticleSlugs": [],
         "productSelectionMode": "all_publication_ready_products",
-        "productResearchCandidates": 60,
+        "productResearchCandidates": 65,
         "verifiedPaidLinks": 0,
         "enrollmentStage": "founder_approval_required",
         "publicApplicationPacketReady": true,
@@ -1237,7 +1190,7 @@ export const OPERATIONS: Operations = {
       {
         "postId": "fiber-two-states",
         "packId": "knitting-crochet-project-bag-row-counter-gift-pairs-launch",
-        "packSha256": "d72f7f6a657b352a8569640ecce7449950f625b341b4c9e756a063dc5a0ee682",
+        "packSha256": "63b9adcc2b8ad23c3ae0460ee496c3eac25685159e31eee6ec8d34b7fba0464c",
         "articleSlug": "knitting-crochet-project-bag-row-counter-gift-pairs",
         "platform": "pinterest",
         "format": "two-part-diagram",
@@ -1267,7 +1220,7 @@ export const OPERATIONS: Operations = {
       {
         "postId": "fiber-name-the-wip",
         "packId": "knitting-crochet-project-bag-row-counter-gift-pairs-launch",
-        "packSha256": "d72f7f6a657b352a8569640ecce7449950f625b341b4c9e756a063dc5a0ee682",
+        "packSha256": "63b9adcc2b8ad23c3ae0460ee496c3eac25685159e31eee6ec8d34b7fba0464c",
         "articleSlug": "knitting-crochet-project-bag-row-counter-gift-pairs",
         "platform": "instagram",
         "format": "six-slide-carousel",
@@ -1297,7 +1250,7 @@ export const OPERATIONS: Operations = {
       {
         "postId": "fiber-counter-convention",
         "packId": "knitting-crochet-project-bag-row-counter-gift-pairs-launch",
-        "packSha256": "d72f7f6a657b352a8569640ecce7449950f625b341b4c9e756a063dc5a0ee682",
+        "packSha256": "63b9adcc2b8ad23c3ae0460ee496c3eac25685159e31eee6ec8d34b7fba0464c",
         "articleSlug": "knitting-crochet-project-bag-row-counter-gift-pairs",
         "platform": "pinterest",
         "format": "vertical-checklist",
@@ -1325,14 +1278,14 @@ export const OPERATIONS: Operations = {
         "nextGate": "Generate an original rights-controlled creative bound to this exact post and pack."
       },
       {
-        "postId": "fiber-paper-versus-app",
+        "postId": "fiber-mini-versus-standard",
         "packId": "knitting-crochet-project-bag-row-counter-gift-pairs-launch",
-        "packSha256": "d72f7f6a657b352a8569640ecce7449950f625b341b4c9e756a063dc5a0ee682",
+        "packSha256": "63b9adcc2b8ad23c3ae0460ee496c3eac25685159e31eee6ec8d34b7fba0464c",
         "articleSlug": "knitting-crochet-project-bag-row-counter-gift-pairs",
         "platform": "instagram",
         "format": "five-slide-carousel",
-        "headline": "Chart board or no chart board? Watch the pattern habit",
-        "angle": "Route paper-pattern makers and app users differently",
+        "headline": "Mini with a lock—or standard with a push button?",
+        "angle": "Choose the exact physical counter from the storage habit",
         "status": "draft",
         "creativeCandidateId": null,
         "creativeCandidateRecordSha256": null,
@@ -1348,8 +1301,8 @@ export const OPERATIONS: Operations = {
         "externalPostUrl": null,
         "publicationReceiptId": null,
         "publishReadiness": "blocked_creative",
-        "claimCount": 4,
-        "productCount": 1,
+        "claimCount": 5,
+        "productCount": 2,
         "pairCount": 0,
         "destinationUrl": "https://tipsforyourgifts.web.app/blog/knitting-crochet-project-bag-row-counter-gift-pairs",
         "nextGate": "Generate an original rights-controlled creative bound to this exact post and pack."
@@ -1357,7 +1310,7 @@ export const OPERATIONS: Operations = {
       {
         "postId": "fiber-pause-ritual",
         "packId": "knitting-crochet-project-bag-row-counter-gift-pairs-launch",
-        "packSha256": "d72f7f6a657b352a8569640ecce7449950f625b341b4c9e756a063dc5a0ee682",
+        "packSha256": "63b9adcc2b8ad23c3ae0460ee496c3eac25685159e31eee6ec8d34b7fba0464c",
         "articleSlug": "knitting-crochet-project-bag-row-counter-gift-pairs",
         "platform": "tiktok",
         "format": "thirty-second-script",
@@ -1387,7 +1340,7 @@ export const OPERATIONS: Operations = {
       {
         "postId": "fiber-buy-one-or-skip",
         "packId": "knitting-crochet-project-bag-row-counter-gift-pairs-launch",
-        "packSha256": "d72f7f6a657b352a8569640ecce7449950f625b341b4c9e756a063dc5a0ee682",
+        "packSha256": "63b9adcc2b8ad23c3ae0460ee496c3eac25685159e31eee6ec8d34b7fba0464c",
         "articleSlug": "knitting-crochet-project-bag-row-counter-gift-pairs",
         "platform": "pinterest",
         "format": "buy-skip-card",
@@ -3390,15 +3343,15 @@ export const OPERATIONS: Operations = {
     },
     "currentCandidate": {
       "status": "release_candidate",
-      "manifestId": "publication-set-42500af1ebd2d773",
-      "contentSetSha256": "42500af1ebd2d773bce4ec43aa19aeba6ea3b4013d64b596b578ec57191f2210",
-      "articles": 10,
-      "independentReviews": 10,
+      "manifestId": "publication-set-4bc6216cd2440947",
+      "contentSetSha256": "4bc6216cd244094741ce91798355d8682d5438fcfe92e316f192937983409414",
+      "articles": 11,
+      "independentReviews": 11,
       "founderSafetyApprovals": 0,
-      "socialLaunchPacks": 9,
-      "socialDrafts": 60,
+      "socialLaunchPacks": 10,
+      "socialDrafts": 66,
       "missionBoundArticles": 0,
-      "preMissionValidatedArticles": 10,
+      "preMissionValidatedArticles": 11,
       "affiliateLinks": 1
     }
   },
@@ -3535,8 +3488,8 @@ export const OPERATIONS: Operations = {
     },
     {
       "ideaId": "founder-idea-012",
-      "stage": "independent_review",
-      "nextGate": "Resolve evidence or editorial blockers and obtain a hash-bound independent review receipt."
+      "stage": "publication_ready",
+      "nextGate": "Review the exact-SHA pull request and Firebase preview before production release."
     },
     {
       "ideaId": "founder-idea-013",
@@ -3551,10 +3504,10 @@ export const OPERATIONS: Operations = {
     "missionsCompleted": 0,
     "opportunityScoutsActive": 0,
     "opportunityReportsValidated": 0,
-    "qa": 3,
+    "qa": 2,
     "proposed": 0,
     "ready": 0,
-    "publicationReady": 10,
+    "publicationReady": 11,
     "socialDrafts": 78
   },
   "alerts": [
@@ -3566,7 +3519,7 @@ export const OPERATIONS: Operations = {
     "Growth measurement is not connected; traffic, conversions, and revenue remain unknown rather than zero.",
     "3 growth experiments await founder review and an aggregate baseline.",
     "Production promotion remains founder-reviewed; automatic release requires 10 verified successful releases and a separate founder approval.",
-    "3 article bundles remain blocked in the editorial decision queue; none can self-certify or publish."
+    "2 article bundles remain blocked in the editorial decision queue; none can self-certify or publish."
   ]
 };
 
