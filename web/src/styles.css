@@ -185,8 +185,12 @@ h3 { font-size: 1.35rem; }
 .finder-checklist li { margin: 8px 0; }
 .finder-heading { align-items: start; }
 .finder-result-list { display: grid; gap: 16px; }
-.finder-result { display: grid; grid-template-columns: 54px 1fr; gap: 18px; padding: 26px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--paper); box-shadow: 0 10px 30px rgba(24, 49, 43, 0.05); }
-.finder-result-rank { width: 44px; height: 44px; display: grid; place-items: center; border-radius: 14px; color: white; background: var(--evergreen); font-weight: 900; }
+.finder-result { display: grid; grid-template-columns: minmax(190px, 240px) minmax(0, 1fr); overflow: hidden; border: 1px solid var(--line); border-radius: var(--radius); background: var(--paper); box-shadow: 0 10px 30px rgba(24, 49, 43, 0.05); }
+.finder-result-visual { position: relative; min-height: 100%; overflow: hidden; background: var(--mint); }
+.finder-result-visual img { width: 100%; height: 100%; object-fit: cover; transition: transform 180ms ease; }
+.finder-result-visual:hover img { transform: scale(1.025); }
+.finder-result-rank { position: absolute; z-index: 1; top: 14px; left: 14px; width: 44px; height: 44px; display: grid; place-items: center; border-radius: 14px; color: white; background: var(--evergreen); box-shadow: 0 6px 18px rgba(24, 49, 43, 0.2); font-weight: 900; }
+.finder-result-copy { padding: 26px; }
 .finder-result h3 { margin-bottom: 10px; font-size: clamp(1.55rem, 3vw, 2.15rem); }
 .finder-result .button { margin-top: 8px; }
 .finder-reason { padding-left: 14px; border-left: 4px solid var(--saffron); font-weight: 760; }
@@ -368,10 +372,12 @@ h3 { font-size: 1.35rem; }
   .pair-roles { grid-template-columns: 1fr; }
   .brief-field-grid { grid-template-columns: 1fr; }
   .finder-result { grid-template-columns: 1fr; }
+  .finder-result-visual { min-height: 0; aspect-ratio: 3 / 2; }
+  .finder-result-copy { padding: 22px; }
   .article-shell { width: min(100% - 28px, 820px); }
 }
 
 @media (prefers-reduced-motion: reduce) {
   * { scroll-behavior: auto !important; }
-  .article-card-visual img, .related-guide-visual img { transition: none; }
+  .article-card-visual img, .related-guide-visual img, .finder-result-visual img { transition: none; }
 }
