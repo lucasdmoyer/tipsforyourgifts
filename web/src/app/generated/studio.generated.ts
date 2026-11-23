@@ -2,10 +2,10 @@
 import type { Growth, Operations, Strategy } from '../content.types';
 
 export const OPERATIONS: Operations = {
-  "generatedAt": "2026-11-23T02:39:22.000Z",
+  "generatedAt": "2026-11-23T07:47:40.000Z",
   "founderAgenda": {
     "schemaVersion": "1.0.0",
-    "generatedAt": "2026-11-23T02:39:22.000Z",
+    "generatedAt": "2026-11-23T07:47:40.000Z",
     "posture": "founder_decisions_required",
     "primaryDecisionId": "review-release-candidate",
     "profitabilityEvidence": "unknown_until_aggregate_measurement",
@@ -39,8 +39,35 @@ export const OPERATIONS: Operations = {
         }
       },
       {
-        "id": "establish-measurement",
+        "id": "choose-next-thesis",
         "rank": 2,
+        "priorityScore": 95,
+        "horizon": "now",
+        "category": "editorial_direction",
+        "title": "Choose the next recipient problem to research",
+        "recommendation": "Approve founder-idea-014 revision 1: Show the turn, mark the condition: a tabletop RPG combat pair.",
+        "decisionQuestion": "Should this be the next bounded research mission for the editorial team?",
+        "rationale": "The proposal is awaiting founder direction, and 4 of 5 proposal slots remain available; deciding it now chooses the next article direction without pretending the research is already approved.",
+        "evidence": [
+          "1/5 founder proposal slots are occupied.",
+          "The recommended thesis has medium strategic priority.",
+          "Its pair-coherence hypothesis scores 90/100 before product research.",
+          "The brief requires 4 finalists, 2 qualified pairs, and 5 social angles."
+        ],
+        "unlocks": "Merging the deterministic approval pull request starts one hash-bound research mission while the autonomous opportunity scout retains the capacity already shown in Studio.",
+        "tradeoff": "Approval spends research capacity on one audience and ritual before product evidence has been collected; the mission may still reject the thesis.",
+        "guardrail": "This action authorizes research only. It cannot approve evidence, add affiliate tracking, publish content, spend money, or deploy Firebase.",
+        "reversibility": "high",
+        "founderActionRequired": true,
+        "action": {
+          "label": "Open strategy approval",
+          "url": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/strategy-approval.yml",
+          "command": "gh workflow run strategy-approval.yml -f idea_id=founder-idea-014 -f expected_revision=1"
+        }
+      },
+      {
+        "id": "establish-measurement",
+        "rank": 3,
         "priorityScore": 85,
         "horizon": "next",
         "category": "measurement",
@@ -67,7 +94,7 @@ export const OPERATIONS: Operations = {
       },
       {
         "id": "configure-first-social-channel",
-        "rank": 3,
+        "rank": 4,
         "priorityScore": 75,
         "horizon": "next",
         "category": "distribution",
@@ -399,8 +426,8 @@ export const OPERATIONS: Operations = {
   "socialApproved": 0,
   "socialPublished": 0,
   "approvedIdeas": 13,
-  "proposedIdeas": 0,
-  "pairingIdeas": 10,
+  "proposedIdeas": 1,
+  "pairingIdeas": 11,
   "recipientFrictionIdeas": 2,
   "editorialReview": {
     "schemaVersion": "1.1.0",
@@ -554,8 +581,8 @@ export const OPERATIONS: Operations = {
     "cadence": "weekly",
     "posture": "capacity_available",
     "maxOpenProposals": 5,
-    "openProposals": 0,
-    "capacityRemaining": 5,
+    "openProposals": 1,
+    "capacityRemaining": 4,
     "totalMissions": 0,
     "activeMissions": 0,
     "completedMissions": 0,
@@ -3520,17 +3547,22 @@ export const OPERATIONS: Operations = {
       "ideaId": "founder-idea-013",
       "stage": "independent_review",
       "nextGate": "Resolve evidence or editorial blockers and obtain a hash-bound independent review receipt."
+    },
+    {
+      "ideaId": "founder-idea-014",
+      "stage": "proposed",
+      "nextGate": "Founder approves, pauses, or rejects the research thesis."
     }
   ],
   "pipeline": {
-    "idea": 13,
+    "idea": 14,
     "researching": 0,
     "missionsActive": 0,
     "missionsCompleted": 0,
     "opportunityScoutsActive": 0,
     "opportunityReportsValidated": 0,
     "qa": 2,
-    "proposed": 0,
+    "proposed": 1,
     "ready": 0,
     "publicationReady": 11,
     "socialDrafts": 78
@@ -3543,6 +3575,7 @@ export const OPERATIONS: Operations = {
     "1 original social creative candidate is locally verified but not rights-approved, released, or published.",
     "Growth measurement is not connected; traffic, conversions, and revenue remain unknown rather than zero.",
     "3 growth experiments await founder review and an aggregate baseline.",
+    "1 strategy proposal awaits a founder approval decision before research can start.",
     "Production promotion remains founder-reviewed; automatic release requires 10 verified successful releases and a separate founder approval.",
     "2 article bundles remain blocked in the editorial decision queue; none can self-certify or publish."
   ]
@@ -3550,7 +3583,7 @@ export const OPERATIONS: Operations = {
 
 export const STRATEGY: Strategy = {
   "schemaVersion": "1.1.0",
-  "updatedAt": "2026-08-23T19:50:08.618Z",
+  "updatedAt": "2026-11-23T07:47:40.000Z",
   "northStar": "Become the most trusted place to make a confident gift decision without wasting time or money.",
   "currentBet": "Build three evergreen recipient-intent guides around routines shoppers can actually observe: clean and dry muddy paws at the door, preserve a fiber-art work in progress and its exact stopping point, and move a cleaned vinyl record into a fresh sleeve instead of returning it to dust.",
   "thoughtfulnessFramework": {
@@ -4173,6 +4206,56 @@ export const STRATEGY: Strategy = {
         "minimumSocialAngles": 5
       },
       "researchBrief": "Research manual vinyl-cleaning plus fresh-inner-sleeve pairs for collectors with an observed queue of used or dusty records. Require exact record-format and material support, fluid and water instructions, label and drying controls, level workspace, batch size, replacement supplies, sleeve material and dimensions, jacket clearance, artwork retention, independent usefulness, and one clean-dry-rehouse interaction. Exclude unsupported media, invented preservation or sound claims, powered systems, exact current prices, and any workflow the recipient did not ask to maintain."
+    },
+    {
+      "id": "founder-idea-014",
+      "revision": 1,
+      "founderDisposition": "proposed",
+      "ideaType": "editorial",
+      "thesisType": "ritual_pairing",
+      "title": "Show the turn, mark the condition: a tabletop RPG combat pair",
+      "audience": "Someone buying for a game master who runs in-person tabletop RPG battles with miniatures or standees",
+      "occasion": "Birthday, holiday, campaign launch, first game-master milestone, or the start of a new in-person campaign",
+      "budget": "$20-$80",
+      "priority": "medium",
+      "insight": "The thoughtful upgrade removes two different facts from the game master's memory: a visible tracker shows whose turn comes next, while a removable marker shows which figure is affected right now.",
+      "observedFriction": "The game master rewrites turn order on scrap paper or a hidden note while temporary conditions live in memory, loose tokens, or improvised bottle rings, so players ask who is next and effects can be missed during a crowded battle.",
+      "selfPurchaseReluctance": "Books, miniatures, maps, and dice feel like the exciting purchases; table-admin tools feel like boring infrastructure and require unglamorous research into rules, figure size, screen setup, and available table space.",
+      "fitSignals": [
+        "You have watched them run an in-person battle with miniatures or standees and pause to restate turn order or a temporary condition.",
+        "You know the exact game system and edition, whether they use a game-master screen, the figures on their table, and that they prefer physical rather than digital tracking."
+      ],
+      "avoidIf": [
+        "They play online, prefer theater-of-the-mind combat, already trust a digital tracker, or have a physical tracking system they use without friction.",
+        "The labels do not match the rules, the markers obscure or damage their figures, or the tracker consumes more screen or table space than the routine can justify."
+      ],
+      "pairing": {
+        "unifyingIdea": "Make both the next turn and the current effect visible at a glance without replacing the books, map, miniatures, or standees the group already trusts.",
+        "itemRoles": [
+          {
+            "item": "A reusable initiative tracker sized for the game master's screen or available table space",
+            "role": "The sequence layer that shows the current and upcoming turns to the game master and, when appropriate, the players."
+          },
+          {
+            "item": "System-compatible removable condition markers sized for the group's miniatures or standees",
+            "role": "The state layer that keeps a temporary effect attached to the exact creature it changes until that effect ends."
+          }
+        ],
+        "interactionMoment": "At the start of a battle, arrange the visible turn order; when a condition begins, place one readable marker on the affected figure, then remove it as soon as the effect ends.",
+        "compatibilityChecks": [
+          "Confirm the exact ruleset and edition, initiative structure, condition vocabulary, combatant capacity, reading distance, player visibility, and available game-master-screen or table dimensions.",
+          "Confirm miniature, base, or standee dimensions; marker stacking and removal; color and vision accessibility; storage; surface care; and that the accessories add less setup than the recipient's existing method."
+        ],
+        "coherenceScore": 90,
+        "clutterRisk": "A system-specific label set or bulky rail can become another box beside the campaign; both pieces must fit one observed combat routine and remain simpler than the paper, screen, or digital method already in use."
+      },
+      "successMetric": "Two independently qualified physical tracking pairs for different table setups, each with exact system, capacity, legibility, figure-fit, accessibility, storage, and duplicate checks",
+      "deliverables": {
+        "minimumFinalists": 4,
+        "minimumQualifiedPairs": 2,
+        "minimumSocialAngles": 5
+      },
+      "researchBrief": "Research reusable initiative-tracker plus removable condition-marker pairs for game masters who run in-person tabletop RPG battles with miniatures or standees. Require official rules evidence, exact system and edition, combatant capacity, terminology, player-facing legibility, screen or table footprint, figure and base fit, marker stacking and removal, color and vision accessibility, dry-erase or surface care, storage, independent usefulness, and one order-mark-remove interaction. Reject digital-only tables, theater-of-the-mind play, duplicate systems, wrong-edition labels, and accessories that add more setup than they remove."
     }
   ]
 };

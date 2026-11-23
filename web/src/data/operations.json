@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-11-23T02:39:22.000Z",
+  "generatedAt": "2026-11-23T07:47:40.000Z",
   "founderAgenda": {
     "schemaVersion": "1.0.0",
-    "generatedAt": "2026-11-23T02:39:22.000Z",
+    "generatedAt": "2026-11-23T07:47:40.000Z",
     "posture": "founder_decisions_required",
     "primaryDecisionId": "review-release-candidate",
     "profitabilityEvidence": "unknown_until_aggregate_measurement",
@@ -36,8 +36,35 @@
         }
       },
       {
-        "id": "establish-measurement",
+        "id": "choose-next-thesis",
         "rank": 2,
+        "priorityScore": 95,
+        "horizon": "now",
+        "category": "editorial_direction",
+        "title": "Choose the next recipient problem to research",
+        "recommendation": "Approve founder-idea-014 revision 1: Show the turn, mark the condition: a tabletop RPG combat pair.",
+        "decisionQuestion": "Should this be the next bounded research mission for the editorial team?",
+        "rationale": "The proposal is awaiting founder direction, and 4 of 5 proposal slots remain available; deciding it now chooses the next article direction without pretending the research is already approved.",
+        "evidence": [
+          "1/5 founder proposal slots are occupied.",
+          "The recommended thesis has medium strategic priority.",
+          "Its pair-coherence hypothesis scores 90/100 before product research.",
+          "The brief requires 4 finalists, 2 qualified pairs, and 5 social angles."
+        ],
+        "unlocks": "Merging the deterministic approval pull request starts one hash-bound research mission while the autonomous opportunity scout retains the capacity already shown in Studio.",
+        "tradeoff": "Approval spends research capacity on one audience and ritual before product evidence has been collected; the mission may still reject the thesis.",
+        "guardrail": "This action authorizes research only. It cannot approve evidence, add affiliate tracking, publish content, spend money, or deploy Firebase.",
+        "reversibility": "high",
+        "founderActionRequired": true,
+        "action": {
+          "label": "Open strategy approval",
+          "url": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/strategy-approval.yml",
+          "command": "gh workflow run strategy-approval.yml -f idea_id=founder-idea-014 -f expected_revision=1"
+        }
+      },
+      {
+        "id": "establish-measurement",
+        "rank": 3,
         "priorityScore": 85,
         "horizon": "next",
         "category": "measurement",
@@ -64,7 +91,7 @@
       },
       {
         "id": "configure-first-social-channel",
-        "rank": 3,
+        "rank": 4,
         "priorityScore": 75,
         "horizon": "next",
         "category": "distribution",
@@ -396,8 +423,8 @@
   "socialApproved": 0,
   "socialPublished": 0,
   "approvedIdeas": 13,
-  "proposedIdeas": 0,
-  "pairingIdeas": 10,
+  "proposedIdeas": 1,
+  "pairingIdeas": 11,
   "recipientFrictionIdeas": 2,
   "editorialReview": {
     "schemaVersion": "1.1.0",
@@ -551,8 +578,8 @@
     "cadence": "weekly",
     "posture": "capacity_available",
     "maxOpenProposals": 5,
-    "openProposals": 0,
-    "capacityRemaining": 5,
+    "openProposals": 1,
+    "capacityRemaining": 4,
     "totalMissions": 0,
     "activeMissions": 0,
     "completedMissions": 0,
@@ -3517,17 +3544,22 @@
       "ideaId": "founder-idea-013",
       "stage": "independent_review",
       "nextGate": "Resolve evidence or editorial blockers and obtain a hash-bound independent review receipt."
+    },
+    {
+      "ideaId": "founder-idea-014",
+      "stage": "proposed",
+      "nextGate": "Founder approves, pauses, or rejects the research thesis."
     }
   ],
   "pipeline": {
-    "idea": 13,
+    "idea": 14,
     "researching": 0,
     "missionsActive": 0,
     "missionsCompleted": 0,
     "opportunityScoutsActive": 0,
     "opportunityReportsValidated": 0,
     "qa": 2,
-    "proposed": 0,
+    "proposed": 1,
     "ready": 0,
     "publicationReady": 11,
     "socialDrafts": 78
@@ -3540,6 +3572,7 @@
     "1 original social creative candidate is locally verified but not rights-approved, released, or published.",
     "Growth measurement is not connected; traffic, conversions, and revenue remain unknown rather than zero.",
     "3 growth experiments await founder review and an aggregate baseline.",
+    "1 strategy proposal awaits a founder approval decision before research can start.",
     "Production promotion remains founder-reviewed; automatic release requires 10 verified successful releases and a separate founder approval.",
     "2 article bundles remain blocked in the editorial decision queue; none can self-certify or publish."
   ]
