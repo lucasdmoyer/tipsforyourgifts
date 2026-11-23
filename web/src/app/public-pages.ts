@@ -5,7 +5,7 @@ import { ContentService } from './content.service';
 import { findGiftGuides, type GiftShape, type RecipientSignal } from './gift-finder';
 import { GIFT_PATHS, giftPathUrl } from './gift-paths';
 import { readerDescription, readerTags, readerTitle } from './reader-copy';
-import { responsiveImageSrcset } from './responsive-image';
+import { responsiveImageFallback, responsiveImageSrcset } from './responsive-image';
 import { SeoService } from './seo.service';
 
 @Component({
@@ -14,7 +14,7 @@ import { SeoService } from './seo.service';
   template: `
     <article class="article-card">
       <a class="article-card-visual" [routerLink]="['/blog', article().slug]" [attr.aria-label]="'Read ' + title(article())">
-        <img [src]="article().visual.hero.src" [attr.srcset]="imageSrcset(article().visual.hero.src)" sizes="(max-width: 620px) calc(100vw - 28px), (max-width: 860px) calc((100vw - 60px) / 2), 380px" [alt]="article().visual.hero.alt" width="1536" height="1024" loading="lazy" decoding="async">
+        <img [src]="imageFallback(article().visual.hero.src)" [attr.srcset]="imageSrcset(article().visual.hero.src)" sizes="(max-width: 620px) calc(100vw - 28px), (max-width: 860px) calc((100vw - 60px) / 2), 380px" [alt]="article().visual.hero.alt" width="1536" height="1024" loading="lazy" decoding="async">
       </a>
       <div class="meta">
         <span>{{ article().occasion }}</span><span>·</span><span>{{ article().priceBand }}</span>
@@ -31,6 +31,7 @@ import { SeoService } from './seo.service';
 })
 export class ArticleCardComponent {
   readonly article = input.required<ArticleSummary>();
+  readonly imageFallback = responsiveImageFallback;
   readonly imageSrcset = responsiveImageSrcset;
   readonly description = readerDescription;
   readonly tags = readerTags;
@@ -165,7 +166,7 @@ export class HomePage {
               <article class="finder-result">
                 <a class="finder-result-visual" [routerLink]="['/blog', result.article.slug]" [attr.aria-label]="'Read ' + result.article.title">
                   <span class="finder-result-rank" aria-hidden="true">0{{ rank + 1 }}</span>
-                  <img [src]="result.article.visual.hero.src" [attr.srcset]="imageSrcset(result.article.visual.hero.src)" sizes="(max-width: 620px) calc(100vw - 56px), 240px" [alt]="result.article.visual.hero.alt" width="1536" height="1024" loading="lazy" decoding="async">
+                  <img [src]="imageFallback(result.article.visual.hero.src)" [attr.srcset]="imageSrcset(result.article.visual.hero.src)" sizes="(max-width: 620px) calc(100vw - 56px), 240px" [alt]="result.article.visual.hero.alt" width="1536" height="1024" loading="lazy" decoding="async">
                 </a>
                 <div class="finder-result-copy">
                   <p class="eyebrow">{{ result.article.priceBand }} · {{ result.article.productCount }} idea{{ result.article.productCount === 1 ? '' : 's' }}@if (result.article.pairCount > 0) { · {{ result.article.pairCount }} pairing{{ result.article.pairCount === 1 ? '' : 's' }} }</p>
@@ -211,6 +212,7 @@ export class GiftFinderPage {
   signal: RecipientSignal = 'unsure';
   shape: GiftShape = 'either';
   readonly description = readerDescription;
+  readonly imageFallback = responsiveImageFallback;
   readonly imageSrcset = responsiveImageSrcset;
 
   get results() { return findGiftGuides(this.content.articles, this.signal, this.shape); }
