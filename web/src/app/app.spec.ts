@@ -10,6 +10,7 @@ import { GROWTH, OPERATIONS, STRATEGY } from './generated/studio.generated';
 import { GiftFinderPage } from './public-pages';
 import { FounderBriefPage, STUDIO_DATA, StudioPage } from './studio-pages';
 import { readerBodyComesFirst, readerBodyHtml, readerEvidenceHtml, readerLanguage, readerLead } from './reader-copy';
+import { SeoService } from './seo.service';
 
 describe('App', () => {
   beforeEach(async () => {
@@ -36,6 +37,32 @@ describe('App', () => {
     expect(element.querySelectorAll('.nav-links a')).toHaveLength(4);
     expect(element.querySelector('a[href="/gift-finder"]')?.textContent).toContain('Gift finder');
     expect(element.querySelector('a[href="/studio"]')).toBeNull();
+  });
+
+  it('emits platform-safe social image metadata with useful alternative text', () => {
+    const seo = TestBed.inject(SeoService);
+    seo.set({ title: 'Tips for Your Gifts', description: 'A thoughtful gift starts with a person.', path: '/' });
+    const meta = (property: string) => document.head.querySelector<HTMLMetaElement>(`meta[property="${property}"]`)?.content;
+    const namedMeta = (name: string) => document.head.querySelector<HTMLMetaElement>(`meta[name="${name}"]`)?.content;
+    expect(meta('og:image')).toBe('https://tipsforyourgifts.web.app/social-card.jpg');
+    expect(meta('og:image:secure_url')).toBe(meta('og:image'));
+    expect(meta('og:image:type')).toBe('image/jpeg');
+    expect(meta('og:image:width')).toBe('1200');
+    expect(meta('og:image:height')).toBe('630');
+    expect(meta('og:image:alt')).toContain('Good gifts, minus the guesswork.');
+    expect(namedMeta('twitter:image')).toBe(meta('og:image'));
+    expect(namedMeta('twitter:image:alt')).toBe(meta('og:image:alt'));
+  });
+
+  it('allows large search image previews on public pages while preserving private noindex rules', () => {
+    const seo = TestBed.inject(SeoService);
+    seo.set({ title: 'Public guide', description: 'A public gift guide.', path: '/blog/public-guide' });
+    expect(document.head.querySelector<HTMLMetaElement>('meta[name="robots"]')?.content)
+      .toBe('index,follow,max-image-preview:large');
+
+    seo.set({ title: 'Executive studio', description: 'A private operating surface.', path: '/studio', noindex: true });
+    expect(document.head.querySelector<HTMLMetaElement>('meta[name="robots"]')?.content)
+      .toBe('noindex,nofollow');
   });
 
   it('ships a founder-approved visual for every public article, product, and pair', () => {
@@ -83,6 +110,7 @@ describe('App', () => {
     const image = fixture.nativeElement.querySelector('.product-context-visual img') as HTMLImageElement;
     const link = fixture.nativeElement.querySelector('[data-event-name="merchant_outbound_click"]') as HTMLAnchorElement;
     expect(image.src).toContain('/blog-images/');
+    expect(image.getAttribute('src')).toMatch(/-1200\.webp$/);
     expect(image.getAttribute('srcset')).toContain('-480.webp 480w');
     expect(image.getAttribute('srcset')).toContain('-768.webp 768w');
     expect(image.getAttribute('srcset')).toContain('-1200.webp 1200w');
@@ -125,6 +153,7 @@ describe('App', () => {
         expect(element.textContent).toContain('Before you buy');
         expect(pairImages).toHaveLength(1);
         expect(pairImages[0].src).toContain('/blog-images/');
+        expect(pairImages[0].getAttribute('src')).toMatch(/-1200\.webp$/);
         expect(pairImages[0].getAttribute('srcset')).toContain('-480.webp 480w');
         expect(pairImages[0].getAttribute('srcset')).toContain('-768.webp 768w');
         expect(pairImages[0].getAttribute('srcset')).toContain('-1200.webp 1200w');
@@ -280,6 +309,15 @@ describe('App', () => {
     expect(connectorLists[connectorLists.length - 1].querySelectorAll('.connector-row')).toHaveLength(OPERATIONS.growth.connectorsTotal);
     const experimentGrids = element.querySelectorAll('.experiment-grid');
     expect(experimentGrids[experimentGrids.length - 1].querySelectorAll('.experiment-card')).toHaveLength(GROWTH.experiments.length);
+  });
+
+  it('renders AI operating counts from the validated policy instead of stale prose', () => {
+    const fixture = TestBed.createComponent(StudioPage);
+    fixture.detectChanges();
+    const element = fixture.nativeElement as HTMLElement;
+    const policy = OPERATIONS.aiAutomationPolicy;
+    expect(element.textContent).toContain(`${policy.protectedWorkflows} protected workflows. ${policy.protectedModelCalls} bounded model steps. Zero production authority.`);
+    expect(element.textContent).not.toContain('Six workflows. Eight model calls.');
   });
 
   it('renders the founder strategy intake and approval controls', () => {

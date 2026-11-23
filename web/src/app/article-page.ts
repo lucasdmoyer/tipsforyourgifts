@@ -5,7 +5,7 @@ import { PairCardComponent, ProductCardComponent } from './article-components';
 import { ArticleShareComponent } from './article-share';
 import type { ArticlePageData, VisualAsset } from './content.types';
 import { readerBodyComesFirst, readerBodyHtml, readerDescription, readerEvidenceHtml, readerGiftIdea, readerLanguage, readerLead, readerTitle } from './reader-copy';
-import { responsiveImageSrcset } from './responsive-image';
+import { responsiveImageFallback, responsiveImageSrcset } from './responsive-image';
 import { SeoService } from './seo.service';
 
 @Component({
@@ -30,7 +30,7 @@ import { SeoService } from './seo.service';
           <span>·</span><span>For {{ article.audience }}</span>
         </div>
         <figure class="article-hero-visual">
-          <img [src]="article.visual.hero.src" [attr.srcset]="imageSrcset(article.visual.hero.src)" sizes="(max-width: 620px) calc(100vw - 28px), (max-width: 1080px) calc(100vw - 40px), 1040px" [alt]="article.visual.hero.alt" width="1536" height="1024" fetchpriority="high" decoding="async">
+          <img [src]="imageFallback(article.visual.hero.src)" [attr.srcset]="imageSrcset(article.visual.hero.src)" sizes="(max-width: 620px) calc(100vw - 28px), (max-width: 1080px) calc(100vw - 40px), 1040px" [alt]="article.visual.hero.alt" width="1536" height="1024" fetchpriority="high" decoding="async">
           <figcaption>{{ display(article.visual.hero.caption) }} <span>Original illustration made for this guide.</span></figcaption>
         </figure>
         <aside class="panel gift-premise">
@@ -108,7 +108,7 @@ import { SeoService } from './seo.service';
             @for (guide of article.journey.guides; track guide.slug) {
               <article class="related-guide-card">
                 <a class="related-guide-visual" [routerLink]="['/blog', guide.slug]" [attr.aria-label]="'Read ' + guide.title">
-                  <img [src]="guide.visual.hero.src" [attr.srcset]="imageSrcset(guide.visual.hero.src)" sizes="(max-width: 620px) calc(100vw - 68px), (max-width: 860px) calc((100vw - 94px) / 2), 300px" [alt]="guide.visual.hero.alt" width="1536" height="1024" loading="lazy" decoding="async">
+                  <img [src]="imageFallback(guide.visual.hero.src)" [attr.srcset]="imageSrcset(guide.visual.hero.src)" sizes="(max-width: 620px) calc(100vw - 68px), (max-width: 860px) calc((100vw - 94px) / 2), 300px" [alt]="guide.visual.hero.alt" width="1536" height="1024" loading="lazy" decoding="async">
                 </a>
                 <div class="related-guide-copy">
                   <p class="related-guide-meta">{{ guide.occasion }} · {{ guide.priceBand }}</p>
@@ -144,6 +144,7 @@ export class ArticlePage {
   readonly bodyComesFirst = readerBodyComesFirst;
   readonly evidence = readerEvidenceHtml;
   readonly display = readerLanguage;
+  readonly imageFallback = responsiveImageFallback;
   readonly imageSrcset = responsiveImageSrcset;
 
   unpairedProducts() {
@@ -164,6 +165,7 @@ export class ArticlePage {
       return;
     }
     const path = `/blog/${this.article.slug}`;
+    const socialImagePath = `/social-cards/${this.article.slug}.jpg`;
     const giftPath = this.article.journey.path;
     const breadcrumbItems = [
       { '@type': 'ListItem', position: 1, name: 'Tips for Your Gifts', item: 'https://tipsforyourgifts.web.app/' },
@@ -180,7 +182,11 @@ export class ArticlePage {
       description: readerDescription(this.article),
       path,
       type: 'article',
-      image: this.article.visual.hero.src,
+      image: socialImagePath,
+      imageAlt: this.article.visual.hero.alt,
+      imageType: 'image/jpeg',
+      imageWidth: 1200,
+      imageHeight: 630,
       structuredData: {
         '@context': 'https://schema.org',
         '@graph': [
@@ -191,7 +197,7 @@ export class ArticlePage {
             author: { '@type': 'Organization', name: 'Tips for Your Gifts Editorial Team' },
             publisher: { '@type': 'Organization', name: 'Tips for Your Gifts' },
             mainEntityOfPage: `https://tipsforyourgifts.web.app${path}`,
-            image: `https://tipsforyourgifts.web.app${this.article.visual.hero.src}`,
+            image: `https://tipsforyourgifts.web.app${socialImagePath}`,
             about: this.article.tags
           },
           { '@type': 'BreadcrumbList', itemListElement: breadcrumbItems }

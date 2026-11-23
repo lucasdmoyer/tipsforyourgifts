@@ -4,7 +4,8 @@
   <circle cx="986" cy="164" r="68" fill="#f2b84b"/>
   <path d="M986 102l15 47 47 15-47 15-15 47-15-47-47-15 47-15 15-47z" fill="#1f5b48"/>
   <text x="140" y="210" font-family="Arial, sans-serif" font-size="34" font-weight="700" fill="#dc6f56">TIPS FOR YOUR GIFTS</text>
-  <text x="140" y="310" font-family="Arial, sans-serif" font-size="68" font-weight="800" fill="#18312b">Gifts worth giving.</text>
-  <text x="140" y="390" font-family="Arial, sans-serif" font-size="68" font-weight="800" fill="#18312b">Research worth trusting.</text>
-  <text x="140" y="470" font-family="Arial, sans-serif" font-size="28" fill="#49645d">Evidence-backed recommendations with honest tradeoffs.</text>
+  <text x="140" y="310" font-family="Arial, sans-serif" font-size="68" font-weight="800" fill="#18312b">Good gifts, minus</text>
+  <text x="140" y="390" font-family="Arial, sans-serif" font-size="68" font-weight="800" fill="#18312b">the guesswork.</text>
+  <text x="140" y="465" font-family="Arial, sans-serif" font-size="26" fill="#49645d">The hobby they love. The upgrade they postpone.</text>
+  <text x="140" y="505" font-family="Arial, sans-serif" font-size="26" fill="#49645d">The little luxury they would not buy themselves.</text>
 </svg>

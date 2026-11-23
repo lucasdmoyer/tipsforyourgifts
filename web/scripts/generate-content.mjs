@@ -166,25 +166,37 @@ await Promise.all([
     `${banner}import type { ArticlePageData } from '../../content.types';\n\nexport const ARTICLE: ArticlePageData = ${JSON.stringify({ ...article, journey: articleJourneys[article.slug] }, null, 2)};\n`
   ))
 ]);
-const paths = [
-  '/', '/gift-finder', '/gifts', '/blog', '/standards', '/affiliate-disclosure',
-  ...giftPaths.paths.map((giftPath) => `/gifts/${giftPath.slug}`),
-  ...publicArticles.map((article) => `/blog/${article.slug}`)
-];
-const sitemap = [
-  '<?xml version="1.0" encoding="UTF-8"?>',
-  '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
-  ...paths.map((urlPath) => `  <url><loc>https://tipsforyourgifts.web.app${urlPath}</loc></url>`),
-  '</urlset>',
-  ''
-].join('\n');
+const siteUrl = 'https://tipsforyourgifts.web.app';
 const escapeXml = (value) => String(value)
   .replaceAll('&', '&amp;')
   .replaceAll('<', '&lt;')
   .replaceAll('>', '&gt;')
   .replaceAll('"', '&quot;')
   .replaceAll("'", '&apos;');
-const siteUrl = 'https://tipsforyourgifts.web.app';
+const staticPaths = [
+  '/', '/gift-finder', '/gifts', '/blog', '/standards', '/affiliate-disclosure',
+  ...giftPaths.paths.map((giftPath) => `/gifts/${giftPath.slug}`)
+];
+const sitemap = [
+  '<?xml version="1.0" encoding="UTF-8"?>',
+  '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">',
+  ...staticPaths.map((urlPath) => `  <url><loc>${siteUrl}${urlPath}</loc></url>`),
+  ...publicArticles.flatMap((article) => {
+    const articleUrl = `${siteUrl}/blog/${article.slug}`;
+    const heroUrl = `${siteUrl}${article.visual.hero.src.replace(/\.webp$/, '-1200.webp')}`;
+    return [
+      '  <url>',
+      `    <loc>${articleUrl}</loc>`,
+      `    <lastmod>${new Date(article.updatedDate).toISOString()}</lastmod>`,
+      '    <image:image>',
+      `      <image:loc>${escapeXml(heroUrl)}</image:loc>`,
+      '    </image:image>',
+      '  </url>'
+    ];
+  }),
+  '</urlset>',
+  ''
+].join('\n');
 const latestArticleDate = feedArticles
   .flatMap((article) => [article.publishDate, article.updatedDate])
   .sort()

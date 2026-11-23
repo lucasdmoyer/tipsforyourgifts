@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.2.0",
-  "observedAt": "2026-11-23T18:30:10.000Z",
+  "observedAt": "2026-11-23T21:47:08.000Z",
   "sourceMode": "versioned_snapshot_not_live_poll",
   "externalGates": [
     {
@@ -17,10 +17,10 @@
       "id": "firebase-preview-identity",
       "label": "Keyless Firebase preview identity",
       "status": "blocked_external_configuration",
-      "summary": "PR 90's protected validation, exact-artifact build, and immutable preview boundary pass, but automated deploy stops at Google authentication because PR-90-specific tips-github-preview/github-preview Workload Identity trust is not provisioned; the exact commit was reviewed through the manual Firebase preview fallback.",
-      "evidenceUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/90#issuecomment-7109024667",
-      "diagnosticUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/runs/45229851048",
-      "nextAction": "Retire the obsolete PR-90 identity request. Freeze the next master-based release candidate, review its exact preview, and propose a new pull-request-scoped OIDC boundary; never reuse this snapshot as authority for later commits.",
+      "summary": "PR 104 head 7b2cddada414eea957add384c4a04fe3301093ee passed protected validation, an exact-artifact build, the immutable pull-request boundary, and manual hosted preview review. Automated deploy stops before Firebase at Google authentication because the tips-github-preview/github-preview Workload Identity pool and provider do not exist.",
+      "evidenceUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/104#issuecomment-7114914873",
+      "diagnosticUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/runs/45265510887",
+      "nextAction": "After fresh action-time founder IAM approval, create the PR-104-only keyless preview pool and provider, rerun the required preview check, and merge only if the head remains exactly 7b2cddada414eea957add384c4a04fe3301093ee.",
       "authorityBoundary": "Use short-lived impersonation for Firebase Hosting previews only. No Firebase Auth Admin, user-managed service-account key, or production Hosting authorization."
     },
     {
@@ -36,11 +36,11 @@
   ],
   "latestVerifiedPreview": {
     "status": "exact_preview_verified",
-    "sha": "2812fe32c0618633dfae7746540da9a9fa729be6",
-    "pullRequestUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/90",
-    "reviewUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/90#issuecomment-7109617164",
-    "previewUrl": "https://tipsforyourgifts--pr89-2812fe3-md92ks8h.web.app/",
-    "summary": "The exact PR-90 Firebase preview passed Node 24.14 validation, a 22-route static build with an 81.63 kB initial transfer, hosted smoke checks across 11 publication-ready articles, and visual review. Lighthouse scored 100 for performance, accessibility, and best practices on both the home page and canonical Studio, with 1.4 second LCP, 20 millisecond total blocking time, and zero layout shift.",
-    "nextAction": "Treat this as historical preview evidence only. Any changed commit needs its own exact preview and founder approval; do not merge or deploy a later build from this snapshot."
+    "sha": "7b2cddada414eea957add384c4a04fe3301093ee",
+    "pullRequestUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/104",
+    "reviewUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/104#issuecomment-7114834768",
+    "previewUrl": "https://tipsforyourgifts--pr-104-7b2cdda-47bzlrvs.web.app/",
+    "summary": "The exact PR-104 Firebase preview passed Node 24.14 validation, a 23-route static build with an 81.91 kB initial transfer, hosted smoke across 20 routes and 11 publication-ready articles, mobile visual review, affiliate disclosure checks, and security-header review. Lighthouse scored 100 for performance, accessibility, and best practices on both the home page and Studio, with 1.0 second LCP and zero layout shift.",
+    "nextAction": "Preserve the exact-head merge approval for 7b2cddada414eea957add384c4a04fe3301093ee only; after merge, require a new exact master-SHA preview, readback, and action-time production approval before any live mutation."
   }
 }
