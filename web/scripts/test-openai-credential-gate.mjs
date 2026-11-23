@@ -9,11 +9,21 @@ import { parse } from 'yaml';
 const webRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const repoRoot = path.resolve(webRoot, '..');
 const guardPath = path.join(webRoot, 'scripts', 'require-openai-api-key.mjs');
+const runtimeGuardPath = path.join(webRoot, 'scripts', 'check-ai-runtime-authorization.mjs');
 const workflowDir = path.join(repoRoot, '.github', 'workflows');
 const secretExpression = '${{ secrets.OPENAI_API_KEY }}';
 const fakeSecret = 'test-only-openai-key-never-send-or-store';
 const policyPath = path.join(webRoot, 'config', 'ai-automation-policy.json');
 const temporaryDirectory = await fs.mkdtemp(path.join(os.tmpdir(), 'tips-openai-guard-test-'));
+
+const inactiveRuntime = spawnSync(process.execPath, [runtimeGuardPath], {
+  cwd: webRoot,
+  encoding: 'utf8',
+  env: { ...process.env, GITHUB_ACTIONS: 'false', OPENAI_API_KEY: '' }
+});
+if (inactiveRuntime.status === 0 || !inactiveRuntime.stderr.includes('AI automation policy not active') || inactiveRuntime.stderr.includes('credential missing')) {
+  throw new Error('The credential-free runtime guard must reject an inactive policy before credential access.');
+}
 
 const missing = spawnSync(process.execPath, [guardPath], {
   cwd: webRoot,
@@ -67,6 +77,17 @@ activePolicy.spendControl.evidenceUrl = 'https://platform.openai.com/settings/or
 const activePolicyPath = path.join(temporaryDirectory, 'active-policy.json');
 await fs.writeFile(activePolicyPath, `${JSON.stringify(activePolicy, null, 2)}\n`);
 
+const authorizedRuntime = spawnSync(process.execPath, [runtimeGuardPath], {
+  cwd: webRoot,
+  encoding: 'utf8',
+  env: { ...process.env, GITHUB_ACTIONS: 'false', OPENAI_API_KEY: '', AI_AUTOMATION_POLICY_PATH: activePolicyPath }
+});
+if (authorizedRuntime.status !== 0) throw new Error(authorizedRuntime.stderr || authorizedRuntime.stdout);
+const runtimeResult = JSON.parse(authorizedRuntime.stdout);
+if (!runtimeResult.authorized || runtimeResult.credentialRead || runtimeResult.modelCalled) {
+  throw new Error('The active runtime guard must authorize without reading a credential or calling a model.');
+}
+
 const configured = spawnSync(process.execPath, [guardPath], {
   cwd: webRoot,
   encoding: 'utf8',
@@ -94,7 +115,14 @@ for (const workflowName of workflowNames) {
 
       workflowUsesCodex = true;
       codexSteps += 1;
+      const runtimeAuthorization = steps[index - 2];
       const preflight = steps[index - 1];
+      if (!runtimeAuthorization || runtimeAuthorization.name !== 'Authorize AI automation runtime') {
+        throw new Error(`${workflowName}:${jobName} must authorize the versioned runtime before credential access.`);
+      }
+      if (runtimeAuthorization.run?.trim() !== 'node web/scripts/check-ai-runtime-authorization.mjs') {
+        throw new Error(`${workflowName}:${jobName} does not use the reviewed credential-free runtime guard.`);
+      }
       if (!preflight || preflight.name !== 'Verify autonomous agent credential') {
         throw new Error(`${workflowName}:${jobName} must put the credential preflight immediately before Codex.`);
       }
@@ -106,6 +134,12 @@ for (const workflowName of workflowNames) {
       }
       if ((preflight.if ?? null) !== (step.if ?? null)) {
         throw new Error(`${workflowName}:${jobName} preflight and Codex conditions can diverge.`);
+      }
+      if ((runtimeAuthorization.if ?? null) !== (step.if ?? null)) {
+        throw new Error(`${workflowName}:${jobName} runtime authorization and Codex conditions can diverge.`);
+      }
+      if (JSON.stringify(runtimeAuthorization).includes(secretExpression)) {
+        throw new Error(`${workflowName}:${jobName} runtime authorization must not receive the repository secret.`);
       }
       if (step.with?.['openai-api-key'] !== secretExpression) {
         throw new Error(`${workflowName}:${jobName} must pass only secrets.OPENAI_API_KEY to Codex.`);
@@ -140,6 +174,8 @@ console.log(JSON.stringify({
   protectedWorkflows,
   missingCredentialFailsBeforeModelCall: true,
   inactivePolicyFailsBeforeModelCall: true,
+  inactivePolicyFailsBeforeCredentialAccess: true,
+  activeRuntimeAuthorizationReadsNoCredential: true,
   modelJobsWithGithubWrite: 0,
   secretValuePrinted: false
 }, null, 2));

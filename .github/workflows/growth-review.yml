@@ -47,6 +47,9 @@ jobs:
         if: steps.preflight.outputs.should_review == 'true'
         run: |
           cp web/src/data/growth.json growth.base.json
+      - name: Authorize AI automation runtime
+        if: steps.preflight.outputs.should_review == 'true'
+        run: node web/scripts/check-ai-runtime-authorization.mjs
       - name: Verify autonomous agent credential
         if: steps.preflight.outputs.should_review == 'true'
         env:

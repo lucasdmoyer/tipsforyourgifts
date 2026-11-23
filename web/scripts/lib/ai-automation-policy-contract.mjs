@@ -239,7 +239,14 @@ export function validateAiWorkflowDocument({ policy, workflowPolicy, workflow })
         const step = steps[index];
         if (step.uses !== policy.runtime.action) continue;
         codexSteps += 1;
+        const runtimeAuthorization = steps[index - 2];
         const preflight = steps[index - 1];
+        if (!runtimeAuthorization || runtimeAuthorization.name !== 'Authorize AI automation runtime') {
+          throw new Error(`${workflowPolicy.file}:${jobName} must authorize the versioned runtime before credential access.`);
+        }
+        if (runtimeAuthorization.run?.trim() !== 'node web/scripts/check-ai-runtime-authorization.mjs') {
+          throw new Error(`${workflowPolicy.file}:${jobName} must use the credential-free runtime authorization guard.`);
+        }
         if (!preflight || preflight.name !== 'Verify autonomous agent credential') {
           throw new Error(`${workflowPolicy.file}:${jobName} must put the credential preflight immediately before Codex.`);
         }
@@ -251,6 +258,12 @@ export function validateAiWorkflowDocument({ policy, workflowPolicy, workflow })
         }
         if ((preflight.if ?? null) !== (step.if ?? null)) {
           throw new Error(`${workflowPolicy.file}:${jobName} preflight and Codex conditions can diverge.`);
+        }
+        if ((runtimeAuthorization.if ?? null) !== (step.if ?? null)) {
+          throw new Error(`${workflowPolicy.file}:${jobName} runtime authorization and Codex conditions can diverge.`);
+        }
+        if (JSON.stringify(runtimeAuthorization).includes(secretExpression)) {
+          throw new Error(`${workflowPolicy.file}:${jobName} runtime authorization must not receive OPENAI_API_KEY.`);
         }
         if (step.with?.['safety-strategy'] !== policy.runtime.safetyStrategy) {
           throw new Error(`${workflowPolicy.file}:${jobName} must explicitly use ${policy.runtime.safetyStrategy}.`);
