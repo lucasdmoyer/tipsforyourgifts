@@ -3,6 +3,7 @@ import { RouterLink } from '@angular/router';
 import type { ArticleSummary } from './content.types';
 import { ContentService } from './content.service';
 import { findGiftGuides, type GiftShape, type RecipientSignal } from './gift-finder';
+import { GIFT_PATHS, giftPathUrl } from './gift-paths';
 import { readerDescription, readerTags, readerTitle } from './reader-copy';
 import { responsiveImageSrcset } from './responsive-image';
 import { SeoService } from './seo.service';
@@ -241,6 +242,16 @@ export class GiftFinderPage {
       <p class="eyebrow">Gift guides</p>
       <h1>The things they will not buy themselves.</h1>
       <p class="lede">A better tool for the hobby. A small luxury. The upgrade they keep postponing because the old one still works. Start there.</p>
+      <div class="grid three gift-path-grid">
+        @for (path of giftPaths; track path.id) {
+          <article class="panel gift-path-card">
+            <p class="eyebrow">{{ path.eyebrow }}</p>
+            <h2>{{ path.title }}</h2>
+            <p>{{ path.description }}</p>
+            <a class="read" [routerLink]="giftPathUrl(path)">Follow this clue →</a>
+          </article>
+        }
+      </div>
       @if (guides.length > 0) {
         <div class="grid three spaced-grid">
           @for (post of guides; track post.slug) { <tfg-article-card [article]="post" /> }
@@ -260,6 +271,8 @@ export class GiftFinderPage {
 export class GiftsPage {
   private readonly content = inject(ContentService);
   readonly guides = this.content.articles.filter((article) => article.productCount > 0);
+  readonly giftPaths = GIFT_PATHS;
+  readonly giftPathUrl = giftPathUrl;
   private readonly seo = inject(SeoService);
   constructor() {
     this.seo.set({ title: 'Thoughtful gift guides', description: 'Gift ideas for the hobbies, useful upgrades, and small luxuries people keep postponing for themselves.', path: '/gifts' });
