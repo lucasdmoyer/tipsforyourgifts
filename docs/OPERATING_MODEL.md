@@ -58,6 +58,8 @@ The strategy-intake job follows the same separation. It accepts only an owner-au
 
 The opportunity scout also fails closed. A discovery-model failure, invalid discovery bundle, reviewer-model failure, or invalid review result is routed to a credential-free recorder. That recorder starts from the trusted mission envelope, proves that no report, proposal, or review receipt survived, and opens a retry pull request with the exact workflow identity. It never reuses partial model output, invents a verdict, merges automatically, or changes production, affiliate, social, or Firebase state.
 
+Model workflows without a research mission use the shared automation-failure ledger. The first protected lane covers founder strategy intake: the runtime policy, credential preflight, model action, and deterministic proposal boundary are classified separately. A failure receipt binds the exact source issue digest, repository SHA, workflow run, attempt, actor, ref, and reason while proving that no partial model output or strategy proposal survived. Studio exposes the failed run and clean retry gate; only a detached credential-free writer can open the correction pull request, with auto-merge and every external mutation disabled.
+
 Publication begins in `founder_reviewed` mode. After ten successful founder-reviewed production deployments, the repository owner may open a deterministic policy PR that enables proven automatic promotion. Even then, research QA, branch checks, an exact-SHA Firebase preview, rollback-target evidence, and hosted smoke remain mandatory. See [publication automation](PUBLICATION_AUTOMATION.md).
 
 ## Affiliate posture

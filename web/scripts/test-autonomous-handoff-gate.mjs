@@ -94,6 +94,26 @@ assert.match(dispatchStep.run, /gh workflow run research-agent\.yml/, 'strategy 
 assert.match(dispatchStep.run, /--ref master/, 'research dispatch must execute trusted master workflow bytes');
 assert.match(dispatchStep.run, /-f idea_id="\$IDEA_ID"/, 'research dispatch must pass only the classified idea ID');
 
+const strategyIntakeJob = (await readWorkflow('strategy-intake.yml')).parsed.jobs?.propose;
+const strategyIntakeWorkflow = await readWorkflow('strategy-intake.yml');
+const strategyFailureJob = strategyIntakeWorkflow.parsed.jobs?.record_failure;
+const strategyFailureWriterJob = strategyIntakeWorkflow.parsed.jobs?.open_failure_pull_request;
+assert.ok(strategyIntakeJob && strategyFailureJob && strategyFailureWriterJob, 'strategy intake needs clean model-failure recording and a detached correction writer');
+const strategyModelStep = strategyIntakeJob.steps.find((step) => step.uses === 'openai/codex-action@v1');
+assert.equal(strategyModelStep?.['continue-on-error'], true, 'strategy model failures must reach the trusted classifier');
+assert.equal(strategyFailureJob.steps.filter((step) => step.uses === 'openai/codex-action@v1').length, 0, 'strategy failure recording must be credential-free');
+assert.equal(strategyFailureWriterJob.steps.filter((step) => step.uses === 'openai/codex-action@v1').length, 0, 'strategy correction writing must be credential-free');
+const strategyRouteStep = findStep(strategyIntakeJob, 'Route the exact strategy result');
+const strategyFailureRecordStep = findStep(strategyFailureJob, 'Record only the credential-free strategy failure receipt');
+const strategyFailureProofStep = findStep(strategyFailureJob, 'Prove and serialize the clean strategy failure packet');
+const strategyFailurePrStep = findStep(strategyFailureWriterJob, 'Open the strategy correction pull request with auto-merge disabled');
+assert.ok(strategyRouteStep && strategyFailureRecordStep && strategyFailureProofStep && strategyFailurePrStep, 'strategy intake failure needs a complete clean retry handoff');
+assert.match(strategyRouteStep.run, /runtime_policy_failed[\s\S]*credential_preflight_failed[\s\S]*model_step_failed[\s\S]*output_invalid/, 'strategy failure routing must distinguish runtime, credential, model, and output failures');
+assert.match(strategyFailureRecordStep.run, /automation:failure:record/, 'strategy failure state must be created only by the deterministic recorder');
+assert.match(strategyFailureProofStep.run, /git diff --exit-code HEAD -- web\/src\/data\/strategy\.json/, 'strategy failure recording must prove no proposal survived');
+assert.match(strategyFailurePrStep.run, /does not preserve partial model output/, 'strategy correction PR must state that partial output was discarded');
+assert.doesNotMatch(strategyFailurePrStep.run, /gh pr merge/, 'strategy correction PR must never auto-merge');
+
 const researchDispatch = research.parsed.on?.workflow_dispatch;
 assert.equal(researchDispatch?.inputs?.idea_id?.required, true, 'research workflow requires the founder-approved idea ID');
 assert.equal(research.parsed.permissions?.contents, 'read', 'model workflow default contents authority must remain read-only');
@@ -198,6 +218,7 @@ console.log(JSON.stringify({
     'opportunity_discovery_failure_to_clean_correction_packet',
     'opportunity_review_failure_to_clean_correction_packet',
     'strategy_approval_to_research_dispatch',
+    'strategy_intake_failure_to_clean_correction_packet',
     'research_failure_to_clean_correction_packet',
     'research_to_independent_qa',
     'review_failure_to_clean_correction_packet',

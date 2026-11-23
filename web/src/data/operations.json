@@ -430,6 +430,10 @@
       "command": "gh workflow run ai-automation-activate.yml --repo lucasdmoyer/tipsforyourgifts --ref master -f expected_policy_sha256=d3c37458d9dfcc89f440794e64e73993c9a38d2e2c560adcb1358c13770a1b11 -f confirmation='ACTIVATE-ai-automation'"
     }
   },
+  "automationFailures": {
+    "total": 0,
+    "queue": []
+  },
   "researchRuns": 14,
   "validatedRuns": 12,
   "publicationReadyPosts": 11,

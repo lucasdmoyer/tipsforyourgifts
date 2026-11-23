@@ -87,6 +87,21 @@ export { STUDIO_DATA } from './studio-data';
           </article>
         }
       </div>
+      @if (content.operations.automationFailures.queue.length > 0) {
+        <div class="panel">
+          <div class="experiment-header"><div><p class="eyebrow">Agent failure ledger</p><h3>{{ content.operations.automationFailures.total }} exact retry {{ content.operations.automationFailures.total === 1 ? 'receipt' : 'receipts' }}</h3></div><span class="status blocked_on_account">Retry required</span></div>
+          <p>These attempts failed closed. Partial model output, authoritative proposals, review receipts, external writes, and production authority were not preserved.</p>
+          @for (failure of content.operations.automationFailures.queue; track failure.failureId) {
+            <details>
+              <summary>{{ displayStatus(failure.stage) }} · {{ displayStatus(failure.reasonCode) }}</summary>
+              <p><strong>Target:</strong> {{ displayStatus(failure.targetKind) }} {{ failure.targetId }}.</p>
+              <p><strong>Next gate:</strong> {{ failure.nextGate }}</p>
+              <p><a [href]="failure.workflowRunUrl" target="_blank" rel="noopener">Open exact failed workflow</a>@if (failure.targetUrl) { · <a [href]="failure.targetUrl" target="_blank" rel="noopener">Open source target</a> }</p>
+              <div class="command">failure: {{ failure.failureId }}<br>record sha256: {{ failure.recordSha256 }}</div>
+            </details>
+          }
+        </div>
+      }
       <div class="grid two readiness-evidence">
         <div class="panel">
           <p class="eyebrow">External configuration</p>
