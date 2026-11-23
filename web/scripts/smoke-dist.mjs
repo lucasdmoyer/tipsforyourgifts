@@ -17,6 +17,7 @@ const checks = [
   ['standards', 'standards/index.html', ['Buy the thing they would talk themselves out of.', 'A thoughtful gift says: I noticed the part of your life you keep putting second.']],
   ['studio', 'studio/index.html', ['Executive studio', 'Founder agenda', 'unknown until aggregate measurement', 'noindex,nofollow']],
   ['founder brief builder', 'studio/brief/index.html', ['Founder brief builder', 'Notice the gift before naming the product.', 'Complete the missing decisions', 'noindex,nofollow']],
+  ['founder decision inbox', 'studio/decisions/index.html', ['Founder decision inbox', 'calls. One order.', 'Sensitive editorial calls', 'noindex,nofollow']],
   ['robots', 'robots.txt', ['Disallow: /studio', 'Sitemap:']],
   ['sitemap', 'sitemap.xml', ['blog/how-we-research-gifts', 'standards']],
   ['rss feed', 'rss.xml', ['<rss version="2.0"', '<title>Tips for Your Gifts</title>', '<atom:link href="https://tipsforyourgifts.web.app/rss.xml"']],

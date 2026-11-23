@@ -203,6 +203,20 @@ h3 { font-size: 1.35rem; }
 .studio-command-brief p:last-child { margin-bottom: 0; }
 .studio-command-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 10px; }
 .studio-command-actions .button { margin: 0; text-align: center; }
+.decision-hero .studio-command-actions { justify-content: flex-start; margin-top: 24px; }
+.decision-metrics { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+.decision-metrics > div { display: grid; gap: 4px; padding: 18px; border: 1px solid #d5e3d9; border-radius: 14px; background: var(--paper); }
+.decision-metrics strong { font-size: clamp(1.6rem, 4vw, 2.4rem); line-height: 1; }
+.decision-metrics span { color: var(--ink-soft); }
+.decision-boundary { margin: 18px 0 0; padding: 16px 18px; border-left: 4px solid var(--saffron); border-radius: 0 12px 12px 0; background: #fff7dc; }
+.decision-board { display: grid; gap: 18px; }
+.decision-card { margin: 0; }
+.decision-card h3 { max-width: 34ch; font-size: clamp(1.35rem, 2.5vw, 1.9rem); }
+.decision-primary { border-color: #c8d9cf; background: linear-gradient(135deg, var(--paper), #f1f8f3); }
+.decision-proof { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin: 20px 0; }
+.decision-proof p { margin: 0; padding: 16px; border: 1px solid #d5e3d9; border-radius: 12px; background: rgba(255, 253, 248, 0.78); }
+.decision-card .actions { align-items: flex-start; }
+.decision-card .actions details { width: 100%; }
 .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px; }
 .kpi { padding: 20px; }
 .kpi strong { display: block; font-size: 2rem; line-height: 1; margin-bottom: 8px; }
@@ -353,7 +367,8 @@ h3 { font-size: 1.35rem; }
   .gift-stack { min-height: 350px; }
   .grid.three, .grid.two, .kpi-grid { grid-template-columns: 1fr 1fr; }
   .idea-proof-grid { grid-template-columns: 1fr; }
-  .experiment-grid, .mission-grid, .agenda-proof-grid, .agenda-grid { grid-template-columns: 1fr; }
+  .experiment-grid, .mission-grid, .agenda-proof-grid, .agenda-grid, .decision-proof { grid-template-columns: 1fr; }
+  .decision-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .brief-layout { grid-template-columns: 1fr; }
   .scout-shortcut-heading, .scout-shortcut-footer { grid-template-columns: 1fr; }
   .brief-sidebar { position: static; }

@@ -3,6 +3,7 @@ import { provideRouter, Router, type ActivatedRouteSnapshot } from '@angular/rou
 import { App } from './app';
 import { PairCardComponent, ProductCardComponent } from './article-components';
 import { ArticlePage } from './article-page';
+import { DecisionInboxPage } from './decision-inbox-page';
 import { loadArticle } from './generated/article-loaders.generated';
 import { ARTICLES } from './generated/content.generated';
 import { GROWTH, OPERATIONS, STRATEGY } from './generated/studio.generated';
@@ -15,8 +16,11 @@ describe('App', () => {
     TestBed.overrideComponent(StudioPage, {
       set: { providers: [{ provide: STUDIO_DATA, useValue: { operations: OPERATIONS, strategy: STRATEGY, growth: GROWTH } }] }
     });
+    TestBed.overrideComponent(DecisionInboxPage, {
+      set: { providers: [{ provide: STUDIO_DATA, useValue: { operations: OPERATIONS, strategy: STRATEGY, growth: GROWTH } }] }
+    });
     await TestBed.configureTestingModule({
-      imports: [App, ArticlePage, StudioPage, FounderBriefPage, GiftFinderPage, ProductCardComponent, PairCardComponent],
+      imports: [App, ArticlePage, StudioPage, DecisionInboxPage, FounderBriefPage, GiftFinderPage, ProductCardComponent, PairCardComponent],
       providers: [
         provideRouter([{ path: 'blog/:slug', component: ArticlePage, resolve: { article: (route: ActivatedRouteSnapshot) => loadArticle(route.paramMap.get('slug')) } }])
       ]
@@ -373,7 +377,7 @@ describe('App', () => {
     expect(element.querySelector('#founder-agenda')).not.toBeNull();
     expect(element.querySelector('.studio-command-brief')?.textContent).toContain(agenda.decisions[0].title);
     expect(element.querySelector('.studio-command-brief')?.textContent).toContain(agenda.decisions[0].recommendation);
-    expect(element.querySelector('a[href="#founder-agenda"]')?.textContent).toContain(`Review ${agenda.decisions.length}`);
+    expect(element.querySelector('a[href="/studio/decisions"]')?.textContent).toContain('Open decision inbox');
     expect(element.querySelector('.studio-command-brief a[href="/studio/brief"]')?.textContent).toContain('Give the team a direction');
     expect(element.textContent).toContain(`${agenda.decisions.length} ${agenda.decisions.length === 1 ? 'decision' : 'decisions'}. One clear order.`);
     expect(element.textContent).toContain('Profitability remains unknown until aggregate measurement.');
@@ -385,6 +389,39 @@ describe('App', () => {
       expect(element.querySelector(`a[href="${decision.action.url}"]`)).not.toBeNull();
     }
     expect(element.querySelectorAll('.agenda-card')).toHaveLength(Math.max(0, agenda.decisions.length - 1));
+  });
+
+  it('renders one compact founder decision inbox without leaking authority', () => {
+    const fixture = TestBed.createComponent(DecisionInboxPage);
+    fixture.detectChanges();
+    const element = fixture.nativeElement as HTMLElement;
+    const agenda = OPERATIONS.founderAgenda;
+    const editorial = OPERATIONS.editorialReview;
+
+    expect(element.textContent).toContain(`${agenda.decisions.length} calls. One order.`);
+    expect(element.textContent).toContain('Nothing on this page merges, spends, publishes, enrolls, or deploys by itself.');
+    expect(element.querySelectorAll('.decision-card')).toHaveLength(agenda.decisions.length + editorial.queue.length);
+    expect(element.textContent).toContain(String(agenda.decisions.length) + 'ranked calls');
+    expect(element.textContent).toContain(String(editorial.counts.pendingBundles) + 'sensitive drafts');
+    expect(element.textContent).toContain('Missing traffic, conversion, and revenue remain unknown—not zero.');
+    for (const decision of agenda.decisions) {
+      expect(element.textContent).toContain(decision.title);
+      expect(element.textContent).toContain(decision.recommendation);
+      expect(element.querySelector('a[href="' + decision.action.url + '"]')).not.toBeNull();
+      if (decision.action.command) expect(element.textContent).toContain(decision.action.command);
+    }
+    for (const review of editorial.queue) {
+      expect(element.textContent).toContain(review.articleSlug);
+      for (const claim of review.highRiskClaims) expect(element.textContent).toContain(claim.text);
+      if (review.founderDecisionPacket) {
+        expect(element.textContent).toContain(review.founderDecisionPacket.approveCommand);
+        expect(element.textContent).toContain(review.founderDecisionPacket.rejectCommand);
+      }
+    }
+    expect(element.textContent).toContain(OPERATIONS.aiAutomationPolicy.activationBlockers[0]);
+    expect(element.querySelector('a[href="https://github.com/lucasdmoyer/tipsforyourgifts/issues/59"]')).not.toBeNull();
+    expect(element.querySelector('a[href="/studio"]')).not.toBeNull();
+    expect(element.querySelector('a[href="/studio/brief"]')).not.toBeNull();
   });
 
   it('renders a timestamped fail-closed AI team readiness board', () => {
