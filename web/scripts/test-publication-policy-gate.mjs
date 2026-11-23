@@ -68,9 +68,9 @@ assert.doesNotMatch(automaticWorkflow, /FIREBASE_SERVICE_ACCOUNT_TIPSFORYOURGIFT
 assert.doesNotMatch(automaticWorkflow, /FirebaseExtended\/action-hosting-deploy|npx --yes firebase-tools/, 'automatic release must use only the pre-authenticated pinned Firebase CLI');
 assert.equal((automaticWorkflow.match(/firebase-tools@15\.26\.0/g) || []).length, 2, 'automatic jobs must install the same pinned Firebase CLI before authentication');
 assert.ok(automaticWorkflow.indexOf('npm run validate') < automaticAuthIndexes[0], 'automatic preview must complete validation before cloud authentication');
-assert.ok(automaticWorkflow.indexOf('actions/upload-artifact@v4') < automaticAuthIndexes[0], 'automatic preview must upload the exact static artifact before cloud authentication');
+assert.ok(automaticWorkflow.indexOf('actions/upload-artifact@v7') < automaticAuthIndexes[0], 'automatic preview must upload the exact static artifact with the Node 24 action before cloud authentication');
 assert.match(automaticWorkflow, /needs: preview[\s\S]*url: \$\{\{ needs\.preview\.outputs\.preview_url \}\}/, 'automatic live release must wait for and expose the exact preview URL');
-assert.match(automaticWorkflow, /actions\/download-artifact@v4[\s\S]*name: \$\{\{ needs\.preview\.outputs\.artifact_name \}\}/, 'automatic live release must download the previewed static artifact');
+assert.match(automaticWorkflow, /actions\/download-artifact@v8[\s\S]*name: \$\{\{ needs\.preview\.outputs\.artifact_name \}\}/, 'automatic live release must download the previewed static artifact with the Node 24 action');
 assert.equal((automaticWorkflow.match(/tips-github-auto-production\/providers\/github-auto-production/g) || []).length, 2, 'automatic jobs must use the isolated automatic-production identity pool');
 assert.equal((automaticWorkflow.match(/service_account: github-auto-production@tipsforyourgifts\.iam\.gserviceaccount\.com/g) || []).length, 2, 'automatic jobs must use the dedicated automatic-production service account');
 assert.equal((automaticWorkflow.match(/test "\$REPOSITORY_ID" = "171694140"/g) || []).length, 2, 'automatic jobs must bind the immutable repository ID before authentication');
@@ -86,7 +86,7 @@ assert.match(automaticWorkflow, /npm --prefix web run smoke:hosted -- "\$PREVIEW
 assert.match(automaticWorkflow, /npm --prefix web run smoke:hosted -- https:\/\/tipsforyourgifts\.web\.app/, 'automatic production must smoke every public route without cloud credentials');
 assert.match(manualWorkflow, /needs: preview/, 'founder-reviewed live release must wait for the exact-SHA preview job');
 assert.match(manualWorkflow, /url: \$\{\{ needs\.preview\.outputs\.preview_url \}\}/, 'production approval must expose the exact preview URL');
-assert.match(manualWorkflow, /actions\/download-artifact@v4/, 'founder-reviewed release must download the reviewed static artifact');
+assert.match(manualWorkflow, /actions\/download-artifact@v8/, 'founder-reviewed release must download the reviewed static artifact with the Node 24 action');
 assert.doesNotMatch(manualWorkflow, /inputs\.preview_url/, 'founder-reviewed release must not trust a caller-supplied preview URL');
 assert.match(manualWorkflow, /id-token: write/, 'founder-reviewed release must explicitly request a short-lived GitHub OIDC token');
 assert.match(manualWorkflow, /tips-github-production\/providers\/github-production/, 'founder-reviewed release must use the isolated production identity pool');

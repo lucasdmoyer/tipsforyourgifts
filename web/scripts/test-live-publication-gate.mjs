@@ -12,7 +12,7 @@ const scriptRoot = path.dirname(fileURLToPath(import.meta.url));
 const liveStateWorkflow = await fs.readFile(path.join(scriptRoot, '..', '..', '.github', 'workflows', 'publication-live-state.yml'), 'utf8');
 assert.match(liveStateWorkflow, /workflow_run:/, 'live-state recorder must follow completed release workflows');
 assert.match(liveStateWorkflow, /ref: master/, 'write-capable recorder must checkout trusted master');
-assert.match(liveStateWorkflow, /actions\/download-artifact@v5/, 'cross-run receipt download must use the current artifact action');
+assert.match(liveStateWorkflow, /actions\/download-artifact@v8/, 'cross-run receipt download must use the current Node 24 artifact action');
 assert.match(liveStateWorkflow, /run-id: \$\{\{ github\.event\.workflow_run\.id \}\}/, 'receipt download must bind the triggering run');
 assert.match(liveStateWorkflow, /path: \$\{\{ runner\.temp \}\}\/verified-release-artifact/, 'downloaded receipts must stay outside the trusted checkout');
 assert.match(liveStateWorkflow, /RECEIPT_DOWNLOAD_DIR: \$\{\{ runner\.temp \}\}\/verified-release-artifact/, 'receipt discovery must bind the runner-temp download directory');

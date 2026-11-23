@@ -39,7 +39,7 @@ jobs:
           ref: ${{ github.sha }}
           fetch-depth: 0
           persist-credentials: false
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: "24.14.0"
           cache: npm
@@ -135,7 +135,7 @@ jobs:
           git diff --binary HEAD -- "web/$EXPECTED_RECEIPT_PATH" > editorial-review.patch
           test -s editorial-review.patch
           echo "has_patch=true" >> "$GITHUB_OUTPUT"
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: steps.receipt.outputs.has_patch == 'true'
         with:
           name: editorial-review-${{ steps.target.outputs.run_id }}-${{ github.run_id }}
@@ -156,12 +156,12 @@ jobs:
         with:
           ref: ${{ needs.independent_review.outputs.base_sha }}
           fetch-depth: 0
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           name: editorial-review-${{ needs.independent_review.outputs.run_id }}-${{ github.run_id }}
       - name: Apply the receipt-only patch
         run: git apply --index editorial-review.patch
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: "24.14.0"
           cache: npm

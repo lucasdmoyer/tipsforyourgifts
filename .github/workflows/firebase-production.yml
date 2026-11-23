@@ -30,7 +30,7 @@ jobs:
           ref: ${{ inputs.release_sha }}
           fetch-depth: 0
           persist-credentials: false
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: "24.14.0"
           cache: npm
@@ -85,7 +85,7 @@ jobs:
         env:
           PREVIEW_URL: ${{ steps.firebase_preview.outputs.preview_url }}
         run: npm --prefix web run smoke:hosted -- "$PREVIEW_URL"
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: ${{ steps.release.outputs.artifact_name }}
           path: web/dist
@@ -105,13 +105,13 @@ jobs:
           ref: ${{ inputs.release_sha }}
           fetch-depth: 0
           persist-credentials: false
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: "24.14.0"
           cache: npm
           cache-dependency-path: web/package-lock.json
       - run: npm ci --prefix web
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           name: ${{ needs.preview.outputs.artifact_name }}
           path: web/dist
@@ -144,7 +144,7 @@ jobs:
           npx --yes firebase-tools@15.26.0 hosting:channel:create "$rollback_channel" --expires 30d --site tipsforyourgifts --project tipsforyourgifts --non-interactive
           npx --yes firebase-tools@15.26.0 hosting:clone tipsforyourgifts:live "tipsforyourgifts:$rollback_channel" --project tipsforyourgifts --non-interactive
           npm --prefix web run publication:rollback-record -- --release-sha="$RELEASE_SHA" --target-channel="$rollback_channel" --output=../rollback-target.json
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: firebase-rollback-target-${{ github.run_id }}-${{ github.run_attempt }}
           path: rollback-target.json
@@ -164,7 +164,7 @@ jobs:
           GITHUB_ACTOR: ${{ github.actor }}
           GITHUB_EVENT_NAME: ${{ github.event_name }}
         run: npm --prefix web run publication:receipt -- --release-sha="$RELEASE_SHA" --mode=founder_reviewed --source-workflow=firebase-production --preview-url="$PREVIEW_URL" --rollback-target=../rollback-target.json --manifest=dist/publication-manifest.json --output=../publication-receipt.json
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: firebase-publication-receipt-${{ inputs.release_sha }}-${{ github.run_id }}-${{ github.run_attempt }}
           path: publication-receipt.json

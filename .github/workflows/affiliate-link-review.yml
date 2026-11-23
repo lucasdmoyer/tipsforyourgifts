@@ -36,7 +36,7 @@ jobs:
         run: |
           [[ "$CANDIDATE_ID" =~ ^[a-z0-9]+(-[a-z0-9]+)*$ ]] || { echo "Invalid candidate ID." >&2; exit 1; }
           [[ "$EXPECTED_CANDIDATE_SHA256" =~ ^[a-f0-9]{64}$ ]] || { echo "Invalid candidate SHA-256." >&2; exit 1; }
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: "24.14.0"
           cache: npm
@@ -84,7 +84,7 @@ jobs:
           npm run smoke
           git diff --check
       - name: Upload the isolated review receipt
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: affiliate-link-review-${{ github.run_id }}
           path: web/affiliate/reviews/${{ inputs.candidate_id }}-review.json
@@ -104,7 +104,7 @@ jobs:
           ref: master
           fetch-depth: 0
           persist-credentials: false
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: "24.14.0"
           cache: npm
@@ -112,7 +112,7 @@ jobs:
       - name: Install the trusted writer environment
         run: npm ci --prefix web
       - name: Download only the independent review receipt
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: affiliate-link-review-${{ github.run_id }}
           path: web/affiliate/reviews
