@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "1.1.0",
+  "schemaVersion": "1.2.0",
   "status": "awaiting_founder_platform_budget",
   "credential": {
     "secretName": "OPENAI_API_KEY",
@@ -106,6 +106,23 @@
       "searchEnabled": true,
       "githubActionsBotAllowed": false,
       "purpose": "Independently review one exact paid-link candidate without approving or activating it."
+    }
+  ],
+  "directApiWorkflows": [
+    {
+      "file": "visual-production.yml",
+      "modelJobs": ["produce", "independent_review"],
+      "modelSteps": 2,
+      "maximumApiCallsPerRun": 13,
+      "maximumGeneratedAssetsPerRun": 12,
+      "endpoint": "https://api.openai.com/v1/responses",
+      "responseModel": "gpt-6.2-sol",
+      "imageToolModel": "gpt-image-2.5-sunburst-2026-09-08",
+      "commands": {
+        "produce": "visual:produce",
+        "independent_review": "visual:review"
+      },
+      "purpose": "Generate one hash-bound visual batch and run a separate multimodal review before any credential-free Git promotion."
     }
   ],
   "shutdownConditions": [

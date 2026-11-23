@@ -8,6 +8,43 @@
   "promptBookPath": "visuals/PROMPTS.md",
   "sourcePathPattern": "visuals/sources/{assetId}.png",
   "draftFilePathPattern": "visuals/drafts/{assetId}.webp",
+  "legacyReview": {
+    "receiptPath": "visuals/reviews/gift-thread-v1.qa.json",
+    "registrySha256": "7a221fa6c5244db3caf0443f253dc061a3e4225a06f43ebf567b46dd0b38604c",
+    "promptBookSha256": "eff7c0ce3fcf526e0e16a9bbfafb1d2f4f38f1f0eaa52dc2d2c59a71f142ad32",
+    "assetIds": [
+      "golf-friction-kit",
+      "research-evidence-desk",
+      "fiber-art-pause-resume",
+      "language-read-retell",
+      "miniature-paint-palette-recipe",
+      "muddy-paw-rinse-dry",
+      "tree-walk-guide-loupe",
+      "night-sky-chart-red-light",
+      "family-one-photo-one-story",
+      "puzzle-pause-sort-resume",
+      "read-it-big-history",
+      "read-it-bird-cognition",
+      "read-it-mars-constraints",
+      "read-it-feedback-loop",
+      "read-it-language-context",
+      "read-it-park-story",
+      "read-it-writing-constraint",
+      "read-it-photo-walk",
+      "read-it-fungal-network",
+      "read-it-temperature-loop",
+      "useful-friction-five",
+      "vinyl-clean-dry-resleeve"
+    ],
+    "scope": {
+      "sourceAssetsReviewed": 22,
+      "publicAssetsReviewed": 20,
+      "draftOnlyAssetsReviewed": 2,
+      "articleMappingsReviewed": 13,
+      "productMappingsReviewed": 75,
+      "pairMappingsReviewed": 29
+    }
+  },
   "dimensions": {
     "width": 1536,
     "height": 1024,

@@ -1,0 +1,184 @@
+name: Produce and independently review article visuals
+
+on:
+  workflow_dispatch:
+    inputs:
+      request_id:
+        description: "Exact pending visual request ID"
+        required: true
+        type: string
+  push:
+    branches: [master]
+    paths:
+      - "web/visuals/requests/*.json"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: visual-production-${{ inputs.request_id || github.sha }}
+  cancel-in-progress: false
+
+jobs:
+  resolve:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    outputs:
+      eligible: ${{ steps.target.outputs.eligible }}
+      policy_active: ${{ steps.policy.outputs.active }}
+      request_id: ${{ steps.target.outputs.request_id }}
+      mission_id: ${{ steps.target.outputs.mission_id }}
+      run_id: ${{ steps.target.outputs.run_id }}
+      article_slug: ${{ steps.target.outputs.article_slug }}
+      review_receipt_path: ${{ steps.target.outputs.review_receipt_path }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "24.14.0"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - run: npm ci --prefix web
+      - name: Resolve the exact visual-pending target
+        id: target
+        env:
+          REQUEST_ID: ${{ inputs.request_id }}
+        run: npm --prefix web run visual:target -- --request-id="$REQUEST_ID"
+      - name: Read the versioned activation state without a credential
+        id: policy
+        run: |
+          status="$(node -p "JSON.parse(require('fs').readFileSync('web/config/ai-automation-policy.json','utf8')).status")"
+          if [ "$status" = "active" ]; then echo "active=true" >> "$GITHUB_OUTPUT"; else echo "active=false" >> "$GITHUB_OUTPUT"; fi
+
+  produce:
+    needs: resolve
+    if: needs.resolve.outputs.eligible == 'true' && needs.resolve.outputs.policy_active == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "24.14.0"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - run: npm ci --prefix web
+      - name: Authorize AI automation runtime
+        run: node web/scripts/check-ai-runtime-authorization.mjs
+      - name: Verify autonomous agent credential
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: node web/scripts/require-openai-api-key.mjs
+      - name: Run the registered visual producer
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: npm --prefix web run visual:produce -- --request-id="${{ needs.resolve.outputs.request_id }}"
+      - uses: actions/upload-artifact@v7
+        with:
+          name: visual-production-${{ needs.resolve.outputs.request_id }}
+          path: web/visuals/production/${{ needs.resolve.outputs.request_id }}
+          if-no-files-found: error
+          retention-days: 7
+
+  independent_review:
+    needs: [resolve, produce]
+    if: needs.produce.result == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    permissions:
+      contents: read
+    outputs:
+      verdict: ${{ steps.verdict.outputs.verdict }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "24.14.0"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - run: npm ci --prefix web
+      - uses: actions/download-artifact@v8
+        with:
+          name: visual-production-${{ needs.resolve.outputs.request_id }}
+          path: web/visuals/production/${{ needs.resolve.outputs.request_id }}
+      - name: Authorize AI automation runtime
+        run: node web/scripts/check-ai-runtime-authorization.mjs
+      - name: Verify autonomous agent credential
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: node web/scripts/require-openai-api-key.mjs
+      - name: Run the registered independent visual review
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: npm --prefix web run visual:review -- --request-id="${{ needs.resolve.outputs.request_id }}"
+      - name: Record the review verdict
+        id: verdict
+        run: echo "verdict=$(node -p "JSON.parse(require('fs').readFileSync('web/visuals/production/${{ needs.resolve.outputs.request_id }}/visual-review-findings.json','utf8')).verdict")" >> "$GITHUB_OUTPUT"
+      - uses: actions/upload-artifact@v7
+        with:
+          name: visual-review-${{ needs.resolve.outputs.request_id }}
+          path: web/visuals/production/${{ needs.resolve.outputs.request_id }}
+          if-no-files-found: error
+          retention-days: 14
+
+  detached_writer:
+    needs: [resolve, independent_review]
+    if: needs.independent_review.outputs.verdict == 'passed'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "24.14.0"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - run: npm ci --prefix web
+      - uses: actions/download-artifact@v8
+        with:
+          name: visual-review-${{ needs.resolve.outputs.request_id }}
+          path: web/visuals/production/${{ needs.resolve.outputs.request_id }}
+      - name: Promote only the independently reviewed visual set
+        run: npm --prefix web run visual:finalize -- --request-id="${{ needs.resolve.outputs.request_id }}"
+      - name: Promote the already-reviewed editorial bundle and close its mission
+        run: |
+          npm --prefix web run review:promote -- "${{ needs.resolve.outputs.run_id }}" --receipt-path="${{ needs.resolve.outputs.review_receipt_path }}"
+          npm --prefix web run research:mission:complete -- --mission-id="${{ needs.resolve.outputs.mission_id }}" --run-id="${{ needs.resolve.outputs.run_id }}"
+      - name: Validate the exact proposed publication set
+        run: |
+          npm run validate
+          npm run build
+          npm run smoke
+      - name: Commit the bounded visual proposal
+        env:
+          REQUEST_ID: ${{ needs.resolve.outputs.request_id }}
+          ARTICLE_SLUG: ${{ needs.resolve.outputs.article_slug }}
+          RUN_ID: ${{ needs.resolve.outputs.run_id }}
+          MISSION_ID: ${{ needs.resolve.outputs.mission_id }}
+        run: |
+          branch="codex/visual-production-${REQUEST_ID}-${GITHUB_RUN_ID}"
+          git switch -c "$branch"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add web/visuals/article-visuals.json web/visuals/PROMPTS.md web/visuals/reviews web/visuals/sources "web/visuals/requests/${REQUEST_ID}.json" "web/public/blog-images/${ARTICLE_SLUG}" "web/research/runs/${RUN_ID}.json" "web/research/missions/${MISSION_ID}.json" "web/src/data/blog/${ARTICLE_SLUG}.md" web/src/data/operations.json web/src/app/generated/content.generated.ts web/src/app/generated/studio.generated.ts web/public/publication-manifest.json web/public/sitemap.xml
+          git diff --cached --quiet && { echo "No bounded visual proposal was produced." >&2; exit 1; }
+          git commit -m "feat: promote reviewed visuals for ${ARTICLE_SLUG}"
+          git push origin "$branch"
+          gh pr create --base master --head "$branch" --title "Promote reviewed visuals for ${ARTICLE_SLUG}" --body "Automated proposal for visual request ${REQUEST_ID}. Generation and independent multimodal review ran in separate read-only jobs. The writer received no OpenAI credential. Validation, build, and smoke passed. No Firebase deployment, affiliate activation, social publication, or email was attempted."

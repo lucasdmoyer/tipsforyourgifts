@@ -208,7 +208,7 @@ export interface AutomationReadiness {
 }
 
 export interface AiAutomationPolicy {
-  schemaVersion: '1.1.0';
+  schemaVersion: '1.2.0';
   status: 'awaiting_founder_platform_budget' | 'budget_approved_awaiting_credential' | 'credential_verified_awaiting_activation' | 'active';
   policySha256: string;
   budgetConfiguration: {
@@ -299,6 +299,18 @@ export interface AiAutomationPolicy {
     codexSteps: number;
     searchEnabled: boolean;
     githubActionsBotAllowed: boolean;
+    purpose: string;
+  }>;
+  directApiWorkflows: Array<{
+    file: 'visual-production.yml';
+    modelJobs: ['produce', 'independent_review'];
+    modelSteps: 2;
+    maximumApiCallsPerRun: 13;
+    maximumGeneratedAssetsPerRun: 12;
+    endpoint: 'https://api.openai.com/v1/responses';
+    responseModel: 'gpt-6.2-sol';
+    imageToolModel: 'gpt-image-2.5-sunburst-2026-09-08';
+    commands: { produce: 'visual:produce'; independent_review: 'visual:review' };
     purpose: string;
   }>;
   shutdownConditions: string[];

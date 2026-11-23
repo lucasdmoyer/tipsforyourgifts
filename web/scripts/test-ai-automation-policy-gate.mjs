@@ -4,7 +4,7 @@ import os from 'node:os';
 import path from 'node:path';
 import process from 'node:process';
 import { parse } from 'yaml';
-import { buildAiAutomationPolicySummary, parseAiAutomationPolicy, validateAiAutomationWorkflows, validateAiWorkflowDocument } from './lib/ai-automation-policy-contract.mjs';
+import { buildAiAutomationPolicySummary, parseAiAutomationPolicy, validateAiAutomationWorkflows, validateAiWorkflowDocument, validateDirectApiWorkflowDocument } from './lib/ai-automation-policy-contract.mjs';
 
 const webRoot = process.cwd();
 const repoRoot = path.resolve(webRoot, '..');
@@ -14,8 +14,8 @@ const summary = buildAiAutomationPolicySummary(policy);
 const validation = await validateAiAutomationWorkflows({ repoRoot, policy });
 
 assert.equal(summary.activationReady, ['credential_verified_awaiting_activation', 'active'].includes(policy.status));
-assert.equal(summary.protectedWorkflows, 6);
-assert.equal(summary.protectedModelCalls, 8);
+assert.equal(summary.protectedWorkflows, 7);
+assert.equal(summary.protectedModelCalls, 21);
 assert.equal(validation.modelJobsWithGithubWrite, 0);
 assert.equal(validation.writerJobsReceivingOpenAiKey, 0);
 
@@ -73,6 +73,15 @@ const effortDriftWorkflow = clone(workflow);
 effortDriftWorkflow.jobs.analyze.steps.find((step) => step.uses === policy.runtime.action).with.effort = 'medium';
 assert.throws(() => validateAiWorkflowDocument({ policy, workflowPolicy, workflow: effortDriftWorkflow }), /must pin reasoning effort/);
 
+const directWorkflowPolicy = policy.directApiWorkflows[0];
+const directWorkflow = parse(await fs.readFile(path.join(repoRoot, '.github', 'workflows', directWorkflowPolicy.file), 'utf8'));
+const directSecretDrift = clone(directWorkflow);
+directSecretDrift.jobs.detached_writer.env = { OPENAI_API_KEY: '${{ secrets.OPENAI_API_KEY }}' };
+assert.throws(() => validateDirectApiWorkflowDocument({ policy, workflowPolicy: directWorkflowPolicy, workflow: directSecretDrift }), /without one registered direct API call|cannot receive/);
+const directWriteDrift = clone(directWorkflow);
+directWriteDrift.jobs.produce.permissions.contents = 'write';
+assert.throws(() => validateDirectApiWorkflowDocument({ policy, workflowPolicy: directWorkflowPolicy, workflow: directWriteDrift }), /no GitHub write permission/);
+
 const activePolicy = clone(budgetApprovedPolicy);
 activePolicy.status = 'active';
 activePolicy.credential.status = 'configured_external';
@@ -98,7 +107,7 @@ await fs.writeFile(activePolicyPath, `${JSON.stringify(activePolicy, null, 2)}\n
 
 console.log(JSON.stringify({
   aiAutomationPolicyGateTests: 'passed',
-  negativeChecks: 11,
+  negativeChecks: 13,
   protectedWorkflows: validation.protectedWorkflows,
   protectedModelCalls: validation.protectedModelCalls,
   currentActivationReady: summary.activationReady,

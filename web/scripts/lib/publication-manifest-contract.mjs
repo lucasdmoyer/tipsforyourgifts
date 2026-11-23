@@ -41,7 +41,9 @@ const affiliateLinkEntrySchema = z.object({
 const visualAssetEntrySchema = z.object({
   id: slugSchema,
   path: z.string().regex(/^blog-images\/[a-z0-9]+(?:-[a-z0-9]+)*\/[a-z0-9]+(?:-[a-z0-9]+)*\.webp$/),
-  sha256: sha256Schema
+  sha256: sha256Schema,
+  reviewPath: z.string().regex(/^visuals\/reviews\/[a-z0-9]+(?:-[a-z0-9.-]+)*\.json$/),
+  reviewSha256: sha256Schema
 }).strict();
 const founderSafetyApprovalEntrySchema = z.object({
   approvalId: z.string().regex(/^\d{8}-[a-z0-9-]+-[a-f0-9]{8}-founder-safety-v[1-9]\d*$/),
@@ -100,7 +102,7 @@ const articleEntrySchema = z.object({
 }).strict();
 
 export const publicationManifestSchema = z.object({
-  schemaVersion: z.literal('1.3.0'),
+  schemaVersion: z.literal('1.4.0'),
   manifestId: z.string().regex(/^publication-set-[a-f0-9]{16}$/),
   generatedAt: z.string().datetime(),
   status: z.literal('release_candidate'),
@@ -433,13 +435,17 @@ export async function buildPublicationManifest(root) {
   };
   const publishedVisualIds = [...new Set(articles.flatMap((article) => article.visualAssetIds))].sort();
   const publishedVisualAssets = [];
+  const visualReviewCache = new Map();
   for (const id of publishedVisualIds) {
     const asset = visualAssetById.get(id);
     const relativePath = asset.src.replace(/^\//, '');
     const raw = await fs.readFile(path.join(root, 'public', relativePath));
     const actualSha256 = sha256(raw);
     if (actualSha256 !== asset.fileSha256) throw new Error(`${id}: visual file differs from approved registry checksum`);
-    publishedVisualAssets.push({ id, path: relativePath, sha256: actualSha256 });
+    const reviewPath = asset.reviewReceiptPath ?? visualRegistry.legacyReview?.receiptPath;
+    if (!reviewPath) throw new Error(`${id}: visual asset has no independent review provenance`);
+    if (!visualReviewCache.has(reviewPath)) visualReviewCache.set(reviewPath, sha256(await fs.readFile(path.join(root, reviewPath))));
+    publishedVisualAssets.push({ id, path: relativePath, sha256: actualSha256, reviewPath, reviewSha256: visualReviewCache.get(reviewPath) });
   }
   const visualPosture = {
     styleVersion: visualRegistry.styleVersion,
@@ -459,7 +465,7 @@ export async function buildPublicationManifest(root) {
   };
   const contentSetSha256 = canonicalSha256({ articles, affiliatePosture, editorialSafetyPosture, visualPosture });
   const manifest = {
-    schemaVersion: '1.3.0',
+    schemaVersion: '1.4.0',
     manifestId: `publication-set-${contentSetSha256.slice(0, 16)}`,
     generatedAt: new Date(Math.max(...dates.filter(Boolean).map((value) => new Date(value).valueOf()))).toISOString(),
     status: 'release_candidate',
