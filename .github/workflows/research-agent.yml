@@ -264,7 +264,8 @@ jobs:
             npm --prefix web run research:mission:qa-failed -- --mission-id="$MISSION_ID" --run-id="$RUN_ID" --receipt-path="$receipt_path"
             release_route="qa_failed"
             echo "release_route=$release_route" >> "$GITHUB_OUTPUT"
-            git diff --exit-code HEAD -- "web/research/runs/$RUN_ID.json" "web/src/data/blog/$ARTICLE_SLUG.md" "web/social/drafts/$ARTICLE_SLUG-launch.json"
+            post_failure_source_patch_sha="$(git diff --binary HEAD -- "web/research/runs/$RUN_ID.json" "web/src/data/blog/$ARTICLE_SLUG.md" "web/social/drafts/$ARTICLE_SLUG-launch.json" "web/visuals/requests/$RUN_ID-visuals.json" | shasum -a 256 | cut -d ' ' -f 1)"
+            test "$post_failure_source_patch_sha" = "$EXPECTED_SOURCE_PATCH_SHA"
           else
             echo "Unexpected review verdict: $verdict" >&2
             exit 1
