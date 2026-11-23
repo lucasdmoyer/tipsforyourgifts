@@ -2,7 +2,8 @@ import { createHash } from 'node:crypto';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import process from 'node:process';
-import { socialPostSha256, validateSocialModel } from './lib/social-contract.mjs';
+import { publicationManifestSchema } from './lib/publication-manifest-contract.mjs';
+import { createSocialDestinationPosture, socialPostSha256, validateSocialModel } from './lib/social-contract.mjs';
 
 const root = process.cwd();
 const args = Object.fromEntries(process.argv.slice(2).map((argument) => {
@@ -19,6 +20,7 @@ if (!/^[a-f0-9]{64}$/.test(args['expected-media-record-sha256'] ?? '')) throw ne
 if (!String(args['rights-evidence-url'] ?? '').startsWith('https://')) throw new Error('rights-evidence-url must be an HTTPS evidence reference');
 
 const config = JSON.parse(await fs.readFile(path.join(root, 'config', 'social-channels.json'), 'utf8'));
+const publicationManifest = publicationManifestSchema.parse(JSON.parse(await fs.readFile(path.join(root, 'public', 'publication-manifest.json'), 'utf8')));
 if (args['founder-login'] !== config.policy.founderApproverLogin) throw new Error('founder-login does not match the configured founder approver');
 const draftsDir = path.join(root, 'social', 'drafts');
 const names = (await fs.readdir(draftsDir)).filter((name) => name.endsWith('.json')).sort();
@@ -46,7 +48,7 @@ const candidateRaw = await fs.readFile(path.join(root, 'social', 'candidates', `
 const candidate = { ...JSON.parse(candidateRaw), __sha256: createHash('sha256').update(candidateRaw).digest('hex') };
 
 const receipt = {
-  schemaVersion: '1.1.0',
+  schemaVersion: '1.2.0',
   approvalId: `${postId}-approval`,
   packId: indexed.pack.packId,
   postId,
@@ -58,6 +60,7 @@ const receipt = {
   founderLogin: args['founder-login'],
   approvedAt: new Date().toISOString(),
   rightsEvidenceUrl: args['rights-evidence-url'],
+  destinationPosture: createSocialDestinationPosture({ config, pack: indexed.pack, publicationManifest }),
   approvals: { originalOrLicensedAsset: true, copy: true, destination: true, disclosure: true },
   status: 'approved',
   externalPostId: null
@@ -66,7 +69,7 @@ const approvalPath = path.join(root, 'social', 'approvals', `${postId}.json`);
 try { await fs.access(approvalPath); throw new Error(`${postId} already has an approval receipt`); } catch (error) {
   if (error?.code !== 'ENOENT') throw error;
 }
-const issues = validateSocialModel(config, packs, [receipt], [media], [], [candidate]);
+const issues = validateSocialModel(config, packs, [receipt], [media], [], [candidate], publicationManifest);
 if (issues.length > 0) throw new Error(`Social approval would violate the contract: ${issues.join('; ')}`);
 await fs.mkdir(path.dirname(approvalPath), { recursive: true });
 await fs.writeFile(approvalPath, `${JSON.stringify(receipt, null, 2)}\n`);

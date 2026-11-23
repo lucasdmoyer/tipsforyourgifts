@@ -116,7 +116,7 @@ export const OPERATIONS: Operations = {
         "action": {
           "label": "Open Pinterest decision packet",
           "url": "https://github.com/lucasdmoyer/tipsforyourgifts/issues/61",
-          "command": "gh workflow run social-channel-configure.yml -f channel_id=pinterest -f expected_config_sha256=62b26e49b547b253e48dcdb608a3f725ce88ec9b6d54f71fd3912b4bbe43031f -f official_account_reference=\"$PINTEREST_ACCOUNT_REFERENCE\" -f official_publication_target_id=\"$PINTEREST_BOARD_ID\" -f max_posts_per_week=3 -f configuration_evidence_url=https://github.com/lucasdmoyer/tipsforyourgifts/issues/61 -f confirmation=CONFIGURE-pinterest"
+          "command": "gh workflow run social-channel-configure.yml -f channel_id=pinterest -f expected_config_sha256=16aeb855f596b3d4469ef81609eb4e2fd1cb7d0792390dcb01a170024aa32e0d -f official_account_reference=\"$PINTEREST_ACCOUNT_REFERENCE\" -f official_publication_target_id=\"$PINTEREST_BOARD_ID\" -f max_posts_per_week=3 -f configuration_evidence_url=https://github.com/lucasdmoyer/tipsforyourgifts/issues/61 -f confirmation=CONFIGURE-pinterest"
         }
       }
     ]
@@ -1036,7 +1036,7 @@ export const OPERATIONS: Operations = {
   },
   "social": {
     "officialApiOnly": true,
-    "configSha256": "62b26e49b547b253e48dcdb608a3f725ce88ec9b6d54f71fd3912b4bbe43031f",
+    "configSha256": "16aeb855f596b3d4469ef81609eb4e2fd1cb7d0792390dcb01a170024aa32e0d",
     "channelsTotal": 3,
     "channelsConfigured": 0,
     "channelsActive": 0,

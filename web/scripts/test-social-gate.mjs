@@ -1,14 +1,25 @@
+import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import process from 'node:process';
-import { createPinterestPublicationPlan, sha256Json, socialPostSha256, validateSocialModel } from './lib/social-contract.mjs';
+import { createPinterestPublicationPlan, createSocialDestinationPosture, sha256Json, socialPostSha256, validateSocialModel } from './lib/social-contract.mjs';
 
 const root = process.cwd();
 const config = JSON.parse(await fs.readFile(path.join(root, 'config', 'social-channels.json'), 'utf8'));
 const packPath = path.join(root, 'social', 'drafts', 'gifts-for-a-golf-friend-launch.json');
 const packRaw = await fs.readFile(packPath);
 const basePack = { ...JSON.parse(packRaw), __sha256: createHash('sha256').update(packRaw).digest('hex') };
+const publicationManifest = {
+  manifestId: 'publication-set-0123456789abcdef',
+  contentSetSha256: '8'.repeat(64),
+  articles: [{
+    articleSlug: basePack.articleSlug,
+    route: `/blog/${basePack.articleSlug}`,
+    affiliateLinkCount: 0,
+    affiliateLinks: []
+  }]
+};
 
 function copy(value) { return structuredClone(value); }
 function configurePinterest(model, active = false) {
@@ -47,10 +58,11 @@ const validAsset = {
   approvedAt: '2026-08-03T10:00:00.000Z', status: 'approved', __sha256: 'a'.repeat(64)
 };
 const validReceipt = {
-  schemaVersion: '1.1.0', approvalId: `${approvedPost.id}-approval`, packId: basePack.packId, postId: approvedPost.id,
+  schemaVersion: '1.2.0', approvalId: `${approvedPost.id}-approval`, packId: basePack.packId, postId: approvedPost.id,
   platform: approvedPost.platform, packSha256: basePack.__sha256, postSha256: socialPostSha256(approvedPost),
   mediaAssetId: validAsset.mediaAssetId, mediaAssetRecordSha256: validAsset.__sha256, founderLogin: 'lucasdmoyer',
   approvedAt: '2026-08-03T10:01:00.000Z', rightsEvidenceUrl: validAsset.rightsEvidenceUrl,
+  destinationPosture: createSocialDestinationPosture({ config, pack: basePack, publicationManifest }),
   approvals: { originalOrLicensedAsset: true, copy: true, destination: true, disclosure: true }, status: 'approved', externalPostId: null
 };
 
@@ -62,7 +74,7 @@ function expectFailure(label, mutate, expectedText) {
   const publications = [];
   const candidates = [];
   mutate(model, packs, receipts, assets, publications, candidates);
-  const issues = validateSocialModel(model, packs, receipts, assets, publications, candidates);
+  const issues = validateSocialModel(model, packs, receipts, assets, publications, candidates, publicationManifest);
   if (issues.length === 0 || !issues.join('\n').toLowerCase().includes(expectedText.toLowerCase())) {
     throw new Error(`${label}: expected ${JSON.stringify(expectedText)}, received ${JSON.stringify(issues)}`);
   }
@@ -73,12 +85,12 @@ if (cleanIssues.length > 0) throw new Error(`base social model should pass: ${cl
 
 const configuredModel = copy(config);
 configurePinterest(configuredModel);
-const positiveReceiptIssues = validateSocialModel(configuredModel, [basePack], [validReceipt], [validAsset], [], [validCandidate]);
+const positiveReceiptIssues = validateSocialModel(configuredModel, [basePack], [validReceipt], [validAsset], [], [validCandidate], publicationManifest);
 if (positiveReceiptIssues.length > 0) throw new Error(`valid media and content receipts should pass: ${positiveReceiptIssues.join('; ')}`);
 
 const activeModel = copy(config);
 configurePinterest(activeModel, true);
-const plan = createPinterestPublicationPlan({ config: activeModel, packs: [basePack], approvals: [validReceipt], assets: [validAsset], candidates: [validCandidate], postId: approvedPost.id });
+const plan = createPinterestPublicationPlan({ config: activeModel, packs: [basePack], approvals: [validReceipt], assets: [validAsset], candidates: [validCandidate], publicationManifest, postId: approvedPost.id });
 if (plan.endpoint !== 'https://api.pinterest.com/v5/pins' || plan.networkCallsPlanned !== 2 || plan.request.media_source.source_type !== 'image_url') {
   throw new Error('valid Pinterest plan must use the official v5 endpoint and approved image_url asset');
 }
@@ -111,22 +123,23 @@ expectFailure('creative candidates must stay within the static image performance
 }, 'static social image must not exceed 1,000,000 bytes');
 
 try {
-  createPinterestPublicationPlan({ config: activeModel, packs: [basePack], approvals: [], assets: [validAsset], candidates: [validCandidate], postId: approvedPost.id });
+  createPinterestPublicationPlan({ config: activeModel, packs: [basePack], approvals: [], assets: [validAsset], candidates: [validCandidate], publicationManifest, postId: approvedPost.id });
   throw new Error('missing approval plan should fail');
 } catch (error) { if (!String(error.message).includes('approval is missing')) throw error; }
 
 const publication = {
-  schemaVersion: '1.0.0', publicationId: `${approvedPost.id}-publication`, approvalId: validReceipt.approvalId, postId: approvedPost.id,
+  schemaVersion: '1.1.0', publicationId: `${approvedPost.id}-publication`, approvalId: validReceipt.approvalId, postId: approvedPost.id,
   packId: basePack.packId, platform: 'pinterest', packSha256: basePack.__sha256, postSha256: socialPostSha256(approvedPost),
   mediaAssetId: validAsset.mediaAssetId, mediaAssetRecordSha256: validAsset.__sha256, mediaContentSha256: validAsset.contentSha256,
-  channelSha256: sha256Json(activeModel.channels[0]), requestSha256: plan.requestSha256, responseSha256: 'd'.repeat(64),
+  channelSha256: sha256Json(activeModel.channels[0]), destinationPostureSha256: plan.destinationPostureSha256,
+  disclosureApplied: plan.disclosureApplied, requestSha256: plan.requestSha256, responseSha256: 'd'.repeat(64),
   endpoint: plan.endpoint, httpStatus: 201, externalPostId: '987654321', externalPostUrl: 'https://www.pinterest.com/pin/987654321/',
   publishedAt: '2026-08-03T10:02:00.000Z', status: 'published'
 };
-const publishedIssues = validateSocialModel(activeModel, [basePack], [validReceipt], [validAsset], [publication], [validCandidate]);
+const publishedIssues = validateSocialModel(activeModel, [basePack], [validReceipt], [validAsset], [publication], [validCandidate], publicationManifest);
 if (publishedIssues.length > 0) throw new Error(`valid publication receipt should pass: ${publishedIssues.join('; ')}`);
 try {
-  createPinterestPublicationPlan({ config: activeModel, packs: [basePack], approvals: [validReceipt], assets: [validAsset], publications: [publication], candidates: [validCandidate], postId: approvedPost.id });
+  createPinterestPublicationPlan({ config: activeModel, packs: [basePack], approvals: [validReceipt], assets: [validAsset], publications: [publication], candidates: [validCandidate], publicationManifest, postId: approvedPost.id });
   throw new Error('duplicate publication plan should fail');
 } catch (error) { if (!String(error.message).includes('already exists')) throw error; }
 
@@ -134,4 +147,25 @@ expectFailure('publication requires a verifiable external ID', (model, _packs, r
   configurePinterest(model, true); receipts.push(copy(validReceipt)); assets.push(copy(validAsset)); candidates.push(copy(validCandidate)); const invalid = copy(publication); invalid.externalPostId = ''; publications.push(invalid);
 }, 'externalPostId');
 
-console.log(JSON.stringify({ socialNegativeGateTests: 'passed', checks: 14, staticImagePerformanceBudget: 'passed', validCreativeCandidateCheck: 'passed', validMediaReceiptCheck: 'passed', validContentReceiptCheck: 'passed', dryRunPlanCheck: 'passed', validPublicationReceiptCheck: 'passed' }, null, 2));
+const paidPublicationManifest = copy(publicationManifest);
+paidPublicationManifest.articles[0].affiliateLinkCount = 1;
+paidPublicationManifest.articles[0].affiliateLinks = [{ approvalSha256: '9'.repeat(64) }];
+const paidReceipt = copy(validReceipt);
+paidReceipt.destinationPosture = createSocialDestinationPosture({ config: activeModel, pack: basePack, publicationManifest: paidPublicationManifest });
+const paidPlan = createPinterestPublicationPlan({
+  config: activeModel,
+  packs: [basePack],
+  approvals: [paidReceipt],
+  assets: [validAsset],
+  candidates: [validCandidate],
+  publicationManifest: paidPublicationManifest,
+  postId: approvedPost.id
+});
+assert.equal(paidPlan.disclosureApplied, true);
+assert.equal(paidPlan.request.description, `${activeModel.policy.paidDestinationDisclosure}\n\n${approvedPost.copy}`);
+const stalePostureIssues = validateSocialModel(activeModel, [basePack], [validReceipt], [validAsset], [], [validCandidate], paidPublicationManifest);
+if (!stalePostureIssues.some((issue) => issue.includes('affiliate posture changed after social approval'))) {
+  throw new Error(`paid destination must invalidate a stale non-disclosure approval: ${stalePostureIssues.join('; ')}`);
+}
+
+console.log(JSON.stringify({ socialNegativeGateTests: 'passed', checks: 16, staticImagePerformanceBudget: 'passed', validCreativeCandidateCheck: 'passed', validMediaReceiptCheck: 'passed', validContentReceiptCheck: 'passed', paidDestinationDisclosurePlanCheck: 'passed', staleAffiliatePostureReapprovalCheck: 'passed', dryRunPlanCheck: 'passed', validPublicationReceiptCheck: 'passed' }, null, 2));
