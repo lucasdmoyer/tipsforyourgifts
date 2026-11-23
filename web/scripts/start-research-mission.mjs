@@ -28,7 +28,7 @@ if (!/^[A-Za-z0-9-]+(?:\[bot\])?$/.test(args.actor)) throw new Error('Actor must
 const missionId = `research-mission-${args['workflow-run-id']}-${workflowRunAttempt}`;
 const createdAt = args['created-at'] ?? new Date().toISOString();
 const mission = researchMissionSchema.parse({
-  schemaVersion: '1.0.0',
+  schemaVersion: '1.1.0',
   missionId,
   status: 'started',
   createdAt,
@@ -41,10 +41,11 @@ const mission = researchMissionSchema.parse({
   teamStages: [
     { id: 'research', role: 'research-editorial-team', authority: 'draft_only', status: 'in_progress' },
     { id: 'quality_review', role: 'independent-evidence-editor', authority: 'review_receipt_only', status: 'queued' },
+    { id: 'visual_production', role: 'visual-production-team', authority: 'original_assets_and_visual_receipt_only', status: 'queued' },
     { id: 'release_preparation', role: 'release-operator', authority: 'preview_and_pr_only', status: 'queued' },
     { id: 'growth_follow_up', role: 'growth-analyst', authority: 'aggregate_measurement_only', status: 'queued' }
   ],
-  deliverables: { researchRuns: 1, articles: 1, socialLaunchPacks: 1, independentReviewReceipts: 1 },
+  deliverables: { researchRuns: 1, articles: 1, socialLaunchPacks: 1, independentReviewReceipts: 1, approvedVisualSets: 1 },
   qualityGates: {
     minimumResearchPasses: 3, minimumSourceClasses: 5, minimumFinalists: 5, minimumEditorialScore: 75,
     minimumEvidenceConfidence: 70, minimumThoughtfulnessScore: 15,
@@ -57,6 +58,7 @@ const mission = researchMissionSchema.parse({
     verifiedSuccessfulReleaseCount: publicationPolicy.automaticPromotion.verifiedSuccessfulReleaseCount,
     minimumSuccessfulFounderReviewedReleases: publicationPolicy.automaticPromotion.minimumSuccessfulFounderReviewedReleases
   },
+  visualHandoff: null,
   completion: null
 });
 

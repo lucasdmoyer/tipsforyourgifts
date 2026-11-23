@@ -169,7 +169,7 @@ jobs:
           node-version: "24.14.0"
           cache: npm
           cache-dependency-path: web/package-lock.json
-      - name: Revalidate without an AI credential and promote only a clean pass
+      - name: Revalidate without an AI credential and route the visual handoff
         env:
           RUN_ID: ${{ needs.independent_review.outputs.run_id }}
           ARTICLE_SLUG: ${{ needs.independent_review.outputs.article_slug }}
@@ -180,11 +180,21 @@ jobs:
           npm ci --prefix web
           npm --prefix web run validate:research
           npm --prefix web run validate:editorial-safety
-          if [ "$VERDICT" = "passed" ]; then
-            npm --prefix web run review:promote -- "$RUN_ID" --receipt-path="$RECEIPT_PATH"
-            if [ -n "$MISSION_ID" ]; then
+          if [ "$VERDICT" = "passed" ] && [ -n "$MISSION_ID" ]; then
+            npm --prefix web run research:visual:assess -- --mission-id="$MISSION_ID" --run-id="$RUN_ID" --receipt-path="$RECEIPT_PATH"
+            release_route="$(sed -n 's/^release_route=//p' "$GITHUB_OUTPUT" | tail -1)"
+            if [ "$release_route" = "publication_ready" ]; then
+              npm --prefix web run review:promote -- "$RUN_ID" --receipt-path="$RECEIPT_PATH"
               npm --prefix web run research:mission:complete -- --mission-id="$MISSION_ID" --run-id="$RUN_ID"
+            elif [ "$release_route" = "visual_pending" ]; then
+              npm --prefix web run research:mission:visual-pending -- --mission-id="$MISSION_ID" --run-id="$RUN_ID" --receipt-path="$RECEIPT_PATH"
+              echo "Independent editorial review passed. The draft and mission remain unpromoted until a separate visual producer fulfills and independently reviews the request."
+            else
+              echo "Unexpected release route: $release_route" >&2
+              exit 1
             fi
+          elif [ "$VERDICT" = "passed" ]; then
+            echo "The independent receipt passed, but no trusted research mission owns this legacy bundle. Preserve the receipt without promotion."
           fi
           npm --prefix web run generate
           git add -N .
@@ -224,4 +234,4 @@ jobs:
             --base master \
             --head "codex/editorial-review-$WORKFLOW_RUN_ID" \
             --title "Independent editorial review for $RUN_ID: $VERDICT" \
-            --body "A separate evidence editor recorded the immutable $RECEIPT_PATH receipt with verdict $VERDICT. A pass promotes only the exact hash-bound bundle; a failure preserves the audit record without changing the source article. This pull request does not merge itself, activate affiliate links, publish social content, deploy Firebase, or authorize production."
+            --body "A separate evidence editor recorded the immutable $RECEIPT_PATH receipt with verdict $VERDICT. A clean pass still routes through the exact mission's visual-readiness gate: approved visuals may proceed to publication-ready source state, while pending visuals remain an unpromoted draft and enter visual production. Legacy bundles without a trusted mission remain receipt-only. A failure preserves the audit record without changing the source article. This pull request does not merge itself, activate affiliate links, publish social content, deploy Firebase, or authorize production."

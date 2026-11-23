@@ -10,22 +10,24 @@ const fixtureRoot = await fs.mkdtemp(path.join(os.tmpdir(), 'tips-review-route-'
 const missionId = 'research-mission-12345-1';
 const ideaSha256 = 'a'.repeat(64);
 const mission = {
-  schemaVersion: '1.0.0', missionId, status: 'started', createdAt: '2026-11-22T12:00:00.000Z', completedAt: null,
+  schemaVersion: '1.1.0', missionId, status: 'started', createdAt: '2026-11-22T12:00:00.000Z', completedAt: null,
   trigger: { type: 'approved_strategy_dispatch', workflow: 'research-agent.yml', workflowRunId: '12345', workflowRunAttempt: 1, actor: 'lucasdmoyer', baseSha: 'b'.repeat(40) },
   idea: { id: 'founder-idea-999', revision: 1, sha256: ideaSha256, title: 'A thoughtful safety handoff fixture', thesisType: 'recipient_friction' },
   teamStages: [
     { id: 'research', role: 'research-editorial-team', authority: 'draft_only', status: 'in_progress' },
     { id: 'quality_review', role: 'independent-evidence-editor', authority: 'review_receipt_only', status: 'queued' },
+    { id: 'visual_production', role: 'visual-production-team', authority: 'original_assets_and_visual_receipt_only', status: 'queued' },
     { id: 'release_preparation', role: 'release-operator', authority: 'preview_and_pr_only', status: 'queued' },
     { id: 'growth_follow_up', role: 'growth-analyst', authority: 'aggregate_measurement_only', status: 'queued' }
   ],
-  deliverables: { researchRuns: 1, articles: 1, socialLaunchPacks: 1, independentReviewReceipts: 1 },
+  deliverables: { researchRuns: 1, articles: 1, socialLaunchPacks: 1, independentReviewReceipts: 1, approvedVisualSets: 1 },
   qualityGates: {
     minimumResearchPasses: 3, minimumSourceClasses: 5, minimumFinalists: 5, minimumEditorialScore: 75,
     minimumEvidenceConfidence: 70, minimumThoughtfulnessScore: 15, minimumPairCoherenceScore: 80,
     independentReviewerRequired: true, affiliatePosture: 'enabled_registry_only'
   },
   publicationPolicySnapshot: { mode: 'founder_reviewed', automaticPromotionEnabled: false, verifiedSuccessfulReleaseCount: 0, minimumSuccessfulFounderReviewedReleases: 10 },
+  visualHandoff: null,
   completion: null
 };
 
@@ -68,7 +70,9 @@ const researchWorkflowRaw = await fs.readFile(path.resolve('../.github/workflows
 const researchWorkflow = YAML.parse(researchWorkflowRaw);
 const reviewSteps = researchWorkflow.jobs.quality_review.steps;
 const codexStep = reviewSteps.find((step) => step.uses === 'openai/codex-action@v1');
+const safetyStep = reviewSteps.find((step) => step.name === 'Preserve a high-risk draft for founder safety review');
 assert.equal(codexStep.if, "steps.identify.outputs.review_route == 'independent_review'");
+assert.match(safetyStep.run, /web\/visuals\/requests\/\$RUN_ID-visuals\.json/, 'founder-safety integrity hash must include the visual request');
 assert.match(researchWorkflowRaw, /Preserve a high-risk draft for founder safety review/);
 assert.match(researchWorkflowRaw, /No independent receipt was created/);
 assert.match(researchWorkflowRaw, /High-risk drafts always require the protected founder safety decision; auto-merge is disabled/);
@@ -76,6 +80,8 @@ assert.match(researchWorkflowRaw, /--workflow-name=research-agent\.yml/);
 
 const recheckWorkflowRaw = await fs.readFile(path.resolve('../.github/workflows/editorial-independent-review.yml'), 'utf8');
 assert.match(recheckWorkflowRaw, /--workflow-name=editorial-independent-review\.yml/);
+assert.match(recheckWorkflowRaw, /research:visual:assess/);
+assert.match(recheckWorkflowRaw, /research:mission:visual-pending/);
 assert.match(recheckWorkflowRaw, /research:mission:complete/);
 assert.doesNotMatch(researchWorkflowRaw, /firebase deploy|gh pr merge --admin/);
 
@@ -84,6 +90,6 @@ console.log(JSON.stringify({
   lowRiskRoute: 'independent_review',
   highRiskRoute: 'founder_safety',
   highRiskModelCallSkipped: true,
-  postApprovalMissionCompletion: true,
+  postApprovalVisualGateRequired: true,
   productionAuthorized: false
 }, null, 2));

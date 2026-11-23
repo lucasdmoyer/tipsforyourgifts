@@ -429,12 +429,13 @@ export interface Operations {
     total: number;
     active: number;
     completed: number;
+    visualPending: number;
     founderReviewRequired: number;
     automaticMergeEligible: number;
     queue: Array<{
       missionId: string;
       recordSha256: string;
-      status: 'started' | 'completed';
+      status: 'started' | 'visual_pending' | 'completed';
       ideaId: string;
       ideaTitle: string;
       ideaRevision: number;
@@ -442,10 +443,10 @@ export interface Operations {
       createdAt: string;
       completedAt: string | null;
       workflowRunId: string;
-      activeStage: 'research' | 'quality_review' | 'release_preparation' | 'growth_follow_up';
+      activeStage: 'research' | 'quality_review' | 'visual_production' | 'release_preparation' | 'growth_follow_up';
       runId: string | null;
       articleSlug: string | null;
-      publicationReadiness: 'research_in_progress' | 'founder_review_required' | 'automatic_merge_eligible';
+      publicationReadiness: 'research_in_progress' | 'visual_pending' | 'founder_review_required' | 'automatic_merge_eligible';
       nextGate: string;
     }>;
   };

@@ -426,17 +426,18 @@ export const STUDIO_DATA = new InjectionToken<StudioData>('STUDIO_DATA');
     </div></section>
     <section class="shell compact-section">
       <div class="section-heading">
-        <div><p class="eyebrow">Research mission control</p><h2>One founder decision. Four accountable roles.</h2></div>
-        <p>The trusted envelope binds the approved idea, base commit, thresholds, team authority, expected deliverables, and publication policy before Codex receives a key. Completion binds the exact run, article, social pack, and independent QA receipt by SHA-256.</p>
+        <div><p class="eyebrow">Research mission control</p><h2>One founder decision. Five accountable roles.</h2></div>
+        <p>The trusted envelope binds the approved idea, base commit, thresholds, team authority, expected deliverables, and publication policy before Codex receives a key. Editorial approval can hand a draft to visual production without making it public; completion still binds the exact run, article, social pack, and independent QA receipt by SHA-256.</p>
       </div>
       <div class="principle-grid">
         <article class="principle-card"><span>01</span><h3>Research editorial team</h3><p>Deep public research, claim ledger, thoughtful finalists, article draft, and social launch pack. Draft authority only.</p></article>
         <article class="principle-card"><span>02</span><h3>Independent evidence editor</h3><p>Challenges every claim, compatibility assumption, drawback, affiliate posture, and pair. Receipt authority only.</p></article>
-        <article class="principle-card"><span>03</span><h3>Release operator</h3><p>Re-runs deterministic gates, opens the exact mission branch and pull request, and prepares Firebase preview evidence.</p></article>
-        <article class="principle-card"><span>04</span><h3>Growth analyst</h3><p>Waits for complete aggregate reporting windows, then measures traffic, engagement, merchant clicks, conversions, and revenue.</p></article>
+        <article class="principle-card"><span>03</span><h3>Visual production team</h3><p>Turns the hash-bound brief into original Gift-Thread art, responsive files, and a separately reviewed registry mapping. No editorial promotion authority.</p></article>
+        <article class="principle-card"><span>04</span><h3>Release operator</h3><p>Re-runs deterministic gates, opens the exact mission branch and pull request, and prepares Firebase preview evidence.</p></article>
+        <article class="principle-card"><span>05</span><h3>Growth analyst</h3><p>Waits for complete aggregate reporting windows, then measures traffic, engagement, merchant clicks, conversions, and revenue.</p></article>
       </div>
       <div class="grid two mission-summary">
-        <div class="panel"><p class="eyebrow">Mission receipts</p><h2>{{ content.operations.researchMissions.completed }} completed · {{ content.operations.researchMissions.active }} active</h2><p>{{ content.operations.researchMissions.founderReviewRequired }} await founder release review; {{ content.operations.researchMissions.automaticMergeEligible }} qualify for the separately approved automatic-merge policy.</p></div>
+        <div class="panel"><p class="eyebrow">Mission receipts</p><h2>{{ content.operations.researchMissions.completed }} completed · {{ content.operations.researchMissions.active }} active</h2><p>{{ content.operations.researchMissions.visualPending }} await visual production; {{ content.operations.researchMissions.founderReviewRequired }} await founder release review; {{ content.operations.researchMissions.automaticMergeEligible }} qualify for the separately approved automatic-merge policy.</p></div>
         <div class="panel"><p class="eyebrow">Completion boundary</p><h2>Research done is not production live.</h2><p>A completed mission hands one validated article to release preparation. Production is proven only by the exact deployment receipt and post-release checks.</p></div>
       </div>
       @if (content.operations.researchMissions.queue.length > 0) {
@@ -453,7 +454,7 @@ export const STUDIO_DATA = new InjectionToken<StudioData>('STUDIO_DATA');
           }
         </div>
       } @else {
-        <div class="panel empty-mission"><p class="eyebrow">Ready for first workflow receipt</p><h2>No automated mission has completed yet.</h2><p>The four existing validated guides predate this mission ledger. The next founder-started run will create the first durable envelope and completion receipt.</p></div>
+        <div class="panel empty-mission"><p class="eyebrow">Ready for first workflow receipt</p><h2>No automated mission has completed yet.</h2><p>The existing validated guides predate this mission ledger. The next founder-started run will create the first durable envelope and completion receipt.</p></div>
       }
     </section>
     <section class="shell compact-section">

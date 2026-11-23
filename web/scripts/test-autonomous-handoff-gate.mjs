@@ -58,14 +58,26 @@ assert.equal(writerJob.permissions?.['pull-requests'], 'write', 'only the detach
 assert.equal(researchJob.steps.filter((step) => step.uses === 'openai/codex-action@v1').length, 1, 'research drafting needs exactly one Codex step');
 assert.equal(qualityJob.steps.filter((step) => step.uses === 'openai/codex-action@v1').length, 1, 'independent QA needs exactly one separate Codex step');
 assert.equal(writerJob.steps.filter((step) => step.uses === 'openai/codex-action@v1').length, 0, 'the GitHub writer must never receive a model step');
+assert.match(research.raw, /web\/visuals\/requests\/<run-id>-visuals\.json/, 'research drafting must create a versioned visual-production request when approved art is absent');
+assert.match(research.raw, /generation\.attempted false/, 'research drafting must not generate or claim visual output');
+assert.doesNotMatch(research.raw, /web\/visuals\/article-visuals\.json\|web\/public\/blog-images/, 'draft and review allowlists must not permit registry or public-image mutation');
+
+const visualAssessmentStep = findStep(qualityJob, 'Prove reviewer isolation and route the visual handoff');
+assert.ok(visualAssessmentStep, 'independent QA must route the visual handoff');
+assert.match(visualAssessmentStep.run, /research:visual:assess/, 'visual readiness must be classified by the deterministic contract');
+assert.match(visualAssessmentStep.run, /release_route" = "publication_ready"[\s\S]*review:promote/, 'only a visually ready bundle may be promoted');
+assert.match(visualAssessmentStep.run, /release_route" = "visual_pending"[\s\S]*remain unpromoted/, 'visual-pending drafts must remain unpromoted');
+assert.match(visualAssessmentStep.run, /research:mission:visual-pending/, 'visual-pending work must become durable mission state');
 
 const openPrStep = findStep(writerJob, 'Open founder-review pull request');
 const autoMergeStep = findStep(writerJob, 'Enable check-gated auto-merge only under the proven policy');
 assert.ok(openPrStep && autoMergeStep, 'research handoff must open a review PR and evaluate the proven policy');
 assert.match(openPrStep.run, /--base master/, 'research output must return through a master-based review pull request');
 assert.match(openPrStep.run, /gh pr create/, 'detached writer must create the review pull request');
+assert.match(openPrStep.run, /RELEASE_ROUTE" = "visual_pending"[\s\S]*Visual production handoff/, 'visual-pending work must open an explicit queue handoff PR');
 assert.match(autoMergeStep.run, /publication-policy\.json/, 'auto-merge decision must read the founder-controlled publication policy');
 assert.match(autoMergeStep.run, /REVIEW_ROUTE" = "founder_safety"[\s\S]*auto-merge is disabled/, 'high-risk research must never request auto-merge');
+assert.match(autoMergeStep.run, /RELEASE_ROUTE" = "visual_pending"[\s\S]*cannot auto-merge/, 'visual-pending research must never request auto-merge');
 assert.match(autoMergeStep.run, /gh pr merge --auto --squash "\$PR_URL"/, 'only the proven policy may request check-gated squash auto-merge');
 
 const automaticPush = automatic.parsed.on?.push;
@@ -90,6 +102,7 @@ console.log(JSON.stringify({
   handoffs: [
     'strategy_approval_to_research_dispatch',
     'research_to_independent_qa',
+    'editorial_qa_to_visual_production_queue',
     'qa_to_detached_pr_writer',
     'proven_policy_to_check_gated_merge',
     'master_to_exact_preview_to_firebase_release'

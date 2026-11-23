@@ -10,7 +10,7 @@ const execFileAsync = promisify(execFile);
 const scriptRoot = process.cwd();
 const fixtureRoot = await fs.mkdtemp(path.join(os.tmpdir(), 'tfyg-research-mission-'));
 try {
-  for (const directory of ['src/data', 'config', 'research/runs', 'research/reviews', 'social/drafts', 'src/data/blog']) await fs.mkdir(path.join(fixtureRoot, directory), { recursive: true });
+  for (const directory of ['src/data', 'config', 'research/runs', 'research/reviews', 'social/drafts', 'src/data/blog', 'visuals/requests']) await fs.mkdir(path.join(fixtureRoot, directory), { recursive: true });
   const idea = {
     id: 'founder-idea-005', revision: 1, ideaType: 'content', thesisType: 'ritual_pairing', founderDisposition: 'approved_for_research',
     title: 'Field guide and observation tool for a curious friend'
@@ -19,6 +19,7 @@ try {
   const policy = { mode: 'founder_reviewed', automaticPromotion: { enabled: false, verifiedSuccessfulReleaseCount: 0, minimumSuccessfulFounderReviewedReleases: 10 } };
   await fs.writeFile(path.join(fixtureRoot, 'src/data/strategy.json'), `${JSON.stringify(strategy, null, 2)}\n`);
   await fs.writeFile(path.join(fixtureRoot, 'config/publication-policy.json'), `${JSON.stringify(policy, null, 2)}\n`);
+  await fs.writeFile(path.join(fixtureRoot, 'visuals/article-visuals.json'), `${JSON.stringify({ articles: [{ slug: 'field-guide-observation-tool' }] }, null, 2)}\n`);
 
   await execFileAsync(process.execPath, [path.join(scriptRoot, 'scripts/start-research-mission.mjs'), '--idea-id=founder-idea-005', `--base-sha=${'a'.repeat(40)}`, '--workflow-run-id=12345', '--workflow-run-attempt=1', '--actor=github-actions[bot]', '--created-at=2026-08-03T10:00:00.000Z'], { cwd: fixtureRoot });
   const missionId = 'research-mission-12345-1';
