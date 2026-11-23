@@ -80,7 +80,7 @@ jobs:
           git add -N .
           while IFS= read -r changed_path; do
             case "$changed_path" in
-              "$APPROVAL_PATH"|web/src/data/operations.json|web/src/app/generated/content.generated.ts|web/public/publication-manifest.json|web/public/sitemap.xml) ;;
+              "$APPROVAL_PATH"|web/src/data/operations.json|web/src/app/generated/content.generated.ts|web/src/app/generated/studio.generated.ts|web/public/publication-manifest.json|web/public/sitemap.xml) ;;
               *) echo "Founder safety decision changed forbidden path: $changed_path" >&2; exit 1 ;;
             esac
           done < <(git diff --name-only HEAD)
@@ -97,7 +97,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git switch -c "codex/editorial-safety-$WORKFLOW_RUN_ID"
-          git add "$APPROVAL_PATH" web/src/data/operations.json web/src/app/generated/content.generated.ts web/public/publication-manifest.json web/public/sitemap.xml
+          git add "$APPROVAL_PATH" web/src/data/operations.json web/src/app/generated/content.generated.ts web/src/app/generated/studio.generated.ts web/public/publication-manifest.json web/public/sitemap.xml
           git commit -m "Record founder safety decision for $RUN_ID"
           git push origin "codex/editorial-safety-$WORKFLOW_RUN_ID"
       - name: Open the decision pull request without merging or deploying

@@ -10,6 +10,21 @@ const manualWorkflow = await fs.readFile(path.join(repositoryRoot, '.github', 'w
 const automaticWorkflow = await fs.readFile(path.join(repositoryRoot, '.github', 'workflows', 'firebase-auto-production.yml'), 'utf8');
 const previewWorkflow = await fs.readFile(path.join(repositoryRoot, '.github', 'workflows', 'firebase-preview-deploy.yml'), 'utf8');
 const previewCallerWorkflow = await fs.readFile(path.join(repositoryRoot, '.github', 'workflows', 'firebase-preview.yml'), 'utf8');
+const workflowDirectory = path.join(repositoryRoot, '.github', 'workflows');
+const workflowNames = (await fs.readdir(workflowDirectory)).filter((name) => name.endsWith('.yml')).sort();
+let generatedOutputReferenceLines = 0;
+for (const workflowName of workflowNames) {
+  const source = await fs.readFile(path.join(workflowDirectory, workflowName), 'utf8');
+  for (const [lineIndex, line] of source.split('\n').entries()) {
+    if (!line.includes('web/src/app/generated/content.generated.ts')) continue;
+    generatedOutputReferenceLines += 1;
+    assert.ok(
+      line.includes('web/src/app/generated/studio.generated.ts'),
+      `${workflowName}:${lineIndex + 1} must stage or allow both generated application outputs`,
+    );
+  }
+}
+assert.ok(generatedOutputReferenceLines > 0, 'workflow generated-output parity scan must inspect at least one reference');
 const [previewBuildJob, previewDeployJob = ''] = previewWorkflow.split('\n  deploy:\n');
 const previewAuthIndex = previewDeployJob.indexOf('id: google_auth');
 const previewAfterAuth = previewAuthIndex >= 0 ? previewDeployJob.slice(previewAuthIndex) : '';
@@ -107,4 +122,4 @@ assert.doesNotMatch(previewCallerWorkflow, /github-pr-20|refs\/pull\/20\/merge|t
 assert.doesNotMatch(previewCallerWorkflow, /google-github-actions\/auth|hosting:channel:deploy/, 'preview caller must delegate all authenticated behavior to the master-pinned reusable workflow');
 assert.match(previewCallerWorkflow, /\n  preview:\n[\s\S]*name: preview[\s\S]*needs:[\s\S]*- deploy_preview[\s\S]*permissions: \{\}[\s\S]*test "\$DEPLOY_PREVIEW_RESULT" = "success"/, 'preview caller must preserve the required check name and fail it when delegated execution fails');
 
-console.log(JSON.stringify({ publicationPolicyNegativeGateTests: 'passed', negativeChecks: 8, workflowReleaseChecks: 68 }, null, 2));
+console.log(JSON.stringify({ publicationPolicyNegativeGateTests: 'passed', negativeChecks: 8, workflowReleaseChecks: 68 + generatedOutputReferenceLines, generatedOutputReferenceLines }, null, 2));

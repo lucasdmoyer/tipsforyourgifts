@@ -68,7 +68,7 @@ jobs:
           git add -N .
           while IFS= read -r changed_path; do
             case "$changed_path" in
-              "$SOURCE_ARTIFACT_PATH"|"$BATCH_MANIFEST_PATH"|web/affiliate/candidates/*|web/src/data/operations.json|web/src/app/generated/content.generated.ts|web/public/publication-manifest.json|web/public/sitemap.xml) ;;
+              "$SOURCE_ARTIFACT_PATH"|"$BATCH_MANIFEST_PATH"|web/affiliate/candidates/*|web/src/data/operations.json|web/src/app/generated/content.generated.ts|web/src/app/generated/studio.generated.ts|web/public/publication-manifest.json|web/public/sitemap.xml) ;;
               *) echo "Affiliate batch changed forbidden path: $changed_path" >&2; exit 1 ;;
             esac
           done < <(git diff --name-only HEAD)
@@ -87,7 +87,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git switch -c "codex/affiliate-link-batch-$RUN_ID"
-          git add "$SOURCE_ARTIFACT_PATH" "$BATCH_MANIFEST_PATH" web/affiliate/candidates web/src/data/operations.json web/src/app/generated/content.generated.ts web/public/publication-manifest.json web/public/sitemap.xml
+          git add "$SOURCE_ARTIFACT_PATH" "$BATCH_MANIFEST_PATH" web/affiliate/candidates web/src/data/operations.json web/src/app/generated/content.generated.ts web/src/app/generated/studio.generated.ts web/public/publication-manifest.json web/public/sitemap.xml
           git commit -m "Record affiliate partner batch $EXPORT_ID"
           git push origin "codex/affiliate-link-batch-$RUN_ID"
       - name: Open independent-review pull request

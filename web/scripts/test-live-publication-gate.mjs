@@ -20,6 +20,8 @@ assert.match(liveStateWorkflow, /find "\$RECEIPT_DOWNLOAD_DIR"/, 'receipt discov
 assert.match(liveStateWorkflow, /publication:live:record/, 'workflow must use the strict recorder');
 assert.match(liveStateWorkflow, /receipt_path="\$\(realpath "\$\{receipt_paths\[0\]\}"\)"/, 'workflow must pass an absolute receipt path across the npm prefix boundary');
 assert.match(liveStateWorkflow, /--receipt="\$receipt_path"/, 'strict recorder must receive the absolute receipt path');
+assert.match(liveStateWorkflow, /web\/src\/app\/generated\/content\.generated\.ts\|web\/src\/app\/generated\/studio\.generated\.ts/, 'live-state scope must allow both generated application outputs');
+assert.match(liveStateWorkflow, /git add[^\n]*web\/src\/app\/generated\/content\.generated\.ts web\/src\/app\/generated\/studio\.generated\.ts/, 'live-state commit must stage both generated application outputs');
 assert.match(liveStateWorkflow, /gh pr merge "\$pr_url" --auto --squash/, 'receipt-only PR must remain check-gated');
 const releaseSha = 'a'.repeat(40);
 const receipt = {
@@ -66,4 +68,4 @@ assert.deepEqual(await fs.readFile(path.join(fixtureRoot, summary.receiptPath)),
 const duplicate = await execFileAsync(process.execPath, [path.join(scriptRoot, 'record-live-publication.mjs'), '--receipt=publication-receipt.json'], { cwd: fixtureRoot });
 assert.match(duplicate.stdout, /content_set_already_recorded/);
 
-console.log(JSON.stringify({ livePublicationGateTests: 'passed', negativeChecks: 6, workflowSafetyChecks: 11, recorderIntegration: 'passed', duplicateContentSetNoOp: 'passed' }, null, 2));
+console.log(JSON.stringify({ livePublicationGateTests: 'passed', negativeChecks: 6, workflowSafetyChecks: 13, recorderIntegration: 'passed', duplicateContentSetNoOp: 'passed' }, null, 2));
