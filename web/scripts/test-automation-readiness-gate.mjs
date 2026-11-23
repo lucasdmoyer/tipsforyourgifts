@@ -30,7 +30,7 @@ assert.equal(base.teams.find((team) => team.id === 'production-release').status,
 assert.equal(base.teams.find((team) => team.id === 'automatic-publication').status, 'blocked_external_configuration');
 assert.match(base.teams.find((team) => team.id === 'automatic-publication').evidence, /2 of 10/);
 assert.match(base.teams.find((team) => team.id === 'automatic-publication').evidence, /live GitHub deployment recount/);
-assert.equal(base.releaseCandidate.sha, evidence.releaseCandidate.sha);
+assert.equal(base.latestVerifiedPreview.sha, evidence.latestVerifiedPreview.sha);
 
 const clone = (value) => structuredClone(value);
 function expectEvidenceFailure(label, mutate) {
@@ -41,12 +41,12 @@ function expectEvidenceFailure(label, mutate) {
 
 expectEvidenceFailure('gate IDs cannot duplicate', (candidate) => { candidate.externalGates[1].id = candidate.externalGates[0].id; });
 expectEvidenceFailure('evidence links must use HTTPS', (candidate) => { candidate.externalGates[0].evidenceUrl = 'http://example.com'; });
-expectEvidenceFailure('preview must name exact SHA prefix', (candidate) => { candidate.releaseCandidate.previewUrl = 'https://tipsforyourgifts--release-wrong.web.app/'; });
-expectEvidenceFailure('preview must use the owned Firebase site', (candidate) => { candidate.releaseCandidate.previewUrl = `https://example--${candidate.releaseCandidate.sha.slice(0, 7)}.web.app/`; });
-expectEvidenceFailure('release PR and OIDC ref cannot drift apart', (candidate) => { candidate.releaseCandidate.pullRequestUrl = 'https://github.com/lucasdmoyer/tipsforyourgifts/pull/999'; });
-expectEvidenceFailure('review receipt must belong to the exact release PR', (candidate) => { candidate.releaseCandidate.reviewUrl = 'https://github.com/lucasdmoyer/tipsforyourgifts/pull/83#issuecomment-1'; });
+expectEvidenceFailure('preview must name exact SHA prefix', (candidate) => { candidate.latestVerifiedPreview.previewUrl = 'https://tipsforyourgifts--release-wrong.web.app/'; });
+expectEvidenceFailure('preview must use the owned Firebase site', (candidate) => { candidate.latestVerifiedPreview.previewUrl = `https://example--${candidate.latestVerifiedPreview.sha.slice(0, 7)}.web.app/`; });
+expectEvidenceFailure('verified preview must name an owned pull request', (candidate) => { candidate.latestVerifiedPreview.pullRequestUrl = 'https://example.com/lucasdmoyer/tipsforyourgifts/pull/999'; });
+expectEvidenceFailure('review receipt must belong to the exact preview PR', (candidate) => { candidate.latestVerifiedPreview.reviewUrl = 'https://github.com/lucasdmoyer/tipsforyourgifts/pull/83#issuecomment-1'; });
 expectEvidenceFailure('unexpected secret values are rejected', (candidate) => { candidate.externalGates[0].secretValue = 'not-allowed'; });
-expectEvidenceFailure('release SHA must be exact', (candidate) => { candidate.releaseCandidate.sha = '011b110'; });
+expectEvidenceFailure('verified preview SHA must be exact', (candidate) => { candidate.latestVerifiedPreview.sha = '011b110'; });
 
 const falsifiedCounts = clone(base);
 falsifiedCounts.counts.ready += 1;

@@ -171,7 +171,7 @@ export type AutomationTeamStatus =
   | 'founder_approval_required';
 
 export interface AutomationReadiness {
-  schemaVersion: '1.1.0';
+  schemaVersion: '1.2.0';
   observedAt: string;
   sourceMode: 'versioned_snapshot_not_live_poll';
   posture: 'founder_action_required';
@@ -196,7 +196,7 @@ export interface AutomationReadiness {
     nextAction: string;
     authorityBoundary: string;
   }>;
-  releaseCandidate: {
+  latestVerifiedPreview: {
     status: 'exact_preview_verified';
     sha: string;
     pullRequestUrl: string;

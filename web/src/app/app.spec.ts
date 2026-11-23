@@ -447,8 +447,10 @@ describe('App', () => {
       expect(element.querySelector(`a[href="${gate.evidenceUrl}"]`)).not.toBeNull();
       expect(element.querySelector(`a[href="${gate.diagnosticUrl}"]`)).not.toBeNull();
     }
-    expect(element.textContent).toContain(readiness.releaseCandidate.sha.slice(0, 7));
-    expect(element.querySelector(`a[href="${readiness.releaseCandidate.previewUrl}"]`)).not.toBeNull();
+    expect(element.textContent).toContain('Latest verified preview');
+    expect(element.textContent).toContain('It does not approve this build or any later commit.');
+    expect(element.textContent).toContain(readiness.latestVerifiedPreview.sha.slice(0, 7));
+    expect(element.querySelector(`a[href="${readiness.latestVerifiedPreview.previewUrl}"]`)).not.toBeNull();
     expect(element.textContent).not.toContain('gho_');
     expect(element.textContent).not.toMatch(/\bsk-[A-Za-z0-9_-]{20,}\b/);
   });
