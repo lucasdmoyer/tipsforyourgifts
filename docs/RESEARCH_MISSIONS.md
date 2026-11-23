@@ -1,5 +1,13 @@
 # Research mission operating model
 
+## Founder-directed opportunity discovery
+
+Lucas does not need to write the research brief. The Executive Studio shortcut asks for only a direction, a recipient or audience, and one observation or hunch; optional boundaries can narrow budget, timing, category, or risk. The browser creates a reviewable owner-authored GitHub issue whose title begins `[Scout]`.
+
+The opportunity workflow re-reads that issue through GitHub's API, requires `author_association: OWNER`, rejects credential-like text, parses only the named direction sections, and binds their exact body digest into a durable mission envelope before any model credential is available. The direction is a hypothesis, not evidence. The scout must prove or reject it through qualifying public online and social/community research, and a separate opportunity editor must review the resulting report. Insufficient evidence produces no strategy proposal.
+
+One founder direction may create at most one proposed strategy idea. It cannot approve article research, create or activate affiliate links, publish social content, deploy Firebase, change accounts, create credentials, or spend. The workflow also respects the founder proposal-capacity limit before a model call. Until the separately reviewed OpenAI budget, credential, and policy gates are active, submitting the issue stops before model execution.
+
 ## Founder command surface
 
 Lucas chooses and approves the thesis. The system resolves the exact approved idea revision and digest before an AI credential is available. The durable receipt calls this an `approved_strategy_dispatch`: the approval merge is the authority, while the recorded actor may be the automation that performs the dispatch or Lucas during manual recovery.
