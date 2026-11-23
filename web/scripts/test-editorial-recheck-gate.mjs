@@ -133,6 +133,11 @@ assert.match(workflowRaw, /web\/research\/safety-approvals\/\*\.json/);
 assert.match(workflowRaw, /openai\/codex-action@v1/);
 assert.match(workflowRaw, /editorial-review-result\.json/);
 assert.match(workflowRaw, /git diff --name-only HEAD/);
+assert.match(workflowRaw, /research:visual:assess/);
+assert.match(workflowRaw, /--receipt-path="\$RECEIPT_PATH"/);
+assert.match(workflowRaw, /release_route" = "publication_ready"[\s\S]*review:promote/);
+assert.match(workflowRaw, /release_route" = "visual_pending"[\s\S]*research:mission:visual-pending/);
+assert.match(workflowRaw, /no trusted research mission owns this legacy bundle/);
 assert.match(workflowRaw, /review:promote/);
 assert.match(workflowRaw, /npm run validate/);
 assert.match(workflowRaw, /npm run build/);
@@ -145,6 +150,6 @@ console.log(JSON.stringify({
   immutableReceiptRevisions: 2,
   failedReceiptPreserved: true,
   exactPassingReceiptPromoted: true,
-  workflowChecks: 12,
+  workflowChecks: 17,
   productionAuthorized: false
 }, null, 2));

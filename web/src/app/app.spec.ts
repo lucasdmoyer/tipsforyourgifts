@@ -570,8 +570,9 @@ describe('App', () => {
     fixture.detectChanges();
     const element = fixture.nativeElement as HTMLElement;
     expect(element.textContent).toContain('Research mission control');
-    expect(element.textContent).toContain('One founder decision. Four accountable roles.');
+    expect(element.textContent).toContain('One founder decision. Five accountable roles.');
     expect(element.textContent).toContain('Research editorial team');
+    expect(element.textContent).toContain('Visual production team');
     expect(element.textContent).toContain('Independent evidence editor');
     expect(element.textContent).toContain('Release operator');
     expect(element.textContent).toContain('Growth analyst');

@@ -3,10 +3,12 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import process from 'node:process';
 import matter from './lib/front-matter.mjs';
+import { visualRequestSchema } from './lib/visual-request-contract.mjs';
 
 const root = process.cwd();
 const visualRegistryPath = path.join(root, 'visuals', 'article-visuals.json');
 const independentReviewPath = path.join(root, 'visuals', 'reviews', 'gift-thread-v1.qa.json');
+const visualRequestDir = path.join(root, 'visuals', 'requests');
 const blogDir = path.join(root, 'src', 'data', 'blog');
 const visualRegistrySource = await fs.readFile(visualRegistryPath);
 const registry = JSON.parse(visualRegistrySource.toString('utf8'));
@@ -93,6 +95,22 @@ for (const fileName of articleFiles) {
   articles.set(slug, { status: parsed.data.status, products: parsed.data.products ?? [], pairs: parsed.data.pairs ?? [] });
 }
 
+const pendingVisualArticles = new Set();
+let visualRequestNames = [];
+try {
+  visualRequestNames = (await fs.readdir(visualRequestDir)).filter((name) => name.endsWith('.json')).sort();
+} catch (error) {
+  if (error.code !== 'ENOENT') throw error;
+}
+for (const name of visualRequestNames) {
+  const parsed = visualRequestSchema.safeParse(JSON.parse(await fs.readFile(path.join(visualRequestDir, name), 'utf8')));
+  if (!parsed.success) {
+    errors.push(`${name}: pending visual request is invalid; run validate:visual-requests for details`);
+    continue;
+  }
+  pendingVisualArticles.add(parsed.data.articleSlug);
+}
+
 const assets = new Map();
 for (const asset of registry.assets ?? []) {
   expect(typeof asset.id === 'string' && /^[a-z0-9-]+$/.test(asset.id), `Invalid visual asset id: ${asset.id}`);
@@ -147,8 +165,12 @@ for (const entry of registry.articles ?? []) {
   }
 }
 
-for (const slug of articles.keys()) expect(visualArticles.has(slug), `Article has no visual mapping: ${slug}`);
+for (const [slug, article] of articles) {
+  if (article.status === 'publication_ready') expect(visualArticles.has(slug), `Publication-ready article has no approved visual mapping: ${slug}`);
+  else expect(visualArticles.has(slug) || pendingVisualArticles.has(slug), `Draft article has neither an approved visual mapping nor a pending visual request: ${slug}`);
+}
 for (const slug of visualArticles.keys()) expect(articles.has(slug), `Visual mapping has no article: ${slug}`);
+for (const slug of pendingVisualArticles) expect(!visualArticles.has(slug), `Pending visual request cannot coexist with an approved visual mapping: ${slug}`);
 for (const assetId of draftAssetIds) expect(!publicAssetIds.has(assetId), `${assetId}: one visual cannot be both draft-only and public`);
 
 for (const asset of assets.values()) {
@@ -226,12 +248,13 @@ expect(mobilePublicWebps.length === publicAssetIds.size, `Deployable mobile resp
 expect(responsivePublicWebps.length === publicAssetIds.size, `Deployable responsive WebP count ${responsivePublicWebps.length} must match ${publicAssetIds.size} public registry assets`);
 expect(desktopPublicWebps.length === publicAssetIds.size, `Deployable desktop responsive WebP count ${desktopPublicWebps.length} must match ${publicAssetIds.size} public registry assets`);
 
-const productCount = [...articles.values()].reduce((sum, article) => sum + article.products.length, 0);
-const pairCount = [...articles.values()].reduce((sum, article) => sum + article.pairs.length, 0);
+const mappedArticles = [...visualArticles.keys()].map((slug) => articles.get(slug)).filter(Boolean);
+const productCount = mappedArticles.reduce((sum, article) => sum + article.products.length, 0);
+const pairCount = mappedArticles.reduce((sum, article) => sum + article.pairs.length, 0);
 expect(independentReview.scope?.sourceAssetsReviewed === assets.size, 'Independent visual review source asset count is stale');
 expect(independentReview.scope?.publicAssetsReviewed === publicAssetIds.size, 'Independent visual review public asset count is stale');
 expect(independentReview.scope?.draftOnlyAssetsReviewed === draftAssetIds.size, 'Independent visual review draft-only asset count is stale');
-expect(independentReview.scope?.articleMappingsReviewed === articles.size, 'Independent visual review article mapping count is stale');
+expect(independentReview.scope?.articleMappingsReviewed === visualArticles.size, 'Independent visual review article mapping count is stale');
 expect(independentReview.scope?.productMappingsReviewed === productCount, 'Independent visual review product mapping count is stale');
 expect(independentReview.scope?.pairMappingsReviewed === pairCount, 'Independent visual review pair mapping count is stale');
 
@@ -241,4 +264,4 @@ if (errors.length > 0) {
   process.exit(1);
 }
 
-console.log(`Validated ${assets.size} original visuals (${publicAssetIds.size} public with 480px, 768px, and 1200px responsive derivatives, ${draftAssetIds.size} draft-only) across ${articles.size} articles, ${productCount} products, and ${pairCount} pairs`);
+console.log(`Validated ${assets.size} original visuals (${publicAssetIds.size} public with 480px, 768px, and 1200px responsive derivatives, ${draftAssetIds.size} draft-only) across ${visualArticles.size} mapped articles, ${pendingVisualArticles.size} pending visual requests, ${productCount} products, and ${pairCount} pairs`);

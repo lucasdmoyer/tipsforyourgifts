@@ -20,6 +20,7 @@ import { summarizeDurableFounderReviewedReleaseReceipts } from './lib/publicatio
 const root = process.cwd();
 const runsDir = path.join(root, 'research', 'runs');
 const missionsDir = path.join(root, 'research', 'missions');
+const visualRequestsDir = path.join(root, 'visuals', 'requests');
 const opportunityMissionsDir = path.join(root, 'research', 'opportunity-missions');
 const opportunityReportsDir = path.join(root, 'research', 'opportunities');
 const opportunityReviewsDir = path.join(root, 'research', 'opportunity-reviews');
@@ -80,6 +81,7 @@ const socialAssets = await loadHashedJsonRecords(socialAssetDir);
 const socialPublications = await loadHashedJsonRecords(socialPublicationDir);
 const socialCandidates = await loadHashedJsonRecords(socialCandidateDir);
 const researchMissions = await loadHashedJsonRecords(missionsDir);
+const visualRequests = await loadHashedJsonRecords(visualRequestsDir);
 const opportunityMissions = await loadHashedJsonRecords(opportunityMissionsDir);
 const opportunityReports = await loadHashedJsonRecords(opportunityReportsDir);
 const opportunityReviews = await loadHashedJsonRecords(opportunityReviewsDir);
@@ -281,17 +283,21 @@ const pairingIdeas = strategy.ideas.filter((idea) => ['story_pairing', 'ritual_p
 const recipientFrictionIdeas = strategy.ideas.filter((idea) => idea.thesisType === 'recipient_friction').length;
 const latestMissionByIdea = new Map();
 for (const mission of [...researchMissions].sort((left, right) => left.createdAt.localeCompare(right.createdAt))) latestMissionByIdea.set(mission.idea.id, mission);
-const activeResearchMissions = researchMissions.filter((mission) => mission.status === 'started').length;
+const runById = new Map(runs.map((run) => [run.runId, run]));
+const visualRequestByRun = new Map(visualRequests.map((request) => [request.runId, request]));
+const activeResearchMissions = researchMissions.filter((mission) => ['started', 'visual_pending'].includes(mission.status)).length;
 const completedResearchMissions = researchMissions.filter((mission) => mission.status === 'completed').length;
 const ideaStages = strategy.ideas.map((idea) => {
   const ideaRuns = runs.filter((run) => run.ideaId === idea.id);
   const latestRun = [...ideaRuns].sort((left, right) => String(right.startedAt).localeCompare(String(left.startedAt)))[0];
   const latestMission = latestMissionByIdea.get(idea.id);
   const article = latestRun ? articles.find((entry) => entry.researchRun === latestRun.runId) : undefined;
+  const visualRequest = latestRun ? visualRequestByRun.get(latestRun.runId) : undefined;
   if (idea.ideaType === 'growth' && socialDrafts > 0 && socialApproved === 0) {
     return { ideaId: idea.id, stage: 'blocked_on_account', nextGate: 'Approve the owned social account, original asset rights, cadence, and official API access.' };
   }
-  if (latestMission?.status === 'started') {
+  if (['started', 'visual_pending'].includes(latestMission?.status)) {
+    if (visualRequest) return { ideaId: idea.id, stage: 'visual_production', nextGate: visualRequest.nextGate };
     return { ideaId: idea.id, stage: 'research_mission_active', nextGate: 'Let the isolated research and independent QA jobs finish; the mission receipt will expose exact artifact hashes and release readiness.' };
   }
   if (latestRun?.status === 'validated' && article?.status === 'publication_ready') {
@@ -430,25 +436,32 @@ const operations = {
     total: researchMissions.length,
     active: activeResearchMissions,
     completed: completedResearchMissions,
+    visualPending: visualRequests.length,
     founderReviewRequired: researchMissions.filter((mission) => mission.completion?.publicationReadiness === 'founder_review_required').length,
     automaticMergeEligible: researchMissions.filter((mission) => mission.completion?.publicationReadiness === 'automatic_merge_eligible').length,
-    queue: [...researchMissions].sort((left, right) => right.createdAt.localeCompare(left.createdAt)).map((mission) => ({
-      missionId: mission.missionId,
-      recordSha256: mission.sha256,
-      status: mission.status,
-      ideaId: mission.idea.id,
-      ideaTitle: mission.idea.title,
-      ideaRevision: mission.idea.revision,
-      ideaSha256: mission.idea.sha256,
-      createdAt: mission.createdAt,
-      completedAt: mission.completedAt,
-      workflowRunId: mission.trigger.workflowRunId,
-      activeStage: mission.teamStages.find((stage) => ['in_progress', 'ready'].includes(stage.status))?.id ?? 'growth_follow_up',
-      runId: mission.completion?.runId ?? null,
-      articleSlug: mission.completion?.articleSlug ?? null,
-      publicationReadiness: mission.completion?.publicationReadiness ?? 'research_in_progress',
-      nextGate: mission.completion?.nextGate ?? 'Complete the evidence bundle, independent QA receipt, deterministic gates, and mission completion receipt.'
-    }))
+    queue: [...researchMissions].sort((left, right) => right.createdAt.localeCompare(left.createdAt)).map((mission) => {
+      const pendingVisual = visualRequests.find((request) => {
+        const run = runById.get(request.runId);
+        return run?.ideaId === mission.idea.id && run?.ideaRevision === mission.idea.revision && run?.ideaSha256 === mission.idea.sha256;
+      });
+      return {
+        missionId: mission.missionId,
+        recordSha256: mission.sha256,
+        status: mission.status,
+        ideaId: mission.idea.id,
+        ideaTitle: mission.idea.title,
+        ideaRevision: mission.idea.revision,
+        ideaSha256: mission.idea.sha256,
+        createdAt: mission.createdAt,
+        completedAt: mission.completedAt,
+        workflowRunId: mission.trigger.workflowRunId,
+        activeStage: pendingVisual ? 'visual_production' : mission.teamStages.find((stage) => ['in_progress', 'ready'].includes(stage.status))?.id ?? 'growth_follow_up',
+        runId: pendingVisual?.runId ?? mission.completion?.runId ?? null,
+        articleSlug: pendingVisual?.articleSlug ?? mission.completion?.articleSlug ?? null,
+        publicationReadiness: pendingVisual ? 'visual_pending' : mission.completion?.publicationReadiness ?? 'research_in_progress',
+        nextGate: pendingVisual?.nextGate ?? mission.completion?.nextGate ?? 'Complete the evidence bundle, independent QA receipt, deterministic gates, and mission completion receipt.'
+      };
+    })
   },
   opportunityScouting: {
     enabled: opportunityPolicy.enabled,

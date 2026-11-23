@@ -10,6 +10,7 @@ const slugSchema = z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/);
 const missionStageSchema = z.discriminatedUnion('id', [
   z.object({ id: z.literal('research'), role: z.literal('research-editorial-team'), authority: z.literal('draft_only'), status: z.enum(['queued', 'in_progress', 'completed']) }).strict(),
   z.object({ id: z.literal('quality_review'), role: z.literal('independent-evidence-editor'), authority: z.literal('review_receipt_only'), status: z.enum(['queued', 'in_progress', 'completed']) }).strict(),
+  z.object({ id: z.literal('visual_production'), role: z.literal('visual-production-team'), authority: z.literal('original_assets_and_visual_receipt_only'), status: z.enum(['queued', 'in_progress', 'completed']) }).strict(),
   z.object({ id: z.literal('release_preparation'), role: z.literal('release-operator'), authority: z.literal('preview_and_pr_only'), status: z.enum(['queued', 'ready', 'completed']) }).strict(),
   z.object({ id: z.literal('growth_follow_up'), role: z.literal('growth-analyst'), authority: z.literal('aggregate_measurement_only'), status: z.enum(['queued', 'ready', 'completed']) }).strict()
 ]);
@@ -27,10 +28,24 @@ const completionSchema = z.object({
   nextGate: z.string().min(30)
 }).strict();
 
+const visualHandoffSchema = z.object({
+  runId: runIdSchema,
+  runSha256: sha256Schema,
+  articleSlug: slugSchema,
+  articleSha256: sha256Schema,
+  socialPackId: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*-launch$/),
+  socialPackSha256: sha256Schema,
+  reviewReceiptPath: z.string().regex(/^research\/reviews\/[a-z0-9-]+\.qa\.v[1-9]\d*\.json$/),
+  reviewReceiptSha256: sha256Schema,
+  visualRequestPath: z.string().regex(/^visuals\/requests\/\d{8}-[a-z0-9-]+-[a-f0-9]{8}-visuals\.json$/),
+  visualRequestSha256: sha256Schema,
+  nextGate: z.string().min(40)
+}).strict();
+
 export const researchMissionSchema = z.object({
-  schemaVersion: z.literal('1.0.0'),
+  schemaVersion: z.literal('1.1.0'),
   missionId: missionIdSchema,
-  status: z.enum(['started', 'completed']),
+  status: z.enum(['started', 'visual_pending', 'completed']),
   createdAt: z.string().datetime(),
   completedAt: z.string().datetime().nullable(),
   trigger: z.object({
@@ -48,12 +63,13 @@ export const researchMissionSchema = z.object({
     title: z.string().min(12),
     thesisType: z.enum(['recipient_friction', 'story_pairing', 'ritual_pairing', 'growth_distribution'])
   }).strict(),
-  teamStages: z.array(missionStageSchema).length(4),
+  teamStages: z.array(missionStageSchema).length(5),
   deliverables: z.object({
     researchRuns: z.literal(1),
     articles: z.literal(1),
     socialLaunchPacks: z.literal(1),
-    independentReviewReceipts: z.literal(1)
+    independentReviewReceipts: z.literal(1),
+    approvedVisualSets: z.literal(1)
   }).strict(),
   qualityGates: z.object({
     minimumResearchPasses: z.literal(3),
@@ -72,6 +88,7 @@ export const researchMissionSchema = z.object({
     verifiedSuccessfulReleaseCount: z.number().int().nonnegative(),
     minimumSuccessfulFounderReviewedReleases: z.number().int().positive()
   }).strict(),
+  visualHandoff: visualHandoffSchema.nullable(),
   completion: completionSchema.nullable()
 }).strict();
 
@@ -111,14 +128,15 @@ export function validateResearchMissionRecords({
   runsById = new Map(),
   articlesBySlug = new Map(),
   socialByRunId = new Map(),
-  reviewsByPath = new Map()
+  reviewsByPath = new Map(),
+  visualRequestsByPath = new Map()
 }) {
   const issues = [];
   const missionIds = new Set();
   const activeIdeas = new Set();
   const parsedRecords = [];
   const ideasById = new Map(strategy.ideas.map((idea) => [idea.id, idea]));
-  const expectedStageOrder = ['research', 'quality_review', 'release_preparation', 'growth_follow_up'];
+  const expectedStageOrder = ['research', 'quality_review', 'visual_production', 'release_preparation', 'growth_follow_up'];
 
   for (const record of records) {
     const parsed = researchMissionSchema.safeParse(record.data);
@@ -147,11 +165,53 @@ export function validateResearchMissionRecords({
     if (mission.status === 'started') {
       if (activeIdeas.has(mission.idea.id)) issues.push(`${mission.missionId}: another active mission already exists for this idea`);
       activeIdeas.add(mission.idea.id);
-      if (mission.completedAt !== null || mission.completion !== null) issues.push(`${mission.missionId}: started mission cannot contain completion evidence`);
+      if (mission.completedAt !== null || mission.visualHandoff !== null || mission.completion !== null) issues.push(`${mission.missionId}: started mission cannot contain handoff or completion evidence`);
       const statuses = Object.fromEntries(mission.teamStages.map((stage) => [stage.id, stage.status]));
-      if (statuses.research !== 'in_progress' || statuses.quality_review !== 'queued' || statuses.release_preparation !== 'queued' || statuses.growth_follow_up !== 'queued') issues.push(`${mission.missionId}: started mission stage statuses are invalid`);
+      if (statuses.research !== 'in_progress' || statuses.quality_review !== 'queued' || statuses.visual_production !== 'queued' || statuses.release_preparation !== 'queued' || statuses.growth_follow_up !== 'queued') issues.push(`${mission.missionId}: started mission stage statuses are invalid`);
       const snapshot = mission.publicationPolicySnapshot;
       if (snapshot.mode !== publicationPolicy.mode || snapshot.automaticPromotionEnabled !== publicationPolicy.automaticPromotion.enabled || snapshot.verifiedSuccessfulReleaseCount !== publicationPolicy.automaticPromotion.verifiedSuccessfulReleaseCount || snapshot.minimumSuccessfulFounderReviewedReleases !== publicationPolicy.automaticPromotion.minimumSuccessfulFounderReviewedReleases) issues.push(`${mission.missionId}: active mission publication policy snapshot is stale`);
+      continue;
+    }
+
+    if (mission.status === 'visual_pending') {
+      if (activeIdeas.has(mission.idea.id)) issues.push(`${mission.missionId}: another active mission already exists for this idea`);
+      activeIdeas.add(mission.idea.id);
+      if (mission.completedAt !== null || mission.completion !== null || mission.visualHandoff === null) {
+        issues.push(`${mission.missionId}: visual-pending mission needs one handoff and no completion evidence`);
+        continue;
+      }
+      const statuses = Object.fromEntries(mission.teamStages.map((stage) => [stage.id, stage.status]));
+      if (statuses.research !== 'completed' || statuses.quality_review !== 'completed' || statuses.visual_production !== 'in_progress' || statuses.release_preparation !== 'queued' || statuses.growth_follow_up !== 'queued') issues.push(`${mission.missionId}: visual-pending mission stage statuses are invalid`);
+      const handoff = mission.visualHandoff;
+      const runRecord = runsById.get(handoff.runId);
+      const articleRecord = articlesBySlug.get(handoff.articleSlug);
+      const socialRecord = socialByRunId.get(handoff.runId);
+      const reviewRecord = reviewsByPath.get(handoff.reviewReceiptPath);
+      const visualRequestRecord = visualRequestsByPath.get(handoff.visualRequestPath);
+      if (!runRecord) issues.push(`${mission.missionId}: visual handoff research run is missing`);
+      else {
+        if (artifactDigest(runRecord) !== handoff.runSha256) issues.push(`${mission.missionId}: visual handoff run digest mismatch`);
+        if (!['drafted', 'qa_failed'].includes(runRecord.data.status) || runRecord.data.article?.status !== 'draft') issues.push(`${mission.missionId}: visual handoff run must remain draft`);
+        if (runRecord.data.ideaId !== mission.idea.id || runRecord.data.ideaRevision !== mission.idea.revision || runRecord.data.ideaSha256 !== mission.idea.sha256) issues.push(`${mission.missionId}: visual handoff run is not bound to the mission idea`);
+      }
+      if (!articleRecord) issues.push(`${mission.missionId}: visual handoff article is missing`);
+      else if (artifactDigest(articleRecord) !== handoff.articleSha256) issues.push(`${mission.missionId}: visual handoff article digest mismatch`);
+      if (!socialRecord) issues.push(`${mission.missionId}: visual handoff social pack is missing`);
+      else {
+        if (socialRecord.data.packId !== handoff.socialPackId) issues.push(`${mission.missionId}: visual handoff social pack ID mismatch`);
+        if (artifactDigest(socialRecord) !== handoff.socialPackSha256) issues.push(`${mission.missionId}: visual handoff social pack digest mismatch`);
+      }
+      if (!reviewRecord) issues.push(`${mission.missionId}: visual handoff review receipt is missing`);
+      else {
+        if (artifactDigest(reviewRecord) !== handoff.reviewReceiptSha256) issues.push(`${mission.missionId}: visual handoff review receipt digest mismatch`);
+        if (reviewRecord.data.verdict !== 'passed' || reviewRecord.data.blockers.length > 0) issues.push(`${mission.missionId}: visual handoff editorial review did not pass cleanly`);
+        if (!reviewReceiptBelongsToMission(reviewRecord.data, mission)) issues.push(`${mission.missionId}: visual handoff review mission provenance mismatch`);
+      }
+      if (!visualRequestRecord) issues.push(`${mission.missionId}: visual handoff request is missing`);
+      else {
+        if (artifactDigest(visualRequestRecord) !== handoff.visualRequestSha256) issues.push(`${mission.missionId}: visual handoff request digest mismatch`);
+        if (visualRequestRecord.data.runId !== handoff.runId || visualRequestRecord.data.articleSlug !== handoff.articleSlug) issues.push(`${mission.missionId}: visual handoff request identity mismatch`);
+      }
       continue;
     }
 
@@ -161,7 +221,7 @@ export function validateResearchMissionRecords({
     }
     if (new Date(mission.completedAt) < new Date(mission.createdAt)) issues.push(`${mission.missionId}: completion precedes creation`);
     const statuses = Object.fromEntries(mission.teamStages.map((stage) => [stage.id, stage.status]));
-    if (statuses.research !== 'completed' || statuses.quality_review !== 'completed' || statuses.release_preparation !== 'ready' || statuses.growth_follow_up !== 'queued') issues.push(`${mission.missionId}: completed mission stage statuses are invalid`);
+    if (statuses.research !== 'completed' || statuses.quality_review !== 'completed' || statuses.visual_production !== 'completed' || statuses.release_preparation !== 'ready' || statuses.growth_follow_up !== 'queued') issues.push(`${mission.missionId}: completed mission stage statuses are invalid`);
 
     const completion = mission.completion;
     const runRecord = runsById.get(completion.runId);
@@ -191,6 +251,7 @@ export function validateResearchMissionRecords({
     }
     const expectedReadiness = mission.publicationPolicySnapshot.automaticPromotionEnabled ? 'automatic_merge_eligible' : 'founder_review_required';
     if (completion.publicationReadiness !== expectedReadiness) issues.push(`${mission.missionId}: publication readiness differs from the mission policy snapshot`);
+    if (mission.visualHandoff && (mission.visualHandoff.runId !== completion.runId || mission.visualHandoff.articleSlug !== completion.articleSlug || mission.visualHandoff.reviewReceiptPath !== completion.reviewReceiptPath)) issues.push(`${mission.missionId}: completed mission differs from its visual handoff`);
   }
 
   return { issues, missions: parsedRecords.map((record) => record.data) };
