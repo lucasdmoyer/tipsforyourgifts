@@ -25,6 +25,7 @@ describe('App', () => {
     fixture.detectChanges();
     const element = fixture.nativeElement as HTMLElement;
     expect(element.querySelector('.brand')?.textContent).toContain('Tips for Your Gifts');
+    expect(element.querySelector('.brand')?.getAttribute('aria-label')).toBe('Tips for Your Gifts home');
     expect(element.querySelectorAll('.nav-links a')).toHaveLength(4);
     expect(element.querySelector('a[href="/gift-finder"]')?.textContent).toContain('Gift finder');
     expect(element.querySelector('a[href="/studio"]')).toBeNull();
@@ -75,6 +76,7 @@ describe('App', () => {
     const image = fixture.nativeElement.querySelector('.product-context-visual img') as HTMLImageElement;
     const link = fixture.nativeElement.querySelector('[data-event-name="merchant_outbound_click"]') as HTMLAnchorElement;
     expect(image.src).toContain('/blog-images/');
+    expect(image.getAttribute('srcset')).toContain('-480.webp 480w');
     expect(image.getAttribute('srcset')).toContain('-768.webp 768w');
     expect(image.getAttribute('srcset')).toContain('-1200.webp 1200w');
     expect(image.getAttribute('srcset')).toContain('.webp 1536w');
@@ -116,6 +118,7 @@ describe('App', () => {
         expect(element.textContent).toContain('Before you buy');
         expect(pairImages).toHaveLength(1);
         expect(pairImages[0].src).toContain('/blog-images/');
+        expect(pairImages[0].getAttribute('srcset')).toContain('-480.webp 480w');
         expect(pairImages[0].getAttribute('srcset')).toContain('-768.webp 768w');
         expect(pairImages[0].getAttribute('srcset')).toContain('-1200.webp 1200w');
         expect(pairImages[0].getAttribute('srcset')).toContain('.webp 1536w');
