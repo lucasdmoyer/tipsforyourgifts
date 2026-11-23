@@ -2,10 +2,10 @@
 import type { Growth, Operations, Strategy } from '../content.types';
 
 export const OPERATIONS: Operations = {
-  "generatedAt": "2026-11-23T08:06:15.000Z",
+  "generatedAt": "2026-11-23T10:03:56.000Z",
   "founderAgenda": {
     "schemaVersion": "1.0.0",
-    "generatedAt": "2026-11-23T08:06:15.000Z",
+    "generatedAt": "2026-11-23T10:03:56.000Z",
     "posture": "founder_decisions_required",
     "primaryDecisionId": "review-release-candidate",
     "profitabilityEvidence": "unknown_until_aggregate_measurement",
@@ -45,14 +45,14 @@ export const OPERATIONS: Operations = {
         "horizon": "now",
         "category": "editorial_direction",
         "title": "Choose the next recipient problem to research",
-        "recommendation": "Approve founder-idea-014 revision 1: Show the turn, mark the condition: a tabletop RPG combat pair.",
+        "recommendation": "Approve founder-idea-015 revision 1: Press it, hold it, keep it flat: a quilter's clapper upgrade.",
         "decisionQuestion": "Should this be the next bounded research mission for the editorial team?",
-        "rationale": "The proposal is awaiting founder direction, and 4 of 5 proposal slots remain available; deciding it now chooses the next article direction without pretending the research is already approved.",
+        "rationale": "The proposal is awaiting founder direction, and 3 of 5 proposal slots remain available; deciding it now chooses the next article direction without pretending the research is already approved.",
         "evidence": [
-          "1/5 founder proposal slots are occupied.",
-          "The recommended thesis has medium strategic priority.",
-          "Its pair-coherence hypothesis scores 90/100 before product research.",
-          "The brief requires 4 finalists, 2 qualified pairs, and 5 social angles."
+          "2/5 founder proposal slots are occupied.",
+          "The recommended thesis has high strategic priority.",
+          "This is a single-product or category thesis; no pair-coherence claim is being made before product research.",
+          "The brief requires 5 finalists, 0 qualified pairs, and 5 social angles."
         ],
         "unlocks": "Merging the deterministic approval pull request starts one hash-bound research mission while the autonomous opportunity scout retains the capacity already shown in Studio.",
         "tradeoff": "Approval spends research capacity on one audience and ritual before product evidence has been collected; the mission may still reject the thesis.",
@@ -62,7 +62,7 @@ export const OPERATIONS: Operations = {
         "action": {
           "label": "Open strategy approval",
           "url": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/strategy-approval.yml",
-          "command": "gh workflow run strategy-approval.yml -f idea_id=founder-idea-014 -f expected_revision=1"
+          "command": "gh workflow run strategy-approval.yml -f idea_id=founder-idea-015 -f expected_revision=1"
         }
       },
       {
@@ -426,9 +426,9 @@ export const OPERATIONS: Operations = {
   "socialApproved": 0,
   "socialPublished": 0,
   "approvedIdeas": 13,
-  "proposedIdeas": 1,
+  "proposedIdeas": 2,
   "pairingIdeas": 11,
-  "recipientFrictionIdeas": 2,
+  "recipientFrictionIdeas": 3,
   "editorialReview": {
     "schemaVersion": "1.1.0",
     "counts": {
@@ -581,8 +581,8 @@ export const OPERATIONS: Operations = {
     "cadence": "weekly",
     "posture": "capacity_available",
     "maxOpenProposals": 5,
-    "openProposals": 1,
-    "capacityRemaining": 4,
+    "openProposals": 2,
+    "capacityRemaining": 3,
     "totalMissions": 0,
     "activeMissions": 0,
     "completedMissions": 0,
@@ -3553,17 +3553,22 @@ export const OPERATIONS: Operations = {
       "ideaId": "founder-idea-014",
       "stage": "proposed",
       "nextGate": "Founder approves, pauses, or rejects the research thesis."
+    },
+    {
+      "ideaId": "founder-idea-015",
+      "stage": "proposed",
+      "nextGate": "Founder approves, pauses, or rejects the research thesis."
     }
   ],
   "pipeline": {
-    "idea": 14,
+    "idea": 15,
     "researching": 0,
     "missionsActive": 0,
     "missionsCompleted": 0,
     "opportunityScoutsActive": 0,
     "opportunityReportsValidated": 0,
     "qa": 2,
-    "proposed": 1,
+    "proposed": 2,
     "ready": 0,
     "publicationReady": 11,
     "socialDrafts": 78
@@ -3576,7 +3581,7 @@ export const OPERATIONS: Operations = {
     "4 original social creative candidates are locally verified but not rights-approved, released, or published.",
     "Growth measurement is not connected; traffic, conversions, and revenue remain unknown rather than zero.",
     "3 growth experiments await founder review and an aggregate baseline.",
-    "1 strategy proposal awaits a founder approval decision before research can start.",
+    "2 strategy proposals await a founder approval decision before research can start.",
     "Production promotion remains founder-reviewed; automatic release requires 10 verified successful releases and a separate founder approval.",
     "2 article bundles remain blocked in the editorial decision queue; none can self-certify or publish."
   ]
@@ -3584,7 +3589,7 @@ export const OPERATIONS: Operations = {
 
 export const STRATEGY: Strategy = {
   "schemaVersion": "1.1.0",
-  "updatedAt": "2026-11-23T07:47:40.000Z",
+  "updatedAt": "2026-11-23T10:03:56.000Z",
   "northStar": "Become the most trusted place to make a confident gift decision without wasting time or money.",
   "currentBet": "Build three evergreen recipient-intent guides around routines shoppers can actually observe: clean and dry muddy paws at the door, preserve a fiber-art work in progress and its exact stopping point, and move a cleaned vinyl record into a fresh sleeve instead of returning it to dust.",
   "thoughtfulnessFramework": {
@@ -4257,6 +4262,36 @@ export const STRATEGY: Strategy = {
         "minimumSocialAngles": 5
       },
       "researchBrief": "Research reusable initiative-tracker plus removable condition-marker pairs for game masters who run in-person tabletop RPG battles with miniatures or standees. Require official rules evidence, exact system and edition, combatant capacity, terminology, player-facing legibility, screen or table footprint, figure and base fit, marker stacking and removal, color and vision accessibility, dry-erase or surface care, storage, independent usefulness, and one order-mark-remove interaction. Reject digital-only tables, theater-of-the-mind play, duplicate systems, wrong-edition labels, and accessories that add more setup than they remove."
+    },
+    {
+      "id": "founder-idea-015",
+      "revision": 1,
+      "founderDisposition": "proposed",
+      "ideaType": "editorial",
+      "thesisType": "recipient_friction",
+      "title": "Press it, hold it, keep it flat: a quilter's clapper upgrade",
+      "audience": "Someone buying for a quilter or sewist who presses seams, fights bulky intersections, or improvises a flat weight while the fabric cools",
+      "occasion": "Birthday, holiday, first quilt milestone, sewing-room upgrade, or return to a paused sewing hobby",
+      "budget": "$15-$75",
+      "priority": "high",
+      "insight": "They already own the general-purpose iron; the thoughtful gift is the narrow specialty tool that holds a difficult seam flat as it cools without replacing the pressing routine they trust.",
+      "observedFriction": "Freshly pressed seams or bulky intersections lift again, so the recipient repeats the pressing step, holds the fabric by hand, or improvises with a cutting board or another smooth flat weight.",
+      "selfPurchaseReluctance": "A hardwood block can look too simple to justify buying, easy to improvise, and less exciting than fabric or a new pattern even when it would improve a step the recipient repeats throughout a project.",
+      "fitSignals": [
+        "You have watched them press quilt or garment seams and then place a board, book, ruler, or other flat object over a difficult intersection while it cools.",
+        "They have mentioned seams that will not stay flat, bulky joins, repeated pressing, or curiosity about a clapper, and you can confirm they do not already own a preferred one."
+      ],
+      "avoidIf": [
+        "They rarely press seams, already own a clapper or trusted pressing system, or primarily work with materials for which pressure, heat, or steam is inappropriate.",
+        "The exact product lacks a smooth unfinished pressing surface, verified dimensions and material, clean independently purchased evidence, or fabric-appropriate use guidance."
+      ],
+      "successMetric": "Five independently qualified exact-product clapper finalists with reconciled dimensions, material, finish, grip, storage, fabric-boundary, duplicate, and ownership-burden checks",
+      "deliverables": {
+        "minimumFinalists": 5,
+        "minimumQualifiedPairs": 0,
+        "minimumSocialAngles": 5
+      },
+      "researchBrief": "Research the quilter's and tailor's clapper category for a gift shopper who has observed repeated seam pressing or an improvised cooling weight. Compare exact products only after confirming manufacturer identity, dimensions, hardwood or other material, pressing-surface finish, smoothness, grip, weight, storage, care, and fabric-appropriate heat and steam boundaries. Require qualifying public recipient-language and workaround evidence plus two commercially independent, independently purchased exact-product sources for each finalist. Treat merchants, merchant-hosted reviews, affiliate-supported reviews, supplied products, sponsorships, unknown relationships, and category-only guidance as context rather than ranking evidence. Reconcile any SKU or size disagreement, do not preselect Riley Blake, name the pile or hair-fabric pressure warning, and reject a clapper when the recipient already owns one or the actual pressing routine does not support it."
     }
   ]
 };

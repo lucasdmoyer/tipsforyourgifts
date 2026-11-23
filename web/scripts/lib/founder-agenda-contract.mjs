@@ -134,7 +134,9 @@ export function buildFounderAgenda(input) {
       evidence: [
         `${input.openStrategyProposals}/${input.maxOpenStrategyProposals} founder proposal slots are occupied.`,
         `The recommended thesis has ${strategyCandidate.priority} strategic priority.`,
-        `Its pair-coherence hypothesis scores ${strategyCandidate.pairing?.coherenceScore ?? 'not applicable'}/100 before product research.`,
+        strategyCandidate.pairing
+          ? `Its pair-coherence hypothesis scores ${strategyCandidate.pairing.coherenceScore}/100 before product research.`
+          : 'This is a single-product or category thesis; no pair-coherence claim is being made before product research.',
         `The brief requires ${strategyCandidate.deliverables.minimumFinalists} finalists, ${strategyCandidate.deliverables.minimumQualifiedPairs} qualified pairs, and ${strategyCandidate.deliverables.minimumSocialAngles} social angles.`
       ],
       unlocks: proposalQueueIsFull
