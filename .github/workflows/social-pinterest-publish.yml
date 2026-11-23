@@ -54,7 +54,7 @@ jobs:
         with:
           ref: ${{ inputs.expected_head_sha }}
           fetch-depth: 0
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: "24.14.0"
           cache: npm
@@ -95,7 +95,7 @@ jobs:
         run: npm --prefix web run social:pinterest:plan -- --post-id="$POST_ID" --expected-approval-sha256="$EXPECTED_APPROVAL_SHA256" --expected-media-record-sha256="$EXPECTED_MEDIA_RECORD_SHA256" --execute
       - name: Preserve the external publication receipt
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: social-publication-receipt-${{ inputs.post_id }}-${{ github.run_id }}
           path: web/social/publications/${{ inputs.post_id }}.json

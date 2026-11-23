@@ -133,8 +133,8 @@ assert.deepEqual(workflow.jobs.open_pull_request.permissions, { contents: 'write
 assert.match(workflowSource, /CONFIGURE-ai-automation-budget/);
 assert.match(workflowSource, /persist-credentials: false/);
 assert.match(workflowSource, /git diff --binary HEAD > ai-budget\.patch/);
-assert.match(workflowSource, /actions\/upload-artifact@v4/);
-assert.match(workflowSource, /actions\/download-artifact@v4/);
+assert.match(workflowSource, /actions\/upload-artifact@v7/);
+assert.match(workflowSource, /actions\/download-artifact@v8/);
 assert.doesNotMatch(workflowSource, /OPENAI_API_KEY|CODEX_API_KEY|codex-action|firebase-tools|hosting:channel|google-github-actions\/auth|secrets\./iu);
 
 console.log(JSON.stringify({

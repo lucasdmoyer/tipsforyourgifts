@@ -29,7 +29,7 @@ jobs:
         with:
           fetch-depth: 0
           persist-credentials: false
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: "24.14.0"
           cache: npm
@@ -59,7 +59,7 @@ jobs:
         env:
           REASON: ${{ steps.scout.outputs.reason }}
         run: echo "Opportunity scout stopped before model execution because $REASON."
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: steps.scout.outputs.should_scout == 'true'
         with:
           name: opportunity-mission-envelope-${{ steps.scout.outputs.mission_id }}
@@ -132,7 +132,7 @@ jobs:
           git diff --binary HEAD > opportunity-draft.patch
           test -s opportunity-draft.patch
           echo "has_patch=true" >> "$GITHUB_OUTPUT"
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: steps.diff.outputs.has_patch == 'true'
         with:
           name: opportunity-draft-${{ github.run_id }}
@@ -152,12 +152,12 @@ jobs:
         with:
           fetch-depth: 0
           persist-credentials: false
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           name: opportunity-draft-${{ github.run_id }}
       - name: Apply the untrusted draft without staging it
         run: git apply opportunity-draft.patch
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: "24.14.0"
           cache: npm
@@ -225,7 +225,7 @@ jobs:
           git diff --binary HEAD > reviewed-opportunity.patch
           test -s reviewed-opportunity.patch
           echo "has_patch=true" >> "$GITHUB_OUTPUT"
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: reviewed-opportunity-${{ github.run_id }}
           path: reviewed-opportunity.patch
@@ -243,11 +243,11 @@ jobs:
       - uses: actions/checkout@v5
         with:
           fetch-depth: 0
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           name: reviewed-opportunity-${{ github.run_id }}
       - run: git apply --index reviewed-opportunity.patch
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: "24.14.0"
           cache: npm
