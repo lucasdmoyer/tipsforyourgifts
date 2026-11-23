@@ -71,8 +71,8 @@ export const OPERATIONS: Operations = {
         "priorityScore": 75,
         "horizon": "next",
         "category": "distribution",
-        "title": "Decide whether Pinterest becomes the first owned distribution channel",
-        "recommendation": "Configure pinterest as the first bounded channel only after the official account, API, rights, cadence, and reporting posture are approved.",
+        "title": "Complete the first Pinterest operating packet",
+        "recommendation": "Complete credential-free issue 61, then configure Pinterest only after the exact business account, public board, Standard API access, minimum scopes, rights, cadence, and reporting boundary are evidenced.",
         "decisionQuestion": "Do you want to establish the official Pinterest operating envelope for the prepared launch queue?",
         "rationale": "The team has reusable decision-first creative, but drafts cannot drive traffic until one official channel has a founder-approved and measurable publishing boundary.",
         "evidence": [
@@ -87,9 +87,9 @@ export const OPERATIONS: Operations = {
         "reversibility": "medium",
         "founderActionRequired": true,
         "action": {
-          "label": "Open channel setup",
-          "url": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/social-channel-configure.yml",
-          "command": null
+          "label": "Open Pinterest decision packet",
+          "url": "https://github.com/lucasdmoyer/tipsforyourgifts/issues/61",
+          "command": "gh workflow run social-channel-configure.yml -f channel_id=pinterest -f expected_config_sha256=62b26e49b547b253e48dcdb608a3f725ce88ec9b6d54f71fd3912b4bbe43031f -f official_account_reference=\"$PINTEREST_ACCOUNT_REFERENCE\" -f official_publication_target_id=\"$PINTEREST_BOARD_ID\" -f max_posts_per_week=3 -f configuration_evidence_url=https://github.com/lucasdmoyer/tipsforyourgifts/issues/61 -f confirmation=CONFIGURE-pinterest"
         }
       }
     ]

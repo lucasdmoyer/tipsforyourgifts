@@ -2,6 +2,7 @@ import { z } from 'zod';
 
 const httpsUrl = z.string().url().refine((value) => value.startsWith('https://'), 'must use HTTPS');
 const searchConsoleDecisionPacketUrl = 'https://github.com/lucasdmoyer/tipsforyourgifts/issues/59';
+const pinterestDecisionPacketUrl = 'https://github.com/lucasdmoyer/tipsforyourgifts/issues/61';
 const decisionSchema = z.object({
   id: z.enum(['review-release-candidate', 'choose-next-thesis', 'establish-measurement', 'configure-first-social-channel', 'choose-affiliate-pilot']),
   rank: z.number().int().min(1).max(5),
@@ -205,10 +206,10 @@ export function buildFounderAgenda(input) {
       priorityScore: 75,
       horizon: 'next',
       category: 'distribution',
-      title: channelConfigured ? 'Activate the configured Pinterest publishing boundary' : 'Decide whether Pinterest becomes the first owned distribution channel',
+      title: channelConfigured ? 'Activate the configured Pinterest publishing boundary' : 'Complete the first Pinterest operating packet',
       recommendation: channelConfigured
         ? `Activate ${firstChannel.id} only after rechecking its configured account, official target, API credential reference, cadence, and protected publishing environment.`
-        : `Configure ${firstChannel.id} as the first bounded channel only after the official account, API, rights, cadence, and reporting posture are approved.`,
+        : 'Complete credential-free issue 61, then configure Pinterest only after the exact business account, public board, Standard API access, minimum scopes, rights, cadence, and reporting boundary are evidenced.',
       decisionQuestion: channelConfigured
         ? 'Do you authorize this exact configured Pinterest channel for protected per-post official-API publishing?'
         : 'Do you want to establish the official Pinterest operating envelope for the prepared launch queue?',
@@ -227,13 +228,13 @@ export function buildFounderAgenda(input) {
       reversibility: 'medium',
       founderActionRequired: true,
       action: {
-        label: channelConfigured ? 'Open channel activation' : 'Open channel setup',
+        label: channelConfigured ? 'Open channel activation' : 'Open Pinterest decision packet',
         url: channelConfigured
           ? 'https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/social-channel-activate.yml'
-          : 'https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/social-channel-configure.yml',
+          : pinterestDecisionPacketUrl,
         command: channelConfigured
           ? `gh workflow run social-channel-activate.yml -f channel_id=${firstChannel.id} -f expected_config_sha256=${input.socialChannelsSha256} -f confirmation=ACTIVATE-${firstChannel.id}`
-          : null
+          : `gh workflow run social-channel-configure.yml -f channel_id=${firstChannel.id} -f expected_config_sha256=${input.socialChannelsSha256} -f official_account_reference="$PINTEREST_ACCOUNT_REFERENCE" -f official_publication_target_id="$PINTEREST_BOARD_ID" -f max_posts_per_week=3 -f configuration_evidence_url=${pinterestDecisionPacketUrl} -f confirmation=CONFIGURE-${firstChannel.id}`
       }
     });
   }

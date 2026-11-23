@@ -56,6 +56,16 @@ if (currentMeasurementDecision?.title === 'Configure the first aggregate measure
   assert.match(currentMeasurementDecision.action.command, /configuration_evidence_url=https:\/\/github\.com\/lucasdmoyer\/tipsforyourgifts\/issues\/59/);
   assert.doesNotMatch(currentMeasurementDecision.action.command, /REPLACE_WITH_ISSUE_NUMBER/);
 }
+const currentSocialDecision = base.decisions.find((decision) => decision.id === 'configure-first-social-channel');
+if (currentSocialDecision?.title === 'Complete the first Pinterest operating packet') {
+  assert.equal(currentSocialDecision.action.url, 'https://github.com/lucasdmoyer/tipsforyourgifts/issues/61');
+  assert.match(currentSocialDecision.action.command, new RegExp(`expected_config_sha256=${socialChannelsSha256}`));
+  assert.match(currentSocialDecision.action.command, /official_account_reference="\$PINTEREST_ACCOUNT_REFERENCE"/);
+  assert.match(currentSocialDecision.action.command, /official_publication_target_id="\$PINTEREST_BOARD_ID"/);
+  assert.match(currentSocialDecision.action.command, /max_posts_per_week=3/);
+  assert.match(currentSocialDecision.action.command, /configuration_evidence_url=https:\/\/github\.com\/lucasdmoyer\/tipsforyourgifts\/issues\/61/);
+  assert.doesNotMatch(currentSocialDecision.action.command, /REPLACE_WITH_ISSUE_NUMBER/);
+}
 assert.deepEqual(base.decisions.map((decision) => decision.rank), base.decisions.map((_decision, index) => index + 1));
 const priorityWeight = { high: 3, medium: 2, low: 1 };
 const expectedStrategyCandidate = [...proposedIdeas].sort((left, right) => (priorityWeight[right.priority] ?? 0) - (priorityWeight[left.priority] ?? 0) || (right.pairing?.coherenceScore ?? 0) - (left.pairing?.coherenceScore ?? 0) || left.id.localeCompare(right.id))[0];
