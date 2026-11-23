@@ -532,6 +532,16 @@ export interface Operations {
         customerDataExportApproved: false;
       };
     }>;
+    expansionRequests: Array<{
+      id: string;
+      status: 'awaiting_founder_scope_approval_and_partner_export' | 'scope_approved_awaiting_partner_export';
+      programId: string;
+      articleSlug: string;
+      requestedProducts: number;
+      paidUrlsCollected: number;
+      currentArticleMatchesIndependentReview: boolean;
+      nextGate: string;
+    }>;
     linkQueue: Array<{
       candidateId: string;
       candidateRevision: number;

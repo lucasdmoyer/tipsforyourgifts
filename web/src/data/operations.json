@@ -653,6 +653,18 @@
         "approvalBoundarySha256": "9c521256d14e650a50359f02f58dba81b07d0689b972c42b2c01e33630b91295"
       }
     ],
+    "expansionRequests": [
+      {
+        "id": "bookshop-read-play-expansion-v1",
+        "status": "awaiting_founder_scope_approval_and_partner_export",
+        "programId": "bookshop-org-us-media",
+        "articleSlug": "read-it-then-play-it-gift-pairs",
+        "requestedProducts": 9,
+        "paidUrlsCollected": 0,
+        "currentArticleMatchesIndependentReview": true,
+        "nextGate": "Lucas approves this exact nine-book scope, then supplies a founder-attested Bookshop export containing partner-issued URLs."
+      }
+    ],
     "approvedOverlaySetSha256": "7052e5fe641aa1f01231cf8aa5d9c62bc5309127d7ff19076a25aad17f412e02",
     "linkQueue": [
       {
