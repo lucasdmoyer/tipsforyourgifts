@@ -56,6 +56,8 @@ The GitHub research job has read-only repository permission while the OpenAI key
 
 The strategy-intake job follows the same separation. It accepts only an owner-authored `[Strategy]` issue, exposes the issue to the AI as untrusted data, permits at most one appended `proposed` idea, and regenerates only deterministic operating files. Approval is a different workflow with no AI credential; it advances the exact proposed revision and opens a founder-controlled pull request.
 
+The opportunity scout also fails closed. A discovery-model failure, invalid discovery bundle, reviewer-model failure, or invalid review result is routed to a credential-free recorder. That recorder starts from the trusted mission envelope, proves that no report, proposal, or review receipt survived, and opens a retry pull request with the exact workflow identity. It never reuses partial model output, invents a verdict, merges automatically, or changes production, affiliate, social, or Firebase state.
+
 Publication begins in `founder_reviewed` mode. After ten successful founder-reviewed production deployments, the repository owner may open a deterministic policy PR that enables proven automatic promotion. Even then, research QA, branch checks, an exact-SHA Firebase preview, rollback-target evidence, and hosted smoke remain mandatory. See [publication automation](PUBLICATION_AUTOMATION.md).
 
 ## Affiliate posture

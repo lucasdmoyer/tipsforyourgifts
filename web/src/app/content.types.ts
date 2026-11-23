@@ -487,6 +487,8 @@ export interface Operations {
     totalMissions: number;
     activeMissions: number;
     completedMissions: number;
+    discoveryFailedMissions: number;
+    reviewFailedMissions: number;
     draftedReports: number;
     validatedReports: number;
     passedReviews: number;
@@ -507,7 +509,7 @@ export interface Operations {
       scoutId: string;
       missionRecordSha256: string;
       reportRecordSha256: string | null;
-      status: 'started' | 'completed' | 'drafted' | 'validated';
+      status: 'started' | 'discovery_failed' | 'review_failed' | 'completed' | 'drafted' | 'validated';
       createdAt: string;
       completedAt: string | null;
       expectedProposalId: string;
@@ -520,6 +522,8 @@ export interface Operations {
       evidenceConfidence: number | null;
       thoughtfulnessPotential: number | null;
       reviewVerdict: 'passed' | 'failed' | null;
+      failureReasonCode: 'discovery_model_step_failed' | 'discovery_bundle_invalid' | 'review_model_step_failed' | 'review_result_invalid' | null;
+      failureWorkflowRunUrl: string | null;
       nextGate: string;
     }>;
   };

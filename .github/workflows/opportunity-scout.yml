@@ -28,6 +28,8 @@ jobs:
       mission_path: ${{ steps.scout.outputs.mission_path }}
       mission_sha256: ${{ steps.scout.outputs.mission_sha256 }}
       expected_proposal_id: ${{ steps.scout.outputs.expected_proposal_id }}
+      discovery_outcome: ${{ steps.route_discovery.outputs.discovery_outcome }}
+      discovery_failure_code: ${{ steps.route_discovery.outputs.discovery_failure_code }}
     steps:
       - uses: actions/checkout@v5
         with:
@@ -99,7 +101,9 @@ jobs:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: node web/scripts/require-openai-api-key.mjs
       - name: Run the autonomous public opportunity desk
+        id: scout_agent
         if: steps.scout.outputs.should_scout == 'true'
+        continue-on-error: true
         uses: openai/codex-action@v1
         with:
           openai-api-key: ${{ secrets.OPENAI_API_KEY }}
@@ -119,8 +123,9 @@ jobs:
 
             Create exactly one schema 1.1 drafted report at web/research/opportunities/${{ steps.scout.outputs.mission_id }}.json and append exactly one strategy idea to web/src/data/strategy.json using proposal ID ${{ steps.scout.outputs.expected_proposal_id }}, revision 1, and founderDisposition proposed. For every source, record its commercial relationship, whether it qualifies or is context-only or excluded, and a concrete qualification rationale. Merchant catalogs, affiliate-supported sources, supplied products, sponsorships, unknown relationships, and Tier-D sources may inform discovery but cannot qualify a signal, candidate, or selected proposal. Recipient-language, workaround, and self-purchase signals require qualifying public social or community evidence, and every candidate requires two commercially independent qualifying source groups. The report must contain 3-7 scored candidates and select only a commission-independent candidate meeting the policy's evidence and thoughtfulness thresholds. The strategy proposal must satisfy the existing thoughtful-gift schema, explain fit and avoid-if conditions, and match the report title and candidate. Do not create a QA receipt, approve research, draft an article, edit existing ideas, change policy or affiliate configuration, enroll accounts, publish, spend, deploy, or edit any other file. If the evidence cannot meet every threshold honestly, make no proposal and explain the gap.
       - name: Prove the scout stayed inside one proposal
-        if: steps.scout.outputs.should_scout == 'true'
+        if: always() && steps.scout.outputs.should_scout == 'true'
         id: boundary
+        continue-on-error: true
         env:
           MISSION_ID: ${{ steps.scout.outputs.mission_id }}
           MISSION_PATH: ${{ steps.scout.outputs.mission_path }}
@@ -153,8 +158,31 @@ jobs:
             esac
           done < <(git diff --name-only HEAD)
           echo "has_candidate=true" >> "$GITHUB_OUTPUT"
+      - name: Route the exact discovery result
+        id: route_discovery
+        if: always() && steps.scout.outputs.should_scout == 'true'
+        env:
+          MODEL_OUTCOME: ${{ steps.scout_agent.outcome }}
+          BOUNDARY_OUTCOME: ${{ steps.boundary.outcome }}
+          HAS_CANDIDATE: ${{ steps.boundary.outputs.has_candidate }}
+        run: |
+          if [ "$MODEL_OUTCOME" != "success" ]; then
+            outcome="failed"
+            code="discovery_model_step_failed"
+          elif [ "$BOUNDARY_OUTCOME" != "success" ]; then
+            outcome="failed"
+            code="discovery_bundle_invalid"
+          elif [ "$HAS_CANDIDATE" = "true" ]; then
+            outcome="ready"
+            code=""
+          else
+            outcome="no_candidate"
+            code=""
+          fi
+          echo "discovery_outcome=$outcome" >> "$GITHUB_OUTPUT"
+          echo "discovery_failure_code=$code" >> "$GITHUB_OUTPUT"
       - name: Serialize the draft opportunity patch
-        if: steps.boundary.outputs.has_candidate == 'true'
+        if: steps.route_discovery.outputs.discovery_outcome == 'ready'
         id: diff
         run: |
           git diff --check
@@ -176,6 +204,8 @@ jobs:
     timeout-minutes: 45
     outputs:
       has_patch: ${{ steps.reviewed_diff.outputs.has_patch }}
+      review_outcome: ${{ steps.route_review.outputs.review_outcome }}
+      review_failure_code: ${{ steps.route_review.outputs.review_failure_code }}
     steps:
       - uses: actions/checkout@v5
         with:
@@ -213,6 +243,8 @@ jobs:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: node web/scripts/require-openai-api-key.mjs
       - name: Run an independent opportunity red team
+        id: review_agent
+        continue-on-error: true
         uses: openai/codex-action@v1
         with:
           openai-api-key: ${{ secrets.OPENAI_API_KEY }}
@@ -229,6 +261,9 @@ jobs:
 
             Otherwise run the same command with --verdict=failed. You may create only web/research/opportunity-reviews/${{ needs.discover.outputs.mission_id }}.qa.v1.json. Never approve research or publication by editing the source bundle.
       - name: Prove reviewer isolation and promote only clean evidence
+        id: review_gate
+        if: always()
+        continue-on-error: true
         env:
           MISSION_ID: ${{ needs.discover.outputs.mission_id }}
           MISSION_PATH: ${{ needs.discover.outputs.mission_path }}
@@ -248,8 +283,28 @@ jobs:
           npm run validate
           npm run build
           npm run smoke
+      - name: Route the exact independent-review result
+        id: route_review
+        if: always()
+        env:
+          MODEL_OUTCOME: ${{ steps.review_agent.outcome }}
+          REVIEW_GATE_OUTCOME: ${{ steps.review_gate.outcome }}
+        run: |
+          if [ "$MODEL_OUTCOME" != "success" ]; then
+            outcome="failed"
+            code="review_model_step_failed"
+          elif [ "$REVIEW_GATE_OUTCOME" != "success" ]; then
+            outcome="failed"
+            code="review_result_invalid"
+          else
+            outcome="ready"
+            code=""
+          fi
+          echo "review_outcome=$outcome" >> "$GITHUB_OUTPUT"
+          echo "review_failure_code=$code" >> "$GITHUB_OUTPUT"
       - name: Serialize the independently reviewed opportunity
         id: reviewed_diff
+        if: steps.route_review.outputs.review_outcome == 'ready'
         run: |
           git add -N .
           git diff --check
@@ -257,11 +312,132 @@ jobs:
           test -s reviewed-opportunity.patch
           echo "has_patch=true" >> "$GITHUB_OUTPUT"
       - uses: actions/upload-artifact@v7
+        if: steps.reviewed_diff.outputs.has_patch == 'true'
         with:
           name: reviewed-opportunity-${{ github.run_id }}
           path: reviewed-opportunity.patch
           if-no-files-found: error
           retention-days: 7
+
+  record_failure:
+    needs: [discover, independent_review]
+    if: >-
+      always() &&
+      needs.discover.outputs.should_scout == 'true' &&
+      (needs.discover.outputs.discovery_outcome == 'failed' || needs.independent_review.outputs.review_outcome == 'failed')
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/download-artifact@v8
+        with:
+          name: opportunity-mission-envelope-${{ needs.discover.outputs.mission_id }}
+          path: web/research/opportunity-missions
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "24.14.0"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - name: Record only the credential-free opportunity failure handoff
+        env:
+          MISSION_ID: ${{ needs.discover.outputs.mission_id }}
+          MISSION_SHA256: ${{ needs.discover.outputs.mission_sha256 }}
+          DISCOVERY_OUTCOME: ${{ needs.discover.outputs.discovery_outcome }}
+          DISCOVERY_FAILURE_CODE: ${{ needs.discover.outputs.discovery_failure_code }}
+          REVIEW_FAILURE_CODE: ${{ needs.independent_review.outputs.review_failure_code }}
+        run: |
+          npm ci --prefix web
+          if [ "$DISCOVERY_OUTCOME" = "failed" ]; then
+            stage="discovery"
+            reason="$DISCOVERY_FAILURE_CODE"
+          else
+            stage="independent_review"
+            reason="${REVIEW_FAILURE_CODE:-review_result_invalid}"
+          fi
+          npm --prefix web run opportunity:scout:failed -- \
+            --scout-id="$MISSION_ID" \
+            --stage="$stage" \
+            --reason-code="$reason" \
+            --expected-mission-sha256="$MISSION_SHA256"
+          npm --prefix web run generate
+      - name: Prove and serialize the clean opportunity failure packet
+        env:
+          MISSION_ID: ${{ needs.discover.outputs.mission_id }}
+        run: |
+          test ! -e "web/research/opportunities/$MISSION_ID.json"
+          test ! -e "web/research/opportunity-reviews/$MISSION_ID.qa.v1.json"
+          test "$(node -p "JSON.parse(require('fs').readFileSync('web/src/data/strategy.json','utf8')).ideas.some((idea) => idea.id === JSON.parse(require('fs').readFileSync('web/research/opportunity-missions/$MISSION_ID.json','utf8')).expectedProposalId)")" = "false"
+          npm run validate
+          npm run build
+          npm run smoke
+          git add -N .
+          while IFS= read -r changed_path; do
+            case "$changed_path" in
+              "web/research/opportunity-missions/$MISSION_ID.json"|web/src/data/operations.json|web/src/app/generated/content.generated.ts|web/src/app/generated/studio.generated.ts|web/public/sitemap.xml) ;;
+              *) echo "Opportunity failure recorder changed forbidden path: $changed_path" >&2; exit 1 ;;
+            esac
+          done < <(git diff --name-only HEAD)
+          git diff --check
+          git diff --binary HEAD > opportunity-failure.patch
+          test -s opportunity-failure.patch
+      - uses: actions/upload-artifact@v7
+        with:
+          name: opportunity-failure-${{ github.run_id }}-${{ github.run_attempt }}
+          path: opportunity-failure.patch
+          if-no-files-found: error
+          retention-days: 30
+
+  open_failure_pull_request:
+    needs: [discover, independent_review, record_failure]
+    if: always() && needs.record_failure.result == 'success'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/download-artifact@v8
+        with:
+          name: opportunity-failure-${{ github.run_id }}-${{ github.run_attempt }}
+      - run: git apply --index opportunity-failure.patch
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "24.14.0"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - name: Re-run failure gates without an AI credential
+        run: |
+          npm ci --prefix web
+          npm run validate
+          npm run build
+          npm run smoke
+          git diff --check --cached
+          git diff --exit-code
+      - name: Commit the clean opportunity correction branch
+        env:
+          MISSION_ID: ${{ needs.discover.outputs.mission_id }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -c "codex/opportunity-failure-$MISSION_ID-${GITHUB_RUN_ATTEMPT}"
+          git commit -m "Record opportunity scout failure $MISSION_ID"
+          git push origin "codex/opportunity-failure-$MISSION_ID-${GITHUB_RUN_ATTEMPT}"
+      - name: Open the opportunity correction pull request with auto-merge disabled
+        env:
+          GH_TOKEN: ${{ github.token }}
+          MISSION_ID: ${{ needs.discover.outputs.mission_id }}
+        run: |
+          gh pr create \
+            --base master \
+            --head "codex/opportunity-failure-$MISSION_ID-${GITHUB_RUN_ATTEMPT}" \
+            --title "Opportunity scout retry required: $MISSION_ID" \
+            --body "The opportunity scout failed before it could produce a clean independently reviewed proposal. This correction packet preserves only the trusted mission and exact failure handoff. It does not preserve partial model output, a strategy proposal, or a QA receipt. It does not approve research, publish content, activate an affiliate, post social content, spend, create credentials, merge automatically, or deploy Firebase. Inspect the linked workflow failure and start a new run; do not reuse unreviewed model output."
 
   open_pull_request:
     needs: [discover, independent_review]

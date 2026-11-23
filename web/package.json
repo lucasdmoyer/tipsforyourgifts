@@ -65,6 +65,7 @@
     "visual:failure:record": "node scripts/record-visual-production-failure.mjs",
     "visual:finalize": "node scripts/finalize-visual-production.mjs",
     "opportunity:scout:start": "node scripts/start-opportunity-scout.mjs",
+    "opportunity:scout:failed": "node scripts/mark-opportunity-scout-failed.mjs",
     "opportunity:review:receipt": "node scripts/create-opportunity-review-receipt.mjs",
     "opportunity:review:promote": "node scripts/promote-opportunity-report.mjs",
     "strategy:resolve": "node scripts/resolve-strategy-idea.mjs",

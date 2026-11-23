@@ -48,6 +48,31 @@ assert.match(startScoutStep.run, /--directive-path="\$DIRECTIVE_PATH"/, 'the mis
 assert.match(scoutModelStep.with?.prompt ?? '', /bounded research question[\s\S]*not product evidence/, 'the model must treat founder direction as a question rather than evidence');
 assert.match(scoutModelStep.with?.prompt ?? '', /Reject the premise and make no proposal/, 'unsupported founder premises must fail closed');
 assert.match(scoutModelStep.with?.prompt ?? '', /append exactly one strategy idea[\s\S]*founderDisposition proposed/, 'the scout may create at most one proposed idea');
+assert.equal(scoutModelStep['continue-on-error'], true, 'a discovery-model failure must reach the trusted opportunity classifier');
+const opportunityReviewJob = opportunity.parsed.jobs?.independent_review;
+const opportunityFailureJob = opportunity.parsed.jobs?.record_failure;
+const opportunityFailureWriterJob = opportunity.parsed.jobs?.open_failure_pull_request;
+const opportunityWriterJob = opportunity.parsed.jobs?.open_pull_request;
+assert.ok(opportunityReviewJob && opportunityFailureJob && opportunityFailureWriterJob && opportunityWriterJob, 'opportunity discovery, review, clean failure recording, and detached writers are required');
+const opportunityReviewModelStep = opportunityReviewJob.steps.find((step) => step.uses === 'openai/codex-action@v1');
+assert.ok(opportunityReviewModelStep, 'opportunity review needs one separate Codex step');
+assert.equal(opportunityReviewModelStep['continue-on-error'], true, 'an opportunity-review model failure must reach the trusted review classifier');
+assert.equal(opportunityFailureJob.steps.filter((step) => step.uses === 'openai/codex-action@v1').length, 0, 'the opportunity failure recorder must never receive a model step');
+assert.equal(opportunityFailureWriterJob.steps.filter((step) => step.uses === 'openai/codex-action@v1').length, 0, 'the opportunity failure writer must never receive a model step');
+assert.equal(opportunityWriterJob.steps.filter((step) => step.uses === 'openai/codex-action@v1').length, 0, 'the successful opportunity writer must never receive a model step');
+const routeDiscoveryStep = findStep(opportunityJob, 'Route the exact discovery result');
+const routeOpportunityReviewStep = findStep(opportunityReviewJob, 'Route the exact independent-review result');
+const recordOpportunityFailureStep = findStep(opportunityFailureJob, 'Record only the credential-free opportunity failure handoff');
+const proveOpportunityFailureStep = findStep(opportunityFailureJob, 'Prove and serialize the clean opportunity failure packet');
+const openOpportunityFailurePrStep = findStep(opportunityFailureWriterJob, 'Open the opportunity correction pull request with auto-merge disabled');
+assert.ok(routeDiscoveryStep && routeOpportunityReviewStep && recordOpportunityFailureStep && proveOpportunityFailureStep && openOpportunityFailurePrStep, 'opportunity model failures need a complete credential-free retry handoff');
+assert.match(routeDiscoveryStep.run, /discovery_model_step_failed[\s\S]*discovery_bundle_invalid/, 'discovery failures must be classified by stage');
+assert.match(routeOpportunityReviewStep.run, /review_model_step_failed[\s\S]*review_result_invalid/, 'review failures must be classified by stage');
+assert.match(recordOpportunityFailureStep.run, /opportunity:scout:failed/, 'only the deterministic failure command may update the mission');
+assert.match(proveOpportunityFailureStep.run, /test ! -e "web\/research\/opportunities\/\$MISSION_ID\.json"/, 'the failure recorder must prove no opportunity report survived');
+assert.match(proveOpportunityFailureStep.run, /test ! -e "web\/research\/opportunity-reviews\/\$MISSION_ID\.qa\.v1\.json"/, 'the failure recorder must prove no review receipt was created');
+assert.match(openOpportunityFailurePrStep.run, /does not preserve partial model output/, 'the correction PR must state that partial output was discarded');
+assert.doesNotMatch(openOpportunityFailurePrStep.run, /gh pr merge/, 'opportunity failure packets must never request auto-merge');
 
 const strategyPush = strategy.parsed.on?.push;
 assert.deepEqual(strategyPush?.branches, ['master'], 'strategy approval handoff must observe only master');
@@ -170,6 +195,8 @@ console.log(JSON.stringify({
   autonomousHandoffGateTests: 'passed',
   handoffs: [
     'founder_direction_to_opportunity_scout',
+    'opportunity_discovery_failure_to_clean_correction_packet',
+    'opportunity_review_failure_to_clean_correction_packet',
     'strategy_approval_to_research_dispatch',
     'research_failure_to_clean_correction_packet',
     'research_to_independent_qa',
