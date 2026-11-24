@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "1.1.0",
+  "schemaVersion": "1.2.0",
   "runId": "20260823-muddy-paw-arrival-e09ff303",
   "ideaId": "founder-idea-011",
   "ideaRevision": 2,
@@ -131,14 +131,14 @@
       "independenceGroup": "chewy-kurgo-shower-buyers"
     },
     {
-      "id": "src-kurgo-shower-tinybuddy-reviews",
-      "url": "https://www.tinybuddy.de/products/kurgo-mud-dog-reisedusche/reviews",
-      "publisher": "Tinybuddy customers",
-      "title": "Kurgo Mud Dog Travel Shower exact-product customer review corpus",
-      "accessedAt": "2026-10-10",
+      "id": "src-kurgo-shower-smart-bark-review",
+      "url": "https://www.smartbark.co.uk/post/best-portable-dog-washers",
+      "publisher": "Smart Bark",
+      "title": "Bought-and-tested Kurgo Mud Dog Travel Shower comparative review with disclosed affiliate links",
+      "accessedAt": "2026-11-23",
       "sourceClass": "independent-review",
-      "trustTier": "B",
-      "independenceGroup": "tinybuddy-kurgo-shower-buyers"
+      "trustTier": "C",
+      "independenceGroup": "smart-bark-kurgo-review"
     },
     {
       "id": "src-soggy-shammy-official",
@@ -161,14 +161,14 @@
       "independenceGroup": "chewy-soggy-shammy-buyers"
     },
     {
-      "id": "src-soggy-shammy-woot-reviews",
-      "url": "https://home.woot.com/review/B015CMWUS0?itemid=TP05163A&offerid=00b63709-87ce-4265-88e4-6f0cf93c1a10",
-      "publisher": "Woot customer reviews",
-      "title": "Soggy Doggy Super Shammy exact-product verified-purchase review corpus",
-      "accessedAt": "2026-10-10",
+      "id": "src-soggy-shammy-gadgeteer-review",
+      "url": "https://the-gadgeteer.com/2011/12/02/soggy-doggy-super-shammy-review/",
+      "publisher": "The Gadgeteer",
+      "title": "Hands-on Soggy Doggy Super Shammy review with disclosed affiliate links",
+      "accessedAt": "2026-11-23",
       "sourceClass": "independent-review",
-      "trustTier": "B",
-      "independenceGroup": "woot-amazon-soggy-shammy-buyers"
+      "trustTier": "C",
+      "independenceGroup": "gadgeteer-soggy-shammy-review"
     },
     {
       "id": "src-dirty-mat-official",
@@ -281,14 +281,14 @@
       "independenceGroup": "girl-with-dogs-absorber-buyers"
     },
     {
-      "id": "src-absorber-walmart-product-line-reviews",
-      "url": "https://www.walmart.com/ip/3977",
-      "publisher": "Walmart customers",
-      "title": "Same-brand, same-size 17-by-27-inch PVA Absorber product-line review corpus; not the dog-branded package and not used to infer dog handling",
-      "accessedAt": "2026-10-10",
+      "id": "src-absorber-shop-app-reviews",
+      "url": "https://shop.app/products/4582752026761/the-absorber-dog-lovers-towel-17-in-x-27-in",
+      "publisher": "Shop app owner reviews",
+      "title": "The Absorber Dog Lover's Towel 17-by-27-inch exact-product owner-review corpus",
+      "accessedAt": "2026-11-23",
       "sourceClass": "independent-review",
       "trustTier": "B",
-      "independenceGroup": "walmart-absorber-product-line-buyers"
+      "independenceGroup": "shop-app-absorber-buyers"
     }
   ],
   "claims": [
@@ -389,7 +389,7 @@
       "sourceIds": [
         "src-kurgo-shower-official",
         "src-kurgo-shower-chewy-reviews",
-        "src-kurgo-shower-tinybuddy-reviews"
+        "src-kurgo-shower-smart-bark-review"
       ]
     },
     {
@@ -415,13 +415,13 @@
     {
       "id": "claim-soggy-shammy-drawback",
       "kind": "product_drawback",
-      "text": "The Super Shammy must be washed without fabric softener and needs a hanging place; buyer reviews disagree on whether its compact size and drying time suit repeated whole-dog use.",
+      "text": "The Super Shammy must be washed without fabric softener and needs a hanging place; an older hands-on review praises the hand pockets but flags the separate-wash routine, so this is best for someone willing to give the towel its own care routine.",
       "risk": "medium",
       "status": "supported",
       "sourceIds": [
         "src-soggy-shammy-official",
         "src-soggy-shammy-chewy-reviews",
-        "src-soggy-shammy-woot-reviews"
+        "src-soggy-shammy-gadgeteer-review"
       ]
     },
     {
@@ -483,7 +483,7 @@
     {
       "id": "claim-no-force-stop-boundary",
       "kind": "compatibility",
-      "text": "Never force a paw into a washer. Stop if the dog freezes, pulls away, guards the paw, growls, panics, or otherwise resists; stop for limping, bleeding, a wound, or other signs of pain or injury and ask a veterinarian.",
+      "text": "Never force a paw into a washer. Stop if the dog becomes still, shows tight lips or side-eye, growls, or shows other visible discomfort; stop for limping, bleeding, a wound, or ongoing pain and ask a veterinarian.",
       "risk": "high",
       "status": "supported",
       "sourceIds": [
@@ -565,6 +565,46 @@
     {
       "id": "mudbuster-published-size-gap",
       "summary": "Dexas lists small through 2 inches and medium from 2.5 inches, leaving paws over 2 but under 2.5 inches without a published size; retailer experience cannot close that gap."
+    },
+    {
+      "id": "mudbuster-chewy-hosting",
+      "summary": "Chewy hosts exact-product MudBuster owner reviews beside a retail offer; the corpus supports subjective fit and handling reports only, not official specifications."
+    },
+    {
+      "id": "mudbuster-walmart-hosting",
+      "summary": "Walmart hosts exact-product MudBuster owner reviews beside a retail offer; the corpus supports conflicting owner experience only, not official specifications."
+    },
+    {
+      "id": "kurgo-chewy-hosting",
+      "summary": "Chewy hosts exact-product Kurgo owner reviews beside a retail offer; the corpus supports bottle-fit experience only, not official specifications."
+    },
+    {
+      "id": "kurgo-smart-bark-affiliate",
+      "summary": "Smart Bark says it bought and tested the exact Kurgo attachment and also discloses affiliate links; it is retained at Tier C for hands-on comparative observations only."
+    },
+    {
+      "id": "soggy-chewy-hosting",
+      "summary": "Chewy hosts exact-product Super Shammy owner reviews beside a retail offer; the corpus supports subjective care and handling experience only."
+    },
+    {
+      "id": "soggy-gadgeteer-affiliate",
+      "summary": "The Gadgeteer hands-on review covers the exact Super Shammy and discloses affiliate commissions; its older report is used only for stable design and ownership observations."
+    },
+    {
+      "id": "absorber-girl-with-dogs-hosting",
+      "summary": "Girl With The Dogs hosts exact-product Dog Lover's Towel owner reviews beside a retail offer; the corpus supports subjective drying experience only."
+    },
+    {
+      "id": "absorber-shop-app-hosting",
+      "summary": "Shop app hosts exact-product Dog Lover's Towel owner reviews beside the brand's retail offer; no displayed price, stock, or delivery claim is used."
+    },
+    {
+      "id": "dirty-mat-chewy-hosting",
+      "summary": "Chewy hosts exact-product Dirty Dog Doormat owner reviews beside a retail offer; the corpus supports subjective placement and washing experience only."
+    },
+    {
+      "id": "dirty-mat-hubpages-affiliate",
+      "summary": "The HubPages owner account may earn from product links, so it remains Tier C and supports subjective placement and washing observations only."
     }
   ],
   "candidates": [
@@ -630,7 +670,7 @@
           {
             "dimension": "accessibility",
             "status": "verified",
-            "requirement": "Confirm the dog is already comfortable with paw handling; never force the cup and stop at pain, injury, guarding, panic, or resistance.",
+            "requirement": "Confirm the dog is already comfortable with paw handling; never force the cup and stop at stillness, tight lips, side-eye, growling, visible discomfort, limping, bleeding, a wound, or ongoing pain.",
             "claimIds": [
               "claim-existing-routine-fit",
               "claim-owner-resistance-conflict",
@@ -655,7 +695,43 @@
           "recipientSpecificity": 5,
           "total": 17
         }
-      }
+      },
+      "sourceQualifications": [
+        {
+          "sourceId": "src-mudbuster-official",
+          "role": "primary",
+          "productMatch": "exact_product",
+          "contentFormat": "manufacturer_page",
+          "commercialRelationship": "first_party",
+          "qualification": "qualifies",
+          "rationale": "Dexas names the exact MudBuster and publishes the product design, care boundary, and sizing ranges.",
+          "conflictIds": []
+        },
+        {
+          "sourceId": "src-mudbuster-chewy-reviews",
+          "role": "independent",
+          "productMatch": "exact_product",
+          "contentFormat": "owner_review_corpus",
+          "commercialRelationship": "merchant_hosted_reviews",
+          "qualification": "qualifies",
+          "rationale": "The Chewy corpus covers the exact MudBuster and is limited to subjective owner reports about fit and dog acceptance.",
+          "conflictIds": [
+            "mudbuster-chewy-hosting"
+          ]
+        },
+        {
+          "sourceId": "src-mudbuster-walmart-reviews",
+          "role": "independent",
+          "productMatch": "exact_product",
+          "contentFormat": "owner_review_corpus",
+          "commercialRelationship": "merchant_hosted_reviews",
+          "qualification": "qualifies",
+          "rationale": "The Walmart corpus covers the exact MudBuster and supplies a second independent group of subjective owner reports.",
+          "conflictIds": [
+            "mudbuster-walmart-hosting"
+          ]
+        }
+      ]
     },
     {
       "id": "kurgo-mud-dog-travel-shower",
@@ -670,7 +746,7 @@
       ],
       "independentSourceIds": [
         "src-kurgo-shower-chewy-reviews",
-        "src-kurgo-shower-tinybuddy-reviews"
+        "src-kurgo-shower-smart-bark-review"
       ],
       "claimIds": [
         "claim-kurgo-benefit",
@@ -717,7 +793,7 @@
           {
             "dimension": "accessibility",
             "status": "verified",
-            "requirement": "Use only for a dog already comfortable with the cleanup pause; never force paw handling and stop at pain, injury, guarding, panic, or resistance.",
+            "requirement": "Use only for a dog already comfortable with the cleanup pause; never force paw handling and stop at stillness, tight lips, side-eye, growling, visible discomfort, limping, bleeding, a wound, or ongoing pain.",
             "claimIds": [
               "claim-existing-routine-fit",
               "claim-no-force-stop-boundary"
@@ -741,22 +817,58 @@
           "recipientSpecificity": 4,
           "total": 16
         }
-      }
+      },
+      "sourceQualifications": [
+        {
+          "sourceId": "src-kurgo-shower-official",
+          "role": "primary",
+          "productMatch": "exact_product",
+          "contentFormat": "manufacturer_page",
+          "commercialRelationship": "first_party",
+          "qualification": "qualifies",
+          "rationale": "Kurgo names the exact attachment and documents its material, bottle-size range, intended use, and care.",
+          "conflictIds": []
+        },
+        {
+          "sourceId": "src-kurgo-shower-chewy-reviews",
+          "role": "independent",
+          "productMatch": "exact_product",
+          "contentFormat": "owner_review_corpus",
+          "commercialRelationship": "merchant_hosted_reviews",
+          "qualification": "qualifies",
+          "rationale": "The Chewy corpus covers the exact Kurgo attachment and is used only for subjective bottle-fit experience.",
+          "conflictIds": [
+            "kurgo-chewy-hosting"
+          ]
+        },
+        {
+          "sourceId": "src-kurgo-shower-smart-bark-review",
+          "role": "independent",
+          "productMatch": "exact_product",
+          "contentFormat": "comparative_review",
+          "commercialRelationship": "affiliate_links",
+          "qualification": "qualifies",
+          "rationale": "Smart Bark says it bought and tested the exact Kurgo attachment; the Tier-C review supports hands-on tradeoffs, not specifications.",
+          "conflictIds": [
+            "kurgo-smart-bark-affiliate"
+          ]
+        }
+      ]
     },
     {
       "id": "soggy-doggy-super-shammy",
       "name": "Soggy Doggy Super Shammy",
       "editorialScore": 82,
-      "evidenceConfidence": 81,
+      "evidenceConfidence": 77,
       "drawbacks": [
-        "The Super Shammy must be washed without fabric softener and needs a hanging place; buyer reviews disagree on whether its compact size and drying time suit repeated whole-dog use."
+        "The Super Shammy must be washed without fabric softener and needs a hanging place; an older hands-on review praises the hand pockets but flags the separate-wash routine, so this is best for someone willing to give the towel its own care routine."
       ],
       "primarySourceIds": [
         "src-soggy-shammy-official"
       ],
       "independentSourceIds": [
         "src-soggy-shammy-chewy-reviews",
-        "src-soggy-shammy-woot-reviews"
+        "src-soggy-shammy-gadgeteer-review"
       ],
       "claimIds": [
         "claim-soggy-shammy-benefit",
@@ -816,7 +928,43 @@
           "recipientSpecificity": 4,
           "total": 18
         }
-      }
+      },
+      "sourceQualifications": [
+        {
+          "sourceId": "src-soggy-shammy-official",
+          "role": "primary",
+          "productMatch": "exact_product",
+          "contentFormat": "manufacturer_page",
+          "commercialRelationship": "first_party",
+          "qualification": "qualifies",
+          "rationale": "Soggy Doggy names the exact Super Shammy and documents its dimensions, material, pockets, and care.",
+          "conflictIds": []
+        },
+        {
+          "sourceId": "src-soggy-shammy-chewy-reviews",
+          "role": "independent",
+          "productMatch": "exact_product",
+          "contentFormat": "owner_review_corpus",
+          "commercialRelationship": "merchant_hosted_reviews",
+          "qualification": "qualifies",
+          "rationale": "The Chewy corpus covers the exact Super Shammy and is used only for subjective owner care and handling reports.",
+          "conflictIds": [
+            "soggy-chewy-hosting"
+          ]
+        },
+        {
+          "sourceId": "src-soggy-shammy-gadgeteer-review",
+          "role": "independent",
+          "productMatch": "exact_product",
+          "contentFormat": "first_person_review",
+          "commercialRelationship": "affiliate_links",
+          "qualification": "qualifies",
+          "rationale": "The Gadgeteer hands-on review covers the exact Super Shammy; its Tier-C evidence is limited to stable design and care observations.",
+          "conflictIds": [
+            "soggy-gadgeteer-affiliate"
+          ]
+        }
+      ]
     },
     {
       "id": "absorber-dog-lovers-towel",
@@ -831,7 +979,7 @@
       ],
       "independentSourceIds": [
         "src-absorber-girl-with-dogs-reviews",
-        "src-absorber-walmart-product-line-reviews"
+        "src-absorber-shop-app-reviews"
       ],
       "claimIds": [
         "claim-absorber-benefit",
@@ -890,7 +1038,43 @@
           "recipientSpecificity": 4,
           "total": 15
         }
-      }
+      },
+      "sourceQualifications": [
+        {
+          "sourceId": "src-absorber-official",
+          "role": "primary",
+          "productMatch": "exact_product",
+          "contentFormat": "manufacturer_page",
+          "commercialRelationship": "first_party",
+          "qualification": "qualifies",
+          "rationale": "Dog Lover's Towel names the exact 17-by-27-inch product and documents its format and care boundary.",
+          "conflictIds": []
+        },
+        {
+          "sourceId": "src-absorber-girl-with-dogs-reviews",
+          "role": "independent",
+          "productMatch": "exact_product",
+          "contentFormat": "owner_review_corpus",
+          "commercialRelationship": "merchant_hosted_reviews",
+          "qualification": "qualifies",
+          "rationale": "The retailer corpus covers the exact Dog Lover's Towel and is limited to subjective owner drying experience.",
+          "conflictIds": [
+            "absorber-girl-with-dogs-hosting"
+          ]
+        },
+        {
+          "sourceId": "src-absorber-shop-app-reviews",
+          "role": "independent",
+          "productMatch": "exact_product",
+          "contentFormat": "owner_review_corpus",
+          "commercialRelationship": "merchant_hosted_reviews",
+          "qualification": "qualifies",
+          "rationale": "The Shop app corpus names the exact 17-by-27-inch Dog Lover's Towel and supplies a second owner-review group.",
+          "conflictIds": [
+            "absorber-shop-app-hosting"
+          ]
+        }
+      ]
     },
     {
       "id": "dirty-dog-doormat",
@@ -966,7 +1150,43 @@
           "recipientSpecificity": 5,
           "total": 16
         }
-      }
+      },
+      "sourceQualifications": [
+        {
+          "sourceId": "src-dirty-mat-official",
+          "role": "primary",
+          "productMatch": "exact_product",
+          "contentFormat": "manufacturer_page",
+          "commercialRelationship": "first_party",
+          "qualification": "qualifies",
+          "rationale": "Dog Gone Smart names the exact Dirty Dog Doormat and documents its measured sizes, backing, and care.",
+          "conflictIds": []
+        },
+        {
+          "sourceId": "src-dirty-mat-chewy-reviews",
+          "role": "independent",
+          "productMatch": "exact_product",
+          "contentFormat": "owner_review_corpus",
+          "commercialRelationship": "merchant_hosted_reviews",
+          "qualification": "qualifies",
+          "rationale": "The Chewy corpus covers the exact mat and is used only for subjective placement and washing experience.",
+          "conflictIds": [
+            "dirty-mat-chewy-hosting"
+          ]
+        },
+        {
+          "sourceId": "src-dirty-mat-hubpages-review",
+          "role": "independent",
+          "productMatch": "exact_product",
+          "contentFormat": "first_person_review",
+          "commercialRelationship": "affiliate_links",
+          "qualification": "qualifies",
+          "rationale": "The owner-purchased HubPages account covers the exact mat; Tier-C use is limited to subjective placement and washing observations.",
+          "conflictIds": [
+            "dirty-mat-hubpages-affiliate"
+          ]
+        }
+      ]
     },
     {
       "id": "generic-water-bowl",
@@ -1123,7 +1343,7 @@
           {
             "dimension": "accessibility",
             "status": "verified",
-            "requirement": "Confirm the dog is already comfortable with paw handling; never force the cup and stop at pain, injury, guarding, panic, or resistance.",
+            "requirement": "Confirm the dog is already comfortable with paw handling; never force the cup and stop at stillness, tight lips, side-eye, growling, visible discomfort, limping, bleeding, a wound, or ongoing pain.",
             "claimIds": [
               "claim-existing-routine-fit",
               "claim-owner-resistance-conflict",
@@ -1148,7 +1368,43 @@
           "recipientSpecificity": 5,
           "total": 17
         }
-      }
+      },
+      "sourceQualifications": [
+        {
+          "sourceId": "src-mudbuster-official",
+          "role": "primary",
+          "productMatch": "exact_product",
+          "contentFormat": "manufacturer_page",
+          "commercialRelationship": "first_party",
+          "qualification": "qualifies",
+          "rationale": "Dexas names the exact MudBuster and publishes the product design, care boundary, and sizing ranges.",
+          "conflictIds": []
+        },
+        {
+          "sourceId": "src-mudbuster-chewy-reviews",
+          "role": "independent",
+          "productMatch": "exact_product",
+          "contentFormat": "owner_review_corpus",
+          "commercialRelationship": "merchant_hosted_reviews",
+          "qualification": "qualifies",
+          "rationale": "The Chewy corpus covers the exact MudBuster and is limited to subjective owner reports about fit and dog acceptance.",
+          "conflictIds": [
+            "mudbuster-chewy-hosting"
+          ]
+        },
+        {
+          "sourceId": "src-mudbuster-walmart-reviews",
+          "role": "independent",
+          "productMatch": "exact_product",
+          "contentFormat": "owner_review_corpus",
+          "commercialRelationship": "merchant_hosted_reviews",
+          "qualification": "qualifies",
+          "rationale": "The Walmart corpus covers the exact MudBuster and supplies a second independent group of subjective owner reports.",
+          "conflictIds": [
+            "mudbuster-walmart-hosting"
+          ]
+        }
+      ]
     },
     {
       "id": "kurgo-mud-dog-travel-shower",
@@ -1163,7 +1419,7 @@
       ],
       "independentSourceIds": [
         "src-kurgo-shower-chewy-reviews",
-        "src-kurgo-shower-tinybuddy-reviews"
+        "src-kurgo-shower-smart-bark-review"
       ],
       "claimIds": [
         "claim-kurgo-benefit",
@@ -1210,7 +1466,7 @@
           {
             "dimension": "accessibility",
             "status": "verified",
-            "requirement": "Use only for a dog already comfortable with the cleanup pause; never force paw handling and stop at pain, injury, guarding, panic, or resistance.",
+            "requirement": "Use only for a dog already comfortable with the cleanup pause; never force paw handling and stop at stillness, tight lips, side-eye, growling, visible discomfort, limping, bleeding, a wound, or ongoing pain.",
             "claimIds": [
               "claim-existing-routine-fit",
               "claim-no-force-stop-boundary"
@@ -1234,22 +1490,58 @@
           "recipientSpecificity": 4,
           "total": 16
         }
-      }
+      },
+      "sourceQualifications": [
+        {
+          "sourceId": "src-kurgo-shower-official",
+          "role": "primary",
+          "productMatch": "exact_product",
+          "contentFormat": "manufacturer_page",
+          "commercialRelationship": "first_party",
+          "qualification": "qualifies",
+          "rationale": "Kurgo names the exact attachment and documents its material, bottle-size range, intended use, and care.",
+          "conflictIds": []
+        },
+        {
+          "sourceId": "src-kurgo-shower-chewy-reviews",
+          "role": "independent",
+          "productMatch": "exact_product",
+          "contentFormat": "owner_review_corpus",
+          "commercialRelationship": "merchant_hosted_reviews",
+          "qualification": "qualifies",
+          "rationale": "The Chewy corpus covers the exact Kurgo attachment and is used only for subjective bottle-fit experience.",
+          "conflictIds": [
+            "kurgo-chewy-hosting"
+          ]
+        },
+        {
+          "sourceId": "src-kurgo-shower-smart-bark-review",
+          "role": "independent",
+          "productMatch": "exact_product",
+          "contentFormat": "comparative_review",
+          "commercialRelationship": "affiliate_links",
+          "qualification": "qualifies",
+          "rationale": "Smart Bark says it bought and tested the exact Kurgo attachment; the Tier-C review supports hands-on tradeoffs, not specifications.",
+          "conflictIds": [
+            "kurgo-smart-bark-affiliate"
+          ]
+        }
+      ]
     },
     {
       "id": "soggy-doggy-super-shammy",
       "name": "Soggy Doggy Super Shammy",
       "editorialScore": 82,
-      "evidenceConfidence": 81,
+      "evidenceConfidence": 77,
       "drawbacks": [
-        "The Super Shammy must be washed without fabric softener and needs a hanging place; buyer reviews disagree on whether its compact size and drying time suit repeated whole-dog use."
+        "The Super Shammy must be washed without fabric softener and needs a hanging place; an older hands-on review praises the hand pockets but flags the separate-wash routine, so this is best for someone willing to give the towel its own care routine."
       ],
       "primarySourceIds": [
         "src-soggy-shammy-official"
       ],
       "independentSourceIds": [
         "src-soggy-shammy-chewy-reviews",
-        "src-soggy-shammy-woot-reviews"
+        "src-soggy-shammy-gadgeteer-review"
       ],
       "claimIds": [
         "claim-soggy-shammy-benefit",
@@ -1309,7 +1601,43 @@
           "recipientSpecificity": 4,
           "total": 18
         }
-      }
+      },
+      "sourceQualifications": [
+        {
+          "sourceId": "src-soggy-shammy-official",
+          "role": "primary",
+          "productMatch": "exact_product",
+          "contentFormat": "manufacturer_page",
+          "commercialRelationship": "first_party",
+          "qualification": "qualifies",
+          "rationale": "Soggy Doggy names the exact Super Shammy and documents its dimensions, material, pockets, and care.",
+          "conflictIds": []
+        },
+        {
+          "sourceId": "src-soggy-shammy-chewy-reviews",
+          "role": "independent",
+          "productMatch": "exact_product",
+          "contentFormat": "owner_review_corpus",
+          "commercialRelationship": "merchant_hosted_reviews",
+          "qualification": "qualifies",
+          "rationale": "The Chewy corpus covers the exact Super Shammy and is used only for subjective owner care and handling reports.",
+          "conflictIds": [
+            "soggy-chewy-hosting"
+          ]
+        },
+        {
+          "sourceId": "src-soggy-shammy-gadgeteer-review",
+          "role": "independent",
+          "productMatch": "exact_product",
+          "contentFormat": "first_person_review",
+          "commercialRelationship": "affiliate_links",
+          "qualification": "qualifies",
+          "rationale": "The Gadgeteer hands-on review covers the exact Super Shammy; its Tier-C evidence is limited to stable design and care observations.",
+          "conflictIds": [
+            "soggy-gadgeteer-affiliate"
+          ]
+        }
+      ]
     },
     {
       "id": "absorber-dog-lovers-towel",
@@ -1324,7 +1652,7 @@
       ],
       "independentSourceIds": [
         "src-absorber-girl-with-dogs-reviews",
-        "src-absorber-walmart-product-line-reviews"
+        "src-absorber-shop-app-reviews"
       ],
       "claimIds": [
         "claim-absorber-benefit",
@@ -1383,7 +1711,43 @@
           "recipientSpecificity": 4,
           "total": 15
         }
-      }
+      },
+      "sourceQualifications": [
+        {
+          "sourceId": "src-absorber-official",
+          "role": "primary",
+          "productMatch": "exact_product",
+          "contentFormat": "manufacturer_page",
+          "commercialRelationship": "first_party",
+          "qualification": "qualifies",
+          "rationale": "Dog Lover's Towel names the exact 17-by-27-inch product and documents its format and care boundary.",
+          "conflictIds": []
+        },
+        {
+          "sourceId": "src-absorber-girl-with-dogs-reviews",
+          "role": "independent",
+          "productMatch": "exact_product",
+          "contentFormat": "owner_review_corpus",
+          "commercialRelationship": "merchant_hosted_reviews",
+          "qualification": "qualifies",
+          "rationale": "The retailer corpus covers the exact Dog Lover's Towel and is limited to subjective owner drying experience.",
+          "conflictIds": [
+            "absorber-girl-with-dogs-hosting"
+          ]
+        },
+        {
+          "sourceId": "src-absorber-shop-app-reviews",
+          "role": "independent",
+          "productMatch": "exact_product",
+          "contentFormat": "owner_review_corpus",
+          "commercialRelationship": "merchant_hosted_reviews",
+          "qualification": "qualifies",
+          "rationale": "The Shop app corpus names the exact 17-by-27-inch Dog Lover's Towel and supplies a second owner-review group.",
+          "conflictIds": [
+            "absorber-shop-app-hosting"
+          ]
+        }
+      ]
     },
     {
       "id": "dirty-dog-doormat",
@@ -1459,7 +1823,43 @@
           "recipientSpecificity": 5,
           "total": 16
         }
-      }
+      },
+      "sourceQualifications": [
+        {
+          "sourceId": "src-dirty-mat-official",
+          "role": "primary",
+          "productMatch": "exact_product",
+          "contentFormat": "manufacturer_page",
+          "commercialRelationship": "first_party",
+          "qualification": "qualifies",
+          "rationale": "Dog Gone Smart names the exact Dirty Dog Doormat and documents its measured sizes, backing, and care.",
+          "conflictIds": []
+        },
+        {
+          "sourceId": "src-dirty-mat-chewy-reviews",
+          "role": "independent",
+          "productMatch": "exact_product",
+          "contentFormat": "owner_review_corpus",
+          "commercialRelationship": "merchant_hosted_reviews",
+          "qualification": "qualifies",
+          "rationale": "The Chewy corpus covers the exact mat and is used only for subjective placement and washing experience.",
+          "conflictIds": [
+            "dirty-mat-chewy-hosting"
+          ]
+        },
+        {
+          "sourceId": "src-dirty-mat-hubpages-review",
+          "role": "independent",
+          "productMatch": "exact_product",
+          "contentFormat": "first_person_review",
+          "commercialRelationship": "affiliate_links",
+          "qualification": "qualifies",
+          "rationale": "The owner-purchased HubPages account covers the exact mat; Tier-C use is limited to subjective placement and washing observations.",
+          "conflictIds": [
+            "dirty-mat-hubpages-affiliate"
+          ]
+        }
+      ]
     }
   ],
   "pairs": [
@@ -1471,7 +1871,7 @@
       "recipientJob": "Contain recurring heavier mud at one measured doorway and dry each paw before the dog crosses the clean threshold, without forcing handling.",
       "coherenceType": "completes_task",
       "whyTogether": "For a dog already comfortable with paw handling, the MudBuster contains a heavier-mud rinse and the Super Shammy gives the person hand pockets for drying the water left behind.",
-      "interactionMoment": "Set out warm—not hot—water and the towel before the walk; on return, use the familiar cleanup pause and stop immediately for pain, injury, guarding, panic, or resistance.",
+      "interactionMoment": "Set out warm—not hot—water and the towel before the walk; on return, use the familiar cleanup pause and stop immediately for stillness, tight lips, side-eye, growling, visible discomfort, limping, bleeding, a wound, or ongoing pain.",
       "compatibilityChecks": [
         {
           "dimension": "size_or_fit",
@@ -1486,7 +1886,7 @@
         {
           "dimension": "accessibility",
           "status": "verified",
-          "requirement": "Confirm comfortable paw handling, never force the cup, and stop at pain, injury, guarding, panic, or resistance.",
+          "requirement": "Confirm comfortable paw handling, never force the cup, and stop at stillness, tight lips, side-eye, growling, visible discomfort, limping, bleeding, a wound, or ongoing pain.",
           "claimIds": [
             "claim-existing-routine-fit",
             "claim-owner-resistance-conflict",
@@ -1538,7 +1938,7 @@
       "recipientJob": "Direct a small water rinse at a porch or car-side cleanup spot and dry paws before the dog enters the car or home.",
       "coherenceType": "completes_task",
       "whyTogether": "For a dog already comfortable with the routine, the tested Kurgo attachment directs a warm-water rinse where no faucet is handy and the pocketed Super Shammy removes the water left behind.",
-      "interactionMoment": "Keep a tested PET bottle, warm—not hot—water, and the towel together; rinse at the familiar spot, stop for resistance or pain, and dry before moving on.",
+      "interactionMoment": "Keep a tested PET bottle, warm—not hot—water, and the towel together; rinse at the familiar spot, stop for visible discomfort or pain, and dry before moving on.",
       "compatibilityChecks": [
         {
           "dimension": "device_or_ecosystem",
@@ -1560,7 +1960,7 @@
         {
           "dimension": "accessibility",
           "status": "verified",
-          "requirement": "Use the pair only for a comfortable familiar cleanup pause; never force handling and stop at pain, injury, guarding, panic, or resistance.",
+          "requirement": "Use the pair only for a comfortable familiar cleanup pause; never force handling and stop at stillness, tight lips, side-eye, growling, visible discomfort, limping, bleeding, a wound, or ongoing pain.",
           "claimIds": [
             "claim-existing-routine-fit",
             "claim-no-force-stop-boundary"
@@ -1610,13 +2010,13 @@
     "reviewerId": "pending-independent-review",
     "receiptPath": "research/reviews/20260823-muddy-paw-arrival-e09ff303.qa.v1.json",
     "blockers": [
-      "Lucas must review and approve the final plain-language safety wording for warm—not hot—water, no force, and stopping for pain, injury, guarding, panic, or resistance.",
-      "Fresh independent editorial review is required because the drafting desk changed sources, safety claims, finalists, scores, pairs, article copy, and social copy."
+      "Lucas must review and approve the final plain-language safety wording for warm—not hot—water, no force, stillness, tight lips, side-eye, growling, visible discomfort, limping, bleeding, wounds, and ongoing pain.",
+      "Fresh independent editorial review is required after the source replacements, commercial-relationship qualifications, narrowed safety wording, and evidence-score change."
     ],
     "warnings": [
-      "Dexas publishes small through 2 inches and medium from 2.5 inches; the over-2-to-under-2.5-inch gap is preserved as ask Dexas or skip, and marketplace evidence does not close it.",
-      "The HubPages mat account is owner-purchased but appears on a platform that may compensate product-link content; it is used only as subjective experience.",
-      "The Absorber replacement uses one exact-product independent retailer corpus and one same-brand, same-size PVA product-line retailer corpus; the latter is not treated as dog-use evidence."
+      "Dexas publishes small through 2 inches and medium from 2.5 inches; the over-2-to-under-2.5-inch gap remains ask Dexas or skip.",
+      "The Gadgeteer Super Shammy review is old and affiliate-supported, so it is used only for stable design and care observations.",
+      "Every product link remains ordinary and unpaid; no affiliate tracking was added."
     ]
   }
 }

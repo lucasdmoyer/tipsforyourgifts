@@ -467,13 +467,13 @@
         "status": "qa_failed",
         "reviewerId": "pending-independent-review",
         "blockers": [
-          "Lucas must review and approve the final plain-language safety wording for warm—not hot—water, no force, and stopping for pain, injury, guarding, panic, or resistance.",
-          "Fresh independent editorial review is required because the drafting desk changed sources, safety claims, finalists, scores, pairs, article copy, and social copy."
+          "Lucas must review and approve the final plain-language safety wording for warm—not hot—water, no force, stillness, tight lips, side-eye, growling, visible discomfort, limping, bleeding, wounds, and ongoing pain.",
+          "Fresh independent editorial review is required after the source replacements, commercial-relationship qualifications, narrowed safety wording, and evidence-score change."
         ],
         "warnings": [
-          "Dexas publishes small through 2 inches and medium from 2.5 inches; the over-2-to-under-2.5-inch gap is preserved as ask Dexas or skip, and marketplace evidence does not close it.",
-          "The HubPages mat account is owner-purchased but appears on a platform that may compensate product-link content; it is used only as subjective experience.",
-          "The Absorber replacement uses one exact-product independent retailer corpus and one same-brand, same-size PVA product-line retailer corpus; the latter is not treated as dog-use evidence."
+          "Dexas publishes small through 2 inches and medium from 2.5 inches; the over-2-to-under-2.5-inch gap remains ask Dexas or skip.",
+          "The Gadgeteer Super Shammy review is old and affiliate-supported, so it is used only for stable design and care observations.",
+          "Every product link remains ordinary and unpaid; no affiliate tracking was added."
         ],
         "failedReview": null,
         "highRiskClaims": [
@@ -503,7 +503,7 @@
           },
           {
             "id": "claim-no-force-stop-boundary",
-            "text": "Never force a paw into a washer. Stop if the dog freezes, pulls away, guards the paw, growls, panics, or otherwise resists; stop for limping, bleeding, a wound, or other signs of pain or injury and ask a veterinarian.",
+            "text": "Never force a paw into a washer. Stop if the dog becomes still, shows tight lips or side-eye, growls, or shows other visible discomfort; stop for limping, bleeding, a wound, or ongoing pain and ask a veterinarian.",
             "sourceIds": [
               "src-handling-akc",
               "src-paw-injury-vca"
@@ -535,9 +535,9 @@
           "social": "social/drafts/muddy-paw-washer-drying-towel-gift-pairs-launch.json"
         },
         "sourceSha256": {
-          "run": "2066fb06e5a42933cb80b3aa84047377c105360829afbd55d24ce3baea531742",
-          "article": "2a5a2f877e5cc56cf5d5fad663e983a02794e46f70e859a2fcbdb669bed36ed8",
-          "social": "91545c599b5c982e81111bbae224d9947b3f8adc33c19caccdb5e132444dad82"
+          "run": "d83ffb32484f4ece27947c7aeea6ed959f006a84a3cf1410a2739be2c9495565",
+          "article": "6e2b241683eba01da8d787a8ec76366d1e6685c8f0728897064382688e751125",
+          "social": "69b671ab7731850049b5b34c13f66cef0e5a364d578695c3b97e768aa04642ea"
         },
         "nextGate": "Lucas records an owner-only, hash-bound decision on the exact high-risk claim language; approval still does not replace independent QA or authorize publication."
       },
@@ -546,14 +546,14 @@
         "ideaId": "founder-idea-013",
         "articleSlug": "vinyl-record-cleaner-inner-sleeve-gift-pairs",
         "status": "qa_failed",
-        "reviewerId": "independent-evidence-audit-20261010",
+        "reviewerId": "pending-independent-review",
         "blockers": [
-          "Founder review is required for the qualified current GrooveWasher G2 product-label safety boundary before promotion or publication.",
-          "The repaired bundle has not received a fresh independent review after exact-product source replacement, shopping-link refresh, claim-role separation, and score changes."
+          "Lucas must review and approve the exact current GrooveWasher G2 product-label safety boundary before promotion or publication.",
+          "Fresh independent editorial review is required after source replacement, commercial-relationship qualification, claim rebinding, bounded self-purchase logic, and score changes."
         ],
         "warnings": [
-          "Sound Matters remains in the source ledger only as a Tier-D conflict record and is not used in any scored claim or finalist source set.",
-          "The Big Fudge manufacturer page was marked sold out during review; the reader link uses the exact 12-inch 50-count product at Binaural Records and availability still requires a pre-publication recheck.",
+          "The Big Fudge manufacturer page was marked sold out; the exact 12-inch 50-count shopping destination still requires a pre-publication availability recheck.",
+          "The GrooveWasher Reddit evidence is a transparent exact-product owner report and is used only for bounded subjective experience.",
           "Every product link remains ordinary and unpaid; no affiliate tracking was added."
         ],
         "failedReview": null,
@@ -583,8 +583,8 @@
           "social": "social/drafts/vinyl-record-cleaner-inner-sleeve-gift-pairs-launch.json"
         },
         "sourceSha256": {
-          "run": "5c0982692b4a3e078530ce90ed3afff2982e9a20b71df972ed32f5fa08783599",
-          "article": "c15ea7a3362ea193b9cb7fff587e42c750b4216b451aa9e97ee97786fc909f56",
+          "run": "4b9b67916de9943e9ef68e91fdbee8f654eccdc39758815098ac1447fca79d1d",
+          "article": "bf3a6554c1448c5d023d62084a05942df9295eefeb2934f61c43dfb3dffd5c70",
           "social": "fe56464843b6f49fe43406d17df490f6fe74344d7ad26765d8c6659f16ec7637"
         },
         "nextGate": "Lucas records an owner-only, hash-bound decision on the exact high-risk claim language; approval still does not replace independent QA or authorize publication."
@@ -1807,7 +1807,7 @@
       {
         "postId": "muddy-paw-two-step-test",
         "packId": "muddy-paw-washer-drying-towel-gift-pairs-launch",
-        "packSha256": "91545c599b5c982e81111bbae224d9947b3f8adc33c19caccdb5e132444dad82",
+        "packSha256": "69b671ab7731850049b5b34c13f66cef0e5a364d578695c3b97e768aa04642ea",
         "articleSlug": "muddy-paw-washer-drying-towel-gift-pairs",
         "platform": "pinterest",
         "format": "two-part-diagram",
@@ -1837,7 +1837,7 @@
       {
         "postId": "muddy-paw-measure-the-paw",
         "packId": "muddy-paw-washer-drying-towel-gift-pairs-launch",
-        "packSha256": "91545c599b5c982e81111bbae224d9947b3f8adc33c19caccdb5e132444dad82",
+        "packSha256": "69b671ab7731850049b5b34c13f66cef0e5a364d578695c3b97e768aa04642ea",
         "articleSlug": "muddy-paw-washer-drying-towel-gift-pairs",
         "platform": "instagram",
         "format": "five-slide-carousel",
@@ -1867,7 +1867,7 @@
       {
         "postId": "muddy-paw-test-the-bottle",
         "packId": "muddy-paw-washer-drying-towel-gift-pairs-launch",
-        "packSha256": "91545c599b5c982e81111bbae224d9947b3f8adc33c19caccdb5e132444dad82",
+        "packSha256": "69b671ab7731850049b5b34c13f66cef0e5a364d578695c3b97e768aa04642ea",
         "articleSlug": "muddy-paw-washer-drying-towel-gift-pairs",
         "platform": "instagram",
         "format": "five-slide-carousel",
@@ -1897,7 +1897,7 @@
       {
         "postId": "muddy-paw-towel-choice",
         "packId": "muddy-paw-washer-drying-towel-gift-pairs-launch",
-        "packSha256": "91545c599b5c982e81111bbae224d9947b3f8adc33c19caccdb5e132444dad82",
+        "packSha256": "69b671ab7731850049b5b34c13f66cef0e5a364d578695c3b97e768aa04642ea",
         "articleSlug": "muddy-paw-washer-drying-towel-gift-pairs",
         "platform": "pinterest",
         "format": "buy-skip-card",
@@ -1927,7 +1927,7 @@
       {
         "postId": "muddy-paw-stable-station",
         "packId": "muddy-paw-washer-drying-towel-gift-pairs-launch",
-        "packSha256": "91545c599b5c982e81111bbae224d9947b3f8adc33c19caccdb5e132444dad82",
+        "packSha256": "69b671ab7731850049b5b34c13f66cef0e5a364d578695c3b97e768aa04642ea",
         "articleSlug": "muddy-paw-washer-drying-towel-gift-pairs",
         "platform": "tiktok",
         "format": "thirty-second-script",
@@ -1957,7 +1957,7 @@
       {
         "postId": "muddy-paw-simple-towel-wins",
         "packId": "muddy-paw-washer-drying-towel-gift-pairs-launch",
-        "packSha256": "91545c599b5c982e81111bbae224d9947b3f8adc33c19caccdb5e132444dad82",
+        "packSha256": "69b671ab7731850049b5b34c13f66cef0e5a364d578695c3b97e768aa04642ea",
         "articleSlug": "muddy-paw-washer-drying-towel-gift-pairs",
         "platform": "pinterest",
         "format": "vertical-checklist",
