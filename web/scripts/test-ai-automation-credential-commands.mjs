@@ -9,6 +9,7 @@ import { fileURLToPath } from 'node:url';
 import { parse as parseYaml } from 'yaml';
 import { parseAiCredentialVerificationReceipt } from './lib/ai-credential-verification-contract.mjs';
 import { buildAiAutomationPolicySummary, parseAiAutomationPolicy } from './lib/ai-automation-policy-contract.mjs';
+import { aiCredentialAuthorityLines, buildAiAutomationCredentialIssueUrl, resolveAiAutomationCredentialIssueRequest, resolveAiAutomationCredentialManualRequest } from './lib/ai-automation-credential-request-contract.mjs';
 
 const scriptDirectory = path.dirname(fileURLToPath(import.meta.url));
 const webRoot = path.resolve(scriptDirectory, '..');
@@ -114,6 +115,40 @@ assert.equal(recordOutput.responseBodyStored, false);
 assert.equal(recordOutput.modelCalled, false);
 assert.equal(recordOutput.policyActivated, false);
 
+const approvalUrl = new URL(buildAiAutomationCredentialIssueUrl({ expectedPolicySha256: budgetApprovedSha256 }));
+assert.equal(approvalUrl.origin, 'https://github.com');
+assert.equal(approvalUrl.pathname, '/lucasdmoyer/tipsforyourgifts/issues/new');
+const issueTitle = approvalUrl.searchParams.get('title');
+const uncheckedIssueBody = approvalUrl.searchParams.get('body');
+assert.equal(issueTitle, `[Verify AI Credential] policy ${budgetApprovedSha256.slice(0, 12)}`);
+assert.ok(uncheckedIssueBody.includes('Never paste the key into this issue'));
+for (const line of aiCredentialAuthorityLines) assert.ok(uncheckedIssueBody.includes(`- [ ] ${line}`));
+const checkedIssueBody = uncheckedIssueBody.replaceAll('- [ ] ', '- [x] ');
+const validIssue = {
+  title: issueTitle,
+  body: checkedIssueBody,
+  html_url: 'https://github.com/lucasdmoyer/tipsforyourgifts/issues/997',
+  user: { login: 'lucasdmoyer' },
+  author_association: 'OWNER'
+};
+const issueRequest = resolveAiAutomationCredentialIssueRequest({ issue: validIssue, actualPolicySha256: budgetApprovedSha256, policyStatus: budgetApprovedPolicy.status });
+assert.equal(issueRequest.expectedPolicySha256, budgetApprovedSha256);
+assert.equal(issueRequest.confirmation, 'VERIFY-ai-automation-credential');
+assert.equal(issueRequest.source, 'owner_issue');
+const manualRequest = resolveAiAutomationCredentialManualRequest({
+  expectedPolicySha256: budgetApprovedSha256,
+  confirmation: 'VERIFY-ai-automation-credential',
+  actualPolicySha256: budgetApprovedSha256,
+  policyStatus: budgetApprovedPolicy.status
+});
+assert.equal(manualRequest.source, 'workflow_dispatch');
+assert.throws(() => resolveAiAutomationCredentialIssueRequest({ issue: { ...validIssue, body: uncheckedIssueBody }, actualPolicySha256: budgetApprovedSha256, policyStatus: budgetApprovedPolicy.status }), /authority check is missing/);
+assert.throws(() => resolveAiAutomationCredentialIssueRequest({ issue: { ...validIssue, user: { login: 'someone-else' } }, actualPolicySha256: budgetApprovedSha256, policyStatus: budgetApprovedPolicy.status }), /repository owner/);
+assert.throws(() => resolveAiAutomationCredentialIssueRequest({ issue: { ...validIssue, html_url: 'https://github.com/elsewhere/repository/issues/997' }, actualPolicySha256: budgetApprovedSha256, policyStatus: budgetApprovedPolicy.status }), /outside the canonical repository/);
+const staleIssueDigest = `${budgetApprovedSha256.slice(0, 12)}${'0'.repeat(52)}`;
+assert.throws(() => resolveAiAutomationCredentialIssueRequest({ issue: { ...validIssue, body: checkedIssueBody.replace(budgetApprovedSha256, staleIssueDigest) }, actualPolicySha256: budgetApprovedSha256, policyStatus: budgetApprovedPolicy.status }), /changed after founder review/);
+assert.throws(() => resolveAiAutomationCredentialIssueRequest({ issue: validIssue, actualPolicySha256: budgetApprovedSha256, policyStatus: 'active' }), /not awaiting credential verification/);
+
 const recordedSha256 = createHash('sha256').update(recordedRaw).digest('hex');
 const activatedResult = activate(happyDirectory, recordedSha256);
 assert.equal(activatedResult.status, 0, activatedResult.stderr);
@@ -180,8 +215,8 @@ for (const [label, overrides, pattern] of [
 const verifyWorkflowSource = await fs.readFile(path.join(repoRoot, '.github', 'workflows', 'ai-automation-credential-verify.yml'), 'utf8');
 const verifyWorkflow = parseYaml(verifyWorkflowSource);
 const verifyJob = verifyWorkflow.jobs.verify;
-assert.deepEqual(verifyWorkflow.permissions, { contents: 'read' });
-assert.deepEqual(verifyWorkflow.jobs.prepare.permissions, { contents: 'read' });
+assert.deepEqual(verifyWorkflow.permissions, { contents: 'read', issues: 'read' });
+assert.deepEqual(verifyWorkflow.jobs.prepare.permissions, { contents: 'read', issues: 'read' });
 assert.deepEqual(verifyJob.permissions, {});
 assert.equal(verifyJob.environment, 'ai-automation-credential');
 assert.equal(verifyJob.steps.some((step) => step.uses === 'actions/checkout@v5'), false);
@@ -190,6 +225,10 @@ assert.equal(JSON.stringify(verifyWorkflow.jobs.open_pull_request).includes('sec
 assert.match(verifyWorkflowSource, /https:\/\/api\.openai\.com\/v1\/models/);
 assert.match(verifyWorkflowSource, /responseBodyStored:false,modelCalled:false,policyActivated:false/);
 assert.match(verifyWorkflowSource, /refs\/heads\/master/);
+assert.match(verifyWorkflowSource, /issues:\s*\n\s+types: \[opened, reopened\]/);
+assert.match(verifyWorkflowSource, /github\.event\.issue\.author_association == 'OWNER'/);
+assert.match(verifyWorkflowSource, /resolve-ai-automation-credential-request\.mjs --request-path=/);
+assert.doesNotMatch(verifyWorkflowSource, /ai:credential:record[^\n]*inputs\.confirmation/);
 assert.doesNotMatch(verifyWorkflowSource, /openai\/codex-action|responses|chat\/completions|gh pr merge|firebase-tools/iu);
 
 const activationWorkflowSource = await fs.readFile(path.join(repoRoot, '.github', 'workflows', 'ai-automation-activate.yml'), 'utf8');
@@ -204,8 +243,9 @@ console.log(JSON.stringify({
   aiAutomationCredentialCommandTests: 'passed',
   credentialTransition: 'budget_approved_awaiting_credential -> credential_verified_awaiting_activation',
   activationTransition: 'credential_verified_awaiting_activation -> active',
-  commandNegativeChecks: 18,
-  workflowSafetyChecks: 16,
+  commandNegativeChecks: 23,
+  workflowSafetyChecks: 20,
+  mobileOwnerIssue: 'passed',
   secretValueStored: false,
   responseBodyStored: false,
   modelCalled: false,

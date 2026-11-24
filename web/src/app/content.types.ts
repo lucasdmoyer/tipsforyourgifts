@@ -222,6 +222,8 @@ export interface AiAutomationPolicy {
   credentialVerification: {
     available: boolean;
     workflowUrl: string;
+    approvalIssueUrl: string;
+    environmentSettingsUrl: string;
     confirmation: 'VERIFY-ai-automation-credential';
     method: 'openai_models_endpoint';
     endpoint: 'https://api.openai.com/v1/models';

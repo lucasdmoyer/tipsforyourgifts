@@ -549,10 +549,13 @@ describe('App', () => {
       let fixture = TestBed.createComponent(StudioPage);
       fixture.detectChanges();
       let element = fixture.nativeElement as HTMLElement;
-      expect(element.textContent).toContain('Verify dedicated AI credential');
+      expect(element.textContent).toContain('Review the exact credential check');
+      expect(element.textContent).toContain('Never paste it into Studio, an issue, a prompt, or a repository file.');
       expect(element.textContent).toContain('checks out and runs no repository code');
       expect(element.textContent).toContain(policy.credentialVerification.command);
-      expect(element.querySelector(`a[href="${policy.credentialVerification.workflowUrl}"]`)).not.toBeNull();
+      expect(anchorWithExactHref(element, policy.credentialVerification.approvalIssueUrl)).not.toBeNull();
+      expect(anchorWithExactHref(element, policy.credentialVerification.environmentSettingsUrl)).not.toBeNull();
+      expect(anchorWithExactHref(element, policy.credentialVerification.workflowUrl)).not.toBeNull();
       expect(element.textContent).not.toContain('Propose AI policy activation');
 
       policy.status = 'credential_verified_awaiting_activation';
