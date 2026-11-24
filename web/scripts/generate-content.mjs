@@ -11,6 +11,7 @@ const blogDir = path.join(root, 'src', 'data', 'blog');
 const generatedDir = path.join(root, 'src', 'app', 'generated');
 const publicOutputPath = path.join(generatedDir, 'content.generated.ts');
 const publicSummaryOutputPath = path.join(generatedDir, 'content-summary.generated.ts');
+const homeSummaryOutputPath = path.join(generatedDir, 'home-summary.generated.ts');
 const articleLoaderOutputPath = path.join(generatedDir, 'article-loaders.generated.ts');
 const giftPathsOutputPath = path.join(generatedDir, 'gift-paths.generated.ts');
 const articleModuleDir = path.join(generatedDir, 'articles');
@@ -122,6 +123,9 @@ const publicArticleSummaries = publicArticles.map((article) => ({
   paidLinkCount: article.products.filter((product) => product.affiliate).length,
   visual: { hero: article.visual.hero }
 }));
+const homeArticleSummaries = [...publicArticleSummaries]
+  .sort((left, right) => right.publishDate.localeCompare(left.publishDate))
+  .slice(0, 3);
 
 const strategy = JSON.parse(await fs.readFile(strategyPath, 'utf8'));
 const operations = JSON.parse(await fs.readFile(operationsPath, 'utf8'));
@@ -139,6 +143,8 @@ const publicSummarySource = `${banner}import type { ArticleSummary } from '../co
     pairs: publicArticles.reduce((sum, article) => sum + article.pairs.length, 0),
     paidLinkCount: publicArticleSummaries.reduce((sum, article) => sum + article.paidLinkCount, 0)
   }, null, 2)} as const;\n`;
+const homeSummarySource = `${banner}import type { ArticleSummary } from '../content.types';\n\n` +
+  `export const HOME_ARTICLE_SUMMARIES: readonly ArticleSummary[] = ${JSON.stringify(homeArticleSummaries, null, 2)};\n`;
 const articleLoaderSource = `${banner}import type { ArticlePageData } from '../content.types';\n\n` +
   `export const ARTICLE_SLUGS = ${JSON.stringify(publicArticles.map((article) => article.slug), null, 2)} as const;\n\n` +
   `const ARTICLE_LOADERS: Record<string, () => Promise<ArticlePageData>> = {\n${publicArticles.map((article) => `  ${JSON.stringify(article.slug)}: () => import('./articles/${article.slug}.generated').then(({ ARTICLE }) => ARTICLE)`).join(',\n')}\n};\n\n` +
@@ -158,6 +164,7 @@ for (const existingName of await fs.readdir(articleModuleDir)) {
 await Promise.all([
   fs.writeFile(publicOutputPath, publicSource),
   fs.writeFile(publicSummaryOutputPath, publicSummarySource),
+  fs.writeFile(homeSummaryOutputPath, homeSummarySource),
   fs.writeFile(articleLoaderOutputPath, articleLoaderSource),
   fs.writeFile(giftPathsOutputPath, giftPathsSource),
   fs.writeFile(studioOutputPath, studioSource),
