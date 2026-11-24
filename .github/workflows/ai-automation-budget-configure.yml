@@ -27,9 +27,12 @@ on:
         description: "Type CONFIGURE-ai-automation-budget"
         required: true
         type: string
+  issues:
+    types: [opened, reopened]
 
 permissions:
   contents: read
+  issues: read
 
 concurrency:
   group: ai-automation-budget-configure
@@ -37,10 +40,17 @@ concurrency:
 
 jobs:
   prepare:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'issues' &&
+       github.event.issue.user.login == 'lucasdmoyer' &&
+       github.event.issue.author_association == 'OWNER' &&
+       startsWith(github.event.issue.title, '[Configure AI Budget] '))
     runs-on: ubuntu-latest
     timeout-minutes: 30
     permissions:
       contents: read
+      issues: read
     outputs:
       base_sha: ${{ steps.base.outputs.sha }}
     steps:
@@ -48,10 +58,8 @@ jobs:
         env:
           ACTOR: ${{ github.actor }}
           OWNER: ${{ github.repository_owner }}
-          CONFIRMATION: ${{ inputs.confirmation }}
         run: |
           test "$ACTOR" = "$OWNER" || { echo "Only the repository owner may record the AI automation budget." >&2; exit 1; }
-          test "$CONFIRMATION" = "CONFIGURE-ai-automation-budget" || { echo "Action-time confirmation does not match the AI automation budget." >&2; exit 1; }
       - uses: actions/checkout@v5
         with:
           ref: master
@@ -65,17 +73,35 @@ jobs:
           node-version: "24.14.0"
           cache: npm
           cache-dependency-path: web/package-lock.json
-      - name: Record the credential-free budget attestation
+      - name: Install and resolve the exact founder budget request
+        id: request
         env:
-          EXPECTED_POLICY_SHA256: ${{ inputs.expected_policy_sha256 }}
-          MONTHLY_BUDGET_USD: ${{ inputs.monthly_budget_usd }}
-          HARD_LIMIT_ENABLED: ${{ inputs.hard_limit_enabled }}
-          ALERT_THRESHOLD_USD: ${{ inputs.alert_threshold_usd }}
-          PLATFORM_EVIDENCE_URL: ${{ inputs.platform_evidence_url }}
-          CONFIRMATION: ${{ inputs.confirmation }}
-          FOUNDER_LOGIN: ${{ github.actor }}
+          GH_TOKEN: ${{ github.token }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          INPUT_POLICY_SHA256: ${{ inputs.expected_policy_sha256 }}
+          INPUT_MONTHLY_BUDGET_USD: ${{ inputs.monthly_budget_usd }}
+          INPUT_HARD_LIMIT_ENABLED: ${{ inputs.hard_limit_enabled }}
+          INPUT_ALERT_THRESHOLD_USD: ${{ inputs.alert_threshold_usd }}
+          INPUT_PLATFORM_EVIDENCE_URL: ${{ inputs.platform_evidence_url }}
+          INPUT_CONFIRMATION: ${{ inputs.confirmation }}
         run: |
           npm ci --prefix web
+          if [ "${{ github.event_name }}" = "issues" ]; then
+            gh api "repos/$GITHUB_REPOSITORY/issues/$ISSUE_NUMBER" > "$RUNNER_TEMP/ai-budget-issue.json"
+            node web/scripts/resolve-ai-automation-budget-request.mjs --request-path="$RUNNER_TEMP/ai-budget-issue.json" >> "$GITHUB_OUTPUT"
+          else
+            node web/scripts/resolve-ai-automation-budget-request.mjs --expected-policy-sha256="$INPUT_POLICY_SHA256" --monthly-budget-usd="$INPUT_MONTHLY_BUDGET_USD" --hard-limit-enabled="$INPUT_HARD_LIMIT_ENABLED" --alert-threshold-usd="$INPUT_ALERT_THRESHOLD_USD" --platform-evidence-url="$INPUT_PLATFORM_EVIDENCE_URL" --confirmation="$INPUT_CONFIRMATION" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Record the credential-free budget attestation
+        env:
+          EXPECTED_POLICY_SHA256: ${{ steps.request.outputs.expected_policy_sha256 }}
+          MONTHLY_BUDGET_USD: ${{ steps.request.outputs.monthly_budget_usd }}
+          HARD_LIMIT_ENABLED: ${{ steps.request.outputs.hard_limit_enabled }}
+          ALERT_THRESHOLD_USD: ${{ steps.request.outputs.alert_threshold_usd }}
+          PLATFORM_EVIDENCE_URL: ${{ steps.request.outputs.platform_evidence_url }}
+          CONFIRMATION: ${{ steps.request.outputs.confirmation }}
+          FOUNDER_LOGIN: ${{ github.actor }}
+        run: |
           npm run validate
           npm --prefix web run ai:budget:configure -- --expected-policy-sha256="$EXPECTED_POLICY_SHA256" --monthly-budget-usd="$MONTHLY_BUDGET_USD" --hard-limit-enabled="$HARD_LIMIT_ENABLED" --alert-threshold-usd="$ALERT_THRESHOLD_USD" --platform-evidence-url="$PLATFORM_EVIDENCE_URL" --confirmation="$CONFIRMATION" --founder-login="$FOUNDER_LOGIN"
           npm --prefix web run generate

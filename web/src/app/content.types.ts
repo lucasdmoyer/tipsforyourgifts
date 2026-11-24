@@ -214,6 +214,7 @@ export interface AiAutomationPolicy {
   budgetConfiguration: {
     available: boolean;
     workflowUrl: string;
+    approvalIssueUrl: string;
     confirmation: 'CONFIGURE-ai-automation-budget';
     evidenceMode: 'founder_attested_external_platform_configuration';
     command: string;
