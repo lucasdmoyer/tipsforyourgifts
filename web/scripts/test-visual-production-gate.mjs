@@ -1,0 +1,154 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { parse as parseYaml } from 'yaml';
+import {
+  buildImageGenerationBody,
+  buildVisualPrompt,
+  extractSingleGeneratedImage,
+  extractStructuredOutput,
+  visualReviewFindingsSchema,
+  visualReviewModelOutputSchema,
+  OPENAI_RESPONSES_ENDPOINT,
+  VISUAL_IMAGE_TOOL_MODEL,
+  VISUAL_PRODUCER_MODEL,
+  VISUAL_REVIEW_MODEL
+} from './lib/visual-production-contract.mjs';
+import { visualFailureReceiptSchema } from './lib/visual-failure-contract.mjs';
+import { parseAiAutomationPolicy, validateDirectApiWorkflowDocument } from './lib/ai-automation-policy-contract.mjs';
+import { resolveVisualAutoMerge } from './lib/visual-auto-merge-contract.mjs';
+
+const webRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const repoRoot = path.resolve(webRoot, '..');
+const request = {
+  visualSystem: { styleVersion: 'gift-thread-editorial-cartoon-v1.0' },
+  assets: []
+};
+const asset = {
+  assetId: 'sample-hero',
+  role: 'hero',
+  pairId: null,
+  productIds: ['sample-product'],
+  sceneDescription: 'An adult uses one useful generic object during a familiar routine while a specialty companion waits nearby.',
+  alt: 'An adult uses a useful generic gift during a familiar routine beside its specialty companion.',
+  caption: 'The pair respects what already works and adds one thoughtful specialty improvement.'
+};
+const prompt = buildVisualPrompt({ request, asset });
+assert.ok(prompt.length >= 500);
+assert.match(prompt, /never an exact SKU likeness/);
+assert.match(prompt, /no brand marks/i);
+const generationBody = buildImageGenerationBody({ prompt, safetyIdentifier: 'a'.repeat(64), styleReferenceDataUrl: 'data:image/png;base64,AA==' });
+assert.equal(generationBody.model, VISUAL_PRODUCER_MODEL);
+assert.equal(generationBody.store, false);
+assert.equal(generationBody.tools[0].model, VISUAL_IMAGE_TOOL_MODEL);
+assert.deepEqual(generationBody.tool_choice, { type: 'image_generation' });
+assert.equal(OPENAI_RESPONSES_ENDPOINT, 'https://api.openai.com/v1/responses');
+assert.equal(extractSingleGeneratedImage({ output: [{ type: 'image_generation_call', result: Buffer.from('image').toString('base64') }] }).bytes.toString(), 'image');
+assert.throws(() => extractSingleGeneratedImage({ output: [] }), /exactly one/);
+assert.deepEqual(extractStructuredOutput({ status: 'completed', output_text: '{"ok":true}' }), { ok: true });
+assert.throws(() => extractStructuredOutput({ status: 'incomplete' }), /did not complete/);
+
+const cleanChecks = Object.fromEntries(['styleMatch', 'sceneAccuracy', 'productContextTruth', 'copyrightAndTradeDressBoundary', 'anatomyAndObjectCoherence', 'mobileLegibility', 'textAndWatermarkFree', 'safeDepiction'].map((key) => [key, true]));
+const passed = {
+  schemaVersion: '1.0.0',
+  requestId: '20261123-sample-aaaaaaaa-visuals',
+  verdict: 'passed',
+  assets: [{ assetId: 'sample-hero', checks: cleanChecks, blockers: [], warnings: [] }],
+  blockers: [],
+  warnings: []
+};
+assert.equal(visualReviewModelOutputSchema.parse(passed).verdict, 'passed');
+assert.equal(visualReviewModelOutputSchema.safeParse({ ...passed, assets: [{ ...passed.assets[0], checks: { ...cleanChecks, mobileLegibility: false } }] }).success, false);
+assert.equal(visualReviewFindingsSchema.safeParse({
+  ...passed,
+  manifestPath: 'visuals/production/20261123-sample-aaaaaaaa-visuals/manifest.json',
+  manifestSha256: 'a'.repeat(64),
+  reviewedAt: '2026-11-23T00:00:00.000Z',
+  reviewer: { role: 'independent-visual-editor', model: VISUAL_REVIEW_MODEL, workflow: 'visual-production.yml', workflowRunId: '123', workflowRunAttempt: 1, responseId: 'resp_12345678', usage: { totalTokens: 30, inputTokens: 20, outputTokens: 10 } },
+  privacy: { rawApiResponseStored: false, secretValueStored: false, personalDataSent: false }
+}).success, true);
+
+const failureReceipt = {
+  schemaVersion: '1.0.0',
+  failureId: '20261123-sample-aaaaaaaa-visuals-run123-attempt1',
+  status: 'retry_required',
+  stage: 'independent_review',
+  reasonCode: 'review_verdict_failed',
+  recordedAt: '2026-11-23T00:01:00.000Z',
+  workflow: { name: 'visual-production.yml', runId: '123', runAttempt: 1, url: 'https://github.com/lucasdmoyer/tipsforyourgifts/actions/runs/123' },
+  bindings: {
+    requestId: '20261123-sample-aaaaaaaa-visuals', requestPath: 'visuals/requests/20261123-sample-aaaaaaaa-visuals.json', requestSha256: 'a'.repeat(64),
+    missionId: 'research-mission-123-1', missionPath: 'research/missions/research-mission-123-1.json', missionSha256: 'b'.repeat(64),
+    runId: '20261123-sample-aaaaaaaa', articleSlug: 'sample-article'
+  },
+  evidence: { manifestSha256: 'c'.repeat(64), findingsSha256: 'd'.repeat(64), reviewVerdict: 'failed', blockers: ['sample-hero: mobileLegibility failed the independent visual review.'], warnings: [] },
+  handling: { partialOutputPreserved: false, generatedAssetsPromoted: false, reviewReceiptCreated: false, productionDeploymentAuthorized: false },
+  nextGate: 'Open the visual-failure correction pull request and retry only after the failed independent review is corrected.'
+};
+assert.equal(visualFailureReceiptSchema.parse(failureReceipt).reasonCode, 'review_verdict_failed');
+assert.equal(visualFailureReceiptSchema.safeParse({ ...failureReceipt, evidence: { ...failureReceipt.evidence, blockers: [] } }).success, false);
+assert.equal(visualFailureReceiptSchema.safeParse({ ...failureReceipt, reasonCode: 'review_step_failed', evidence: { ...failureReceipt.evidence, reviewVerdict: null } }).success, false);
+
+const policy = parseAiAutomationPolicy(JSON.parse(await fs.readFile(path.join(webRoot, 'config', 'ai-automation-policy.json'), 'utf8')));
+const workflow = parseYaml(await fs.readFile(path.join(repoRoot, '.github', 'workflows', 'visual-production.yml'), 'utf8'));
+const workflowPolicy = policy.directApiWorkflows[0];
+const validation = validateDirectApiWorkflowDocument({ policy, workflowPolicy, workflow });
+assert.equal(validation.directApiModelSteps, 2);
+assert.equal(validation.maximumApiCallsPerRun, 13);
+assert.equal(validation.maximumGeneratedAssetsPerRun, 12);
+assert.equal(validation.maximumApiCallsPerRun, validation.maximumGeneratedAssetsPerRun + 1);
+assert.deepEqual(validation.modelJobs.sort(), ['independent_review', 'produce']);
+assert.deepEqual(validation.detachedWriterJobs, ['detached_writer']);
+const workflowSource = await fs.readFile(path.join(repoRoot, '.github', 'workflows', 'visual-production.yml'), 'utf8');
+assert.doesNotMatch(workflowSource, /firebase deploy/);
+assert.match(workflowSource, /visual:classify-production/);
+assert.match(workflowSource, /visual:classify-review/);
+assert.match(workflowSource, /visual:failure:record/);
+assert.match(workflowSource, /review_verdict_failed/);
+assert.match(workflowSource, /review:promote/);
+assert.match(workflowSource, /research:mission:complete/);
+const writerText = JSON.stringify(workflow.jobs.detached_writer);
+assert.doesNotMatch(writerText, /OPENAI_API_KEY/);
+assert.match(writerText, /contents":"write/);
+assert.match(writerText, /pull-requests":"write/);
+assert.match(writerText, /partial generation or reviewer output/);
+assert.match(writerText, /generatedAssetsPromoted|promoted no images/i);
+assert.equal(workflow.jobs.produce.steps.find((step) => step.id === 'visual_producer')['continue-on-error'], true);
+assert.equal(workflow.jobs.independent_review.steps.find((step) => step.id === 'visual_reviewer')['continue-on-error'], true);
+for (const jobName of ['produce', 'independent_review']) {
+  assert.equal(workflow.jobs[jobName].permissions.contents, 'read');
+  assert.doesNotMatch(JSON.stringify(workflow.jobs[jobName].permissions), /write/);
+}
+
+const automaticPolicy = {
+  mode: 'automatic_after_proven',
+  automaticPromotion: { enabled: true }
+};
+const automaticMission = {
+  missionId: 'research-mission-123-1',
+  status: 'completed',
+  publicationPolicySnapshot: { mode: 'automatic_after_proven', automaticPromotionEnabled: true },
+  completion: { articleSlug: 'sample-article', publicationReadiness: 'automatic_merge_eligible' }
+};
+assert.deepEqual(resolveVisualAutoMerge({ route: 'promotion', publicationPolicy: automaticPolicy, mission: automaticMission }), {
+  eligible: true,
+  reason: 'proven_policy_and_mission_eligible',
+  missionId: 'research-mission-123-1',
+  articleSlug: 'sample-article'
+});
+assert.equal(resolveVisualAutoMerge({ route: 'failure', publicationPolicy: automaticPolicy, mission: automaticMission }).eligible, false);
+assert.equal(resolveVisualAutoMerge({ route: 'promotion', publicationPolicy: { mode: 'founder_reviewed', automaticPromotion: { enabled: false } }, mission: automaticMission }).eligible, false);
+assert.equal(resolveVisualAutoMerge({ route: 'promotion', publicationPolicy: automaticPolicy, mission: { ...automaticMission, publicationPolicySnapshot: { mode: 'founder_reviewed', automaticPromotionEnabled: false } } }).eligible, false);
+assert.equal(resolveVisualAutoMerge({ route: 'promotion', publicationPolicy: automaticPolicy, mission: { ...automaticMission, completion: { ...automaticMission.completion, publicationReadiness: 'founder_review_required' } } }).eligible, false);
+const pullRequestStep = workflow.jobs.detached_writer.steps.find((step) => step.name === 'Commit the bounded visual result');
+const autoMergeResolverStep = workflow.jobs.detached_writer.steps.find((step) => step.name === 'Resolve the proven-policy visual merge boundary without a credential');
+const autoMergeStep = workflow.jobs.detached_writer.steps.find((step) => step.name === 'Queue check-gated visual auto-merge only under the proven policy');
+assert.equal(pullRequestStep.id, 'pull_request');
+assert.match(pullRequestStep.run, /pr_url=.*gh pr create/);
+assert.match(autoMergeResolverStep.run, /visual:auto-merge:resolve/);
+assert.equal(autoMergeStep.if, "steps.auto_merge.outputs.eligible == 'true'");
+assert.match(autoMergeStep.run, /gh pr merge --auto --squash "\$PR_URL"/);
+assert.doesNotMatch(JSON.stringify(autoMergeResolverStep), /OPENAI_API_KEY/);
+
+console.log(JSON.stringify({ gate: 'passed', credentialedModelSteps: 2, maximumApiCallsPerRun: 13, maximumGeneratedAssetsPerRun: 12, usageEvidenceRequired: true, dollarCostInvented: false, independentReviewRequired: true, failedReviewPromotionBlocked: true, generationFailureRecorded: true, reviewFailureRecorded: true, partialVisualOutputPreserved: false, reviewReceiptFabricated: false, writerReceivesOpenAiKey: false, provenVisualAutoMergeGuarded: true, firebaseDeploymentAuthorized: false }, null, 2));

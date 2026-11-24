@@ -2,20 +2,26 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import process from 'node:process';
 import matter from './lib/front-matter.mjs';
+import sharp from 'sharp';
 import { affiliateEnrollmentReadinessSchema, buildAffiliateEnrollmentReadiness } from './lib/affiliate-enrollment-contract.mjs';
 import { buildPublicationManifest, parsePublicationManifest, sha256 } from './lib/publication-manifest-contract.mjs';
 
 const root = process.cwd();
 const dist = path.join(root, 'dist');
 const checks = [
-  ['home', 'index.html', ['Good gifts, minus the guesswork.', 'THE REAL GIFT', 'Give them permission to enjoy it.', 'rel="canonical"', 'tfg-root']],
+  ['home', 'index.html', ['Good gifts, minus the guesswork.', 'THE REAL GIFT', 'Give them permission to enjoy it.', 'rel="canonical"', 'social-card.jpg', 'og:image:type" content="image/jpeg"', 'og:image:alt', 'twitter:image:alt', 'tfg-root']],
   ['gift finder', 'gift-finder/index.html', ['Who are they when no one is shopping for them?', 'Places to begin', 'Do not invent a new person for them.', 'gift_finder_guide_open']],
+  ['curious adult gift path', 'gifts/curious-adults/index.html', ['Gifts for curious adults', 'Start with what you have noticed.', 'application/ld+json']],
+  ['hobby lover gift path', 'gifts/hobby-lovers/index.html', ['Gifts for hobby lovers', 'Look for the repeated annoyance', 'application/ld+json']],
+  ['thoughtful pairs gift path', 'gifts/thoughtful-pairs/index.html', ['Thoughtful gift pairs', 'Two things, one good reason', 'application/ld+json']],
   ['blog index', 'blog/index.html', ['A gift starts before the shopping.', 'The Gift Hiding in Plain Sight']],
   ['standards', 'standards/index.html', ['Buy the thing they would talk themselves out of.', 'A thoughtful gift says: I noticed the part of your life you keep putting second.']],
   ['studio', 'studio/index.html', ['Executive studio', 'Founder agenda', 'unknown until aggregate measurement', 'noindex,nofollow']],
   ['founder brief builder', 'studio/brief/index.html', ['Founder brief builder', 'Notice the gift before naming the product.', 'Complete the missing decisions', 'noindex,nofollow']],
+  ['founder decision inbox', 'studio/decisions/index.html', ['Founder decision inbox', 'calls. One order.', 'Sensitive editorial calls', 'noindex,nofollow']],
   ['robots', 'robots.txt', ['Disallow: /studio', 'Sitemap:']],
-  ['sitemap', 'sitemap.xml', ['blog/how-we-research-gifts', 'standards']],
+  ['sitemap', 'sitemap.xml', ['blog/how-we-research-gifts', 'standards', 'xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"']],
+  ['rss feed', 'rss.xml', ['<rss version="2.0"', '<title>Tips for Your Gifts</title>', '<atom:link href="https://tipsforyourgifts.web.app/rss.xml"']],
   ['publication manifest', 'publication-manifest.json', ['"status": "release_candidate"', '"projectId": "tipsforyourgifts"']],
   ['affiliate enrollment readiness', 'affiliate-enrollment-readiness.json', ['"publicApplicationPacketsReady": 5', '"externalEnrollmentAllowedByRegistry": 1', '"externalSubmissionStillRequiresActionTimeApproval": true']]
 ];
@@ -89,8 +95,47 @@ const sourceArticles = await Promise.all(articleNames.map(async (name) => ({
   ...matter(await fs.readFile(path.join(blogDir, name), 'utf8')).data
 })));
 const readyArticles = sourceArticles.filter((article) => article.status === 'publication_ready');
+const readyArticleSlugs = new Set(readyArticles.map((article) => article.slug));
 const draftArticles = sourceArticles.filter((article) => article.status === 'draft');
+const staticReaderPaths = [
+  'index.html',
+  'blog/index.html',
+  'gifts/index.html',
+  'standards/index.html',
+  'affiliate-disclosure/index.html',
+  ...readyArticles.map((article) => path.join('blog', article.slug, 'index.html'))
+];
+for (const relativePath of staticReaderPaths) {
+  const html = await fs.readFile(path.join(dist, relativePath), 'utf8');
+  if (/modulepreload|\bmain-[A-Z0-9]+\.js|id="ng-state"|\sngh=/i.test(html)) failures.push(`${relativePath}: static reader route retains Angular hydration work`);
+  if (relativePath.startsWith(`blog${path.sep}`) && relativePath !== path.join('blog', 'index.html') && !/public-enhancements-[a-f0-9]{12}\.js/.test(html)) {
+    failures.push(`${relativePath}: article share controls lost their lightweight enhancement`);
+  }
+}
+for (const relativePath of ['gift-finder/index.html', 'studio/index.html', 'studio/brief/index.html', 'studio/decisions/index.html']) {
+  const html = await fs.readFile(path.join(dist, relativePath), 'utf8');
+  if (!/\bmain-[A-Z0-9]+\.js/i.test(html) || !html.includes('id="ng-state"')) failures.push(`${relativePath}: interactive route lost its Angular runtime`);
+}
+const visualRegistry = JSON.parse(await fs.readFile(path.join(root, 'visuals', 'article-visuals.json'), 'utf8'));
+const visualAssets = new Map(visualRegistry.assets.map((asset) => [asset.id, asset]));
+const articleVisuals = new Map(visualRegistry.articles.map((article) => [article.slug, article]));
 const operations = JSON.parse(await fs.readFile(path.join(root, 'src', 'data', 'operations.json'), 'utf8'));
+
+const expectedSocialCards = [
+  ['site default', 'social-card.jpg'],
+  ...readyArticles.map((article) => [article.slug, path.join('social-cards', `${article.slug}.jpg`)])
+];
+for (const [label, relativePath] of expectedSocialCards) {
+  const filePath = path.join(dist, relativePath);
+  try {
+    const stat = await fs.stat(filePath);
+    const metadata = await sharp(filePath).metadata();
+    if (metadata.format !== 'jpeg' || metadata.width !== 1200 || metadata.height !== 630) failures.push(`${label}: social card must be a 1200x630 JPEG`);
+    if (stat.size > 350 * 1024) failures.push(`${label}: social card exceeds the 350 KiB delivery budget`);
+  } catch (error) {
+    failures.push(`${label}: missing or unreadable social card ${relativePath} (${error instanceof Error ? error.message : String(error)})`);
+  }
+}
 const studioHtml = await fs.readFile(path.join(dist, 'studio', 'index.html'), 'utf8');
 for (const marker of [
   'public application packets ready',
@@ -113,6 +158,15 @@ if (operations.publication.currentLive.status === 'verified_managed_content_rele
 } else if (!studioHtml.includes('no verified managed release is recorded')) {
   failures.push('studio: missing truthful no-managed-release posture');
 }
+const exactReleaseApproval = operations.publication.exactReleaseApprovals.currentContentSetApprovedRelease;
+if (exactReleaseApproval) {
+  for (const marker of [exactReleaseApproval.approvalId, exactReleaseApproval.headSha, exactReleaseApproval.contentSetSha256, exactReleaseApproval.nextGate]) {
+    if (!studioHtml.includes(marker)) failures.push(`studio: missing exact release-approval marker ${JSON.stringify(marker)}`);
+  }
+  for (const url of [exactReleaseApproval.pullRequestUrl, exactReleaseApproval.evidenceUrl, exactReleaseApproval.previewUrl]) {
+    if (!studioHtml.includes(url)) failures.push(`studio: missing exact release-approval link ${JSON.stringify(url)}`);
+  }
+}
 if (publicationManifest) {
   const readySlugs = [...readyArticles.map((article) => article.slug)].sort();
   const manifestSlugs = [...publicationManifest.articles.map((article) => article.articleSlug)].sort();
@@ -125,17 +179,54 @@ if (publicationManifest) {
 const blogIndex = await fs.readFile(path.join(dist, 'blog', 'index.html'), 'utf8');
 const giftsIndex = await fs.readFile(path.join(dist, 'gifts', 'index.html'), 'utf8');
 const sitemap = await fs.readFile(path.join(dist, 'sitemap.xml'), 'utf8');
+const rss = await fs.readFile(path.join(dist, 'rss.xml'), 'utf8');
+const giftPathConfig = JSON.parse(await fs.readFile(path.join(root, 'src', 'data', 'gift-paths.json'), 'utf8'));
+const giftPathHtml = await Promise.all(giftPathConfig.paths.map(async (giftPath) => {
+  const route = `/gifts/${giftPath.slug}`;
+  if (!sitemap.includes(route)) failures.push(`gift path ${giftPath.id}: missing from sitemap`);
+  return fs.readFile(path.join(dist, 'gifts', giftPath.slug, 'index.html'), 'utf8');
+}));
+const rssItemCount = [...rss.matchAll(/<item>/g)].length;
+if (rssItemCount !== readyArticles.length) failures.push(`rss feed: expected ${readyArticles.length} items, found ${rssItemCount}`);
+const sitemapImageCount = [...sitemap.matchAll(/<image:image>/g)].length;
+if (sitemapImageCount !== readyArticles.length) failures.push(`sitemap: expected ${readyArticles.length} image entries, found ${sitemapImageCount}`);
+for (const deprecatedTag of ['<image:caption>', '<image:title>', '<image:license>', '<image:geo_location>']) {
+  if (sitemap.includes(deprecatedTag)) failures.push(`sitemap: contains deprecated Google image tag ${JSON.stringify(deprecatedTag)}`);
+}
+for (const marker of ['/studio', 'researchRun', 'affiliate=true', 'data-paid-link']) {
+  if (rss.includes(marker)) failures.push(`rss feed: contains private or commercial marker ${JSON.stringify(marker)}`);
+}
 for (const article of readyArticles) {
   const relativePath = path.join('blog', article.slug, 'index.html');
   let html;
   try { html = await fs.readFile(path.join(dist, relativePath), 'utf8'); }
   catch { failures.push(`${article.slug}: missing prerendered article`); continue; }
   const readerTitle = article.slug === 'how-we-research-gifts' ? 'The Gift Hiding in Plain Sight' : article.title;
-  for (const marker of [readerTitle, 'Start with the person', 'If you know someone', 'application/ld+json']) {
+  for (const marker of [readerTitle, 'Start with the person', 'If you know someone', 'Keep following the clue', 'data-event-name="related_guide_open"', 'BreadcrumbList', 'Know who this sounds like?', 'data-event-name="article_share"', 'data-share-method="copy"', `/social-cards/${article.slug}.jpg`, 'og:image:type" content="image/jpeg"', 'og:image:width" content="1200"', 'og:image:height" content="630"', 'og:image:alt', 'twitter:image:alt', 'application/ld+json']) {
     if (!html.includes(marker)) failures.push(`${article.slug}: article HTML missing ${JSON.stringify(marker)}`);
+  }
+  const relatedDestinations = [...html.matchAll(/data-destination-guide-slug="([^"]+)"/g)].map((match) => match[1]);
+  if (relatedDestinations.length !== 3) failures.push(`${article.slug}: expected 3 related guides, found ${relatedDestinations.length}`);
+  if (new Set(relatedDestinations).size !== relatedDestinations.length) failures.push(`${article.slug}: related guides contain a duplicate destination`);
+  if (relatedDestinations.includes(article.slug)) failures.push(`${article.slug}: related guides include the current article`);
+  for (const destination of relatedDestinations) {
+    if (!readyArticleSlugs.has(destination)) failures.push(`${article.slug}: related guide ${destination} is not publication ready`);
   }
   if (!blogIndex.includes(readerTitle)) failures.push(`${article.slug}: missing from blog index`);
   if (!sitemap.includes(`/blog/${article.slug}`)) failures.push(`${article.slug}: missing from sitemap`);
+  const visualEntry = articleVisuals.get(article.slug);
+  const hero = visualEntry ? visualAssets.get(visualEntry.heroId) : undefined;
+  if (!hero) {
+    failures.push(`${article.slug}: approved hero visual cannot be resolved for sitemap smoke`);
+  } else {
+    const heroPath = hero.src.replace(/\.webp$/, '-1200.webp');
+    if (!sitemap.includes(`<image:loc>https://tipsforyourgifts.web.app${heroPath}</image:loc>`)) failures.push(`${article.slug}: sitemap missing its 1200px approved hero`);
+    try { await fs.access(path.join(dist, heroPath.replace(/^\//, ''))); }
+    catch { failures.push(`${article.slug}: sitemap hero does not exist in the built artifact`); }
+  }
+  for (const marker of [escapeHtmlText(article.title), `/blog/${article.slug}`]) {
+    if (!rss.includes(marker)) failures.push(`${article.slug}: missing RSS marker ${JSON.stringify(marker)}`);
+  }
   const products = Array.isArray(article.products) ? article.products : [];
   if (products.length > 0 && !giftsIndex.includes(article.title)) failures.push(`${article.slug}: roundup missing from gifts index`);
   for (const product of products) {
@@ -171,14 +262,19 @@ for (const article of readyArticles) {
   }
 }
 
-const readerFacingHtml = [
+const readerFacingDocuments = [
   await fs.readFile(path.join(dist, 'index.html'), 'utf8'),
   await fs.readFile(path.join(dist, 'gift-finder', 'index.html'), 'utf8'),
   await fs.readFile(path.join(dist, 'gifts', 'index.html'), 'utf8'),
   await fs.readFile(path.join(dist, 'blog', 'index.html'), 'utf8'),
   await fs.readFile(path.join(dist, 'standards', 'index.html'), 'utf8'),
+  ...giftPathHtml,
   ...await Promise.all(readyArticles.map((article) => fs.readFile(path.join(dist, 'blog', article.slug, 'index.html'), 'utf8')))
-].join('\n');
+];
+for (const html of readerFacingDocuments) {
+  if (!html.includes('content="index,follow,max-image-preview:large"')) failures.push('reader SEO: a public page does not authorize large image previews');
+}
+const readerFacingHtml = readerFacingDocuments.join('\n');
 for (const marker of [
   'Advice that earns the click.',
   'minimum editorial score',
@@ -211,6 +307,7 @@ const jsNames = (await fs.readdir(dist)).filter((name) => name.endsWith('.js'));
 const publicJs = (await Promise.all(jsNames.map((name) => fs.readFile(path.join(dist, name), 'utf8')))).join('\n');
 for (const article of draftArticles) {
   if (publicJs.includes(article.title)) failures.push(`${article.slug}: draft content leaked into the public JavaScript bundle`);
+  if (rss.includes(`/blog/${article.slug}`) || rss.includes(escapeHtmlText(article.title))) failures.push(`${article.slug}: draft content leaked into the RSS feed`);
 }
 
 const deployTextPaths = (await fs.readdir(dist, { recursive: true }))

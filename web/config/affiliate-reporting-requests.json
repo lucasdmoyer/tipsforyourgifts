@@ -1,0 +1,69 @@
+{
+  "schemaVersion": "1.0.0",
+  "updatedAt": "2026-11-23T12:00:00.000Z",
+  "requests": [
+    {
+      "id": "bookshop-aggregate-reporting-v1",
+      "status": "queued_behind_existing_program_revision",
+      "programId": "bookshop-org-us-media",
+      "observedProgramRevision": 5,
+      "blockedByExpansionRequestId": "bookshop-read-play-expansion-v1",
+      "reservedExpansionRevision": 6,
+      "earliestReportingRevision": 7,
+      "liveScope": {
+        "articleSlugs": [
+          "read-it-then-play-it-gift-pairs"
+        ],
+        "productIds": [
+          "sapiens-us-paperback"
+        ],
+        "candidateIds": [
+          "affiliate-link-read-it-then-play-it-gift-pairs-sapiens-us-paperback-bookshop-org-us-media-v1"
+        ]
+      },
+      "reporting": {
+        "reportType": "commission_report",
+        "attributionDateBasis": "date_sold",
+        "minimumWindowDays": 7,
+        "commissionStates": [
+          "pending",
+          "payable",
+          "paid",
+          "canceled"
+        ],
+        "inputMode": "founder_sanitized_aggregate",
+        "allowedMetrics": [
+          "affiliateConversions",
+          "revenueUsd"
+        ]
+      },
+      "privacy": {
+        "includeCustomerData": false,
+        "exportCustomerList": false,
+        "storeRawReportRows": false,
+        "storeOrderIdentifiers": false,
+        "storeEmailAddresses": false
+      },
+      "officialSources": {
+        "dashboardGuideUrl": "https://support.bookshop.org/en/support/solutions/articles/65000189589",
+        "reportingGuideUrl": "https://support.bookshop.org/en/support/solutions/articles/65000168993-what-kind-of-reporting-will-i-receive-and-how-frequently-",
+        "viewsRemovalUrl": "https://support.bookshop.org/en/support/solutions/articles/65000184857-why-can-t-i-see-views-of-my-affiliate-storefront-"
+      },
+      "requiredGates": [
+        "founder_revision_sequence_decision",
+        "separate_founder_reporting_export_approval",
+        "founder_generated_sanitized_aggregate",
+        "independent_aggregate_review",
+        "exact_snapshot_import"
+      ],
+      "assertions": {
+        "reportingExportApproved": false,
+        "externalReportGenerated": false,
+        "connectorActivated": false,
+        "customerDataAuthorized": false,
+        "programRevisionChanged": false,
+        "productionDeploymentAuthorized": false
+      }
+    }
+  ]
+}

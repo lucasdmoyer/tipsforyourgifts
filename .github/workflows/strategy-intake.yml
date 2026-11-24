@@ -27,12 +27,16 @@ jobs:
       has_patch: ${{ steps.diff.outputs.has_patch }}
       issue_number: ${{ steps.intake.outputs.issue_number }}
       proposal_id: ${{ steps.boundary.outputs.proposal_id }}
+      failure_outcome: ${{ steps.route.outputs.failure_outcome }}
+      failure_code: ${{ steps.route.outputs.failure_code }}
+      target_sha256: ${{ steps.intake.outputs.target_sha256 }}
+      target_url: ${{ steps.intake.outputs.target_url }}
     steps:
       - uses: actions/checkout@v5
         with:
           fetch-depth: 0
           persist-credentials: false
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: "24.14.0"
           cache: npm
@@ -54,15 +58,27 @@ jobs:
           test "$(jq -r '.title | startswith("[Strategy]")' issue.json)" = "true"
           jq '{number, title, body, html_url, user: {login}, author_association, labels: [.labels[].name]}' issue.json > strategy-intake.json
           echo "issue_number=$ISSUE_NUMBER" >> "$GITHUB_OUTPUT"
+          echo "target_sha256=$(shasum -a 256 strategy-intake.json | cut -d ' ' -f 1)" >> "$GITHUB_OUTPUT"
+          echo "target_url=$(jq -r '.html_url' strategy-intake.json)" >> "$GITHUB_OUTPUT"
+      - name: Authorize AI automation runtime
+        id: runtime
+        run: node web/scripts/check-ai-runtime-authorization.mjs
       - name: Verify autonomous agent credential
+        id: credential
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: node web/scripts/require-openai-api-key.mjs
       - name: Let the strategy council structure one proposal
+        id: council
+        continue-on-error: true
         uses: openai/codex-action@v1
         with:
           openai-api-key: ${{ secrets.OPENAI_API_KEY }}
+          model: gpt-6.2-sol
+          effort: high
           safety-strategy: drop-sudo
+          sandbox: workspace-write
+          codex-args: '["--ephemeral"]'
           prompt: |
             Act as the Tips for Your Gifts strategy council. Read AGENTS.md, docs/THOUGHTFUL_GIFT_FRAMEWORK.md, web/src/data/strategy.json, and strategy-intake.json.
 
@@ -73,6 +89,8 @@ jobs:
             If the issue is incomplete, sensitive, duplicative, or cannot be converted honestly, make no change. Do not edit any other file, use credentials, research private content, publish, spend, deploy, or create an approval.
       - name: Prove the AI stayed inside the proposal boundary
         id: boundary
+        if: always() && steps.council.outcome == 'success'
+        continue-on-error: true
         run: |
           rm -f issue.json strategy-intake.json
           node web/scripts/verify-strategy-proposal-patch.mjs strategy.base.json web/src/data/strategy.json > proposal-result.json
@@ -83,13 +101,41 @@ jobs:
           git add -N .
           while IFS= read -r changed_path; do
             case "$changed_path" in
-              web/src/data/strategy.json|web/src/data/operations.json|web/src/app/generated/content.generated.ts|web/public/sitemap.xml) ;;
+              web/src/data/strategy.json|web/src/data/operations.json|web/src/app/generated/content.generated.ts|web/src/app/generated/studio.generated.ts|web/public/sitemap.xml) ;;
               *) echo "Strategy council changed forbidden path: $changed_path" >&2; exit 1 ;;
             esac
           done < <(git diff --name-only HEAD)
           echo "proposal_id=$proposal_id" >> "$GITHUB_OUTPUT"
+      - name: Route the exact strategy result
+        id: route
+        if: always() && steps.intake.outcome == 'success'
+        env:
+          RUNTIME_OUTCOME: ${{ steps.runtime.outcome }}
+          CREDENTIAL_OUTCOME: ${{ steps.credential.outcome }}
+          MODEL_OUTCOME: ${{ steps.council.outcome }}
+          BOUNDARY_OUTCOME: ${{ steps.boundary.outcome }}
+        run: |
+          if [ "$RUNTIME_OUTCOME" != "success" ]; then
+            outcome="failed"
+            code="runtime_policy_failed"
+          elif [ "$CREDENTIAL_OUTCOME" != "success" ]; then
+            outcome="failed"
+            code="credential_preflight_failed"
+          elif [ "$MODEL_OUTCOME" != "success" ]; then
+            outcome="failed"
+            code="model_step_failed"
+          elif [ "$BOUNDARY_OUTCOME" != "success" ]; then
+            outcome="failed"
+            code="output_invalid"
+          else
+            outcome="ready"
+            code=""
+          fi
+          echo "failure_outcome=$outcome" >> "$GITHUB_OUTPUT"
+          echo "failure_code=$code" >> "$GITHUB_OUTPUT"
       - name: Serialize the founder-review proposal
         id: diff
+        if: steps.route.outputs.failure_outcome == 'ready'
         run: |
           git diff --check
           git diff --binary HEAD > strategy-proposal.patch
@@ -98,13 +144,124 @@ jobs:
           else
             echo "has_patch=false" >> "$GITHUB_OUTPUT"
           fi
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: steps.diff.outputs.has_patch == 'true'
         with:
           name: strategy-proposal-${{ github.run_id }}
           path: strategy-proposal.patch
           if-no-files-found: error
           retention-days: 7
+
+  record_failure:
+    needs: propose
+    if: always() && needs.propose.outputs.failure_outcome == 'failed'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "24.14.0"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - name: Record only the credential-free strategy failure receipt
+        id: record
+        env:
+          FAILURE_CODE: ${{ needs.propose.outputs.failure_code }}
+          ISSUE_NUMBER: ${{ needs.propose.outputs.issue_number }}
+          TARGET_SHA256: ${{ needs.propose.outputs.target_sha256 }}
+          TARGET_URL: ${{ needs.propose.outputs.target_url }}
+        run: |
+          npm ci --prefix web
+          npm --prefix web run automation:failure:record -- \
+            --workflow=strategy-intake.yml \
+            --stage=strategy_proposal \
+            --reason-code="$FAILURE_CODE" \
+            --target-kind=founder_strategy_issue \
+            --target-id="$ISSUE_NUMBER" \
+            --target-sha256="$TARGET_SHA256" \
+            --target-url="$TARGET_URL"
+          npm --prefix web run generate
+      - name: Prove and serialize the clean strategy failure packet
+        env:
+          ISSUE_NUMBER: ${{ needs.propose.outputs.issue_number }}
+          FAILURE_PATH: ${{ steps.record.outputs.failure_path }}
+        run: |
+          test -f "$FAILURE_PATH"
+          test "$(node -p "require('./$FAILURE_PATH').target.id")" = "$ISSUE_NUMBER"
+          npm run validate
+          npm run build
+          npm run smoke
+          git add -N .
+          while IFS= read -r changed_path; do
+            case "$changed_path" in
+              "$FAILURE_PATH"|web/src/data/operations.json|web/src/app/generated/content.generated.ts|web/src/app/generated/studio.generated.ts|web/public/sitemap.xml) ;;
+              *) echo "Strategy failure recorder changed forbidden path: $changed_path" >&2; exit 1 ;;
+            esac
+          done < <(git diff --name-only HEAD)
+          git diff --exit-code HEAD -- web/src/data/strategy.json
+          git diff --check
+          git diff --binary HEAD > strategy-failure.patch
+          test -s strategy-failure.patch
+      - uses: actions/upload-artifact@v7
+        with:
+          name: strategy-failure-${{ github.run_id }}-${{ github.run_attempt }}
+          path: strategy-failure.patch
+          if-no-files-found: error
+          retention-days: 30
+
+  open_failure_pull_request:
+    needs: [propose, record_failure]
+    if: always() && needs.record_failure.result == 'success'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/download-artifact@v8
+        with:
+          name: strategy-failure-${{ github.run_id }}-${{ github.run_attempt }}
+      - run: git apply --index strategy-failure.patch
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "24.14.0"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - name: Re-run failure gates without an AI credential
+        run: |
+          npm ci --prefix web
+          npm run validate
+          npm run build
+          npm run smoke
+          git diff --check --cached
+          git diff --exit-code
+      - name: Commit the strategy retry branch
+        env:
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -c "codex/strategy-failure-$RUN_ID-${GITHUB_RUN_ATTEMPT}"
+          git commit -m "Record strategy intake failure $RUN_ID"
+          git push origin "codex/strategy-failure-$RUN_ID-${GITHUB_RUN_ATTEMPT}"
+      - name: Open the strategy correction pull request with auto-merge disabled
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE_NUMBER: ${{ needs.propose.outputs.issue_number }}
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          gh pr create \
+            --base master \
+            --head "codex/strategy-failure-$RUN_ID-${GITHUB_RUN_ATTEMPT}" \
+            --title "Strategy intake retry required for issue #$ISSUE_NUMBER" \
+            --body "The founder strategy intake failed before it could produce a clean bounded proposal. This correction packet preserves only the hash-bound source issue and exact workflow failure. It does not preserve partial model output, a strategy proposal, or a review receipt. It does not approve research, merge automatically, publish, activate an affiliate, post social content, spend, create credentials, or deploy Firebase. Inspect the failed run and retry from a new workflow attempt; do not reuse partial model output."
 
   open_pull_request:
     needs: propose
@@ -117,11 +274,11 @@ jobs:
       - uses: actions/checkout@v5
         with:
           fetch-depth: 0
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           name: strategy-proposal-${{ github.run_id }}
       - run: git apply --index strategy-proposal.patch
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: "24.14.0"
           cache: npm

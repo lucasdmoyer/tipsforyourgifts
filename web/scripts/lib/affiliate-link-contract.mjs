@@ -4,6 +4,7 @@ import path from 'node:path';
 import matter from './front-matter.mjs';
 import { z } from 'zod';
 import { affiliateSchema, programAllowsPaidProduct, validateAffiliateModel } from './affiliate-contract.mjs';
+import { reviewedArticleSha256 } from './editorial-review-receipt-contract.mjs';
 
 const sha256Schema = z.string().regex(/^[a-f0-9]{64}$/);
 const slugSchema = z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/);
@@ -382,6 +383,7 @@ export async function buildCandidateFromRepository(root, input) {
   const review = run ? sources.reviewsByPath.get(run.data.qa?.receiptPath) : null;
   const product = (article.data.products ?? []).find((entry) => entry.id === input.productId);
   if (!run || !review || !product) throw new Error(`${input.articleSlug}/${input.productId}: incomplete reviewed source bundle`);
+  if (review.data.articleSha256 !== reviewedArticleSha256(article.raw)) throw new Error(`${input.articleSlug}: independent review does not match the current article`);
   const paidUrl = assertSafePublicHttpsUrl(input.paidUrl, 'paid URL');
   const tracking = program.trackingMethod === 'query_parameters'
     ? {

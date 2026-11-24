@@ -3,8 +3,20 @@
   <rect x="84" y="72" width="1032" height="486" rx="42" fill="#fffdf8" stroke="#d9ddd4" stroke-width="3"/>
   <circle cx="986" cy="164" r="68" fill="#f2b84b"/>
   <path d="M986 102l15 47 47 15-47 15-15 47-15-47-47-15 47-15 15-47z" fill="#1f5b48"/>
-  <text x="140" y="210" font-family="Arial, sans-serif" font-size="34" font-weight="700" fill="#dc6f56">TIPS FOR YOUR GIFTS</text>
-  <text x="140" y="310" font-family="Arial, sans-serif" font-size="68" font-weight="800" fill="#18312b">Gifts worth giving.</text>
-  <text x="140" y="390" font-family="Arial, sans-serif" font-size="68" font-weight="800" fill="#18312b">Research worth trusting.</text>
-  <text x="140" y="470" font-family="Arial, sans-serif" font-size="28" fill="#49645d">Evidence-backed recommendations with honest tradeoffs.</text>
+
+  <rect x="132" y="202" width="492" height="274" rx="34" fill="#dce9e1" stroke="#18312b" stroke-width="8"/>
+  <rect x="108" y="174" width="540" height="82" rx="24" fill="#fff8e8" stroke="#18312b" stroke-width="8"/>
+  <path d="M378 178v294" stroke="#dc6f56" stroke-width="36"/>
+  <path d="M378 174c-84-56-126-27-121 17 4 35 52 51 121 23M378 174c84-56 126-27 121 17-4 35-52 51-121 23" fill="none" stroke="#dc6f56" stroke-width="24" stroke-linecap="round"/>
+  <path d="M324 334l34 34 72-82" fill="none" stroke="#1f5b48" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <g transform="rotate(-4 856 370)">
+    <rect x="710" y="246" width="310" height="252" rx="28" fill="#f4d596" stroke="#18312b" stroke-width="7"/>
+    <rect x="756" y="306" width="196" height="16" rx="8" fill="#18312b"/>
+    <rect x="756" y="350" width="150" height="14" rx="7" fill="#49645d"/>
+    <rect x="756" y="390" width="204" height="14" rx="7" fill="#49645d"/>
+    <rect x="756" y="430" width="116" height="14" rx="7" fill="#49645d"/>
+  </g>
+  <path d="M684 118l8 25 25 8-25 8-8 25-8-25-25-8 25-8 8-25z" fill="#dc6f56"/>
+  <path d="M1082 354l7 22 22 7-22 7-7 22-7-22-22-7 22-7 7-22z" fill="#1f5b48"/>
 </svg>

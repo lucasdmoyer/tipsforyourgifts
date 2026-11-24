@@ -1,0 +1,142 @@
+name: Approve an affiliate expansion scope
+
+on:
+  workflow_dispatch:
+    inputs:
+      request_id:
+        description: "Exact affiliate expansion request ID visible in Studio"
+        required: true
+        type: string
+      expected_approval_boundary_sha256:
+        description: "Exact SHA-256 boundary provided by Codex for the reviewed request"
+        required: true
+        type: string
+      confirmation:
+        description: "Type APPROVE-<request-id>-<exact-boundary-sha256>"
+        required: true
+        type: string
+  issues:
+    types: [opened, reopened]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: affiliate-expansion-${{ github.event.issue.number || inputs.request_id }}
+  cancel-in-progress: false
+
+jobs:
+  prepare:
+    if: github.event_name == 'workflow_dispatch' || startsWith(github.event.issue.title, '[Approve Affiliate Expansion] ')
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      issues: read
+    outputs:
+      request_id: ${{ steps.resolve.outputs.request_id }}
+      expected_approval_boundary_sha256: ${{ steps.resolve.outputs.expected_approval_boundary_sha256 }}
+      confirmation: ${{ steps.resolve.outputs.confirmation }}
+      request_source: ${{ steps.resolve.outputs.request_source }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: master
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "24.14.0"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - name: Install and resolve the exact founder request
+        id: resolve
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EVENT_NAME: ${{ github.event_name }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          INPUT_REQUEST_ID: ${{ inputs.request_id }}
+          INPUT_EXPECTED_BOUNDARY: ${{ inputs.expected_approval_boundary_sha256 }}
+          INPUT_CONFIRMATION: ${{ inputs.confirmation }}
+        run: |
+          npm ci --prefix web
+          if [ "$EVENT_NAME" = "issues" ]; then
+            gh api "repos/$GITHUB_REPOSITORY/issues/$ISSUE_NUMBER" > "$RUNNER_TEMP/affiliate-expansion-issue.json"
+            node web/scripts/resolve-affiliate-expansion-approval-request.mjs --root=web --request-path="$RUNNER_TEMP/affiliate-expansion-issue.json" >> "$GITHUB_OUTPUT"
+          else
+            node web/scripts/resolve-affiliate-expansion-approval-request.mjs --root=web --request-id="$INPUT_REQUEST_ID" --expected-approval-boundary-sha256="$INPUT_EXPECTED_BOUNDARY" --confirmation="$INPUT_CONFIRMATION" >> "$GITHUB_OUTPUT"
+          fi
+
+  approve:
+    needs: prepare
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    environment: affiliate-expansion
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Require repository-owner action-time approval
+        env:
+          ACTOR: ${{ github.actor }}
+          OWNER: ${{ github.repository_owner }}
+          REQUEST_ID: ${{ needs.prepare.outputs.request_id }}
+          EXPECTED_BOUNDARY: ${{ needs.prepare.outputs.expected_approval_boundary_sha256 }}
+          CONFIRMATION: ${{ needs.prepare.outputs.confirmation }}
+        run: |
+          test "$ACTOR" = "$OWNER" || { echo "Only the repository owner may approve an affiliate expansion." >&2; exit 1; }
+          [[ "$REQUEST_ID" =~ ^[a-z0-9]+(-[a-z0-9]+)*$ ]] || { echo "Invalid request ID." >&2; exit 1; }
+          [[ "$EXPECTED_BOUNDARY" =~ ^[a-f0-9]{64}$ ]] || { echo "Invalid approval boundary." >&2; exit 1; }
+          test "$CONFIRMATION" = "APPROVE-$REQUEST_ID-$EXPECTED_BOUNDARY" || { echo "Action-time confirmation does not match the exact expansion request." >&2; exit 1; }
+      - uses: actions/checkout@v5
+        with:
+          ref: master
+          fetch-depth: 0
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "24.14.0"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - name: Record the exact founder-approved scope
+        id: approval
+        env:
+          REQUEST_ID: ${{ inputs.request_id }}
+          EXPECTED_BOUNDARY: ${{ inputs.expected_approval_boundary_sha256 }}
+          CONFIRMATION: ${{ inputs.confirmation }}
+          FOUNDER_LOGIN: ${{ github.actor }}
+          EVIDENCE_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          npm ci --prefix web
+          npm run validate
+          npm --prefix web run affiliate:expansion:approve -- --request-id="$REQUEST_ID" --expected-approval-boundary-sha256="$EXPECTED_BOUNDARY" --approval-evidence-url="$EVIDENCE_URL" --founder-login="$FOUNDER_LOGIN" --confirmation="$CONFIRMATION"
+          npm --prefix web run generate
+      - name: Prove the bounded approval patch
+        run: |
+          while IFS= read -r changed_path; do
+            case "$changed_path" in
+              web/config/affiliate-expansion-requests.json|web/config/affiliate-programs.json|web/public/affiliate-product-coverage.json|web/public/affiliate-enrollment-readiness.json|web/public/publication-manifest.json|web/public/sitemap.xml|web/src/data/operations.json|web/src/app/generated/content.generated.ts|web/src/app/generated/studio.generated.ts) ;;
+              *) echo "Affiliate expansion approval changed forbidden path: $changed_path" >&2; exit 1 ;;
+            esac
+          done < <(git diff --name-only HEAD)
+          npm run validate
+          npm run build
+          npm run smoke
+          git diff --check
+          test "$(find web/affiliate/candidates -type f -name '*.json' 2>/dev/null | wc -l | tr -d ' ')" -eq 1
+      - name: Commit the founder-controlled scope branch
+        env:
+          RUN_ID: ${{ github.run_id }}
+          REQUEST_ID: ${{ inputs.request_id }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -c "codex/approve-affiliate-expansion-$RUN_ID"
+          git add web/config/affiliate-expansion-requests.json web/config/affiliate-programs.json web/public/affiliate-product-coverage.json web/public/affiliate-enrollment-readiness.json web/public/publication-manifest.json web/public/sitemap.xml web/src/data/operations.json web/src/app/generated/content.generated.ts web/src/app/generated/studio.generated.ts
+          git commit -m "Approve affiliate expansion scope $REQUEST_ID"
+          git push origin "codex/approve-affiliate-expansion-$RUN_ID"
+      - name: Open the scope-review pull request
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ github.run_id }}
+          REQUEST_ID: ${{ inputs.request_id }}
+          PRODUCT_COUNT: ${{ steps.approval.outputs.product_count }}
+        run: |
+          gh pr create --base master --head "codex/approve-affiliate-expansion-$RUN_ID" --title "Approve affiliate expansion scope $REQUEST_ID" --body "Lucas approved the exact hash-bound expansion request at action time. This patch expands only the product allowlist to $PRODUCT_COUNT researched editions. It does not create paid links, merge, preview, or deploy. A founder-attested partner export, independent destination and tracking review, separate link approval, and exact-commit Firebase preview remain required."

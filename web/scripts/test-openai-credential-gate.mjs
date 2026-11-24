@@ -1,4 +1,5 @@
 import fs from 'node:fs/promises';
+import os from 'node:os';
 import path from 'node:path';
 import process from 'node:process';
 import { spawnSync } from 'node:child_process';
@@ -8,9 +9,21 @@ import { parse } from 'yaml';
 const webRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const repoRoot = path.resolve(webRoot, '..');
 const guardPath = path.join(webRoot, 'scripts', 'require-openai-api-key.mjs');
+const runtimeGuardPath = path.join(webRoot, 'scripts', 'check-ai-runtime-authorization.mjs');
 const workflowDir = path.join(repoRoot, '.github', 'workflows');
 const secretExpression = '${{ secrets.OPENAI_API_KEY }}';
 const fakeSecret = 'test-only-openai-key-never-send-or-store';
+const policyPath = path.join(webRoot, 'config', 'ai-automation-policy.json');
+const temporaryDirectory = await fs.mkdtemp(path.join(os.tmpdir(), 'tips-openai-guard-test-'));
+
+const inactiveRuntime = spawnSync(process.execPath, [runtimeGuardPath], {
+  cwd: webRoot,
+  encoding: 'utf8',
+  env: { ...process.env, GITHUB_ACTIONS: 'false', OPENAI_API_KEY: '' }
+});
+if (inactiveRuntime.status === 0 || !inactiveRuntime.stderr.includes('AI automation policy not active') || inactiveRuntime.stderr.includes('credential missing')) {
+  throw new Error('The credential-free runtime guard must reject an inactive policy before credential access.');
+}
 
 const missing = spawnSync(process.execPath, [guardPath], {
   cwd: webRoot,
@@ -22,14 +35,67 @@ if (missing.status === 0 || !missing.stderr.includes('Autonomous agent credentia
   throw new Error('The credential guard must fail with an actionable error when OPENAI_API_KEY is absent.');
 }
 
+const inactivePolicy = JSON.parse(await fs.readFile(policyPath, 'utf8'));
+inactivePolicy.status = 'awaiting_founder_platform_budget';
+inactivePolicy.credential.status = 'not_configured';
+inactivePolicy.credential.verification.status = 'not_verified';
+for (const key of ['method', 'endpoint', 'verifiedAt', 'evidenceUrl', 'receiptPath', 'receiptSha256']) inactivePolicy.credential.verification[key] = null;
+inactivePolicy.spendControl.status = 'not_configured';
+inactivePolicy.spendControl.monthlyBudgetUsd = null;
+inactivePolicy.spendControl.hardLimitEnabled = false;
+inactivePolicy.spendControl.alertThresholdUsd = null;
+inactivePolicy.spendControl.evidenceUrl = null;
+const inactivePolicyPath = path.join(temporaryDirectory, 'inactive-policy.json');
+await fs.writeFile(inactivePolicyPath, `${JSON.stringify(inactivePolicy, null, 2)}\n`);
+const blockedByPolicy = spawnSync(process.execPath, [guardPath], {
+  cwd: webRoot,
+  encoding: 'utf8',
+  env: { ...process.env, GITHUB_ACTIONS: 'false', OPENAI_API_KEY: fakeSecret, AI_AUTOMATION_POLICY_PATH: inactivePolicyPath }
+});
+
+if (blockedByPolicy.status === 0 || !blockedByPolicy.stderr.includes('AI automation policy not active')) {
+  throw new Error('A configured credential must remain blocked until the versioned budget policy is active.');
+}
+
+const activePolicy = JSON.parse(await fs.readFile(policyPath, 'utf8'));
+activePolicy.status = 'active';
+activePolicy.credential.status = 'configured_external';
+Object.assign(activePolicy.credential.verification, {
+  status: 'verified_external',
+  method: 'openai_models_endpoint',
+  endpoint: 'https://api.openai.com/v1/models',
+  verifiedAt: '2026-11-22T18:00:00.000Z',
+  evidenceUrl: 'https://github.com/lucasdmoyer/tipsforyourgifts/actions/runs/12345',
+  receiptPath: 'config/ai-credential-verification.json',
+  receiptSha256: 'a'.repeat(64)
+});
+activePolicy.spendControl.status = 'configured_external';
+activePolicy.spendControl.monthlyBudgetUsd = 25;
+activePolicy.spendControl.hardLimitEnabled = true;
+activePolicy.spendControl.alertThresholdUsd = 10;
+activePolicy.spendControl.evidenceUrl = 'https://platform.openai.com/settings/organization/limits';
+const activePolicyPath = path.join(temporaryDirectory, 'active-policy.json');
+await fs.writeFile(activePolicyPath, `${JSON.stringify(activePolicy, null, 2)}\n`);
+
+const authorizedRuntime = spawnSync(process.execPath, [runtimeGuardPath], {
+  cwd: webRoot,
+  encoding: 'utf8',
+  env: { ...process.env, GITHUB_ACTIONS: 'false', OPENAI_API_KEY: '', AI_AUTOMATION_POLICY_PATH: activePolicyPath }
+});
+if (authorizedRuntime.status !== 0) throw new Error(authorizedRuntime.stderr || authorizedRuntime.stdout);
+const runtimeResult = JSON.parse(authorizedRuntime.stdout);
+if (!runtimeResult.authorized || runtimeResult.credentialRead || runtimeResult.modelCalled) {
+  throw new Error('The active runtime guard must authorize without reading a credential or calling a model.');
+}
+
 const configured = spawnSync(process.execPath, [guardPath], {
   cwd: webRoot,
   encoding: 'utf8',
-  env: { ...process.env, OPENAI_API_KEY: fakeSecret }
+  env: { ...process.env, GITHUB_ACTIONS: 'false', OPENAI_API_KEY: fakeSecret, AI_AUTOMATION_POLICY_PATH: activePolicyPath }
 });
 
 if (configured.status !== 0) throw new Error(configured.stderr || configured.stdout);
-if (`${missing.stdout}${missing.stderr}${configured.stdout}${configured.stderr}`.includes(fakeSecret)) {
+if (`${missing.stdout}${missing.stderr}${blockedByPolicy.stdout}${blockedByPolicy.stderr}${configured.stdout}${configured.stderr}`.includes(fakeSecret)) {
   throw new Error('The credential guard exposed the secret value.');
 }
 
@@ -49,7 +115,14 @@ for (const workflowName of workflowNames) {
 
       workflowUsesCodex = true;
       codexSteps += 1;
+      const runtimeAuthorization = steps[index - 2];
       const preflight = steps[index - 1];
+      if (!runtimeAuthorization || runtimeAuthorization.name !== 'Authorize AI automation runtime') {
+        throw new Error(`${workflowName}:${jobName} must authorize the versioned runtime before credential access.`);
+      }
+      if (runtimeAuthorization.run?.trim() !== 'node web/scripts/check-ai-runtime-authorization.mjs') {
+        throw new Error(`${workflowName}:${jobName} does not use the reviewed credential-free runtime guard.`);
+      }
       if (!preflight || preflight.name !== 'Verify autonomous agent credential') {
         throw new Error(`${workflowName}:${jobName} must put the credential preflight immediately before Codex.`);
       }
@@ -62,8 +135,28 @@ for (const workflowName of workflowNames) {
       if ((preflight.if ?? null) !== (step.if ?? null)) {
         throw new Error(`${workflowName}:${jobName} preflight and Codex conditions can diverge.`);
       }
+      if ((runtimeAuthorization.if ?? null) !== (step.if ?? null)) {
+        throw new Error(`${workflowName}:${jobName} runtime authorization and Codex conditions can diverge.`);
+      }
+      if (JSON.stringify(runtimeAuthorization).includes(secretExpression)) {
+        throw new Error(`${workflowName}:${jobName} runtime authorization must not receive the repository secret.`);
+      }
       if (step.with?.['openai-api-key'] !== secretExpression) {
         throw new Error(`${workflowName}:${jobName} must pass only secrets.OPENAI_API_KEY to Codex.`);
+      }
+      if (step.with?.['safety-strategy'] !== 'drop-sudo' || step.with?.sandbox !== 'workspace-write') {
+        throw new Error(`${workflowName}:${jobName} must use the explicit reviewed privilege boundary.`);
+      }
+      if (step.with?.model !== 'gpt-6.2-sol' || step.with?.effort !== 'high') {
+        throw new Error(`${workflowName}:${jobName} must pin the reviewed model and reasoning effort.`);
+      }
+      const codexArgs = JSON.parse(step.with?.['codex-args'] ?? '[]');
+      if (!codexArgs.includes('--ephemeral')) {
+        throw new Error(`${workflowName}:${jobName} must use an ephemeral Codex session.`);
+      }
+      const permissions = job.permissions ?? workflow.permissions ?? {};
+      if (permissions.contents !== 'read' || Object.values(permissions).includes('write')) {
+        throw new Error(`${workflowName}:${jobName} cannot expose the model key in a GitHub write-capable job.`);
       }
     }
   }
@@ -71,8 +164,8 @@ for (const workflowName of workflowNames) {
   if (workflowUsesCodex) protectedWorkflows.push(workflowName);
 }
 
-if (codexSteps !== 7 || protectedWorkflows.length !== 5) {
-  throw new Error(`Expected 7 Codex steps across 5 workflows, found ${codexSteps} across ${protectedWorkflows.length}.`);
+if (codexSteps !== 8 || protectedWorkflows.length !== 6) {
+  throw new Error(`Expected 8 Codex steps across 6 workflows, found ${codexSteps} across ${protectedWorkflows.length}.`);
 }
 
 console.log(JSON.stringify({
@@ -80,5 +173,9 @@ console.log(JSON.stringify({
   codexSteps,
   protectedWorkflows,
   missingCredentialFailsBeforeModelCall: true,
+  inactivePolicyFailsBeforeModelCall: true,
+  inactivePolicyFailsBeforeCredentialAccess: true,
+  activeRuntimeAuthorizationReadsNoCredential: true,
+  modelJobsWithGithubWrite: 0,
   secretValuePrinted: false
 }, null, 2));

@@ -2,6 +2,9 @@ node_modules/
 web/node_modules/
 web/dist/
 web/.angular/
+web/public/social-card.jpg
+web/public/social-cards/
+web/visuals/production/
 .firebase/
 firebase-debug.log
 firebase-debug.*.log

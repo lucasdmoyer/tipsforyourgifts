@@ -1,0 +1,282 @@
+name: Produce and independently review article visuals
+
+on:
+  workflow_dispatch:
+    inputs:
+      request_id:
+        description: "Exact pending visual request ID"
+        required: true
+        type: string
+  push:
+    branches: [master]
+    paths:
+      - "web/visuals/requests/*.json"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: visual-production-${{ inputs.request_id || github.sha }}
+  cancel-in-progress: false
+
+jobs:
+  resolve:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    outputs:
+      eligible: ${{ steps.target.outputs.eligible }}
+      policy_active: ${{ steps.policy.outputs.active }}
+      request_id: ${{ steps.target.outputs.request_id }}
+      mission_id: ${{ steps.target.outputs.mission_id }}
+      run_id: ${{ steps.target.outputs.run_id }}
+      article_slug: ${{ steps.target.outputs.article_slug }}
+      review_receipt_path: ${{ steps.target.outputs.review_receipt_path }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "24.14.0"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - run: npm ci --prefix web
+      - name: Resolve the exact visual-pending target
+        id: target
+        env:
+          REQUEST_ID: ${{ inputs.request_id }}
+        run: npm --prefix web run visual:target -- --request-id="$REQUEST_ID"
+      - name: Read the versioned activation state without a credential
+        id: policy
+        run: |
+          status="$(node -p "JSON.parse(require('fs').readFileSync('web/config/ai-automation-policy.json','utf8')).status")"
+          if [ "$status" = "active" ]; then echo "active=true" >> "$GITHUB_OUTPUT"; else echo "active=false" >> "$GITHUB_OUTPUT"; fi
+
+  produce:
+    needs: resolve
+    if: needs.resolve.outputs.eligible == 'true' && needs.resolve.outputs.policy_active == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    permissions:
+      contents: read
+    outputs:
+      production_outcome: ${{ steps.production_result.outputs.production_outcome }}
+      production_failure_code: ${{ steps.production_result.outputs.production_failure_code }}
+      manifest_sha256: ${{ steps.production_result.outputs.manifest_sha256 }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "24.14.0"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - run: npm ci --prefix web
+      - name: Authorize AI automation runtime
+        run: node web/scripts/check-ai-runtime-authorization.mjs
+      - name: Verify autonomous agent credential
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: node web/scripts/require-openai-api-key.mjs
+      - name: Run the registered visual producer
+        id: visual_producer
+        continue-on-error: true
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: npm --prefix web run visual:produce -- --request-id="${{ needs.resolve.outputs.request_id }}"
+      - name: Classify the visual production bundle before artifact promotion
+        id: production_result
+        if: always()
+        env:
+          REQUEST_ID: ${{ needs.resolve.outputs.request_id }}
+          MODEL_OUTCOME: ${{ steps.visual_producer.outcome }}
+        run: npm --prefix web run visual:classify-production -- --request-id="$REQUEST_ID" --model-outcome="$MODEL_OUTCOME"
+      - uses: actions/upload-artifact@v7
+        if: steps.production_result.outputs.production_outcome == 'ready'
+        with:
+          name: visual-production-${{ needs.resolve.outputs.request_id }}
+          path: web/visuals/production/${{ needs.resolve.outputs.request_id }}
+          if-no-files-found: error
+          retention-days: 7
+
+  independent_review:
+    needs: [resolve, produce]
+    if: always() && needs.produce.outputs.production_outcome == 'ready'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    permissions:
+      contents: read
+    outputs:
+      review_outcome: ${{ steps.review_result.outputs.review_outcome }}
+      review_failure_code: ${{ steps.review_result.outputs.review_failure_code }}
+      verdict: ${{ steps.review_result.outputs.verdict }}
+      findings_sha256: ${{ steps.review_result.outputs.findings_sha256 }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "24.14.0"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - run: npm ci --prefix web
+      - uses: actions/download-artifact@v8
+        with:
+          name: visual-production-${{ needs.resolve.outputs.request_id }}
+          path: web/visuals/production/${{ needs.resolve.outputs.request_id }}
+      - name: Authorize AI automation runtime
+        run: node web/scripts/check-ai-runtime-authorization.mjs
+      - name: Verify autonomous agent credential
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: node web/scripts/require-openai-api-key.mjs
+      - name: Run the registered independent visual review
+        id: visual_reviewer
+        continue-on-error: true
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: npm --prefix web run visual:review -- --request-id="${{ needs.resolve.outputs.request_id }}"
+      - name: Classify the independent visual review before artifact promotion
+        id: review_result
+        if: always()
+        env:
+          REQUEST_ID: ${{ needs.resolve.outputs.request_id }}
+          MODEL_OUTCOME: ${{ steps.visual_reviewer.outcome }}
+          EXPECTED_MANIFEST_SHA256: ${{ needs.produce.outputs.manifest_sha256 }}
+        run: npm --prefix web run visual:classify-review -- --request-id="$REQUEST_ID" --model-outcome="$MODEL_OUTCOME" --expected-manifest-sha256="$EXPECTED_MANIFEST_SHA256"
+      - uses: actions/upload-artifact@v7
+        if: steps.review_result.outputs.review_outcome == 'ready'
+        with:
+          name: visual-review-${{ needs.resolve.outputs.request_id }}
+          path: web/visuals/production/${{ needs.resolve.outputs.request_id }}
+          if-no-files-found: error
+          retention-days: 14
+
+  detached_writer:
+    needs: [resolve, produce, independent_review]
+    if: always() && needs.resolve.outputs.eligible == 'true' && needs.resolve.outputs.policy_active == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "24.14.0"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - run: npm ci --prefix web
+      - name: Route the exact visual result without a model credential
+        id: route
+        env:
+          PRODUCTION_RESULT: ${{ needs.produce.result }}
+          PRODUCTION_OUTCOME: ${{ needs.produce.outputs.production_outcome }}
+          PRODUCTION_FAILURE_CODE: ${{ needs.produce.outputs.production_failure_code }}
+          REVIEW_RESULT: ${{ needs.independent_review.result }}
+          REVIEW_OUTCOME: ${{ needs.independent_review.outputs.review_outcome }}
+          REVIEW_FAILURE_CODE: ${{ needs.independent_review.outputs.review_failure_code }}
+          REVIEW_VERDICT: ${{ needs.independent_review.outputs.verdict }}
+        run: |
+          if [ "$PRODUCTION_OUTCOME" != "ready" ]; then
+            echo "route=failure" >> "$GITHUB_OUTPUT"
+            echo "failure_stage=production" >> "$GITHUB_OUTPUT"
+            if [ -n "$PRODUCTION_FAILURE_CODE" ]; then code="$PRODUCTION_FAILURE_CODE"; elif [ "$PRODUCTION_RESULT" = "failure" ]; then code="production_step_failed"; else code="production_bundle_invalid"; fi
+            echo "failure_code=$code" >> "$GITHUB_OUTPUT"
+          elif [ "$REVIEW_OUTCOME" != "ready" ]; then
+            echo "route=failure" >> "$GITHUB_OUTPUT"
+            echo "failure_stage=independent_review" >> "$GITHUB_OUTPUT"
+            if [ -n "$REVIEW_FAILURE_CODE" ]; then code="$REVIEW_FAILURE_CODE"; elif [ "$REVIEW_RESULT" = "failure" ]; then code="review_step_failed"; else code="review_findings_invalid"; fi
+            echo "failure_code=$code" >> "$GITHUB_OUTPUT"
+          elif [ "$REVIEW_VERDICT" = "failed" ]; then
+            echo "route=failure" >> "$GITHUB_OUTPUT"
+            echo "failure_stage=independent_review" >> "$GITHUB_OUTPUT"
+            echo "failure_code=review_verdict_failed" >> "$GITHUB_OUTPUT"
+          elif [ "$REVIEW_VERDICT" = "passed" ]; then
+            echo "route=promotion" >> "$GITHUB_OUTPUT"
+          else
+            echo "Visual result could not be routed safely." >&2
+            exit 1
+          fi
+      - uses: actions/download-artifact@v8
+        if: steps.route.outputs.route == 'promotion' || steps.route.outputs.failure_code == 'review_verdict_failed'
+        with:
+          name: visual-review-${{ needs.resolve.outputs.request_id }}
+          path: web/visuals/production/${{ needs.resolve.outputs.request_id }}
+      - name: Promote only the independently reviewed visual set
+        if: steps.route.outputs.route == 'promotion'
+        run: npm --prefix web run visual:finalize -- --request-id="${{ needs.resolve.outputs.request_id }}"
+      - name: Promote the already-reviewed editorial bundle and close its mission
+        if: steps.route.outputs.route == 'promotion'
+        run: |
+          npm --prefix web run review:promote -- "${{ needs.resolve.outputs.run_id }}" --receipt-path="${{ needs.resolve.outputs.review_receipt_path }}"
+          npm --prefix web run research:mission:complete -- --mission-id="${{ needs.resolve.outputs.mission_id }}" --run-id="${{ needs.resolve.outputs.run_id }}"
+      - name: Record only the credential-free visual failure receipt
+        id: failure
+        if: steps.route.outputs.route == 'failure'
+        env:
+          REQUEST_ID: ${{ needs.resolve.outputs.request_id }}
+          FAILURE_STAGE: ${{ steps.route.outputs.failure_stage }}
+          FAILURE_CODE: ${{ steps.route.outputs.failure_code }}
+        run: |
+          npm --prefix web run visual:failure:record -- --request-id="$REQUEST_ID" --stage="$FAILURE_STAGE" --reason-code="$FAILURE_CODE"
+          npm --prefix web run generate
+      - name: Validate the exact proposed visual result
+        run: |
+          npm run validate
+          npm run build
+          npm run smoke
+      - name: Commit the bounded visual result
+        id: pull_request
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REQUEST_ID: ${{ needs.resolve.outputs.request_id }}
+          ARTICLE_SLUG: ${{ needs.resolve.outputs.article_slug }}
+          RUN_ID: ${{ needs.resolve.outputs.run_id }}
+          MISSION_ID: ${{ needs.resolve.outputs.mission_id }}
+          ROUTE: ${{ steps.route.outputs.route }}
+          FAILURE_ID: ${{ steps.failure.outputs.failure_id }}
+          FAILURE_CODE: ${{ steps.route.outputs.failure_code }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if [ "$ROUTE" = "promotion" ]; then
+            branch="codex/visual-production-${REQUEST_ID}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+            title="Promote reviewed visuals for ${ARTICLE_SLUG}"
+            body="Automated proposal for visual request ${REQUEST_ID}. Generation and independent multimodal review ran in separate read-only jobs. The writer received no OpenAI credential. Validation, build, and smoke passed. If both the exact mission snapshot and current publication policy are automatic-after-proven, GitHub may queue check-gated squash auto-merge; otherwise founder review remains required. No Firebase deployment, affiliate activation, social publication, or email was attempted."
+            message="feat: promote reviewed visuals for ${ARTICLE_SLUG}"
+            git add web/visuals/article-visuals.json web/visuals/PROMPTS.md web/visuals/reviews web/visuals/sources "web/visuals/requests/${REQUEST_ID}.json" "web/public/blog-images/${ARTICLE_SLUG}" "web/research/runs/${RUN_ID}.json" "web/research/missions/${MISSION_ID}.json" "web/src/data/blog/${ARTICLE_SLUG}.md" web/src/data/operations.json web/src/app/generated/content.generated.ts web/src/app/generated/studio.generated.ts web/public/publication-manifest.json web/public/sitemap.xml
+          else
+            branch="codex/visual-failure-${REQUEST_ID}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+            title="Visual production correction required for ${ARTICLE_SLUG}"
+            body="Visual request ${REQUEST_ID} stopped at ${FAILURE_CODE}. The credential-free writer discarded partial generation or reviewer output, promoted no images, created no visual QA receipt, and recorded only a bounded failure receipt for Studio. Merging this pull request does not publish the article, activate affiliate links, post social content, deploy Firebase, or enable auto-merge. Retry requires a new workflow run after correction."
+            message="Record visual failure for ${ARTICLE_SLUG}"
+            git add "web/visuals/failures/${FAILURE_ID}.json" web/src/data/operations.json web/src/app/generated/studio.generated.ts
+          fi
+          git switch -c "$branch"
+          git diff --cached --quiet && { echo "No bounded visual result was produced." >&2; exit 1; }
+          git commit -m "$message"
+          git push origin "$branch"
+          pr_url="$(gh pr create --base master --head "$branch" --title "$title" --body "$body")"
+          echo "pr_url=$pr_url" >> "$GITHUB_OUTPUT"
+      - name: Resolve the proven-policy visual merge boundary without a credential
+        id: auto_merge
+        env:
+          MISSION_ID: ${{ needs.resolve.outputs.mission_id }}
+          ROUTE: ${{ steps.route.outputs.route }}
+        run: npm --prefix web run visual:auto-merge:resolve -- --mission-id="$MISSION_ID" --route="$ROUTE"
+      - name: Queue check-gated visual auto-merge only under the proven policy
+        if: steps.auto_merge.outputs.eligible == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_URL: ${{ steps.pull_request.outputs.pr_url }}
+        run: gh pr merge --auto --squash "$PR_URL"

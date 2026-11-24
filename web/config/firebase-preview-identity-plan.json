@@ -1,0 +1,34 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectId": "tipsforyourgifts",
+  "projectNumber": "647657919626",
+  "location": "global",
+  "poolId": "tips-github-preview",
+  "providerId": "github-preview",
+  "issuerUri": "https://token.actions.githubusercontent.com",
+  "serviceAccountEmail": "github-action-171694140@tipsforyourgifts.iam.gserviceaccount.com",
+  "repository": "lucasdmoyer/tipsforyourgifts",
+  "repositoryId": "171694140",
+  "repositoryOwnerId": "23782501",
+  "actorId": "23782501",
+  "eventName": "pull_request",
+  "pullRequestNumber": 124,
+  "ref": "refs/pull/124/merge",
+  "jobWorkflowRef": "lucasdmoyer/tipsforyourgifts/.github/workflows/firebase-preview-deploy.yml@refs/heads/master",
+  "approvedHeadSha": "4a631984fb36cef60ec8faa6ae35875119a04e0e",
+  "attributeMapping": {
+    "google.subject": "assertion.sub",
+    "attribute.repository_id": "assertion.repository_id",
+    "attribute.repository_owner_id": "assertion.repository_owner_id",
+    "attribute.actor_id": "assertion.actor_id",
+    "attribute.event_name": "assertion.event_name",
+    "attribute.ref": "assertion.ref",
+    "attribute.job_workflow_ref": "assertion.job_workflow_ref"
+  },
+  "allowedServiceAccountProjectRoles": [
+    "roles/firebasehosting.admin"
+  ],
+  "releaseReviewEvidenceUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/124#issuecomment-7120213608",
+  "previewWorkflowUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/firebase-preview.yml",
+  "authorityBoundary": "Create only the PR-124-bound keyless preview pool, provider, and workloadIdentityUser impersonation binding for the existing Firebase Hosting Admin service account. Do not create a key, grant Firebase Auth Admin, change production identity, or deploy Firebase."
+}
