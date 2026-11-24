@@ -29,7 +29,7 @@ const workflowPolicySchema = z.object({
   }
 });
 
-const directApiWorkflowPolicySchema = z.object({
+const visualDirectApiWorkflowPolicySchema = z.object({
   file: z.literal('visual-production.yml'),
   modelJobs: z.tuple([z.literal('produce'), z.literal('independent_review')]),
   modelSteps: z.literal(2),
@@ -44,6 +44,27 @@ const directApiWorkflowPolicySchema = z.object({
   }).strict(),
   purpose: z.string().min(50)
 }).strict();
+
+const socialCreativeDirectApiWorkflowPolicySchema = z.object({
+  file: z.literal('social-creative-production.yml'),
+  modelJobs: z.tuple([z.literal('produce'), z.literal('independent_review')]),
+  modelSteps: z.literal(2),
+  maximumApiCallsPerRun: z.literal(2),
+  maximumGeneratedAssetsPerRun: z.literal(1),
+  endpoint: z.literal('https://api.openai.com/v1/responses'),
+  responseModel: z.literal('gpt-6.2-sol'),
+  imageToolModel: z.literal('gpt-image-2.5-sunburst-2026-09-08'),
+  commands: z.object({
+    produce: z.literal('social:creative:produce'),
+    independent_review: z.literal('social:creative:review')
+  }).strict(),
+  purpose: z.string().min(50)
+}).strict();
+
+const directApiWorkflowPolicySchema = z.discriminatedUnion('file', [
+  visualDirectApiWorkflowPolicySchema,
+  socialCreativeDirectApiWorkflowPolicySchema
+]);
 
 export const aiAutomationPolicySchema = z.object({
   schemaVersion: z.literal('1.2.0'),
@@ -106,7 +127,7 @@ export const aiAutomationPolicySchema = z.object({
     canCreateCredentials: z.literal(false)
   }).strict(),
   workflows: z.array(workflowPolicySchema).length(6),
-  directApiWorkflows: z.array(directApiWorkflowPolicySchema).length(1),
+  directApiWorkflows: z.array(directApiWorkflowPolicySchema).length(2),
   shutdownConditions: z.array(z.string().min(50)).min(6)
 }).strict().superRefine((policy, context) => {
   const expectedFiles = workflowFile.options;
@@ -122,6 +143,12 @@ export const aiAutomationPolicySchema = z.object({
   const codexSteps = policy.workflows.reduce((total, workflow) => total + workflow.codexSteps, 0);
   if (codexSteps !== 8) {
     context.addIssue({ code: z.ZodIssueCode.custom, path: ['workflows'], message: `Expected 8 protected Codex steps, found ${codexSteps}` });
+  }
+  const directFiles = policy.directApiWorkflows.map((workflow) => workflow.file);
+  for (const expectedFile of ['visual-production.yml', 'social-creative-production.yml']) {
+    if (!directFiles.includes(expectedFile)) {
+      context.addIssue({ code: z.ZodIssueCode.custom, path: ['directApiWorkflows'], message: `Missing protected direct API workflow ${expectedFile}` });
+    }
   }
 
   const budgetConfigured = policy.spendControl.status === 'configured_external'

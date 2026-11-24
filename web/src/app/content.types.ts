@@ -306,15 +306,18 @@ export interface AiAutomationPolicy {
     purpose: string;
   }>;
   directApiWorkflows: Array<{
-    file: 'visual-production.yml';
+    file: 'visual-production.yml' | 'social-creative-production.yml';
     modelJobs: ['produce', 'independent_review'];
     modelSteps: 2;
-    maximumApiCallsPerRun: 13;
-    maximumGeneratedAssetsPerRun: 12;
+    maximumApiCallsPerRun: 13 | 2;
+    maximumGeneratedAssetsPerRun: 12 | 1;
     endpoint: 'https://api.openai.com/v1/responses';
     responseModel: 'gpt-6.2-sol';
     imageToolModel: 'gpt-image-2.5-sunburst-2026-09-08';
-    commands: { produce: 'visual:produce'; independent_review: 'visual:review' };
+    commands: {
+      produce: 'visual:produce' | 'social:creative:produce';
+      independent_review: 'visual:review' | 'social:creative:review';
+    };
     purpose: string;
   }>;
   shutdownConditions: string[];
@@ -719,10 +722,21 @@ export interface Operations {
   social: {
     officialApiOnly: true;
     configSha256: string;
+    creativeProductionWorkflowUrl: string;
+    nextCreativePostId: string | null;
     channelsTotal: number;
     channelsConfigured: number;
     channelsActive: number;
     creativeCandidates: number;
+    creativeFailures: number;
+    creativeFailureReceipts: Array<{
+      failureId: string;
+      postId: string;
+      stage: 'production' | 'independent-review';
+      reasonCode: string;
+      failedAt: string;
+      nextGate: string;
+    }>;
     mediaAssetsApproved: number;
     approvalReceipts: number;
     publicationReceipts: number;

@@ -424,8 +424,12 @@ export { STUDIO_DATA } from './studio-data';
         <div class="panel">
           <p class="eyebrow">Official channel registry</p>
           <h2>{{ content.operations.social.channelsActive }}/{{ content.operations.social.channelsTotal }} channels active.</h2>
-          <p><strong>{{ content.operations.social.creativeCandidates }}</strong> original creative candidates · <strong>{{ content.operations.social.mediaAssetsApproved }}</strong> approved media · <strong>{{ content.operations.social.approvalReceipts }}</strong> content receipts · <strong>{{ content.operations.social.publishReady }}</strong> ready for official API.</p>
-          <p><a href="https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/social-channel-configure.yml" target="_blank" rel="noopener">Configure official channel</a> · <a href="https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/social-channel-activate.yml" target="_blank" rel="noopener">Activate publishing boundary</a></p>
+          <p><strong>{{ content.operations.social.creativeCandidates }}</strong> original creative candidates · <strong>{{ content.operations.social.creativeFailures }}</strong> bounded correction receipts · <strong>{{ content.operations.social.mediaAssetsApproved }}</strong> approved media · <strong>{{ content.operations.social.approvalReceipts }}</strong> content receipts · <strong>{{ content.operations.social.publishReady }}</strong> ready for official API.</p>
+          <p><a [href]="content.operations.social.creativeProductionWorkflowUrl" target="_blank" rel="noopener">Produce one reviewed creative candidate</a> · <a href="https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/social-channel-configure.yml" target="_blank" rel="noopener">Configure official channel</a> · <a href="https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/social-channel-activate.yml" target="_blank" rel="noopener">Activate publishing boundary</a></p>
+          @if (nextSocialCreativePost; as nextCreative) {
+            <p><strong>Next inert candidate:</strong> {{ nextCreative.postId }}. This command can only open an independently reviewed proposal; it cannot approve or publish it.</p>
+            <div class="command">{{ creativeProductionCommand(nextCreative.postId) }}</div>
+          }
           <details><summary>Exact channel-registry digest</summary><div class="command">{{ content.operations.social.configSha256 }}</div></details>
           <div class="connector-list">
             @for (channel of content.operations.social.channels; track channel.id) {
@@ -455,8 +459,11 @@ export { STUDIO_DATA } from './studio-data';
               <p><strong>Evidence bindings:</strong> {{ post.claimCount }} claims · {{ post.productCount }} products · {{ post.pairCount }} pairs</p>
               <p><strong>Publish readiness:</strong> {{ displayStatus(post.publishReadiness) }}</p>
               <p><strong>Next gate:</strong> {{ post.nextGate }}</p>
+              @if (creativeFailureFor(post.postId); as creativeFailure) {
+                <p><strong>Latest bounded correction:</strong> {{ displayStatus(creativeFailure.reasonCode) }} at {{ creativeFailure.failedAt | date:'medium' }}. No candidate, approval, or external post was created.</p>
+              }
               @if (post.externalPostUrl) { <p><a [href]="post.externalPostUrl" target="_blank" rel="noopener">Open verified external post</a></p> }
-              <details><summary>Exact approval identifiers</summary><div class="command">post: {{ post.postId }}<br>pack: {{ post.packId }}<br>pack sha256: {{ post.packSha256 }}<br>creative candidate: {{ post.creativeCandidateId ?? 'not generated' }}<br>candidate record sha256: {{ post.creativeCandidateRecordSha256 ?? 'not generated' }}<br>creative bytes sha256: {{ post.creativeCandidateContentSha256 ?? 'not generated' }}<br>media: {{ post.mediaAssetId ?? 'not approved' }}<br>media record sha256: {{ post.mediaAssetRecordSha256 ?? 'not approved' }}<br>content approval: {{ post.approvalId ?? 'not approved' }}<br>publication receipt: {{ post.publicationReceiptId ?? 'not published' }}<br>external post ID: {{ post.externalPostId ?? 'not published' }}</div></details>
+              <details><summary>Exact approval identifiers</summary><div class="command">post: {{ post.postId }}<br>pack: {{ post.packId }}<br>pack sha256: {{ post.packSha256 }}<br>creative candidate: {{ post.creativeCandidateId ?? 'not generated' }}<br>candidate record sha256: {{ post.creativeCandidateRecordSha256 ?? 'not generated' }}<br>creative bytes sha256: {{ post.creativeCandidateContentSha256 ?? 'not generated' }}<br>latest correction receipt: {{ creativeFailureFor(post.postId)?.failureId ?? 'none' }}<br>media: {{ post.mediaAssetId ?? 'not approved' }}<br>media record sha256: {{ post.mediaAssetRecordSha256 ?? 'not approved' }}<br>content approval: {{ post.approvalId ?? 'not approved' }}<br>publication receipt: {{ post.publicationReceiptId ?? 'not published' }}<br>external post ID: {{ post.externalPostId ?? 'not published' }}</div></details>
             </article>
           }
         </div>
@@ -611,6 +618,8 @@ export { STUDIO_DATA } from './studio-data';
 export class StudioPage {
   readonly content = inject(STUDIO_DATA);
   private readonly ideaStages = new Map(this.content.operations.ideaStages.map((idea) => [idea.ideaId, idea]));
+  private readonly socialCreativeFailures = new Map(this.content.operations.social.creativeFailureReceipts.map((failure) => [failure.postId, failure]));
+  readonly nextSocialCreativePost = this.content.operations.social.queue.find((post) => post.postId === this.content.operations.social.nextCreativePostId) ?? null;
   readonly nextResearchIdea = this.content.strategy.ideas.find((idea) => this.ideaStages.get(idea.id)?.stage === 'approved_for_research');
   readonly proposedIdeas = this.content.strategy.ideas
     .filter((idea) => idea.founderDisposition === 'proposed')
@@ -647,6 +656,8 @@ export class StudioPage {
   formatPercent(value: number | null) { return value === null ? 'Unknown' : new Intl.NumberFormat('en-US', { style: 'percent', maximumFractionDigits: 1 }).format(value); }
   formatMoney(value: number | null) { return value === null ? 'Unknown' : new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value); }
   formatCount(value: number | null) { return value === null ? 'Unknown' : new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 }).format(value); }
+  creativeProductionCommand(postId: string) { return `gh workflow run social-creative-production.yml --repo lucasdmoyer/tipsforyourgifts --ref master -f post_id=${postId}`; }
+  creativeFailureFor(postId: string) { return this.socialCreativeFailures.get(postId) ?? null; }
   readonly metricLabel = (metric: string) => metric.replace(/([a-z])([A-Z])/g, '$1 $2').toLowerCase();
   stageFor(ideaId: string) { return this.ideaStages.get(ideaId)?.stage ?? 'untracked'; }
   nextGateFor(ideaId: string) { return this.ideaStages.get(ideaId)?.nextGate ?? 'Connect this idea to the strategy pipeline.'; }
