@@ -19,6 +19,7 @@ import { assessEditorialSafetyApproval, reviewedContentDigests } from './lib/edi
 import { latestEditorialSafetyApproval, loadEditorialSafetyApprovalRecords } from './lib/editorial-safety-store.mjs';
 import { buildFounderAgenda } from './lib/founder-agenda-contract.mjs';
 import { loadAffiliateLinkState } from './lib/affiliate-link-contract.mjs';
+import { buildAffiliateLinkApprovalIssueUrl } from './lib/affiliate-link-approval-request-contract.mjs';
 import { summarizeDurableFounderReviewedReleaseReceipts } from './lib/publication-receipt-contract.mjs';
 import { loadReleaseApprovals, summarizeReleaseApprovals } from './lib/release-approval-contract.mjs';
 
@@ -238,6 +239,7 @@ const affiliateLinkQueue = affiliateLinkState.candidates.map((record) => {
     approvalPath: approval?.path ?? null,
     approvalSha256: approval?.sha256 ?? null,
     approvedAt: approval?.data.approvedAt ?? null,
+    approvalIssueUrl: review?.data.verdict === 'passed' && !approval ? buildAffiliateLinkApprovalIssueUrl({ candidate: record, review }) : null,
     nextGate: approval
       ? 'Include this exact approved overlay in a Firebase preview, verify disclosure and sponsored rel, then use the separate exact-SHA release gate.'
       : review?.data.verdict === 'passed'

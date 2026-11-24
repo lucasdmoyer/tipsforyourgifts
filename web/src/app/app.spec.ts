@@ -676,6 +676,21 @@ describe('App', () => {
     }
   });
 
+  it('renders a phone-friendly exact-link approval packet only when one is prepared', () => {
+    const candidate = OPERATIONS.affiliate.linkQueue[0];
+    const originalIssueUrl = candidate.approvalIssueUrl;
+    candidate.approvalIssueUrl = 'https://github.com/lucasdmoyer/tipsforyourgifts/issues/new?title=approve-exact-link';
+    try {
+      const fixture = TestBed.createComponent(StudioPage);
+      fixture.detectChanges();
+      const element = fixture.nativeElement as HTMLElement;
+      const approvalLink = element.querySelector(`a[href="${candidate.approvalIssueUrl}"]`);
+      expect(approvalLink?.textContent).toContain('Review and approve this exact paid link');
+    } finally {
+      candidate.approvalIssueUrl = originalIssueUrl;
+    }
+  });
+
   it('renders the hash-bound research mission operating model', () => {
     const fixture = TestBed.createComponent(StudioPage);
     fixture.detectChanges();

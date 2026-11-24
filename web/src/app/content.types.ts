@@ -678,6 +678,7 @@ export interface Operations {
       approvalPath: string | null;
       approvalSha256: string | null;
       approvedAt: string | null;
+      approvalIssueUrl: string | null;
       nextGate: string;
     }>;
     programs: Array<{

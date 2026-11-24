@@ -782,6 +782,7 @@
         "approvalPath": "affiliate/approvals/affiliate-link-read-it-then-play-it-gift-pairs-sapiens-us-paperback-bookshop-org-us-media-v1-approval.json",
         "approvalSha256": "f37a6f710d3b3289089bc12f5c7186766acec23955736240ed44fa565e50c22b",
         "approvedAt": "2026-11-07T23:58:13.560Z",
+        "approvalIssueUrl": null,
         "nextGate": "Include this exact approved overlay in a Firebase preview, verify disclosure and sponsored rel, then use the separate exact-SHA release gate."
       }
     ],

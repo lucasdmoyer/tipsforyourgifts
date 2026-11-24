@@ -159,15 +159,16 @@ enabledAffiliateInput.affiliateLinks = {
   passedReviews: 0,
   approvals: 0,
   activeOverlays: 0,
-  queue: [{ candidateId: 'affiliate-link-test-v1', candidateSha256: 'a'.repeat(64), reviewSha256: null, stage: 'independent_review_required' }]
+  queue: [{ candidateId: 'affiliate-link-test-v1', candidateSha256: 'a'.repeat(64), reviewSha256: null, approvalIssueUrl: null, stage: 'independent_review_required' }]
 };
 const linkReviewDecision = buildFounderAgenda(enabledAffiliateInput).decisions.find((decision) => decision.id === 'choose-affiliate-pilot');
 assert.match(linkReviewDecision.action.url, /affiliate-link-review\.yml$/);
 enabledAffiliateInput.affiliateLinks.passedReviews = 1;
 enabledAffiliateInput.affiliateLinks.queue[0].stage = 'founder_approval_required';
 enabledAffiliateInput.affiliateLinks.queue[0].reviewSha256 = 'b'.repeat(64);
+enabledAffiliateInput.affiliateLinks.queue[0].approvalIssueUrl = 'https://github.com/lucasdmoyer/tipsforyourgifts/issues/new?title=approve-affiliate-link';
 const linkApprovalDecision = buildFounderAgenda(enabledAffiliateInput).decisions.find((decision) => decision.id === 'choose-affiliate-pilot');
-assert.match(linkApprovalDecision.action.url, /affiliate-link-approval\.yml$/);
+assert.equal(linkApprovalDecision.action.url, enabledAffiliateInput.affiliateLinks.queue[0].approvalIssueUrl);
 
 const clone = (value) => structuredClone(value);
 const fixtureInput = clone(baseInput);

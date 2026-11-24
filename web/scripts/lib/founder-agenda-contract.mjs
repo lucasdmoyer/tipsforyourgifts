@@ -407,7 +407,7 @@ export function buildFounderAgenda(input) {
         founderActionRequired: true,
         action: mode === 'approve' ? {
           label: 'Open exact-link approval',
-          url: 'https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/affiliate-link-approval.yml',
+          url: candidate.approvalIssueUrl ?? 'https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/affiliate-link-approval.yml',
           command: `gh workflow run affiliate-link-approval.yml -f candidate_id=${candidate.candidateId} -f expected_candidate_sha256=${candidate.candidateSha256} -f expected_review_sha256=${candidate.reviewSha256} -f confirmation=APPROVE-${candidate.candidateId}`
         } : mode === 'review' ? {
           label: 'Open independent review',

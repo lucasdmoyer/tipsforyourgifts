@@ -414,6 +414,7 @@ export { STUDIO_DATA } from './studio-data';
                   <div><strong>{{ candidate.productId }}</strong><p>{{ candidate.articleSlug }} · {{ candidate.destinationHostname }} · candidate v{{ candidate.candidateRevision }}</p><p class="quiet">Source: {{ displayStatus(candidate.originSource) }}{{ candidate.originReferenceId ? ' · ' + candidate.originReferenceId : '' }}</p></div>
                   <span class="status" [class.blocked_on_account]="candidate.stage === 'review_failed'">{{ displayStatus(candidate.stage) }}</span>
                   <p class="connector-gate"><strong>Next gate:</strong> {{ candidate.nextGate }}</p>
+                  @if (candidate.approvalIssueUrl) { <p class="connector-gate"><a [href]="candidate.approvalIssueUrl" target="_blank" rel="noopener">Review and approve this exact paid link</a></p> }
                   <details><summary>Exact candidate and source digests</summary><div class="command">candidate: {{ candidate.candidateSha256 }}<br>source artifact: {{ candidate.originSourceArtifactPath ?? 'founder supplied in the action-time workflow' }}<br>source sha256: {{ candidate.originSourceSha256 ?? 'not applicable' }}</div></details>
                 </div>
               }
