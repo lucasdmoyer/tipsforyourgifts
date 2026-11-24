@@ -8,6 +8,7 @@ import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { parse as parseYaml } from 'yaml';
 import { parseAiCredentialVerificationReceipt } from './lib/ai-credential-verification-contract.mjs';
+import { aiActivationAuthorityLines, buildAiAutomationActivationIssueUrl, resolveAiAutomationActivationIssueRequest, resolveAiAutomationActivationManualRequest } from './lib/ai-automation-activation-request-contract.mjs';
 import { buildAiAutomationPolicySummary, parseAiAutomationPolicy } from './lib/ai-automation-policy-contract.mjs';
 import { aiCredentialAuthorityLines, buildAiAutomationCredentialIssueUrl, resolveAiAutomationCredentialIssueRequest, resolveAiAutomationCredentialManualRequest } from './lib/ai-automation-credential-request-contract.mjs';
 
@@ -150,6 +151,39 @@ assert.throws(() => resolveAiAutomationCredentialIssueRequest({ issue: { ...vali
 assert.throws(() => resolveAiAutomationCredentialIssueRequest({ issue: validIssue, actualPolicySha256: budgetApprovedSha256, policyStatus: 'active' }), /not awaiting credential verification/);
 
 const recordedSha256 = createHash('sha256').update(recordedRaw).digest('hex');
+const activationUrl = new URL(buildAiAutomationActivationIssueUrl({ expectedPolicySha256: recordedSha256 }));
+assert.equal(activationUrl.origin, 'https://github.com');
+assert.equal(activationUrl.pathname, '/lucasdmoyer/tipsforyourgifts/issues/new');
+const activationIssueTitle = activationUrl.searchParams.get('title');
+const uncheckedActivationBody = activationUrl.searchParams.get('body');
+assert.equal(activationIssueTitle, `[Propose AI Activation] policy ${recordedSha256.slice(0, 12)}`);
+assert.ok(uncheckedActivationBody.includes('opens a review pull request only'));
+for (const line of aiActivationAuthorityLines) assert.ok(uncheckedActivationBody.includes(`- [ ] ${line}`));
+const checkedActivationBody = uncheckedActivationBody.replaceAll('- [ ] ', '- [x] ');
+const validActivationIssue = {
+  title: activationIssueTitle,
+  body: checkedActivationBody,
+  html_url: 'https://github.com/lucasdmoyer/tipsforyourgifts/issues/998',
+  user: { login: 'lucasdmoyer' },
+  author_association: 'OWNER'
+};
+const activationIssueRequest = resolveAiAutomationActivationIssueRequest({ issue: validActivationIssue, actualPolicySha256: recordedSha256, policyStatus: recorded.status });
+assert.equal(activationIssueRequest.expectedPolicySha256, recordedSha256);
+assert.equal(activationIssueRequest.confirmation, 'ACTIVATE-ai-automation');
+assert.equal(activationIssueRequest.source, 'owner_issue');
+const manualActivationRequest = resolveAiAutomationActivationManualRequest({
+  expectedPolicySha256: recordedSha256,
+  confirmation: 'ACTIVATE-ai-automation',
+  actualPolicySha256: recordedSha256,
+  policyStatus: recorded.status
+});
+assert.equal(manualActivationRequest.source, 'workflow_dispatch');
+assert.throws(() => resolveAiAutomationActivationIssueRequest({ issue: { ...validActivationIssue, body: uncheckedActivationBody }, actualPolicySha256: recordedSha256, policyStatus: recorded.status }), /authority check is missing/);
+assert.throws(() => resolveAiAutomationActivationIssueRequest({ issue: { ...validActivationIssue, user: { login: 'someone-else' } }, actualPolicySha256: recordedSha256, policyStatus: recorded.status }), /repository owner/);
+assert.throws(() => resolveAiAutomationActivationIssueRequest({ issue: { ...validActivationIssue, html_url: 'https://github.com/elsewhere/repository/issues/998' }, actualPolicySha256: recordedSha256, policyStatus: recorded.status }), /outside the canonical repository/);
+const staleActivationDigest = `${recordedSha256.slice(0, 12)}${'0'.repeat(52)}`;
+assert.throws(() => resolveAiAutomationActivationIssueRequest({ issue: { ...validActivationIssue, body: checkedActivationBody.replace(recordedSha256, staleActivationDigest) }, actualPolicySha256: recordedSha256, policyStatus: recorded.status }), /changed after founder review/);
+assert.throws(() => resolveAiAutomationActivationIssueRequest({ issue: validActivationIssue, actualPolicySha256: recordedSha256, policyStatus: 'active' }), /not awaiting explicit activation/);
 const activatedResult = activate(happyDirectory, recordedSha256);
 assert.equal(activatedResult.status, 0, activatedResult.stderr);
 const active = parseAiAutomationPolicy(JSON.parse(await fs.readFile(path.join(happyDirectory, 'config', 'ai-automation-policy.json'), 'utf8')));
@@ -233,19 +267,25 @@ assert.doesNotMatch(verifyWorkflowSource, /openai\/codex-action|responses|chat\/
 
 const activationWorkflowSource = await fs.readFile(path.join(repoRoot, '.github', 'workflows', 'ai-automation-activate.yml'), 'utf8');
 const activationWorkflow = parseYaml(activationWorkflowSource);
-assert.deepEqual(activationWorkflow.permissions, { contents: 'read' });
+assert.deepEqual(activationWorkflow.permissions, { contents: 'read', issues: 'read' });
 assert.equal(activationWorkflow.jobs.prepare.environment, 'ai-automation-activation');
+assert.deepEqual(activationWorkflow.jobs.prepare.permissions, { contents: 'read', issues: 'read' });
 assert.deepEqual(activationWorkflow.jobs.open_pull_request.permissions, { contents: 'write', 'pull-requests': 'write' });
 assert.match(activationWorkflowSource, /ACTIVATE-ai-automation/);
+assert.match(activationWorkflowSource, /issues:\s*\n\s+types: \[opened, reopened\]/);
+assert.match(activationWorkflowSource, /github\.event\.issue\.author_association == 'OWNER'/);
+assert.match(activationWorkflowSource, /resolve-ai-automation-activation-request\.mjs --request-path=/);
+assert.doesNotMatch(activationWorkflowSource, /ai:policy:activate[^\n]*inputs\.confirmation/);
 assert.doesNotMatch(activationWorkflowSource, /OPENAI_API_KEY|secrets\.|api\.openai\.com|openai\/codex-action|gh pr merge|firebase-tools/iu);
 
 console.log(JSON.stringify({
   aiAutomationCredentialCommandTests: 'passed',
   credentialTransition: 'budget_approved_awaiting_credential -> credential_verified_awaiting_activation',
   activationTransition: 'credential_verified_awaiting_activation -> active',
-  commandNegativeChecks: 23,
-  workflowSafetyChecks: 20,
+  commandNegativeChecks: 28,
+  workflowSafetyChecks: 25,
   mobileOwnerIssue: 'passed',
+  mobileActivationIssue: 'passed',
   secretValueStored: false,
   responseBodyStored: false,
   modelCalled: false,
