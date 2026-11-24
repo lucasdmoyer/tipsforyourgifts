@@ -4,6 +4,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import process from 'node:process';
 import { buildFounderAgenda, parseFounderAgenda } from './lib/founder-agenda-contract.mjs';
+import { buildFirebasePreviewIdentityPlan, parseFirebasePreviewIdentityExactApproval } from './lib/firebase-preview-identity-plan-contract.mjs';
 import { loadReleaseApprovals, summarizeReleaseApprovals } from './lib/release-approval-contract.mjs';
 
 const root = process.cwd();
@@ -18,6 +19,7 @@ const publicationPolicy = await readJson('config/publication-policy.json');
 const publicationManifest = await readJson('public/publication-manifest.json');
 const releaseApprovals = summarizeReleaseApprovals(await loadReleaseApprovals(root), publicationManifest);
 const automationReadinessEvidence = await readJson('config/automation-readiness.json');
+const firebasePreviewIdentityPlan = buildFirebasePreviewIdentityPlan(await readJson('config/firebase-preview-identity-plan.json'));
 const growthRaw = await fs.readFile(path.join(root, 'src/data/growth.json'));
 const growth = JSON.parse(growthRaw.toString('utf8'));
 const growthSha256 = createHash('sha256').update(growthRaw).digest('hex');
@@ -36,6 +38,7 @@ const baseInput = {
   livePublication,
   releaseApprovals,
   automationReadinessEvidence,
+  firebasePreviewIdentityPlan,
   growth,
   openStrategyProposals: proposedIdeas.length,
   maxOpenStrategyProposals: 5,
@@ -58,8 +61,12 @@ if (!currentContentIsVerified && livePublication.latestVerifiedContentRelease) {
     assert.equal(releaseApprovals.currentContentSetApprovedRelease.pullRequestUrl, automationReadinessEvidence.latestVerifiedPreview.pullRequestUrl, 'executive release approval and preview readiness must identify the same pull request');
     assert.equal(releaseApprovals.currentContentSetApprovedRelease.previewUrl, automationReadinessEvidence.latestVerifiedPreview.previewUrl, 'executive release approval and preview readiness must identify the same reviewed preview');
     assert.equal(releaseDecision.title, 'Unblock the approved exact release');
-    assert.equal(releaseDecision.action.url, releaseApprovals.currentContentSetApprovedRelease.pullRequestUrl);
+    assert.match(releaseDecision.action.url, /^https:\/\/github\.com\/lucasdmoyer\/tipsforyourgifts\/issues\/new\?/);
+    const identityApprovalIssue = new URL(releaseDecision.action.url);
+    assert.equal(identityApprovalIssue.searchParams.get('title'), `[Firebase Preview Identity Approval] PR 124 ${firebasePreviewIdentityPlan.configSha256.slice(0, 12)}`);
+    assert.equal(parseFirebasePreviewIdentityExactApproval(identityApprovalIssue.searchParams.get('body')).configSha256, firebasePreviewIdentityPlan.configSha256);
     assert.match(releaseDecision.action.command, /tips-github-preview/);
+    assert.match(releaseDecision.action.command, new RegExp(firebasePreviewIdentityPlan.configSha256));
     assert.match(releaseDecision.action.command, new RegExp(`refs/pull/${releaseApprovals.currentContentSetApprovedRelease.pullRequestNumber}/merge`));
     assert.match(releaseDecision.action.command, /job_workflow_ref lucasdmoyer\/tipsforyourgifts\/\.github\/workflows\/firebase-preview-deploy\.yml@refs\/heads\/master/);
     assert.match(releaseDecision.action.command, /No Firebase Auth Admin, no user-managed key, no production-provider changes, and no production deployment/);

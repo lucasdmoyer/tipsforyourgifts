@@ -74,8 +74,9 @@ function selectAffiliatePilot(affiliate) {
     })[0];
 }
 
-function previewIdentityApprovalPrompt(pullRequestNumber) {
-  return `Approve creation of Workload Identity pool tips-github-preview and provider github-preview for repository ID 171694140, repository-owner ID 23782501, actor ID 23782501, event pull_request, ref refs/pull/${pullRequestNumber}/merge, and job_workflow_ref lucasdmoyer/tipsforyourgifts/.github/workflows/firebase-preview-deploy.yml@refs/heads/master. Grant roles/iam.workloadIdentityUser on github-action-171694140@tipsforyourgifts.iam.gserviceaccount.com. Retain Firebase Hosting Admin only. No Firebase Auth Admin, no user-managed key, no production-provider changes, and no production deployment.`;
+function previewIdentityApprovalPrompt(pullRequestNumber, plan = null) {
+  const exactPlan = plan ? ` Approve only repository plan SHA-256 ${plan.configSha256} for head ${plan.approvedHeadSha}; its issue submission records approval evidence but does not execute cloud commands.` : '';
+  return `Approve creation of Workload Identity pool tips-github-preview and provider github-preview for repository ID 171694140, repository-owner ID 23782501, actor ID 23782501, event pull_request, ref refs/pull/${pullRequestNumber}/merge, and job_workflow_ref lucasdmoyer/tipsforyourgifts/.github/workflows/firebase-preview-deploy.yml@refs/heads/master. Grant roles/iam.workloadIdentityUser on github-action-171694140@tipsforyourgifts.iam.gserviceaccount.com. Retain Firebase Hosting Admin only. No Firebase Auth Admin, no user-managed key, no production-provider changes, and no production deployment.${exactPlan}`;
 }
 
 export function strategyApprovalIssueUrl(idea) {
@@ -128,6 +129,10 @@ export function buildFounderAgenda(input) {
     ? input.automationReadinessEvidence.latestVerifiedPreview
     : null;
   const approvedExactRelease = input.releaseApprovals?.currentContentSetApprovedRelease ?? null;
+  const firebasePreviewIdentityPlan = input.firebasePreviewIdentityPlan ?? null;
+  if (approvedExactRelease && firebasePreviewIdentityPlan && (firebasePreviewIdentityPlan.pullRequestNumber !== approvedExactRelease.pullRequestNumber || firebasePreviewIdentityPlan.approvedHeadSha !== approvedExactRelease.headSha)) {
+    throw new Error('Firebase preview identity plan must match the exact approved release');
+  }
   const candidateContentIsVerifiedLive = input.livePublication.status === 'verified_managed_content_release' &&
     latestLiveRelease?.publicationManifest.contentSetSha256 === release.contentSetSha256;
   if (release.counts.articles > 0 && !candidateContentIsVerifiedLive) {
@@ -158,7 +163,8 @@ export function buildFounderAgenda(input) {
         `The exact Firebase preview remains ${approvedExactRelease.previewUrl}.`,
         latestLiveRelease
           ? `The latest Git-recorded live content set is ${latestLiveRelease.publicationManifest.manifestId}, so production has not advanced to the approved candidate.`
-          : 'No managed Firebase content-release receipt is durably recorded in Git yet.'
+          : 'No managed Firebase content-release receipt is durably recorded in Git yet.',
+        ...(firebasePreviewIdentityPlan ? [`The review-only identity plan is SHA-256 ${firebasePreviewIdentityPlan.configSha256}; its mobile issue packet cannot execute gcloud or deploy Firebase.`] : [])
       ] : [
         `${release.counts.articles} publication-ready articles are in the candidate set.`,
         `${release.counts.independentReviews} independent QA receipts are hash-bound to those articles.`,
@@ -181,10 +187,10 @@ export function buildFounderAgenda(input) {
       reversibility: 'high',
       founderActionRequired: true,
       action: {
-        label: approvedExactRelease ? 'Open approved release' : 'Open release workflow',
-        url: approvedExactRelease ? approvedExactRelease.pullRequestUrl : 'https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/firebase-production.yml',
+        label: approvedExactRelease ? (firebasePreviewIdentityPlan ? 'Review exact identity plan' : 'Open approved release') : 'Open release workflow',
+        url: approvedExactRelease ? (firebasePreviewIdentityPlan?.approvalIssueUrl ?? approvedExactRelease.pullRequestUrl) : 'https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/firebase-production.yml',
         command: approvedExactRelease
-          ? previewIdentityApprovalPrompt(approvedExactRelease.pullRequestNumber)
+          ? previewIdentityApprovalPrompt(approvedExactRelease.pullRequestNumber, firebasePreviewIdentityPlan)
           : 'gh workflow run firebase-production.yml -f release_sha=<approved-master-sha>'
       }
     });

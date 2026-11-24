@@ -2,7 +2,13 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import process from 'node:process';
-import { buildFirebasePreviewIdentityPlan, parseFirebasePreviewIdentityPlan } from './lib/firebase-preview-identity-plan-contract.mjs';
+import {
+  buildFirebasePreviewIdentityPlan,
+  firebasePreviewIdentityApprovalAuthorityLines,
+  parseFirebasePreviewIdentityExactApproval,
+  parseFirebasePreviewIdentityPlan,
+  resolveFirebasePreviewIdentityApprovalIssue
+} from './lib/firebase-preview-identity-plan-contract.mjs';
 
 const root = process.cwd();
 const config = parseFirebasePreviewIdentityPlan(JSON.parse(await fs.readFile(path.join(root, 'config', 'firebase-preview-identity-plan.json'), 'utf8')));
@@ -26,6 +32,47 @@ assert.match(plan.attributeCondition, /assertion\.event_name=='pull_request'/);
 assert.match(plan.attributeCondition, /assertion\.ref=='refs\/pull\/124\/merge'/);
 assert.match(plan.attributeCondition, /firebase-preview-deploy\.yml@refs\/heads\/master/);
 assert.equal(plan.principalSetMember, 'principalSet://iam.googleapis.com/projects/647657919626/locations/global/workloadIdentityPools/tips-github-preview/attribute.repository_id/171694140');
+const approvalIssueUrl = new URL(plan.approvalIssueUrl);
+assert.equal(approvalIssueUrl.origin, 'https://github.com');
+assert.equal(approvalIssueUrl.pathname, '/lucasdmoyer/tipsforyourgifts/issues/new');
+assert.equal(approvalIssueUrl.searchParams.get('title'), `[Firebase Preview Identity Approval] PR 124 ${plan.configSha256.slice(0, 12)}`);
+assert.ok(plan.approvalIssueUrl.length < 12_000);
+const uncheckedApprovalBody = approvalIssueUrl.searchParams.get('body');
+const exactApproval = parseFirebasePreviewIdentityExactApproval(uncheckedApprovalBody);
+assert.equal(exactApproval.configSha256, plan.configSha256);
+assert.equal(exactApproval.approvedHeadSha, plan.approvedHeadSha);
+assert.equal(exactApproval.attributeCondition, plan.attributeCondition);
+assert.equal(exactApproval.principalSetMember, plan.principalSetMember);
+for (const line of firebasePreviewIdentityApprovalAuthorityLines) assert.match(uncheckedApprovalBody, new RegExp(`- \\[ \\] ${line.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`));
+
+const checkedApprovalBody = uncheckedApprovalBody.replaceAll('- [ ] ', '- [x] ');
+const validIssue = {
+  title: approvalIssueUrl.searchParams.get('title'),
+  body: checkedApprovalBody,
+  html_url: 'https://github.com/lucasdmoyer/tipsforyourgifts/issues/129',
+  user: { login: 'lucasdmoyer' },
+  author_association: 'OWNER'
+};
+const resolvedApproval = resolveFirebasePreviewIdentityApprovalIssue({ issue: validIssue, currentPlan: plan });
+assert.equal(resolvedApproval.configSha256, plan.configSha256);
+assert.equal(resolvedApproval.confirmation, plan.approvalConfirmation);
+assert.equal(resolvedApproval.source, 'owner_issue');
+
+const approvalNegativeCases = [
+  ['unchecked authority', (issue) => { issue.body = uncheckedApprovalBody; }],
+  ['wrong owner', (issue) => { issue.user.login = 'someone-else'; }],
+  ['wrong association', (issue) => { issue.author_association = 'MEMBER'; }],
+  ['wrong repository', (issue) => { issue.html_url = 'https://github.com/example/repository/issues/129'; }],
+  ['wrong title', (issue) => { issue.title = `${issue.title} changed`; }],
+  ['changed digest', (issue) => { issue.body = issue.body.replaceAll(plan.configSha256, 'a'.repeat(64)); }],
+  ['changed head', (issue) => { issue.body = issue.body.replaceAll(plan.approvedHeadSha, 'b'.repeat(40)); }],
+  ['duplicate decision block', (issue) => { issue.body += `\n\n## Exact approval\n\`\`\`json\n${JSON.stringify(exactApproval, null, 2)}\n\`\`\``; }]
+];
+for (const [label, mutate] of approvalNegativeCases) {
+  const issue = structuredClone(validIssue);
+  mutate(issue);
+  assert.throws(() => resolveFirebasePreviewIdentityApprovalIssue({ issue, currentPlan: plan }), undefined, label);
+}
 
 const commandText = JSON.stringify([...plan.auditCommands, ...plan.mutationCommands]);
 const allCommands = [...plan.auditCommands, ...plan.mutationCommands];
@@ -80,6 +127,8 @@ console.log(JSON.stringify({
   auditCommands: plan.auditCommands.length,
   boundedMutationCommands: plan.mutationCommands.length,
   negativeChecks: negativeCases.length,
+  mobileApprovalPacket: 'passed',
+  approvalNegativeChecks: approvalNegativeCases.length,
   cloudMutationAttempted: false,
   userManagedKeyAllowed: false,
   firebaseAuthAdminAllowed: false,

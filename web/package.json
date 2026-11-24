@@ -39,6 +39,7 @@
     "validate:workflow-runtimes": "node scripts/validate-workflow-action-runtimes.mjs",
     "validate:automation-readiness": "node scripts/validate-automation-readiness.mjs",
     "firebase:preview-identity:plan": "node scripts/plan-firebase-preview-identity.mjs",
+    "firebase:preview-identity:approval:resolve": "node scripts/resolve-firebase-preview-identity-approval-request.mjs",
     "validate:firebase-preview-identity-plan": "node scripts/plan-firebase-preview-identity.mjs --summary",
     "validate:ai-automation-policy": "node scripts/validate-ai-automation-policy.mjs",
     "validate:editorial-safety": "node scripts/validate-editorial-safety.mjs",
