@@ -7,7 +7,7 @@ import { DecisionInboxPage } from './decision-inbox-page';
 import { loadArticle } from './generated/article-loaders.generated';
 import { ARTICLES } from './generated/content.generated';
 import { GROWTH, OPERATIONS, STRATEGY } from './generated/studio.generated';
-import { GiftFinderPage } from './public-pages';
+import { GiftFinderPage } from './gift-finder-page';
 import { FounderBriefPage, STUDIO_DATA, StudioPage } from './studio-pages';
 import { readerBodyComesFirst, readerBodyHtml, readerEvidenceHtml, readerLanguage, readerLead } from './reader-copy';
 import { SeoService } from './seo.service';

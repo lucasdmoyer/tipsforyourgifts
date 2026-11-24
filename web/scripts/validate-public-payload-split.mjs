@@ -29,6 +29,10 @@ expect(browserRoutes.includes("import('./generated/article-loaders.generated')")
 expect(serverRoutes.includes('ARTICLE_SLUGS'), 'server prerender routes must use the slug-only manifest');
 expect(!serverRoutes.includes('content.generated'), 'server route discovery cannot load the full article catalog');
 expect(browserRoutes.includes("import('./home-page')"), 'homepage must lazy-load its dedicated route module');
+for (const moduleName of ['gift-finder-page', 'gifts-page', 'blog-page', 'standards-page', 'affiliate-disclosure-page', 'not-found-page']) {
+  expect(browserRoutes.includes(`import('./${moduleName}')`), `${moduleName} must be a direct lazy route module`);
+}
+expect(!browserRoutes.includes("import('./public-pages')"), 'browser routes cannot lazy-load the combined public-page barrel');
 expect(!publicPages.includes('export class HomePage'), 'homepage cannot be bundled with every public utility page');
 expect(homePage.includes('export class HomePage'), 'dedicated homepage module must export HomePage');
 expect(homePage.includes("from './article-card'"), 'homepage must use the route-neutral article card');
@@ -69,5 +73,6 @@ console.log(JSON.stringify({
   summarySharePercent: Number(((summaryBytes / fullCatalogBytes) * 100).toFixed(2)),
   fullCatalogImportedByBrowserListings: false,
   homePageIsolated: true,
+  utilityPagesIsolated: true,
   articleCardSharedWithoutPublicPageBundle: true
 }, null, 2));
