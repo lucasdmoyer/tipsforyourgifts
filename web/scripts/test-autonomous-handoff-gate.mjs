@@ -25,6 +25,7 @@ const strategy = await readWorkflow('strategy-approved-launch.yml');
 const opportunity = await readWorkflow('opportunity-scout.yml');
 const research = await readWorkflow('research-agent.yml');
 const visual = await readWorkflow('visual-production.yml');
+const affiliateReviewHandoff = await readWorkflow('affiliate-review-handoff.yml');
 const automatic = await readWorkflow('firebase-auto-production.yml');
 const policy = JSON.parse(await fs.readFile(path.join(webRoot, 'config', 'publication-policy.json'), 'utf8'));
 
@@ -230,6 +231,18 @@ assert.equal(visualAutoMergeStep.if, "steps.auto_merge.outputs.eligible == 'true
 assert.match(visualAutoMergeStep.run, /gh pr merge --auto --squash "\$PR_URL"/, 'eligible visual promotion may only request check-gated squash auto-merge');
 assert.doesNotMatch(JSON.stringify(visualAutoMergeResolverStep), /OPENAI_API_KEY/, 'the visual auto-merge resolver must be credential-free');
 
+const affiliateCandidatePush = affiliateReviewHandoff.parsed.on?.push;
+assert.deepEqual(affiliateCandidatePush?.branches, ['master'], 'affiliate review handoff must observe only trusted master');
+assert.ok(affiliateCandidatePush?.paths?.includes('web/affiliate/candidates/*.json'), 'a merged exact-link candidate must automatically wake the independent affiliate evidence desk');
+assert.equal(affiliateReviewHandoff.parsed.permissions?.contents, 'read', 'affiliate review handoff repository access must remain read-only');
+assert.equal(affiliateReviewHandoff.parsed.permissions?.actions, 'write', 'affiliate review handoff needs only workflow-dispatch authority');
+const affiliateHandoffJob = affiliateReviewHandoff.parsed.jobs?.classify_and_launch;
+const affiliateDispatchStep = findStep(affiliateHandoffJob, 'Dispatch each exact candidate once');
+assert.ok(affiliateHandoffJob && affiliateDispatchStep, 'affiliate review handoff must classify and dispatch exact candidates');
+assert.equal(affiliateHandoffJob.steps.filter((step) => step.uses === 'openai/codex-action@v1').length, 0, 'affiliate review handoff must not receive a model credential');
+assert.match(affiliateDispatchStep.run, /gh workflow run affiliate-link-review\.yml --ref master/, 'affiliate evidence review must execute trusted master workflow bytes');
+assert.doesNotMatch(affiliateDispatchStep.run, /affiliate-link-approval|gh pr merge|firebase/i, 'affiliate review handoff cannot approve, merge, or deploy');
+
 const automaticPush = automatic.parsed.on?.push;
 assert.deepEqual(automaticPush?.branches, ['master'], 'automatic Firebase publication must observe only master');
 assert.ok(automaticPush?.paths?.includes('web/**'), 'automatic publication must observe reviewed web changes');
@@ -264,6 +277,7 @@ console.log(JSON.stringify({
     'proven_policy_to_check_gated_merge',
     'visual_request_to_independent_visual_review',
     'proven_visual_promotion_to_check_gated_merge',
+    'new_affiliate_candidate_to_independent_evidence_review',
     'master_to_exact_preview_to_firebase_release'
   ],
   modelJobsWithGithubWrite: 0,

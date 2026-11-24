@@ -339,7 +339,7 @@ export { STUDIO_DATA } from './studio-data';
     <section class="shell compact-section">
       <div class="section-heading">
         <div><p class="eyebrow">Monetization and distribution</p><h2>Proposals move. Authority does not leak.</h2></div>
-        <p>Affiliate candidates and social assets can be researched and queued automatically. Account enrollment, terms, tracking identities, asset rights, cadence, and public posting remain separately recorded founder decisions.</p>
+        <p>New exact affiliate candidates now wake the independent evidence desk automatically after they merge. Account enrollment, scope, terms, tracking identities, exact-link approval, asset rights, cadence, public posting, and production remain separately recorded founder decisions.</p>
       </div>
       <div class="grid two">
         <div class="panel">
@@ -354,7 +354,7 @@ export { STUDIO_DATA } from './studio-data';
               <div><p class="eyebrow">Bookshop expansion handoff</p><strong>{{ request.requestedProducts }} editions identified. {{ request.catalogProductsVerified }} clean catalog pages independently verified. {{ request.paidUrlsCollected }} partner-issued paid URLs collected.</strong></div>
               <span class="status" [class.blocked_on_account]="request.status === 'awaiting_founder_scope_approval_and_partner_export'">{{ request.status === 'awaiting_founder_scope_approval_and_partner_export' ? 'Awaiting Lucas' : 'Scope approved' }}</span>
               <p class="connector-gate">The existing Sapiens pilot remains the only active Bookshop product. This request does not expand the activation list, alter editorial rankings, or authorize production.</p>
-              <p class="connector-gate"><strong>Article review:</strong> {{ request.currentArticleMatchesIndependentReview ? 'current and canonically hash-bound' : 'stale; a fresh review is mandatory before any new link can be created' }}. Every imported paid destination still requires its own independent tracking and purchase-action review.</p>
+              <p class="connector-gate"><strong>Article review:</strong> {{ request.currentArticleMatchesIndependentReview ? 'current and canonically hash-bound' : 'stale; a fresh review is mandatory before any new link can be created' }}. Once an approved partner export is merged, every new exact candidate automatically enters its own independent tracking and purchase-action review. Lucas still approves each reviewed paid link separately.</p>
               <p class="connector-gate"><strong>Next gate:</strong> {{ request.nextGate }}</p>
               @if (request.status === 'awaiting_founder_scope_approval_and_partner_export') { <p class="connector-gate"><a href="https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/affiliate-expansion-approve.yml" target="_blank" rel="noopener">Open founder scope approval workflow</a></p> }
             </article>
