@@ -29,9 +29,6 @@ jobs:
           hosting_changed=false
           while IFS= read -r changed_path; do
             case "$changed_path" in
-              .github/workflows/release-approval-record.yml|web/releases/approvals/README.md|web/releases/approvals/*.json|web/scripts/create-release-approval-from-github.mjs|web/scripts/lib/release-approval-contract.mjs) continue ;;
-            esac
-            case "$changed_path" in
               .github/workflows/firebase-preview.yml|.github/workflows/firebase-preview-deploy.yml|docs/PUBLICATION_AUTOMATION.md|web/scripts/test-publication-policy-gate.mjs|web/config/live-publication.json|web/releases/receipts/*.json|web/src/data/operations.json|web/src/app/generated/content.generated.ts) ;;
               *) hosting_changed=true ;;
             esac
