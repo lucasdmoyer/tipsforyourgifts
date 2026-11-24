@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.2.0",
-  "observedAt": "2026-11-23T23:34:17.000Z",
+  "observedAt": "2026-11-24T03:18:18.000Z",
   "sourceMode": "versioned_snapshot_not_live_poll",
   "externalGates": [
     {
@@ -17,10 +17,10 @@
       "id": "firebase-preview-identity",
       "label": "Keyless Firebase preview identity",
       "status": "blocked_external_configuration",
-      "summary": "PR 104 head 7b2cddada414eea957add384c4a04fe3301093ee passed protected validation, an exact-artifact build, the immutable pull-request boundary, and manual hosted preview review. A live read-only Google Cloud audit confirmed that tips-github-preview does not exist; the intended service account exists with Firebase Hosting Admin only, no Firebase Auth Admin, and no user-managed key. Existing providers are restricted to PR 1, PR 20, or the master production workflow and cannot authenticate PR 104.",
-      "evidenceUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/104#issuecomment-7117003721",
-      "diagnosticUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/runs/45265510887",
-      "nextAction": "After fresh action-time founder IAM approval, create tips-github-preview/github-preview restricted to repository ID 171694140, repository-owner ID 23782501, actor ID 23782501, pull_request, refs/pull/104/merge, and the master-pinned reusable preview workflow; then rerun the required preview check and merge only if the head remains exactly 7b2cddada414eea957add384c4a04fe3301093ee.",
+      "summary": "PR 124 head 4a631984fb36cef60ec8faa6ae35875119a04e0e passed protected validation, an exact-artifact build, the immutable pull-request boundary, manual hosted preview review, and a fresh Node 24.14 validation/build/smoke rerun. A live read-only Google Cloud audit confirmed that tips-github-preview does not exist; the intended service account retains Firebase Hosting Admin only, no Firebase Auth Admin, and no user-managed key. Existing providers are restricted to PR 1, PR 20, or the master production workflow and cannot authenticate PR 124.",
+      "evidenceUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/124#issuecomment-7120213608",
+      "diagnosticUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/runs/45311972759",
+      "nextAction": "After fresh action-time founder IAM approval, create tips-github-preview/github-preview restricted to repository ID 171694140, repository-owner ID 23782501, actor ID 23782501, pull_request, refs/pull/124/merge, and the master-pinned reusable preview workflow; then rerun the required preview check and merge only if the head remains exactly 4a631984fb36cef60ec8faa6ae35875119a04e0e.",
       "authorityBoundary": "Grant only short-lived workload-identity impersonation to the existing Firebase Hosting Admin service account. No Firebase Auth Admin, user-managed service-account key, production-provider change, or production Hosting authorization."
     },
     {
@@ -36,11 +36,17 @@
   ],
   "latestVerifiedPreview": {
     "status": "exact_preview_verified",
-    "sha": "7b2cddada414eea957add384c4a04fe3301093ee",
-    "pullRequestUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/104",
-    "reviewUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/104#issuecomment-7114834768",
-    "previewUrl": "https://tipsforyourgifts--pr-104-7b2cdda-47bzlrvs.web.app/",
-    "summary": "The exact PR-104 Firebase preview passed Node 24.14 validation, a 23-route static build with an 81.91 kB initial transfer, hosted smoke across 20 routes and 11 publication-ready articles, mobile visual review, affiliate disclosure checks, and security-header review. Lighthouse scored 100 for performance, accessibility, and best practices on both the home page and Studio, with 1.0 second LCP and zero layout shift.",
-    "nextAction": "Preserve the exact-head merge approval for 7b2cddada414eea957add384c4a04fe3301093ee only; after merge, require a new exact master-SHA preview, readback, and action-time production approval before any live mutation."
+    "sha": "4a631984fb36cef60ec8faa6ae35875119a04e0e",
+    "pullRequestUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/124",
+    "reviewUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/124#issuecomment-7120213608",
+    "previewUrl": "https://tipsforyourgifts--pr-124-1scxtqco.web.app/",
+    "immutableArtifact": {
+      "source": "github_actions",
+      "workflowRunId": "45311972759",
+      "artifactId": "14883278577",
+      "sha256": "4b82ea510358bd63ce2c42875d4e3f62dabbb298ec066e51af87a64fdbb8461d"
+    },
+    "summary": "The exact PR-124 Firebase preview passed Node 24.14 validation, a 23-route static build, hosted smoke across 20 routes and 11 publication-ready articles, affiliate disclosure checks, security-header review, and manual visual review. Public static routes now load 29.8 kB raw and 6.4 kB gzip initially. Lighthouse scored 100 for performance, accessibility, and best practices on both the home page and Studio, with zero layout shift.",
+    "nextAction": "Preserve the exact-head merge approval for 4a631984fb36cef60ec8faa6ae35875119a04e0e only; after merge, require a new exact master-SHA preview, readback, and action-time production approval before any live mutation."
   }
 }

@@ -2,6 +2,7 @@ import { z } from 'zod';
 
 const httpsUrl = z.string().url().refine((value) => value.startsWith('https://'), 'must use HTTPS');
 const sha40 = z.string().regex(/^[a-f0-9]{40}$/);
+const sha256 = z.string().regex(/^[a-f0-9]{64}$/);
 const teamStatus = z.enum([
   'ready',
   'limited_live',
@@ -28,6 +29,12 @@ const latestVerifiedPreviewSchema = z.object({
   pullRequestUrl: httpsUrl,
   reviewUrl: httpsUrl,
   previewUrl: httpsUrl,
+  immutableArtifact: z.object({
+    source: z.literal('github_actions'),
+    workflowRunId: z.string().regex(/^[1-9]\d*$/),
+    artifactId: z.string().regex(/^[1-9]\d*$/),
+    sha256
+  }).strict().nullable(),
   summary: z.string().min(80),
   nextAction: z.string().min(60)
 }).strict();
@@ -45,8 +52,12 @@ export const automationReadinessEvidenceSchema = z.object({
     if (!ids.includes(requiredId)) context.addIssue({ code: z.ZodIssueCode.custom, path: ['externalGates'], message: `missing required gate ${requiredId}` });
   }
   const previewHost = new URL(evidence.latestVerifiedPreview.previewUrl).hostname;
-  if (!previewHost.startsWith('tipsforyourgifts--') || !previewHost.endsWith('.web.app') || !previewHost.includes(evidence.latestVerifiedPreview.sha.slice(0, 7))) {
-    context.addIssue({ code: z.ZodIssueCode.custom, path: ['latestVerifiedPreview', 'previewUrl'], message: 'preview URL must identify the exact verified SHA prefix' });
+  if (!previewHost.startsWith('tipsforyourgifts--') || !previewHost.endsWith('.web.app')) {
+    context.addIssue({ code: z.ZodIssueCode.custom, path: ['latestVerifiedPreview', 'previewUrl'], message: 'preview URL must use the owned Firebase preview site' });
+  }
+  const previewUrlNamesSha = previewHost.includes(evidence.latestVerifiedPreview.sha.slice(0, 7));
+  if (!previewUrlNamesSha && evidence.latestVerifiedPreview.immutableArtifact === null) {
+    context.addIssue({ code: z.ZodIssueCode.custom, path: ['latestVerifiedPreview', 'immutableArtifact'], message: 'a preview URL without the exact SHA prefix requires an immutable artifact identity' });
   }
   const pullRequestMatch = evidence.latestVerifiedPreview.pullRequestUrl.match(/^https:\/\/github\.com\/lucasdmoyer\/tipsforyourgifts\/pull\/(\d+)$/);
   if (!pullRequestMatch) {
@@ -65,6 +76,10 @@ export const automationReadinessEvidenceSchema = z.object({
   }
   if (previewGate && !previewGate.nextAction.includes(evidence.latestVerifiedPreview.sha)) {
     context.addIssue({ code: z.ZodIssueCode.custom, path: ['externalGates'], message: 'preview identity next action must remain bound to the exact latest verified preview SHA' });
+  }
+  const immutableArtifact = evidence.latestVerifiedPreview.immutableArtifact;
+  if (immutableArtifact && previewGate && previewGate.diagnosticUrl !== `https://github.com/lucasdmoyer/tipsforyourgifts/actions/runs/${immutableArtifact.workflowRunId}`) {
+    context.addIssue({ code: z.ZodIssueCode.custom, path: ['externalGates'], message: 'preview diagnostic URL must bind the immutable artifact workflow run' });
   }
 });
 

@@ -54,6 +54,9 @@ assert.equal(base.decisions.some((decision) => decision.id === 'review-release-c
 if (!currentContentIsVerified && livePublication.latestVerifiedContentRelease) {
   const releaseDecision = base.decisions.find((decision) => decision.id === 'review-release-candidate');
   if (releaseApprovals.currentContentSetApprovedRelease) {
+    assert.equal(releaseApprovals.currentContentSetApprovedRelease.headSha, automationReadinessEvidence.latestVerifiedPreview.sha, 'executive release approval and preview readiness must identify the same exact head');
+    assert.equal(releaseApprovals.currentContentSetApprovedRelease.pullRequestUrl, automationReadinessEvidence.latestVerifiedPreview.pullRequestUrl, 'executive release approval and preview readiness must identify the same pull request');
+    assert.equal(releaseApprovals.currentContentSetApprovedRelease.previewUrl, automationReadinessEvidence.latestVerifiedPreview.previewUrl, 'executive release approval and preview readiness must identify the same reviewed preview');
     assert.equal(releaseDecision.title, 'Unblock the approved exact release');
     assert.equal(releaseDecision.action.url, releaseApprovals.currentContentSetApprovedRelease.pullRequestUrl);
     assert.match(releaseDecision.action.command, /tips-github-preview/);
@@ -220,4 +223,4 @@ expectFailure('actions must use HTTPS', (agenda) => { agenda.decisions[0].action
 expectFailure('evidence cannot disappear', (agenda) => { agenda.decisions[0].evidence = []; });
 expectFailure('unexpected fields rejected', (agenda) => { agenda.estimatedRevenue = 5000; });
 
-console.log(JSON.stringify({ founderAgendaGateTests: 'passed', negativeChecks: 9, currentDecisions: base.decisions.map(({ rank, id, priorityScore }) => ({ rank, id, priorityScore })), allDecisionCategoriesFixture: 'passed', verifiedLiveDeduplication: 'passed', recommendedStrategyIdea: expectedStrategyCandidate?.id ?? null, profitabilityEvidence: base.profitabilityEvidence }, null, 2));
+console.log(JSON.stringify({ founderAgendaGateTests: 'passed', negativeChecks: 9, executiveReleaseConsistencyChecks: 3, currentDecisions: base.decisions.map(({ rank, id, priorityScore }) => ({ rank, id, priorityScore })), allDecisionCategoriesFixture: 'passed', verifiedLiveDeduplication: 'passed', recommendedStrategyIdea: expectedStrategyCandidate?.id ?? null, profitabilityEvidence: base.profitabilityEvidence }, null, 2));
