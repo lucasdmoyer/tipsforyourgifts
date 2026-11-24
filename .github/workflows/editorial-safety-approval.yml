@@ -18,18 +18,26 @@ on:
         description: "REVIEW- followed by the run ID, a hyphen, and the decision"
         required: true
         type: string
+  issues:
+    types: [opened, reopened]
 
 permissions:
   contents: write
+  issues: read
   pull-requests: write
 
 concurrency:
-  group: editorial-safety-${{ inputs.run_id }}
+  group: editorial-safety-${{ github.event_name == 'issues' && format('issue-{0}', github.event.issue.number) || inputs.run_id }}
   cancel-in-progress: false
 
 jobs:
   record_decision:
-    if: github.actor == github.repository_owner && github.actor == 'lucasdmoyer'
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'issues' &&
+       github.event.issue.user.login == 'lucasdmoyer' &&
+       github.event.issue.author_association == 'OWNER' &&
+       startsWith(github.event.issue.title, '[Editorial Safety Decision] '))
     runs-on: ubuntu-latest
     timeout-minutes: 30
     environment: editorial-safety-approval
@@ -41,10 +49,13 @@ jobs:
           CONFIRMATION: ${{ inputs.confirmation }}
           ACTOR: ${{ github.actor }}
           OWNER: ${{ github.repository_owner }}
+          EVENT_NAME: ${{ github.event_name }}
         run: |
           test "$ACTOR" = "$OWNER"
           test "$ACTOR" = "lucasdmoyer"
-          test "$CONFIRMATION" = "REVIEW-$RUN_ID-$DECISION"
+          if [ "$EVENT_NAME" = "workflow_dispatch" ]; then
+            test "$CONFIRMATION" = "REVIEW-$RUN_ID-$DECISION"
+          fi
       - uses: actions/checkout@v5
         with:
           ref: master
@@ -54,16 +65,31 @@ jobs:
           node-version: "24.14.0"
           cache: npm
           cache-dependency-path: web/package-lock.json
+      - name: Install and resolve the exact founder decision request
+        id: request
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          INPUT_RUN_ID: ${{ inputs.run_id }}
+          INPUT_DECISION: ${{ inputs.decision }}
+          INPUT_CONFIRMATION: ${{ inputs.confirmation }}
+        run: |
+          npm ci --prefix web
+          if [ "${{ github.event_name }}" = "issues" ]; then
+            gh api "repos/$GITHUB_REPOSITORY/issues/$ISSUE_NUMBER" > "$RUNNER_TEMP/editorial-safety-issue.json"
+            node web/scripts/resolve-editorial-safety-approval-request.mjs --root=web --request-path="$RUNNER_TEMP/editorial-safety-issue.json" >> "$GITHUB_OUTPUT"
+          else
+            node web/scripts/resolve-editorial-safety-approval-request.mjs --root=web --run-id="$INPUT_RUN_ID" --decision="$INPUT_DECISION" --confirmation="$INPUT_CONFIRMATION" >> "$GITHUB_OUTPUT"
+          fi
       - name: Validate the trusted base and record one immutable decision
         id: decision
         env:
-          RUN_ID: ${{ inputs.run_id }}
-          DECISION: ${{ inputs.decision }}
+          RUN_ID: ${{ steps.request.outputs.run_id }}
+          DECISION: ${{ steps.request.outputs.decision }}
           FOUNDER_LOGIN: ${{ github.actor }}
           WORKFLOW_RUN_ID: ${{ github.run_id }}
           WORKFLOW_RUN_ATTEMPT: ${{ github.run_attempt }}
         run: |
-          npm ci --prefix web
           npm run validate
           npm --prefix web run editorial:safety:record -- \
             --run-id="$RUN_ID" \
@@ -90,7 +116,7 @@ jobs:
           git diff --check
       - name: Commit the isolated decision branch
         env:
-          RUN_ID: ${{ inputs.run_id }}
+          RUN_ID: ${{ steps.request.outputs.run_id }}
           APPROVAL_PATH: ${{ steps.decision.outputs.approval_path }}
           WORKFLOW_RUN_ID: ${{ github.run_id }}
         run: |
@@ -103,8 +129,8 @@ jobs:
       - name: Open the decision pull request without merging or deploying
         env:
           GH_TOKEN: ${{ github.token }}
-          RUN_ID: ${{ inputs.run_id }}
-          DECISION: ${{ inputs.decision }}
+          RUN_ID: ${{ steps.request.outputs.run_id }}
+          DECISION: ${{ steps.request.outputs.decision }}
           WORKFLOW_RUN_ID: ${{ github.run_id }}
         run: |
           gh pr create \

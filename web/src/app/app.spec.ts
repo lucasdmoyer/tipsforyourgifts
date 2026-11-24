@@ -407,6 +407,8 @@ describe('App', () => {
         expect(element.textContent).toContain(claim.text);
       }
       if (review.founderDecisionPacket) {
+        expect(anchorWithExactHref(element, review.founderDecisionPacket.approvalIssueUrl)?.textContent).toContain('Review and approve exact language');
+        expect(anchorWithExactHref(element, review.founderDecisionPacket.rejectionIssueUrl)?.textContent).toContain('Reject exact language');
         expect(element.textContent).toContain(review.founderDecisionPacket.approveCommand);
         expect(element.textContent).toContain(review.founderDecisionPacket.rejectCommand);
         expect(element.textContent).toContain(review.founderDecisionPacket.authorityBoundary);
@@ -466,6 +468,8 @@ describe('App', () => {
       expect(element.textContent).toContain(review.articleSlug);
       for (const claim of review.highRiskClaims) expect(element.textContent).toContain(claim.text);
       if (review.founderDecisionPacket) {
+        expect(anchorWithExactHref(element, review.founderDecisionPacket.approvalIssueUrl)).not.toBeNull();
+        expect(anchorWithExactHref(element, review.founderDecisionPacket.rejectionIssueUrl)).not.toBeNull();
         expect(element.textContent).toContain(review.founderDecisionPacket.approveCommand);
         expect(element.textContent).toContain(review.founderDecisionPacket.rejectCommand);
       }

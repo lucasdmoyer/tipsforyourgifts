@@ -100,7 +100,7 @@ const workflowRaw = await fs.readFile(workflowPath, 'utf8');
 const workflow = YAML.parse(workflowRaw);
 const workflowText = JSON.stringify(workflow);
 assert.match(workflowRaw, /environment:\s*editorial-safety-approval/);
-assert.match(workflowRaw, /github\.actor.*github\.repository_owner/);
+assert.match(workflowRaw, /ACTOR: \$\{\{ github\.actor \}\}[\s\S]*OWNER: \$\{\{ github\.repository_owner \}\}[\s\S]*test "\$ACTOR" = "\$OWNER"/);
 assert.match(workflowRaw, /lucasdmoyer/);
 assert.match(workflowRaw, /editorial:safety:record/);
 assert.match(workflowRaw, /npm run validate/);
