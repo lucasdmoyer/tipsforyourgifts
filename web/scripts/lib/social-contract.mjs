@@ -5,6 +5,7 @@ const slug = z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/);
 const sha256 = z.string().regex(/^[a-f0-9]{64}$/);
 const httpsUrl = z.string().url().refine((value) => value.startsWith('https://'), 'must use HTTPS');
 const externalId = z.string().min(2).max(160).regex(/^[A-Za-z0-9._:-]+$/);
+const maximumStaticSocialImageBytes = 1_000_000;
 
 function isPrivateIpv4(hostname) {
   const octets = hostname.split('.').map(Number);
@@ -79,7 +80,8 @@ export const socialChannelsSchema = z.object({
     publicationReceiptRequired: z.literal(true),
     founderApproverLogin: z.string().regex(/^[A-Za-z0-9-]+$/),
     aggregateReportingRequiredBeforeAutopilot: z.literal(true),
-    ownedDestinationHosts: z.array(z.string().min(3)).min(1)
+    ownedDestinationHosts: z.array(z.string().min(3)).min(1),
+    paidDestinationDisclosure: z.string().min(40).max(240)
   }).strict(),
   channels: z.array(channelSchema).length(3)
 }).strict();
@@ -96,7 +98,7 @@ export const socialCreativeCandidateSchema = z.object({
   publicUrl: httpsUrl,
   contentSha256: sha256,
   contentType: z.enum(['image/png', 'image/jpeg', 'image/webp']),
-  byteLength: z.number().int().positive().max(20_000_000),
+  byteLength: z.number().int().positive().max(maximumStaticSocialImageBytes, 'static social image must not exceed 1,000,000 bytes'),
   width: z.number().int().min(600).max(3840),
   height: z.number().int().min(600).max(3840),
   aspectRatio: z.literal('2:3'),
@@ -129,7 +131,7 @@ export const socialMediaAssetSchema = z.object({
   publicUrl: httpsUrl,
   contentSha256: sha256,
   contentType: z.enum(['image/png', 'image/jpeg', 'image/webp']),
-  byteLength: z.number().int().positive().max(20_000_000),
+  byteLength: z.number().int().positive().max(maximumStaticSocialImageBytes, 'static social image must not exceed 1,000,000 bytes'),
   altText: z.string().min(10).max(500),
   rightsEvidenceUrl: httpsUrl,
   founderLogin: z.string().regex(/^[A-Za-z0-9-]+$/),
@@ -137,8 +139,18 @@ export const socialMediaAssetSchema = z.object({
   status: z.literal('approved')
 }).strict();
 
+export const socialDestinationPostureSchema = z.object({
+  articleSlug: slug,
+  articleRoute: z.string().regex(/^\/blog\/[a-z0-9]+(?:-[a-z0-9]+)*$/),
+  articleManifestSha256: sha256,
+  affiliateLinkCount: z.number().int().nonnegative(),
+  affiliateApprovalSha256s: z.array(sha256),
+  disclosureRequired: z.boolean(),
+  disclosureText: z.string().min(40).max(240).nullable()
+}).strict();
+
 export const socialApprovalSchema = z.object({
-  schemaVersion: z.literal('1.1.0'),
+  schemaVersion: z.literal('1.2.0'),
   approvalId: slug,
   packId: slug,
   postId: slug,
@@ -150,6 +162,7 @@ export const socialApprovalSchema = z.object({
   founderLogin: z.string().regex(/^[A-Za-z0-9-]+$/),
   approvedAt: z.string().datetime(),
   rightsEvidenceUrl: httpsUrl,
+  destinationPosture: socialDestinationPostureSchema,
   approvals: z.object({
     originalOrLicensedAsset: z.literal(true),
     copy: z.literal(true),
@@ -161,7 +174,7 @@ export const socialApprovalSchema = z.object({
 }).strict();
 
 export const socialPublicationSchema = z.object({
-  schemaVersion: z.literal('1.0.0'),
+  schemaVersion: z.literal('1.1.0'),
   publicationId: slug,
   approvalId: slug,
   postId: slug,
@@ -173,6 +186,8 @@ export const socialPublicationSchema = z.object({
   mediaAssetRecordSha256: sha256,
   mediaContentSha256: sha256,
   channelSha256: sha256,
+  destinationPostureSha256: sha256,
+  disclosureApplied: z.boolean(),
   requestSha256: sha256,
   responseSha256: sha256,
   endpoint: z.literal('https://api.pinterest.com/v5/pins'),
@@ -191,6 +206,34 @@ export function socialPostSha256(post) {
   return sha256Json(post);
 }
 
+const socialPublicationManifestContextSchema = z.object({
+  articles: z.array(z.object({
+    articleSlug: slug,
+    route: z.string().regex(/^\/blog\/[a-z0-9]+(?:-[a-z0-9]+)*$/),
+    affiliateLinkCount: z.number().int().nonnegative(),
+    affiliateLinks: z.array(z.object({ approvalSha256: sha256 }).passthrough())
+  }).passthrough())
+}).passthrough();
+
+export function createSocialDestinationPosture({ config, pack, publicationManifest }) {
+  const manifest = socialPublicationManifestContextSchema.parse(publicationManifest);
+  const article = manifest.articles.find((entry) => entry.articleSlug === pack.articleSlug);
+  if (!article) throw new Error(`${pack.packId}: publication manifest does not include destination article ${pack.articleSlug}`);
+  const expectedRoute = `/blog/${pack.articleSlug}`;
+  if (article.route !== expectedRoute) throw new Error(`${pack.packId}: publication manifest route does not match the social destination`);
+  if (article.affiliateLinkCount !== article.affiliateLinks.length) throw new Error(`${pack.packId}: publication manifest affiliate count does not match its approval evidence`);
+  const disclosureRequired = article.affiliateLinkCount > 0;
+  return socialDestinationPostureSchema.parse({
+    articleSlug: article.articleSlug,
+    articleRoute: article.route,
+    articleManifestSha256: sha256Json(article),
+    affiliateLinkCount: article.affiliateLinkCount,
+    affiliateApprovalSha256s: article.affiliateLinks.map((link) => link.approvalSha256).sort(),
+    disclosureRequired,
+    disclosureText: disclosureRequired ? config.policy.paidDestinationDisclosure : null
+  });
+}
+
 function parseReceipt(schema, input, prefix, issues) {
   try {
     const { __sha256: _internalSha256, ...publicInput } = input;
@@ -203,7 +246,7 @@ function parseReceipt(schema, input, prefix, issues) {
   }
 }
 
-export function validateSocialModel(configInput, packs, receipts, assets = [], publications = [], candidates = []) {
+export function validateSocialModel(configInput, packs, receipts, assets = [], publications = [], candidates = [], publicationManifest = null) {
   const issues = [];
   let config;
   try {
@@ -328,6 +371,13 @@ export function validateSocialModel(configInput, packs, receipts, assets = [], p
     if (indexed.post.platform !== receipt.platform) issues.push(`${receipt.postId}: approval platform does not match source post`);
     if (indexed.pack.__sha256 !== receipt.packSha256) issues.push(`${receipt.postId}: source pack changed after social approval`);
     if (socialPostSha256(indexed.post) !== receipt.postSha256) issues.push(`${receipt.postId}: source post changed after social approval`);
+    if (!publicationManifest) issues.push(`${receipt.postId}: content approval requires the current publication manifest`);
+    else {
+      try {
+        const currentPosture = createSocialDestinationPosture({ config, pack: indexed.pack, publicationManifest });
+        if (sha256Json(currentPosture) !== sha256Json(receipt.destinationPosture)) issues.push(`${receipt.postId}: destination article or affiliate posture changed after social approval`);
+      } catch (error) { issues.push(`${receipt.postId}: ${error.message}`); }
+    }
     const asset = assetById.get(receipt.mediaAssetId);
     if (!asset || asset.postId !== receipt.postId) issues.push(`${receipt.postId}: approval requires the post's approved media asset`);
     else {
@@ -356,14 +406,16 @@ export function validateSocialModel(configInput, packs, receipts, assets = [], p
     if (indexed.pack.packId !== publication.packId || indexed.pack.__sha256 !== publication.packSha256 || socialPostSha256(indexed.post) !== publication.postSha256) issues.push(`${publication.postId}: publication source changed after posting`);
     if (asset.__sha256 !== publication.mediaAssetRecordSha256 || asset.contentSha256 !== publication.mediaContentSha256) issues.push(`${publication.postId}: publication media evidence mismatch`);
     if (sha256Json(channel) !== publication.channelSha256) issues.push(`${publication.postId}: active channel configuration changed after posting`);
+    if (sha256Json(approval.destinationPosture) !== publication.destinationPostureSha256) issues.push(`${publication.postId}: publication destination posture does not match its approval`);
+    if (approval.destinationPosture.disclosureRequired !== publication.disclosureApplied) issues.push(`${publication.postId}: publication disclosure evidence does not match its approved destination posture`);
     if (channel.status !== 'active' || !channel.publishingEnabled || channel.publisher !== 'pinterest-api-v5') issues.push(`${publication.postId}: publication receipt requires an active Pinterest API channel`);
     if (!publication.externalPostUrl.endsWith(`/${publication.externalPostId}/`)) issues.push(`${publication.postId}: publication URL does not match the external post ID`);
   }
   return issues;
 }
 
-export function createPinterestPublicationPlan({ config, packs, approvals, assets, publications = [], candidates = [], postId }) {
-  const issues = validateSocialModel(config, packs, approvals, assets, publications, candidates);
+export function createPinterestPublicationPlan({ config, packs, approvals, assets, publications = [], candidates = [], publicationManifest, postId }) {
+  const issues = validateSocialModel(config, packs, approvals, assets, publications, candidates, publicationManifest);
   if (issues.length > 0) throw new Error(`Social model is invalid: ${issues.join('; ')}`);
   const indexed = packs.flatMap((pack) => (pack.posts ?? []).map((post) => ({ pack, post }))).find((entry) => entry.post.id === postId);
   if (!indexed) throw new Error(`Unknown social post: ${postId}`);
@@ -378,12 +430,16 @@ export function createPinterestPublicationPlan({ config, packs, approvals, asset
   if (channel.publisher !== 'pinterest-api-v5') throw new Error(`${postId}: Pinterest official API v5 publisher is not configured`);
   if (!channel.officialPublicationTargetId || !channel.apiCredentialSecretName) throw new Error(`${postId}: Pinterest board target or credential secret reference is missing`);
   if (asset.mediaType !== 'image') throw new Error(`${postId}: Pinterest publisher currently accepts only approved image assets`);
-  if (indexed.post.disclosureRequired) throw new Error(`${postId}: disclosure-required social publishing is not implemented; keep the post non-affiliate`);
+
+  const disclosureApplied = approval.destinationPosture.disclosureRequired;
+  const description = disclosureApplied
+    ? `${approval.destinationPosture.disclosureText}\n\n${indexed.post.copy}`
+    : indexed.post.copy;
 
   const request = {
     link: indexed.post.destinationUrl,
     title: indexed.post.headline,
-    description: indexed.post.copy,
+    description,
     alt_text: asset.altText,
     board_id: channel.officialPublicationTargetId,
     media_source: { source_type: 'image_url', url: asset.publicUrl, is_standard: true }
@@ -407,6 +463,8 @@ export function createPinterestPublicationPlan({ config, packs, approvals, asset
     mediaAssetRecordSha256: asset.__sha256,
     mediaContentSha256: asset.contentSha256,
     channelSha256: sha256Json(channel),
+    destinationPostureSha256: sha256Json(approval.destinationPosture),
+    disclosureApplied,
     requestSha256: sha256Json(request),
     request
   };

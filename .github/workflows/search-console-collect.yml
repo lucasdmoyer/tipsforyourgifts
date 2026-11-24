@@ -45,7 +45,7 @@ jobs:
         with:
           ref: master
           fetch-depth: 0
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: "24.14.0"
           cache: npm
@@ -78,7 +78,7 @@ jobs:
         run: |
           while IFS= read -r changed_path; do
             case "$changed_path" in
-              web/src/data/growth.json|web/src/data/operations.json|web/src/app/generated/content.generated.ts|web/public/sitemap.xml) ;;
+              web/src/data/growth.json|web/src/data/operations.json|web/src/app/generated/content.generated.ts|web/src/app/generated/studio.generated.ts|web/public/sitemap.xml) ;;
               *) echo "Search Console collection changed forbidden path: $changed_path" >&2; exit 1 ;;
             esac
           done < <(git diff --name-only HEAD)
@@ -96,7 +96,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git switch -c "codex/search-console-snapshot-$RUN_ID"
-          git add web/src/data/growth.json web/src/data/operations.json web/src/app/generated/content.generated.ts web/public/sitemap.xml
+          git add web/src/data/growth.json web/src/data/operations.json web/src/app/generated/content.generated.ts web/src/app/generated/studio.generated.ts web/public/sitemap.xml
           git commit -m "Record aggregate Search Console snapshot $SNAPSHOT_ID"
           git push origin "codex/search-console-snapshot-$RUN_ID"
       - name: Open a check-gated auto-merge pull request

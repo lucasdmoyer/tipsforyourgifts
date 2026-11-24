@@ -27,6 +27,22 @@ const escapeHtml = (value) => String(value)
   .replaceAll('"', '&quot;');
 
 const failures = [];
+try {
+  const response = await fetch(new URL('/rss.xml', baseUrl), { redirect: 'follow', signal: AbortSignal.timeout(30_000) });
+  const contents = await response.text();
+  if (!response.ok) failures.push(`/rss.xml: HTTP ${response.status}`);
+  const contentType = response.headers.get('content-type') ?? '';
+  if (!/(?:application|text)\/(?:rss\+)?xml/i.test(contentType)) failures.push(`/rss.xml: unexpected content type ${JSON.stringify(contentType)}`);
+  for (const marker of ['<rss version="2.0"', '<title>Tips for Your Gifts</title>', '<atom:link href="https://tipsforyourgifts.web.app/rss.xml"']) {
+    if (!contents.includes(marker)) failures.push(`/rss.xml: missing ${JSON.stringify(marker)}`);
+  }
+  if ([...contents.matchAll(/<item>/g)].length !== articles.size) failures.push(`/rss.xml: item count differs from ${articles.size} publication-ready articles`);
+  for (const slug of articles.keys()) {
+    if (!contents.includes(`/blog/${slug}`)) failures.push(`/rss.xml: missing publication-ready article ${slug}`);
+  }
+} catch (error) {
+  failures.push(`/rss.xml: request failed: ${error instanceof Error ? error.message : String(error)}`);
+}
 await Promise.all(paths.map(async (pathname) => {
   const url = new URL(pathname, baseUrl).toString();
   let response;
@@ -48,8 +64,15 @@ await Promise.all(paths.map(async (pathname) => {
     failures.push(`${pathname}: no matching publication-ready source article`);
     return;
   }
-  for (const marker of ['Start with the person', 'If you know someone', 'Original illustration']) {
+  for (const marker of ['Start with the person', 'If you know someone', 'Original illustration', 'Keep following the clue', 'data-event-name="related_guide_open"', 'BreadcrumbList', 'Know who this sounds like?', 'data-event-name="article_share"']) {
     if (!html.includes(marker)) failures.push(`${pathname}: missing ${JSON.stringify(marker)}`);
+  }
+  const relatedDestinations = [...html.matchAll(/data-destination-guide-slug="([^"]+)"/g)].map((match) => match[1]);
+  if (relatedDestinations.length !== 3) failures.push(`${pathname}: expected 3 related guides, found ${relatedDestinations.length}`);
+  if (new Set(relatedDestinations).size !== relatedDestinations.length) failures.push(`${pathname}: related guides contain a duplicate destination`);
+  if (relatedDestinations.includes(slug)) failures.push(`${pathname}: related guides include the current article`);
+  for (const destination of relatedDestinations) {
+    if (!articles.has(destination)) failures.push(`${pathname}: related guide ${destination} is not publication ready`);
   }
   for (const product of article.products ?? []) {
     if (!html.includes(escapeHtml(product.name))) failures.push(`${pathname}: missing product ${product.id}`);

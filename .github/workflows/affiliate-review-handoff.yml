@@ -1,0 +1,65 @@
+name: Launch affiliate evidence review for new candidates
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - web/affiliate/candidates/*.json
+
+permissions:
+  contents: read
+  actions: write
+
+concurrency:
+  group: affiliate-review-handoff-${{ github.event.after }}
+  cancel-in-progress: false
+
+jobs:
+  classify_and_launch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.after }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "24.14.0"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - name: Resolve only newly merged, hash-bound candidates
+        id: handoff
+        env:
+          BEFORE_SHA: ${{ github.event.before }}
+          AFTER_SHA: ${{ github.event.after }}
+          HANDOFF_FILE: ${{ runner.temp }}/affiliate-review-handoffs.tsv
+        run: |
+          npm ci --prefix web
+          npm --prefix web run affiliate:link:review-handoff -- --before="$BEFORE_SHA" --after="$AFTER_SHA" --output="$HANDOFF_FILE"
+      - name: Re-run every deterministic gate before review dispatch
+        if: steps.handoff.outputs.candidate_count != '0'
+        run: |
+          npm run validate
+          npm run build
+          npm run smoke
+          git diff --check
+      - name: Dispatch each exact candidate once
+        if: steps.handoff.outputs.candidate_count != '0'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          HANDOFF_FILE: ${{ steps.handoff.outputs.handoff_file }}
+          PRIOR_RUNS_FILE: ${{ runner.temp }}/affiliate-review-prior-runs.tsv
+        run: |
+          gh api --paginate "/repos/$GITHUB_REPOSITORY/actions/workflows/affiliate-link-review.yml/runs?event=workflow_dispatch&per_page=100" --jq '.workflow_runs[] | [.display_title, .status, (.conclusion // "")] | @tsv' > "$PRIOR_RUNS_FILE"
+          while IFS=$'\t' read -r candidate_id candidate_sha256; do
+            [[ "$candidate_id" =~ ^[a-z0-9]+(-[a-z0-9]+)*$ ]] || { echo "Invalid candidate ID." >&2; exit 1; }
+            [[ "$candidate_sha256" =~ ^[a-f0-9]{64}$ ]] || { echo "Invalid candidate SHA-256." >&2; exit 1; }
+            run_title="Independently review $candidate_id"
+            if awk -F '\t' -v title="$run_title" '$1 == title && ($2 == "queued" || $2 == "in_progress" || $3 == "success") { found = 1 } END { exit !found }' "$PRIOR_RUNS_FILE"; then
+              echo "Review already queued, running, or completed for $candidate_id; dispatch skipped."
+              continue
+            fi
+            gh workflow run affiliate-link-review.yml --ref master -f candidate_id="$candidate_id" -f expected_candidate_sha256="$candidate_sha256"
+          done < "$HANDOFF_FILE"

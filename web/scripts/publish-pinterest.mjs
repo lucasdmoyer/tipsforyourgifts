@@ -2,6 +2,7 @@ import { createHash } from 'node:crypto';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import process from 'node:process';
+import { publicationManifestSchema } from './lib/publication-manifest-contract.mjs';
 import { assertSafePublicHttpsUrl, createPinterestPublicationPlan, readResponseBytesCapped, sha256Json, socialPublicationSchema, validateSocialModel } from './lib/social-contract.mjs';
 
 const root = process.cwd();
@@ -22,12 +23,13 @@ async function loadJsonRecords(directory) {
 }
 
 const config = JSON.parse(await fs.readFile(path.join(root, 'config', 'social-channels.json'), 'utf8'));
+const publicationManifest = publicationManifestSchema.parse(JSON.parse(await fs.readFile(path.join(root, 'public', 'publication-manifest.json'), 'utf8')));
 const packs = await loadJsonRecords(path.join(root, 'social', 'drafts'));
 const approvals = await loadJsonRecords(path.join(root, 'social', 'approvals'));
 const candidates = await loadJsonRecords(path.join(root, 'social', 'candidates'));
 const assets = await loadJsonRecords(path.join(root, 'social', 'assets'));
 const publications = await loadJsonRecords(path.join(root, 'social', 'publications'));
-const plan = createPinterestPublicationPlan({ config, packs, approvals, assets, publications, candidates, postId });
+const plan = createPinterestPublicationPlan({ config, packs, approvals, assets, publications, candidates, publicationManifest, postId });
 const approval = approvals.find((entry) => entry.postId === postId);
 if (args['expected-approval-sha256'] && approval?.__sha256 !== args['expected-approval-sha256']) throw new Error('approval receipt SHA-256 does not match the action-time reviewed digest');
 if (args['expected-media-record-sha256'] && plan.mediaAssetRecordSha256 !== args['expected-media-record-sha256']) throw new Error('media asset record SHA-256 does not match the action-time reviewed digest');
@@ -62,7 +64,7 @@ try { responseBody = JSON.parse(responseText); } catch { throw new Error('Pinter
 if (!/^[A-Za-z0-9._:-]{2,160}$/.test(String(responseBody.id ?? ''))) throw new Error('Pinterest success response did not include a valid external Pin ID');
 
 const receipt = socialPublicationSchema.parse({
-  schemaVersion: '1.0.0',
+  schemaVersion: '1.1.0',
   publicationId: `${postId}-publication`,
   approvalId: plan.approvalId,
   postId,
@@ -74,6 +76,8 @@ const receipt = socialPublicationSchema.parse({
   mediaAssetRecordSha256: plan.mediaAssetRecordSha256,
   mediaContentSha256: mediaSha256,
   channelSha256: plan.channelSha256,
+  destinationPostureSha256: plan.destinationPostureSha256,
+  disclosureApplied: plan.disclosureApplied,
   requestSha256: plan.requestSha256,
   responseSha256: createHash('sha256').update(responseText).digest('hex'),
   endpoint: plan.endpoint,
@@ -89,7 +93,7 @@ try { await fs.access(outputPath); throw new Error(`${postId} already has a publ
 }
 await fs.mkdir(path.dirname(outputPath), { recursive: true });
 await fs.writeFile(outputPath, `${JSON.stringify(receipt, null, 2)}\n`);
-const validationIssues = validateSocialModel(config, packs, approvals, assets, [...publications, { ...receipt, __sha256: sha256Json(receipt) }], candidates);
+const validationIssues = validateSocialModel(config, packs, approvals, assets, [...publications, { ...receipt, __sha256: sha256Json(receipt) }], candidates, publicationManifest);
 if (validationIssues.length > 0) throw new Error(`Publication receipt failed validation: ${validationIssues.join('; ')}`);
 if (process.env.GITHUB_OUTPUT) await fs.appendFile(process.env.GITHUB_OUTPUT, `post_id=${postId}\nexternal_post_id=${receipt.externalPostId}\npublication_path=${path.relative(root, outputPath)}\n`);
 console.log(JSON.stringify({ published: true, postId, platform: 'pinterest', externalPostId: receipt.externalPostId, publicationReceipt: path.relative(root, outputPath) }, null, 2));

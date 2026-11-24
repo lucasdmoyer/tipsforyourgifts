@@ -1,0 +1,157 @@
+name: Propose AI automation activation
+
+on:
+  workflow_dispatch:
+    inputs:
+      expected_policy_sha256:
+        description: "Exact credential-verified AI policy SHA-256 visible in Studio"
+        required: true
+        type: string
+      confirmation:
+        description: "Type ACTIVATE-ai-automation"
+        required: true
+        type: string
+  issues:
+    types: [opened, reopened]
+
+permissions:
+  contents: read
+  issues: read
+
+concurrency:
+  group: ai-automation-activate
+  cancel-in-progress: false
+
+jobs:
+  prepare:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'issues' &&
+       github.event.issue.user.login == 'lucasdmoyer' &&
+       github.event.issue.author_association == 'OWNER' &&
+       startsWith(github.event.issue.title, '[Propose AI Activation] '))
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    environment: ai-automation-activation
+    permissions:
+      contents: read
+      issues: read
+    outputs:
+      base_sha: ${{ steps.base.outputs.sha }}
+    steps:
+      - name: Require repository-owner activation decision
+        env:
+          ACTOR: ${{ github.actor }}
+          OWNER: ${{ github.repository_owner }}
+        run: |
+          test "$ACTOR" = "$OWNER" || { echo "Only the repository owner may propose AI automation activation." >&2; exit 1; }
+      - uses: actions/checkout@v5
+        with:
+          ref: master
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Bind the proposal to the exact master commit
+        id: base
+        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "24.14.0"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - name: Install and resolve the exact founder activation request
+        id: request
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          INPUT_POLICY_SHA256: ${{ inputs.expected_policy_sha256 }}
+          INPUT_CONFIRMATION: ${{ inputs.confirmation }}
+        run: |
+          npm ci --prefix web
+          if [ "${{ github.event_name }}" = "issues" ]; then
+            gh api "repos/$GITHUB_REPOSITORY/issues/$ISSUE_NUMBER" > "$RUNNER_TEMP/ai-activation-issue.json"
+            node web/scripts/resolve-ai-automation-activation-request.mjs --request-path="$RUNNER_TEMP/ai-activation-issue.json" >> "$GITHUB_OUTPUT"
+          else
+            node web/scripts/resolve-ai-automation-activation-request.mjs --expected-policy-sha256="$INPUT_POLICY_SHA256" --confirmation="$INPUT_CONFIRMATION" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Prepare the exact activation proposal without a credential
+        env:
+          EXPECTED_POLICY_SHA256: ${{ steps.request.outputs.expected_policy_sha256 }}
+          CONFIRMATION: ${{ steps.request.outputs.confirmation }}
+          FOUNDER_LOGIN: ${{ github.actor }}
+        run: |
+          npm run validate
+          npm --prefix web run ai:policy:activate -- --expected-policy-sha256="$EXPECTED_POLICY_SHA256" --confirmation="$CONFIRMATION" --founder-login="$FOUNDER_LOGIN"
+          npm --prefix web run generate
+      - name: Prove the proposal grants only versioned model-call eligibility
+        run: |
+          while IFS= read -r changed_path; do
+            case "$changed_path" in
+              web/config/ai-automation-policy.json|web/src/data/operations.json|web/src/app/generated/content.generated.ts|web/src/app/generated/studio.generated.ts|web/public/sitemap.xml) ;;
+              *) echo "AI activation changed forbidden path: $changed_path" >&2; exit 1 ;;
+            esac
+          done < <(git diff --name-only HEAD)
+          npm run validate
+          npm run build
+          npm run smoke
+          git diff --check
+          git diff --binary HEAD > ai-activation.patch
+          test -s ai-activation.patch
+      - uses: actions/upload-artifact@v7
+        with:
+          name: ai-activation-proposal-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ai-activation.patch
+          if-no-files-found: error
+          retention-days: 7
+
+  open_pull_request:
+    needs: prepare
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ needs.prepare.outputs.base_sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "24.14.0"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - uses: actions/download-artifact@v8
+        with:
+          name: ai-activation-proposal-${{ github.run_id }}-${{ github.run_attempt }}
+      - name: Re-prove and commit the exact credential-free patch
+        env:
+          RUN_ID: ${{ github.run_id }}
+          RUN_ATTEMPT: ${{ github.run_attempt }}
+        run: |
+          git apply --index ai-activation.patch
+          rm ai-activation.patch
+          while IFS= read -r changed_path; do
+            case "$changed_path" in
+              web/config/ai-automation-policy.json|web/src/data/operations.json|web/src/app/generated/content.generated.ts|web/src/app/generated/studio.generated.ts|web/public/sitemap.xml) ;;
+              *) echo "AI activation writer received forbidden path: $changed_path" >&2; exit 1 ;;
+            esac
+          done < <(git diff --cached --name-only)
+          npm ci --prefix web
+          npm run validate
+          npm run build
+          npm run smoke
+          git diff --cached --check
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          branch="codex/activate-ai-automation-$RUN_ID-$RUN_ATTEMPT"
+          git switch -c "$branch"
+          git commit -m "Activate bounded AI automation policy"
+          git push origin "$branch"
+      - name: Open the activation pull request
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ github.run_id }}
+          RUN_ATTEMPT: ${{ github.run_attempt }}
+        run: |
+          branch="codex/activate-ai-automation-$RUN_ID-$RUN_ATTEMPT"
+          gh pr create --base master --head "$branch" --title "Activate bounded AI automation policy" --body "This protected, exact-hash proposal changes only the versioned AI policy from credential-verified to active. It uses no OpenAI key, calls no model or external API, cannot merge itself, and cannot deploy Firebase, activate affiliate links, publish social posts, send email, or create credentials. Merging is the separate founder decision that makes the six reviewed model workflows eligible to run within their existing read-only GitHub permissions, project hard spend limit and early alert, pinned model and reasoning effort, per-workflow allowlists, and detached credential-free writer jobs."

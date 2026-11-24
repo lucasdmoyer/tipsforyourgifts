@@ -12,7 +12,8 @@
     "aggregateReportingRequiredBeforeAutopilot": true,
     "ownedDestinationHosts": [
       "tipsforyourgifts.web.app"
-    ]
+    ],
+    "paidDestinationDisclosure": "Affiliate disclosure: This guide contains paid links. We may earn a commission if you purchase through them. Recommendations are selected independently."
   },
   "channels": [
     {

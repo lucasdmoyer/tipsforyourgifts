@@ -3,15 +3,19 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import process from 'node:process';
 import matter from './lib/front-matter.mjs';
+import { visualRequestSchema } from './lib/visual-request-contract.mjs';
+import { canonicalSha256, legacyVisualReviewReceiptSchema, visualReviewReceiptSchema } from './lib/visual-production-contract.mjs';
 
 const root = process.cwd();
 const visualRegistryPath = path.join(root, 'visuals', 'article-visuals.json');
-const independentReviewPath = path.join(root, 'visuals', 'reviews', 'gift-thread-v1.qa.json');
+const visualRequestDir = path.join(root, 'visuals', 'requests');
 const blogDir = path.join(root, 'src', 'data', 'blog');
 const visualRegistrySource = await fs.readFile(visualRegistryPath);
 const registry = JSON.parse(visualRegistrySource.toString('utf8'));
 const promptBook = await fs.readFile(path.join(root, registry.promptBookPath ?? ''), 'utf8');
-const independentReview = JSON.parse(await fs.readFile(independentReviewPath, 'utf8'));
+const legacyReviewMetadata = registry.legacyReview ?? {};
+const independentReviewPath = path.join(root, legacyReviewMetadata.receiptPath ?? 'visuals/reviews/gift-thread-v1.qa.json');
+const independentReview = legacyVisualReviewReceiptSchema.parse(JSON.parse(await fs.readFile(independentReviewPath, 'utf8')));
 const errors = [];
 
 const expect = (condition, message) => { if (!condition) errors.push(message); };
@@ -27,9 +31,9 @@ expect(independentReview.verdict === 'passed', 'Independent visual review verdic
 expect(Array.isArray(independentReview.blockers) && independentReview.blockers.length === 0, 'Independent visual review must have no blockers');
 expect(typeof independentReview.reviewedAt === 'string' && !Number.isNaN(Date.parse(independentReview.reviewedAt)), 'Independent visual review needs a valid reviewedAt timestamp');
 expect(independentReview.registryPath === 'visuals/article-visuals.json', 'Independent visual review must bind the visual registry');
-expect(independentReview.registrySha256 === sha256(visualRegistrySource), 'Independent visual review registrySha256 is stale');
+expect(independentReview.registrySha256 === legacyReviewMetadata.registrySha256, 'Legacy visual review registry digest differs from the immutable migration record');
 expect(independentReview.promptBookPath === registry.promptBookPath, 'Independent visual review must bind the prompt book');
-expect(independentReview.promptBookSha256 === sha256(Buffer.from(promptBook)), 'Independent visual review promptBookSha256 is stale');
+expect(independentReview.promptBookSha256 === legacyReviewMetadata.promptBookSha256, 'Legacy visual review prompt digest differs from the immutable migration record');
 for (const requiredCheck of ['sourceAndPromptProvenance', 'fileIntegrity', 'productContextTruth', 'copyrightAndTradeDressBoundary', 'accessibilitySemantics', 'responsiveLayout', 'draftIsolation']) {
   expect(independentReview.checks?.[requiredCheck] === true, `Independent visual review must pass ${requiredCheck}`);
 }
@@ -85,6 +89,9 @@ const promptSections = new Map(promptBook.split(/^## /m).slice(1).map((section) 
   const newline = section.indexOf('\n');
   return [section.slice(0, newline).trim(), section.slice(newline + 1).trim()];
 }));
+const legacyAssetIds = new Set(legacyReviewMetadata.assetIds ?? []);
+expect(legacyAssetIds.size === (legacyReviewMetadata.assetIds ?? []).length, 'Legacy visual review asset IDs must be unique');
+expect(legacyAssetIds.size === independentReview.scope.sourceAssetsReviewed, 'Legacy visual review asset count differs from its immutable migration scope');
 const articleFiles = (await fs.readdir(blogDir)).filter((name) => name.endsWith('.md')).sort();
 const articles = new Map();
 for (const fileName of articleFiles) {
@@ -93,7 +100,24 @@ for (const fileName of articleFiles) {
   articles.set(slug, { status: parsed.data.status, products: parsed.data.products ?? [], pairs: parsed.data.pairs ?? [] });
 }
 
+const pendingVisualArticles = new Set();
+let visualRequestNames = [];
+try {
+  visualRequestNames = (await fs.readdir(visualRequestDir)).filter((name) => name.endsWith('.json')).sort();
+} catch (error) {
+  if (error.code !== 'ENOENT') throw error;
+}
+for (const name of visualRequestNames) {
+  const parsed = visualRequestSchema.safeParse(JSON.parse(await fs.readFile(path.join(visualRequestDir, name), 'utf8')));
+  if (!parsed.success) {
+    errors.push(`${name}: pending visual request is invalid; run validate:visual-requests for details`);
+    continue;
+  }
+  pendingVisualArticles.add(parsed.data.articleSlug);
+}
+
 const assets = new Map();
+const incrementalReceipts = new Map();
 for (const asset of registry.assets ?? []) {
   expect(typeof asset.id === 'string' && /^[a-z0-9-]+$/.test(asset.id), `Invalid visual asset id: ${asset.id}`);
   expect(!assets.has(asset.id), `Duplicate visual asset id: ${asset.id}`);
@@ -113,7 +137,20 @@ for (const asset of registry.assets ?? []) {
   } catch (error) {
     errors.push(`${asset.id}: cannot read retained source ${path.relative(root, sourcePath)} (${error.message})`);
   }
+  if (legacyAssetIds.has(asset.id)) {
+    expect(asset.reviewReceiptPath === undefined, `${asset.id}: legacy-reviewed asset must not claim an incremental receipt`);
+  } else {
+    expect(typeof asset.reviewReceiptPath === 'string' && /^visuals\/reviews\/.+\.qa\.v1\.json$/.test(asset.reviewReceiptPath), `${asset.id}: incremental asset needs an immutable visual review receipt`);
+    if (asset.reviewReceiptPath && !incrementalReceipts.has(asset.reviewReceiptPath)) {
+      try {
+        incrementalReceipts.set(asset.reviewReceiptPath, visualReviewReceiptSchema.parse(JSON.parse(await fs.readFile(path.join(root, asset.reviewReceiptPath), 'utf8'))));
+      } catch (error) {
+        errors.push(`${asset.id}: cannot validate visual receipt ${asset.reviewReceiptPath} (${error.message})`);
+      }
+    }
+  }
 }
+for (const assetId of legacyAssetIds) expect(assets.has(assetId), `Legacy visual review references missing asset ${assetId}`);
 
 const visualArticles = new Map();
 const publicAssetIds = new Set();
@@ -147,8 +184,39 @@ for (const entry of registry.articles ?? []) {
   }
 }
 
-for (const slug of articles.keys()) expect(visualArticles.has(slug), `Article has no visual mapping: ${slug}`);
+for (const [receiptPath, receipt] of incrementalReceipts) {
+  expect(receipt.verdict === 'passed' && receipt.sourcePromotionAuthorized === true && receipt.productionDeploymentAuthorized === false, `${receiptPath}: visual receipt authority is invalid`);
+  const mapping = registry.articles.find((entry) => entry.slug === receipt.articleSlug);
+  expect(Boolean(mapping), `${receiptPath}: reviewed article mapping is missing`);
+  if (mapping) expect(receipt.articleMappingSha256 === canonicalSha256(mapping), `${receiptPath}: article mapping changed after visual review`);
+  for (const reviewed of receipt.assets) {
+    const asset = assets.get(reviewed.assetId);
+    expect(Boolean(asset), `${receiptPath}: reviewed asset ${reviewed.assetId} is missing`);
+    if (!asset) continue;
+    expect(asset.reviewReceiptPath === receiptPath, `${reviewed.assetId}: asset points to a different visual receipt`);
+    expect(reviewed.assetRecordSha256 === canonicalSha256(asset), `${reviewed.assetId}: registry record changed after visual review`);
+    expect(reviewed.promptSectionSha256 === sha256(Buffer.from(`${promptSections.get(reviewed.assetId) ?? ''}\n`)), `${reviewed.assetId}: prompt section changed after visual review`);
+    expect(reviewed.sourcePath === registry.sourcePathPattern.replace('{assetId}', reviewed.assetId), `${reviewed.assetId}: receipt source path is invalid`);
+    expect(reviewed.sourceSha256 === asset.sourceSha256, `${reviewed.assetId}: receipt source digest differs from the registry`);
+    expect(reviewed.publicPaths[0] === `public${asset.src}`, `${reviewed.assetId}: receipt delivery path differs from the registry`);
+    expect(reviewed.publicSha256[0] === asset.fileSha256, `${reviewed.assetId}: receipt delivery digest differs from the registry`);
+    for (let index = 0; index < reviewed.publicPaths.length; index += 1) {
+      try {
+        const bytes = await fs.readFile(path.join(root, reviewed.publicPaths[index]));
+        expect(sha256(bytes) === reviewed.publicSha256[index], `${reviewed.assetId}: reviewed public file digest changed for ${reviewed.publicPaths[index]}`);
+      } catch (error) {
+        errors.push(`${reviewed.assetId}: cannot read reviewed public file ${reviewed.publicPaths[index]} (${error.message})`);
+      }
+    }
+  }
+}
+
+for (const [slug, article] of articles) {
+  if (article.status === 'publication_ready') expect(visualArticles.has(slug), `Publication-ready article has no approved visual mapping: ${slug}`);
+  else expect(visualArticles.has(slug) || pendingVisualArticles.has(slug), `Draft article has neither an approved visual mapping nor a pending visual request: ${slug}`);
+}
 for (const slug of visualArticles.keys()) expect(articles.has(slug), `Visual mapping has no article: ${slug}`);
+for (const slug of pendingVisualArticles) expect(!visualArticles.has(slug), `Pending visual request cannot coexist with an approved visual mapping: ${slug}`);
 for (const assetId of draftAssetIds) expect(!publicAssetIds.has(assetId), `${assetId}: one visual cannot be both draft-only and public`);
 
 for (const asset of assets.values()) {
@@ -168,6 +236,35 @@ for (const asset of assets.values()) {
   } catch (error) {
     errors.push(`${asset.id}: cannot read ${path.relative(root, filePath)} (${error.message})`);
   }
+  if (isPublic) {
+    const mobilePath = publicPath.replace(/\.webp$/, '-480.webp');
+    try {
+      const mobileBuffer = await fs.readFile(mobilePath);
+      expect(mobileBuffer.length <= 50 * 1024, `${asset.id}: 480px responsive WebP exceeds 50 KiB`);
+      const mobileDimensions = webpDimensions(mobileBuffer);
+      expect(mobileDimensions?.width === 480 && mobileDimensions?.height === 320, `${asset.id}: mobile responsive WebP must be exactly 480x320, got ${mobileDimensions ? `${mobileDimensions.width}x${mobileDimensions.height}` : 'unreadable dimensions'}`);
+    } catch (error) {
+      errors.push(`${asset.id}: cannot read mobile responsive derivative ${path.relative(root, mobilePath)} (${error.message})`);
+    }
+    const responsivePath = publicPath.replace(/\.webp$/, '-768.webp');
+    try {
+      const responsiveBuffer = await fs.readFile(responsivePath);
+      expect(responsiveBuffer.length <= 80 * 1024, `${asset.id}: 768px responsive WebP exceeds 80 KiB`);
+      const responsiveDimensions = webpDimensions(responsiveBuffer);
+      expect(responsiveDimensions?.width === 768 && responsiveDimensions?.height === 512, `${asset.id}: responsive WebP must be exactly 768x512, got ${responsiveDimensions ? `${responsiveDimensions.width}x${responsiveDimensions.height}` : 'unreadable dimensions'}`);
+    } catch (error) {
+      errors.push(`${asset.id}: cannot read responsive derivative ${path.relative(root, responsivePath)} (${error.message})`);
+    }
+    const desktopPath = publicPath.replace(/\.webp$/, '-1200.webp');
+    try {
+      const desktopBuffer = await fs.readFile(desktopPath);
+      expect(desktopBuffer.length <= 140 * 1024, `${asset.id}: 1200px responsive WebP exceeds 140 KiB`);
+      const desktopDimensions = webpDimensions(desktopBuffer);
+      expect(desktopDimensions?.width === 1200 && desktopDimensions?.height === 800, `${asset.id}: desktop responsive WebP must be exactly 1200x800, got ${desktopDimensions ? `${desktopDimensions.width}x${desktopDimensions.height}` : 'unreadable dimensions'}`);
+    } catch (error) {
+      errors.push(`${asset.id}: cannot read desktop responsive derivative ${path.relative(root, desktopPath)} (${error.message})`);
+    }
+  }
   if (isDraft) expect(!(await fileExists(publicPath)), `${asset.id}: draft-only asset must not exist under public/`);
   if (isPublic) expect(!(await fileExists(draftPath)), `${asset.id}: public asset must not have a stale draft delivery copy`);
 }
@@ -181,17 +278,26 @@ for (const directory of await fs.readdir(publicImageRoot, { withFileTypes: true 
   }
 }
 const registeredPublicSources = new Set([...publicAssetIds].map((id) => assets.get(id)?.src));
-for (const src of publicWebps) expect(registeredPublicSources.has(src), `Unregistered deployable visual: ${src}`);
-expect(publicWebps.length === publicAssetIds.size, `Deployable WebP count ${publicWebps.length} must match ${publicAssetIds.size} public registry assets`);
+const registeredMobileSources = new Set([...registeredPublicSources].map((src) => src?.replace(/\.webp$/, '-480.webp')));
+const registeredResponsiveSources = new Set([...registeredPublicSources].map((src) => src?.replace(/\.webp$/, '-768.webp')));
+const registeredDesktopSources = new Set([...registeredPublicSources].map((src) => src?.replace(/\.webp$/, '-1200.webp')));
+const originalPublicWebps = publicWebps.filter((src) => !src.endsWith('-480.webp') && !src.endsWith('-768.webp') && !src.endsWith('-1200.webp'));
+const mobilePublicWebps = publicWebps.filter((src) => src.endsWith('-480.webp'));
+const responsivePublicWebps = publicWebps.filter((src) => src.endsWith('-768.webp'));
+const desktopPublicWebps = publicWebps.filter((src) => src.endsWith('-1200.webp'));
+for (const src of originalPublicWebps) expect(registeredPublicSources.has(src), `Unregistered deployable visual: ${src}`);
+for (const src of mobilePublicWebps) expect(registeredMobileSources.has(src), `Unregistered mobile responsive visual: ${src}`);
+for (const src of responsivePublicWebps) expect(registeredResponsiveSources.has(src), `Unregistered responsive visual: ${src}`);
+for (const src of desktopPublicWebps) expect(registeredDesktopSources.has(src), `Unregistered desktop responsive visual: ${src}`);
+expect(originalPublicWebps.length === publicAssetIds.size, `Deployable original WebP count ${originalPublicWebps.length} must match ${publicAssetIds.size} public registry assets`);
+expect(mobilePublicWebps.length === publicAssetIds.size, `Deployable mobile responsive WebP count ${mobilePublicWebps.length} must match ${publicAssetIds.size} public registry assets`);
+expect(responsivePublicWebps.length === publicAssetIds.size, `Deployable responsive WebP count ${responsivePublicWebps.length} must match ${publicAssetIds.size} public registry assets`);
+expect(desktopPublicWebps.length === publicAssetIds.size, `Deployable desktop responsive WebP count ${desktopPublicWebps.length} must match ${publicAssetIds.size} public registry assets`);
 
-const productCount = [...articles.values()].reduce((sum, article) => sum + article.products.length, 0);
-const pairCount = [...articles.values()].reduce((sum, article) => sum + article.pairs.length, 0);
-expect(independentReview.scope?.sourceAssetsReviewed === assets.size, 'Independent visual review source asset count is stale');
-expect(independentReview.scope?.publicAssetsReviewed === publicAssetIds.size, 'Independent visual review public asset count is stale');
-expect(independentReview.scope?.draftOnlyAssetsReviewed === draftAssetIds.size, 'Independent visual review draft-only asset count is stale');
-expect(independentReview.scope?.articleMappingsReviewed === articles.size, 'Independent visual review article mapping count is stale');
-expect(independentReview.scope?.productMappingsReviewed === productCount, 'Independent visual review product mapping count is stale');
-expect(independentReview.scope?.pairMappingsReviewed === pairCount, 'Independent visual review pair mapping count is stale');
+const mappedArticles = [...visualArticles.keys()].map((slug) => articles.get(slug)).filter(Boolean);
+const productCount = mappedArticles.reduce((sum, article) => sum + article.products.length, 0);
+const pairCount = mappedArticles.reduce((sum, article) => sum + article.pairs.length, 0);
+for (const [key, value] of Object.entries(legacyReviewMetadata.scope ?? {})) expect(independentReview.scope?.[key] === value, `Legacy independent visual review scope ${key} differs from the immutable migration record`);
 
 if (errors.length > 0) {
   console.error(`Visual validation failed with ${errors.length} error${errors.length === 1 ? '' : 's'}:`);
@@ -199,4 +305,4 @@ if (errors.length > 0) {
   process.exit(1);
 }
 
-console.log(`Validated ${assets.size} original visuals (${publicAssetIds.size} public, ${draftAssetIds.size} draft-only) across ${articles.size} articles, ${productCount} products, and ${pairCount} pairs`);
+console.log(`Validated ${assets.size} original visuals (${publicAssetIds.size} public with 480px, 768px, and 1200px responsive derivatives, ${draftAssetIds.size} draft-only) across ${visualArticles.size} mapped articles, ${pendingVisualArticles.size} pending visual requests, ${productCount} products, and ${pairCount} pairs`);
