@@ -1,0 +1,77 @@
+{
+  "schemaVersion": "1.0.0",
+  "approvalId": "release-approval-pr-131-de7156c",
+  "repository": "lucasdmoyer/tipsforyourgifts",
+  "pullRequest": {
+    "number": 131,
+    "url": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/131",
+    "headSha": "de7156cf796bde99f933536c7bf713a86af97c6d",
+    "baseSha": "8fd7a7abbb0e9381786ff6994883c56874287281"
+  },
+  "candidate": {
+    "publicationManifestId": "publication-set-8f82fd7548201471",
+    "contentSetSha256": "8f82fd75482014719e5c59602ae819d06eb326b339d7e4cc10f8ab32d0cfc90f",
+    "articles": 11,
+    "affiliateLinks": 1
+  },
+  "approval": {
+    "status": "approved_for_exact_head_merge_only",
+    "approvedBy": "lucasdmoyer",
+    "authorAssociation": "OWNER",
+    "approvedAt": "2026-11-24T07:13:46.000Z",
+    "source": {
+      "kind": "github_owner_comment",
+      "url": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/131#issuecomment-7124759653",
+      "commentId": "7124759653",
+      "bodySha256": "1a1bfeb526ac2bc23ab2ca6eebf573ce2d881fbf046cd1453e8c8af4eb8e33e0",
+      "observedAt": "2026-11-24T07:42:12.000Z"
+    }
+  },
+  "previewReview": {
+    "status": "exact_preview_verified",
+    "url": "https://tipsforyourgifts--pr-131-0ld9jf5z.web.app/",
+    "artifactId": "14892130122",
+    "artifactSha256": "128405ff635925683d16072254a60bd12f58199606bc96072fc82ffc36a34366",
+    "hostedSmoke": {
+      "routes": 20,
+      "articles": 11
+    },
+    "lighthouse": {
+      "homepage": {
+        "performance": 100,
+        "accessibility": 100,
+        "bestPractices": 100
+      },
+      "studio": {
+        "performance": 100,
+        "accessibility": 100,
+        "bestPractices": 100
+      },
+      "lcpSeconds": 1.34,
+      "cls": 0
+    },
+    "affiliateDisclosureVerified": true,
+    "securityHeadersVerified": true
+  },
+  "authority": {
+    "allowed": [
+      "merge_exact_pull_request_head"
+    ],
+    "excluded": [
+      "changed_head",
+      "merge_commit",
+      "replay",
+      "later_artifact",
+      "firebase_production_deployment",
+      "iam_changes",
+      "credentials",
+      "affiliate_expansion",
+      "social_publishing",
+      "email",
+      "spend"
+    ]
+  },
+  "nextGate": "Rerun the required preview check and merge only if pull request 131 remains exactly de7156cf796bde99f933536c7bf713a86af97c6d; after merge, require a new exact master-SHA preview, readback, and action-time production approval.",
+  "recordedAt": "2026-11-24T07:42:12.000Z",
+  "status": "active_exact_head_approval"
+}
