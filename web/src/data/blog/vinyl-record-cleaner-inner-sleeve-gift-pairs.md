@@ -14,7 +14,7 @@ tags:
   - gifts for record lovers
   - thoughtful gift pairs
 researchRun: "20260823-used-record-reset-53a6b604"
-evidenceScore: 80
+evidenceScore: 76
 evidenceMode: desk_research
 featured: false
 affiliateDisclosure: false
@@ -37,7 +37,7 @@ products:
     whyItFits: "What it is: a manual bath-style washer for compatible vinyl records. It fits a collector with a small batch of confirmed vinyl, a level wet-work area, and the patience to wash, dry, and clean the system afterward."
     drawback: "The system requires a level work area, distilled water and concentrate, prewashed cloths, careful label clearance, manual drying, brush rinsing and air drying, and basin cleanup after a session."
     editorialScore: 89
-    evidenceConfidence: 90
+    evidenceConfidence: 86
     claimIds:
       - claim-spin-clean-benefit
       - claim-spin-clean-drawback
@@ -52,7 +52,7 @@ products:
     whyItFits: "What it is: a manual pad-and-mist cleaning kit for one compatible vinyl record at a time. It fits a collector who brings home used records one by one and wants a compact routine instead of setting up a full bath."
     drawback: "The G2 process is a light one-record clean that can require repeated passes on dirty used vinyl, needs pad maintenance and replacement fluid, and demands careful control around the label."
     editorialScore: 82
-    evidenceConfidence: 80
+    evidenceConfidence: 76
     claimIds:
       - claim-groovewasher-benefit
       - claim-groovewasher-drawback
@@ -67,7 +67,7 @@ products:
     whyItFits: "What it is: a soft, multi-layer replacement inner sleeve with a support layer for standard 12-inch LPs. It fits a collector who wants to move a fully clean, dry record out of a plain paper sleeve that sheds debris."
     drawback: "The soft multi-layer sleeve can bunch during insertion into a tight jacket, and independent owner reports include both long-term satisfaction and isolated quality concerns that justify inspecting every sleeve before use."
     editorialScore: 82
-    evidenceConfidence: 78
+    evidenceConfidence: 76
     claimIds:
       - claim-mofi-benefit
       - claim-mofi-drawback
@@ -79,9 +79,9 @@ products:
     affiliate: false
     priceBand: "Under $35"
     whyItFits: "What it is: a supported multi-layer replacement inner sleeve for standard 12-inch LPs. It fits a collector whose first cleaning batch is confirmed as 12-inch and needs a clean sleeve after each record is fully dry."
-    drawback: "A supported multi-layer 12-inch sleeve still requires inspection for manufacturing debris or creases and a fit check in tight jackets before a whole pack is used; the direct manufacturer page was marked sold out during this review."
+    drawback: "A supported multi-layer 12-inch sleeve adds bulk and should be test-fitted in a tight jacket before a whole pack is used; the direct manufacturer page was marked sold out during this review."
     editorialScore: 82
-    evidenceConfidence: 76
+    evidenceConfidence: 74
     claimIds:
       - claim-bigfudge-benefit
       - claim-bigfudge-drawback
@@ -95,7 +95,7 @@ products:
     whyItFits: "What it is: a thin, flexible sleeve made from high-density polyethylene (HDPE) plastic and cut for standard 12-inch records. It fits a collector whose jacket is too tight for a thicker multi-layer sleeve, after one sample has been inspected and test-fitted."
     drawback: "The thin plastic is less rigid than a paper-backed sleeve when someone slides it into a record jacket. Owner discussions include both long use and past quality-control concerns, so each sleeve needs inspection."
     editorialScore: 75
-    evidenceConfidence: 72
+    evidenceConfidence: 71
     claimIds:
       - claim-diskeeper-benefit
       - claim-diskeeper-drawback
@@ -176,13 +176,13 @@ Give only the Spin-Clean if suitable fresh sleeves already exist. Give only the 
 
 ### For one record at a time: choose a pad cleaner and size-matched sleeves
 
-The [GrooveWasher Hardwood Record Cleaning Kit](https://www.groovewasher.com/products/groovewasher-walnut-record-cleaning-kit) is the compact one-record option. Its official page documents the handle, replaceable pad, G2 fluid, mat, and label mask. Two reports about the same cleaning system describe the practical tradeoffs: repeated passes may be needed on dirty vinyl, and the pad eventually needs washing or replacement ([SoundStage! Access review](https://www.soundstageaccess.com/index.php/equipment-reviews/1180-groovewasher-walnut-record-cleaning-kit), [ecoustics first-person report](https://www.ecoustics.com/articles/best-record-cleaning-options-2026/)). The ecoustics page uses commission links, so it supports subjective handling and pad-wear observations only—not product specifications.
+The [GrooveWasher Hardwood Record Cleaning Kit](https://www.groovewasher.com/products/groovewasher-walnut-record-cleaning-kit) is the compact one-record option. Its official page documents the handle, replaceable pad, G2 fluid, mat, and label mask. One exact-product owner says they bought the kit and liked it for an occasional one-record clean; another first-person report says the pad wears down over time ([owner discussion](https://www.reddit.com/r/vinyl/comments/mko21y), [ecoustics first-person report](https://www.ecoustics.com/articles/best-record-cleaning-options-2026/)). The ecoustics page uses commission links, so it supports subjective handling and pad-wear observations only—not product specifications.
 
 This is a routine rather than a spray-and-forget accessory. Start with one confirmed vinyl record, follow the current [how-to instructions](https://www.groovewasher.com/pages/how-to) and [maintenance FAQ](https://www.groovewasher.com/pages/faqs), keep the label dry, allow the record to air-dry fully, rinse and air-dry the removable pad as directed, and give the kit a clean storage drawer.
 
 The current manufacturer label for G2 says the fluid is for hard surfaces only, can irritate eyes, should be kept away from eyes, skin, clothing, and food, must not be swallowed, and has specific first-aid directions for exposure ([current G2 label](https://www.groovewasher.com/products/g2-8-oz-fluid-refill-bottle)). Follow the complete current label rather than this summary.
 
-The [Big Fudge 12-inch Premium Master Inner Sleeves](https://binauralrecords.com/products/big-fudge-12-inch-premium-master-archive-quality-inner-sleeves) are supported multi-layer replacements for standard 12-inch LPs ([official specifications](https://bigfudgevinyl.com/products/big-fudge-premium-master-vinyl-record-sleeves-50x-record-inner-sleeves-for-12-vinyl-record-storage-clear-3-layer-lp-sleeves-with-anti-static-rice-paper-acid-free-archival-album-sleeves)). The direct manufacturer page was marked sold out during this review, so the ordinary, unpaid link goes to the exact 50-count product at Binaural Records; recheck stock before ordering. Each sleeve still needs inspection for creases or debris and a fit test inside the actual jacket ([exact-product verified-owner reviews](https://www.platekompaniet.no/lyd-hifi/vinyltilbehor/oppbevaring/innercover/big-fudge-12-tommer-premium-master-innerlommer-50stk-innercover), [comparative review](https://theaudiophileman.com/mofi-the-games-up-an-inner-sleeve-odyssey/)).
+The [Big Fudge 12-inch Premium Master Inner Sleeves](https://binauralrecords.com/products/big-fudge-12-inch-premium-master-archive-quality-inner-sleeves) are supported multi-layer replacements for standard 12-inch LPs ([official specifications](https://bigfudgevinyl.com/products/big-fudge-premium-master-vinyl-record-sleeves-50x-record-inner-sleeves-for-12-vinyl-record-storage-clear-3-layer-lp-sleeves-with-anti-static-rice-paper-acid-free-archival-album-sleeves)). The direct manufacturer page was marked sold out during this review, so the ordinary, unpaid link goes to the exact 50-count product at Binaural Records; recheck stock before ordering. A supported sleeve adds thickness, so test one inside the tightest actual jacket before using the whole pack ([comparative review](https://theaudiophileman.com/mofi-the-games-up-an-inner-sleeve-odyssey/)). That review says the pack was self-funded but uses affiliate links, so we use it only for fit and handling tradeoffs.
 
 Choose this pair for someone who brings home one compatible record at a time and wants a compact arrival routine. Give only the sleeves when a cleaning method they trust is already in place.
 

@@ -72,9 +72,9 @@ products:
     affiliate: false
     priceBand: "Under $35"
     whyItFits: "What it is: a compact 31-by-14-inch microfiber-chenille towel with pockets for both hands. It fits someone whose flat towel keeps slipping or bunching while they dry paws."
-    drawback: "The Super Shammy must be washed without fabric softener and needs a hanging place; buyer reviews disagree on whether its compact size and drying time suit repeated whole-dog use."
+    drawback: "The Super Shammy must be washed without fabric softener and needs a hanging place; an older hands-on review praises the hand pockets but flags the separate-wash routine, so this is best for someone willing to give the towel its own care routine."
     editorialScore: 82
-    evidenceConfidence: 81
+    evidenceConfidence: 77
     claimIds:
       - claim-soggy-shammy-benefit
       - claim-soggy-shammy-drawback
@@ -120,7 +120,7 @@ pairs:
     anchorProductId: dexas-mudbuster
     companionProductId: soggy-doggy-super-shammy
     whyTogether: "For a dog already comfortable with paw handling, the MudBuster contains a heavier-mud rinse and the Super Shammy gives the person hand pockets for drying the water left behind."
-    interactionMoment: "Set out warm—not hot—water and the towel before the walk; on return, use the familiar cleanup pause and stop immediately for pain, injury, guarding, panic, or resistance."
+    interactionMoment: "Set out warm—not hot—water and the towel before the walk; on return, use the familiar cleanup pause and stop immediately for stillness, tight lips, side-eye, growling, visible discomfort, limping, bleeding, a wound, or ongoing pain."
     preGiftCheck: "Use only a published paw-width range, confirm comfortable handling, inventory current tools, test footing, and name both drying locations."
     bundleDrawback: "Buy only the shammy when a bowl already rinses well; buy only the MudBuster when a preferred towel already dries well; skip both when the existing setup works."
     coherenceScore: 86
@@ -131,7 +131,7 @@ pairs:
     anchorProductId: kurgo-mud-dog-travel-shower
     companionProductId: soggy-doggy-super-shammy
     whyTogether: "For a dog already comfortable with the routine, the tested Kurgo attachment directs a warm-water rinse where no faucet is handy and the pocketed Super Shammy removes the water left behind."
-    interactionMoment: "Keep a tested PET bottle, warm—not hot—water, and the towel together; rinse at the familiar spot, stop for resistance or pain, and dry before moving on."
+    interactionMoment: "Keep a tested PET bottle, warm—not hot—water, and the towel together; rinse at the familiar spot, stop for visible discomfort or pain, and dry before moving on."
     preGiftCheck: "Test the bottle thread, confirm comfortable handling, choose a drainage-safe non-slip spot, use warm water, and inventory any rinse tool already in the car."
     bundleDrawback: "Buy only the shammy when pouring water already works; buy only the attachment when a good towel is packed; skip both when the dog resists paw handling or there is no regular faucet-free cleanup spot."
     coherenceScore: 84
@@ -159,7 +159,7 @@ Picture the real moment before you shop:
 
 Use warm water, not hot or cold water. Keep the dog on a dry, non-slip surface ([PetMD veterinarian-reviewed bathing guidance](https://www.petmd.com/dog/grooming/how-to-bathe-a-dog), [doorway setup guidance](https://askavet.com/blogs/news/paw-care-guide-2025-7-vet-approved-cleaning-methods)).
 
-Never force a paw into a washer. Stop if the dog freezes, pulls away, guards the paw, growls, panics, or otherwise resists. Gentle handling guidance says those are reasons to stop and return to a comfortable stage ([AKC handling guidance](https://www.akc.org/canine-partners/handling-vs-petting-how-to-make-sure-your-dog-enjoys-both/)). If there is limping, bleeding, a wound, or another sign of pain or injury, stop the cleanup and ask a veterinarian ([VCA paw-injury guidance](https://vcahospitals.com/pediatric/puppy/health-wellness/dog-paw-injuries-and-how-to-help)).
+Never force a paw into a washer. Stop if the dog becomes still, shows tight lips or side-eye, growls, or shows other visible discomfort. Those are the stop signals named in the handling guidance ([AKC handling guidance](https://www.akc.org/canine-partners/handling-vs-petting-how-to-make-sure-your-dog-enjoys-both/)). If there is limping, bleeding, a wound, or ongoing pain, stop the cleanup and ask a veterinarian ([VCA paw-injury guidance](https://vcahospitals.com/pediatric/puppy/health-wellness/dog-paw-injuries-and-how-to-help)).
 
 ## What they may already have
 
@@ -195,13 +195,13 @@ Buyer reports also conflict on whether dogs accept the cup: some participate eas
 
 The [Kurgo Mud Dog Travel Shower](https://www.kurgo.com/p/mud-dog-travel-shower/K01567) is a small silicone shower head that screws onto compatible PET water or soda bottles. It can direct a warm-water rinse when the normal cleanup happens beside a car or on a porch away from a faucet.
 
-The important word is compatible. Kurgo specifies standard PET bottles from 16 ounces to 2 liters, while purchaser reviews show that not every bottle thread behaves the same ([Kurgo specifications](https://www.kurgo.com/p/mud-dog-travel-shower/K01567), [Chewy purchaser reviews](https://www.chewy.com/kurgo-mud-travel-dog-shower/dp/143314)). Test the exact bottle before wrapping the gift. The attachment still needs clean water, drainage, a non-slip surface, and a towel.
+The important word is compatible. Kurgo specifies standard PET bottles from 16 ounces to 2 liters, while purchaser reviews show that not every bottle thread behaves the same ([Kurgo specifications](https://www.kurgo.com/p/mud-dog-travel-shower/K01567), [Chewy purchaser reviews](https://www.chewy.com/kurgo-mud-travel-dog-shower/dp/143314)). A bought-and-tested comparative review also found the compact attachment useful for small paw-cleaning jobs but limited by bottle volume and squeeze pressure ([Smart Bark review](https://www.smartbark.co.uk/post/best-portable-dog-washers)). Smart Bark uses affiliate links, so we use that report only for its hands-on tradeoffs. Test the exact bottle before wrapping the gift. The attachment still needs clean water, drainage, a non-slip surface, and a towel.
 
 ### When the towel keeps slipping: one pocketed shammy
 
 The [Soggy Doggy Super Shammy](https://www.soggydoggydoormat.com/products/soggy-doggy-super-shammy-blue) is a 31-by-14-inch microfiber-chenille towel with a pocket for each hand. The pockets help the person keep hold of a compact towel while drying paws.
 
-It needs a hanging place and must be washed without fabric softener. Buyer feedback is positive overall, but some people say it is small or takes longer than expected to dry ([Chewy customer reviews](https://www.chewy.com/soggy-doggy-microfiber-super-shammy/product-reviews/142545), [verified-purchase review corpus](https://home.woot.com/review/B015CMWUS0?itemid=TP05163A&offerid=00b63709-87ce-4265-88e4-6f0cf93c1a10)). Treat it as a paw and targeted-coat towel, not a guaranteed full-body towel for every dog.
+It needs a hanging place and must be washed without fabric softener. An older hands-on review liked the hand pockets but disliked the separate-wash requirement ([The Gadgeteer review](https://the-gadgeteer.com/2011/12/02/soggy-doggy-super-shammy-review/)). The page now discloses affiliate commissions, so we use it only for stable design and care observations—not price, availability, or long-term durability. Treat the shammy as a targeted paw-and-coat towel with its own care routine, not a guaranteed full-body towel for every dog.
 
 ### When several ordinary towels get soaked: one wringable flat towel
 
@@ -209,7 +209,7 @@ The [17-by-27-inch Absorber Dog Lover's Towel](https://dogloverstowel.com/produc
 
 It does not have hand pockets. It cannot go in the dryer, and it becomes stiff if allowed to dry. The owner must either follow the maker's clean-and-store-damp tube routine or re-wet and wring the towel before using it again ([official product details](https://dogloverstowel.com/products/the-absorber-dog-lovers-towel-1), [official care FAQ](https://dogloverstowel.com/pages/faqs)).
 
-The exact dog-towel listing also has independent purchaser feedback about everyday ownership ([Girl With The Dogs reviews](https://girlwiththedogs.com/products/the-absorber-27-in-x-17-in-aqua)).
+The exact dog-towel listing also has independent purchaser feedback about everyday ownership ([Girl With The Dogs reviews](https://girlwiththedogs.com/products/the-absorber-27-in-x-17-in-aqua), [Shop app owner reviews](https://shop.app/products/4582752026761/the-absorber-dog-lovers-towel-17-in-x-27-in)). Both corpora sit beside retail offers, so we use them only for subjective ownership experience—not specifications, stock, price, or delivery.
 
 Choose the Soggy Doggy when hand pockets solve the observed problem. Choose the Absorber when wringing and reusing one flat towel solves it. Do not buy both without a clear reason.
 
@@ -248,7 +248,7 @@ Answer these questions first:
 - Is there a dry, flat, non-slip standing surface?
 - Where will the cup, attachment, towel, or mat be cleaned and stored?
 
-During cleanup, use warm—not hot—water. Never force handling. Stop for pain, injury, limping, bleeding, a wound, guarding, freezing, growling, panic, pulling away, or other resistance. Ask a veterinarian about pain or injury.
+During cleanup, use warm—not hot—water. Never force handling. Stop if the dog becomes still, shows tight lips or side-eye, growls, or shows other visible discomfort. Stop for limping, bleeding, a wound, or ongoing pain, and ask a veterinarian.
 
 If an answer is missing, choose the smallest reversible option—or improve the bowl-and-towel station they already have.
 
