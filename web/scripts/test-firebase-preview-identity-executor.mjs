@@ -73,7 +73,7 @@ function createFake(overrides = {}) {
       if (index === 1) state.provider = {
         name: `projects/${plan.projectNumber}/locations/global/workloadIdentityPools/${plan.poolId}/providers/${plan.providerId}`,
         state: 'ACTIVE',
-        displayName: 'Tips PR 124 preview',
+        displayName: 'Tips PR 131 preview',
         oidc: { issuerUri: 'https://token.actions.githubusercontent.com' },
         attributeCondition: plan.attributeCondition,
         attributeMapping: expectedMapping
@@ -147,7 +147,7 @@ await rejectAudit({ state: {
   pool: { name: `projects/${plan.projectNumber}/locations/global/workloadIdentityPools/${plan.poolId}`, state: 'ACTIVE', displayName: 'Tips GitHub PR preview' },
   provider: {
     name: `projects/${plan.projectNumber}/locations/global/workloadIdentityPools/${plan.poolId}/providers/${plan.providerId}`,
-    state: 'ACTIVE', displayName: 'Tips PR 124 preview', oidc: { issuerUri: 'https://token.actions.githubusercontent.com' },
+    state: 'ACTIVE', displayName: 'Tips PR 131 preview', oidc: { issuerUri: 'https://token.actions.githubusercontent.com' },
     attributeCondition: 'assertion.repository_id==\'wrong\'', attributeMapping: expectedMapping
   }
 } }, /condition differs/);

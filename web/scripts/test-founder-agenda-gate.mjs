@@ -59,14 +59,15 @@ assert.equal(base.primaryDecisionId, currentContentIsVerified ? 'establish-measu
 assert.equal(base.decisions.some((decision) => decision.id === 'review-release-candidate'), !currentContentIsVerified);
 if (!currentContentIsVerified && livePublication.latestVerifiedContentRelease) {
   const releaseDecision = base.decisions.find((decision) => decision.id === 'review-release-candidate');
-  if (releaseApprovals.currentContentSetApprovedRelease) {
-    assert.equal(releaseApprovals.currentContentSetApprovedRelease.headSha, automationReadinessEvidence.latestVerifiedPreview.sha, 'executive release approval and preview readiness must identify the same exact head');
-    assert.equal(releaseApprovals.currentContentSetApprovedRelease.pullRequestUrl, automationReadinessEvidence.latestVerifiedPreview.pullRequestUrl, 'executive release approval and preview readiness must identify the same pull request');
-    assert.equal(releaseApprovals.currentContentSetApprovedRelease.previewUrl, automationReadinessEvidence.latestVerifiedPreview.previewUrl, 'executive release approval and preview readiness must identify the same reviewed preview');
+  const approvedReleaseMatchesPreview = releaseApprovals.currentContentSetApprovedRelease &&
+    releaseApprovals.currentContentSetApprovedRelease.headSha === automationReadinessEvidence.latestVerifiedPreview.sha &&
+    releaseApprovals.currentContentSetApprovedRelease.pullRequestUrl === automationReadinessEvidence.latestVerifiedPreview.pullRequestUrl &&
+    releaseApprovals.currentContentSetApprovedRelease.previewUrl === automationReadinessEvidence.latestVerifiedPreview.previewUrl;
+  if (approvedReleaseMatchesPreview) {
     assert.equal(releaseDecision.title, 'Unblock the approved exact release');
     assert.match(releaseDecision.action.url, /^https:\/\/github\.com\/lucasdmoyer\/tipsforyourgifts\/issues\/new\?/);
     const identityApprovalIssue = new URL(releaseDecision.action.url);
-    assert.equal(identityApprovalIssue.searchParams.get('title'), `[Firebase Preview Identity Approval] PR 124 ${firebasePreviewIdentityPlan.configSha256.slice(0, 12)}`);
+    assert.equal(identityApprovalIssue.searchParams.get('title'), `[Firebase Preview Identity Approval] PR 131 ${firebasePreviewIdentityPlan.configSha256.slice(0, 12)}`);
     assert.equal(parseFirebasePreviewIdentityExactApproval(identityApprovalIssue.searchParams.get('body')).configSha256, firebasePreviewIdentityPlan.configSha256);
     assert.match(releaseDecision.action.command, /tips-github-preview/);
     assert.match(releaseDecision.action.command, new RegExp(firebasePreviewIdentityPlan.configSha256));

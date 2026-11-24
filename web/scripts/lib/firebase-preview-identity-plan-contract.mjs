@@ -11,10 +11,10 @@ const expectedAttributeMapping = Object.freeze({
   'attribute.job_workflow_ref': 'assertion.job_workflow_ref'
 });
 
-const exactAuthorityBoundary = 'Create only the PR-124-bound keyless preview pool, provider, and workloadIdentityUser impersonation binding for the existing Firebase Hosting Admin service account. Do not create a key, grant Firebase Auth Admin, change production identity, or deploy Firebase.';
+const exactAuthorityBoundary = 'Create only the PR-131-bound keyless preview pool, provider, and workloadIdentityUser impersonation binding for the existing Firebase Hosting Admin service account. Do not create a key, grant Firebase Auth Admin, change production identity, or deploy Firebase.';
 
 export const firebasePreviewIdentityApprovalAuthorityLines = Object.freeze([
-  'I reviewed this exact plan digest, PR 124 head, OIDC condition, principal set, service account, and three conditional mutations.',
+  'I reviewed this exact plan digest, PR 131 head, OIDC condition, principal set, service account, and three conditional mutations.',
   'I authorize only the seven read-only checks and three conditional mutations in this exact plan, with an immediate stop on unexpected existing state.',
   'This does not authorize service-account creation, user-managed keys, Firebase Auth Admin, production-provider changes, destructive recovery, Firebase deployment, PR merge, or production deployment.'
 ]);
@@ -33,10 +33,10 @@ export const firebasePreviewIdentityPlanSchema = z.object({
   repositoryOwnerId: z.literal('23782501'),
   actorId: z.literal('23782501'),
   eventName: z.literal('pull_request'),
-  pullRequestNumber: z.literal(124),
-  ref: z.literal('refs/pull/124/merge'),
+  pullRequestNumber: z.literal(131),
+  ref: z.literal('refs/pull/131/merge'),
   jobWorkflowRef: z.literal('lucasdmoyer/tipsforyourgifts/.github/workflows/firebase-preview-deploy.yml@refs/heads/master'),
-  approvedHeadSha: z.literal('4a631984fb36cef60ec8faa6ae35875119a04e0e'),
+  approvedHeadSha: z.literal('de7156cf796bde99f933536c7bf713a86af97c6d'),
   attributeMapping: z.object({
     'google.subject': z.literal(expectedAttributeMapping['google.subject']),
     'attribute.repository_id': z.literal(expectedAttributeMapping['attribute.repository_id']),
@@ -47,7 +47,7 @@ export const firebasePreviewIdentityPlanSchema = z.object({
     'attribute.job_workflow_ref': z.literal(expectedAttributeMapping['attribute.job_workflow_ref'])
   }).strict(),
   allowedServiceAccountProjectRoles: z.tuple([z.literal('roles/firebasehosting.admin')]),
-  releaseReviewEvidenceUrl: z.literal('https://github.com/lucasdmoyer/tipsforyourgifts/pull/124#issuecomment-7120213608'),
+  releaseReviewEvidenceUrl: z.literal('https://github.com/lucasdmoyer/tipsforyourgifts/pull/131#issuecomment-7122574287'),
   previewWorkflowUrl: z.literal('https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/firebase-preview.yml'),
   authorityBoundary: z.literal(exactAuthorityBoundary)
 }).strict();
@@ -97,7 +97,7 @@ export function parseFirebasePreviewIdentityExactApproval(body) {
   if (!/^[a-f0-9]{64}$/.test(decision.configSha256 ?? '')) throw new Error('Firebase preview identity plan SHA-256 is invalid');
   if (!/^[a-f0-9]{64}$/.test(decision.executionPlanSha256 ?? '')) throw new Error('Firebase preview identity execution-plan SHA-256 is invalid');
   if (!/^[a-f0-9]{40}$/.test(decision.approvedHeadSha ?? '')) throw new Error('Firebase preview identity approved head SHA is invalid');
-  if (decision.pullRequestNumber !== 124) throw new Error('Firebase preview identity approval must target PR 124');
+  if (decision.pullRequestNumber !== 131) throw new Error('Firebase preview identity approval must target PR 131');
   return decision;
 }
 
@@ -205,14 +205,14 @@ export function buildFirebasePreviewIdentityPlan(rawConfig) {
   ];
   const mutationCommands = [
     command('Create the dedicated disabled-by-absence preview pool', ['iam', 'workload-identity-pools', 'create', config.poolId, ...commonLocation, '--display-name=Tips GitHub PR preview', '--quiet'], true, 'only_if_pool_is_absent'),
-    command('Create the PR-124-only GitHub OIDC provider', [
+    command('Create the PR-131-only GitHub OIDC provider', [
       'iam', 'workload-identity-pools', 'providers', 'create-oidc', config.providerId,
       `--workload-identity-pool=${config.poolId}`,
       ...commonLocation,
       `--issuer-uri=${config.issuerUri}`,
       `--attribute-mapping=${attributeMapping}`,
       `--attribute-condition=${attributeCondition}`,
-      '--display-name=Tips PR 124 preview',
+      '--display-name=Tips PR 131 preview',
       '--quiet'
     ], true, 'only_if_provider_is_absent'),
     command('Grant short-lived impersonation to the exact repository identity', [
@@ -247,7 +247,7 @@ export function buildFirebasePreviewIdentityPlan(rawConfig) {
     mode: 'review_only_no_execution',
     configSha256,
     executionPlanSha256,
-    approvalConfirmation: `CREATE-PR-124-PREVIEW-IDENTITY-${configSha256}-${executionPlanSha256}`,
+    approvalConfirmation: `CREATE-PR-131-PREVIEW-IDENTITY-${configSha256}-${executionPlanSha256}`,
     approvedHeadSha: config.approvedHeadSha,
     pullRequestNumber: config.pullRequestNumber,
     repository: config.repository,

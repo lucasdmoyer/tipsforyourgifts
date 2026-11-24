@@ -20,8 +20,8 @@ assert.match(plan.configSha256, /^[a-f0-9]{64}$/);
 assert.match(plan.executionPlanSha256, /^[a-f0-9]{64}$/);
 assert.match(previewGate.nextAction, new RegExp(plan.configSha256));
 assert.equal(plan.mode, 'review_only_no_execution');
-assert.equal(plan.approvedHeadSha, '4a631984fb36cef60ec8faa6ae35875119a04e0e');
-assert.equal(plan.pullRequestNumber, 124);
+assert.equal(plan.approvedHeadSha, 'de7156cf796bde99f933536c7bf713a86af97c6d');
+assert.equal(plan.pullRequestNumber, 131);
 assert.equal(plan.auditCommands.length, 7);
 assert.equal(plan.mutationCommands.length, 3);
 assert.equal(plan.postflightCommands, plan.auditCommands);
@@ -30,13 +30,13 @@ assert.match(plan.attributeCondition, /assertion\.repository_id=='171694140'/);
 assert.match(plan.attributeCondition, /assertion\.repository_owner_id=='23782501'/);
 assert.match(plan.attributeCondition, /assertion\.actor_id=='23782501'/);
 assert.match(plan.attributeCondition, /assertion\.event_name=='pull_request'/);
-assert.match(plan.attributeCondition, /assertion\.ref=='refs\/pull\/124\/merge'/);
+assert.match(plan.attributeCondition, /assertion\.ref=='refs\/pull\/131\/merge'/);
 assert.match(plan.attributeCondition, /firebase-preview-deploy\.yml@refs\/heads\/master/);
 assert.equal(plan.principalSetMember, 'principalSet://iam.googleapis.com/projects/647657919626/locations/global/workloadIdentityPools/tips-github-preview/attribute.repository_id/171694140');
 const approvalIssueUrl = new URL(plan.approvalIssueUrl);
 assert.equal(approvalIssueUrl.origin, 'https://github.com');
 assert.equal(approvalIssueUrl.pathname, '/lucasdmoyer/tipsforyourgifts/issues/new');
-assert.equal(approvalIssueUrl.searchParams.get('title'), `[Firebase Preview Identity Approval] PR 124 ${plan.configSha256.slice(0, 12)}`);
+assert.equal(approvalIssueUrl.searchParams.get('title'), `[Firebase Preview Identity Approval] PR 131 ${plan.configSha256.slice(0, 12)}`);
 assert.ok(plan.approvalIssueUrl.length < 12_000);
 const uncheckedApprovalBody = approvalIssueUrl.searchParams.get('body');
 const exactApproval = parseFirebasePreviewIdentityExactApproval(uncheckedApprovalBody);
@@ -113,8 +113,8 @@ const negativeCases = [
   ['different owner', (candidate) => { candidate.repositoryOwnerId = '1'; }],
   ['different actor', (candidate) => { candidate.actorId = '1'; }],
   ['different event', (candidate) => { candidate.eventName = 'push'; }],
-  ['different PR', (candidate) => { candidate.pullRequestNumber = 125; }],
-  ['different merge ref', (candidate) => { candidate.ref = 'refs/pull/125/merge'; }],
+  ['different PR', (candidate) => { candidate.pullRequestNumber = 132; }],
+  ['different merge ref', (candidate) => { candidate.ref = 'refs/pull/132/merge'; }],
   ['different workflow', (candidate) => { candidate.jobWorkflowRef = 'lucasdmoyer/tipsforyourgifts/.github/workflows/firebase-production.yml@refs/heads/master'; }],
   ['different approved SHA', (candidate) => { candidate.approvedHeadSha = 'a'.repeat(40); }],
   ['extra project role', (candidate) => { candidate.allowedServiceAccountProjectRoles.push('roles/firebaseauth.admin'); }],

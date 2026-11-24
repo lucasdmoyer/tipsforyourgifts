@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.2.0",
-  "observedAt": "2026-11-24T03:55:19.000Z",
+  "observedAt": "2026-11-24T05:11:18.000Z",
   "sourceMode": "versioned_snapshot_not_live_poll",
   "externalGates": [
     {
@@ -17,10 +17,10 @@
       "id": "firebase-preview-identity",
       "label": "Keyless Firebase preview identity",
       "status": "blocked_external_configuration",
-      "summary": "PR 124 head 4a631984fb36cef60ec8faa6ae35875119a04e0e passed protected validation, an exact-artifact build, the immutable pull-request boundary, manual hosted preview review, and a fresh Node 24.14 validation/build/smoke rerun. A 2026-11-24 read-only Google Cloud audit confirmed project 647657919626, an enabled existing service account with Firebase Hosting Admin as its only project role, zero user-managed keys, no tips-github-preview pool, no github-preview provider, and no PR-124 impersonation binding. Existing unrelated bindings were observed and remain outside the plan.",
-      "evidenceUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/124#issuecomment-7120213608",
-      "diagnosticUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/runs/45311972759",
-      "nextAction": "After fresh action-time founder IAM approval of plan 50cc893f2f86084e4a536bed50a161646fb9df48ceb7e98aa74f88bd9245d1a9, execute only its three conditional mutations: create tips-github-preview, create github-preview restricted to repository ID 171694140, repository-owner ID 23782501, actor ID 23782501, pull_request, refs/pull/124/merge, and the master-pinned reusable preview workflow, then add only roles/iam.workloadIdentityUser on the existing service account. Rerun the seven read-only postflight checks and the required preview check; merge only if the head remains exactly 4a631984fb36cef60ec8faa6ae35875119a04e0e.",
+      "summary": "PR 131 head de7156cf796bde99f933536c7bf713a86af97c6d passed GitHub validation and exact-artifact build checks. Its immutable CI artifact was deployed manually to the PR-131 Firebase preview channel and passed hosted smoke plus manual visual, content, disclosure, affiliate-link, manifest, and fallback-social-card review. The automated deploy check stops before Firebase because the dedicated Workload Identity pool and provider do not exist. A fresh 2026-11-24 read-only Google Cloud audit found the existing preview service account enabled with Firebase Hosting Admin as its only project role, zero user-managed keys, no tips-github-preview pool, no github-preview provider, and no PR-131 impersonation binding; the observed older tips-github binding remains unrelated and outside the plan.",
+      "evidenceUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/131#issuecomment-7122574287",
+      "diagnosticUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/runs/45330095957",
+      "nextAction": "After fresh action-time founder IAM approval of config db841a29bc43b0c633d61c092edfc94e37ea9a42bdc1e16fcca1feb1e1c7890d and execution plan 44b0121700030aec4baad925f74d171ff10f749a0ed8a45b1e484d5fe5d6c937 for exact head de7156cf796bde99f933536c7bf713a86af97c6d, execute only its three conditional mutations: create tips-github-preview, create github-preview restricted to repository ID 171694140, repository-owner ID 23782501, actor ID 23782501, pull_request, refs/pull/131/merge, and the master-pinned reusable preview workflow, then add only roles/iam.workloadIdentityUser on the existing service account. Rerun the seven read-only postflight checks and the required PR-131 preview check; do not merge or deploy production without a separate exact action-time approval.",
       "authorityBoundary": "Grant only short-lived workload-identity impersonation to the existing Firebase Hosting Admin service account. No Firebase Auth Admin, user-managed service-account key, production-provider change, or production Hosting authorization."
     },
     {
@@ -36,17 +36,17 @@
   ],
   "latestVerifiedPreview": {
     "status": "exact_preview_verified",
-    "sha": "4a631984fb36cef60ec8faa6ae35875119a04e0e",
-    "pullRequestUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/124",
-    "reviewUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/124#issuecomment-7120213608",
-    "previewUrl": "https://tipsforyourgifts--pr-124-1scxtqco.web.app/",
+    "sha": "de7156cf796bde99f933536c7bf713a86af97c6d",
+    "pullRequestUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/131",
+    "reviewUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/131#issuecomment-7122574287",
+    "previewUrl": "https://tipsforyourgifts--pr-131-0ld9jf5z.web.app/",
     "immutableArtifact": {
       "source": "github_actions",
-      "workflowRunId": "45311972759",
-      "artifactId": "14883278577",
-      "sha256": "4b82ea510358bd63ce2c42875d4e3f62dabbb298ec066e51af87a64fdbb8461d"
+      "workflowRunId": "45330095957",
+      "artifactId": "14892130122",
+      "sha256": "128405ff635925683d16072254a60bd12f58199606bc96072fc82ffc36a34366"
     },
-    "summary": "The exact PR-124 Firebase preview passed Node 24.14 validation, a 23-route static build, hosted smoke across 20 routes and 11 publication-ready articles, affiliate disclosure checks, security-header review, and manual visual review. Public static routes now load 29.8 kB raw and 6.4 kB gzip initially. Lighthouse scored 100 for performance, accessibility, and best practices on both the home page and Studio, with zero layout shift.",
-    "nextAction": "Preserve the exact-head merge approval for 4a631984fb36cef60ec8faa6ae35875119a04e0e only; after merge, require a new exact master-SHA preview, readback, and action-time production approval before any live mutation."
+    "summary": "The exact PR-131 CI artifact passed Node 24.14 validation, a 23-route static build, hosted smoke across 20 routes and 11 publication-ready articles, affiliate disclosure checks, security-header review, and manual visual review. Public static routes load 29.8 kB raw and 6.4 kB gzip initially; the fallback social card is now deterministic across macOS and Linux. Lighthouse previously scored 100 for performance, accessibility, and best practices on both the home page and Studio, with zero layout shift; PR 131 preserves the same public performance budget.",
+    "nextAction": "Use fresh exact IAM approval only for the PR-131 preview identity packet, rerun the required preview check, and keep merge plus production deployment behind their own action-time approvals."
   }
 }
