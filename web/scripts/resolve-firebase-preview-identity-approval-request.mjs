@@ -19,6 +19,7 @@ const result = resolveFirebasePreviewIdentityApprovalIssue({ issue, currentPlan 
 
 console.log(`decision=${result.decision}`);
 console.log(`config_sha256=${result.configSha256}`);
+console.log(`execution_plan_sha256=${result.executionPlanSha256}`);
 console.log(`approved_head_sha=${result.approvedHeadSha}`);
 console.log(`pull_request_number=${result.pullRequestNumber}`);
 console.log(`confirmation=${result.confirmation}`);

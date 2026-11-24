@@ -69,6 +69,7 @@ function exactApprovalDecision(plan) {
     schemaVersion: '1.0.0',
     decision: 'approve_pr_preview_identity_plan',
     configSha256: plan.configSha256,
+    executionPlanSha256: plan.executionPlanSha256,
     approvedHeadSha: plan.approvedHeadSha,
     pullRequestNumber: plan.pullRequestNumber,
     projectId: plan.projectId,
@@ -88,12 +89,13 @@ export function parseFirebasePreviewIdentityExactApproval(body) {
   if (blocks.length !== 1) throw new Error('Firebase preview identity request must contain exactly one Exact approval JSON block');
   let decision;
   try { decision = JSON.parse(blocks[0]); } catch { throw new Error('Firebase preview identity Exact approval block is not valid JSON'); }
-  const expectedKeys = ['approvedHeadSha', 'attributeCondition', 'configSha256', 'decision', 'poolId', 'principalSetMember', 'projectId', 'projectNumber', 'providerId', 'pullRequestNumber', 'schemaVersion', 'serviceAccountEmail'];
+  const expectedKeys = ['approvedHeadSha', 'attributeCondition', 'configSha256', 'decision', 'executionPlanSha256', 'poolId', 'principalSetMember', 'projectId', 'projectNumber', 'providerId', 'pullRequestNumber', 'schemaVersion', 'serviceAccountEmail'];
   if (!decision || Array.isArray(decision) || JSON.stringify(Object.keys(decision).sort()) !== JSON.stringify(expectedKeys)) {
     throw new Error('Firebase preview identity Exact approval contains unexpected fields');
   }
   if (decision.schemaVersion !== '1.0.0' || decision.decision !== 'approve_pr_preview_identity_plan') throw new Error('Firebase preview identity decision is unsupported');
   if (!/^[a-f0-9]{64}$/.test(decision.configSha256 ?? '')) throw new Error('Firebase preview identity plan SHA-256 is invalid');
+  if (!/^[a-f0-9]{64}$/.test(decision.executionPlanSha256 ?? '')) throw new Error('Firebase preview identity execution-plan SHA-256 is invalid');
   if (!/^[a-f0-9]{40}$/.test(decision.approvedHeadSha ?? '')) throw new Error('Firebase preview identity approved head SHA is invalid');
   if (decision.pullRequestNumber !== 124) throw new Error('Firebase preview identity approval must target PR 124');
   return decision;
@@ -119,6 +121,7 @@ export function buildFirebasePreviewIdentityApprovalIssueUrl(plan) {
     `- **Pull request:** ${plan.pullRequestNumber}`,
     `- **Approved head:** ${plan.approvedHeadSha}`,
     `- **Plan SHA-256:** ${plan.configSha256}`,
+    `- **Execution plan SHA-256:** ${plan.executionPlanSha256}`,
     `- **Project:** ${plan.projectId} (${plan.projectNumber})`,
     `- **Pool/provider:** ${plan.poolId}/${plan.providerId}`,
     `- **Existing service account:** ${plan.serviceAccountEmail}`,
@@ -164,6 +167,7 @@ export function resolveFirebasePreviewIdentityApprovalIssue({ issue, currentPlan
   return {
     decision: decision.decision,
     configSha256: decision.configSha256,
+    executionPlanSha256: decision.executionPlanSha256,
     approvedHeadSha: decision.approvedHeadSha,
     pullRequestNumber: decision.pullRequestNumber,
     confirmation: currentPlan.approvalConfirmation,
@@ -200,7 +204,7 @@ export function buildFirebasePreviewIdentityPlan(rawConfig) {
     command('Inspect the service-account impersonation policy', ['iam', 'service-accounts', 'get-iam-policy', config.serviceAccountEmail, ...commonProject, '--format=json'])
   ];
   const mutationCommands = [
-    command('Create the dedicated disabled-by-absence preview pool', ['iam', 'workload-identity-pools', 'create', config.poolId, ...commonLocation, '--display-name=Tips GitHub PR preview'], true, 'only_if_pool_is_absent'),
+    command('Create the dedicated disabled-by-absence preview pool', ['iam', 'workload-identity-pools', 'create', config.poolId, ...commonLocation, '--display-name=Tips GitHub PR preview', '--quiet'], true, 'only_if_pool_is_absent'),
     command('Create the PR-124-only GitHub OIDC provider', [
       'iam', 'workload-identity-pools', 'providers', 'create-oidc', config.providerId,
       `--workload-identity-pool=${config.poolId}`,
@@ -208,20 +212,42 @@ export function buildFirebasePreviewIdentityPlan(rawConfig) {
       `--issuer-uri=${config.issuerUri}`,
       `--attribute-mapping=${attributeMapping}`,
       `--attribute-condition=${attributeCondition}`,
-      '--display-name=Tips PR 124 preview'
+      '--display-name=Tips PR 124 preview',
+      '--quiet'
     ], true, 'only_if_provider_is_absent'),
     command('Grant short-lived impersonation to the exact repository identity', [
       'iam', 'service-accounts', 'add-iam-policy-binding', config.serviceAccountEmail,
       ...commonProject,
       '--role=roles/iam.workloadIdentityUser',
-      `--member=${principalSetMember}`
+      `--member=${principalSetMember}`,
+      '--condition=None',
+      '--quiet'
     ], true, 'only_if_exact_binding_is_absent')
   ];
+  const invariants = {
+    existingServiceAccountRequired: true,
+    createServiceAccountAllowed: false,
+    userManagedKeysAllowed: false,
+    firebaseAuthAdminAllowed: false,
+    productionProviderChangesAllowed: false,
+    firebaseDeploymentAllowed: false,
+    destructiveRecoveryAllowed: false,
+    stopOnUnexpectedExistingState: true
+  };
+  const executionPlanSha256 = createHash('sha256').update(JSON.stringify({
+    schemaVersion: '1.0.0',
+    configSha256,
+    auditCommands,
+    mutationCommands,
+    postflightCommands: auditCommands,
+    invariants
+  }), 'utf8').digest('hex');
   const plan = {
     schemaVersion: '1.0.0',
     mode: 'review_only_no_execution',
     configSha256,
-    approvalConfirmation: `CREATE-PR-124-PREVIEW-IDENTITY-${configSha256}`,
+    executionPlanSha256,
+    approvalConfirmation: `CREATE-PR-124-PREVIEW-IDENTITY-${configSha256}-${executionPlanSha256}`,
     approvedHeadSha: config.approvedHeadSha,
     pullRequestNumber: config.pullRequestNumber,
     repository: config.repository,
@@ -236,16 +262,7 @@ export function buildFirebasePreviewIdentityPlan(rawConfig) {
     auditCommands,
     mutationCommands,
     postflightCommands: auditCommands,
-    invariants: {
-      existingServiceAccountRequired: true,
-      createServiceAccountAllowed: false,
-      userManagedKeysAllowed: false,
-      firebaseAuthAdminAllowed: false,
-      productionProviderChangesAllowed: false,
-      firebaseDeploymentAllowed: false,
-      destructiveRecoveryAllowed: false,
-      stopOnUnexpectedExistingState: true
-    },
+    invariants,
     releaseReviewEvidenceUrl: config.releaseReviewEvidenceUrl,
     previewWorkflowUrl: config.previewWorkflowUrl,
     authorityBoundary: config.authorityBoundary

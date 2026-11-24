@@ -17,6 +17,7 @@ const readiness = JSON.parse(await fs.readFile(path.join(root, 'config', 'automa
 const previewGate = readiness.externalGates.find((gate) => gate.id === 'firebase-preview-identity');
 
 assert.match(plan.configSha256, /^[a-f0-9]{64}$/);
+assert.match(plan.executionPlanSha256, /^[a-f0-9]{64}$/);
 assert.match(previewGate.nextAction, new RegExp(plan.configSha256));
 assert.equal(plan.mode, 'review_only_no_execution');
 assert.equal(plan.approvedHeadSha, '4a631984fb36cef60ec8faa6ae35875119a04e0e');
@@ -40,6 +41,7 @@ assert.ok(plan.approvalIssueUrl.length < 12_000);
 const uncheckedApprovalBody = approvalIssueUrl.searchParams.get('body');
 const exactApproval = parseFirebasePreviewIdentityExactApproval(uncheckedApprovalBody);
 assert.equal(exactApproval.configSha256, plan.configSha256);
+assert.equal(exactApproval.executionPlanSha256, plan.executionPlanSha256);
 assert.equal(exactApproval.approvedHeadSha, plan.approvedHeadSha);
 assert.equal(exactApproval.attributeCondition, plan.attributeCondition);
 assert.equal(exactApproval.principalSetMember, plan.principalSetMember);
@@ -55,6 +57,7 @@ const validIssue = {
 };
 const resolvedApproval = resolveFirebasePreviewIdentityApprovalIssue({ issue: validIssue, currentPlan: plan });
 assert.equal(resolvedApproval.configSha256, plan.configSha256);
+assert.equal(resolvedApproval.executionPlanSha256, plan.executionPlanSha256);
 assert.equal(resolvedApproval.confirmation, plan.approvalConfirmation);
 assert.equal(resolvedApproval.source, 'owner_issue');
 
@@ -65,6 +68,7 @@ const approvalNegativeCases = [
   ['wrong repository', (issue) => { issue.html_url = 'https://github.com/example/repository/issues/129'; }],
   ['wrong title', (issue) => { issue.title = `${issue.title} changed`; }],
   ['changed digest', (issue) => { issue.body = issue.body.replaceAll(plan.configSha256, 'a'.repeat(64)); }],
+  ['changed execution digest', (issue) => { issue.body = issue.body.replaceAll(plan.executionPlanSha256, 'c'.repeat(64)); }],
   ['changed head', (issue) => { issue.body = issue.body.replaceAll(plan.approvedHeadSha, 'b'.repeat(40)); }],
   ['duplicate decision block', (issue) => { issue.body += `\n\n## Exact approval\n\`\`\`json\n${JSON.stringify(exactApproval, null, 2)}\n\`\`\``; }]
 ];
@@ -85,6 +89,8 @@ assert.match(commandText, /roles\/iam\.workloadIdentityUser/);
 assert.match(commandText, /--project=tipsforyourgifts/);
 assert.equal(plan.mutationCommands.filter((entry) => entry.mutatesCloud).length, 3);
 assert.ok(plan.mutationCommands.every((entry) => entry.runWhen.startsWith('only_if_')));
+assert.ok(plan.mutationCommands.every((entry) => entry.args.includes('--quiet')));
+assert.ok(plan.mutationCommands.find((entry) => entry.purpose.includes('impersonation')).args.includes('--condition=None'));
 assert.deepEqual(plan.invariants, {
   existingServiceAccountRequired: true,
   createServiceAccountAllowed: false,
@@ -124,6 +130,7 @@ for (const [label, mutate] of negativeCases) {
 console.log(JSON.stringify({
   firebasePreviewIdentityPlanGateTests: 'passed',
   configSha256: plan.configSha256,
+  executionPlanSha256: plan.executionPlanSha256,
   auditCommands: plan.auditCommands.length,
   boundedMutationCommands: plan.mutationCommands.length,
   negativeChecks: negativeCases.length,

@@ -17,6 +17,7 @@ console.log(JSON.stringify(process.argv.includes('--summary') ? {
   firebasePreviewIdentityPlan: 'valid',
   mode: plan.mode,
   configSha256: plan.configSha256,
+  executionPlanSha256: plan.executionPlanSha256,
   approvedHeadSha: plan.approvedHeadSha,
   pullRequestNumber: plan.pullRequestNumber,
   auditCommands: plan.auditCommands.length,
