@@ -70,6 +70,7 @@ if (!currentContentIsVerified && livePublication.latestVerifiedContentRelease) {
     assert.equal(parseFirebasePreviewIdentityExactApproval(identityApprovalIssue.searchParams.get('body')).configSha256, firebasePreviewIdentityPlan.configSha256);
     assert.match(releaseDecision.action.command, /tips-github-preview/);
     assert.match(releaseDecision.action.command, new RegExp(firebasePreviewIdentityPlan.configSha256));
+    assert.match(releaseDecision.action.command, new RegExp(firebasePreviewIdentityPlan.executionPlanSha256));
     assert.match(releaseDecision.action.command, new RegExp(`refs/pull/${releaseApprovals.currentContentSetApprovedRelease.pullRequestNumber}/merge`));
     assert.match(releaseDecision.action.command, /job_workflow_ref lucasdmoyer\/tipsforyourgifts\/\.github\/workflows\/firebase-preview-deploy\.yml@refs\/heads\/master/);
     assert.match(releaseDecision.action.command, /No Firebase Auth Admin, no user-managed key, no production-provider changes, and no production deployment/);
