@@ -34,7 +34,7 @@ function assertExactPool(pool, plan) {
 
 function assertExactProvider(provider, plan) {
   const expectedName = `projects/${plan.projectNumber}/locations/global/workloadIdentityPools/${plan.poolId}/providers/${plan.providerId}`;
-  if (provider.name !== expectedName || provider.state !== 'ACTIVE' || provider.displayName !== 'Tips PR 124 preview') throw new Error('Existing GitHub preview provider identity differs from the exact plan');
+  if (provider.name !== expectedName || provider.state !== 'ACTIVE' || provider.displayName !== 'Tips PR 131 preview') throw new Error('Existing GitHub preview provider identity differs from the exact plan');
   if (provider.oidc?.issuerUri !== 'https://token.actions.githubusercontent.com') throw new Error('Existing GitHub preview provider issuer differs from the exact plan');
   if (provider.attributeCondition !== plan.attributeCondition) throw new Error('Existing GitHub preview provider condition differs from the exact plan');
   const expectedMapping = {

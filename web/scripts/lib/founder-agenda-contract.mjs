@@ -128,8 +128,19 @@ export function buildFounderAgenda(input) {
   const latestVerifiedPreview = input.automationReadinessEvidence?.latestVerifiedPreview?.status === 'exact_preview_verified'
     ? input.automationReadinessEvidence.latestVerifiedPreview
     : null;
-  const approvedExactRelease = input.releaseApprovals?.currentContentSetApprovedRelease ?? null;
+  const contentSetApprovedRelease = input.releaseApprovals?.currentContentSetApprovedRelease ?? null;
+  const approvedExactRelease = contentSetApprovedRelease && (!latestVerifiedPreview || (
+    contentSetApprovedRelease.headSha === latestVerifiedPreview.sha &&
+    contentSetApprovedRelease.pullRequestUrl === latestVerifiedPreview.pullRequestUrl &&
+    contentSetApprovedRelease.previewUrl === latestVerifiedPreview.previewUrl
+  )) ? contentSetApprovedRelease : null;
   const firebasePreviewIdentityPlan = input.firebasePreviewIdentityPlan ?? null;
+  if (latestVerifiedPreview && firebasePreviewIdentityPlan && (
+    firebasePreviewIdentityPlan.pullRequestNumber !== Number(new URL(latestVerifiedPreview.pullRequestUrl).pathname.split('/').at(-1)) ||
+    firebasePreviewIdentityPlan.approvedHeadSha !== latestVerifiedPreview.sha
+  )) {
+    throw new Error('Firebase preview identity plan must match the latest exact verified preview');
+  }
   if (approvedExactRelease && firebasePreviewIdentityPlan && (firebasePreviewIdentityPlan.pullRequestNumber !== approvedExactRelease.pullRequestNumber || firebasePreviewIdentityPlan.approvedHeadSha !== approvedExactRelease.headSha)) {
     throw new Error('Firebase preview identity plan must match the exact approved release');
   }

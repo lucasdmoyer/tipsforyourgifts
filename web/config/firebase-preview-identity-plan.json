@@ -12,10 +12,10 @@
   "repositoryOwnerId": "23782501",
   "actorId": "23782501",
   "eventName": "pull_request",
-  "pullRequestNumber": 124,
-  "ref": "refs/pull/124/merge",
+  "pullRequestNumber": 131,
+  "ref": "refs/pull/131/merge",
   "jobWorkflowRef": "lucasdmoyer/tipsforyourgifts/.github/workflows/firebase-preview-deploy.yml@refs/heads/master",
-  "approvedHeadSha": "4a631984fb36cef60ec8faa6ae35875119a04e0e",
+  "approvedHeadSha": "de7156cf796bde99f933536c7bf713a86af97c6d",
   "attributeMapping": {
     "google.subject": "assertion.sub",
     "attribute.repository_id": "assertion.repository_id",
@@ -28,7 +28,7 @@
   "allowedServiceAccountProjectRoles": [
     "roles/firebasehosting.admin"
   ],
-  "releaseReviewEvidenceUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/124#issuecomment-7120213608",
+  "releaseReviewEvidenceUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/131#issuecomment-7122574287",
   "previewWorkflowUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/firebase-preview.yml",
-  "authorityBoundary": "Create only the PR-124-bound keyless preview pool, provider, and workloadIdentityUser impersonation binding for the existing Firebase Hosting Admin service account. Do not create a key, grant Firebase Auth Admin, change production identity, or deploy Firebase."
+  "authorityBoundary": "Create only the PR-131-bound keyless preview pool, provider, and workloadIdentityUser impersonation binding for the existing Firebase Hosting Admin service account. Do not create a key, grant Firebase Auth Admin, change production identity, or deploy Firebase."
 }

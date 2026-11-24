@@ -14,26 +14,25 @@
         "priorityScore": 100,
         "horizon": "now",
         "category": "release",
-        "title": "Unblock the approved exact release",
-        "recommendation": "Preserve the merge-only approval for PR 124 head 4a631984fb36cef60ec8faa6ae35875119a04e0e; authorize only the missing keyless preview trust if you want the protected check rerun.",
-        "decisionQuestion": "Do you authorize the narrow PR-124-only OIDC trust required to rerun its protected preview check?",
-        "rationale": "The founder decision and hosted preview review are already recorded against one immutable pull request head. The merge remains blocked only because the required GitHub preview check cannot obtain its missing short-lived Google identity.",
+        "title": "Review the next accountable Angular release",
+        "recommendation": "Review publication-set-8f82fd7548201471 as the next founder-controlled Firebase release candidate.",
+        "decisionQuestion": "Should this exact reviewed content set replace the currently verified live set?",
+        "rationale": "The candidate adds reviewed content and operating improvements beyond the verified live set, but it must retain exact-SHA preview, rollback, and founder-control evidence before replacement.",
         "evidence": [
-          "Lucas approved PR 124 head 4a631984fb36cef60ec8faa6ae35875119a04e0e for merge only on 2026-11-24T02:30:33.000Z.",
-          "The approved content set is publication-set-8f82fd7548201471, matching this candidate manifest.",
-          "The exact Firebase preview remains https://tipsforyourgifts--pr-124-1scxtqco.web.app/.",
-          "The latest Git-recorded live content set is publication-set-8e8287a5ec7db534, so production has not advanced to the approved candidate.",
-          "The review-only identity plan binds config SHA-256 50cc893f2f86084e4a536bed50a161646fb9df48ceb7e98aa74f88bd9245d1a9 and execution-plan SHA-256 a8df36c916209beb5f26a734113e99cb0430cfde55b579da24d5089346b7f474; its mobile issue packet cannot execute gcloud or deploy Firebase."
+          "11 publication-ready articles are in the candidate set.",
+          "11 independent QA receipts are hash-bound to those articles.",
+          "The latest verified preview was de7156cf796bde99f933536c7bf713a86af97c6d at https://github.com/lucasdmoyer/tipsforyourgifts/pull/131; that receipt does not authorize this build.",
+          "The latest Git-recorded live content set is publication-set-8e8287a5ec7db534, which differs from this candidate."
         ],
         "unlocks": "A protected exact-SHA preview and founder-reviewed Firebase release establish the owned destination for every later growth and affiliate action.",
-        "tradeoff": "Creating a tightly scoped keyless preview identity adds IAM configuration, but it does not grant production authority and can remain limited to this one pull request merge ref.",
-        "guardrail": "The approval applies only to 4a631984fb36cef60ec8faa6ae35875119a04e0e and merge of PR 124. It does not transfer to a changed head, merge commit, replay, later artifact, IAM change, credential, or Firebase production deployment.",
+        "tradeoff": "Replacing the live set advances the publication but creates a new monitoring and rollback obligation; affiliate and social authority remain separately bounded.",
+        "guardrail": "Commit and review the exact candidate first; the workflow must still clone live, expose the preview, require founder approval, smoke production, and mint a manifest-bound receipt. The prior de7156cf796bde99f933536c7bf713a86af97c6d receipt is historical evidence only.",
         "reversibility": "high",
         "founderActionRequired": true,
         "action": {
-          "label": "Review exact identity plan",
-          "url": "https://github.com/lucasdmoyer/tipsforyourgifts/issues/new?title=%5BFirebase+Preview+Identity+Approval%5D+PR+124+50cc893f2f86&body=%23+Approve+one+exact+keyless+Firebase+preview+identity+plan%0A%0ALucas%2C+this+packet+records+an+action-time+decision+for+one+reviewed+plan.+Check+the+identities%2C+condition%2C+mutations%2C+and+boundaries+below.+All+three+boxes+must+be+checked+before+submission.+Submitting+the+issue+records+approval+evidence+only%3B+it+does+not+run+gcloud%2C+change+Firebase%2C+merge+a+pull+request%2C+or+deploy+production.%0A%0A%23%23+Release+identity%0A%0A-+**Pull+request%3A**+124%0A-+**Approved+head%3A**+4a631984fb36cef60ec8faa6ae35875119a04e0e%0A-+**Plan+SHA-256%3A**+50cc893f2f86084e4a536bed50a161646fb9df48ceb7e98aa74f88bd9245d1a9%0A-+**Execution+plan+SHA-256%3A**+a8df36c916209beb5f26a734113e99cb0430cfde55b579da24d5089346b7f474%0A-+**Project%3A**+tipsforyourgifts+%28647657919626%29%0A-+**Pool%2Fprovider%3A**+tips-github-preview%2Fgithub-preview%0A-+**Existing+service+account%3A**+github-action-171694140%40tipsforyourgifts.iam.gserviceaccount.com%0A%0A%23%23+Exact+OIDC+boundary%0A%0A-+**Attribute+condition%3A**+%60assertion.repository_id%3D%3D%27171694140%27+%26%26+assertion.repository_owner_id%3D%3D%2723782501%27+%26%26+assertion.actor_id%3D%3D%2723782501%27+%26%26+assertion.event_name%3D%3D%27pull_request%27+%26%26+assertion.ref%3D%3D%27refs%2Fpull%2F124%2Fmerge%27+%26%26+assertion.job_workflow_ref%3D%3D%27lucasdmoyer%2Ftipsforyourgifts%2F.github%2Fworkflows%2Ffirebase-preview-deploy.yml%40refs%2Fheads%2Fmaster%27%60%0A-+**Principal+set%3A**+%60principalSet%3A%2F%2Fiam.googleapis.com%2Fprojects%2F647657919626%2Flocations%2Fglobal%2FworkloadIdentityPools%2Ftips-github-preview%2Fattribute.repository_id%2F171694140%60%0A-+**Existing+project+role+retained%3A**+roles%2Ffirebasehosting.admin%0A%0A%23%23+Conditional+mutations%0A%0A1.+Create+the+dedicated+disabled-by-absence+preview+pool+%28only_if_pool_is_absent%29.%0A2.+Create+the+PR-124-only+GitHub+OIDC+provider+%28only_if_provider_is_absent%29.%0A3.+Grant+short-lived+impersonation+to+the+exact+repository+identity+%28only_if_exact_binding_is_absent%29.%0A%0A%23%23+Exact+approval%0A%0A%60%60%60json%0A%7B%0A++%22schemaVersion%22%3A+%221.0.0%22%2C%0A++%22decision%22%3A+%22approve_pr_preview_identity_plan%22%2C%0A++%22configSha256%22%3A+%2250cc893f2f86084e4a536bed50a161646fb9df48ceb7e98aa74f88bd9245d1a9%22%2C%0A++%22executionPlanSha256%22%3A+%22a8df36c916209beb5f26a734113e99cb0430cfde55b579da24d5089346b7f474%22%2C%0A++%22approvedHeadSha%22%3A+%224a631984fb36cef60ec8faa6ae35875119a04e0e%22%2C%0A++%22pullRequestNumber%22%3A+124%2C%0A++%22projectId%22%3A+%22tipsforyourgifts%22%2C%0A++%22projectNumber%22%3A+%22647657919626%22%2C%0A++%22poolId%22%3A+%22tips-github-preview%22%2C%0A++%22providerId%22%3A+%22github-preview%22%2C%0A++%22serviceAccountEmail%22%3A+%22github-action-171694140%40tipsforyourgifts.iam.gserviceaccount.com%22%2C%0A++%22attributeCondition%22%3A+%22assertion.repository_id%3D%3D%27171694140%27+%26%26+assertion.repository_owner_id%3D%3D%2723782501%27+%26%26+assertion.actor_id%3D%3D%2723782501%27+%26%26+assertion.event_name%3D%3D%27pull_request%27+%26%26+assertion.ref%3D%3D%27refs%2Fpull%2F124%2Fmerge%27+%26%26+assertion.job_workflow_ref%3D%3D%27lucasdmoyer%2Ftipsforyourgifts%2F.github%2Fworkflows%2Ffirebase-preview-deploy.yml%40refs%2Fheads%2Fmaster%27%22%2C%0A++%22principalSetMember%22%3A+%22principalSet%3A%2F%2Fiam.googleapis.com%2Fprojects%2F647657919626%2Flocations%2Fglobal%2FworkloadIdentityPools%2Ftips-github-preview%2Fattribute.repository_id%2F171694140%22%0A%7D%0A%60%60%60%0A%0A%23%23+Authority+boundary%0A%0A-+%5B+%5D+I+reviewed+this+exact+plan+digest%2C+PR+124+head%2C+OIDC+condition%2C+principal+set%2C+service+account%2C+and+three+conditional+mutations.%0A-+%5B+%5D+I+authorize+only+the+seven+read-only+checks+and+three+conditional+mutations+in+this+exact+plan%2C+with+an+immediate+stop+on+unexpected+existing+state.%0A-+%5B+%5D+This+does+not+authorize+service-account+creation%2C+user-managed+keys%2C+Firebase+Auth+Admin%2C+production-provider+changes%2C+destructive+recovery%2C+Firebase+deployment%2C+PR+merge%2C+or+production+deployment.%0A%0A%3E+Confirmation%3A+CREATE-PR-124-PREVIEW-IDENTITY-50cc893f2f86084e4a536bed50a161646fb9df48ceb7e98aa74f88bd9245d1a9-a8df36c916209beb5f26a734113e99cb0430cfde55b579da24d5089346b7f474",
-          "command": "Approve creation of Workload Identity pool tips-github-preview and provider github-preview for repository ID 171694140, repository-owner ID 23782501, actor ID 23782501, event pull_request, ref refs/pull/124/merge, and job_workflow_ref lucasdmoyer/tipsforyourgifts/.github/workflows/firebase-preview-deploy.yml@refs/heads/master. Grant roles/iam.workloadIdentityUser on github-action-171694140@tipsforyourgifts.iam.gserviceaccount.com. Retain Firebase Hosting Admin only. No Firebase Auth Admin, no user-managed key, no production-provider changes, and no production deployment. Approve only repository config SHA-256 50cc893f2f86084e4a536bed50a161646fb9df48ceb7e98aa74f88bd9245d1a9 and execution-plan SHA-256 a8df36c916209beb5f26a734113e99cb0430cfde55b579da24d5089346b7f474 for head 4a631984fb36cef60ec8faa6ae35875119a04e0e; its issue submission records approval evidence but does not execute cloud commands."
+          "label": "Open release workflow",
+          "url": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/firebase-production.yml",
+          "command": "gh workflow run firebase-production.yml -f release_sha=<approved-master-sha>"
         }
       },
       {
@@ -148,7 +147,7 @@
   },
   "automationReadiness": {
     "schemaVersion": "1.2.0",
-    "observedAt": "2026-11-24T03:55:19.000Z",
+    "observedAt": "2026-11-24T05:11:18.000Z",
     "sourceMode": "versioned_snapshot_not_live_poll",
     "posture": "founder_action_required",
     "summary": "The operating system can validate content and run a narrow affiliate pilot today. Research generation, automated previews, distribution, measurement, release approval, and eventual keyless automatic publication still require explicit bounded founder actions.",
@@ -209,18 +208,18 @@
         "id": "preview-delivery",
         "label": "Firebase preview delivery",
         "status": "manual_fallback_verified",
-        "evidence": "The exact PR-124 Firebase preview passed Node 24.14 validation, a 23-route static build, hosted smoke across 20 routes and 11 publication-ready articles, affiliate disclosure checks, security-header review, and manual visual review. Public static routes now load 29.8 kB raw and 6.4 kB gzip initially. Lighthouse scored 100 for performance, accessibility, and best practices on both the home page and Studio, with zero layout shift. This is the latest verified preview, not authority for the current build. Automated keyless delivery remains blocked: PR 124 head 4a631984fb36cef60ec8faa6ae35875119a04e0e passed protected validation, an exact-artifact build, the immutable pull-request boundary, manual hosted preview review, and a fresh Node 24.14 validation/build/smoke rerun. A 2026-11-24 read-only Google Cloud audit confirmed project 647657919626, an enabled existing service account with Firebase Hosting Admin as its only project role, zero user-managed keys, no tips-github-preview pool, no github-preview provider, and no PR-124 impersonation binding. Existing unrelated bindings were observed and remain outside the plan.",
-        "nextAction": "After fresh action-time founder IAM approval of plan 50cc893f2f86084e4a536bed50a161646fb9df48ceb7e98aa74f88bd9245d1a9, execute only its three conditional mutations: create tips-github-preview, create github-preview restricted to repository ID 171694140, repository-owner ID 23782501, actor ID 23782501, pull_request, refs/pull/124/merge, and the master-pinned reusable preview workflow, then add only roles/iam.workloadIdentityUser on the existing service account. Rerun the seven read-only postflight checks and the required preview check; merge only if the head remains exactly 4a631984fb36cef60ec8faa6ae35875119a04e0e.",
-        "actionUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/124#issuecomment-7120213608",
+        "evidence": "The exact PR-131 CI artifact passed Node 24.14 validation, a 23-route static build, hosted smoke across 20 routes and 11 publication-ready articles, affiliate disclosure checks, security-header review, and manual visual review. Public static routes load 29.8 kB raw and 6.4 kB gzip initially; the fallback social card is now deterministic across macOS and Linux. Lighthouse previously scored 100 for performance, accessibility, and best practices on both the home page and Studio, with zero layout shift; PR 131 preserves the same public performance budget. This is the latest verified preview, not authority for the current build. Automated keyless delivery remains blocked: PR 131 head de7156cf796bde99f933536c7bf713a86af97c6d passed GitHub validation and exact-artifact build checks. Its immutable CI artifact was deployed manually to the PR-131 Firebase preview channel and passed hosted smoke plus manual visual, content, disclosure, affiliate-link, manifest, and fallback-social-card review. The automated deploy check stops before Firebase because the dedicated Workload Identity pool and provider do not exist. A fresh 2026-11-24 read-only Google Cloud audit found the existing preview service account enabled with Firebase Hosting Admin as its only project role, zero user-managed keys, no tips-github-preview pool, no github-preview provider, and no PR-131 impersonation binding; the observed older tips-github binding remains unrelated and outside the plan.",
+        "nextAction": "After fresh action-time founder IAM approval of config db841a29bc43b0c633d61c092edfc94e37ea9a42bdc1e16fcca1feb1e1c7890d and execution plan 44b0121700030aec4baad925f74d171ff10f749a0ed8a45b1e484d5fe5d6c937 for exact head de7156cf796bde99f933536c7bf713a86af97c6d, execute only its three conditional mutations: create tips-github-preview, create github-preview restricted to repository ID 171694140, repository-owner ID 23782501, actor ID 23782501, pull_request, refs/pull/131/merge, and the master-pinned reusable preview workflow, then add only roles/iam.workloadIdentityUser on the existing service account. Rerun the seven read-only postflight checks and the required PR-131 preview check; do not merge or deploy production without a separate exact action-time approval.",
+        "actionUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/131#issuecomment-7122574287",
         "founderActionRequired": true
       },
       {
         "id": "production-release",
         "label": "Production release",
         "status": "founder_approval_required",
-        "evidence": "No master release is authorized by pull-request preview evidence. The latest verified preview was 4a631984fb36cef60ec8faa6ae35875119a04e0e; after that reviewed pull request merges, the resulting exact master SHA still requires its own preview, readback, and action-time production approval.",
-        "nextAction": "Preserve the exact-head merge approval for 4a631984fb36cef60ec8faa6ae35875119a04e0e only; after merge, require a new exact master-SHA preview, readback, and action-time production approval before any live mutation.",
-        "actionUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/124#issuecomment-7120213608",
+        "evidence": "No master release is authorized by pull-request preview evidence. The latest verified preview was de7156cf796bde99f933536c7bf713a86af97c6d; after that reviewed pull request merges, the resulting exact master SHA still requires its own preview, readback, and action-time production approval.",
+        "nextAction": "Use fresh exact IAM approval only for the PR-131 preview identity packet, rerun the required preview check, and keep merge plus production deployment behind their own action-time approvals.",
+        "actionUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/131#issuecomment-7122574287",
         "founderActionRequired": true
       },
       {
@@ -248,10 +247,10 @@
         "id": "firebase-preview-identity",
         "label": "Keyless Firebase preview identity",
         "status": "blocked_external_configuration",
-        "summary": "PR 124 head 4a631984fb36cef60ec8faa6ae35875119a04e0e passed protected validation, an exact-artifact build, the immutable pull-request boundary, manual hosted preview review, and a fresh Node 24.14 validation/build/smoke rerun. A 2026-11-24 read-only Google Cloud audit confirmed project 647657919626, an enabled existing service account with Firebase Hosting Admin as its only project role, zero user-managed keys, no tips-github-preview pool, no github-preview provider, and no PR-124 impersonation binding. Existing unrelated bindings were observed and remain outside the plan.",
-        "evidenceUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/124#issuecomment-7120213608",
-        "diagnosticUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/runs/45311972759",
-        "nextAction": "After fresh action-time founder IAM approval of plan 50cc893f2f86084e4a536bed50a161646fb9df48ceb7e98aa74f88bd9245d1a9, execute only its three conditional mutations: create tips-github-preview, create github-preview restricted to repository ID 171694140, repository-owner ID 23782501, actor ID 23782501, pull_request, refs/pull/124/merge, and the master-pinned reusable preview workflow, then add only roles/iam.workloadIdentityUser on the existing service account. Rerun the seven read-only postflight checks and the required preview check; merge only if the head remains exactly 4a631984fb36cef60ec8faa6ae35875119a04e0e.",
+        "summary": "PR 131 head de7156cf796bde99f933536c7bf713a86af97c6d passed GitHub validation and exact-artifact build checks. Its immutable CI artifact was deployed manually to the PR-131 Firebase preview channel and passed hosted smoke plus manual visual, content, disclosure, affiliate-link, manifest, and fallback-social-card review. The automated deploy check stops before Firebase because the dedicated Workload Identity pool and provider do not exist. A fresh 2026-11-24 read-only Google Cloud audit found the existing preview service account enabled with Firebase Hosting Admin as its only project role, zero user-managed keys, no tips-github-preview pool, no github-preview provider, and no PR-131 impersonation binding; the observed older tips-github binding remains unrelated and outside the plan.",
+        "evidenceUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/131#issuecomment-7122574287",
+        "diagnosticUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/runs/45330095957",
+        "nextAction": "After fresh action-time founder IAM approval of config db841a29bc43b0c633d61c092edfc94e37ea9a42bdc1e16fcca1feb1e1c7890d and execution plan 44b0121700030aec4baad925f74d171ff10f749a0ed8a45b1e484d5fe5d6c937 for exact head de7156cf796bde99f933536c7bf713a86af97c6d, execute only its three conditional mutations: create tips-github-preview, create github-preview restricted to repository ID 171694140, repository-owner ID 23782501, actor ID 23782501, pull_request, refs/pull/131/merge, and the master-pinned reusable preview workflow, then add only roles/iam.workloadIdentityUser on the existing service account. Rerun the seven read-only postflight checks and the required PR-131 preview check; do not merge or deploy production without a separate exact action-time approval.",
         "authorityBoundary": "Grant only short-lived workload-identity impersonation to the existing Firebase Hosting Admin service account. No Firebase Auth Admin, user-managed service-account key, production-provider change, or production Hosting authorization."
       },
       {
@@ -267,18 +266,18 @@
     ],
     "latestVerifiedPreview": {
       "status": "exact_preview_verified",
-      "sha": "4a631984fb36cef60ec8faa6ae35875119a04e0e",
-      "pullRequestUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/124",
-      "reviewUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/124#issuecomment-7120213608",
-      "previewUrl": "https://tipsforyourgifts--pr-124-1scxtqco.web.app/",
+      "sha": "de7156cf796bde99f933536c7bf713a86af97c6d",
+      "pullRequestUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/131",
+      "reviewUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/131#issuecomment-7122574287",
+      "previewUrl": "https://tipsforyourgifts--pr-131-0ld9jf5z.web.app/",
       "immutableArtifact": {
         "source": "github_actions",
-        "workflowRunId": "45311972759",
-        "artifactId": "14883278577",
-        "sha256": "4b82ea510358bd63ce2c42875d4e3f62dabbb298ec066e51af87a64fdbb8461d"
+        "workflowRunId": "45330095957",
+        "artifactId": "14892130122",
+        "sha256": "128405ff635925683d16072254a60bd12f58199606bc96072fc82ffc36a34366"
       },
-      "summary": "The exact PR-124 Firebase preview passed Node 24.14 validation, a 23-route static build, hosted smoke across 20 routes and 11 publication-ready articles, affiliate disclosure checks, security-header review, and manual visual review. Public static routes now load 29.8 kB raw and 6.4 kB gzip initially. Lighthouse scored 100 for performance, accessibility, and best practices on both the home page and Studio, with zero layout shift.",
-      "nextAction": "Preserve the exact-head merge approval for 4a631984fb36cef60ec8faa6ae35875119a04e0e only; after merge, require a new exact master-SHA preview, readback, and action-time production approval before any live mutation."
+      "summary": "The exact PR-131 CI artifact passed Node 24.14 validation, a 23-route static build, hosted smoke across 20 routes and 11 publication-ready articles, affiliate disclosure checks, security-header review, and manual visual review. Public static routes load 29.8 kB raw and 6.4 kB gzip initially; the fallback social card is now deterministic across macOS and Linux. Lighthouse previously scored 100 for performance, accessibility, and best practices on both the home page and Studio, with zero layout shift; PR 131 preserves the same public performance budget.",
+      "nextAction": "Use fresh exact IAM approval only for the PR-131 preview identity packet, rerun the required preview check, and keep merge plus production deployment behind their own action-time approvals."
     }
   },
   "aiAutomationPolicy": {
