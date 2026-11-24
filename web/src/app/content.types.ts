@@ -428,7 +428,7 @@ export interface Operations {
   pairingIdeas: number;
   recipientFrictionIdeas: number;
   editorialReview: {
-    schemaVersion: '1.1.0';
+    schemaVersion: '1.2.0';
     counts: {
       pendingBundles: number;
       founderSafetyReviewsRequired: number;
@@ -456,6 +456,8 @@ export interface Operations {
       highRiskClaims: Array<{ id: string; text: string; sourceIds: string[] }>;
       founderDecisionPacket: {
         workflowUrl: string;
+        approvalIssueUrl: string;
+        rejectionIssueUrl: string;
         approveCommand: string;
         rejectCommand: string;
         authorityBoundary: string;

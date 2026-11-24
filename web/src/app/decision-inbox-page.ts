@@ -86,10 +86,17 @@ import { STUDIO_DATA, STUDIO_DATA_PROVIDER } from './studio-data';
                   <p class="quiet">Sources: {{ claim.sourceIds.join(', ') }}</p>
                 </div>
               }
+              @if (review.founderDecisionPacket && (review.founderSafetyReviewStatus === 'approval_required' || review.founderSafetyReviewStatus === 'stale')) {
+                <div class="actions">
+                  <a class="button" [href]="review.founderDecisionPacket.approvalIssueUrl" target="_blank" rel="noopener">Review and approve exact language</a>
+                  <a class="button secondary" [href]="review.founderDecisionPacket.rejectionIssueUrl" target="_blank" rel="noopener">Reject exact language</a>
+                </div>
+              }
               <details open>
                 <summary>Decision boundary and exact actions</summary>
                 <ul>@for (blocker of review.blockers; track blocker) { <li>{{ blocker }}</li> }</ul>
                 @if (review.founderDecisionPacket) {
+                  <p>The phone-friendly issue packets above bind the same exact hashes and require every authority acknowledgement. Command-line recovery remains available below.</p>
                   <p><strong>Approve exact language</strong></p>
                   <div class="command">{{ review.founderDecisionPacket.approveCommand }}</div>
                   <tfg-copy-text-button [value]="review.founderDecisionPacket.approveCommand" label="Copy approval" />

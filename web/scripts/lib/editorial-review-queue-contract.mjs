@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { buildEditorialSafetyDecisionIssueUrl, hashEditorialSafetyClaims, parseEditorialSafetyExactDecision } from './editorial-safety-approval-request-contract.mjs';
 
 const sha256Schema = z.string().regex(/^[a-f0-9]{64}$/);
 const highRiskClaimSchema = z.object({
@@ -9,6 +10,8 @@ const highRiskClaimSchema = z.object({
 
 const founderDecisionPacketSchema = z.object({
   workflowUrl: z.literal('https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/editorial-safety-approval.yml'),
+  approvalIssueUrl: z.string().url().refine((value) => value.startsWith('https://github.com/lucasdmoyer/tipsforyourgifts/issues/new?')),
+  rejectionIssueUrl: z.string().url().refine((value) => value.startsWith('https://github.com/lucasdmoyer/tipsforyourgifts/issues/new?')),
   approveCommand: z.string().min(80),
   rejectCommand: z.string().min(80),
   authorityBoundary: z.literal('This decision binds only the exact current run, article, social, and high-risk claim hashes. It does not replace independent QA, merge a pull request, or authorize publication.')
@@ -80,6 +83,18 @@ const queueEntrySchema = z.object({
       if (entry.founderDecisionPacket.rejectCommand !== expectedReject) {
         context.addIssue({ code: z.ZodIssueCode.custom, path: ['founderDecisionPacket', 'rejectCommand'], message: 'must bind the exact run ID and rejected confirmation' });
       }
+      for (const [decision, field] of [['approved', 'approvalIssueUrl'], ['rejected', 'rejectionIssueUrl']]) {
+        try {
+          const issueUrl = new URL(entry.founderDecisionPacket[field]);
+          const request = parseEditorialSafetyExactDecision(issueUrl.searchParams.get('body'));
+          const expectedTitle = `[Editorial Safety Decision] ${entry.runId} ${decision}`;
+          if (issueUrl.searchParams.get('title') !== expectedTitle || request.runId !== entry.runId || request.decision !== decision || request.expectedRunSha256 !== entry.sourceSha256.run || request.expectedArticleSha256 !== entry.sourceSha256.article || request.expectedSocialSha256 !== entry.sourceSha256.social || request.expectedHighRiskClaimsSha256 !== hashEditorialSafetyClaims(entry.highRiskClaims)) {
+            context.addIssue({ code: z.ZodIssueCode.custom, path: ['founderDecisionPacket', field], message: `must bind the exact ${decision} decision and current content hashes` });
+          }
+        } catch (error) {
+          context.addIssue({ code: z.ZodIssueCode.custom, path: ['founderDecisionPacket', field], message: `is not a valid exact ${decision} issue packet: ${error.message}` });
+        }
+      }
     }
   }
   if (entry.founderSafetyReviewStatus === 'not_required' && entry.safetyApproval !== null) {
@@ -102,7 +117,7 @@ const queueEntrySchema = z.object({
 });
 
 export const editorialReviewQueueSchema = z.object({
-  schemaVersion: z.literal('1.1.0'),
+  schemaVersion: z.literal('1.2.0'),
   counts: z.object({
     pendingBundles: z.number().int().nonnegative(),
     founderSafetyReviewsRequired: z.number().int().nonnegative(),
@@ -139,8 +154,12 @@ export function buildEditorialReviewQueue(records) {
       const carriesSafetyBoundary = highRiskClaims.length > 0 || effectiveBlockers.some((blocker) => /founder review|lucas must review|safety/i.test(blocker));
       const founderSafetyReviewStatus = !carriesSafetyBoundary ? 'not_required' : safetyApproval?.status ?? 'approval_required';
       const founderSafetyReviewRequired = carriesSafetyBoundary && founderSafetyReviewStatus !== 'approved_current';
+      const sourceSha256 = { run: runSha256, article: articleSha256, social: socialSha256 };
+      const reviewIdentity = { runId: run.runId, articleSlug: run.article.slug, highRiskClaims, sourceSha256, founderSafetyReviewRequired, founderSafetyReviewStatus };
       const founderDecisionPacket = highRiskClaims.length === 0 ? null : {
         workflowUrl: 'https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/editorial-safety-approval.yml',
+        approvalIssueUrl: buildEditorialSafetyDecisionIssueUrl({ review: reviewIdentity, decision: 'approved' }),
+        rejectionIssueUrl: buildEditorialSafetyDecisionIssueUrl({ review: reviewIdentity, decision: 'rejected' }),
         approveCommand: `gh workflow run editorial-safety-approval.yml -f run_id=${run.runId} -f decision=approved -f confirmation=REVIEW-${run.runId}-approved`,
         rejectCommand: `gh workflow run editorial-safety-approval.yml -f run_id=${run.runId} -f decision=rejected -f confirmation=REVIEW-${run.runId}-rejected`,
         authorityBoundary: 'This decision binds only the exact current run, article, social, and high-risk claim hashes. It does not replace independent QA, merge a pull request, or authorize publication.'
@@ -170,7 +189,7 @@ export function buildEditorialReviewQueue(records) {
         safetyApproval,
         independentReviewRequired: true,
         sourcePaths: { run: runPath, article: articlePath, social: socialPath },
-        sourceSha256: { run: runSha256, article: articleSha256, social: socialSha256 },
+        sourceSha256,
         nextGate: failedReview
           ? 'Open the exact correction pull request, resolve every recorded blocker without deleting the failed receipt, then require a new independent review before visual production or promotion.'
           : founderSafetyReviewStatus === 'approved_current'
@@ -187,7 +206,7 @@ export function buildEditorialReviewQueue(records) {
     .sort((left, right) => left.articleSlug.localeCompare(right.articleSlug));
 
   return editorialReviewQueueSchema.parse({
-    schemaVersion: '1.1.0',
+    schemaVersion: '1.2.0',
     counts: {
       pendingBundles: queue.length,
       founderSafetyReviewsRequired: queue.filter((entry) => entry.founderSafetyReviewRequired).length,

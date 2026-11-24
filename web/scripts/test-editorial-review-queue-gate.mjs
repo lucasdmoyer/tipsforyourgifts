@@ -37,6 +37,8 @@ assert.equal(queue.queue[0].founderSafetyReviewStatus, 'approval_required');
 assert.equal(queue.queue[0].failedReview, null);
 assert.equal(queue.queue[0].founderDecisionPacket.approveCommand, 'gh workflow run editorial-safety-approval.yml -f run_id=20261010-editorial-review-ab12cd34 -f decision=approved -f confirmation=REVIEW-20261010-editorial-review-ab12cd34-approved');
 assert.equal(queue.queue[0].founderDecisionPacket.rejectCommand, 'gh workflow run editorial-safety-approval.yml -f run_id=20261010-editorial-review-ab12cd34 -f decision=rejected -f confirmation=REVIEW-20261010-editorial-review-ab12cd34-rejected');
+assert.equal(new URL(queue.queue[0].founderDecisionPacket.approvalIssueUrl).searchParams.get('title'), '[Editorial Safety Decision] 20261010-editorial-review-ab12cd34 approved');
+assert.equal(new URL(queue.queue[0].founderDecisionPacket.rejectionIssueUrl).searchParams.get('title'), '[Editorial Safety Decision] 20261010-editorial-review-ab12cd34 rejected');
 
 const approvedQueue = buildEditorialReviewQueue([{ ...fixture, safetyApproval: {
   status: 'approved_current',
@@ -79,6 +81,7 @@ expectFailure('source identity must use sha256', (candidate) => { candidate.queu
 expectFailure('independent review remains mandatory', (candidate) => { candidate.queue[0].independentReviewRequired = false; });
 expectFailure('approval status requires a matching receipt', (candidate) => { candidate.queue[0].founderSafetyReviewStatus = 'approved_current'; candidate.queue[0].founderSafetyReviewRequired = false; });
 expectFailure('founder approval command cannot drift from the run ID', (candidate) => { candidate.queue[0].founderDecisionPacket.approveCommand = candidate.queue[0].founderDecisionPacket.approveCommand.replace('ab12cd34', 'deadbeef'); });
+expectFailure('phone approval packet cannot drift from the current article', (candidate) => { candidate.queue[0].founderDecisionPacket.approvalIssueUrl = candidate.queue[0].founderDecisionPacket.approvalIssueUrl.replaceAll(sha('b'), sha('d')); });
 expectFailure('high-risk claims cannot omit the founder decision packet', (candidate) => { candidate.queue[0].founderDecisionPacket = null; });
 
-console.log(JSON.stringify({ editorialReviewQueueGateTests: 'passed', negativeChecks: 8, pendingBundles: queue.counts.pendingBundles, highRiskClaims: queue.counts.highRiskClaims, failedQaCorrectionPackets: failedQueue.queue.filter((entry) => entry.failedReview !== null).length, executiveActionPackets: queue.queue.filter((entry) => entry.founderDecisionPacket !== null).length }, null, 2));
+console.log(JSON.stringify({ editorialReviewQueueGateTests: 'passed', negativeChecks: 9, pendingBundles: queue.counts.pendingBundles, highRiskClaims: queue.counts.highRiskClaims, failedQaCorrectionPackets: failedQueue.queue.filter((entry) => entry.failedReview !== null).length, executiveActionPackets: queue.queue.filter((entry) => entry.founderDecisionPacket !== null).length }, null, 2));

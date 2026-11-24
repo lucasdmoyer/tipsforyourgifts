@@ -311,6 +311,7 @@ export { STUDIO_DATA } from './studio-data';
               @if (review.failedReview) { <p><a class="button secondary" [href]="review.failedReview.correctionPullRequestSearchUrl" target="_blank" rel="noopener">Open correction pull request</a> · <a [href]="review.failedReview.workflowRunUrl" target="_blank" rel="noopener">review run</a></p> }
               <p><strong>Founder safety status:</strong> {{ displayStatus(review.founderSafetyReviewStatus) }}@if (review.safetyApproval) { · revision {{ review.safetyApproval.revision }} · <a [href]="'https://github.com/lucasdmoyer/tipsforyourgifts/blob/' + 'master/web/' + review.safetyApproval.path" target="_blank" rel="noopener">open exact decision</a> }</p>
               @if (review.founderSafetyReviewStatus === 'approved_current') { <p><a class="button secondary" href="https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/editorial-independent-review.yml" target="_blank" rel="noopener">Run independent evidence review</a></p> }
+              @if (review.founderDecisionPacket && (review.founderSafetyReviewStatus === 'approval_required' || review.founderSafetyReviewStatus === 'stale')) { <p><a class="button" [href]="review.founderDecisionPacket.approvalIssueUrl" target="_blank" rel="noopener">Review and approve exact language</a> <a class="button secondary" [href]="review.founderDecisionPacket.rejectionIssueUrl" target="_blank" rel="noopener">Reject exact language</a></p> }
               <p><strong>Blocking decisions:</strong></p><ul>@for (blocker of review.blockers; track blocker) { <li>{{ blocker }}</li> }</ul>
               @if (review.highRiskClaims.length > 0) {
                 <details open><summary>Exact high-risk claims</summary>
@@ -321,6 +322,7 @@ export { STUDIO_DATA } from './studio-data';
               }
               @if (review.founderDecisionPacket) {
                 <details class="founder-decision-packet"><summary>Copy exact founder decision</summary>
+                  <p>The phone-friendly issue packets above bind the same exact hashes and require all authority acknowledgements. Command-line recovery remains available below.</p>
                   <p><strong>Approve this exact language:</strong></p><div class="command">{{ review.founderDecisionPacket.approveCommand }}</div>
                   <p><strong>Reject this exact language:</strong></p><div class="command">{{ review.founderDecisionPacket.rejectCommand }}</div>
                   <p class="quiet">{{ review.founderDecisionPacket.authorityBoundary }}</p>
