@@ -13,6 +13,11 @@ import { readerBodyComesFirst, readerBodyHtml, readerEvidenceHtml, readerLanguag
 import { SeoService } from './seo.service';
 
 describe('App', () => {
+  function anchorWithExactHref(element: HTMLElement, href: string) {
+    return Array.from(element.querySelectorAll<HTMLAnchorElement>('a'))
+      .find((anchor) => anchor.getAttribute('href') === href) ?? null;
+  }
+
   beforeEach(async () => {
     TestBed.overrideComponent(StudioPage, {
       set: { providers: [{ provide: STUDIO_DATA, useValue: { operations: OPERATIONS, strategy: STRATEGY, growth: GROWTH } }] }
@@ -424,7 +429,7 @@ describe('App', () => {
       expect(element.textContent).toContain(decision.title);
       expect(element.textContent).toContain(decision.recommendation);
       if (decision.action.command) expect(element.textContent).toContain(decision.action.command);
-      expect(element.querySelector(`a[href="${decision.action.url}"]`)).not.toBeNull();
+      expect(anchorWithExactHref(element, decision.action.url)).not.toBeNull();
     }
     const releaseApproval = OPERATIONS.publication.exactReleaseApprovals.currentContentSetApprovedRelease;
     if (releaseApproval) {
@@ -452,7 +457,7 @@ describe('App', () => {
     for (const decision of agenda.decisions) {
       expect(element.textContent).toContain(decision.title);
       expect(element.textContent).toContain(decision.recommendation);
-      expect(element.querySelector('a[href="' + decision.action.url + '"]')).not.toBeNull();
+      expect(anchorWithExactHref(element, decision.action.url)).not.toBeNull();
       if (decision.action.command) expect(element.textContent).toContain(decision.action.command);
     }
     for (const review of editorial.queue) {

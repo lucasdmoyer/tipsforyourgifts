@@ -1,4 +1,6 @@
 import { z } from 'zod';
+import { canonicalIdeaSha256 } from './research-mission-contract.mjs';
+import { strategyApprovalAuthorityLines } from '../resolve-strategy-approval-request.mjs';
 
 const httpsUrl = z.string().url().refine((value) => value.startsWith('https://'), 'must use HTTPS');
 const searchConsoleDecisionPacketUrl = 'https://github.com/lucasdmoyer/tipsforyourgifts/issues/59';
@@ -74,6 +76,48 @@ function selectAffiliatePilot(affiliate) {
 
 function previewIdentityApprovalPrompt(pullRequestNumber) {
   return `Approve creation of Workload Identity pool tips-github-preview and provider github-preview for repository ID 171694140, repository-owner ID 23782501, actor ID 23782501, event pull_request, ref refs/pull/${pullRequestNumber}/merge, and job_workflow_ref lucasdmoyer/tipsforyourgifts/.github/workflows/firebase-preview-deploy.yml@refs/heads/master. Grant roles/iam.workloadIdentityUser on github-action-171694140@tipsforyourgifts.iam.gserviceaccount.com. Retain Firebase Hosting Admin only. No Firebase Auth Admin, no user-managed key, no production-provider changes, and no production deployment.`;
+}
+
+export function strategyApprovalIssueUrl(idea) {
+  const decision = {
+    schemaVersion: '1.0.0',
+    ideaId: idea.id,
+    expectedRevision: idea.revision,
+    ideaSha256: canonicalIdeaSha256(idea),
+    decision: 'approve_for_research'
+  };
+  const title = `[Approve Strategy] ${idea.id} revision ${idea.revision}`;
+  const body = [
+    '# Approve one strategy thesis for research',
+    '',
+    'Lucas, this is the exact founder decision prepared by Studio. Review the proposal, check all three authority boxes, then submit the issue. The workflow will independently verify this packet before it can open an approval pull request.',
+    '',
+    '## Proposal',
+    '',
+    `- **Idea:** ${idea.id}, revision ${idea.revision}`,
+    `- **Title:** ${idea.title}`,
+    `- **Priority:** ${idea.priority}`,
+    `- **Audience:** ${idea.audience}`,
+    `- **Research brief:** ${idea.researchBrief}`,
+    '',
+    '## Exact decision',
+    '',
+    '```json',
+    JSON.stringify(decision, null, 2),
+    '```',
+    '',
+    '## Authority boundary',
+    '',
+    ...strategyApprovalAuthorityLines.map((line) => `- [ ] ${line}`),
+    '',
+    '> All three boxes must be checked. Submitting this issue does not change strategy data directly; it asks the protected workflow to create a deterministic, reviewable pull request.'
+  ].join('\n');
+  const url = new URL('https://github.com/lucasdmoyer/tipsforyourgifts/issues/new');
+  url.searchParams.set('title', title);
+  url.searchParams.set('body', body);
+  return url.toString().length <= 12_000
+    ? url.toString()
+    : 'https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/strategy-approval.yml';
 }
 
 export function buildFounderAgenda(input) {
@@ -178,8 +222,8 @@ export function buildFounderAgenda(input) {
       reversibility: 'high',
       founderActionRequired: true,
       action: {
-        label: 'Open strategy approval',
-        url: 'https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/strategy-approval.yml',
+        label: 'Review exact approval',
+        url: strategyApprovalIssueUrl(strategyCandidate),
         command: `gh workflow run strategy-approval.yml -f idea_id=${strategyCandidate.id} -f expected_revision=${strategyCandidate.revision}`
       }
     });
