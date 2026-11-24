@@ -1,4 +1,5 @@
 name: Independently review one affiliate link
+run-name: Independently review ${{ inputs.candidate_id }}
 
 on:
   workflow_dispatch:
