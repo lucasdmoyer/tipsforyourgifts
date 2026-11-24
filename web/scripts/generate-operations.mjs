@@ -6,16 +6,32 @@ import matter from './lib/front-matter.mjs';
 import { affiliateCoverageSchema } from './lib/affiliate-coverage-contract.mjs';
 import { affiliateEnrollmentReadinessSchema, buildAffiliateEnrollmentReadiness } from './lib/affiliate-enrollment-contract.mjs';
 import { affiliateActivationProposalSchema, validateAffiliateActivationProposals } from './lib/affiliate-activation-proposal-contract.mjs';
+import { validateAffiliateExpansionRequests } from './lib/affiliate-expansion-request-contract.mjs';
+import { validateAffiliateReportingRequests } from './lib/affiliate-reporting-request-contract.mjs';
+import { buildAiAutomationPolicySummary, parseAiAutomationPolicy } from './lib/ai-automation-policy-contract.mjs';
+import { buildAiAutomationActivationIssueUrl } from './lib/ai-automation-activation-request-contract.mjs';
+import { buildAiAutomationBudgetIssueUrl } from './lib/ai-automation-budget-request-contract.mjs';
+import { aiCredentialEnvironmentSettingsUrl, buildAiAutomationCredentialIssueUrl } from './lib/ai-automation-credential-request-contract.mjs';
+import { automationReadinessEvidenceSchema, buildAutomationReadiness } from './lib/automation-readiness-contract.mjs';
+import { buildCommercialScorecard } from './lib/commercial-scorecard.mjs';
 import { buildEditorialReviewQueue } from './lib/editorial-review-queue-contract.mjs';
+import { assessEditorialSafetyApproval, reviewedContentDigests } from './lib/editorial-safety-contract.mjs';
+import { latestEditorialSafetyApproval, loadEditorialSafetyApprovalRecords } from './lib/editorial-safety-store.mjs';
 import { buildFounderAgenda } from './lib/founder-agenda-contract.mjs';
 import { loadAffiliateLinkState } from './lib/affiliate-link-contract.mjs';
+import { buildAffiliateLinkApprovalIssueUrl } from './lib/affiliate-link-approval-request-contract.mjs';
+import { summarizeDurableFounderReviewedReleaseReceipts } from './lib/publication-receipt-contract.mjs';
+import { loadReleaseApprovals, summarizeReleaseApprovals } from './lib/release-approval-contract.mjs';
 
 const root = process.cwd();
 const runsDir = path.join(root, 'research', 'runs');
 const missionsDir = path.join(root, 'research', 'missions');
+const visualRequestsDir = path.join(root, 'visuals', 'requests');
+const visualFailuresDir = path.join(root, 'visuals', 'failures');
 const opportunityMissionsDir = path.join(root, 'research', 'opportunity-missions');
 const opportunityReportsDir = path.join(root, 'research', 'opportunities');
 const opportunityReviewsDir = path.join(root, 'research', 'opportunity-reviews');
+const automationFailuresDir = path.join(root, 'automation', 'failures');
 const blogDir = path.join(root, 'src', 'data', 'blog');
 const socialDir = path.join(root, 'social', 'drafts');
 const socialApprovalDir = path.join(root, 'social', 'approvals');
@@ -29,29 +45,34 @@ const affiliateCoveragePath = path.join(root, 'public', 'affiliate-product-cover
 const affiliateEnrollmentPath = path.join(root, 'public', 'affiliate-enrollment-readiness.json');
 const affiliateEnrollmentPlanPath = path.join(root, 'config', 'affiliate-enrollment-plans.json');
 const affiliateActivationProposalPath = path.join(root, 'config', 'affiliate-activation-proposals.json');
+const affiliateExpansionRequestPath = path.join(root, 'config', 'affiliate-expansion-requests.json');
+const affiliateReportingRequestPath = path.join(root, 'config', 'affiliate-reporting-requests.json');
 const socialChannelsPath = path.join(root, 'config', 'social-channels.json');
 const livePublicationPath = path.join(root, 'config', 'live-publication.json');
 const publicationPolicyPath = path.join(root, 'config', 'publication-policy.json');
 const opportunityPolicyPath = path.join(root, 'config', 'opportunity-scout-policy.json');
+const automationReadinessPath = path.join(root, 'config', 'automation-readiness.json');
+const aiAutomationPolicyPath = path.join(root, 'config', 'ai-automation-policy.json');
 const publicationManifestPath = path.join(root, 'public', 'publication-manifest.json');
+const publicationReceiptDir = path.join(root, 'releases', 'receipts');
 const outputPath = path.join(root, 'src', 'data', 'operations.json');
 
 const runNames = (await fs.readdir(runsDir)).filter((name) => name.endsWith('.json')).sort();
 const runRecords = await Promise.all(runNames.map(async (name) => {
   const raw = await fs.readFile(path.join(runsDir, name));
-  return { name, data: JSON.parse(raw), sha256: createHash('sha256').update(raw).digest('hex') };
+  return { name, raw, data: JSON.parse(raw.toString('utf8')), sha256: createHash('sha256').update(raw).digest('hex') };
 }));
 const runs = runRecords.map((record) => record.data);
 const articleNames = (await fs.readdir(blogDir)).filter((name) => name.endsWith('.md')).sort();
 const articleRecords = await Promise.all(articleNames.map(async (name) => {
   const raw = await fs.readFile(path.join(blogDir, name));
-  return { name, data: matter(raw.toString('utf8')).data, sha256: createHash('sha256').update(raw).digest('hex') };
+  return { name, raw, data: matter(raw.toString('utf8')).data, sha256: createHash('sha256').update(raw).digest('hex') };
 }));
 const articles = articleRecords.map((record) => record.data);
 const socialNames = (await fs.readdir(socialDir)).filter((name) => name.endsWith('.json')).sort();
 const socialPacks = await Promise.all(socialNames.map(async (name) => {
   const raw = await fs.readFile(path.join(socialDir, name));
-  return { ...JSON.parse(raw), name, sha256: createHash('sha256').update(raw).digest('hex') };
+  return { ...JSON.parse(raw.toString('utf8')), name, raw, sha256: createHash('sha256').update(raw).digest('hex') };
 }));
 let socialApprovalNames = [];
 try { socialApprovalNames = (await fs.readdir(socialApprovalDir)).filter((name) => name.endsWith('.json')); } catch {}
@@ -69,9 +90,12 @@ const socialAssets = await loadHashedJsonRecords(socialAssetDir);
 const socialPublications = await loadHashedJsonRecords(socialPublicationDir);
 const socialCandidates = await loadHashedJsonRecords(socialCandidateDir);
 const researchMissions = await loadHashedJsonRecords(missionsDir);
+const visualRequests = await loadHashedJsonRecords(visualRequestsDir);
+const visualFailures = await loadHashedJsonRecords(visualFailuresDir);
 const opportunityMissions = await loadHashedJsonRecords(opportunityMissionsDir);
 const opportunityReports = await loadHashedJsonRecords(opportunityReportsDir);
 const opportunityReviews = await loadHashedJsonRecords(opportunityReviewsDir);
+const automationFailures = await loadHashedJsonRecords(automationFailuresDir);
 const assetByPost = new Map(socialAssets.map((asset) => [asset.postId, asset]));
 const publicationByPost = new Map(socialPublications.map((publication) => [publication.postId, publication]));
 const candidateByPost = new Map();
@@ -103,14 +127,72 @@ const affiliateActivationProposals = validateAffiliateActivationProposals({
   articles: articleRecords.map((record) => ({ ...record.data, slug: record.name.replace(/\.md$/, '') })),
   evidenceRecords: affiliateActivationEvidenceRecords
 });
+const affiliateExpansionDocument = JSON.parse(await fs.readFile(affiliateExpansionRequestPath, 'utf8'));
+const affiliateExpansionRequests = await validateAffiliateExpansionRequests({
+  root,
+  document: affiliateExpansionDocument,
+  affiliate
+});
 const affiliateLinkState = await loadAffiliateLinkState(root);
+const affiliateReportingRequests = validateAffiliateReportingRequests({
+  document: JSON.parse(await fs.readFile(affiliateReportingRequestPath, 'utf8')),
+  affiliate,
+  expansionDocument: affiliateExpansionRequests.document,
+  linkState: affiliateLinkState
+});
 const socialChannelsRaw = await fs.readFile(socialChannelsPath);
 const socialChannels = JSON.parse(socialChannelsRaw.toString('utf8'));
 const socialChannelsSha256 = createHash('sha256').update(socialChannelsRaw).digest('hex');
 const livePublication = JSON.parse(await fs.readFile(livePublicationPath, 'utf8'));
 const publicationPolicy = JSON.parse(await fs.readFile(publicationPolicyPath, 'utf8'));
 const opportunityPolicy = JSON.parse(await fs.readFile(opportunityPolicyPath, 'utf8'));
+const automationReadinessEvidence = automationReadinessEvidenceSchema.parse(JSON.parse(await fs.readFile(automationReadinessPath, 'utf8')));
+const aiAutomationPolicyRaw = await fs.readFile(aiAutomationPolicyPath);
+const aiAutomationPolicySha256 = createHash('sha256').update(aiAutomationPolicyRaw).digest('hex');
+const aiAutomationPolicySummary = buildAiAutomationPolicySummary(parseAiAutomationPolicy(JSON.parse(aiAutomationPolicyRaw.toString('utf8'))));
+const aiAutomationBudgetWorkflowUrl = 'https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/ai-automation-budget-configure.yml';
+const aiAutomationCredentialWorkflowUrl = 'https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/ai-automation-credential-verify.yml';
+const aiAutomationActivationWorkflowUrl = 'https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/ai-automation-activate.yml';
+const aiAutomationPolicy = {
+  ...aiAutomationPolicySummary,
+  policySha256: aiAutomationPolicySha256,
+  budgetConfiguration: {
+    available: aiAutomationPolicySummary.status === 'awaiting_founder_platform_budget',
+    workflowUrl: aiAutomationBudgetWorkflowUrl,
+    approvalIssueUrl: buildAiAutomationBudgetIssueUrl({
+      expectedPolicySha256: aiAutomationPolicySha256,
+      monthlyBudgetUsd: aiAutomationPolicySummary.spendControl.recommendation.monthlyHardLimitUsd,
+      alertThresholdUsd: aiAutomationPolicySummary.spendControl.recommendation.alertThresholdUsd
+    }),
+    confirmation: 'CONFIGURE-ai-automation-budget',
+    evidenceMode: 'founder_attested_external_platform_configuration',
+    command: `gh workflow run ai-automation-budget-configure.yml --repo lucasdmoyer/tipsforyourgifts --ref master -f expected_policy_sha256=${aiAutomationPolicySha256} -f monthly_budget_usd='<APPROVED_HARD_LIMIT_USD>' -f hard_limit_enabled=true -f alert_threshold_usd='<APPROVED_ALERT_USD>' -f platform_evidence_url='<OPENAI_PLATFORM_SETTINGS_URL>' -f confirmation='CONFIGURE-ai-automation-budget'`
+  },
+  credentialVerification: {
+    available: aiAutomationPolicySummary.status === 'budget_approved_awaiting_credential',
+    workflowUrl: aiAutomationCredentialWorkflowUrl,
+    approvalIssueUrl: buildAiAutomationCredentialIssueUrl({ expectedPolicySha256: aiAutomationPolicySha256 }),
+    environmentSettingsUrl: aiCredentialEnvironmentSettingsUrl,
+    confirmation: 'VERIFY-ai-automation-credential',
+    method: 'openai_models_endpoint',
+    endpoint: 'https://api.openai.com/v1/models',
+    command: `gh workflow run ai-automation-credential-verify.yml --repo lucasdmoyer/tipsforyourgifts --ref master -f expected_policy_sha256=${aiAutomationPolicySha256} -f confirmation='VERIFY-ai-automation-credential'`
+  },
+  policyActivation: {
+    available: aiAutomationPolicySummary.status === 'credential_verified_awaiting_activation',
+    workflowUrl: aiAutomationActivationWorkflowUrl,
+    approvalIssueUrl: buildAiAutomationActivationIssueUrl({ expectedPolicySha256: aiAutomationPolicySha256 }),
+    confirmation: 'ACTIVATE-ai-automation',
+    command: `gh workflow run ai-automation-activate.yml --repo lucasdmoyer/tipsforyourgifts --ref master -f expected_policy_sha256=${aiAutomationPolicySha256} -f confirmation='ACTIVATE-ai-automation'`
+  }
+};
 const publicationManifest = JSON.parse(await fs.readFile(publicationManifestPath, 'utf8'));
+const publicationReceiptNames = (await fs.readdir(publicationReceiptDir)).filter((name) => name.endsWith('.json')).sort();
+const publicationReceipts = await Promise.all(publicationReceiptNames.map(async (name) => JSON.parse(await fs.readFile(path.join(publicationReceiptDir, name), 'utf8'))));
+const durableFounderReviewedReleaseSummary = summarizeDurableFounderReviewedReleaseReceipts(publicationReceipts);
+const releaseApprovalRecords = await loadReleaseApprovals(root);
+const releaseApprovalSummary = summarizeReleaseApprovals(releaseApprovalRecords, publicationManifest);
+const editorialSafetyApprovals = await loadEditorialSafetyApprovalRecords(root);
 
 const validatedRuns = runs.filter((run) => run.status === 'validated').length;
 const publicationReadyPosts = articles.filter((article) => article.status === 'publication_ready').length;
@@ -157,6 +239,7 @@ const affiliateLinkQueue = affiliateLinkState.candidates.map((record) => {
     approvalPath: approval?.path ?? null,
     approvalSha256: approval?.sha256 ?? null,
     approvedAt: approval?.data.approvedAt ?? null,
+    approvalIssueUrl: review?.data.verdict === 'passed' && !approval ? buildAffiliateLinkApprovalIssueUrl({ candidate: record, review }) : null,
     nextGate: approval
       ? 'Include this exact approved overlay in a Firebase preview, verify disclosure and sponsored rel, then use the separate exact-SHA release gate.'
       : review?.data.verdict === 'passed'
@@ -174,6 +257,19 @@ const editorialReviewQueue = buildEditorialReviewQueue(runRecords
     const articleRecord = articleRecordByRun.get(record.data.runId);
     if (!articleRecord) throw new Error(`${record.data.runId}: editorial review queue cannot find its article`);
     const socialPack = socialPackByRun.get(record.data.runId);
+    const latestSafetyApproval = latestEditorialSafetyApproval(editorialSafetyApprovals, record.data.runId);
+    const safetyAssessment = latestSafetyApproval
+      ? assessEditorialSafetyApproval({
+        approval: latestSafetyApproval.data,
+        run: record.data,
+        currentReviewedContentSha256: reviewedContentDigests({
+          run: record.data,
+          articleRaw: articleRecord.raw,
+          socialRaw: socialPack?.raw ?? null
+        })
+      })
+      : null;
+    const failedMission = researchMissions.find((mission) => mission.status === 'qa_failed' && mission.qaFailureHandoff?.runId === record.data.runId);
     return {
       run: record.data,
       runPath: `research/runs/${record.name}`,
@@ -181,7 +277,21 @@ const editorialReviewQueue = buildEditorialReviewQueue(runRecords
       articlePath: `src/data/blog/${articleRecord.name}`,
       articleSha256: articleRecord.sha256,
       socialPath: socialPack ? `social/drafts/${socialPack.name}` : null,
-      socialSha256: socialPack?.sha256 ?? null
+      socialSha256: socialPack?.sha256 ?? null,
+      qaFailureHandoff: failedMission ? {
+        missionId: failedMission.missionId,
+        failedAt: failedMission.failedAt,
+        workflowRunId: failedMission.trigger.workflowRunId,
+        ...failedMission.qaFailureHandoff
+      } : null,
+      safetyApproval: latestSafetyApproval ? {
+        status: safetyAssessment.status,
+        revision: latestSafetyApproval.data.approvalRevision,
+        decision: latestSafetyApproval.data.decision,
+        reviewedAt: latestSafetyApproval.data.reviewedAt,
+        path: latestSafetyApproval.path,
+        sha256: latestSafetyApproval.sha256
+      } : null
     };
   }));
 const socialPublished = socialPublications.length;
@@ -198,6 +308,8 @@ const proposedIdeas = strategy.ideas.filter((idea) => idea.founderDisposition ==
 const opportunityCapacityRemaining = Math.max(0, opportunityPolicy.maxOpenProposals - proposedIdeas);
 const activeOpportunityMissions = opportunityMissions.filter((mission) => mission.status === 'started').length;
 const completedOpportunityMissions = opportunityMissions.filter((mission) => mission.status === 'completed').length;
+const discoveryFailedOpportunityMissions = opportunityMissions.filter((mission) => mission.status === 'discovery_failed').length;
+const reviewFailedOpportunityMissions = opportunityMissions.filter((mission) => mission.status === 'review_failed').length;
 const opportunityPosture = !opportunityPolicy.enabled
   ? 'policy_disabled'
   : proposedIdeas >= opportunityPolicy.maxOpenProposals
@@ -209,17 +321,27 @@ const pairingIdeas = strategy.ideas.filter((idea) => ['story_pairing', 'ritual_p
 const recipientFrictionIdeas = strategy.ideas.filter((idea) => idea.thesisType === 'recipient_friction').length;
 const latestMissionByIdea = new Map();
 for (const mission of [...researchMissions].sort((left, right) => left.createdAt.localeCompare(right.createdAt))) latestMissionByIdea.set(mission.idea.id, mission);
-const activeResearchMissions = researchMissions.filter((mission) => mission.status === 'started').length;
+const runById = new Map(runs.map((run) => [run.runId, run]));
+const visualRequestByRun = new Map(visualRequests.map((request) => [request.runId, request]));
+const latestVisualFailureByRequest = new Map();
+for (const failure of [...visualFailures].sort((left, right) => left.recordedAt.localeCompare(right.recordedAt))) latestVisualFailureByRequest.set(failure.bindings.requestId, failure);
+const activeResearchMissions = researchMissions.filter((mission) => ['started', 'visual_pending'].includes(mission.status)).length;
 const completedResearchMissions = researchMissions.filter((mission) => mission.status === 'completed').length;
+const researchFailedResearchMissions = researchMissions.filter((mission) => mission.status === 'research_failed').length;
+const reviewFailedResearchMissions = researchMissions.filter((mission) => mission.status === 'review_failed').length;
+const qaFailedResearchMissions = researchMissions.filter((mission) => mission.status === 'qa_failed').length;
+const visualFailedResearchMissions = visualRequests.filter((request) => latestVisualFailureByRequest.has(request.requestId)).length;
 const ideaStages = strategy.ideas.map((idea) => {
   const ideaRuns = runs.filter((run) => run.ideaId === idea.id);
   const latestRun = [...ideaRuns].sort((left, right) => String(right.startedAt).localeCompare(String(left.startedAt)))[0];
   const latestMission = latestMissionByIdea.get(idea.id);
   const article = latestRun ? articles.find((entry) => entry.researchRun === latestRun.runId) : undefined;
+  const visualRequest = latestRun ? visualRequestByRun.get(latestRun.runId) : undefined;
   if (idea.ideaType === 'growth' && socialDrafts > 0 && socialApproved === 0) {
     return { ideaId: idea.id, stage: 'blocked_on_account', nextGate: 'Approve the owned social account, original asset rights, cadence, and official API access.' };
   }
-  if (latestMission?.status === 'started') {
+  if (['started', 'visual_pending'].includes(latestMission?.status)) {
+    if (visualRequest) return { ideaId: idea.id, stage: 'visual_production', nextGate: visualRequest.nextGate };
     return { ideaId: idea.id, stage: 'research_mission_active', nextGate: 'Let the isolated research and independent QA jobs finish; the mission receipt will expose exact artifact hashes and release readiness.' };
   }
   if (latestRun?.status === 'validated' && article?.status === 'publication_ready') {
@@ -243,6 +365,7 @@ const proposedGrowthExperiments = growth.experiments.filter((experiment) => expe
 const approvedGrowthExperiments = growth.experiments.filter((experiment) => experiment.founderDisposition === 'approved').length;
 const runningGrowthExperiments = growth.experiments.filter((experiment) => experiment.status === 'running').length;
 const latestGrowthSnapshot = [...growth.snapshots].sort((left, right) => right.periodEnd.localeCompare(left.periodEnd))[0];
+const commercialScorecard = buildCommercialScorecard(growth);
 const measurementStatus = activeGrowthConnectors === 0
   ? 'not_connected'
   : latestGrowthSnapshot ? 'measured' : 'awaiting_snapshot';
@@ -261,6 +384,7 @@ if (proposedGrowthExperiments > 0) alerts.push(`${proposedGrowthExperiments} gro
 if (proposedIdeas > 0) alerts.push(`${proposedIdeas} strategy proposal${proposedIdeas === 1 ? ' awaits' : 's await'} a founder approval decision before research can start.`);
 if (opportunityPosture === 'founder_backlog_full') alerts.push(`Autonomous opportunity scouting is paused at the ${proposedIdeas}/${opportunityPolicy.maxOpenProposals} founder proposal cap; no model call is made until a proposal is resolved.`);
 if (activeOpportunityMissions > 0) alerts.push(`${activeOpportunityMissions} autonomous opportunity scout mission${activeOpportunityMissions === 1 ? ' is' : 's are'} awaiting a drafted report or independent review.`);
+if (discoveryFailedOpportunityMissions + reviewFailedOpportunityMissions > 0) alerts.push(`${discoveryFailedOpportunityMissions + reviewFailedOpportunityMissions} opportunity scout mission${discoveryFailedOpportunityMissions + reviewFailedOpportunityMissions === 1 ? ' needs' : 's need'} a clean retry; unreviewed output was discarded.`);
 if (!publicationPolicy.automaticPromotion.enabled) {
   alerts.push(`Production promotion remains founder-reviewed; automatic release requires ${publicationPolicy.automaticPromotion.minimumSuccessfulFounderReviewedReleases} verified successful releases and a separate founder approval.`);
 }
@@ -279,10 +403,12 @@ const sourceDates = [
   publicationManifest.generatedAt,
   livePublication.updatedAt,
   ...runs.map((run) => run.completedAt ?? run.startedAt).filter(Boolean),
-  ...researchMissions.flatMap((mission) => [mission.createdAt, mission.completedAt]).filter(Boolean),
-  ...opportunityMissions.flatMap((mission) => [mission.createdAt, mission.completedAt]).filter(Boolean),
+  ...researchMissions.flatMap((mission) => [mission.createdAt, mission.failedAt, mission.completedAt]).filter(Boolean),
+  ...visualFailures.map((failure) => failure.recordedAt),
+  ...opportunityMissions.flatMap((mission) => [mission.createdAt, mission.completedAt, mission.failedAt]).filter(Boolean),
   ...opportunityReports.map((report) => report.createdAt),
   ...opportunityReviews.map((review) => review.reviewedAt),
+  ...automationFailures.map((failure) => failure.recordedAt),
   ...growth.snapshots.map((snapshot) => snapshot.collectedAt),
   ...socialApprovals.map((approval) => approval.approvedAt),
   ...socialCandidates.map((candidate) => candidate.generatedAt),
@@ -291,6 +417,8 @@ const sourceDates = [
   ...affiliateLinkState.candidates.map((record) => record.data.createdAt),
   ...affiliateLinkState.reviews.map((record) => record.data.reviewedAt),
   ...affiliateLinkState.approvals.map((record) => record.data.approvedAt),
+  ...releaseApprovalRecords.map((record) => record.data.approval.approvedAt),
+  ...editorialSafetyApprovals.map((record) => record.data.reviewedAt),
   ...articles.flatMap((article) => [article.publishDate, article.updatedDate]).filter(Boolean)
 ].map((value) => new Date(value).valueOf()).filter(Number.isFinite);
 const generatedAt = new Date(Math.max(...sourceDates)).toISOString();
@@ -302,6 +430,8 @@ const founderAgenda = buildFounderAgenda({
   publicationPolicy,
   publicationManifest,
   livePublication,
+  releaseApprovals: releaseApprovalSummary,
+  automationReadinessEvidence,
   growth,
   openStrategyProposals: proposedIdeas,
   maxOpenStrategyProposals: opportunityPolicy.maxOpenProposals,
@@ -317,10 +447,41 @@ const founderAgenda = buildFounderAgenda({
     queue: affiliateLinkQueue
   }
 });
+const automationReadiness = buildAutomationReadiness({
+  evidence: automationReadinessEvidence,
+  validatedRuns,
+  publicationReadyPosts,
+  activeAffiliateOverlays: affiliateLinkState.counts.activeOverlays,
+  activeSocialChannels,
+  socialDrafts,
+  activeGrowthConnectors,
+  growthSnapshots: growth.snapshots.length,
+  durableFounderReviewedReleases: durableFounderReviewedReleaseSummary.uniqueReleaseCount,
+  minimumFounderReviewedReleases: publicationPolicy.automaticPromotion.minimumSuccessfulFounderReviewedReleases
+});
 
 const operations = {
   generatedAt,
   founderAgenda,
+  automationReadiness,
+  aiAutomationPolicy,
+  automationFailures: {
+    total: automationFailures.length,
+    queue: [...automationFailures].sort((left, right) => right.recordedAt.localeCompare(left.recordedAt)).map((failure) => ({
+      failureId: failure.failureId,
+      recordSha256: failure.sha256,
+      status: failure.status,
+      stage: failure.stage,
+      reasonCode: failure.reasonCode,
+      recordedAt: failure.recordedAt,
+      workflowName: failure.workflow.name,
+      workflowRunUrl: failure.workflow.url,
+      targetKind: failure.target.kind,
+      targetId: failure.target.id,
+      targetUrl: failure.target.url,
+      nextGate: failure.nextGate
+    }))
+  },
   researchRuns: runs.length,
   validatedRuns,
   publicationReadyPosts,
@@ -342,25 +503,39 @@ const operations = {
     total: researchMissions.length,
     active: activeResearchMissions,
     completed: completedResearchMissions,
+    researchFailed: researchFailedResearchMissions,
+    reviewFailed: reviewFailedResearchMissions,
+    qaFailed: qaFailedResearchMissions,
+    visualPending: visualRequests.length,
+    visualFailed: visualFailedResearchMissions,
     founderReviewRequired: researchMissions.filter((mission) => mission.completion?.publicationReadiness === 'founder_review_required').length,
     automaticMergeEligible: researchMissions.filter((mission) => mission.completion?.publicationReadiness === 'automatic_merge_eligible').length,
-    queue: [...researchMissions].sort((left, right) => right.createdAt.localeCompare(left.createdAt)).map((mission) => ({
-      missionId: mission.missionId,
-      recordSha256: mission.sha256,
-      status: mission.status,
-      ideaId: mission.idea.id,
-      ideaTitle: mission.idea.title,
-      ideaRevision: mission.idea.revision,
-      ideaSha256: mission.idea.sha256,
-      createdAt: mission.createdAt,
-      completedAt: mission.completedAt,
-      workflowRunId: mission.trigger.workflowRunId,
-      activeStage: mission.teamStages.find((stage) => ['in_progress', 'ready'].includes(stage.status))?.id ?? 'growth_follow_up',
-      runId: mission.completion?.runId ?? null,
-      articleSlug: mission.completion?.articleSlug ?? null,
-      publicationReadiness: mission.completion?.publicationReadiness ?? 'research_in_progress',
-      nextGate: mission.completion?.nextGate ?? 'Complete the evidence bundle, independent QA receipt, deterministic gates, and mission completion receipt.'
-    }))
+    queue: [...researchMissions].sort((left, right) => right.createdAt.localeCompare(left.createdAt)).map((mission) => {
+      const pendingVisual = visualRequests.find((request) => {
+        const run = runById.get(request.runId);
+        return run?.ideaId === mission.idea.id && run?.ideaRevision === mission.idea.revision && run?.ideaSha256 === mission.idea.sha256;
+      });
+      const visualFailure = pendingVisual ? latestVisualFailureByRequest.get(pendingVisual.requestId) : null;
+      return {
+        missionId: mission.missionId,
+        recordSha256: mission.sha256,
+        status: mission.status,
+        ideaId: mission.idea.id,
+        ideaTitle: mission.idea.title,
+        ideaRevision: mission.idea.revision,
+        ideaSha256: mission.idea.sha256,
+        createdAt: mission.createdAt,
+        completedAt: mission.completedAt,
+        workflowRunId: mission.trigger.workflowRunId,
+        failureReasonCode: mission.researchFailureHandoff?.reasonCode ?? mission.reviewFailureHandoff?.reasonCode ?? visualFailure?.reasonCode ?? null,
+        failureWorkflowRunUrl: mission.researchFailureHandoff?.workflowRunUrl ?? mission.reviewFailureHandoff?.workflowRunUrl ?? visualFailure?.workflow.url ?? null,
+        activeStage: mission.status === 'research_failed' ? 'research' : ['review_failed', 'qa_failed'].includes(mission.status) ? 'quality_review' : pendingVisual ? 'visual_production' : mission.teamStages.find((stage) => ['in_progress', 'ready'].includes(stage.status))?.id ?? 'growth_follow_up',
+        runId: mission.reviewFailureHandoff?.runId ?? mission.qaFailureHandoff?.runId ?? pendingVisual?.runId ?? mission.completion?.runId ?? null,
+        articleSlug: mission.reviewFailureHandoff?.articleSlug ?? mission.qaFailureHandoff?.articleSlug ?? pendingVisual?.articleSlug ?? mission.completion?.articleSlug ?? null,
+        publicationReadiness: mission.status === 'research_failed' ? 'research_failed' : mission.status === 'review_failed' ? 'review_failed' : mission.status === 'qa_failed' ? 'qa_failed' : visualFailure ? 'visual_failed' : pendingVisual ? 'visual_pending' : mission.completion?.publicationReadiness ?? 'research_in_progress',
+        nextGate: mission.researchFailureHandoff?.nextGate ?? mission.reviewFailureHandoff?.nextGate ?? mission.qaFailureHandoff?.nextGate ?? visualFailure?.nextGate ?? pendingVisual?.nextGate ?? mission.completion?.nextGate ?? 'Complete the evidence bundle, independent QA receipt, deterministic gates, and mission completion receipt.'
+      };
+    })
   },
   opportunityScouting: {
     enabled: opportunityPolicy.enabled,
@@ -372,6 +547,8 @@ const operations = {
     totalMissions: opportunityMissions.length,
     activeMissions: activeOpportunityMissions,
     completedMissions: completedOpportunityMissions,
+    discoveryFailedMissions: discoveryFailedOpportunityMissions,
+    reviewFailedMissions: reviewFailedOpportunityMissions,
     draftedReports: opportunityReports.filter((report) => report.status === 'drafted').length,
     validatedReports: opportunityReports.filter((report) => report.status === 'validated').length,
     passedReviews: opportunityReviews.filter((review) => review.verdict === 'passed').length,
@@ -409,11 +586,13 @@ const operations = {
         evidenceConfidence: selectedCandidate?.score.evidenceConfidence ?? null,
         thoughtfulnessPotential: selectedCandidate?.score.thoughtfulnessPotential ?? null,
         reviewVerdict: review?.verdict ?? null,
-        nextGate: report?.status === 'validated'
+        failureReasonCode: mission.failureHandoff?.reasonCode ?? null,
+        failureWorkflowRunUrl: mission.failureHandoff?.workflowRunUrl ?? null,
+        nextGate: mission.failureHandoff?.nextGate ?? (report?.status === 'validated'
           ? 'Founder reviews the proposal; approval is a separate exact-revision workflow.'
           : report
             ? 'Independent opportunity editor must issue a hash-bound clean review receipt.'
-            : 'Opportunity research desk must draft one policy-compliant report and one proposed strategy idea.'
+            : 'Opportunity research desk must draft one policy-compliant report and one proposed strategy idea.')
       };
     })
   },
@@ -443,6 +622,8 @@ const operations = {
     linkApprovals: affiliateLinkState.counts.approvals,
     activeOverlays: affiliateLinkState.counts.activeOverlays,
     activationProposals: affiliateActivationProposals.proposals,
+    expansionRequests: affiliateExpansionRequests.summaries,
+    reportingRequests: affiliateReportingRequests.summaries,
     approvedOverlaySetSha256: publicationManifest.affiliatePosture.approvedOverlaySetSha256,
     linkQueue: affiliateLinkQueue,
     programs: [...affiliate.programs].sort((left, right) => left.priority - right.priority).map((program) => ({
@@ -557,10 +738,13 @@ const operations = {
     mode: publicationPolicy.mode,
     automaticPromotionEnabled: publicationPolicy.automaticPromotion.enabled,
     verifiedSuccessfulReleaseCount: publicationPolicy.automaticPromotion.verifiedSuccessfulReleaseCount,
+    durableVerifiedFounderReviewedReleaseCount: durableFounderReviewedReleaseSummary.uniqueReleaseCount,
     minimumSuccessfulFounderReviewedReleases: publicationPolicy.automaticPromotion.minimumSuccessfulFounderReviewedReleases,
     verifiedReleaseReceiptRequired: publicationPolicy.requiredGates.verifiedReleaseReceipt,
     receiptRetentionDays: 90,
     releaseEvidenceSource: 'github_production_deployments_at_enable_time',
+    durableReceiptEvidenceSource: 'repository_verified_publication_receipts',
+    exactReleaseApprovals: releaseApprovalSummary,
     currentLive: {
       status: livePublication.status,
       updatedAt: livePublication.updatedAt,
@@ -581,6 +765,7 @@ const operations = {
       contentSetSha256: publicationManifest.contentSetSha256,
       articles: publicationManifest.counts.articles,
       independentReviews: publicationManifest.counts.independentReviews,
+      founderSafetyApprovals: publicationManifest.counts.founderSafetyApprovals,
       socialLaunchPacks: publicationManifest.counts.socialLaunchPacks,
       socialDrafts: publicationManifest.counts.socialDrafts,
       missionBoundArticles: publicationManifest.counts.missionBoundArticles,
@@ -599,6 +784,7 @@ const operations = {
     proposedExperiments: proposedGrowthExperiments,
     approvedExperiments: approvedGrowthExperiments,
     runningExperiments: runningGrowthExperiments,
+    commercialScorecard,
     searchConsole: (() => {
       const connector = growth.connectors.find((entry) => entry.id === 'search-console');
       return {

@@ -10,6 +10,18 @@ const sourceIdSchema = z.string().regex(/^opp-source-[a-z0-9]+(?:-[a-z0-9]+)*$/)
 const signalIdSchema = z.string().regex(/^opp-signal-[a-z0-9]+(?:-[a-z0-9]+)*$/);
 const candidateIdSchema = z.string().regex(/^opp-candidate-[a-z0-9]+(?:-[a-z0-9]+)*$/);
 
+export const founderOpportunityDirectiveSchema = z.object({
+  source: z.literal('founder_github_issue'),
+  issueNumber: z.number().int().positive(),
+  issueUrl: z.string().url().regex(/^https:\/\/github\.com\/lucasdmoyer\/tipsforyourgifts\/issues\/[1-9]\d*$/),
+  issueTitle: z.string().min(10).max(220),
+  direction: z.string().min(8).max(180),
+  audience: z.string().min(6).max(180),
+  observedSignal: z.string().min(12).max(1200),
+  boundaries: z.string().max(1000),
+  sourceBodySha256: sha256Schema
+}).strict();
+
 const opportunityScoutPolicyBaseSchema = z.object({
   schemaVersion: z.literal('1.0.0'),
   updatedAt: z.string().datetime(),
@@ -41,13 +53,14 @@ export const opportunityScoutPolicySchema = opportunityScoutPolicyBaseSchema.sup
 const policySnapshotSchema = opportunityScoutPolicyBaseSchema.omit({ updatedAt: true });
 
 export const opportunityScoutMissionSchema = z.object({
-  schemaVersion: z.literal('1.0.0'),
+  schemaVersion: z.literal('1.1.0'),
   missionId: scoutIdSchema,
-  status: z.enum(['started', 'completed']),
+  status: z.enum(['started', 'discovery_failed', 'review_failed', 'completed']),
   createdAt: z.string().datetime(),
+  failedAt: z.string().datetime().nullable(),
   completedAt: z.string().datetime().nullable(),
   trigger: z.object({
-    type: z.enum(['scheduled', 'manual']),
+    type: z.enum(['scheduled', 'manual', 'founder_direction']),
     workflow: z.literal('opportunity-scout.yml'),
     workflowRunId: z.string().regex(/^[1-9]\d*$/),
     workflowRunAttempt: z.number().int().positive(),
@@ -56,6 +69,7 @@ export const opportunityScoutMissionSchema = z.object({
   }).strict(),
   expectedProposalId: ideaIdSchema,
   openProposalCountAtStart: z.number().int().nonnegative(),
+  directive: founderOpportunityDirectiveSchema.nullable().default(null),
   authority: z.object({
     mayAppendOneProposedIdea: z.literal(true),
     mayApproveResearch: z.literal(false),
@@ -63,12 +77,56 @@ export const opportunityScoutMissionSchema = z.object({
     mayChangeAccountsOrSpend: z.literal(false)
   }).strict(),
   policySnapshot: policySnapshotSchema,
+  failureHandoff: z.object({
+    stage: z.enum(['discovery', 'independent_review']),
+    reasonCode: z.enum(['discovery_model_step_failed', 'discovery_bundle_invalid', 'review_model_step_failed', 'review_result_invalid']),
+    recordedAt: z.string().datetime(),
+    startedMissionSha256: sha256Schema,
+    workflowRunId: z.string().regex(/^[1-9]\d*$/),
+    workflowRunAttempt: z.number().int().positive(),
+    workflowRunUrl: z.string().url().regex(/^https:\/\/github\.com\/lucasdmoyer\/tipsforyourgifts\/actions\/runs\/[1-9]\d*$/),
+    partialOutputPreserved: z.literal(false),
+    proposalPreserved: z.literal(false),
+    reviewReceiptCreated: z.literal(false),
+    productionDeploymentAuthorized: z.literal(false),
+    nextGate: z.string().min(50)
+  }).strict().nullable(),
   completion: z.object({
     reportId: scoutIdSchema,
     proposalId: ideaIdSchema,
     reviewReceiptPath: z.string().regex(/^research\/opportunity-reviews\/opportunity-scout-[1-9]\d*-[1-9]\d*\.qa\.v1\.json$/)
   }).strict().nullable()
-}).strict();
+}).strict().superRefine((mission, context) => {
+  if (mission.trigger.type === 'founder_direction' && mission.directive === null) {
+    context.addIssue({ code: z.ZodIssueCode.custom, path: ['directive'], message: 'founder_direction missions require one parsed founder directive' });
+  }
+  if (mission.trigger.type !== 'founder_direction' && mission.directive !== null) {
+    context.addIssue({ code: z.ZodIssueCode.custom, path: ['directive'], message: 'scheduled and manual missions cannot inherit a founder directive' });
+  }
+  if (mission.status === 'started' && (mission.failedAt !== null || mission.completedAt !== null || mission.failureHandoff !== null || mission.completion !== null)) {
+    context.addIssue({ code: z.ZodIssueCode.custom, path: ['status'], message: 'started missions cannot contain terminal evidence' });
+  }
+  if (['discovery_failed', 'review_failed'].includes(mission.status)) {
+    if (mission.failedAt === null || mission.completedAt !== null || mission.failureHandoff === null || mission.completion !== null) {
+      context.addIssue({ code: z.ZodIssueCode.custom, path: ['failureHandoff'], message: 'failed missions require only a failure handoff' });
+    } else {
+      const expectedStage = mission.status === 'discovery_failed' ? 'discovery' : 'independent_review';
+      if (mission.failureHandoff.stage !== expectedStage || !mission.failureHandoff.reasonCode.startsWith(mission.status === 'discovery_failed' ? 'discovery_' : 'review_')) {
+        context.addIssue({ code: z.ZodIssueCode.custom, path: ['failureHandoff'], message: 'failure stage and reason must match mission status' });
+      }
+      if (mission.failureHandoff.recordedAt !== mission.failedAt) context.addIssue({ code: z.ZodIssueCode.custom, path: ['failedAt'], message: 'failedAt must match the handoff timestamp' });
+      if (mission.failureHandoff.workflowRunId !== mission.trigger.workflowRunId || mission.failureHandoff.workflowRunAttempt !== mission.trigger.workflowRunAttempt) {
+        context.addIssue({ code: z.ZodIssueCode.custom, path: ['failureHandoff'], message: 'failure workflow identity must match the mission trigger' });
+      }
+      if (mission.failureHandoff.workflowRunUrl !== `https://github.com/lucasdmoyer/tipsforyourgifts/actions/runs/${mission.trigger.workflowRunId}`) {
+        context.addIssue({ code: z.ZodIssueCode.custom, path: ['failureHandoff', 'workflowRunUrl'], message: 'failure URL must bind the exact mission workflow run' });
+      }
+    }
+  }
+  if (mission.status === 'completed' && (mission.failedAt !== null || mission.completedAt === null || mission.failureHandoff !== null || mission.completion === null)) {
+    context.addIssue({ code: z.ZodIssueCode.custom, path: ['completion'], message: 'completed missions require completion evidence and no failure handoff' });
+  }
+});
 
 const sourceClassSchema = z.enum([
   'manufacturer_category',
@@ -91,7 +149,18 @@ const opportunitySourceSchema = z.object({
   trustTier: z.enum(['A', 'B', 'C', 'D']),
   independenceGroup: z.string().min(2),
   publicContent: z.literal(true),
-  containsPersonalIdentifiers: z.literal(false)
+  containsPersonalIdentifiers: z.literal(false),
+  commercialRelationship: z.enum([
+    'first_party',
+    'none_observed',
+    'affiliate_links',
+    'merchant_catalog',
+    'supplied_product',
+    'sponsored',
+    'unknown'
+  ]).optional(),
+  evidenceUse: z.enum(['qualifying', 'context_only', 'excluded']).optional(),
+  qualificationRationale: z.string().min(30).optional()
 }).strict();
 
 const opportunitySignalSchema = z.object({
@@ -143,7 +212,7 @@ const opportunityCandidateSchema = z.object({
 });
 
 export const opportunityReportSchema = z.object({
-  schemaVersion: z.literal('1.0.0'),
+  schemaVersion: z.enum(['1.0.0', '1.1.0']),
   scoutId: scoutIdSchema,
   missionId: scoutIdSchema,
   status: z.enum(['drafted', 'validated']),
@@ -252,12 +321,9 @@ export function validateOpportunityScoutRecords({ policy, missions, reports, rev
     missionIds.add(mission.missionId);
     if (mission.missionId !== `opportunity-scout-${mission.trigger.workflowRunId}-${mission.trigger.workflowRunAttempt}`) issues.push(`${mission.missionId}: mission ID must match workflow run and attempt`);
     if (mission.status === 'started') {
-      if (mission.completedAt !== null || mission.completion !== null) issues.push(`${mission.missionId}: started mission cannot contain completion evidence`);
       const snapshot = { ...currentPolicy };
       delete snapshot.updatedAt;
       if (JSON.stringify(mission.policySnapshot) !== JSON.stringify(snapshot)) issues.push(`${mission.missionId}: active mission policy snapshot is stale`);
-    } else if (mission.completedAt === null || mission.completion === null) {
-      issues.push(`${mission.missionId}: completed mission needs completion evidence`);
     }
   }
 
@@ -290,12 +356,28 @@ export function validateOpportunityScoutRecords({ policy, missions, reports, rev
     if (tail.length < currentPolicy.requiredConsecutiveLowNoveltyPasses || tail.some((pass) => pass.materialNoveltyRate >= currentPolicy.diminishingReturnThreshold)) issues.push(`${report.scoutId}: research did not reach two consecutive low-novelty passes`);
 
     const sourceIds = new Set(report.sources.map((source) => source.id));
+    const sourcesById = new Map(report.sources.map((source) => [source.id, source]));
     if (sourceIds.size !== report.sources.length) issues.push(`${report.scoutId}: source IDs must be unique`);
     if (report.sources.length < currentPolicy.minimumSources) issues.push(`${report.scoutId}: too few sources`);
     if (new Set(report.sources.map((source) => source.sourceClass)).size < currentPolicy.minimumSourceClasses) issues.push(`${report.scoutId}: too few source classes`);
     const socialSources = report.sources.filter((source) => ['public_social', 'public_community'].includes(source.sourceClass));
     if (socialSources.length < currentPolicy.minimumPublicSocialOrCommunitySources) issues.push(`${report.scoutId}: too few public social or community sources`);
     if (new Set(socialSources.map((source) => source.independenceGroup)).size < Math.min(2, currentPolicy.minimumPublicSocialOrCommunitySources)) issues.push(`${report.scoutId}: social or community sources need distinct independence groups`);
+
+    const usesQualifiedSources = report.schemaVersion === '1.1.0';
+    if (usesQualifiedSources) {
+      for (const source of report.sources) {
+        if (!source.commercialRelationship) issues.push(`${report.scoutId}: source ${source.id} is missing its commercial relationship`);
+        if (!source.evidenceUse) issues.push(`${report.scoutId}: source ${source.id} is missing its evidence-use decision`);
+        if (!source.qualificationRationale) issues.push(`${report.scoutId}: source ${source.id} is missing its qualification rationale`);
+        if (source.sourceClass === 'manufacturer_category' && source.commercialRelationship !== 'first_party') issues.push(`${report.scoutId}: manufacturer source ${source.id} must disclose a first-party relationship`);
+        if (source.sourceClass === 'merchant_catalog' && !['merchant_catalog', 'affiliate_links'].includes(source.commercialRelationship)) issues.push(`${report.scoutId}: merchant source ${source.id} must disclose its catalog or affiliate relationship`);
+        if (source.trustTier === 'D' && source.evidenceUse === 'qualifying') issues.push(`${report.scoutId}: Tier-D source ${source.id} cannot qualify`);
+        if (['affiliate_links', 'merchant_catalog', 'supplied_product', 'sponsored', 'unknown'].includes(source.commercialRelationship) && source.evidenceUse === 'qualifying') {
+          issues.push(`${report.scoutId}: commercially conflicted or unknown source ${source.id} cannot qualify opportunity evidence`);
+        }
+      }
+    }
 
     const assertSourceRefs = (label, ids, minimum) => {
       if (ids.length < minimum) issues.push(`${report.scoutId}: ${label} has too few source references`);
@@ -304,11 +386,30 @@ export function validateOpportunityScoutRecords({ policy, missions, reports, rev
     if (report.signals.length < currentPolicy.minimumSignals) issues.push(`${report.scoutId}: too few opportunity signals`);
     const signalKinds = new Set(report.signals.map((signal) => signal.kind));
     for (const required of ['recipient_language', 'observed_workaround', 'self_purchase_gap', 'editorial_gap']) if (!signalKinds.has(required)) issues.push(`${report.scoutId}: missing ${required} signal`);
-    for (const signal of report.signals) assertSourceRefs(`signal ${signal.id}`, signal.sourceIds, 2);
+    for (const signal of report.signals) {
+      assertSourceRefs(`signal ${signal.id}`, signal.sourceIds, 2);
+      if (usesQualifiedSources) {
+        const signalSources = signal.sourceIds.map((sourceId) => sourcesById.get(sourceId)).filter(Boolean);
+        if (signalSources.some((source) => source.evidenceUse !== 'qualifying')) issues.push(`${report.scoutId}: signal ${signal.id} relies on context-only or excluded evidence`);
+        if (['recipient_language', 'observed_workaround', 'self_purchase_gap'].includes(signal.kind) && !signalSources.some((source) => ['public_social', 'public_community'].includes(source.sourceClass))) {
+          issues.push(`${report.scoutId}: signal ${signal.id} needs qualifying public social or community evidence`);
+        }
+      }
+    }
     if (report.candidates.length < currentPolicy.minimumCandidates || report.candidates.length > currentPolicy.maximumCandidates) issues.push(`${report.scoutId}: candidate count is outside policy`);
     const candidateIds = new Set(report.candidates.map((candidate) => candidate.id));
     if (candidateIds.size !== report.candidates.length) issues.push(`${report.scoutId}: candidate IDs must be unique`);
-    for (const candidate of report.candidates) assertSourceRefs(`candidate ${candidate.id}`, candidate.sourceIds, 3);
+    for (const candidate of report.candidates) {
+      assertSourceRefs(`candidate ${candidate.id}`, candidate.sourceIds, 3);
+      if (usesQualifiedSources) {
+        const candidateSources = candidate.sourceIds.map((sourceId) => sourcesById.get(sourceId)).filter(Boolean);
+        if (candidateSources.some((source) => source.evidenceUse !== 'qualifying')) issues.push(`${report.scoutId}: candidate ${candidate.id} relies on context-only or excluded evidence`);
+        const independentGroups = new Set(candidateSources
+          .filter((source) => source.commercialRelationship === 'none_observed')
+          .map((source) => source.independenceGroup));
+        if (independentGroups.size < 2) issues.push(`${report.scoutId}: candidate ${candidate.id} needs two commercially independent qualifying source groups`);
+      }
+    }
     const selected = report.candidates.find((candidate) => candidate.id === report.selectedProposal.candidateId);
     if (!selected) issues.push(`${report.scoutId}: selected candidate is missing`);
     else {
@@ -317,6 +418,9 @@ export function validateOpportunityScoutRecords({ policy, missions, reports, rev
       if (proposal && ['story_pairing', 'ritual_pairing'].includes(proposal.thesisType) && (!selected.pairingHypothesis || !signalKinds.has('pairing_behavior'))) issues.push(`${report.scoutId}: pairing proposal lacks pairing evidence`);
     }
     assertSourceRefs('selected proposal', report.selectedProposal.sourceIds, 3);
+    if (usesQualifiedSources && report.selectedProposal.sourceIds.some((sourceId) => sourcesById.get(sourceId)?.evidenceUse !== 'qualifying')) {
+      issues.push(`${report.scoutId}: selected proposal relies on context-only or excluded evidence`);
+    }
 
     if (report.status === 'drafted') {
       if (report.qa !== null) issues.push(`${report.scoutId}: drafted report cannot contain QA approval`);
@@ -362,6 +466,10 @@ export function validateOpportunityScoutRecords({ policy, missions, reports, rev
 
   for (const missionRecord of parsedMissions.filter((record) => record.data.status === 'completed')) {
     if (!reportIds.has(missionRecord.data.missionId)) issues.push(`${missionRecord.data.missionId}: completed mission report is missing`);
+  }
+  for (const missionRecord of parsedMissions.filter((record) => ['discovery_failed', 'review_failed'].includes(record.data.status))) {
+    if (reportIds.has(missionRecord.data.missionId)) issues.push(`${missionRecord.data.missionId}: failed mission cannot preserve an unreviewed report`);
+    if (reviewsByScout.has(missionRecord.data.missionId)) issues.push(`${missionRecord.data.missionId}: failed mission cannot preserve a review receipt`);
   }
 
   return {

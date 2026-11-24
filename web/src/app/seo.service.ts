@@ -9,6 +9,10 @@ interface SeoOptions {
   noindex?: boolean;
   type?: 'website' | 'article';
   image?: string;
+  imageAlt?: string;
+  imageType?: 'image/jpeg' | 'image/png' | 'image/webp';
+  imageWidth?: number;
+  imageHeight?: number;
   structuredData?: Record<string, unknown>;
 }
 
@@ -23,21 +27,34 @@ export class SeoService {
   set(options: SeoOptions) {
     const fullTitle = options.title === this.siteName ? options.title : `${options.title} | ${this.siteName}`;
     const canonical = new URL(options.path, this.origin).toString();
-    const image = options.image ? new URL(options.image, this.origin).toString() : `${this.origin}/social-card.svg`;
+    const image = options.image ? new URL(options.image, this.origin).toString() : `${this.origin}/social-card.jpg`;
+    const imageAlt = options.imageAlt ?? 'Tips for Your Gifts: Good gifts, minus the guesswork.';
+    const imageType = options.imageType ?? 'image/jpeg';
+    const imageWidth = options.imageWidth ?? 1200;
+    const imageHeight = options.imageHeight ?? 630;
 
     this.title.setTitle(fullTitle);
     this.meta.updateTag({ name: 'description', content: options.description });
-    this.meta.updateTag({ name: 'robots', content: options.noindex ? 'noindex,nofollow' : 'index,follow' });
+    this.meta.updateTag({
+      name: 'robots',
+      content: options.noindex ? 'noindex,nofollow' : 'index,follow,max-image-preview:large'
+    });
     this.meta.updateTag({ property: 'og:type', content: options.type ?? 'website' });
     this.meta.updateTag({ property: 'og:site_name', content: this.siteName });
     this.meta.updateTag({ property: 'og:title', content: fullTitle });
     this.meta.updateTag({ property: 'og:description', content: options.description });
     this.meta.updateTag({ property: 'og:url', content: canonical });
     this.meta.updateTag({ property: 'og:image', content: image });
+    this.meta.updateTag({ property: 'og:image:secure_url', content: image });
+    this.meta.updateTag({ property: 'og:image:type', content: imageType });
+    this.meta.updateTag({ property: 'og:image:width', content: String(imageWidth) });
+    this.meta.updateTag({ property: 'og:image:height', content: String(imageHeight) });
+    this.meta.updateTag({ property: 'og:image:alt', content: imageAlt });
     this.meta.updateTag({ name: 'twitter:card', content: 'summary_large_image' });
     this.meta.updateTag({ name: 'twitter:title', content: fullTitle });
     this.meta.updateTag({ name: 'twitter:description', content: options.description });
     this.meta.updateTag({ name: 'twitter:image', content: image });
+    this.meta.updateTag({ name: 'twitter:image:alt', content: imageAlt });
 
     this.document.head.querySelector('link[rel="canonical"]')?.remove();
     const link = this.document.createElement('link');

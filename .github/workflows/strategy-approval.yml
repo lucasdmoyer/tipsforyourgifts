@@ -11,17 +11,26 @@ on:
         description: "Exact proposed revision visible in Studio"
         required: true
         type: number
+  issues:
+    types: [opened, reopened]
 
 permissions:
   contents: write
+  issues: read
   pull-requests: write
 
 concurrency:
-  group: strategy-approval-${{ inputs.idea_id }}
+  group: strategy-approval-${{ github.event_name == 'issues' && format('issue-{0}', github.event.issue.number) || inputs.idea_id }}
   cancel-in-progress: false
 
 jobs:
   approve:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'issues' &&
+       github.event.issue.user.login == 'lucasdmoyer' &&
+       github.event.issue.author_association == 'OWNER' &&
+       startsWith(github.event.issue.title, '[Approve Strategy] '))
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -29,28 +38,45 @@ jobs:
         with:
           ref: master
           fetch-depth: 0
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: "24.14.0"
           cache: npm
           cache-dependency-path: web/package-lock.json
-      - name: Validate the base and create the exact founder decision
-        id: decision
+      - name: Install and resolve the exact founder request
+        id: request
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          INPUT_IDEA_ID: ${{ inputs.idea_id }}
+          INPUT_EXPECTED_REVISION: ${{ inputs.expected_revision }}
         run: |
           npm ci --prefix web
+          if [ "${{ github.event_name }}" = "issues" ]; then
+            gh api "repos/$GITHUB_REPOSITORY/issues/$ISSUE_NUMBER" > "$RUNNER_TEMP/strategy-approval-issue.json"
+            node web/scripts/resolve-strategy-approval-request.mjs --request-path="$RUNNER_TEMP/strategy-approval-issue.json" >> "$GITHUB_OUTPUT"
+          else
+            node web/scripts/resolve-strategy-approval-request.mjs --idea-id="$INPUT_IDEA_ID" --expected-revision="$INPUT_EXPECTED_REVISION" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Validate the base and create the exact founder decision
+        id: decision
+        env:
+          IDEA_ID: ${{ steps.request.outputs.idea_id }}
+          EXPECTED_REVISION: ${{ steps.request.outputs.expected_revision }}
+        run: |
           npm run validate
           cp web/src/data/strategy.json "$RUNNER_TEMP/strategy.before.json"
-          npm --prefix web run strategy:approve -- --idea-id="${{ inputs.idea_id }}" --expected-revision="${{ inputs.expected_revision }}"
+          npm --prefix web run strategy:approve -- --idea-id="$IDEA_ID" --expected-revision="$EXPECTED_REVISION"
           node web/scripts/classify-strategy-change.mjs "$RUNNER_TEMP/strategy.before.json" web/src/data/strategy.json > "$RUNNER_TEMP/strategy-transition.json"
           test "$(jq -r '.changeType' "$RUNNER_TEMP/strategy-transition.json")" = "approval"
           test "$(jq -r '.launchResearch' "$RUNNER_TEMP/strategy-transition.json")" = "true"
-          test "$(jq -r '.ideaId' "$RUNNER_TEMP/strategy-transition.json")" = "${{ inputs.idea_id }}"
+          test "$(jq -r '.ideaId' "$RUNNER_TEMP/strategy-transition.json")" = "$IDEA_ID"
           npm --prefix web run generate
       - name: Prove the deterministic decision patch
         run: |
           while IFS= read -r changed_path; do
             case "$changed_path" in
-              web/src/data/strategy.json|web/src/data/operations.json|web/src/app/generated/content.generated.ts|web/public/sitemap.xml) ;;
+              web/src/data/strategy.json|web/src/data/operations.json|web/src/app/generated/content.generated.ts|web/src/app/generated/studio.generated.ts|web/public/sitemap.xml) ;;
               *) echo "Strategy approval changed forbidden path: $changed_path" >&2; exit 1 ;;
             esac
           done < <(git diff --name-only HEAD)
@@ -61,19 +87,19 @@ jobs:
       - name: Commit the founder-controlled approval branch
         env:
           RUN_ID: ${{ github.run_id }}
-          IDEA_ID: ${{ inputs.idea_id }}
+          IDEA_ID: ${{ steps.request.outputs.idea_id }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git switch -c "codex/approve-$RUN_ID"
-          git add web/src/data/strategy.json web/src/data/operations.json web/src/app/generated/content.generated.ts web/public/sitemap.xml
+          git add web/src/data/strategy.json web/src/data/operations.json web/src/app/generated/content.generated.ts web/src/app/generated/studio.generated.ts web/public/sitemap.xml
           git commit -m "Approve $IDEA_ID for research"
           git push origin "codex/approve-$RUN_ID"
       - name: Open the approval pull request
         env:
           GH_TOKEN: ${{ github.token }}
           RUN_ID: ${{ github.run_id }}
-          IDEA_ID: ${{ inputs.idea_id }}
+          IDEA_ID: ${{ steps.request.outputs.idea_id }}
         run: |
           gh pr create \
             --base master \

@@ -39,6 +39,14 @@ These attributes do not execute code, set cookies, contact an analytics service,
 
 The primary funnel is `qualified discovery -> gift finder guide open -> engaged guide -> merchant outbound click -> approved affiliate conversion`. Missing stages remain unknown. A merchant click is intent evidence, not a sale, satisfied reader, or profitable session.
 
+## Commercial scorecard
+
+Executive Studio derives one commercial scorecard from the latest comparable reporting window. Snapshots are joined only when their `periodStart` and `periodEnd` match. The scorecard totals observed article-level metrics and, only when both inputs exist and the denominator is greater than zero, calculates organic click-through, merchant click-through, affiliate conversion, earnings per outbound click, revenue per conversion, and social owned-site click-through.
+
+It never mixes windows, converts a missing value to zero, divides by an unobserved or zero denominator, or counts the same article metric twice. A site total remains unknown unless that metric is observed for every article represented in the selected window. It can identify the observed article leader for discovery, merchant intent, conversion, revenue, or social traffic without turning one channel into evidence for another.
+
+Revenue is not profit. The growth registry contains no operating-cost evidence, so the scorecard must continue to report profitability as unknown even after revenue appears. An AI agent may explain the observed aggregate values and propose a bounded experiment; it may not infer margin, lifetime value, reader satisfaction, or business profitability from clicks or commissions alone.
+
 ## Founder privacy decision and baseline state
 
 Lucas approved decision `privacy-measurement-20260816-v1` on 2026-08-16. The approved posture is aggregate-only measurement using the three bounded event labels above, with consent required before any client analytics begins. Client collection remains disabled: no provider, property, cookie, script, or event destination was configured by this decision.
@@ -61,7 +69,7 @@ Until Lucas completes these external account and credential steps and merges bot
 
 ## AI growth-team boundary
 
-The weekly workflow runs on Monday and may also be started manually. The OpenAI credential is present only in a read-only job. The agent may use committed aggregate snapshots to create or revise proposed experiments in `growth.json`; it cannot approve or run an experiment, change a connector, rewrite a snapshot, alter strategy, publish social content, add affiliate tracking, spend money, or deploy.
+The weekly workflow runs on Monday and may also be started manually. A deterministic preflight reads the validated growth ledger first: when no complete aggregate snapshot exists, the job stops before reading the OpenAI credential or invoking a model. The OpenAI credential is present only in the read-only analysis path after that gate. The agent may use committed aggregate snapshots to create or revise proposed experiments in `growth.json`; it cannot approve or run an experiment, change a connector, rewrite a snapshot, alter strategy, publish social content, add affiliate tracking, spend money, or deploy.
 
 A separate job without the AI credential verifies the patch boundary, reruns all deterministic gates, and opens a founder-review pull request. If no new complete snapshot supports a material decision, the correct output is no patch and no pull request.
 

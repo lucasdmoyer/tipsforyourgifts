@@ -1,7 +1,15 @@
 import fs from 'node:fs/promises';
-import crypto from 'node:crypto';
 import path from 'node:path';
 import process from 'node:process';
+import {
+  editorialReviewFindingsSchema,
+  editorialReviewReceiptSchema,
+  nextReviewRevision,
+  reviewedArticleSha256,
+  reviewableEvidenceSha256,
+  reviewReceiptFilename,
+  sha256
+} from './lib/editorial-review-receipt-contract.mjs';
 
 const args = Object.fromEntries(process.argv.slice(2).map((value) => {
   const [key, ...rest] = value.replace(/^--/, '').split('=');
@@ -9,44 +17,59 @@ const args = Object.fromEntries(process.argv.slice(2).map((value) => {
 }));
 const runId = args['run-id'];
 const reviewerId = args['reviewer-id'];
-const verdict = args.verdict;
-if (!runId || !reviewerId || !['passed', 'failed'].includes(verdict)) {
-  throw new Error('Usage: node scripts/create-review-receipt.mjs --run-id=<id> --reviewer-id=<id> --verdict=passed|failed [--workflow-run-id=<id>]');
+const workflowName = args['workflow-name'];
+const workflowRunId = args['workflow-run-id'] || process.env.GITHUB_RUN_ID;
+if (!runId || !reviewerId || !['research-agent.yml', 'editorial-independent-review.yml'].includes(workflowName) || !/^[1-9]\d*$/.test(workflowRunId ?? '') || (!args['findings-file'] && !['passed', 'failed'].includes(args.verdict))) {
+  throw new Error('Usage: node scripts/create-review-receipt.mjs --run-id=<id> --reviewer-id=<id> --workflow-name=research-agent.yml|editorial-independent-review.yml (--findings-file=<path>|--verdict=passed|failed) [--mission-id=<id>] [--workflow-run-id=<id>]');
 }
+const missionId = args['mission-id'] || null;
+if (workflowName === 'research-agent.yml' && missionId === null) throw new Error('Research-agent reviews must bind --mission-id');
 
 const root = process.cwd();
 const runPath = path.join(root, 'research', 'runs', `${runId}.json`);
 const run = JSON.parse(await fs.readFile(runPath, 'utf8'));
 if (run.draftAuthor === reviewerId) throw new Error('The independent reviewer cannot be the draft author');
-const sha256 = (value) => crypto.createHash('sha256').update(value).digest('hex');
-const reviewable = structuredClone(run);
-delete reviewable.qa;
-delete reviewable.completedAt;
-reviewable.status = 'review_pending';
-reviewable.article.status = 'review_pending';
+if (!['drafted', 'qa_failed'].includes(run.status)) throw new Error('Independent re-review applies only to drafted or qa_failed bundles');
+const findings = args['findings-file']
+  ? editorialReviewFindingsSchema.parse(JSON.parse(await fs.readFile(path.resolve(root, args['findings-file']), 'utf8')))
+  : editorialReviewFindingsSchema.parse({
+    schemaVersion: '1.0.0',
+    runId,
+    verdict: args.verdict,
+    blockers: args.verdict === 'failed' ? ['Independent review did not approve this bundle.'] : [],
+    warnings: []
+  });
+if (findings.runId !== runId) throw new Error('Review findings run ID differs from the requested run');
 const articleRaw = await fs.readFile(path.join(root, 'src', 'data', 'blog', `${run.article.slug}.md`));
-const articleSha256 = sha256(articleRaw.toString().replace(/^status:\s*(?:draft|publication_ready)\s*$/m, 'status: review_pending'));
 const socialPath = path.join(root, 'social', 'drafts', `${run.article.slug}-launch.json`);
-let socialSha256 = null;
-try { socialSha256 = sha256(await fs.readFile(socialPath)); } catch {}
-const reviewedAt = new Date().toISOString();
-const receipt = {
-  schemaVersion: '1.0.0',
-  receiptId: `${runId}-qa`,
+let socialRaw = null;
+try { socialRaw = await fs.readFile(socialPath); } catch (error) { if (error.code !== 'ENOENT') throw error; }
+const reviewDirectory = path.join(root, 'research', 'reviews');
+let existingNames = [];
+try { existingNames = await fs.readdir(reviewDirectory); } catch (error) { if (error.code !== 'ENOENT') throw error; }
+const receiptRevision = nextReviewRevision(existingNames, runId);
+const receipt = editorialReviewReceiptSchema.parse({
+  schemaVersion: '1.2.0',
+  receiptId: `${runId}-qa-v${receiptRevision}`,
+  receiptRevision,
+  workflowName,
+  missionId,
   runId,
   articleSlug: run.article.slug,
-  reviewedAt,
+  reviewedAt: args['reviewed-at'] ?? new Date().toISOString(),
   reviewerRole: 'independent-editor',
   reviewerId,
-  workflowRunId: args['workflow-run-id'] || process.env.GITHUB_RUN_ID || 'local-independent-review',
-  verdict,
-  evidenceSha256: sha256(`${JSON.stringify(reviewable)}\n`),
-  articleSha256,
-  socialSha256,
-  blockers: verdict === 'failed' ? ['Independent review did not approve this bundle.'] : [],
-  warnings: []
-};
-const outputPath = path.join(root, 'research', 'reviews', `${runId}.qa.v1.json`);
+  workflowRunId,
+  verdict: findings.verdict,
+  evidenceSha256: reviewableEvidenceSha256(run),
+  articleSha256: reviewedArticleSha256(articleRaw),
+  socialSha256: socialRaw == null ? null : sha256(socialRaw),
+  blockers: findings.blockers,
+  warnings: findings.warnings
+});
+const outputPath = path.join(reviewDirectory, reviewReceiptFilename(runId, receiptRevision));
 await fs.mkdir(path.dirname(outputPath), { recursive: true });
-await fs.writeFile(outputPath, `${JSON.stringify(receipt, null, 2)}\n`);
-console.log(`Created ${path.relative(root, outputPath)} with verdict ${verdict}`);
+await fs.writeFile(outputPath, `${JSON.stringify(receipt, null, 2)}\n`, { flag: 'wx' });
+const relativePath = path.relative(root, outputPath);
+if (process.env.GITHUB_OUTPUT) await fs.appendFile(process.env.GITHUB_OUTPUT, `receipt_path=${relativePath}\nreceipt_revision=${receiptRevision}\nverdict=${receipt.verdict}\n`);
+console.log(JSON.stringify({ receiptPath: relativePath, receiptRevision, verdict: receipt.verdict, runId }, null, 2));

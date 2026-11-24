@@ -18,7 +18,7 @@ const [missionRaw, reportRaw, receipt, strategy] = await Promise.all([
 ]);
 const mission = opportunityScoutMissionSchema.parse(JSON.parse(missionRaw));
 const report = opportunityReportSchema.parse(JSON.parse(reportRaw));
-if (mission.status !== 'started' || report.status !== 'drafted' || report.qa !== null) throw new Error('Opportunity scout is not awaiting promotion');
+if (mission.status !== 'started' || mission.failureHandoff !== null || report.status !== 'drafted' || report.qa !== null) throw new Error('Opportunity scout is not awaiting promotion');
 if (receipt.verdict !== 'passed' || receipt.blockers.length > 0) throw new Error('Independent opportunity review did not pass cleanly');
 if (receipt.reviewerId === report.draftAuthor) throw new Error('Scout author cannot review their own report');
 if (receipt.startedMissionSha256 !== sha256(missionRaw)) throw new Error('Opportunity mission changed after the model received it');

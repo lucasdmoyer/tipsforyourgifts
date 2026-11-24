@@ -4,6 +4,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import process from 'node:process';
 import { buildFounderAgenda, parseFounderAgenda } from './lib/founder-agenda-contract.mjs';
+import { loadReleaseApprovals, summarizeReleaseApprovals } from './lib/release-approval-contract.mjs';
 
 const root = process.cwd();
 const readJson = async (relativePath) => JSON.parse(await fs.readFile(path.join(root, relativePath), 'utf8'));
@@ -15,6 +16,8 @@ const socialChannelsSha256 = createHash('sha256').update(socialChannelsRaw).dige
 const livePublication = await readJson('config/live-publication.json');
 const publicationPolicy = await readJson('config/publication-policy.json');
 const publicationManifest = await readJson('public/publication-manifest.json');
+const releaseApprovals = summarizeReleaseApprovals(await loadReleaseApprovals(root), publicationManifest);
+const automationReadinessEvidence = await readJson('config/automation-readiness.json');
 const growthRaw = await fs.readFile(path.join(root, 'src/data/growth.json'));
 const growth = JSON.parse(growthRaw.toString('utf8'));
 const growthSha256 = createHash('sha256').update(growthRaw).digest('hex');
@@ -31,6 +34,8 @@ const baseInput = {
   publicationPolicy,
   publicationManifest,
   livePublication,
+  releaseApprovals,
+  automationReadinessEvidence,
   growth,
   openStrategyProposals: proposedIdeas.length,
   maxOpenStrategyProposals: 5,
@@ -46,11 +51,60 @@ const currentContentIsVerified = livePublication.status === 'verified_managed_co
   && livePublication.latestVerifiedContentRelease?.publicationManifest?.contentSetSha256 === publicationManifest.contentSetSha256;
 assert.equal(base.primaryDecisionId, currentContentIsVerified ? 'establish-measurement' : 'review-release-candidate');
 assert.equal(base.decisions.some((decision) => decision.id === 'review-release-candidate'), !currentContentIsVerified);
+if (!currentContentIsVerified && livePublication.latestVerifiedContentRelease) {
+  const releaseDecision = base.decisions.find((decision) => decision.id === 'review-release-candidate');
+  if (releaseApprovals.currentContentSetApprovedRelease) {
+    assert.equal(releaseDecision.title, 'Unblock the approved exact release');
+    assert.equal(releaseDecision.action.url, releaseApprovals.currentContentSetApprovedRelease.pullRequestUrl);
+    assert.match(releaseDecision.action.command, /tips-github-preview/);
+    assert.match(releaseDecision.action.command, new RegExp(`refs/pull/${releaseApprovals.currentContentSetApprovedRelease.pullRequestNumber}/merge`));
+    assert.match(releaseDecision.action.command, /job_workflow_ref lucasdmoyer\/tipsforyourgifts\/\.github\/workflows\/firebase-preview-deploy\.yml@refs\/heads\/master/);
+    assert.match(releaseDecision.action.command, /No Firebase Auth Admin, no user-managed key, no production-provider changes, and no production deployment/);
+    assert.ok(releaseDecision.evidence.some((item) => item.includes(releaseApprovals.currentContentSetApprovedRelease.headSha)));
+    assert.match(releaseDecision.guardrail, /does not transfer/);
+  } else {
+    assert.equal(releaseDecision.title, 'Review the next accountable Angular release');
+    assert.equal(releaseDecision.action.url, 'https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/firebase-production.yml');
+    assert.match(releaseDecision.action.command, /release_sha=<approved-master-sha>/);
+    assert.ok(releaseDecision.evidence.some((item) => item.includes(automationReadinessEvidence.latestVerifiedPreview.sha)));
+    assert.match(releaseDecision.guardrail, /historical evidence only/);
+  }
+}
 assert.equal(base.profitabilityEvidence, 'unknown_until_aggregate_measurement');
+const currentMeasurementDecision = base.decisions.find((decision) => decision.id === 'establish-measurement');
+if (currentMeasurementDecision?.title === 'Configure the first aggregate measurement source') {
+  assert.equal(currentMeasurementDecision.action.url, 'https://github.com/lucasdmoyer/tipsforyourgifts/issues/59');
+  assert.match(currentMeasurementDecision.action.command, /configuration_evidence_url=https:\/\/github\.com\/lucasdmoyer\/tipsforyourgifts\/issues\/59/);
+  assert.doesNotMatch(currentMeasurementDecision.action.command, /REPLACE_WITH_ISSUE_NUMBER/);
+}
+const currentSocialDecision = base.decisions.find((decision) => decision.id === 'configure-first-social-channel');
+if (currentSocialDecision?.title === 'Complete the first Pinterest operating packet') {
+  assert.equal(currentSocialDecision.action.url, 'https://github.com/lucasdmoyer/tipsforyourgifts/issues/61');
+  assert.match(currentSocialDecision.action.command, new RegExp(`expected_config_sha256=${socialChannelsSha256}`));
+  assert.match(currentSocialDecision.action.command, /official_account_reference="\$PINTEREST_ACCOUNT_REFERENCE"/);
+  assert.match(currentSocialDecision.action.command, /official_publication_target_id="\$PINTEREST_BOARD_ID"/);
+  assert.match(currentSocialDecision.action.command, /max_posts_per_week=3/);
+  assert.match(currentSocialDecision.action.command, /configuration_evidence_url=https:\/\/github\.com\/lucasdmoyer\/tipsforyourgifts\/issues\/61/);
+  assert.doesNotMatch(currentSocialDecision.action.command, /REPLACE_WITH_ISSUE_NUMBER/);
+  assert.ok(currentSocialDecision.evidence.includes(`${socialCandidateCount} original creative candidate${socialCandidateCount === 1 ? ' is' : 's are'} locally verified.`));
+}
 assert.deepEqual(base.decisions.map((decision) => decision.rank), base.decisions.map((_decision, index) => index + 1));
 const priorityWeight = { high: 3, medium: 2, low: 1 };
 const expectedStrategyCandidate = [...proposedIdeas].sort((left, right) => (priorityWeight[right.priority] ?? 0) - (priorityWeight[left.priority] ?? 0) || (right.pairing?.coherenceScore ?? 0) - (left.pairing?.coherenceScore ?? 0) || left.id.localeCompare(right.id))[0];
-if (expectedStrategyCandidate) assert.match(base.decisions.find((decision) => decision.id === 'choose-next-thesis').recommendation, new RegExp(`${expectedStrategyCandidate.id} revision ${expectedStrategyCandidate.revision}`));
+if (expectedStrategyCandidate) {
+  const currentStrategyDecision = base.decisions.find((decision) => decision.id === 'choose-next-thesis');
+  assert.match(currentStrategyDecision.recommendation, new RegExp(`${expectedStrategyCandidate.id} revision ${expectedStrategyCandidate.revision}`));
+  if (expectedStrategyCandidate.pairing) {
+    assert.ok(currentStrategyDecision.evidence.includes(`Its pair-coherence hypothesis scores ${expectedStrategyCandidate.pairing.coherenceScore}/100 before product research.`));
+  } else {
+    assert.ok(currentStrategyDecision.evidence.includes('This is a single-product or category thesis; no pair-coherence claim is being made before product research.'));
+    assert.doesNotMatch(currentStrategyDecision.evidence.join(' '), /not applicable\/100/);
+  }
+  if (baseInput.openStrategyProposals < baseInput.maxOpenStrategyProposals) {
+    assert.doesNotMatch(currentStrategyDecision.rationale, /queue (?:is|has reached).*full|configured cap/i, 'available proposal capacity must not be reported as full');
+    assert.match(currentStrategyDecision.rationale, new RegExp(`${baseInput.maxOpenStrategyProposals - baseInput.openStrategyProposals} of ${baseInput.maxOpenStrategyProposals} proposal slots remain available`));
+  }
+}
 
 const verifiedLiveInput = structuredClone(baseInput);
 verifiedLiveInput.livePublication = {
@@ -65,6 +119,18 @@ verifiedLiveInput.livePublication = {
 };
 const verifiedLiveAgenda = buildFounderAgenda(verifiedLiveInput);
 assert.equal(verifiedLiveAgenda.decisions.some((decision) => decision.id === 'review-release-candidate'), false, 'current verified live content must not be proposed for release again');
+
+const noManagedReleaseAgenda = buildFounderAgenda({ ...structuredClone(baseInput), releaseApprovals: { total: 0, active: 0, currentContentSetApprovedRelease: null }, automationReadinessEvidence: null, livePublication: {
+  schemaVersion: livePublication.schemaVersion,
+  projectId: livePublication.projectId,
+  siteId: livePublication.siteId,
+  hostingChannel: livePublication.hostingChannel,
+  productionUrl: livePublication.productionUrl,
+  status: 'no_verified_managed_release',
+  updatedAt: null,
+  latestVerifiedContentRelease: null
+} });
+assert.equal(noManagedReleaseAgenda.decisions.find((decision) => decision.id === 'review-release-candidate').title, 'Review the first accountable Angular release');
 
 const configuredMeasurementInput = structuredClone(baseInput);
 const configuredSearch = configuredMeasurementInput.growth.connectors.find((connector) => connector.id === 'search-console');
@@ -93,15 +159,16 @@ enabledAffiliateInput.affiliateLinks = {
   passedReviews: 0,
   approvals: 0,
   activeOverlays: 0,
-  queue: [{ candidateId: 'affiliate-link-test-v1', candidateSha256: 'a'.repeat(64), reviewSha256: null, stage: 'independent_review_required' }]
+  queue: [{ candidateId: 'affiliate-link-test-v1', candidateSha256: 'a'.repeat(64), reviewSha256: null, approvalIssueUrl: null, stage: 'independent_review_required' }]
 };
 const linkReviewDecision = buildFounderAgenda(enabledAffiliateInput).decisions.find((decision) => decision.id === 'choose-affiliate-pilot');
 assert.match(linkReviewDecision.action.url, /affiliate-link-review\.yml$/);
 enabledAffiliateInput.affiliateLinks.passedReviews = 1;
 enabledAffiliateInput.affiliateLinks.queue[0].stage = 'founder_approval_required';
 enabledAffiliateInput.affiliateLinks.queue[0].reviewSha256 = 'b'.repeat(64);
+enabledAffiliateInput.affiliateLinks.queue[0].approvalIssueUrl = 'https://github.com/lucasdmoyer/tipsforyourgifts/issues/new?title=approve-affiliate-link';
 const linkApprovalDecision = buildFounderAgenda(enabledAffiliateInput).decisions.find((decision) => decision.id === 'choose-affiliate-pilot');
-assert.match(linkApprovalDecision.action.url, /affiliate-link-approval\.yml$/);
+assert.equal(linkApprovalDecision.action.url, enabledAffiliateInput.affiliateLinks.queue[0].approvalIssueUrl);
 
 const clone = (value) => structuredClone(value);
 const fixtureInput = clone(baseInput);
@@ -131,6 +198,11 @@ fixtureInput.affiliate.programs[0].status = 'proposed';
 fixtureInput.affiliate.programs[0].founderDisposition = 'proposed';
 const fullAgenda = buildFounderAgenda(fixtureInput);
 assert.equal(fullAgenda.decisions.length, 5, 'full founder decision fixture must exercise every decision category');
+const fullProposalQueueInput = clone(fixtureInput);
+fullProposalQueueInput.openStrategyProposals = fullProposalQueueInput.maxOpenStrategyProposals;
+const fullProposalQueueDecision = buildFounderAgenda(fullProposalQueueInput).decisions.find((decision) => decision.id === 'choose-next-thesis');
+assert.match(fullProposalQueueDecision.rationale, /configured cap/);
+assert.match(fullProposalQueueDecision.unlocks, /reopens one weekly opportunity-scout slot/);
 
 function expectFailure(label, mutate) {
   const candidate = clone(fullAgenda);

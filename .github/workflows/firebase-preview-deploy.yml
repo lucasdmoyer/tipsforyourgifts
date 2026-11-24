@@ -29,7 +29,7 @@ jobs:
         with:
           fetch-depth: 0
           persist-credentials: false
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: "24.14.0"
           cache: npm
@@ -43,7 +43,7 @@ jobs:
         env:
           PR_NUMBER: ${{ inputs.pr_number }}
         run: echo "name=firebase-preview-pr-$PR_NUMBER-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT" >> "$GITHUB_OUTPUT"
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: inputs.hosting_changed
         with:
           name: ${{ steps.artifact.outputs.name }}
@@ -87,12 +87,12 @@ jobs:
           persist-credentials: false
           sparse-checkout: firebase.json
           sparse-checkout-cone-mode: false
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: "24.14.0"
       - name: Install the pinned Firebase CLI before cloud authentication
         run: npm install --prefix "$RUNNER_TEMP/firebase-cli" --no-audit --no-fund firebase-tools@15.26.0
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           name: ${{ needs.build.outputs.artifact_name }}
           path: trusted-config/web/dist

@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "1.2.0",
+  "observedAt": "2026-11-23T23:34:17.000Z",
+  "sourceMode": "versioned_snapshot_not_live_poll",
+  "externalGates": [
+    {
+      "id": "openai-platform-credential",
+      "label": "Research model credential",
+      "status": "blocked_external_configuration",
+      "summary": "The versioned policy still records no founder-approved OpenAI project hard limit, earlier spend alert, or verified dedicated credential; scheduled research therefore remains fail-closed before any model call.",
+      "evidenceUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/issues/37#issuecomment-7102214382",
+      "diagnosticUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/issues/37",
+      "nextAction": "Lucas first approves and configures an OpenAI project hard spend limit plus an earlier alert; only afterward may the dedicated project key be stored as OPENAI_API_KEY and separately verified.",
+      "authorityBoundary": "The proposed $50 hard limit and $25 alert are planning-only, not approved. No credential value may be displayed, logged, downloaded, committed, or placed in Studio data, and model activation remains a separate exact-policy gate."
+    },
+    {
+      "id": "firebase-preview-identity",
+      "label": "Keyless Firebase preview identity",
+      "status": "blocked_external_configuration",
+      "summary": "PR 104 head 7b2cddada414eea957add384c4a04fe3301093ee passed protected validation, an exact-artifact build, the immutable pull-request boundary, and manual hosted preview review. A live read-only Google Cloud audit confirmed that tips-github-preview does not exist; the intended service account exists with Firebase Hosting Admin only, no Firebase Auth Admin, and no user-managed key. Existing providers are restricted to PR 1, PR 20, or the master production workflow and cannot authenticate PR 104.",
+      "evidenceUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/104#issuecomment-7117003721",
+      "diagnosticUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/runs/45265510887",
+      "nextAction": "After fresh action-time founder IAM approval, create tips-github-preview/github-preview restricted to repository ID 171694140, repository-owner ID 23782501, actor ID 23782501, pull_request, refs/pull/104/merge, and the master-pinned reusable preview workflow; then rerun the required preview check and merge only if the head remains exactly 7b2cddada414eea957add384c4a04fe3301093ee.",
+      "authorityBoundary": "Grant only short-lived workload-identity impersonation to the existing Firebase Hosting Admin service account. No Firebase Auth Admin, user-managed service-account key, production-provider change, or production Hosting authorization."
+    },
+    {
+      "id": "firebase-auto-production-identity",
+      "label": "Keyless automatic-production identity",
+      "status": "blocked_external_configuration",
+      "summary": "Automatic-after-proven publication remains disabled, and its dedicated master-bound Google Workload Identity provider and service account have not been provisioned or verified.",
+      "evidenceUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/issues/43",
+      "diagnosticUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/firebase-auto-production.yml",
+      "nextAction": "After ten verified founder-reviewed releases, separately approve and provision the dedicated tips-github-auto-production identity, then review the policy activation pull request and production environment boundary.",
+      "authorityBoundary": "Use short-lived impersonation only for the master-pinned automatic Firebase Hosting workflow. No Firebase Auth Admin, user-managed service-account key, database access, affiliate activation, social publishing, or policy bypass."
+    }
+  ],
+  "latestVerifiedPreview": {
+    "status": "exact_preview_verified",
+    "sha": "7b2cddada414eea957add384c4a04fe3301093ee",
+    "pullRequestUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/104",
+    "reviewUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/104#issuecomment-7114834768",
+    "previewUrl": "https://tipsforyourgifts--pr-104-7b2cdda-47bzlrvs.web.app/",
+    "summary": "The exact PR-104 Firebase preview passed Node 24.14 validation, a 23-route static build with an 81.91 kB initial transfer, hosted smoke across 20 routes and 11 publication-ready articles, mobile visual review, affiliate disclosure checks, and security-header review. Lighthouse scored 100 for performance, accessibility, and best practices on both the home page and Studio, with 1.0 second LCP and zero layout shift.",
+    "nextAction": "Preserve the exact-head merge approval for 7b2cddada414eea957add384c4a04fe3301093ee only; after merge, require a new exact master-SHA preview, readback, and action-time production approval before any live mutation."
+  }
+}

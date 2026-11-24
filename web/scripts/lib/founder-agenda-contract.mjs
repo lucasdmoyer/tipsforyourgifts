@@ -1,6 +1,10 @@
 import { z } from 'zod';
+import { canonicalIdeaSha256 } from './research-mission-contract.mjs';
+import { strategyApprovalAuthorityLines } from '../resolve-strategy-approval-request.mjs';
 
 const httpsUrl = z.string().url().refine((value) => value.startsWith('https://'), 'must use HTTPS');
+const searchConsoleDecisionPacketUrl = 'https://github.com/lucasdmoyer/tipsforyourgifts/issues/59';
+const pinterestDecisionPacketUrl = 'https://github.com/lucasdmoyer/tipsforyourgifts/issues/61';
 const decisionSchema = z.object({
   id: z.enum(['review-release-candidate', 'choose-next-thesis', 'establish-measurement', 'configure-first-social-channel', 'choose-affiliate-pilot']),
   rank: z.number().int().min(1).max(5),
@@ -70,46 +74,126 @@ function selectAffiliatePilot(affiliate) {
     })[0];
 }
 
+function previewIdentityApprovalPrompt(pullRequestNumber) {
+  return `Approve creation of Workload Identity pool tips-github-preview and provider github-preview for repository ID 171694140, repository-owner ID 23782501, actor ID 23782501, event pull_request, ref refs/pull/${pullRequestNumber}/merge, and job_workflow_ref lucasdmoyer/tipsforyourgifts/.github/workflows/firebase-preview-deploy.yml@refs/heads/master. Grant roles/iam.workloadIdentityUser on github-action-171694140@tipsforyourgifts.iam.gserviceaccount.com. Retain Firebase Hosting Admin only. No Firebase Auth Admin, no user-managed key, no production-provider changes, and no production deployment.`;
+}
+
+export function strategyApprovalIssueUrl(idea) {
+  const decision = {
+    schemaVersion: '1.0.0',
+    ideaId: idea.id,
+    expectedRevision: idea.revision,
+    ideaSha256: canonicalIdeaSha256(idea),
+    decision: 'approve_for_research'
+  };
+  const title = `[Approve Strategy] ${idea.id} revision ${idea.revision}`;
+  const body = [
+    '# Approve one strategy thesis for research',
+    '',
+    'Lucas, this is the exact founder decision prepared by Studio. Review the proposal, check all three authority boxes, then submit the issue. The workflow will independently verify this packet before it can open an approval pull request.',
+    '',
+    '## Proposal',
+    '',
+    `- **Idea:** ${idea.id}, revision ${idea.revision}`,
+    `- **Title:** ${idea.title}`,
+    `- **Priority:** ${idea.priority}`,
+    `- **Audience:** ${idea.audience}`,
+    `- **Research brief:** ${idea.researchBrief}`,
+    '',
+    '## Exact decision',
+    '',
+    '```json',
+    JSON.stringify(decision, null, 2),
+    '```',
+    '',
+    '## Authority boundary',
+    '',
+    ...strategyApprovalAuthorityLines.map((line) => `- [ ] ${line}`),
+    '',
+    '> All three boxes must be checked. Submitting this issue does not change strategy data directly; it asks the protected workflow to create a deterministic, reviewable pull request.'
+  ].join('\n');
+  const url = new URL('https://github.com/lucasdmoyer/tipsforyourgifts/issues/new');
+  url.searchParams.set('title', title);
+  url.searchParams.set('body', body);
+  return url.toString().length <= 12_000
+    ? url.toString()
+    : 'https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/strategy-approval.yml';
+}
+
 export function buildFounderAgenda(input) {
   const decisions = [];
   const release = input.publicationManifest;
   const latestLiveRelease = input.livePublication.latestVerifiedContentRelease;
+  const latestVerifiedPreview = input.automationReadinessEvidence?.latestVerifiedPreview?.status === 'exact_preview_verified'
+    ? input.automationReadinessEvidence.latestVerifiedPreview
+    : null;
+  const approvedExactRelease = input.releaseApprovals?.currentContentSetApprovedRelease ?? null;
   const candidateContentIsVerifiedLive = input.livePublication.status === 'verified_managed_content_release' &&
     latestLiveRelease?.publicationManifest.contentSetSha256 === release.contentSetSha256;
   if (release.counts.articles > 0 && !candidateContentIsVerifiedLive) {
+    const hasManagedLiveRelease = Boolean(latestLiveRelease);
     decisions.push({
       id: 'review-release-candidate',
       rank: 0,
       priorityScore: 100,
       horizon: 'now',
       category: 'release',
-      title: 'Review the first accountable Angular release',
-      recommendation: `Review ${release.manifestId} as the first founder-controlled Firebase release candidate.`,
-      decisionQuestion: 'Does this exact content set represent the site you want readers to see first?',
-      rationale: 'The research and release machinery cannot create traffic, trust, or revenue while the modern reviewed site remains only a local candidate.',
-      evidence: [
+      title: approvedExactRelease
+        ? 'Unblock the approved exact release'
+        : hasManagedLiveRelease ? 'Review the next accountable Angular release' : 'Review the first accountable Angular release',
+      recommendation: approvedExactRelease
+        ? `Preserve the merge-only approval for PR ${approvedExactRelease.pullRequestNumber} head ${approvedExactRelease.headSha}; authorize only the missing keyless preview trust if you want the protected check rerun.`
+        : `Review ${release.manifestId} as the ${hasManagedLiveRelease ? 'next' : 'first'} founder-controlled Firebase release candidate.`,
+      decisionQuestion: approvedExactRelease
+        ? `Do you authorize the narrow PR-${approvedExactRelease.pullRequestNumber}-only OIDC trust required to rerun its protected preview check?`
+        : hasManagedLiveRelease ? 'Should this exact reviewed content set replace the currently verified live set?' : 'Does this exact content set represent the site you want readers to see first?',
+      rationale: approvedExactRelease
+        ? 'The founder decision and hosted preview review are already recorded against one immutable pull request head. The merge remains blocked only because the required GitHub preview check cannot obtain its missing short-lived Google identity.'
+        : hasManagedLiveRelease
+          ? 'The candidate adds reviewed content and operating improvements beyond the verified live set, but it must retain exact-SHA preview, rollback, and founder-control evidence before replacement.'
+          : 'The research and release machinery cannot create traffic, trust, or revenue while the modern reviewed site remains only a local candidate.',
+      evidence: approvedExactRelease ? [
+        `Lucas approved PR ${approvedExactRelease.pullRequestNumber} head ${approvedExactRelease.headSha} for merge only on ${approvedExactRelease.approvedAt}.`,
+        `The approved content set is ${approvedExactRelease.manifestId}, matching this candidate manifest.`,
+        `The exact Firebase preview remains ${approvedExactRelease.previewUrl}.`,
+        latestLiveRelease
+          ? `The latest Git-recorded live content set is ${latestLiveRelease.publicationManifest.manifestId}, so production has not advanced to the approved candidate.`
+          : 'No managed Firebase content-release receipt is durably recorded in Git yet.'
+      ] : [
         `${release.counts.articles} publication-ready articles are in the candidate set.`,
         `${release.counts.independentReviews} independent QA receipts are hash-bound to those articles.`,
-        `${release.counts.socialDrafts} reviewed social drafts are prepared for later distribution.`,
+        latestVerifiedPreview
+          ? `The latest verified preview was ${latestVerifiedPreview.sha} at ${latestVerifiedPreview.pullRequestUrl}; that receipt does not authorize this build.`
+          : `${release.counts.socialDrafts} reviewed social drafts are prepared for later distribution.`,
         latestLiveRelease
           ? `The latest Git-recorded live content set is ${latestLiveRelease.publicationManifest.manifestId}, which differs from this candidate.`
           : 'No managed Firebase content-release receipt is durably recorded in Git yet.'
       ],
       unlocks: 'A protected exact-SHA preview and founder-reviewed Firebase release establish the owned destination for every later growth and affiliate action.',
-      tradeoff: 'The first release creates a public baseline and monitoring responsibility, while affiliate links and social publishing remain separately disabled.',
-      guardrail: 'Commit and review the exact candidate first; the workflow must still clone live, expose the preview, require founder approval, smoke production, and mint a manifest-bound receipt.',
+      tradeoff: approvedExactRelease
+        ? 'Creating a tightly scoped keyless preview identity adds IAM configuration, but it does not grant production authority and can remain limited to this one pull request merge ref.'
+        : hasManagedLiveRelease
+          ? 'Replacing the live set advances the publication but creates a new monitoring and rollback obligation; affiliate and social authority remain separately bounded.'
+          : 'The first release creates a public baseline and monitoring responsibility, while affiliate links and social publishing remain separately disabled.',
+      guardrail: approvedExactRelease
+        ? `The approval applies only to ${approvedExactRelease.headSha} and merge of PR ${approvedExactRelease.pullRequestNumber}. It does not transfer to a changed head, merge commit, replay, later artifact, IAM change, credential, or Firebase production deployment.`
+        : `Commit and review the exact candidate first; the workflow must still clone live, expose the preview, require founder approval, smoke production, and mint a manifest-bound receipt.${latestVerifiedPreview ? ` The prior ${latestVerifiedPreview.sha} receipt is historical evidence only.` : ''}`,
       reversibility: 'high',
       founderActionRequired: true,
       action: {
-        label: 'Open release workflow',
-        url: 'https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/firebase-production.yml',
-        command: 'gh workflow run firebase-production.yml -f release_sha=<approved-master-sha>'
+        label: approvedExactRelease ? 'Open approved release' : 'Open release workflow',
+        url: approvedExactRelease ? approvedExactRelease.pullRequestUrl : 'https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/firebase-production.yml',
+        command: approvedExactRelease
+          ? previewIdentityApprovalPrompt(approvedExactRelease.pullRequestNumber)
+          : 'gh workflow run firebase-production.yml -f release_sha=<approved-master-sha>'
       }
     });
   }
 
   const strategyCandidate = selectStrategyCandidate(input.strategy);
   if (strategyCandidate) {
+    const proposalQueueIsFull = input.openStrategyProposals >= input.maxOpenStrategyProposals;
+    const proposalCapacityRemaining = Math.max(input.maxOpenStrategyProposals - input.openStrategyProposals, 0);
     decisions.push({
       id: 'choose-next-thesis',
       rank: 0,
@@ -119,21 +203,27 @@ export function buildFounderAgenda(input) {
       title: 'Choose the next recipient problem to research',
       recommendation: `Approve ${strategyCandidate.id} revision ${strategyCandidate.revision}: ${strategyCandidate.title}.`,
       decisionQuestion: 'Should this be the next bounded research mission for the editorial team?',
-      rationale: 'The founder proposal queue is full, so one decision both chooses the next article direction and restores capacity to the autonomous opportunity scout.',
+      rationale: proposalQueueIsFull
+        ? 'The founder proposal queue has reached its configured cap, so one decision both chooses the next article direction and restores capacity to the autonomous opportunity scout.'
+        : `The proposal is awaiting founder direction, and ${proposalCapacityRemaining} of ${input.maxOpenStrategyProposals} proposal slots remain available; deciding it now chooses the next article direction without pretending the research is already approved.`,
       evidence: [
         `${input.openStrategyProposals}/${input.maxOpenStrategyProposals} founder proposal slots are occupied.`,
         `The recommended thesis has ${strategyCandidate.priority} strategic priority.`,
-        `Its pair-coherence hypothesis scores ${strategyCandidate.pairing?.coherenceScore ?? 'not applicable'}/100 before product research.`,
+        strategyCandidate.pairing
+          ? `Its pair-coherence hypothesis scores ${strategyCandidate.pairing.coherenceScore}/100 before product research.`
+          : 'This is a single-product or category thesis; no pair-coherence claim is being made before product research.',
         `The brief requires ${strategyCandidate.deliverables.minimumFinalists} finalists, ${strategyCandidate.deliverables.minimumQualifiedPairs} qualified pairs, and ${strategyCandidate.deliverables.minimumSocialAngles} social angles.`
       ],
-      unlocks: 'Merging the deterministic approval pull request starts one hash-bound research mission and reopens one weekly opportunity-scout slot.',
+      unlocks: proposalQueueIsFull
+        ? 'Merging the deterministic approval pull request starts one hash-bound research mission and reopens one weekly opportunity-scout slot.'
+        : 'Merging the deterministic approval pull request starts one hash-bound research mission while the autonomous opportunity scout retains the capacity already shown in Studio.',
       tradeoff: 'Approval spends research capacity on one audience and ritual before product evidence has been collected; the mission may still reject the thesis.',
       guardrail: 'This action authorizes research only. It cannot approve evidence, add affiliate tracking, publish content, spend money, or deploy Firebase.',
       reversibility: 'high',
       founderActionRequired: true,
       action: {
-        label: 'Open strategy approval',
-        url: 'https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/strategy-approval.yml',
+        label: 'Review exact approval',
+        url: strategyApprovalIssueUrl(strategyCandidate),
         command: `gh workflow run strategy-approval.yml -f idea_id=${strategyCandidate.id} -f expected_revision=${strategyCandidate.revision}`
       }
     });
@@ -155,7 +245,7 @@ export function buildFounderAgenda(input) {
         ? 'Run the read-only finalized Search Console collector and let its aggregate snapshot pass the full pull-request gates.'
         : configured
           ? 'Activate the exact reviewed Search Console configuration so its scheduled read-only collector can begin.'
-          : 'Start with the exact canonical URL-prefix property and read-only page aggregates before adding broader analytics.',
+          : 'Review the credential-free issue 59 decision packet, then configure only its exact URL-prefix property and read-only page-aggregate boundary.',
       decisionQuestion: active
         ? 'Do you want the team to collect the first finalized seven-day organic-search snapshot now?'
         : configured
@@ -174,17 +264,17 @@ export function buildFounderAgenda(input) {
       reversibility: 'high',
       founderActionRequired: true,
       action: {
-        label: active ? 'Collect first snapshot' : configured ? 'Open measurement activation' : 'Open measurement setup',
+        label: active ? 'Collect first snapshot' : configured ? 'Open measurement activation' : 'Open measurement decision packet',
         url: active
           ? 'https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/search-console-collect.yml'
           : configured
             ? 'https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/search-console-activate.yml'
-            : 'https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/search-console-configure.yml',
+            : searchConsoleDecisionPacketUrl,
         command: active
           ? 'gh workflow run search-console-collect.yml'
           : configured
             ? `gh workflow run search-console-activate.yml -f expected_growth_sha256=${input.growthSha256} -f confirmation=ACTIVATE-search-console`
-            : `gh workflow run search-console-configure.yml -f expected_growth_sha256=${input.growthSha256} -f property_reference=https://tipsforyourgifts.web.app/ -f configuration_evidence_url=https://github.com/lucasdmoyer/tipsforyourgifts/issues/REPLACE_WITH_ISSUE_NUMBER -f confirmation=CONFIGURE-search-console`
+            : `gh workflow run search-console-configure.yml -f expected_growth_sha256=${input.growthSha256} -f property_reference=https://tipsforyourgifts.web.app/ -f configuration_evidence_url=${searchConsoleDecisionPacketUrl} -f confirmation=CONFIGURE-search-console`
       }
     });
   }
@@ -199,17 +289,17 @@ export function buildFounderAgenda(input) {
       priorityScore: 75,
       horizon: 'next',
       category: 'distribution',
-      title: channelConfigured ? 'Activate the configured Pinterest publishing boundary' : 'Decide whether Pinterest becomes the first owned distribution channel',
+      title: channelConfigured ? 'Activate the configured Pinterest publishing boundary' : 'Complete the first Pinterest operating packet',
       recommendation: channelConfigured
         ? `Activate ${firstChannel.id} only after rechecking its configured account, official target, API credential reference, cadence, and protected publishing environment.`
-        : `Configure ${firstChannel.id} as the first bounded channel only after the official account, API, rights, cadence, and reporting posture are approved.`,
+        : 'Complete credential-free issue 61, then configure Pinterest only after the exact business account, public board, Standard API access, minimum scopes, rights, cadence, and reporting boundary are evidenced.',
       decisionQuestion: channelConfigured
         ? 'Do you authorize this exact configured Pinterest channel for protected per-post official-API publishing?'
         : 'Do you want to establish the official Pinterest operating envelope for the prepared launch queue?',
       rationale: 'The team has reusable decision-first creative, but drafts cannot drive traffic until one official channel has a founder-approved and measurable publishing boundary.',
       evidence: [
         `${input.socialDraftCount} reviewed social drafts are prepared.`,
-        `${input.socialCreativeCandidateCount} original creative candidate is locally verified.`,
+        `${input.socialCreativeCandidateCount} original creative candidate${input.socialCreativeCandidateCount === 1 ? ' is' : 's are'} locally verified.`,
         `${activeChannels.length}/${input.socialChannels.channels.length} official social channels are active.`,
         `${firstChannel.id} is channel priority ${firstChannel.priority}.`
       ],
@@ -221,13 +311,13 @@ export function buildFounderAgenda(input) {
       reversibility: 'medium',
       founderActionRequired: true,
       action: {
-        label: channelConfigured ? 'Open channel activation' : 'Open channel setup',
+        label: channelConfigured ? 'Open channel activation' : 'Open Pinterest decision packet',
         url: channelConfigured
           ? 'https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/social-channel-activate.yml'
-          : 'https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/social-channel-configure.yml',
+          : pinterestDecisionPacketUrl,
         command: channelConfigured
           ? `gh workflow run social-channel-activate.yml -f channel_id=${firstChannel.id} -f expected_config_sha256=${input.socialChannelsSha256} -f confirmation=ACTIVATE-${firstChannel.id}`
-          : null
+          : `gh workflow run social-channel-configure.yml -f channel_id=${firstChannel.id} -f expected_config_sha256=${input.socialChannelsSha256} -f official_account_reference="$PINTEREST_ACCOUNT_REFERENCE" -f official_publication_target_id="$PINTEREST_BOARD_ID" -f max_posts_per_week=3 -f configuration_evidence_url=${pinterestDecisionPacketUrl} -f confirmation=CONFIGURE-${firstChannel.id}`
       }
     });
   }
@@ -317,7 +407,7 @@ export function buildFounderAgenda(input) {
         founderActionRequired: true,
         action: mode === 'approve' ? {
           label: 'Open exact-link approval',
-          url: 'https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/affiliate-link-approval.yml',
+          url: candidate.approvalIssueUrl ?? 'https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/affiliate-link-approval.yml',
           command: `gh workflow run affiliate-link-approval.yml -f candidate_id=${candidate.candidateId} -f expected_candidate_sha256=${candidate.candidateSha256} -f expected_review_sha256=${candidate.reviewSha256} -f confirmation=APPROVE-${candidate.candidateId}`
         } : mode === 'review' ? {
           label: 'Open independent review',

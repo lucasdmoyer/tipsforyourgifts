@@ -1,0 +1,77 @@
+{
+  "schemaVersion": "1.0.0",
+  "approvalId": "release-approval-pr-104-7b2cdda",
+  "repository": "lucasdmoyer/tipsforyourgifts",
+  "pullRequest": {
+    "number": 104,
+    "url": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/104",
+    "headSha": "7b2cddada414eea957add384c4a04fe3301093ee",
+    "baseSha": "8fd7a7abbb0e9381786ff6994883c56874287281"
+  },
+  "candidate": {
+    "publicationManifestId": "publication-set-8f82fd7548201471",
+    "contentSetSha256": "8f82fd75482014719e5c59602ae819d06eb326b339d7e4cc10f8ab32d0cfc90f",
+    "articles": 11,
+    "affiliateLinks": 1
+  },
+  "approval": {
+    "status": "approved_for_exact_head_merge_only",
+    "approvedBy": "lucasdmoyer",
+    "authorAssociation": "OWNER",
+    "approvedAt": "2026-11-23T21:43:27.000Z",
+    "source": {
+      "kind": "github_owner_comment",
+      "url": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/104#issuecomment-7114834768",
+      "commentId": "7114834768",
+      "bodySha256": "01935e2fcc5677930f5f74edf39ec2c1f6948b91c050fb2bcb325244c103a088",
+      "observedAt": "2026-11-23T23:08:02.000Z"
+    }
+  },
+  "previewReview": {
+    "status": "exact_preview_verified",
+    "url": "https://tipsforyourgifts--pr-104-7b2cdda-47bzlrvs.web.app/",
+    "artifactId": "14862047409",
+    "artifactSha256": "43628c5b79ca8f2e48b63db34852a7426e09fdf8611574db625289dfa1eec35a",
+    "hostedSmoke": {
+      "routes": 20,
+      "articles": 11
+    },
+    "lighthouse": {
+      "homepage": {
+        "performance": 100,
+        "accessibility": 100,
+        "bestPractices": 100
+      },
+      "studio": {
+        "performance": 100,
+        "accessibility": 100,
+        "bestPractices": 100
+      },
+      "lcpSeconds": 1,
+      "cls": 0
+    },
+    "affiliateDisclosureVerified": true,
+    "securityHeadersVerified": true
+  },
+  "authority": {
+    "allowed": [
+      "merge_exact_pull_request_head"
+    ],
+    "excluded": [
+      "changed_head",
+      "merge_commit",
+      "replay",
+      "later_artifact",
+      "firebase_production_deployment",
+      "iam_changes",
+      "credentials",
+      "affiliate_expansion",
+      "social_publishing",
+      "email",
+      "spend"
+    ]
+  },
+  "nextGate": "Obtain fresh action-time approval for PR-104-only keyless preview identity, rerun the required preview check, and merge only if the pull request head remains exactly 7b2cddada414eea957add384c4a04fe3301093ee.",
+  "recordedAt": "2026-11-23T23:08:02.000Z",
+  "status": "active_exact_head_approval"
+}

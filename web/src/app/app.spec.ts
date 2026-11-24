@@ -1,13 +1,36 @@
 import { TestBed } from '@angular/core/testing';
-import { provideRouter, Router } from '@angular/router';
+import { provideRouter, Router, type ActivatedRouteSnapshot } from '@angular/router';
 import { App } from './app';
-import { ARTICLES, GROWTH, OPERATIONS, STRATEGY } from './generated/content.generated';
-import { ArticlePage, FounderBriefPage, GiftFinderPage, PairCardComponent, ProductCardComponent, StudioPage } from './pages';
+import { PairCardComponent, ProductCardComponent } from './article-components';
+import { ArticlePage } from './article-page';
+import { DecisionInboxPage } from './decision-inbox-page';
+import { loadArticle } from './generated/article-loaders.generated';
+import { ARTICLES } from './generated/content.generated';
+import { GROWTH, OPERATIONS, STRATEGY } from './generated/studio.generated';
+import { GiftFinderPage } from './gift-finder-page';
+import { FounderBriefPage, STUDIO_DATA, StudioPage } from './studio-pages';
 import { readerBodyComesFirst, readerBodyHtml, readerEvidenceHtml, readerLanguage, readerLead } from './reader-copy';
+import { SeoService } from './seo.service';
 
 describe('App', () => {
+  function anchorWithExactHref(element: HTMLElement, href: string) {
+    return Array.from(element.querySelectorAll<HTMLAnchorElement>('a'))
+      .find((anchor) => anchor.getAttribute('href') === href) ?? null;
+  }
+
   beforeEach(async () => {
-    await TestBed.configureTestingModule({ imports: [App, ArticlePage, StudioPage, FounderBriefPage, GiftFinderPage, ProductCardComponent, PairCardComponent], providers: [provideRouter([{ path: 'blog/:slug', component: ArticlePage }])] }).compileComponents();
+    TestBed.overrideComponent(StudioPage, {
+      set: { providers: [{ provide: STUDIO_DATA, useValue: { operations: OPERATIONS, strategy: STRATEGY, growth: GROWTH } }] }
+    });
+    TestBed.overrideComponent(DecisionInboxPage, {
+      set: { providers: [{ provide: STUDIO_DATA, useValue: { operations: OPERATIONS, strategy: STRATEGY, growth: GROWTH } }] }
+    });
+    await TestBed.configureTestingModule({
+      imports: [App, ArticlePage, StudioPage, DecisionInboxPage, FounderBriefPage, GiftFinderPage, ProductCardComponent, PairCardComponent],
+      providers: [
+        provideRouter([{ path: 'blog/:slug', component: ArticlePage, resolve: { article: (route: ActivatedRouteSnapshot) => loadArticle(route.paramMap.get('slug')) } }])
+      ]
+    }).compileComponents();
   });
 
   it('renders the editorial brand and primary navigation', () => {
@@ -15,9 +38,36 @@ describe('App', () => {
     fixture.detectChanges();
     const element = fixture.nativeElement as HTMLElement;
     expect(element.querySelector('.brand')?.textContent).toContain('Tips for Your Gifts');
+    expect(element.querySelector('.brand')?.getAttribute('aria-label')).toBe('Tips for Your Gifts home');
     expect(element.querySelectorAll('.nav-links a')).toHaveLength(4);
     expect(element.querySelector('a[href="/gift-finder"]')?.textContent).toContain('Gift finder');
     expect(element.querySelector('a[href="/studio"]')).toBeNull();
+  });
+
+  it('emits platform-safe social image metadata with useful alternative text', () => {
+    const seo = TestBed.inject(SeoService);
+    seo.set({ title: 'Tips for Your Gifts', description: 'A thoughtful gift starts with a person.', path: '/' });
+    const meta = (property: string) => document.head.querySelector<HTMLMetaElement>(`meta[property="${property}"]`)?.content;
+    const namedMeta = (name: string) => document.head.querySelector<HTMLMetaElement>(`meta[name="${name}"]`)?.content;
+    expect(meta('og:image')).toBe('https://tipsforyourgifts.web.app/social-card.jpg');
+    expect(meta('og:image:secure_url')).toBe(meta('og:image'));
+    expect(meta('og:image:type')).toBe('image/jpeg');
+    expect(meta('og:image:width')).toBe('1200');
+    expect(meta('og:image:height')).toBe('630');
+    expect(meta('og:image:alt')).toContain('Good gifts, minus the guesswork.');
+    expect(namedMeta('twitter:image')).toBe(meta('og:image'));
+    expect(namedMeta('twitter:image:alt')).toBe(meta('og:image:alt'));
+  });
+
+  it('allows large search image previews on public pages while preserving private noindex rules', () => {
+    const seo = TestBed.inject(SeoService);
+    seo.set({ title: 'Public guide', description: 'A public gift guide.', path: '/blog/public-guide' });
+    expect(document.head.querySelector<HTMLMetaElement>('meta[name="robots"]')?.content)
+      .toBe('index,follow,max-image-preview:large');
+
+    seo.set({ title: 'Executive studio', description: 'A private operating surface.', path: '/studio', noindex: true });
+    expect(document.head.querySelector<HTMLMetaElement>('meta[name="robots"]')?.content)
+      .toBe('noindex,nofollow');
   });
 
   it('ships a founder-approved visual for every public article, product, and pair', () => {
@@ -65,6 +115,12 @@ describe('App', () => {
     const image = fixture.nativeElement.querySelector('.product-context-visual img') as HTMLImageElement;
     const link = fixture.nativeElement.querySelector('[data-event-name="merchant_outbound_click"]') as HTMLAnchorElement;
     expect(image.src).toContain('/blog-images/');
+    expect(image.getAttribute('src')).toMatch(/-1200\.webp$/);
+    expect(image.getAttribute('srcset')).toContain('-480.webp 480w');
+    expect(image.getAttribute('srcset')).toContain('-768.webp 768w');
+    expect(image.getAttribute('srcset')).toContain('-1200.webp 1200w');
+    expect(image.getAttribute('srcset')).toContain('.webp 1536w');
+    expect(image.getAttribute('sizes')).toContain('100vw');
     expect(image.alt.length).toBeGreaterThan(40);
     expect(image.getAttribute('aria-hidden')).toBeNull();
     expect(fixture.nativeElement.textContent).toContain('not a product photo');
@@ -102,6 +158,12 @@ describe('App', () => {
         expect(element.textContent).toContain('Before you buy');
         expect(pairImages).toHaveLength(1);
         expect(pairImages[0].src).toContain('/blog-images/');
+        expect(pairImages[0].getAttribute('src')).toMatch(/-1200\.webp$/);
+        expect(pairImages[0].getAttribute('srcset')).toContain('-480.webp 480w');
+        expect(pairImages[0].getAttribute('srcset')).toContain('-768.webp 768w');
+        expect(pairImages[0].getAttribute('srcset')).toContain('-1200.webp 1200w');
+        expect(pairImages[0].getAttribute('srcset')).toContain('.webp 1536w');
+        expect(pairImages[0].getAttribute('sizes')).toContain('100vw');
         expect((pairImages[0].getAttribute('alt') ?? '').length).toBeGreaterThan(40);
         expect(element.querySelector('.pairing-context-visual figcaption')?.textContent).toContain('not product photography');
         expect(Array.from(productLinks).map((link) => link.href)).toEqual([anchor.url, companion.url]);
@@ -152,7 +214,8 @@ describe('App', () => {
   });
 
   it('places a plain disclosure before a paid recommendation', async () => {
-    const article = ARTICLES.find((candidate) => candidate.pairs.length > 0)!;
+    const sourceArticle = ARTICLES.find((candidate) => candidate.pairs.length > 0)!;
+    const article = (await loadArticle(sourceArticle.slug))!;
     const product = article.products.find((candidate) => candidate.id === article.pairs[0].anchorProductId)!;
     const originalDisclosure = article.affiliateDisclosure;
     const originalAffiliate = product.affiliate;
@@ -242,10 +305,24 @@ describe('App', () => {
     const element = fixture.nativeElement as HTMLElement;
     expect(element.textContent).toContain('Measure first. Scale what earns attention.');
     expect(element.textContent).toContain('Personal data stored');
+    const scorecard = element.querySelector('#commercial-scorecard') as HTMLElement;
+    expect(scorecard).toBeTruthy();
+    expect(scorecard.textContent).toContain('Every commercial value below remains unknown—not zero.');
+    expect(scorecard.textContent).toContain('Revenue is not profit.');
+    expect(scorecard.textContent).toContain('0/9');
     const connectorLists = element.querySelectorAll('.connector-list');
     expect(connectorLists[connectorLists.length - 1].querySelectorAll('.connector-row')).toHaveLength(OPERATIONS.growth.connectorsTotal);
     const experimentGrids = element.querySelectorAll('.experiment-grid');
     expect(experimentGrids[experimentGrids.length - 1].querySelectorAll('.experiment-card')).toHaveLength(GROWTH.experiments.length);
+  });
+
+  it('renders AI operating counts from the validated policy instead of stale prose', () => {
+    const fixture = TestBed.createComponent(StudioPage);
+    fixture.detectChanges();
+    const element = fixture.nativeElement as HTMLElement;
+    const policy = OPERATIONS.aiAutomationPolicy;
+    expect(element.textContent).toContain(`${policy.protectedWorkflows} protected workflows. ${policy.protectedModelCalls} bounded model steps. Zero production authority.`);
+    expect(element.textContent).not.toContain('Six workflows. Eight model calls.');
   });
 
   it('renders the founder strategy intake and approval controls', () => {
@@ -253,10 +330,14 @@ describe('App', () => {
     fixture.detectChanges();
     const element = fixture.nativeElement as HTMLElement;
     expect(element.textContent).toContain('Ideas flow in. Authority stays separated.');
+    expect(element.textContent).toContain('A merged visual request wakes the protected art desk automatically');
+    expect(element.textContent).toContain("GitHub's check-gated auto-merge queue");
     expect(element.textContent).toContain('Strategy proposals');
     expect(element.querySelector('a[href*="strategy-approval.yml"]')).not.toBeNull();
     expect(element.querySelector('a[href*="strategy-idea.yml"]')).not.toBeNull();
-    expect(element.querySelector('a[href="/studio/brief"]')?.textContent).toContain('Compose a thoughtful brief');
+    const briefLinks = Array.from(element.querySelectorAll<HTMLAnchorElement>('a[href="/studio/brief"]'));
+    expect(briefLinks.some((link) => link.textContent?.includes('Give the team a direction'))).toBe(true);
+    expect(briefLinks.some((link) => link.textContent?.includes('Compose a thoughtful brief'))).toBe(true);
     const proposedIdeas = STRATEGY.ideas.filter((idea) => idea.founderDisposition === 'proposed').sort((left, right) => ({ high: 0, medium: 1, low: 2 }[left.priority] ?? 3) - ({ high: 0, medium: 1, low: 2 }[right.priority] ?? 3) || (right.pairing?.coherenceScore ?? 0) - (left.pairing?.coherenceScore ?? 0) || left.id.localeCompare(right.id));
     if (proposedIdeas[0]) {
       expect(element.textContent).toContain(`${proposedIdeas.length} thoughtful ${proposedIdeas.length === 1 ? 'thesis awaits' : 'theses await'} your decision`);
@@ -264,15 +345,17 @@ describe('App', () => {
       expect(element.textContent).toContain(proposedIdeas[0].title);
     }
     expect(element.textContent).toContain(`Publication mode: ${OPERATIONS.publication.mode.replaceAll('_', ' ')}`);
-    expect(element.textContent).toContain(`policy snapshot ${OPERATIONS.publication.verifiedSuccessfulReleaseCount}/${OPERATIONS.publication.minimumSuccessfulFounderReviewedReleases}`);
+    expect(element.textContent).toContain(`Durable verified founder-reviewed receipts: ${OPERATIONS.publication.durableVerifiedFounderReviewedReleaseCount}/${OPERATIONS.publication.minimumSuccessfulFounderReviewedReleases}`);
+    expect(element.textContent).toContain(`Activation audit snapshot: ${OPERATIONS.publication.verifiedSuccessfulReleaseCount}`);
     expect(element.textContent).toContain('recounts unique successful GitHub production deployments');
+    expect(element.textContent).toContain('neither this repository count nor the frozen snapshot grants publication authority');
     expect(element.querySelector('a[href*="publication-policy-enable.yml"]')).not.toBeNull();
     expect(element.querySelector('a[href*="firebase-production.yml"]')).not.toBeNull();
     expect(element.textContent).toContain('pauses with its preview URL for production approval');
     expect(element.textContent).toContain('promotes the same static artifact');
     expect(element.textContent).toContain('Current release candidate: publication-set-');
     const candidate = OPERATIONS.publication.currentCandidate;
-    expect(element.textContent).toContain(`${candidate.articles} articles · ${candidate.independentReviews} independent receipts · ${candidate.socialLaunchPacks} launch packs · ${candidate.socialDrafts} social drafts · ${candidate.affiliateLinks} affiliate links`);
+    expect(element.textContent).toContain(`${candidate.articles} articles · ${candidate.independentReviews} independent receipts · ${candidate.founderSafetyApprovals} founder safety receipts · ${candidate.socialLaunchPacks} launch packs · ${candidate.socialDrafts} social drafts · ${candidate.affiliateLinks} affiliate links`);
     expect(element.textContent).toContain('prepared bytes; it is not proof of a live deployment');
     expect(element.textContent).toContain('Exact candidate content digest');
     if (OPERATIONS.publication.currentLive.status === 'verified_managed_content_release') {
@@ -291,7 +374,10 @@ describe('App', () => {
     fixture.detectChanges();
     const element = fixture.nativeElement as HTMLElement;
     expect(element.textContent).toContain('Notice the gift before naming the product.');
+    expect(element.textContent).toContain('Give the team three things. Let research do the rest.');
+    expect(element.textContent).toContain('1/6 complete');
     expect(element.textContent).toContain('1/12 complete');
+    expect(element.textContent).toContain('Add the three founder signals');
     expect(element.textContent).toContain('Complete the missing decisions');
     expect(element.querySelector('a[href*="github.com/lucasdmoyer/tipsforyourgifts/issues/new"]')).toBeNull();
     expect(element.textContent).toContain('proposal workflow');
@@ -320,6 +406,11 @@ describe('App', () => {
         expect(element.textContent).toContain(claim.id);
         expect(element.textContent).toContain(claim.text);
       }
+      if (review.founderDecisionPacket) {
+        expect(element.textContent).toContain(review.founderDecisionPacket.approveCommand);
+        expect(element.textContent).toContain(review.founderDecisionPacket.rejectCommand);
+        expect(element.textContent).toContain(review.founderDecisionPacket.authorityBoundary);
+      }
     }
   });
 
@@ -328,6 +419,11 @@ describe('App', () => {
     fixture.detectChanges();
     const element = fixture.nativeElement as HTMLElement;
     const agenda = OPERATIONS.founderAgenda;
+    expect(element.querySelector('#founder-agenda')).not.toBeNull();
+    expect(element.querySelector('.studio-command-brief')?.textContent).toContain(agenda.decisions[0].title);
+    expect(element.querySelector('.studio-command-brief')?.textContent).toContain(agenda.decisions[0].recommendation);
+    expect(element.querySelector('a[href="/studio/decisions"]')?.textContent).toContain('Open decision inbox');
+    expect(element.querySelector('.studio-command-brief a[href="/studio/brief"]')?.textContent).toContain('Give the team a direction');
     expect(element.textContent).toContain(`${agenda.decisions.length} ${agenda.decisions.length === 1 ? 'decision' : 'decisions'}. One clear order.`);
     expect(element.textContent).toContain('Profitability remains unknown until aggregate measurement.');
     for (const decision of agenda.decisions) {
@@ -335,9 +431,152 @@ describe('App', () => {
       expect(element.textContent).toContain(decision.title);
       expect(element.textContent).toContain(decision.recommendation);
       if (decision.action.command) expect(element.textContent).toContain(decision.action.command);
-      expect(element.querySelector(`a[href="${decision.action.url}"]`)).not.toBeNull();
+      expect(anchorWithExactHref(element, decision.action.url)).not.toBeNull();
+    }
+    const releaseApproval = OPERATIONS.publication.exactReleaseApprovals.currentContentSetApprovedRelease;
+    if (releaseApproval) {
+      expect(element.textContent).toContain(`PR ${releaseApproval.pullRequestNumber} head ${releaseApproval.headSha.slice(0, 7)} is approved for exact-head merge only.`);
+      expect(element.textContent).toContain(releaseApproval.nextGate);
+      expect(element.querySelector(`a[href="${releaseApproval.evidenceUrl}"]`)).not.toBeNull();
+      expect(element.querySelector(`a[href="${releaseApproval.previewUrl}"]`)).not.toBeNull();
     }
     expect(element.querySelectorAll('.agenda-card')).toHaveLength(Math.max(0, agenda.decisions.length - 1));
+  });
+
+  it('renders one compact founder decision inbox without leaking authority', () => {
+    const fixture = TestBed.createComponent(DecisionInboxPage);
+    fixture.detectChanges();
+    const element = fixture.nativeElement as HTMLElement;
+    const agenda = OPERATIONS.founderAgenda;
+    const editorial = OPERATIONS.editorialReview;
+
+    expect(element.textContent).toContain(`${agenda.decisions.length} calls. One order.`);
+    expect(element.textContent).toContain('Nothing on this page merges, spends, publishes, enrolls, or deploys by itself.');
+    expect(element.querySelectorAll('.decision-card')).toHaveLength(agenda.decisions.length + editorial.queue.length);
+    expect(element.textContent).toContain(String(agenda.decisions.length) + 'ranked calls');
+    expect(element.textContent).toContain(String(editorial.counts.pendingBundles) + 'sensitive drafts');
+    expect(element.textContent).toContain('Missing traffic, conversion, and revenue remain unknown—not zero.');
+    for (const decision of agenda.decisions) {
+      expect(element.textContent).toContain(decision.title);
+      expect(element.textContent).toContain(decision.recommendation);
+      expect(anchorWithExactHref(element, decision.action.url)).not.toBeNull();
+      if (decision.action.command) expect(element.textContent).toContain(decision.action.command);
+    }
+    for (const review of editorial.queue) {
+      expect(element.textContent).toContain(review.articleSlug);
+      for (const claim of review.highRiskClaims) expect(element.textContent).toContain(claim.text);
+      if (review.founderDecisionPacket) {
+        expect(element.textContent).toContain(review.founderDecisionPacket.approveCommand);
+        expect(element.textContent).toContain(review.founderDecisionPacket.rejectCommand);
+      }
+    }
+    expect(element.textContent).toContain(OPERATIONS.aiAutomationPolicy.activationBlockers[0]);
+    expect(element.querySelector('a[href="https://github.com/lucasdmoyer/tipsforyourgifts/issues/59"]')).not.toBeNull();
+    expect(element.querySelector('a[href="/studio"]')).not.toBeNull();
+    expect(element.querySelector('a[href="/studio/brief"]')).not.toBeNull();
+  });
+
+  it('renders a timestamped fail-closed AI team readiness board', () => {
+    const fixture = TestBed.createComponent(StudioPage);
+    fixture.detectChanges();
+    const element = fixture.nativeElement as HTMLElement;
+    const readiness = OPERATIONS.automationReadiness;
+    expect(element.textContent).toContain('What can run. What needs Lucas.');
+    expect(element.textContent).toContain('This is versioned operating evidence, not a live account poll.');
+    expect(element.querySelectorAll('.readiness-card')).toHaveLength(readiness.teams.length);
+    expect(element.textContent).toContain(`${readiness.counts.ready}fully ready`);
+    expect(element.textContent).toContain(`${readiness.counts.limited}limited or fallback`);
+    expect(element.textContent).toContain(`${readiness.counts.blocked}blocked`);
+    expect(element.textContent).toContain(`${readiness.counts.founderActions}need founder action`);
+    for (const team of readiness.teams) {
+      expect(element.textContent).toContain(team.label);
+      expect(element.textContent).toContain(team.evidence);
+      expect(element.textContent).toContain(team.nextAction);
+      if (team.actionUrl) expect(element.querySelector(`a[href="${team.actionUrl}"]`)).not.toBeNull();
+    }
+    for (const gate of readiness.externalGates) {
+      expect(element.textContent).toContain(gate.label);
+      expect(element.querySelector(`a[href="${gate.evidenceUrl}"]`)).not.toBeNull();
+      expect(element.querySelector(`a[href="${gate.diagnosticUrl}"]`)).not.toBeNull();
+    }
+    expect(element.textContent).toContain('Latest verified preview');
+    expect(element.textContent).toContain('It does not approve this build or any later commit.');
+    expect(element.textContent).toContain(readiness.latestVerifiedPreview.sha.slice(0, 7));
+    expect(element.querySelector(`a[href="${readiness.latestVerifiedPreview.previewUrl}"]`)).not.toBeNull();
+    expect(element.textContent).not.toContain('gho_');
+    expect(element.textContent).not.toMatch(/\bsk-[A-Za-z0-9_-]{20,}\b/);
+  });
+
+  it('renders an exact-hash founder budget handoff without granting runtime authority', () => {
+    const policy = OPERATIONS.aiAutomationPolicy;
+    const original = structuredClone(policy);
+    try {
+      policy.status = 'awaiting_founder_platform_budget';
+      policy.budgetConfiguration.available = true;
+      policy.credentialVerification.available = false;
+      policy.policyActivation.available = false;
+      policy.activationReady = false;
+      const fixture = TestBed.createComponent(StudioPage);
+      fixture.detectChanges();
+      const element = fixture.nativeElement as HTMLElement;
+      expect(policy.policySha256).toMatch(/^[a-f0-9]{64}$/);
+      expect(element.textContent).toContain(policy.policySha256);
+      expect(element.textContent).toContain('Lucas must first set a real monthly project spend limit');
+      expect(element.textContent).toContain('First create the external limit and alert.');
+      expect(element.textContent).toContain('does not add a credential, call a model, activate the policy, merge, or deploy');
+      expect(element.textContent).toContain(`$${policy.spendControl.recommendation.monthlyHardLimitUsd} hard limit`);
+      expect(element.textContent).toContain(`$${policy.spendControl.recommendation.alertThresholdUsd} alert`);
+      expect(element.textContent).toContain('hard-limit enforcement is not instantaneous');
+      expect(policy.budgetConfiguration.command).toContain(`expected_policy_sha256=${policy.policySha256}`);
+      expect(policy.budgetConfiguration.command).toContain("monthly_budget_usd='<APPROVED_HARD_LIMIT_USD>'");
+      expect(policy.budgetConfiguration.command).toContain('hard_limit_enabled=true');
+      expect(policy.budgetConfiguration.command).toContain("alert_threshold_usd='<APPROVED_ALERT_USD>'");
+      expect(element.textContent).toContain(policy.budgetConfiguration.command);
+      expect(anchorWithExactHref(element, policy.budgetConfiguration.approvalIssueUrl)?.textContent).toContain('Review the exact budget packet');
+      expect(anchorWithExactHref(element, policy.budgetConfiguration.workflowUrl)).not.toBeNull();
+      expect(policy.credential.valueStoredInGit).toBe(false);
+    } finally {
+      Object.assign(policy, original);
+    }
+  });
+
+  it('keeps credential verification and policy activation as separate founder actions', () => {
+    const policy = OPERATIONS.aiAutomationPolicy;
+    const original = structuredClone(policy);
+    try {
+      policy.status = 'budget_approved_awaiting_credential';
+      policy.budgetConfiguration.available = false;
+      policy.credentialVerification.available = true;
+      policy.policyActivation.available = false;
+      let fixture = TestBed.createComponent(StudioPage);
+      fixture.detectChanges();
+      let element = fixture.nativeElement as HTMLElement;
+      expect(element.textContent).toContain('Review the exact credential check');
+      expect(element.textContent).toContain('Never paste it into Studio, an issue, a prompt, or a repository file.');
+      expect(element.textContent).toContain('checks out and runs no repository code');
+      expect(element.textContent).toContain(policy.credentialVerification.command);
+      expect(anchorWithExactHref(element, policy.credentialVerification.approvalIssueUrl)).not.toBeNull();
+      expect(anchorWithExactHref(element, policy.credentialVerification.environmentSettingsUrl)).not.toBeNull();
+      expect(anchorWithExactHref(element, policy.credentialVerification.workflowUrl)).not.toBeNull();
+      expect(element.textContent).not.toContain('Review the exact activation packet');
+
+      policy.status = 'credential_verified_awaiting_activation';
+      policy.credentialVerification.available = false;
+      policy.policyActivation.available = true;
+      fixture = TestBed.createComponent(StudioPage);
+      fixture.detectChanges();
+      element = fixture.nativeElement as HTMLElement;
+      expect(element.textContent).toContain('Review the exact activation packet');
+      expect(element.textContent).toContain('opens a credential-free review pull request only');
+      expect(element.textContent).toContain('starts no research mission and makes no model call');
+      expect(element.textContent).toContain('Only reviewing and merging that exact proposal activates');
+      expect(element.textContent).toContain(policy.policyActivation.command);
+      expect(anchorWithExactHref(element, policy.policyActivation.approvalIssueUrl)).not.toBeNull();
+      expect(anchorWithExactHref(element, policy.policyActivation.workflowUrl)).not.toBeNull();
+      expect(element.textContent).not.toContain('Verify dedicated AI credential');
+    } finally {
+      Object.assign(policy, original);
+    }
   });
 
   it('renders the fail-closed autonomous opportunity desk', () => {
@@ -373,9 +612,21 @@ describe('App', () => {
     expect(element.textContent).toContain(OPERATIONS.affiliate.siteApplicationDescription);
     expect(element.textContent).toContain(OPERATIONS.affiliate.sensitiveDataPolicy);
     expect(element.textContent).toContain(`${OPERATIONS.affiliate.linkCandidates} exact candidates · ${OPERATIONS.affiliate.linkReviewsPassed} clean independent reviews · ${OPERATIONS.affiliate.linkApprovals} founder approvals.`);
+    expect(element.textContent).toContain('New exact affiliate candidates now wake the independent evidence desk automatically after they merge.');
+    expect(element.textContent).toContain('Lucas still approves each reviewed paid link separately.');
+    for (const request of OPERATIONS.affiliate.expansionRequests) {
+      expect(element.textContent).toContain('Bookshop expansion handoff');
+      expect(element.textContent).toContain(`${request.requestedProducts} editions identified. ${request.catalogProductsVerified} clean catalog pages independently verified. ${request.paidUrlsCollected} partner-issued paid URLs collected.`);
+    }
     for (const proposal of OPERATIONS.affiliate.activationProposals) {
       expect(element.textContent).toContain('Bookshop decision packet');
-      expect(element.textContent).toContain(proposal.activationState === 'activation_recorded' ? 'Narrow program activation recorded. No paid links yet.' : 'Verified account. One observed book link. Still disabled.');
+      expect(element.textContent).toContain(
+        proposal.activationState === 'activation_recorded' && OPERATIONS.affiliate.activeOverlays > 0
+          ? `Narrow program active. ${OPERATIONS.affiliate.activeOverlays} independently reviewed paid ${OPERATIONS.affiliate.activeOverlays === 1 ? 'link is' : 'links are'} live.`
+          : proposal.activationState === 'activation_recorded'
+            ? 'Narrow program activation recorded. No paid links yet.'
+            : 'Verified account. One observed book link. Still disabled.'
+      );
       expect(element.textContent).toContain(proposal.evidence.publicTrackingIdentity);
       expect(element.textContent).toContain(`ISBN ${proposal.evidence.productIsbn}`);
       expect(element.textContent).toContain(`HTTP ${proposal.evidence.automatedFetchStatus}`);
@@ -407,7 +658,7 @@ describe('App', () => {
     }
   });
 
-  it('renders the post-activation Bookshop state without implying a paid link or deployment', () => {
+  it('renders the post-activation Bookshop state with the exact active paid-link boundary', () => {
     const proposal = OPERATIONS.affiliate.activationProposals[0];
     const originalState = proposal.activationState;
     proposal.activationState = 'activation_recorded';
@@ -415,11 +666,28 @@ describe('App', () => {
       const fixture = TestBed.createComponent(StudioPage);
       fixture.detectChanges();
       const element = fixture.nativeElement as HTMLElement;
-      expect(element.textContent).toContain('Narrow program activation recorded. No paid links yet.');
-      expect(element.textContent).toContain('Create one exact product-level candidate, complete an independent destination review, and obtain a separate founder approval before any paid link can enter a Firebase preview.');
+      expect(element.textContent).toContain(`Narrow program active. ${OPERATIONS.affiliate.activeOverlays} independently reviewed paid link is live.`);
+      expect(element.textContent).toContain('Independent product-level review and founder approval are recorded for the exact active overlay.');
+      expect(element.textContent).toContain('Keep the narrow Sapiens link verified. Add another paid link only after a fresh exact-destination review and separate founder approval.');
       expect(element.textContent).not.toContain('Verified account. One observed book link. Still disabled.');
+      expect(element.textContent).not.toContain('No paid links yet.');
     } finally {
       proposal.activationState = originalState;
+    }
+  });
+
+  it('renders a phone-friendly exact-link approval packet only when one is prepared', () => {
+    const candidate = OPERATIONS.affiliate.linkQueue[0];
+    const originalIssueUrl = candidate.approvalIssueUrl;
+    candidate.approvalIssueUrl = 'https://github.com/lucasdmoyer/tipsforyourgifts/issues/new?title=approve-exact-link';
+    try {
+      const fixture = TestBed.createComponent(StudioPage);
+      fixture.detectChanges();
+      const element = fixture.nativeElement as HTMLElement;
+      const approvalLink = element.querySelector(`a[href="${candidate.approvalIssueUrl}"]`);
+      expect(approvalLink?.textContent).toContain('Review and approve this exact paid link');
+    } finally {
+      candidate.approvalIssueUrl = originalIssueUrl;
     }
   });
 
@@ -428,8 +696,9 @@ describe('App', () => {
     fixture.detectChanges();
     const element = fixture.nativeElement as HTMLElement;
     expect(element.textContent).toContain('Research mission control');
-    expect(element.textContent).toContain('One founder decision. Four accountable roles.');
+    expect(element.textContent).toContain('One founder decision. Five accountable roles.');
     expect(element.textContent).toContain('Research editorial team');
+    expect(element.textContent).toContain('Visual production team');
     expect(element.textContent).toContain('Independent evidence editor');
     expect(element.textContent).toContain('Release operator');
     expect(element.textContent).toContain('Growth analyst');

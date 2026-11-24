@@ -10,6 +10,7 @@ const thoughtfulRunId = '20260803-gifts-for-golf-friend-53cb00a5';
 const thoughtfulSlug = 'gifts-for-a-golf-friend';
 const conflictLedgerRunId = '20260816-neighborhood-tree-walk-b8a44f32';
 const refreshedRunId = '20261018-read-it-then-play-it-c437f208';
+const provenanceRunId = '20260823-used-record-reset-53a6b604';
 
 async function makeFixture() {
   const fixture = await fs.mkdtemp(path.join(root, '.gate-fixture-'));
@@ -19,6 +20,7 @@ async function makeFixture() {
   await fs.mkdir(path.join(fixture, 'scripts', 'lib'), { recursive: true });
   await fs.copyFile(path.join(root, 'scripts', 'validate-research.mjs'), path.join(fixture, 'scripts', 'validate-research.mjs'));
   await fs.copyFile(path.join(root, 'scripts', 'lib', 'front-matter.mjs'), path.join(fixture, 'scripts', 'lib', 'front-matter.mjs'));
+  await fs.copyFile(path.join(root, 'scripts', 'lib', 'editorial-review-receipt-contract.mjs'), path.join(fixture, 'scripts', 'lib', 'editorial-review-receipt-contract.mjs'));
   return fixture;
 }
 
@@ -44,6 +46,56 @@ async function expectFailure(label, mutate) {
   } finally {
     await fs.rm(fixture, { recursive: true, force: true });
   }
+}
+
+async function expectSuccess(label, mutate) {
+  const fixture = await makeFixture();
+  try {
+    await mutate(fixture);
+    const result = executeGate(fixture);
+    checks += 1;
+    if (result.status !== 0) failures.push(`${label}: ${result.stderr || result.stdout}`);
+  } finally {
+    await fs.rm(fixture, { recursive: true, force: true });
+  }
+}
+
+function upgradeToProvenanceSchema(run) {
+  run.schemaVersion = '1.2.0';
+  const sourcesById = new Map(run.sources.map((source) => [source.id, source]));
+  for (const candidate of run.candidates) {
+    candidate.sourceQualifications = [
+      ...candidate.primarySourceIds.map((sourceId) => ({
+        sourceId,
+        role: 'primary',
+        productMatch: 'exact_product',
+        contentFormat: 'manufacturer_page',
+        commercialRelationship: 'first_party',
+        qualification: 'qualifies',
+        rationale: 'The cited manufacturer page identifies the exact finalist product and its official specification boundary.',
+        conflictIds: []
+      })),
+      ...candidate.independentSourceIds.map((sourceId) => ({
+        sourceId,
+        role: 'independent',
+        productMatch: 'exact_product',
+        contentFormat: sourcesById.get(sourceId)?.sourceClass === 'independent-review' ? 'first_person_review' : 'other',
+        commercialRelationship: 'none_observed',
+        qualification: 'qualifies',
+        rationale: 'The source addresses the exact finalist product and is treated as independent corroboration for this gate fixture.',
+        conflictIds: []
+      }))
+    ];
+    const finalist = run.finalists.find((entry) => entry.id === candidate.id);
+    if (finalist) finalist.sourceQualifications = structuredClone(candidate.sourceQualifications);
+  }
+}
+
+async function updateProvenanceRun(fixture, mutate) {
+  await updateJson(path.join(fixture, 'research', 'runs', `${provenanceRunId}.json`), (run) => {
+    upgradeToProvenanceSchema(run);
+    mutate(run);
+  });
 }
 
 const baseline = await makeFixture();
@@ -150,6 +202,70 @@ await expectFailure('gift pair below the reviewed coherence threshold', async (f
 await expectFailure('social draft referencing an unreviewed gift pair', async (fixture) => {
   await updateJson(path.join(fixture, 'social', 'drafts', `${thoughtfulSlug}-launch.json`), (pack) => {
     pack.posts[0].pairIds = ['unreviewed-pair'];
+  });
+});
+
+await expectSuccess('schema 1.2 exact-product provenance baseline', async (fixture) => {
+  await updateProvenanceRun(fixture, () => {});
+});
+
+await expectFailure('schema 1.2 finalist missing a source qualification', async (fixture) => {
+  await updateProvenanceRun(fixture, (run) => {
+    const candidate = run.candidates.find((entry) => entry.id === run.finalists[0].id);
+    candidate.sourceQualifications.pop();
+    run.finalists[0].sourceQualifications = structuredClone(candidate.sourceQualifications);
+  });
+});
+
+await expectFailure('schema 1.2 finalist source matches only the product line', async (fixture) => {
+  await updateProvenanceRun(fixture, (run) => {
+    const candidate = run.candidates.find((entry) => entry.id === run.finalists[0].id);
+    candidate.sourceQualifications.at(-1).productMatch = 'same_product_line';
+    run.finalists[0].sourceQualifications = structuredClone(candidate.sourceQualifications);
+  });
+});
+
+await expectFailure('schema 1.2 supplied product used as independent evidence', async (fixture) => {
+  await updateProvenanceRun(fixture, (run) => {
+    const candidate = run.candidates.find((entry) => entry.id === run.finalists[0].id);
+    const qualification = candidate.sourceQualifications.find((entry) => entry.role === 'independent');
+    qualification.commercialRelationship = 'supplied_product';
+    qualification.conflictIds = [run.conflicts[0].id];
+    run.finalists[0].sourceQualifications = structuredClone(candidate.sourceQualifications);
+  });
+});
+
+await expectFailure('schema 1.2 affiliate listicle used as independent evidence', async (fixture) => {
+  await updateProvenanceRun(fixture, (run) => {
+    const candidate = run.candidates.find((entry) => entry.id === run.finalists[0].id);
+    const qualification = candidate.sourceQualifications.find((entry) => entry.role === 'independent');
+    const source = run.sources.find((entry) => entry.id === qualification.sourceId);
+    qualification.contentFormat = 'affiliate_listicle';
+    qualification.commercialRelationship = 'affiliate_links';
+    qualification.conflictIds = [run.conflicts[0].id];
+    source.trustTier = 'C';
+    run.finalists[0].sourceQualifications = structuredClone(candidate.sourceQualifications);
+  });
+});
+
+await expectFailure('schema 1.2 retailer page used as independent evidence', async (fixture) => {
+  await updateProvenanceRun(fixture, (run) => {
+    const candidate = run.candidates.find((entry) => entry.id === run.finalists[0].id);
+    const qualification = candidate.sourceQualifications.find((entry) => entry.role === 'independent');
+    qualification.contentFormat = 'retailer_page';
+    run.finalists[0].sourceQualifications = structuredClone(candidate.sourceQualifications);
+  });
+});
+
+await expectFailure('schema 1.2 affiliate relationship omitted from conflict ledger', async (fixture) => {
+  await updateProvenanceRun(fixture, (run) => {
+    const candidate = run.candidates.find((entry) => entry.id === run.finalists[0].id);
+    const qualification = candidate.sourceQualifications.find((entry) => entry.role === 'independent');
+    const source = run.sources.find((entry) => entry.id === qualification.sourceId);
+    qualification.commercialRelationship = 'affiliate_links';
+    qualification.conflictIds = [];
+    source.trustTier = 'C';
+    run.finalists[0].sourceQualifications = structuredClone(candidate.sourceQualifications);
   });
 });
 

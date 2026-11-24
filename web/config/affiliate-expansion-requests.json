@@ -1,0 +1,137 @@
+{
+  "schemaVersion": "1.0.0",
+  "updatedAt": "2026-11-23T08:22:16.000Z",
+  "requests": [
+    {
+      "id": "bookshop-read-play-expansion-v1",
+      "status": "awaiting_founder_scope_approval_and_partner_export",
+      "programId": "bookshop-org-us-media",
+      "expectedProgramRevision": 5,
+      "proposedProgramRevision": 6,
+      "articleSlug": "read-it-then-play-it-gift-pairs",
+      "articleSha256": "7fb26c710e7cdd48615bcd4acf56a209295ea70d8925dfb7e7998f8c0a0a0f37",
+      "researchRun": {
+        "id": "20261018-read-it-then-play-it-c437f208",
+        "path": "research/runs/20261018-read-it-then-play-it-c437f208.json",
+        "sha256": "2226215c2b737cbe9b0e98703d2f4a4a79c2612ae1678d7254ba9abb407d61a8"
+      },
+      "independentReview": {
+        "path": "research/reviews/20261018-read-it-then-play-it-c437f208.qa.v1.json",
+        "sha256": "50f9adf5cd650ae9d63ca4818d46f813a365bf0ada48edc64391712fa4bda070",
+        "recordedArticleSha256": "92d71732667e82af3f507dbc16ee639c25f3375bf03eddd9980431fb4f76ef12",
+        "currentArticleMatchesReceipt": true,
+        "nextGate": "Run an independent exact-destination and tracking review after partner-issued paid URLs are imported."
+      },
+      "catalogObservation": {
+        "path": "affiliate/evidence/bookshop-read-play-catalog-observation-20261123.json",
+        "sha256": "363f971cf4ba301d2a97a1954d0078c45795f2e95360c87826e81ccb51259bcc",
+        "observedAt": "2026-11-23T08:22:16.000Z",
+        "recordCount": 9
+      },
+      "currentActivationProductIds": [
+        "sapiens-us-paperback"
+      ],
+      "requestedProductIds": [
+        "genius-of-birds-paperback",
+        "a-city-on-mars-paperback",
+        "thinking-in-systems-paperback",
+        "because-internet-paperback",
+        "leave-only-footprints-paperback",
+        "steering-the-craft-2015",
+        "read-this-great-photographs-2023",
+        "entangled-life-paperback",
+        "the-food-lab-hardcover"
+      ],
+      "products": [
+        {
+          "productId": "genius-of-birds-paperback",
+          "productName": "The Genius of Birds — U.S. paperback",
+          "isbn13": "9780399563126",
+          "ordinaryEditorialUrl": "https://www.penguinrandomhouse.com/books/312321/the-genius-of-birds-by-jennifer-ackerman/",
+          "officialEditionEvidenceUrl": "https://www.penguinrandomhouse.com/books/312321/the-genius-of-birds-by-jennifer-ackerman/",
+          "cleanBookshopCatalogUrl": "https://bookshop.org/p/books/the-genius-of-birds-jennifer-ackerman/205afffc34c87bdc"
+        },
+        {
+          "productId": "a-city-on-mars-paperback",
+          "productName": "A City on Mars — U.S. paperback",
+          "isbn13": "9781984881748",
+          "ordinaryEditorialUrl": "https://www.penguinrandomhouse.com/books/639449/a-city-on-mars-by-kelly-and-zach-weinersmith/",
+          "officialEditionEvidenceUrl": "https://www.penguinrandomhouse.com/books/639449/a-city-on-mars-by-kelly-and-zach-weinersmith/",
+          "cleanBookshopCatalogUrl": "https://bookshop.org/p/books/a-city-on-mars-can-we-settle-space-should-we-settle-space-and-have-we-really-thought-this-through-kelly-weinersmith/136b76250d1ebd10"
+        },
+        {
+          "productId": "thinking-in-systems-paperback",
+          "productName": "Thinking in Systems: A Primer — paperback",
+          "isbn13": "9781603580557",
+          "ordinaryEditorialUrl": "https://www.chelseagreen.com/product/thinking-in-systems/",
+          "officialEditionEvidenceUrl": "https://www.chelseagreen.com/product/thinking-in-systems/",
+          "cleanBookshopCatalogUrl": "https://bookshop.org/p/books/thinking-in-systems-international-bestseller-donella-meadows/fea83b2e43c07e9a"
+        },
+        {
+          "productId": "because-internet-paperback",
+          "productName": "Because Internet — U.S. paperback",
+          "isbn13": "9780735210943",
+          "ordinaryEditorialUrl": "https://www.penguinrandomhouse.com/books/540664/because-internet-by-gretchen-mcculloch/9780735210943/",
+          "officialEditionEvidenceUrl": "https://www.penguinrandomhouse.com/books/540664/because-internet-by-gretchen-mcculloch/9780735210943/",
+          "cleanBookshopCatalogUrl": "https://bookshop.org/p/books/because-internet-understanding-the-new-rules-of-language-gretchen-mcculloch/a7f53e82f8d4017d"
+        },
+        {
+          "productId": "leave-only-footprints-paperback",
+          "productName": "Leave Only Footprints — U.S. paperback",
+          "isbn13": "9781984823557",
+          "ordinaryEditorialUrl": "https://www.penguinrandomhouse.com/books/600367/leave-only-footprints-by-conor-knighton/",
+          "officialEditionEvidenceUrl": "https://www.penguinrandomhouse.com/books/600367/leave-only-footprints-by-conor-knighton/",
+          "cleanBookshopCatalogUrl": "https://bookshop.org/p/books/leave-only-footprints-my-acadia-to-zion-journey-through-every-national-park-conor-knighton/a2367d56cda9d65b"
+        },
+        {
+          "productId": "steering-the-craft-2015",
+          "productName": "Steering the Craft — revised 2015 paperback",
+          "isbn13": "9780544611610",
+          "ordinaryEditorialUrl": "https://www.ursulakleguin.com/steering-the-craft",
+          "officialEditionEvidenceUrl": "https://www.ursulakleguin.com/steering-the-craft",
+          "cleanBookshopCatalogUrl": "https://bookshop.org/p/books/steering-the-craft-a-twenty-first-century-guide-to-sailing-the-sea-of-story-ursula-k-le-guin/d17fb47e25f712f5"
+        },
+        {
+          "productId": "read-this-great-photographs-2023",
+          "productName": "Read This If You Want to Take Great Photographs — revised 2023 edition",
+          "isbn13": "9781399606950",
+          "ordinaryEditorialUrl": "https://us.laurenceking.com/products/read-this-if-you-want-to-take-great-photographs",
+          "officialEditionEvidenceUrl": "https://us.laurenceking.com/products/read-this-if-you-want-to-take-great-photographs",
+          "cleanBookshopCatalogUrl": "https://bookshop.org/p/books/read-this-if-you-want-to-take-great-photographs-henry-carroll/e699892efc4e5094"
+        },
+        {
+          "productId": "entangled-life-paperback",
+          "productName": "Entangled Life — U.S. paperback",
+          "isbn13": "9780525510321",
+          "ordinaryEditorialUrl": "https://www.penguinrandomhouse.com/books/566795/entangled-life-by-merlin-sheldrake/",
+          "officialEditionEvidenceUrl": "https://www.penguinrandomhouse.com/books/566795/entangled-life-by-merlin-sheldrake/",
+          "cleanBookshopCatalogUrl": "https://bookshop.org/p/books/entangled-life-how-fungi-make-our-worlds-change-our-minds-shape-our-futures-merlin-sheldrake/cf18757944e3c489"
+        },
+        {
+          "productId": "the-food-lab-hardcover",
+          "productName": "The Food Lab: Better Home Cooking Through Science — U.S. hardcover, ISBN 9780393081084",
+          "isbn13": "9780393081084",
+          "ordinaryEditorialUrl": "https://wwnorton.com/books/9780393081084",
+          "officialEditionEvidenceUrl": "https://wwnorton.com/books/9780393081084",
+          "cleanBookshopCatalogUrl": "https://bookshop.org/p/books/the-food-lab-better-home-cooking-through-science-j-kenji-l-pez-alt/cbadd17c19ff2a52"
+        }
+      ],
+      "requiredGates": [
+        "founder_expansion_scope_approval",
+        "founder_attested_partner_export_with_exact_paid_urls",
+        "exact_candidate_import",
+        "independent_destination_and_tracking_review",
+        "separate_founder_link_approval",
+        "exact_commit_firebase_preview"
+      ],
+      "assertions": {
+        "paidUrlsCollected": false,
+        "trackingParametersInvented": false,
+        "activationScopeChanged": false,
+        "affiliateCandidatesCreated": false,
+        "editorialRankingChanged": false,
+        "productionDeploymentAuthorized": false
+      }
+    }
+  ]
+}

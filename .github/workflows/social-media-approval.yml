@@ -47,7 +47,7 @@ jobs:
         with:
           ref: master
           fetch-depth: 0
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: "24.14.0"
           cache: npm
@@ -77,7 +77,7 @@ jobs:
           git add -N .
           while IFS= read -r changed_path; do
             case "$changed_path" in
-              web/social/assets/"$POST_ID"-image.json|web/src/data/operations.json|web/src/app/generated/content.generated.ts|web/public/sitemap.xml) ;;
+              web/social/assets/"$POST_ID"-image.json|web/src/data/operations.json|web/src/app/generated/content.generated.ts|web/src/app/generated/studio.generated.ts|web/public/sitemap.xml) ;;
               *) echo "Media approval changed forbidden path: $changed_path" >&2; exit 1 ;;
             esac
           done < <(git diff --name-only HEAD)
@@ -93,7 +93,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git switch -c "codex/approve-social-media-$RUN_ID"
-          git add "web/social/assets/$POST_ID-image.json" web/src/data/operations.json web/src/app/generated/content.generated.ts web/public/sitemap.xml
+          git add "web/social/assets/$POST_ID-image.json" web/src/data/operations.json web/src/app/generated/content.generated.ts web/src/app/generated/studio.generated.ts web/public/sitemap.xml
           git commit -m "Approve social media for $POST_ID"
           git push origin "codex/approve-social-media-$RUN_ID"
       - name: Open the media approval pull request

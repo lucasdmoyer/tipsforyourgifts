@@ -55,6 +55,39 @@ export interface ArticleVisual {
   pairSceneIds: Record<string, string>;
 }
 
+export interface ArticleSummary {
+  slug: string;
+  title: string;
+  description: string;
+  publishDate: string;
+  status: 'publication_ready';
+  audience: string;
+  occasion: string;
+  priceBand: string;
+  tags: string[];
+  researchRun: string;
+  evidenceScore: number;
+  featured: boolean;
+  productCount: number;
+  pairCount: number;
+  paidLinkCount: number;
+  visual: Pick<ArticleVisual, 'hero'>;
+}
+
+export interface RelatedGuide {
+  slug: string;
+  title: string;
+  description: string;
+  occasion: string;
+  priceBand: string;
+  visual: Pick<ArticleVisual, 'hero'>;
+}
+
+export interface ArticleJourney {
+  path: { slug: string; title: string; description: string } | null;
+  guides: RelatedGuide[];
+}
+
 export interface Article {
   slug: string;
   title: string;
@@ -78,6 +111,10 @@ export interface Article {
   pairs: ProductPair[];
   visual: ArticleVisual;
   contentHtml: string;
+}
+
+export interface ArticlePageData extends Article {
+  journey: ArticleJourney;
 }
 
 export interface StrategyIdea {
@@ -125,6 +162,199 @@ export interface Strategy {
   ideas: StrategyIdea[];
 }
 
+export type AutomationTeamStatus =
+  | 'ready'
+  | 'limited_live'
+  | 'blocked_external_configuration'
+  | 'blocked_founder_configuration'
+  | 'manual_fallback_verified'
+  | 'founder_approval_required';
+
+export interface AutomationReadiness {
+  schemaVersion: '1.2.0';
+  observedAt: string;
+  sourceMode: 'versioned_snapshot_not_live_poll';
+  posture: 'founder_action_required';
+  summary: string;
+  counts: { teams: number; ready: number; limited: number; blocked: number; founderActions: number };
+  teams: Array<{
+    id: 'research-generation' | 'deterministic-quality' | 'affiliate-monetization' | 'social-distribution' | 'growth-measurement' | 'preview-delivery' | 'production-release' | 'automatic-publication';
+    label: string;
+    status: AutomationTeamStatus;
+    evidence: string;
+    nextAction: string;
+    actionUrl: string | null;
+    founderActionRequired: boolean;
+  }>;
+  externalGates: Array<{
+    id: 'openai-platform-credential' | 'firebase-preview-identity' | 'firebase-auto-production-identity';
+    label: string;
+    status: 'blocked_external_configuration';
+    summary: string;
+    evidenceUrl: string;
+    diagnosticUrl: string;
+    nextAction: string;
+    authorityBoundary: string;
+  }>;
+  latestVerifiedPreview: {
+    status: 'exact_preview_verified';
+    sha: string;
+    pullRequestUrl: string;
+    reviewUrl: string;
+    previewUrl: string;
+    summary: string;
+    nextAction: string;
+  };
+}
+
+export interface AiAutomationPolicy {
+  schemaVersion: '1.2.0';
+  status: 'awaiting_founder_platform_budget' | 'budget_approved_awaiting_credential' | 'credential_verified_awaiting_activation' | 'active';
+  policySha256: string;
+  budgetConfiguration: {
+    available: boolean;
+    workflowUrl: string;
+    approvalIssueUrl: string;
+    confirmation: 'CONFIGURE-ai-automation-budget';
+    evidenceMode: 'founder_attested_external_platform_configuration';
+    command: string;
+  };
+  credentialVerification: {
+    available: boolean;
+    workflowUrl: string;
+    approvalIssueUrl: string;
+    environmentSettingsUrl: string;
+    confirmation: 'VERIFY-ai-automation-credential';
+    method: 'openai_models_endpoint';
+    endpoint: 'https://api.openai.com/v1/models';
+    command: string;
+  };
+  policyActivation: {
+    available: boolean;
+    workflowUrl: string;
+    approvalIssueUrl: string;
+    confirmation: 'ACTIVATE-ai-automation';
+    command: string;
+  };
+  activationReady: boolean;
+  activationBlockers: string[];
+  protectedWorkflows: number;
+  protectedModelCalls: number;
+  credential: {
+    secretName: 'OPENAI_API_KEY';
+    status: 'not_configured' | 'configured_external';
+    scope: 'dedicated_openai_project';
+    valueStoredInGit: false;
+    verification: {
+      status: 'not_verified' | 'verified_external';
+      method: 'openai_models_endpoint' | null;
+      endpoint: 'https://api.openai.com/v1/models' | null;
+      verifiedAt: string | null;
+      evidenceUrl: string | null;
+      receiptPath: 'config/ai-credential-verification.json' | null;
+      receiptSha256: string | null;
+      responseBodyStored: false;
+      modelCalled: false;
+    };
+  };
+  spendControl: {
+    status: 'not_configured' | 'configured_external';
+    enforcement: 'openai_project_hard_spend_limit';
+    monthlyBudgetUsd: number | null;
+    hardLimitEnabled: boolean;
+    alertThresholdUsd: number | null;
+    evidenceUrl: string | null;
+    repositoryHardCap: false;
+    enforcementLagAcknowledged: true;
+    documentationUrl: 'https://developers.openai.com/api/docs/guides/spend-limits';
+    activationRule: string;
+    recommendation: {
+      status: 'planning_only_not_approved';
+      monthlyHardLimitUsd: number;
+      alertThresholdUsd: number;
+      rationale: string;
+      reviewedAt: string;
+    };
+  };
+  runtime: {
+    action: 'openai/codex-action@v1';
+    documentationUrl: 'https://learn.chatgpt.com/docs/github-action';
+    safetyStrategy: 'drop-sudo';
+    sandbox: 'workspace-write';
+    sessionMode: 'ephemeral';
+    modelPolicy: 'gpt-6.2-sol';
+    effortPolicy: 'high';
+    trustedInitiators: 'repository_write_collaborators_and_bounded_github_automation';
+  };
+  authority: {
+    modelJobGithubContents: 'read';
+    modelJobCanWritePullRequests: false;
+    detachedWriterJobsMayOpenProposalPullRequests: true;
+    writerJobsReceiveOpenAiKey: false;
+    canDeployFirebase: false;
+    canActivateAffiliateLinks: false;
+    canPublishSocialPosts: false;
+    canSendEmail: false;
+    canCreateCredentials: false;
+  };
+  workflows: Array<{
+    file: string;
+    codexJobs: string[];
+    codexSteps: number;
+    searchEnabled: boolean;
+    githubActionsBotAllowed: boolean;
+    purpose: string;
+  }>;
+  directApiWorkflows: Array<{
+    file: 'visual-production.yml';
+    modelJobs: ['produce', 'independent_review'];
+    modelSteps: 2;
+    maximumApiCallsPerRun: 13;
+    maximumGeneratedAssetsPerRun: 12;
+    endpoint: 'https://api.openai.com/v1/responses';
+    responseModel: 'gpt-6.2-sol';
+    imageToolModel: 'gpt-image-2.5-sunburst-2026-09-08';
+    commands: { produce: 'visual:produce'; independent_review: 'visual:review' };
+    purpose: string;
+  }>;
+  shutdownConditions: string[];
+}
+
+export interface CommercialScorecard {
+  status: 'awaiting_observed_export' | 'partial_observed_window' | 'complete_observed_window';
+  evidenceStage: 'awaiting_observed_export' | 'reach_observed' | 'qualified_traffic_observed' | 'merchant_intent_observed' | 'affiliate_outcome_observed';
+  periodStart: string | null;
+  periodEnd: string | null;
+  reportingWindowDays: number | null;
+  snapshotIds: string[];
+  sourceConnectorIds: GrowthConnector['id'][];
+  articleCount: number;
+  knownMetrics: string[];
+  missingMetrics: string[];
+  totals: {
+    searchImpressions: number | null;
+    organicClicks: number | null;
+    engagedSessions: number | null;
+    outboundMerchantClicks: number | null;
+    affiliateConversions: number | null;
+    revenueUsd: number | null;
+    socialImpressions: number | null;
+    socialEngagements: number | null;
+    ownedSiteClicks: number | null;
+  };
+  rates: {
+    organicClickThrough: number | null;
+    merchantClickThrough: number | null;
+    affiliateConversion: number | null;
+    earningsPerOutboundClickUsd: number | null;
+    revenuePerConversionUsd: number | null;
+    socialOwnedClickThrough: number | null;
+  };
+  leaders: Record<'organicClicks' | 'outboundMerchantClicks' | 'affiliateConversions' | 'revenueUsd' | 'ownedSiteClicks', { slug: string; value: number } | null>;
+  profitabilityConclusion: 'unknown_until_observed_revenue_and_cost_evidence' | 'unknown_until_operating_cost_evidence';
+  nextGate: string;
+}
+
 export interface Operations {
   generatedAt: string;
   founderAgenda: {
@@ -153,6 +383,25 @@ export interface Operations {
       action: { label: string; url: string; command: string | null };
     }>;
   };
+  automationReadiness: AutomationReadiness;
+  aiAutomationPolicy: AiAutomationPolicy;
+  automationFailures: {
+    total: number;
+    queue: Array<{
+      failureId: string;
+      recordSha256: string;
+      status: 'retry_required';
+      stage: 'strategy_proposal' | 'growth_analysis' | 'affiliate_review' | 'editorial_review';
+      reasonCode: 'runtime_policy_failed' | 'credential_preflight_failed' | 'model_step_failed' | 'output_invalid';
+      recordedAt: string;
+      workflowName: 'strategy-intake.yml' | 'growth-review.yml' | 'affiliate-link-review.yml' | 'editorial-independent-review.yml';
+      workflowRunUrl: string;
+      targetKind: 'founder_strategy_issue' | 'growth_snapshot' | 'affiliate_link_candidate' | 'editorial_run';
+      targetId: string;
+      targetUrl: string | null;
+      nextGate: string;
+    }>;
+  };
   researchRuns: number;
   validatedRuns: number;
   publicationReadyPosts: number;
@@ -170,10 +419,11 @@ export interface Operations {
   pairingIdeas: number;
   recipientFrictionIdeas: number;
   editorialReview: {
-    schemaVersion: '1.0.0';
+    schemaVersion: '1.1.0';
     counts: {
       pendingBundles: number;
       founderSafetyReviewsRequired: number;
+      founderSafetyApprovalsCurrent: number;
       independentReviewsRequired: number;
       highRiskClaims: number;
     };
@@ -185,8 +435,32 @@ export interface Operations {
       reviewerId: string;
       blockers: string[];
       warnings: string[];
+      failedReview: {
+        missionId: string;
+        failedAt: string;
+        receiptPath: string;
+        receiptSha256: string;
+        reviewedAt: string;
+        workflowRunUrl: string;
+        correctionPullRequestSearchUrl: string;
+      } | null;
       highRiskClaims: Array<{ id: string; text: string; sourceIds: string[] }>;
+      founderDecisionPacket: {
+        workflowUrl: string;
+        approveCommand: string;
+        rejectCommand: string;
+        authorityBoundary: string;
+      } | null;
       founderSafetyReviewRequired: boolean;
+      founderSafetyReviewStatus: 'not_required' | 'approval_required' | 'approved_current' | 'rejected_current' | 'stale';
+      safetyApproval: {
+        status: 'approved_current' | 'rejected_current' | 'stale';
+        revision: number;
+        decision: 'approved' | 'rejected';
+        reviewedAt: string;
+        path: string;
+        sha256: string;
+      } | null;
       independentReviewRequired: true;
       sourcePaths: { run: string; article: string; social: string | null };
       sourceSha256: { run: string; article: string; social: string | null };
@@ -197,12 +471,17 @@ export interface Operations {
     total: number;
     active: number;
     completed: number;
+    researchFailed: number;
+    reviewFailed: number;
+    qaFailed: number;
+    visualPending: number;
+    visualFailed: number;
     founderReviewRequired: number;
     automaticMergeEligible: number;
     queue: Array<{
       missionId: string;
       recordSha256: string;
-      status: 'started' | 'completed';
+      status: 'started' | 'research_failed' | 'review_failed' | 'qa_failed' | 'visual_pending' | 'completed';
       ideaId: string;
       ideaTitle: string;
       ideaRevision: number;
@@ -210,10 +489,12 @@ export interface Operations {
       createdAt: string;
       completedAt: string | null;
       workflowRunId: string;
-      activeStage: 'research' | 'quality_review' | 'release_preparation' | 'growth_follow_up';
+      failureReasonCode: 'model_step_failed' | 'draft_bundle_invalid' | 'review_model_step_failed' | 'review_result_invalid' | 'production_step_failed' | 'production_bundle_invalid' | 'review_step_failed' | 'review_findings_invalid' | 'review_verdict_failed' | null;
+      failureWorkflowRunUrl: string | null;
+      activeStage: 'research' | 'quality_review' | 'visual_production' | 'release_preparation' | 'growth_follow_up';
       runId: string | null;
       articleSlug: string | null;
-      publicationReadiness: 'research_in_progress' | 'founder_review_required' | 'automatic_merge_eligible';
+      publicationReadiness: 'research_in_progress' | 'research_failed' | 'review_failed' | 'qa_failed' | 'visual_pending' | 'visual_failed' | 'founder_review_required' | 'automatic_merge_eligible';
       nextGate: string;
     }>;
   };
@@ -227,6 +508,8 @@ export interface Operations {
     totalMissions: number;
     activeMissions: number;
     completedMissions: number;
+    discoveryFailedMissions: number;
+    reviewFailedMissions: number;
     draftedReports: number;
     validatedReports: number;
     passedReviews: number;
@@ -247,7 +530,7 @@ export interface Operations {
       scoutId: string;
       missionRecordSha256: string;
       reportRecordSha256: string | null;
-      status: 'started' | 'completed' | 'drafted' | 'validated';
+      status: 'started' | 'discovery_failed' | 'review_failed' | 'completed' | 'drafted' | 'validated';
       createdAt: string;
       completedAt: string | null;
       expectedProposalId: string;
@@ -260,6 +543,8 @@ export interface Operations {
       evidenceConfidence: number | null;
       thoughtfulnessPotential: number | null;
       reviewVerdict: 'passed' | 'failed' | null;
+      failureReasonCode: 'discovery_model_step_failed' | 'discovery_bundle_invalid' | 'review_model_step_failed' | 'review_result_invalid' | null;
+      failureWorkflowRunUrl: string | null;
       nextGate: string;
     }>;
   };
@@ -337,6 +622,38 @@ export interface Operations {
         customerDataExportApproved: false;
       };
     }>;
+    expansionRequests: Array<{
+      id: string;
+      status: 'awaiting_founder_scope_approval_and_partner_export' | 'scope_approved_awaiting_partner_export';
+      programId: string;
+      articleSlug: string;
+      requestedProducts: number;
+      catalogProductsVerified: number;
+      paidUrlsCollected: number;
+      currentArticleMatchesIndependentReview: boolean;
+      nextGate: string;
+    }>;
+    reportingRequests: Array<{
+      id: string;
+      status: 'queued_behind_existing_program_revision';
+      programId: string;
+      observedProgramRevision: number;
+      reservedExpansionRevision: number;
+      earliestReportingRevision: number;
+      blockedByExpansionRequestId: string;
+      liveArticles: number;
+      livePaidLinks: number;
+      allowedMetrics: ['affiliateConversions', 'revenueUsd'];
+      minimumWindowDays: number;
+      customerDataAllowed: false;
+      requestBoundarySha256: string;
+      officialSources: {
+        dashboardGuideUrl: string;
+        reportingGuideUrl: string;
+        viewsRemovalUrl: string;
+      };
+      nextGate: string;
+    }>;
     linkQueue: Array<{
       candidateId: string;
       candidateRevision: number;
@@ -361,6 +678,7 @@ export interface Operations {
       approvalPath: string | null;
       approvalSha256: string | null;
       approvedAt: string | null;
+      approvalIssueUrl: string | null;
       nextGate: string;
     }>;
     programs: Array<{
@@ -457,10 +775,32 @@ export interface Operations {
     mode: 'founder_reviewed' | 'automatic_after_proven';
     automaticPromotionEnabled: boolean;
     verifiedSuccessfulReleaseCount: number;
+    durableVerifiedFounderReviewedReleaseCount: number;
     minimumSuccessfulFounderReviewedReleases: number;
     verifiedReleaseReceiptRequired: true;
     receiptRetentionDays: number;
     releaseEvidenceSource: 'github_production_deployments_at_enable_time';
+    durableReceiptEvidenceSource: 'repository_verified_publication_receipts';
+    exactReleaseApprovals: {
+      total: number;
+      active: number;
+      currentContentSetApprovedRelease: {
+        approvalId: string;
+        approvalRecordPath: string;
+        approvalRecordSha256: string;
+        pullRequestNumber: number;
+        pullRequestUrl: string;
+        headSha: string;
+        manifestId: string;
+        contentSetSha256: string;
+        approvedBy: string;
+        approvedAt: string;
+        evidenceUrl: string;
+        previewUrl: string;
+        scope: 'approved_for_exact_head_merge_only';
+        nextGate: string;
+      } | null;
+    };
     currentLive: {
       status: 'no_verified_managed_release' | 'verified_managed_content_release';
       updatedAt: string | null;
@@ -481,6 +821,7 @@ export interface Operations {
       contentSetSha256: string;
       articles: number;
       independentReviews: number;
+      founderSafetyApprovals: number;
       socialLaunchPacks: number;
       socialDrafts: number;
       missionBoundArticles: number;
@@ -499,6 +840,7 @@ export interface Operations {
     proposedExperiments: number;
     approvedExperiments: number;
     runningExperiments: number;
+    commercialScorecard: CommercialScorecard;
     searchConsole: {
       status: 'not_connected' | 'configured' | 'active' | 'paused';
       founderApproved: boolean;
