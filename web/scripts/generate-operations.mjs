@@ -10,6 +10,7 @@ import { validateAffiliateExpansionRequests } from './lib/affiliate-expansion-re
 import { validateAffiliateReportingRequests } from './lib/affiliate-reporting-request-contract.mjs';
 import { buildAiAutomationPolicySummary, parseAiAutomationPolicy } from './lib/ai-automation-policy-contract.mjs';
 import { buildAiAutomationBudgetIssueUrl } from './lib/ai-automation-budget-request-contract.mjs';
+import { aiCredentialEnvironmentSettingsUrl, buildAiAutomationCredentialIssueUrl } from './lib/ai-automation-credential-request-contract.mjs';
 import { automationReadinessEvidenceSchema, buildAutomationReadiness } from './lib/automation-readiness-contract.mjs';
 import { buildCommercialScorecard } from './lib/commercial-scorecard.mjs';
 import { buildEditorialReviewQueue } from './lib/editorial-review-queue-contract.mjs';
@@ -168,6 +169,8 @@ const aiAutomationPolicy = {
   credentialVerification: {
     available: aiAutomationPolicySummary.status === 'budget_approved_awaiting_credential',
     workflowUrl: aiAutomationCredentialWorkflowUrl,
+    approvalIssueUrl: buildAiAutomationCredentialIssueUrl({ expectedPolicySha256: aiAutomationPolicySha256 }),
+    environmentSettingsUrl: aiCredentialEnvironmentSettingsUrl,
     confirmation: 'VERIFY-ai-automation-credential',
     method: 'openai_models_endpoint',
     endpoint: 'https://api.openai.com/v1/models',
