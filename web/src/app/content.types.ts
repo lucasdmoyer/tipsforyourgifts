@@ -232,6 +232,7 @@ export interface AiAutomationPolicy {
   policyActivation: {
     available: boolean;
     workflowUrl: string;
+    approvalIssueUrl: string;
     confirmation: 'ACTIVATE-ai-automation';
     command: string;
   };

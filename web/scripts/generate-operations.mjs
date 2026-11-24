@@ -9,6 +9,7 @@ import { affiliateActivationProposalSchema, validateAffiliateActivationProposals
 import { validateAffiliateExpansionRequests } from './lib/affiliate-expansion-request-contract.mjs';
 import { validateAffiliateReportingRequests } from './lib/affiliate-reporting-request-contract.mjs';
 import { buildAiAutomationPolicySummary, parseAiAutomationPolicy } from './lib/ai-automation-policy-contract.mjs';
+import { buildAiAutomationActivationIssueUrl } from './lib/ai-automation-activation-request-contract.mjs';
 import { buildAiAutomationBudgetIssueUrl } from './lib/ai-automation-budget-request-contract.mjs';
 import { aiCredentialEnvironmentSettingsUrl, buildAiAutomationCredentialIssueUrl } from './lib/ai-automation-credential-request-contract.mjs';
 import { automationReadinessEvidenceSchema, buildAutomationReadiness } from './lib/automation-readiness-contract.mjs';
@@ -179,6 +180,7 @@ const aiAutomationPolicy = {
   policyActivation: {
     available: aiAutomationPolicySummary.status === 'credential_verified_awaiting_activation',
     workflowUrl: aiAutomationActivationWorkflowUrl,
+    approvalIssueUrl: buildAiAutomationActivationIssueUrl({ expectedPolicySha256: aiAutomationPolicySha256 }),
     confirmation: 'ACTIVATE-ai-automation',
     command: `gh workflow run ai-automation-activate.yml --repo lucasdmoyer/tipsforyourgifts --ref master -f expected_policy_sha256=${aiAutomationPolicySha256} -f confirmation='ACTIVATE-ai-automation'`
   }

@@ -556,7 +556,7 @@ describe('App', () => {
       expect(anchorWithExactHref(element, policy.credentialVerification.approvalIssueUrl)).not.toBeNull();
       expect(anchorWithExactHref(element, policy.credentialVerification.environmentSettingsUrl)).not.toBeNull();
       expect(anchorWithExactHref(element, policy.credentialVerification.workflowUrl)).not.toBeNull();
-      expect(element.textContent).not.toContain('Propose AI policy activation');
+      expect(element.textContent).not.toContain('Review the exact activation packet');
 
       policy.status = 'credential_verified_awaiting_activation';
       policy.credentialVerification.available = false;
@@ -564,10 +564,13 @@ describe('App', () => {
       fixture = TestBed.createComponent(StudioPage);
       fixture.detectChanges();
       element = fixture.nativeElement as HTMLElement;
-      expect(element.textContent).toContain('Propose AI policy activation');
-      expect(element.textContent).toContain('Only merging that exact proposal activates');
+      expect(element.textContent).toContain('Review the exact activation packet');
+      expect(element.textContent).toContain('opens a credential-free review pull request only');
+      expect(element.textContent).toContain('starts no research mission and makes no model call');
+      expect(element.textContent).toContain('Only reviewing and merging that exact proposal activates');
       expect(element.textContent).toContain(policy.policyActivation.command);
-      expect(element.querySelector(`a[href="${policy.policyActivation.workflowUrl}"]`)).not.toBeNull();
+      expect(anchorWithExactHref(element, policy.policyActivation.approvalIssueUrl)).not.toBeNull();
+      expect(anchorWithExactHref(element, policy.policyActivation.workflowUrl)).not.toBeNull();
       expect(element.textContent).not.toContain('Verify dedicated AI credential');
     } finally {
       Object.assign(policy, original);
