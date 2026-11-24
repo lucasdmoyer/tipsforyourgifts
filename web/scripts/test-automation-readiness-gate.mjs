@@ -41,8 +41,10 @@ function expectEvidenceFailure(label, mutate) {
 
 expectEvidenceFailure('gate IDs cannot duplicate', (candidate) => { candidate.externalGates[1].id = candidate.externalGates[0].id; });
 expectEvidenceFailure('evidence links must use HTTPS', (candidate) => { candidate.externalGates[0].evidenceUrl = 'http://example.com'; });
-expectEvidenceFailure('preview must name exact SHA prefix', (candidate) => { candidate.latestVerifiedPreview.previewUrl = 'https://tipsforyourgifts--release-wrong.web.app/'; });
+expectEvidenceFailure('preview without SHA-bound channel requires immutable artifact evidence', (candidate) => { candidate.latestVerifiedPreview.immutableArtifact = null; });
 expectEvidenceFailure('preview must use the owned Firebase site', (candidate) => { candidate.latestVerifiedPreview.previewUrl = `https://example--${candidate.latestVerifiedPreview.sha.slice(0, 7)}.web.app/`; });
+expectEvidenceFailure('artifact digest must be exact', (candidate) => { candidate.latestVerifiedPreview.immutableArtifact.sha256 = 'artifact-digest'; });
+expectEvidenceFailure('artifact must bind the diagnostic workflow run', (candidate) => { candidate.latestVerifiedPreview.immutableArtifact.workflowRunId = '999'; });
 expectEvidenceFailure('verified preview must name an owned pull request', (candidate) => { candidate.latestVerifiedPreview.pullRequestUrl = 'https://example.com/lucasdmoyer/tipsforyourgifts/pull/999'; });
 expectEvidenceFailure('review receipt must belong to the exact preview PR', (candidate) => { candidate.latestVerifiedPreview.reviewUrl = 'https://github.com/lucasdmoyer/tipsforyourgifts/pull/83#issuecomment-1'; });
 expectEvidenceFailure('preview identity evidence cannot point at a stale PR', (candidate) => { candidate.externalGates.find((gate) => gate.id === 'firebase-preview-identity').evidenceUrl = 'https://github.com/lucasdmoyer/tipsforyourgifts/pull/90#issuecomment-1'; });
@@ -86,7 +88,7 @@ assert.throws(() => buildAutomationReadiness({
 
 console.log(JSON.stringify({
   automationReadinessGateTests: 'passed',
-  negativeChecks: 13,
+  negativeChecks: 15,
   teams: base.teams.length,
   ready: base.counts.ready,
   limited: base.counts.limited,

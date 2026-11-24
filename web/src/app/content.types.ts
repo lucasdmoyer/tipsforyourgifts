@@ -202,6 +202,12 @@ export interface AutomationReadiness {
     pullRequestUrl: string;
     reviewUrl: string;
     previewUrl: string;
+    immutableArtifact: {
+      source: 'github_actions';
+      workflowRunId: string;
+      artifactId: string;
+      sha256: string;
+    } | null;
     summary: string;
     nextAction: string;
   };
