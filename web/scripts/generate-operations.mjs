@@ -18,6 +18,7 @@ import { buildEditorialReviewQueue } from './lib/editorial-review-queue-contract
 import { assessEditorialSafetyApproval, reviewedContentDigests } from './lib/editorial-safety-contract.mjs';
 import { latestEditorialSafetyApproval, loadEditorialSafetyApprovalRecords } from './lib/editorial-safety-store.mjs';
 import { buildFounderAgenda } from './lib/founder-agenda-contract.mjs';
+import { buildFirebasePreviewIdentityPlan } from './lib/firebase-preview-identity-plan-contract.mjs';
 import { loadAffiliateLinkState } from './lib/affiliate-link-contract.mjs';
 import { buildAffiliateLinkApprovalIssueUrl } from './lib/affiliate-link-approval-request-contract.mjs';
 import { summarizeDurableFounderReviewedReleaseReceipts } from './lib/publication-receipt-contract.mjs';
@@ -54,6 +55,7 @@ const livePublicationPath = path.join(root, 'config', 'live-publication.json');
 const publicationPolicyPath = path.join(root, 'config', 'publication-policy.json');
 const opportunityPolicyPath = path.join(root, 'config', 'opportunity-scout-policy.json');
 const automationReadinessPath = path.join(root, 'config', 'automation-readiness.json');
+const firebasePreviewIdentityPlanPath = path.join(root, 'config', 'firebase-preview-identity-plan.json');
 const aiAutomationPolicyPath = path.join(root, 'config', 'ai-automation-policy.json');
 const publicationManifestPath = path.join(root, 'public', 'publication-manifest.json');
 const publicationReceiptDir = path.join(root, 'releases', 'receipts');
@@ -151,6 +153,7 @@ const livePublication = JSON.parse(await fs.readFile(livePublicationPath, 'utf8'
 const publicationPolicy = JSON.parse(await fs.readFile(publicationPolicyPath, 'utf8'));
 const opportunityPolicy = JSON.parse(await fs.readFile(opportunityPolicyPath, 'utf8'));
 const automationReadinessEvidence = automationReadinessEvidenceSchema.parse(JSON.parse(await fs.readFile(automationReadinessPath, 'utf8')));
+const firebasePreviewIdentityPlan = buildFirebasePreviewIdentityPlan(JSON.parse(await fs.readFile(firebasePreviewIdentityPlanPath, 'utf8')));
 const aiAutomationPolicyRaw = await fs.readFile(aiAutomationPolicyPath);
 const aiAutomationPolicySha256 = createHash('sha256').update(aiAutomationPolicyRaw).digest('hex');
 const aiAutomationPolicySummary = buildAiAutomationPolicySummary(parseAiAutomationPolicy(JSON.parse(aiAutomationPolicyRaw.toString('utf8'))));
@@ -436,6 +439,7 @@ const founderAgenda = buildFounderAgenda({
   livePublication,
   releaseApprovals: releaseApprovalSummary,
   automationReadinessEvidence,
+  firebasePreviewIdentityPlan,
   growth,
   openStrategyProposals: proposedIdeas,
   maxOpenStrategyProposals: opportunityPolicy.maxOpenProposals,
