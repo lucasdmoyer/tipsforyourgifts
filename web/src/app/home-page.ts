@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ArticleCardComponent } from './article-card';
-import { ContentService } from './content.service';
+import { HOME_ARTICLE_SUMMARIES } from './generated/home-summary.generated';
 import { SeoService } from './seo.service';
 
 @Component({
@@ -47,14 +47,14 @@ import { SeoService } from './seo.service';
         <a routerLink="/blog">Read every story →</a>
       </div>
       <div class="grid three">
-        @for (post of content.articles.slice(0, 3); track post.slug) { <tfg-article-card [article]="post" /> }
+        @for (post of articles; track post.slug) { <tfg-article-card [article]="post" /> }
       </div>
     </section>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HomePage {
-  readonly content = inject(ContentService);
+  readonly articles = HOME_ARTICLE_SUMMARIES;
   private readonly seo = inject(SeoService);
 
   constructor() {
