@@ -24,6 +24,7 @@ function stepIndex(job, name) {
 const strategy = await readWorkflow('strategy-approved-launch.yml');
 const opportunity = await readWorkflow('opportunity-scout.yml');
 const research = await readWorkflow('research-agent.yml');
+const visual = await readWorkflow('visual-production.yml');
 const automatic = await readWorkflow('firebase-auto-production.yml');
 const policy = JSON.parse(await fs.readFile(path.join(webRoot, 'config', 'publication-policy.json'), 'utf8'));
 
@@ -214,6 +215,21 @@ assert.match(autoMergeStep.run, /RELEASE_ROUTE" = "visual_pending"[\s\S]*cannot 
 assert.match(autoMergeStep.run, /RELEASE_ROUTE" = "qa_failed"[\s\S]*cannot auto-merge/, 'QA-failed research must never request auto-merge');
 assert.match(autoMergeStep.run, /gh pr merge --auto --squash "\$PR_URL"/, 'only the proven policy may request check-gated squash auto-merge');
 
+const visualPush = visual.parsed.on?.push;
+assert.deepEqual(visualPush?.branches, ['master'], 'visual production must observe only trusted master');
+assert.ok(visualPush?.paths?.includes('web/visuals/requests/*.json'), 'a merged visual request must automatically wake the visual desk');
+const visualWriter = visual.parsed.jobs?.detached_writer;
+assert.ok(visualWriter, 'visual production needs a credential-free detached writer');
+const visualPullRequestStep = findStep(visualWriter, 'Commit the bounded visual result');
+const visualAutoMergeResolverStep = findStep(visualWriter, 'Resolve the proven-policy visual merge boundary without a credential');
+const visualAutoMergeStep = findStep(visualWriter, 'Queue check-gated visual auto-merge only under the proven policy');
+assert.ok(visualPullRequestStep && visualAutoMergeResolverStep && visualAutoMergeStep, 'visual promotion must open a PR and separately evaluate the proven publication policy');
+assert.equal(visualPullRequestStep.id, 'pull_request', 'visual writer must expose the exact created PR URL');
+assert.match(visualAutoMergeResolverStep.run, /visual:auto-merge:resolve/, 'visual auto-merge eligibility must come from the deterministic mission and policy contract');
+assert.equal(visualAutoMergeStep.if, "steps.auto_merge.outputs.eligible == 'true'", 'visual auto-merge must require an explicit eligible result');
+assert.match(visualAutoMergeStep.run, /gh pr merge --auto --squash "\$PR_URL"/, 'eligible visual promotion may only request check-gated squash auto-merge');
+assert.doesNotMatch(JSON.stringify(visualAutoMergeResolverStep), /OPENAI_API_KEY/, 'the visual auto-merge resolver must be credential-free');
+
 const automaticPush = automatic.parsed.on?.push;
 assert.deepEqual(automaticPush?.branches, ['master'], 'automatic Firebase publication must observe only master');
 assert.ok(automaticPush?.paths?.includes('web/**'), 'automatic publication must observe reviewed web changes');
@@ -246,6 +262,8 @@ console.log(JSON.stringify({
     'editorial_qa_to_visual_production_queue',
     'qa_to_detached_pr_writer',
     'proven_policy_to_check_gated_merge',
+    'visual_request_to_independent_visual_review',
+    'proven_visual_promotion_to_check_gated_merge',
     'master_to_exact_preview_to_firebase_release'
   ],
   modelJobsWithGithubWrite: 0,

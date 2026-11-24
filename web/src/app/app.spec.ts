@@ -330,6 +330,8 @@ describe('App', () => {
     fixture.detectChanges();
     const element = fixture.nativeElement as HTMLElement;
     expect(element.textContent).toContain('Ideas flow in. Authority stays separated.');
+    expect(element.textContent).toContain('A merged visual request wakes the protected art desk automatically');
+    expect(element.textContent).toContain("GitHub's check-gated auto-merge queue");
     expect(element.textContent).toContain('Strategy proposals');
     expect(element.querySelector('a[href*="strategy-approval.yml"]')).not.toBeNull();
     expect(element.querySelector('a[href*="strategy-idea.yml"]')).not.toBeNull();
