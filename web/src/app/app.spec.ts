@@ -649,7 +649,10 @@ describe('App', () => {
     expect(element.querySelector('a[href*="social-media-approval.yml"]')).not.toBeNull();
     expect(element.querySelector('a[href*="social-content-approval.yml"]')).not.toBeNull();
     expect(element.querySelector('a[href*="social-pinterest-publish.yml"]')).not.toBeNull();
-    expect(element.textContent).toContain(`${OPERATIONS.social.creativeCandidates} original creative candidates · ${OPERATIONS.social.mediaAssetsApproved} approved media · ${OPERATIONS.social.approvalReceipts} content receipts · ${OPERATIONS.social.publishReady} ready for official API.`);
+    expect(element.querySelector('a[href*="social-creative-production.yml"]')).not.toBeNull();
+    const nextCreativePost = OPERATIONS.social.queue.find((post) => post.postId === OPERATIONS.social.nextCreativePostId);
+    expect(['pinterest', 'instagram']).toContain(nextCreativePost?.platform);
+    expect(element.textContent).toContain(`${OPERATIONS.social.creativeCandidates} original creative candidates · ${OPERATIONS.social.creativeFailures} bounded correction receipts · ${OPERATIONS.social.mediaAssetsApproved} approved media · ${OPERATIONS.social.approvalReceipts} content receipts · ${OPERATIONS.social.publishReady} ready for official API.`);
     expect(element.textContent).toContain(OPERATIONS.social.configSha256);
     const visualCandidate = OPERATIONS.social.queue.find((post) => post.creativeCandidateAssetPath);
     if (visualCandidate) {

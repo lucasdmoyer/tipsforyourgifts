@@ -259,8 +259,8 @@ export const OPERATIONS: Operations = {
       "Founder-approved OpenAI project hard spend limit, earlier alert, and platform evidence are not recorded.",
       "Versioned automation policy is not active."
     ],
-    "protectedWorkflows": 7,
-    "protectedModelCalls": 21,
+    "protectedWorkflows": 8,
+    "protectedModelCalls": 23,
     "credential": {
       "secretName": "OPENAI_API_KEY",
       "status": "not_configured",
@@ -400,6 +400,24 @@ export const OPERATIONS: Operations = {
           "independent_review": "visual:review"
         },
         "purpose": "Generate one hash-bound visual batch and run a separate multimodal review before any credential-free Git promotion."
+      },
+      {
+        "file": "social-creative-production.yml",
+        "modelJobs": [
+          "produce",
+          "independent_review"
+        ],
+        "modelSteps": 2,
+        "maximumApiCallsPerRun": 2,
+        "maximumGeneratedAssetsPerRun": 1,
+        "endpoint": "https://api.openai.com/v1/responses",
+        "responseModel": "gpt-6.2-sol",
+        "imageToolModel": "gpt-image-2.5-sunburst-2026-09-08",
+        "commands": {
+          "produce": "social:creative:produce",
+          "independent_review": "social:creative:review"
+        },
+        "purpose": "Generate one exact static social creative candidate and require a separate multimodal review before a credential-free writer may open an inert proposal."
       }
     ],
     "shutdownConditions": [
@@ -410,31 +428,31 @@ export const OPERATIONS: Operations = {
       "Any proposed patch outside its workflow-specific allowlist fails deterministic validation.",
       "A project hard-limit response, repeated failures, or suspected credential exposure requires the founder to disable runs and rotate the credential before resuming."
     ],
-    "policySha256": "d3c37458d9dfcc89f440794e64e73993c9a38d2e2c560adcb1358c13770a1b11",
+    "policySha256": "a0de302c0d05c09b52994e682ee45d282e299b21f5454b5a4a630fa7e8870049",
     "budgetConfiguration": {
       "available": true,
       "workflowUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/ai-automation-budget-configure.yml",
-      "approvalIssueUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/issues/new?title=%5BConfigure+AI+Budget%5D+policy+d3c37458d9df&body=%23+Record+the+AI+editorial+team+budget+boundary%0A%0ABefore+submitting%2C+open+the+dedicated+OpenAI+project+settings+and+set+the+exact+hard+limit+and+earlier+alert+below.+This+issue+records+Lucas%E2%80%99s+attestation+in+a+review+pull+request%3B+it+does+not+configure+OpenAI+for+him.%0A%0A-+**Monthly+hard+limit%3A**+%2450%0A-+**Earlier+alert%3A**+%2425%0A-+**Hard-limit+enforcement%3A**+required%0A-+**Credential-free+settings+path%3A**+https%3A%2F%2Fplatform.openai.com%2Fsettings%2Forganization%2Flimits%0A%0A%23%23+Exact+decision%0A%0A%60%60%60json%0A%7B%0A++%22schemaVersion%22%3A+%221.0.0%22%2C%0A++%22decision%22%3A+%22record_ai_automation_budget%22%2C%0A++%22expectedPolicySha256%22%3A+%22d3c37458d9dfcc89f440794e64e73993c9a38d2e2c560adcb1358c13770a1b11%22%2C%0A++%22monthlyBudgetUsd%22%3A+50%2C%0A++%22hardLimitEnabled%22%3A+true%2C%0A++%22alertThresholdUsd%22%3A+25%2C%0A++%22platformEvidenceUrl%22%3A+%22https%3A%2F%2Fplatform.openai.com%2Fsettings%2Forganization%2Flimits%22%0A%7D%0A%60%60%60%0A%0A%23%23+Authority+boundary%0A%0A-+%5B+%5D+I+set+this+exact+monthly+hard+limit+and+earlier+alert+in+the+dedicated+OpenAI+project+before+submitting.%0A-+%5B+%5D+I+confirm+hard-limit+enforcement+is+enabled+and+understand+that+delayed+reporting+may+allow+a+small+overage.%0A-+%5B+%5D+This+records+a+review+proposal+only%3B+it+does+not+add+a+credential%2C+call+a+model%2C+activate+automation%2C+merge%2C+publish%2C+authorize+spend%2C+or+deploy+Firebase.%0A%0A%3E+Check+all+three+boxes+only+after+the+external+controls+are+real.+The+protected+workflow+will+verify+this+exact+policy+digest+before+opening+a+pull+request.",
+      "approvalIssueUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/issues/new?title=%5BConfigure+AI+Budget%5D+policy+a0de302c0d05&body=%23+Record+the+AI+editorial+team+budget+boundary%0A%0ABefore+submitting%2C+open+the+dedicated+OpenAI+project+settings+and+set+the+exact+hard+limit+and+earlier+alert+below.+This+issue+records+Lucas%E2%80%99s+attestation+in+a+review+pull+request%3B+it+does+not+configure+OpenAI+for+him.%0A%0A-+**Monthly+hard+limit%3A**+%2450%0A-+**Earlier+alert%3A**+%2425%0A-+**Hard-limit+enforcement%3A**+required%0A-+**Credential-free+settings+path%3A**+https%3A%2F%2Fplatform.openai.com%2Fsettings%2Forganization%2Flimits%0A%0A%23%23+Exact+decision%0A%0A%60%60%60json%0A%7B%0A++%22schemaVersion%22%3A+%221.0.0%22%2C%0A++%22decision%22%3A+%22record_ai_automation_budget%22%2C%0A++%22expectedPolicySha256%22%3A+%22a0de302c0d05c09b52994e682ee45d282e299b21f5454b5a4a630fa7e8870049%22%2C%0A++%22monthlyBudgetUsd%22%3A+50%2C%0A++%22hardLimitEnabled%22%3A+true%2C%0A++%22alertThresholdUsd%22%3A+25%2C%0A++%22platformEvidenceUrl%22%3A+%22https%3A%2F%2Fplatform.openai.com%2Fsettings%2Forganization%2Flimits%22%0A%7D%0A%60%60%60%0A%0A%23%23+Authority+boundary%0A%0A-+%5B+%5D+I+set+this+exact+monthly+hard+limit+and+earlier+alert+in+the+dedicated+OpenAI+project+before+submitting.%0A-+%5B+%5D+I+confirm+hard-limit+enforcement+is+enabled+and+understand+that+delayed+reporting+may+allow+a+small+overage.%0A-+%5B+%5D+This+records+a+review+proposal+only%3B+it+does+not+add+a+credential%2C+call+a+model%2C+activate+automation%2C+merge%2C+publish%2C+authorize+spend%2C+or+deploy+Firebase.%0A%0A%3E+Check+all+three+boxes+only+after+the+external+controls+are+real.+The+protected+workflow+will+verify+this+exact+policy+digest+before+opening+a+pull+request.",
       "confirmation": "CONFIGURE-ai-automation-budget",
       "evidenceMode": "founder_attested_external_platform_configuration",
-      "command": "gh workflow run ai-automation-budget-configure.yml --repo lucasdmoyer/tipsforyourgifts --ref master -f expected_policy_sha256=d3c37458d9dfcc89f440794e64e73993c9a38d2e2c560adcb1358c13770a1b11 -f monthly_budget_usd='<APPROVED_HARD_LIMIT_USD>' -f hard_limit_enabled=true -f alert_threshold_usd='<APPROVED_ALERT_USD>' -f platform_evidence_url='<OPENAI_PLATFORM_SETTINGS_URL>' -f confirmation='CONFIGURE-ai-automation-budget'"
+      "command": "gh workflow run ai-automation-budget-configure.yml --repo lucasdmoyer/tipsforyourgifts --ref master -f expected_policy_sha256=a0de302c0d05c09b52994e682ee45d282e299b21f5454b5a4a630fa7e8870049 -f monthly_budget_usd='<APPROVED_HARD_LIMIT_USD>' -f hard_limit_enabled=true -f alert_threshold_usd='<APPROVED_ALERT_USD>' -f platform_evidence_url='<OPENAI_PLATFORM_SETTINGS_URL>' -f confirmation='CONFIGURE-ai-automation-budget'"
     },
     "credentialVerification": {
       "available": false,
       "workflowUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/ai-automation-credential-verify.yml",
-      "approvalIssueUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/issues/new?title=%5BVerify+AI+Credential%5D+policy+d3c37458d9df&body=%23+Verify+the+dedicated+AI+editorial-team+credential%0A%0ABefore+submitting%2C+open+https%3A%2F%2Fgithub.com%2Flucasdmoyer%2Ftipsforyourgifts%2Fsettings%2Fenvironments%2C+select+the+**ai-automation-credential**+environment%2C+and+add+or+rotate+the+**OPENAI_API_KEY**+secret.+Never+paste+the+key+into+this+issue%2C+a+prompt%2C+a+command%2C+or+a+repository+file.%0A%0AThe+isolated+verifier+will+make+one+authentication+request%2C+discard+the+response+body%2C+and+produce+a+credential-free+receipt.+It+checks+out+and+runs+no+repository+code.%0A%0A%23%23+Exact+decision%0A%0A%60%60%60json%0A%7B%0A++%22schemaVersion%22%3A+%221.0.0%22%2C%0A++%22decision%22%3A+%22verify_ai_automation_credential%22%2C%0A++%22expectedPolicySha256%22%3A+%22d3c37458d9dfcc89f440794e64e73993c9a38d2e2c560adcb1358c13770a1b11%22%2C%0A++%22secretName%22%3A+%22OPENAI_API_KEY%22%2C%0A++%22environment%22%3A+%22ai-automation-credential%22%2C%0A++%22method%22%3A+%22openai_models_endpoint%22%2C%0A++%22endpoint%22%3A+%22https%3A%2F%2Fapi.openai.com%2Fv1%2Fmodels%22%0A%7D%0A%60%60%60%0A%0A%23%23+Authority+boundary%0A%0A-+%5B+%5D+I+stored+a+dedicated+OpenAI+project+key+only+as+the+protected+GitHub+secret+OPENAI_API_KEY+available+to+the+ai-automation-credential+environment.%0A-+%5B+%5D+I+authorize+one+authentication+request+to+the+documented+models+endpoint%3B+the+response+body+is+discarded+and+no+model+is+called.%0A-+%5B+%5D+This+verification+may+open+a+credential-free+receipt+pull+request+only%3B+it+does+not+reveal+the+key%2C+activate+automation%2C+merge%2C+publish%2C+authorize+spend%2C+or+deploy+Firebase.%0A%0A%3E+Check+all+three+boxes+only+after+the+protected+secret+exists.+Submitting+this+issue+does+not+activate+the+AI+policy+or+start+a+research+mission.",
+      "approvalIssueUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/issues/new?title=%5BVerify+AI+Credential%5D+policy+a0de302c0d05&body=%23+Verify+the+dedicated+AI+editorial-team+credential%0A%0ABefore+submitting%2C+open+https%3A%2F%2Fgithub.com%2Flucasdmoyer%2Ftipsforyourgifts%2Fsettings%2Fenvironments%2C+select+the+**ai-automation-credential**+environment%2C+and+add+or+rotate+the+**OPENAI_API_KEY**+secret.+Never+paste+the+key+into+this+issue%2C+a+prompt%2C+a+command%2C+or+a+repository+file.%0A%0AThe+isolated+verifier+will+make+one+authentication+request%2C+discard+the+response+body%2C+and+produce+a+credential-free+receipt.+It+checks+out+and+runs+no+repository+code.%0A%0A%23%23+Exact+decision%0A%0A%60%60%60json%0A%7B%0A++%22schemaVersion%22%3A+%221.0.0%22%2C%0A++%22decision%22%3A+%22verify_ai_automation_credential%22%2C%0A++%22expectedPolicySha256%22%3A+%22a0de302c0d05c09b52994e682ee45d282e299b21f5454b5a4a630fa7e8870049%22%2C%0A++%22secretName%22%3A+%22OPENAI_API_KEY%22%2C%0A++%22environment%22%3A+%22ai-automation-credential%22%2C%0A++%22method%22%3A+%22openai_models_endpoint%22%2C%0A++%22endpoint%22%3A+%22https%3A%2F%2Fapi.openai.com%2Fv1%2Fmodels%22%0A%7D%0A%60%60%60%0A%0A%23%23+Authority+boundary%0A%0A-+%5B+%5D+I+stored+a+dedicated+OpenAI+project+key+only+as+the+protected+GitHub+secret+OPENAI_API_KEY+available+to+the+ai-automation-credential+environment.%0A-+%5B+%5D+I+authorize+one+authentication+request+to+the+documented+models+endpoint%3B+the+response+body+is+discarded+and+no+model+is+called.%0A-+%5B+%5D+This+verification+may+open+a+credential-free+receipt+pull+request+only%3B+it+does+not+reveal+the+key%2C+activate+automation%2C+merge%2C+publish%2C+authorize+spend%2C+or+deploy+Firebase.%0A%0A%3E+Check+all+three+boxes+only+after+the+protected+secret+exists.+Submitting+this+issue+does+not+activate+the+AI+policy+or+start+a+research+mission.",
       "environmentSettingsUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/settings/environments",
       "confirmation": "VERIFY-ai-automation-credential",
       "method": "openai_models_endpoint",
       "endpoint": "https://api.openai.com/v1/models",
-      "command": "gh workflow run ai-automation-credential-verify.yml --repo lucasdmoyer/tipsforyourgifts --ref master -f expected_policy_sha256=d3c37458d9dfcc89f440794e64e73993c9a38d2e2c560adcb1358c13770a1b11 -f confirmation='VERIFY-ai-automation-credential'"
+      "command": "gh workflow run ai-automation-credential-verify.yml --repo lucasdmoyer/tipsforyourgifts --ref master -f expected_policy_sha256=a0de302c0d05c09b52994e682ee45d282e299b21f5454b5a4a630fa7e8870049 -f confirmation='VERIFY-ai-automation-credential'"
     },
     "policyActivation": {
       "available": false,
       "workflowUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/ai-automation-activate.yml",
-      "approvalIssueUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/issues/new?title=%5BPropose+AI+Activation%5D+policy+d3c37458d9df&body=%23+Propose+bounded+AI+editorial-team+activation%0A%0AThis+packet+opens+a+review+pull+request+only.+It+does+not+activate+the+policy+by+itself.+Activation+occurs+only+if+Lucas+later+reviews+and+merges+the+exact+generated+proposal.%0A%0A%23%23+Exact+decision%0A%0A%60%60%60json%0A%7B%0A++%22schemaVersion%22%3A+%221.0.0%22%2C%0A++%22decision%22%3A+%22propose_ai_automation_activation%22%2C%0A++%22expectedPolicySha256%22%3A+%22d3c37458d9dfcc89f440794e64e73993c9a38d2e2c560adcb1358c13770a1b11%22%0A%7D%0A%60%60%60%0A%0A%23%23+Authority+boundary%0A%0A-+%5B+%5D+I+reviewed+the+current+founder-approved+budget+controls+and+credential-verification+receipt+bound+to+this+exact+policy+digest.%0A-+%5B+%5D+I+authorize+a+review+proposal+that+changes+only+the+versioned+AI+policy+from+credential-verified+to+active%3B+merging+that+exact+proposal+remains+a+separate+founder+decision.%0A-+%5B+%5D+This+may+open+a+credential-free+activation+pull+request+only%3B+it+does+not+merge%2C+call+a+model%2C+start+a+mission%2C+publish%2C+authorize+additional+spend%2C+or+deploy+Firebase.%0A%0A%3E+Check+all+three+boxes+only+after+the+current+budget+and+credential+receipts+are+visible+in+Studio.+Submitting+this+issue+starts+no+research+mission+and+makes+no+model+call.",
+      "approvalIssueUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/issues/new?title=%5BPropose+AI+Activation%5D+policy+a0de302c0d05&body=%23+Propose+bounded+AI+editorial-team+activation%0A%0AThis+packet+opens+a+review+pull+request+only.+It+does+not+activate+the+policy+by+itself.+Activation+occurs+only+if+Lucas+later+reviews+and+merges+the+exact+generated+proposal.%0A%0A%23%23+Exact+decision%0A%0A%60%60%60json%0A%7B%0A++%22schemaVersion%22%3A+%221.0.0%22%2C%0A++%22decision%22%3A+%22propose_ai_automation_activation%22%2C%0A++%22expectedPolicySha256%22%3A+%22a0de302c0d05c09b52994e682ee45d282e299b21f5454b5a4a630fa7e8870049%22%0A%7D%0A%60%60%60%0A%0A%23%23+Authority+boundary%0A%0A-+%5B+%5D+I+reviewed+the+current+founder-approved+budget+controls+and+credential-verification+receipt+bound+to+this+exact+policy+digest.%0A-+%5B+%5D+I+authorize+a+review+proposal+that+changes+only+the+versioned+AI+policy+from+credential-verified+to+active%3B+merging+that+exact+proposal+remains+a+separate+founder+decision.%0A-+%5B+%5D+This+may+open+a+credential-free+activation+pull+request+only%3B+it+does+not+merge%2C+call+a+model%2C+start+a+mission%2C+publish%2C+authorize+additional+spend%2C+or+deploy+Firebase.%0A%0A%3E+Check+all+three+boxes+only+after+the+current+budget+and+credential+receipts+are+visible+in+Studio.+Submitting+this+issue+starts+no+research+mission+and+makes+no+model+call.",
       "confirmation": "ACTIVATE-ai-automation",
-      "command": "gh workflow run ai-automation-activate.yml --repo lucasdmoyer/tipsforyourgifts --ref master -f expected_policy_sha256=d3c37458d9dfcc89f440794e64e73993c9a38d2e2c560adcb1358c13770a1b11 -f confirmation='ACTIVATE-ai-automation'"
+      "command": "gh workflow run ai-automation-activate.yml --repo lucasdmoyer/tipsforyourgifts --ref master -f expected_policy_sha256=a0de302c0d05c09b52994e682ee45d282e299b21f5454b5a4a630fa7e8870049 -f confirmation='ACTIVATE-ai-automation'"
     }
   },
   "automationFailures": {
@@ -1042,10 +1060,14 @@ export const OPERATIONS: Operations = {
   "social": {
     "officialApiOnly": true,
     "configSha256": "16aeb855f596b3d4469ef81609eb4e2fd1cb7d0792390dcb01a170024aa32e0d",
+    "creativeProductionWorkflowUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/social-creative-production.yml",
+    "nextCreativePostId": "golf-friend-clean-club-pair",
     "channelsTotal": 3,
     "channelsConfigured": 0,
     "channelsActive": 0,
     "creativeCandidates": 4,
+    "creativeFailures": 0,
+    "creativeFailureReceipts": [],
     "mediaAssetsApproved": 0,
     "approvalReceipts": 0,
     "publicationReceipts": 0,
@@ -1150,7 +1172,7 @@ export const OPERATIONS: Operations = {
         "productCount": 2,
         "pairCount": 1,
         "destinationUrl": "https://tipsforyourgifts.web.app/blog/gifts-for-a-golf-friend",
-        "nextGate": "Generate an original rights-controlled creative bound to this exact post and pack."
+        "nextGate": "Run the bounded social creative workflow for this exact post; independent review must pass before an inert candidate pull request can open."
       },
       {
         "postId": "golf-friend-buy-skip-brush",
@@ -1180,7 +1202,7 @@ export const OPERATIONS: Operations = {
         "productCount": 1,
         "pairCount": 0,
         "destinationUrl": "https://tipsforyourgifts.web.app/blog/gifts-for-a-golf-friend",
-        "nextGate": "Generate an original rights-controlled creative bound to this exact post and pack."
+        "nextGate": "Run the bounded social creative workflow for this exact post; independent review must pass before an inert candidate pull request can open."
       },
       {
         "postId": "golf-friend-weather-check",
@@ -1210,7 +1232,7 @@ export const OPERATIONS: Operations = {
         "productCount": 2,
         "pairCount": 0,
         "destinationUrl": "https://tipsforyourgifts.web.app/blog/gifts-for-a-golf-friend",
-        "nextGate": "Generate an original rights-controlled creative bound to this exact post and pack."
+        "nextGate": "Run the bounded social creative workflow for this exact post; independent review must pass before an inert candidate pull request can open."
       },
       {
         "postId": "golf-friend-not-equipment",
@@ -1240,7 +1262,7 @@ export const OPERATIONS: Operations = {
         "productCount": 1,
         "pairCount": 0,
         "destinationUrl": "https://tipsforyourgifts.web.app/blog/gifts-for-a-golf-friend",
-        "nextGate": "Generate an original rights-controlled creative bound to this exact post and pack."
+        "nextGate": "Run the bounded social creative workflow for this exact post; independent review must pass before an inert candidate pull request can open."
       },
       {
         "postId": "golf-friend-instagram-carousel",
@@ -1270,7 +1292,7 @@ export const OPERATIONS: Operations = {
         "productCount": 5,
         "pairCount": 1,
         "destinationUrl": "https://tipsforyourgifts.web.app/blog/gifts-for-a-golf-friend",
-        "nextGate": "Generate an original rights-controlled creative bound to this exact post and pack."
+        "nextGate": "Run the bounded social creative workflow for this exact post; independent review must pass before an inert candidate pull request can open."
       },
       {
         "postId": "golf-friend-tiktok-script",
@@ -1300,7 +1322,7 @@ export const OPERATIONS: Operations = {
         "productCount": 4,
         "pairCount": 0,
         "destinationUrl": "https://tipsforyourgifts.web.app/blog/gifts-for-a-golf-friend",
-        "nextGate": "Generate an original rights-controlled creative bound to this exact post and pack."
+        "nextGate": "Run the bounded social creative workflow for this exact post; independent review must pass before an inert candidate pull request can open."
       },
       {
         "postId": "fiber-two-states",
@@ -1330,7 +1352,7 @@ export const OPERATIONS: Operations = {
         "productCount": 2,
         "pairCount": 1,
         "destinationUrl": "https://tipsforyourgifts.web.app/blog/knitting-crochet-project-bag-row-counter-gift-pairs",
-        "nextGate": "Generate an original rights-controlled creative bound to this exact post and pack."
+        "nextGate": "Run the bounded social creative workflow for this exact post; independent review must pass before an inert candidate pull request can open."
       },
       {
         "postId": "fiber-name-the-wip",
@@ -1360,7 +1382,7 @@ export const OPERATIONS: Operations = {
         "productCount": 2,
         "pairCount": 0,
         "destinationUrl": "https://tipsforyourgifts.web.app/blog/knitting-crochet-project-bag-row-counter-gift-pairs",
-        "nextGate": "Generate an original rights-controlled creative bound to this exact post and pack."
+        "nextGate": "Run the bounded social creative workflow for this exact post; independent review must pass before an inert candidate pull request can open."
       },
       {
         "postId": "fiber-counter-convention",
@@ -1390,7 +1412,7 @@ export const OPERATIONS: Operations = {
         "productCount": 2,
         "pairCount": 0,
         "destinationUrl": "https://tipsforyourgifts.web.app/blog/knitting-crochet-project-bag-row-counter-gift-pairs",
-        "nextGate": "Generate an original rights-controlled creative bound to this exact post and pack."
+        "nextGate": "Run the bounded social creative workflow for this exact post; independent review must pass before an inert candidate pull request can open."
       },
       {
         "postId": "fiber-mini-versus-standard",
@@ -1420,7 +1442,7 @@ export const OPERATIONS: Operations = {
         "productCount": 2,
         "pairCount": 0,
         "destinationUrl": "https://tipsforyourgifts.web.app/blog/knitting-crochet-project-bag-row-counter-gift-pairs",
-        "nextGate": "Generate an original rights-controlled creative bound to this exact post and pack."
+        "nextGate": "Run the bounded social creative workflow for this exact post; independent review must pass before an inert candidate pull request can open."
       },
       {
         "postId": "fiber-pause-ritual",
@@ -1450,7 +1472,7 @@ export const OPERATIONS: Operations = {
         "productCount": 2,
         "pairCount": 1,
         "destinationUrl": "https://tipsforyourgifts.web.app/blog/knitting-crochet-project-bag-row-counter-gift-pairs",
-        "nextGate": "Generate an original rights-controlled creative bound to this exact post and pack."
+        "nextGate": "Run the bounded social creative workflow for this exact post; independent review must pass before an inert candidate pull request can open."
       },
       {
         "postId": "fiber-buy-one-or-skip",
@@ -1480,7 +1502,7 @@ export const OPERATIONS: Operations = {
         "productCount": 4,
         "pairCount": 2,
         "destinationUrl": "https://tipsforyourgifts.web.app/blog/knitting-crochet-project-bag-row-counter-gift-pairs",
-        "nextGate": "Generate an original rights-controlled creative bound to this exact post and pack."
+        "nextGate": "Run the bounded social creative workflow for this exact post; independent review must pass before an inert candidate pull request can open."
       },
       {
         "postId": "language-gift-five-checks",
@@ -1510,7 +1532,7 @@ export const OPERATIONS: Operations = {
         "productCount": 2,
         "pairCount": 0,
         "destinationUrl": "https://tipsforyourgifts.web.app/blog/language-learning-gifts-read-a-scene-say-it-aloud",
-        "nextGate": "Generate an original rights-controlled creative bound to this exact post and pack."
+        "nextGate": "Run the bounded social creative workflow for this exact post; independent review must pass before an inert candidate pull request can open."
       },
       {
         "postId": "one-scene-one-die",
@@ -1540,7 +1562,7 @@ export const OPERATIONS: Operations = {
         "productCount": 2,
         "pairCount": 1,
         "destinationUrl": "https://tipsforyourgifts.web.app/blog/language-learning-gifts-read-a-scene-say-it-aloud",
-        "nextGate": "Generate an original rights-controlled creative bound to this exact post and pack."
+        "nextGate": "Run the bounded social creative workflow for this exact post; independent review must pass before an inert candidate pull request can open."
       },
       {
         "postId": "spanish-variant-stop-sign",
@@ -1570,7 +1592,7 @@ export const OPERATIONS: Operations = {
         "productCount": 2,
         "pairCount": 0,
         "destinationUrl": "https://tipsforyourgifts.web.app/blog/language-learning-gifts-read-a-scene-say-it-aloud",
-        "nextGate": "Generate an original rights-controlled creative bound to this exact post and pack."
+        "nextGate": "Run the bounded social creative workflow for this exact post; independent review must pass before an inert candidate pull request can open."
       },
       {
         "postId": "group-before-game",
@@ -1600,7 +1622,7 @@ export const OPERATIONS: Operations = {
         "productCount": 2,
         "pairCount": 1,
         "destinationUrl": "https://tipsforyourgifts.web.app/blog/language-learning-gifts-read-a-scene-say-it-aloud",
-        "nextGate": "Generate an original rights-controlled creative bound to this exact post and pack."
+        "nextGate": "Run the bounded social creative workflow for this exact post; independent review must pass before an inert candidate pull request can open."
       },
       {
         "postId": "practice-not-placement",
@@ -1630,7 +1652,7 @@ export const OPERATIONS: Operations = {
         "productCount": 2,
         "pairCount": 1,
         "destinationUrl": "https://tipsforyourgifts.web.app/blog/language-learning-gifts-read-a-scene-say-it-aloud",
-        "nextGate": "Generate an original rights-controlled creative bound to this exact post and pack."
+        "nextGate": "Run the bounded social creative workflow for this exact post; independent review must pass before an inert candidate pull request can open."
       },
       {
         "postId": "mini-paint-one-mix-one-record",
@@ -1690,7 +1712,7 @@ export const OPERATIONS: Operations = {
         "productCount": 2,
         "pairCount": 0,
         "destinationUrl": "https://tipsforyourgifts.web.app/blog/miniature-painting-wet-palette-recipe-pairs",
-        "nextGate": "Generate an original rights-controlled creative bound to this exact post and pack."
+        "nextGate": "Run the bounded social creative workflow for this exact post; independent review must pass before an inert candidate pull request can open."
       },
       {
         "postId": "mini-paint-four-field-recipe",
@@ -1720,7 +1742,7 @@ export const OPERATIONS: Operations = {
         "productCount": 1,
         "pairCount": 0,
         "destinationUrl": "https://tipsforyourgifts.web.app/blog/miniature-painting-wet-palette-recipe-pairs",
-        "nextGate": "Generate an original rights-controlled creative bound to this exact post and pack."
+        "nextGate": "Run the bounded social creative workflow for this exact post; independent review must pass before an inert candidate pull request can open."
       },
       {
         "postId": "mini-paint-compact-desk-pair",
@@ -1750,7 +1772,7 @@ export const OPERATIONS: Operations = {
         "productCount": 2,
         "pairCount": 1,
         "destinationUrl": "https://tipsforyourgifts.web.app/blog/miniature-painting-wet-palette-recipe-pairs",
-        "nextGate": "Generate an original rights-controlled creative bound to this exact post and pack."
+        "nextGate": "Run the bounded social creative workflow for this exact post; independent review must pass before an inert candidate pull request can open."
       },
       {
         "postId": "mini-paint-buy-only-anchor",
@@ -1780,7 +1802,7 @@ export const OPERATIONS: Operations = {
         "productCount": 3,
         "pairCount": 2,
         "destinationUrl": "https://tipsforyourgifts.web.app/blog/miniature-painting-wet-palette-recipe-pairs",
-        "nextGate": "Generate an original rights-controlled creative bound to this exact post and pack."
+        "nextGate": "Run the bounded social creative workflow for this exact post; independent review must pass before an inert candidate pull request can open."
       },
       {
         "postId": "mini-paint-thirty-second-script",
@@ -1810,7 +1832,7 @@ export const OPERATIONS: Operations = {
         "productCount": 2,
         "pairCount": 1,
         "destinationUrl": "https://tipsforyourgifts.web.app/blog/miniature-painting-wet-palette-recipe-pairs",
-        "nextGate": "Generate an original rights-controlled creative bound to this exact post and pack."
+        "nextGate": "Run the bounded social creative workflow for this exact post; independent review must pass before an inert candidate pull request can open."
       },
       {
         "postId": "muddy-paw-two-step-test",
@@ -1840,7 +1862,7 @@ export const OPERATIONS: Operations = {
         "productCount": 2,
         "pairCount": 1,
         "destinationUrl": "https://tipsforyourgifts.web.app/blog/muddy-paw-washer-drying-towel-gift-pairs",
-        "nextGate": "Generate an original rights-controlled creative bound to this exact post and pack."
+        "nextGate": "Run the bounded social creative workflow for this exact post; independent review must pass before an inert candidate pull request can open."
       },
       {
         "postId": "muddy-paw-measure-the-paw",
@@ -1870,7 +1892,7 @@ export const OPERATIONS: Operations = {
         "productCount": 1,
         "pairCount": 0,
         "destinationUrl": "https://tipsforyourgifts.web.app/blog/muddy-paw-washer-drying-towel-gift-pairs",
-        "nextGate": "Generate an original rights-controlled creative bound to this exact post and pack."
+        "nextGate": "Run the bounded social creative workflow for this exact post; independent review must pass before an inert candidate pull request can open."
       },
       {
         "postId": "muddy-paw-test-the-bottle",
@@ -1900,7 +1922,7 @@ export const OPERATIONS: Operations = {
         "productCount": 2,
         "pairCount": 1,
         "destinationUrl": "https://tipsforyourgifts.web.app/blog/muddy-paw-washer-drying-towel-gift-pairs",
-        "nextGate": "Generate an original rights-controlled creative bound to this exact post and pack."
+        "nextGate": "Run the bounded social creative workflow for this exact post; independent review must pass before an inert candidate pull request can open."
       },
       {
         "postId": "muddy-paw-towel-choice",
@@ -1930,7 +1952,7 @@ export const OPERATIONS: Operations = {
         "productCount": 2,
         "pairCount": 0,
         "destinationUrl": "https://tipsforyourgifts.web.app/blog/muddy-paw-washer-drying-towel-gift-pairs",
-        "nextGate": "Generate an original rights-controlled creative bound to this exact post and pack."
+        "nextGate": "Run the bounded social creative workflow for this exact post; independent review must pass before an inert candidate pull request can open."
       },
       {
         "postId": "muddy-paw-stable-station",
@@ -1960,7 +1982,7 @@ export const OPERATIONS: Operations = {
         "productCount": 1,
         "pairCount": 0,
         "destinationUrl": "https://tipsforyourgifts.web.app/blog/muddy-paw-washer-drying-towel-gift-pairs",
-        "nextGate": "Generate an original rights-controlled creative bound to this exact post and pack."
+        "nextGate": "Run the bounded social creative workflow for this exact post; independent review must pass before an inert candidate pull request can open."
       },
       {
         "postId": "muddy-paw-simple-towel-wins",
@@ -1990,7 +2012,7 @@ export const OPERATIONS: Operations = {
         "productCount": 3,
         "pairCount": 0,
         "destinationUrl": "https://tipsforyourgifts.web.app/blog/muddy-paw-washer-drying-towel-gift-pairs",
-        "nextGate": "Generate an original rights-controlled creative bound to this exact post and pack."
+        "nextGate": "Run the bounded social creative workflow for this exact post; independent review must pass before an inert candidate pull request can open."
       },
       {
         "postId": "tree-walk-one-tree-not-whole-forest",
@@ -2020,7 +2042,7 @@ export const OPERATIONS: Operations = {
         "productCount": 1,
         "pairCount": 1,
         "destinationUrl": "https://tipsforyourgifts.web.app/blog/neighborhood-tree-walk-field-guide-loupe-gift-pairs",
-        "nextGate": "Generate an original rights-controlled creative bound to this exact post and pack."
+        "nextGate": "Run the bounded social creative workflow for this exact post; independent review must pass before an inert candidate pull request can open."
       },
       {
         "postId": "tree-walk-map-before-book",
@@ -2050,7 +2072,7 @@ export const OPERATIONS: Operations = {
         "productCount": 4,
         "pairCount": 0,
         "destinationUrl": "https://tipsforyourgifts.web.app/blog/neighborhood-tree-walk-field-guide-loupe-gift-pairs",
-        "nextGate": "Generate an original rights-controlled creative bound to this exact post and pack."
+        "nextGate": "Run the bounded social creative workflow for this exact post; independent review must pass before an inert candidate pull request can open."
       },
       {
         "postId": "tree-walk-loupe-fit-test",
@@ -2080,7 +2102,7 @@ export const OPERATIONS: Operations = {
         "productCount": 1,
         "pairCount": 0,
         "destinationUrl": "https://tipsforyourgifts.web.app/blog/neighborhood-tree-walk-field-guide-loupe-gift-pairs",
-        "nextGate": "Generate an original rights-controlled creative bound to this exact post and pack."
+        "nextGate": "Run the bounded social creative workflow for this exact post; independent review must pass before an inert candidate pull request can open."
       },
       {
         "postId": "tree-walk-two-guide-paths",
@@ -2110,7 +2132,7 @@ export const OPERATIONS: Operations = {
         "productCount": 3,
         "pairCount": 2,
         "destinationUrl": "https://tipsforyourgifts.web.app/blog/neighborhood-tree-walk-field-guide-loupe-gift-pairs",
-        "nextGate": "Generate an original rights-controlled creative bound to this exact post and pack."
+        "nextGate": "Run the bounded social creative workflow for this exact post; independent review must pass before an inert candidate pull request can open."
       },
       {
         "postId": "tree-walk-compact-pair",
@@ -2140,7 +2162,7 @@ export const OPERATIONS: Operations = {
         "productCount": 2,
         "pairCount": 1,
         "destinationUrl": "https://tipsforyourgifts.web.app/blog/neighborhood-tree-walk-field-guide-loupe-gift-pairs",
-        "nextGate": "Generate an original rights-controlled creative bound to this exact post and pack."
+        "nextGate": "Run the bounded social creative workflow for this exact post; independent review must pass before an inert candidate pull request can open."
       },
       {
         "postId": "tree-walk-buy-one-half",
@@ -2170,7 +2192,7 @@ export const OPERATIONS: Operations = {
         "productCount": 3,
         "pairCount": 2,
         "destinationUrl": "https://tipsforyourgifts.web.app/blog/neighborhood-tree-walk-field-guide-loupe-gift-pairs",
-        "nextGate": "Generate an original rights-controlled creative bound to this exact post and pack."
+        "nextGate": "Run the bounded social creative workflow for this exact post; independent review must pass before an inert candidate pull request can open."
       },
       {
         "postId": "night-sky-buy-by-coordinates",
@@ -2200,7 +2222,7 @@ export const OPERATIONS: Operations = {
         "productCount": 2,
         "pairCount": 0,
         "destinationUrl": "https://tipsforyourgifts.web.app/blog/night-sky-planisphere-red-light-gift-pairs",
-        "nextGate": "Generate an original rights-controlled creative bound to this exact post and pack."
+        "nextGate": "Run the bounded social creative workflow for this exact post; independent review must pass before an inert candidate pull request can open."
       },
       {
         "postId": "night-sky-one-pattern-ritual",
@@ -2230,7 +2252,7 @@ export const OPERATIONS: Operations = {
         "productCount": 2,
         "pairCount": 1,
         "destinationUrl": "https://tipsforyourgifts.web.app/blog/night-sky-planisphere-red-light-gift-pairs",
-        "nextGate": "Generate an original rights-controlled creative bound to this exact post and pack."
+        "nextGate": "Run the bounded social creative workflow for this exact post; independent review must pass before an inert candidate pull request can open."
       },
       {
         "postId": "night-sky-red-is-not-enough",
@@ -2260,7 +2282,7 @@ export const OPERATIONS: Operations = {
         "productCount": 2,
         "pairCount": 0,
         "destinationUrl": "https://tipsforyourgifts.web.app/blog/night-sky-planisphere-red-light-gift-pairs",
-        "nextGate": "Generate an original rights-controlled creative bound to this exact post and pack."
+        "nextGate": "Run the bounded social creative workflow for this exact post; independent review must pass before an inert candidate pull request can open."
       },
       {
         "postId": "night-sky-planisphere-limits",
@@ -2290,7 +2312,7 @@ export const OPERATIONS: Operations = {
         "productCount": 3,
         "pairCount": 0,
         "destinationUrl": "https://tipsforyourgifts.web.app/blog/night-sky-planisphere-red-light-gift-pairs",
-        "nextGate": "Generate an original rights-controlled creative bound to this exact post and pack."
+        "nextGate": "Run the bounded social creative workflow for this exact post; independent review must pass before an inert candidate pull request can open."
       },
       {
         "postId": "night-sky-buy-only-one",
@@ -2320,7 +2342,7 @@ export const OPERATIONS: Operations = {
         "productCount": 2,
         "pairCount": 1,
         "destinationUrl": "https://tipsforyourgifts.web.app/blog/night-sky-planisphere-red-light-gift-pairs",
-        "nextGate": "Generate an original rights-controlled creative bound to this exact post and pack."
+        "nextGate": "Run the bounded social creative workflow for this exact post; independent review must pass before an inert candidate pull request can open."
       },
       {
         "postId": "night-sky-thirty-second-script",
@@ -2350,7 +2372,7 @@ export const OPERATIONS: Operations = {
         "productCount": 2,
         "pairCount": 1,
         "destinationUrl": "https://tipsforyourgifts.web.app/blog/night-sky-planisphere-red-light-gift-pairs",
-        "nextGate": "Generate an original rights-controlled creative bound to this exact post and pack."
+        "nextGate": "Run the bounded social creative workflow for this exact post; independent review must pass before an inert candidate pull request can open."
       },
       {
         "postId": "one-photo-ten-minute-ritual",
@@ -2410,7 +2432,7 @@ export const OPERATIONS: Operations = {
         "productCount": 1,
         "pairCount": 0,
         "destinationUrl": "https://tipsforyourgifts.web.app/blog/one-photo-one-story-gift-pairs",
-        "nextGate": "Generate an original rights-controlled creative bound to this exact post and pack."
+        "nextGate": "Run the bounded social creative workflow for this exact post; independent review must pass before an inert candidate pull request can open."
       },
       {
         "postId": "one-photo-caption-not-original",
@@ -2440,7 +2462,7 @@ export const OPERATIONS: Operations = {
         "productCount": 2,
         "pairCount": 1,
         "destinationUrl": "https://tipsforyourgifts.web.app/blog/one-photo-one-story-gift-pairs",
-        "nextGate": "Generate an original rights-controlled creative bound to this exact post and pack."
+        "nextGate": "Run the bounded social creative workflow for this exact post; independent review must pass before an inert candidate pull request can open."
       },
       {
         "postId": "one-photo-archival-stop-signs",
@@ -2470,7 +2492,7 @@ export const OPERATIONS: Operations = {
         "productCount": 1,
         "pairCount": 0,
         "destinationUrl": "https://tipsforyourgifts.web.app/blog/one-photo-one-story-gift-pairs",
-        "nextGate": "Generate an original rights-controlled creative bound to this exact post and pack."
+        "nextGate": "Run the bounded social creative workflow for this exact post; independent review must pass before an inert candidate pull request can open."
       },
       {
         "postId": "one-photo-paper-or-clear",
@@ -2500,7 +2522,7 @@ export const OPERATIONS: Operations = {
         "productCount": 2,
         "pairCount": 0,
         "destinationUrl": "https://tipsforyourgifts.web.app/blog/one-photo-one-story-gift-pairs",
-        "nextGate": "Generate an original rights-controlled creative bound to this exact post and pack."
+        "nextGate": "Run the bounded social creative workflow for this exact post; independent review must pass before an inert candidate pull request can open."
       },
       {
         "postId": "one-photo-instagram-carousel",
@@ -2530,7 +2552,7 @@ export const OPERATIONS: Operations = {
         "productCount": 2,
         "pairCount": 1,
         "destinationUrl": "https://tipsforyourgifts.web.app/blog/one-photo-one-story-gift-pairs",
-        "nextGate": "Generate an original rights-controlled creative bound to this exact post and pack."
+        "nextGate": "Run the bounded social creative workflow for this exact post; independent review must pass before an inert candidate pull request can open."
       },
       {
         "postId": "one-photo-tiktok-script",
@@ -2560,7 +2582,7 @@ export const OPERATIONS: Operations = {
         "productCount": 2,
         "pairCount": 1,
         "destinationUrl": "https://tipsforyourgifts.web.app/blog/one-photo-one-story-gift-pairs",
-        "nextGate": "Generate an original rights-controlled creative bound to this exact post and pack."
+        "nextGate": "Run the bounded social creative workflow for this exact post; independent review must pass before an inert candidate pull request can open."
       },
       {
         "postId": "puzzle-measure-the-finished-image",
@@ -2590,7 +2612,7 @@ export const OPERATIONS: Operations = {
         "productCount": 2,
         "pairCount": 0,
         "destinationUrl": "https://tipsforyourgifts.web.app/blog/puzzle-board-sorting-tray-gift-pairs",
-        "nextGate": "Generate an original rights-controlled creative bound to this exact post and pack."
+        "nextGate": "Run the bounded social creative workflow for this exact post; independent review must pass before an inert candidate pull request can open."
       },
       {
         "postId": "puzzle-name-tonights-storage",
@@ -2620,7 +2642,7 @@ export const OPERATIONS: Operations = {
         "productCount": 1,
         "pairCount": 0,
         "destinationUrl": "https://tipsforyourgifts.web.app/blog/puzzle-board-sorting-tray-gift-pairs",
-        "nextGate": "Generate an original rights-controlled creative bound to this exact post and pack."
+        "nextGate": "Run the bounded social creative workflow for this exact post; independent review must pass before an inert candidate pull request can open."
       },
       {
         "postId": "puzzle-two-kinds-of-progress",
@@ -2650,7 +2672,7 @@ export const OPERATIONS: Operations = {
         "productCount": 2,
         "pairCount": 1,
         "destinationUrl": "https://tipsforyourgifts.web.app/blog/puzzle-board-sorting-tray-gift-pairs",
-        "nextGate": "Generate an original rights-controlled creative bound to this exact post and pack."
+        "nextGate": "Run the bounded social creative workflow for this exact post; independent review must pass before an inert candidate pull request can open."
       },
       {
         "postId": "puzzle-lid-versus-shallow-reach",
@@ -2680,7 +2702,7 @@ export const OPERATIONS: Operations = {
         "productCount": 2,
         "pairCount": 2,
         "destinationUrl": "https://tipsforyourgifts.web.app/blog/puzzle-board-sorting-tray-gift-pairs",
-        "nextGate": "Generate an original rights-controlled creative bound to this exact post and pack."
+        "nextGate": "Run the bounded social creative workflow for this exact post; independent review must pass before an inert candidate pull request can open."
       },
       {
         "postId": "puzzle-flat-means-flat",
@@ -2710,7 +2732,7 @@ export const OPERATIONS: Operations = {
         "productCount": 2,
         "pairCount": 0,
         "destinationUrl": "https://tipsforyourgifts.web.app/blog/puzzle-board-sorting-tray-gift-pairs",
-        "nextGate": "Generate an original rights-controlled creative bound to this exact post and pack."
+        "nextGate": "Run the bounded social creative workflow for this exact post; independent review must pass before an inert candidate pull request can open."
       },
       {
         "postId": "puzzle-buy-only-the-anchor",
@@ -2740,7 +2762,7 @@ export const OPERATIONS: Operations = {
         "productCount": 3,
         "pairCount": 2,
         "destinationUrl": "https://tipsforyourgifts.web.app/blog/puzzle-board-sorting-tray-gift-pairs",
-        "nextGate": "Generate an original rights-controlled creative bound to this exact post and pack."
+        "nextGate": "Run the bounded social creative workflow for this exact post; independent review must pass before an inert candidate pull request can open."
       },
       {
         "postId": "pair-or-pile-diagnostic",
@@ -2770,7 +2792,7 @@ export const OPERATIONS: Operations = {
         "productCount": 2,
         "pairCount": 1,
         "destinationUrl": "https://tipsforyourgifts.web.app/blog/read-it-then-play-it-gift-pairs",
-        "nextGate": "Generate an original rights-controlled creative bound to this exact post and pack."
+        "nextGate": "Run the bounded social creative workflow for this exact post; independent review must pass before an inert candidate pull request can open."
       },
       {
         "postId": "read-play-disagree",
@@ -2830,7 +2852,7 @@ export const OPERATIONS: Operations = {
         "productCount": 2,
         "pairCount": 1,
         "destinationUrl": "https://tipsforyourgifts.web.app/blog/read-it-then-play-it-gift-pairs",
-        "nextGate": "Generate an original rights-controlled creative bound to this exact post and pack."
+        "nextGate": "Run the bounded social creative workflow for this exact post; independent review must pass before an inert candidate pull request can open."
       },
       {
         "postId": "mars-model-gap",
@@ -2860,7 +2882,7 @@ export const OPERATIONS: Operations = {
         "productCount": 2,
         "pairCount": 1,
         "destinationUrl": "https://tipsforyourgifts.web.app/blog/read-it-then-play-it-gift-pairs",
-        "nextGate": "Generate an original rights-controlled creative bound to this exact post and pack."
+        "nextGate": "Run the bounded social creative workflow for this exact post; independent review must pass before an inert candidate pull request can open."
       },
       {
         "postId": "systems-after-game",
@@ -2890,7 +2912,7 @@ export const OPERATIONS: Operations = {
         "productCount": 2,
         "pairCount": 1,
         "destinationUrl": "https://tipsforyourgifts.web.app/blog/read-it-then-play-it-gift-pairs",
-        "nextGate": "Generate an original rights-controlled creative bound to this exact post and pack."
+        "nextGate": "Run the bounded social creative workflow for this exact post; independent review must pass before an inert candidate pull request can open."
       },
       {
         "postId": "game-gift-five-checks",
@@ -2920,7 +2942,7 @@ export const OPERATIONS: Operations = {
         "productCount": 2,
         "pairCount": 1,
         "destinationUrl": "https://tipsforyourgifts.web.app/blog/read-it-then-play-it-gift-pairs",
-        "nextGate": "Generate an original rights-controlled creative bound to this exact post and pack."
+        "nextGate": "Run the bounded social creative workflow for this exact post; independent review must pass before an inert candidate pull request can open."
       },
       {
         "postId": "park-story-to-trail-social",
@@ -2950,7 +2972,7 @@ export const OPERATIONS: Operations = {
         "productCount": 2,
         "pairCount": 1,
         "destinationUrl": "https://tipsforyourgifts.web.app/blog/read-it-then-play-it-gift-pairs",
-        "nextGate": "Generate an original rights-controlled creative bound to this exact post and pack."
+        "nextGate": "Run the bounded social creative workflow for this exact post; independent review must pass before an inert candidate pull request can open."
       },
       {
         "postId": "photo-technique-weekend",
@@ -2980,7 +3002,7 @@ export const OPERATIONS: Operations = {
         "productCount": 2,
         "pairCount": 1,
         "destinationUrl": "https://tipsforyourgifts.web.app/blog/read-it-then-play-it-gift-pairs",
-        "nextGate": "Generate an original rights-controlled creative bound to this exact post and pack."
+        "nextGate": "Run the bounded social creative workflow for this exact post; independent review must pass before an inert candidate pull request can open."
       },
       {
         "postId": "fungal-network-trace",
@@ -3010,7 +3032,7 @@ export const OPERATIONS: Operations = {
         "productCount": 2,
         "pairCount": 1,
         "destinationUrl": "https://tipsforyourgifts.web.app/blog/read-it-then-play-it-gift-pairs",
-        "nextGate": "Generate an original rights-controlled creative bound to this exact post and pack."
+        "nextGate": "Run the bounded social creative workflow for this exact post; independent review must pass before an inert candidate pull request can open."
       },
       {
         "postId": "cook-tool-self-purchase-gap",
@@ -3040,7 +3062,7 @@ export const OPERATIONS: Operations = {
         "productCount": 2,
         "pairCount": 1,
         "destinationUrl": "https://tipsforyourgifts.web.app/blog/read-it-then-play-it-gift-pairs",
-        "nextGate": "Generate an original rights-controlled creative bound to this exact post and pack."
+        "nextGate": "Run the bounded social creative workflow for this exact post; independent review must pass before an inert candidate pull request can open."
       },
       {
         "postId": "pinterest-gift-decoder",
@@ -3070,7 +3092,7 @@ export const OPERATIONS: Operations = {
         "productCount": 0,
         "pairCount": 0,
         "destinationUrl": "https://tipsforyourgifts.web.app/blog/useful-gifts-for-hard-to-shop-for-adults",
-        "nextGate": "Generate an original rights-controlled creative bound to this exact post and pack."
+        "nextGate": "Run the bounded social creative workflow for this exact post; independent review must pass before an inert candidate pull request can open."
       },
       {
         "postId": "pinterest-daily-friction",
@@ -3100,7 +3122,7 @@ export const OPERATIONS: Operations = {
         "productCount": 0,
         "pairCount": 0,
         "destinationUrl": "https://tipsforyourgifts.web.app/blog/useful-gifts-for-hard-to-shop-for-adults",
-        "nextGate": "Generate an original rights-controlled creative bound to this exact post and pack."
+        "nextGate": "Run the bounded social creative workflow for this exact post; independent review must pass before an inert candidate pull request can open."
       },
       {
         "postId": "pinterest-no-clutter-matrix",
@@ -3130,7 +3152,7 @@ export const OPERATIONS: Operations = {
         "productCount": 0,
         "pairCount": 0,
         "destinationUrl": "https://tipsforyourgifts.web.app/blog/useful-gifts-for-hard-to-shop-for-adults",
-        "nextGate": "Generate an original rights-controlled creative bound to this exact post and pack."
+        "nextGate": "Run the bounded social creative workflow for this exact post; independent review must pass before an inert candidate pull request can open."
       },
       {
         "postId": "pinterest-what-they-say",
@@ -3160,7 +3182,7 @@ export const OPERATIONS: Operations = {
         "productCount": 0,
         "pairCount": 0,
         "destinationUrl": "https://tipsforyourgifts.web.app/blog/useful-gifts-for-hard-to-shop-for-adults",
-        "nextGate": "Generate an original rights-controlled creative bound to this exact post and pack."
+        "nextGate": "Run the bounded social creative workflow for this exact post; independent review must pass before an inert candidate pull request can open."
       },
       {
         "postId": "pinterest-right-gift-wrong-person",
@@ -3190,7 +3212,7 @@ export const OPERATIONS: Operations = {
         "productCount": 0,
         "pairCount": 0,
         "destinationUrl": "https://tipsforyourgifts.web.app/blog/useful-gifts-for-hard-to-shop-for-adults",
-        "nextGate": "Generate an original rights-controlled creative bound to this exact post and pack."
+        "nextGate": "Run the bounded social creative workflow for this exact post; independent review must pass before an inert candidate pull request can open."
       },
       {
         "postId": "instagram-five-filters",
@@ -3220,7 +3242,7 @@ export const OPERATIONS: Operations = {
         "productCount": 0,
         "pairCount": 0,
         "destinationUrl": "https://tipsforyourgifts.web.app/blog/useful-gifts-for-hard-to-shop-for-adults",
-        "nextGate": "Generate an original rights-controlled creative bound to this exact post and pack."
+        "nextGate": "Run the bounded social creative workflow for this exact post; independent review must pass before an inert candidate pull request can open."
       },
       {
         "postId": "tiktok-three-skips",
@@ -3250,7 +3272,7 @@ export const OPERATIONS: Operations = {
         "productCount": 0,
         "pairCount": 0,
         "destinationUrl": "https://tipsforyourgifts.web.app/blog/useful-gifts-for-hard-to-shop-for-adults",
-        "nextGate": "Generate an original rights-controlled creative bound to this exact post and pack."
+        "nextGate": "Run the bounded social creative workflow for this exact post; independent review must pass before an inert candidate pull request can open."
       },
       {
         "postId": "vinyl-clean-dry-rehouse",
@@ -3280,7 +3302,7 @@ export const OPERATIONS: Operations = {
         "productCount": 2,
         "pairCount": 1,
         "destinationUrl": "https://tipsforyourgifts.web.app/blog/vinyl-record-cleaner-inner-sleeve-gift-pairs",
-        "nextGate": "Generate an original rights-controlled creative bound to this exact post and pack."
+        "nextGate": "Run the bounded social creative workflow for this exact post; independent review must pass before an inert candidate pull request can open."
       },
       {
         "postId": "vinyl-medium-boundary",
@@ -3310,7 +3332,7 @@ export const OPERATIONS: Operations = {
         "productCount": 2,
         "pairCount": 0,
         "destinationUrl": "https://tipsforyourgifts.web.app/blog/vinyl-record-cleaner-inner-sleeve-gift-pairs",
-        "nextGate": "Generate an original rights-controlled creative bound to this exact post and pack."
+        "nextGate": "Run the bounded social creative workflow for this exact post; independent review must pass before an inert candidate pull request can open."
       },
       {
         "postId": "vinyl-batch-versus-one",
@@ -3340,7 +3362,7 @@ export const OPERATIONS: Operations = {
         "productCount": 2,
         "pairCount": 0,
         "destinationUrl": "https://tipsforyourgifts.web.app/blog/vinyl-record-cleaner-inner-sleeve-gift-pairs",
-        "nextGate": "Generate an original rights-controlled creative bound to this exact post and pack."
+        "nextGate": "Run the bounded social creative workflow for this exact post; independent review must pass before an inert candidate pull request can open."
       },
       {
         "postId": "vinyl-sleeve-fit",
@@ -3370,7 +3392,7 @@ export const OPERATIONS: Operations = {
         "productCount": 3,
         "pairCount": 0,
         "destinationUrl": "https://tipsforyourgifts.web.app/blog/vinyl-record-cleaner-inner-sleeve-gift-pairs",
-        "nextGate": "Generate an original rights-controlled creative bound to this exact post and pack."
+        "nextGate": "Run the bounded social creative workflow for this exact post; independent review must pass before an inert candidate pull request can open."
       },
       {
         "postId": "vinyl-keep-printed-inner",
@@ -3400,7 +3422,7 @@ export const OPERATIONS: Operations = {
         "productCount": 2,
         "pairCount": 0,
         "destinationUrl": "https://tipsforyourgifts.web.app/blog/vinyl-record-cleaner-inner-sleeve-gift-pairs",
-        "nextGate": "Generate an original rights-controlled creative bound to this exact post and pack."
+        "nextGate": "Run the bounded social creative workflow for this exact post; independent review must pass before an inert candidate pull request can open."
       },
       {
         "postId": "vinyl-buy-one-or-skip",
@@ -3430,7 +3452,7 @@ export const OPERATIONS: Operations = {
         "productCount": 4,
         "pairCount": 2,
         "destinationUrl": "https://tipsforyourgifts.web.app/blog/vinyl-record-cleaner-inner-sleeve-gift-pairs",
-        "nextGate": "Generate an original rights-controlled creative bound to this exact post and pack."
+        "nextGate": "Run the bounded social creative workflow for this exact post; independent review must pass before an inert candidate pull request can open."
       }
     ]
   },

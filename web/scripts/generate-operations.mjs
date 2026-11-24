@@ -22,6 +22,7 @@ import { loadAffiliateLinkState } from './lib/affiliate-link-contract.mjs';
 import { buildAffiliateLinkApprovalIssueUrl } from './lib/affiliate-link-approval-request-contract.mjs';
 import { summarizeDurableFounderReviewedReleaseReceipts } from './lib/publication-receipt-contract.mjs';
 import { loadReleaseApprovals, summarizeReleaseApprovals } from './lib/release-approval-contract.mjs';
+import { isSocialCreativePostEligible } from './lib/social-creative-production-contract.mjs';
 
 const root = process.cwd();
 const runsDir = path.join(root, 'research', 'runs');
@@ -36,6 +37,7 @@ const blogDir = path.join(root, 'src', 'data', 'blog');
 const socialDir = path.join(root, 'social', 'drafts');
 const socialApprovalDir = path.join(root, 'social', 'approvals');
 const socialCandidateDir = path.join(root, 'social', 'candidates');
+const socialFailureDir = path.join(root, 'social', 'failures');
 const socialAssetDir = path.join(root, 'social', 'assets');
 const socialPublicationDir = path.join(root, 'social', 'publications');
 const strategyPath = path.join(root, 'src', 'data', 'strategy.json');
@@ -89,6 +91,7 @@ async function loadHashedJsonRecords(directory) {
 const socialAssets = await loadHashedJsonRecords(socialAssetDir);
 const socialPublications = await loadHashedJsonRecords(socialPublicationDir);
 const socialCandidates = await loadHashedJsonRecords(socialCandidateDir);
+const socialCreativeFailures = await loadHashedJsonRecords(socialFailureDir);
 const researchMissions = await loadHashedJsonRecords(missionsDir);
 const visualRequests = await loadHashedJsonRecords(visualRequestsDir);
 const visualFailures = await loadHashedJsonRecords(visualFailuresDir);
@@ -106,6 +109,7 @@ const socialPosts = socialPacks.flatMap((pack) => (pack.posts ?? []).map((post) 
   packSha256: pack.sha256,
   articleSlug: pack.articleSlug
 })));
+const nextSocialCreativePost = socialPosts.find((post) => isSocialCreativePostEligible({ post, hasCandidate: candidateByPost.has(post.id) })) ?? null;
 const strategy = JSON.parse(await fs.readFile(strategyPath, 'utf8'));
 const growthRaw = await fs.readFile(growthPath);
 const growth = JSON.parse(growthRaw.toString('utf8'));
@@ -664,10 +668,21 @@ const operations = {
   social: {
     officialApiOnly: socialChannels.policy.officialApiOnly,
     configSha256: socialChannelsSha256,
+    creativeProductionWorkflowUrl: 'https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/social-creative-production.yml',
+    nextCreativePostId: nextSocialCreativePost?.id ?? null,
     channelsTotal: socialChannels.channels.length,
     channelsConfigured: configuredSocialChannels,
     channelsActive: activeSocialChannels,
     creativeCandidates: socialCandidates.length,
+    creativeFailures: socialCreativeFailures.length,
+    creativeFailureReceipts: [...socialCreativeFailures].sort((left, right) => left.failedAt.localeCompare(right.failedAt)).map((failure) => ({
+      failureId: failure.failureId,
+      postId: failure.postId,
+      stage: failure.stage,
+      reasonCode: failure.reasonCode,
+      failedAt: failure.failedAt,
+      nextGate: failure.nextGate
+    })),
     mediaAssetsApproved: socialAssets.length,
     approvalReceipts: socialApprovals.length,
     publicationReceipts: socialPublications.length,
@@ -726,7 +741,7 @@ const operations = {
       nextGate: publicationByPost.has(post.id)
         ? 'Import an official aggregate reporting snapshot before evaluating performance.'
         : !candidateByPost.has(post.id)
-          ? 'Generate an original rights-controlled creative bound to this exact post and pack.'
+          ? 'Run the bounded social creative workflow for this exact post; independent review must pass before an inert candidate pull request can open.'
           : !assetByPost.has(post.id)
             ? 'Review the exact creative in a Firebase preview, release its stable owned URL, then record founder media-rights approval.'
           : !approvalByPost.has(post.id)

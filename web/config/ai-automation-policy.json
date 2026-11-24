@@ -123,6 +123,21 @@
         "independent_review": "visual:review"
       },
       "purpose": "Generate one hash-bound visual batch and run a separate multimodal review before any credential-free Git promotion."
+    },
+    {
+      "file": "social-creative-production.yml",
+      "modelJobs": ["produce", "independent_review"],
+      "modelSteps": 2,
+      "maximumApiCallsPerRun": 2,
+      "maximumGeneratedAssetsPerRun": 1,
+      "endpoint": "https://api.openai.com/v1/responses",
+      "responseModel": "gpt-6.2-sol",
+      "imageToolModel": "gpt-image-2.5-sunburst-2026-09-08",
+      "commands": {
+        "produce": "social:creative:produce",
+        "independent_review": "social:creative:review"
+      },
+      "purpose": "Generate one exact static social creative candidate and require a separate multimodal review before a credential-free writer may open an inert proposal."
     }
   ],
   "shutdownConditions": [

@@ -1,0 +1,241 @@
+name: Produce and independently review one social creative
+
+on:
+  workflow_dispatch:
+    inputs:
+      post_id:
+        description: "Exact static social post ID without an existing creative candidate"
+        required: true
+        type: string
+  push:
+    branches: [master]
+    paths:
+      - "web/social/drafts/*.json"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: social-creative-production-${{ inputs.post_id || github.sha }}
+  cancel-in-progress: false
+
+jobs:
+  resolve:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    outputs:
+      eligible: ${{ steps.target.outputs.eligible }}
+      policy_active: ${{ steps.policy.outputs.active }}
+      candidate_id: ${{ steps.target.outputs.candidate_id }}
+      post_id: ${{ steps.target.outputs.post_id }}
+      pack_id: ${{ steps.target.outputs.pack_id }}
+      pack_path: ${{ steps.target.outputs.pack_path }}
+      article_slug: ${{ steps.target.outputs.article_slug }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 2
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "24.14.0"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - run: npm ci --prefix web
+      - name: Resolve one exact static social post
+        id: target
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          BEFORE_SHA: ${{ github.event.before }}
+          REQUESTED_POST_ID: ${{ inputs.post_id }}
+        run: |
+          pack_path=""
+          if [ "$EVENT_NAME" = "push" ]; then
+            mapfile -t pack_files < <(git diff --diff-filter=AM --name-only "$BEFORE_SHA" "$GITHUB_SHA" -- 'web/social/drafts/*.json' | sort)
+            test "${#pack_files[@]}" -ge 1
+            pack_path="${pack_files[0]}"
+          fi
+          npm --prefix web run social:creative:target -- --post-id="$REQUESTED_POST_ID" --pack-path="$pack_path"
+      - name: Read the versioned activation state without a credential
+        id: policy
+        run: |
+          status="$(node -p "JSON.parse(require('fs').readFileSync('web/config/ai-automation-policy.json','utf8')).status")"
+          if [ "$status" = "active" ]; then echo "active=true" >> "$GITHUB_OUTPUT"; else echo "active=false" >> "$GITHUB_OUTPUT"; fi
+
+  produce:
+    needs: resolve
+    if: needs.resolve.outputs.eligible == 'true' && needs.resolve.outputs.policy_active == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    permissions:
+      contents: read
+    outputs:
+      production_outcome: ${{ steps.classify.outputs.production_outcome }}
+      production_failure_code: ${{ steps.classify.outputs.production_failure_code }}
+      manifest_sha256: ${{ steps.classify.outputs.manifest_sha256 }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "24.14.0"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - run: npm ci --prefix web
+      - name: Authorize AI automation runtime
+        run: node web/scripts/check-ai-runtime-authorization.mjs
+      - name: Verify autonomous agent credential
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: node web/scripts/require-openai-api-key.mjs
+      - name: Run the registered social creative producer
+        id: producer
+        continue-on-error: true
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: npm --prefix web run social:creative:produce -- --post-id="${{ needs.resolve.outputs.post_id }}"
+      - name: Classify the production bundle before artifact promotion
+        id: classify
+        if: always()
+        run: npm --prefix web run social:creative:classify-production -- --candidate-id="${{ needs.resolve.outputs.candidate_id }}" --model-outcome="${{ steps.producer.outcome }}"
+      - uses: actions/upload-artifact@v7
+        if: steps.classify.outputs.production_outcome == 'ready'
+        with:
+          name: social-creative-production-${{ needs.resolve.outputs.candidate_id }}
+          path: web/social/production/${{ needs.resolve.outputs.candidate_id }}
+          if-no-files-found: error
+          retention-days: 7
+
+  independent_review:
+    needs: [resolve, produce]
+    if: always() && needs.produce.outputs.production_outcome == 'ready'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+    outputs:
+      review_outcome: ${{ steps.classify.outputs.review_outcome }}
+      review_failure_code: ${{ steps.classify.outputs.review_failure_code }}
+      verdict: ${{ steps.classify.outputs.verdict }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "24.14.0"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - run: npm ci --prefix web
+      - uses: actions/download-artifact@v8
+        with:
+          name: social-creative-production-${{ needs.resolve.outputs.candidate_id }}
+          path: web/social/production/${{ needs.resolve.outputs.candidate_id }}
+      - name: Authorize AI automation runtime
+        run: node web/scripts/check-ai-runtime-authorization.mjs
+      - name: Verify autonomous agent credential
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: node web/scripts/require-openai-api-key.mjs
+      - name: Run the registered independent social visual review
+        id: reviewer
+        continue-on-error: true
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: npm --prefix web run social:creative:review -- --post-id="${{ needs.resolve.outputs.post_id }}"
+      - name: Classify the independent findings before artifact promotion
+        id: classify
+        if: always()
+        run: npm --prefix web run social:creative:classify-review -- --candidate-id="${{ needs.resolve.outputs.candidate_id }}" --model-outcome="${{ steps.reviewer.outcome }}" --expected-manifest-sha256="${{ needs.produce.outputs.manifest_sha256 }}"
+      - uses: actions/upload-artifact@v7
+        if: steps.classify.outputs.review_outcome == 'ready'
+        with:
+          name: social-creative-review-${{ needs.resolve.outputs.candidate_id }}
+          path: web/social/production/${{ needs.resolve.outputs.candidate_id }}
+          if-no-files-found: error
+          retention-days: 14
+
+  detached_writer:
+    needs: [resolve, produce, independent_review]
+    if: always() && needs.resolve.outputs.eligible == 'true' && needs.resolve.outputs.policy_active == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "24.14.0"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - run: npm ci --prefix web
+      - name: Route the exact isolated result without a model credential
+        id: route
+        env:
+          PRODUCTION_OUTCOME: ${{ needs.produce.outputs.production_outcome }}
+          PRODUCTION_FAILURE_CODE: ${{ needs.produce.outputs.production_failure_code }}
+          REVIEW_OUTCOME: ${{ needs.independent_review.outputs.review_outcome }}
+          REVIEW_FAILURE_CODE: ${{ needs.independent_review.outputs.review_failure_code }}
+          REVIEW_VERDICT: ${{ needs.independent_review.outputs.verdict }}
+        run: |
+          result="$(node --input-type=module -e "import { routeSocialCreativeResult } from './web/scripts/lib/social-creative-production-contract.mjs'; console.log(JSON.stringify(routeSocialCreativeResult({productionOutcome:process.env.PRODUCTION_OUTCOME,productionFailureCode:process.env.PRODUCTION_FAILURE_CODE,reviewOutcome:process.env.REVIEW_OUTCOME,reviewFailureCode:process.env.REVIEW_FAILURE_CODE,reviewVerdict:process.env.REVIEW_VERDICT})))")"
+          echo "route=$(node -p "JSON.parse(process.argv[1]).route" "$result")" >> "$GITHUB_OUTPUT"
+          echo "stage=$(node -p "JSON.parse(process.argv[1]).stage || ''" "$result")" >> "$GITHUB_OUTPUT"
+          echo "reason_code=$(node -p "JSON.parse(process.argv[1]).reasonCode || ''" "$result")" >> "$GITHUB_OUTPUT"
+      - uses: actions/download-artifact@v8
+        if: steps.route.outputs.route == 'candidate' || steps.route.outputs.reason_code == 'review-verdict-failed'
+        with:
+          name: social-creative-review-${{ needs.resolve.outputs.candidate_id }}
+          path: web/social/production/${{ needs.resolve.outputs.candidate_id }}
+      - name: Finalize only the independently reviewed candidate
+        if: steps.route.outputs.route == 'candidate'
+        run: npm --prefix web run social:creative:finalize -- --post-id="${{ needs.resolve.outputs.post_id }}"
+      - name: Record only a bounded credential-free failure receipt
+        id: failure
+        if: steps.route.outputs.route == 'failure'
+        run: npm --prefix web run social:creative:failure:record -- --post-id="${{ needs.resolve.outputs.post_id }}" --stage="${{ steps.route.outputs.stage }}" --reason-code="${{ steps.route.outputs.reason_code }}"
+      - name: Regenerate Studio and validate the exact proposal
+        run: |
+          npm --prefix web run generate
+          npm run validate
+          npm run build
+          npm run smoke
+          git diff --check
+      - name: Commit and open the inert creative proposal
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ROUTE: ${{ steps.route.outputs.route }}
+          CANDIDATE_ID: ${{ needs.resolve.outputs.candidate_id }}
+          POST_ID: ${{ needs.resolve.outputs.post_id }}
+          FAILURE_ID: ${{ steps.failure.outputs.failure_id }}
+          FAILURE_CODE: ${{ steps.route.outputs.reason_code }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if [ "$ROUTE" = "candidate" ]; then
+            branch="codex/social-creative-${CANDIDATE_ID}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+            title="Review social creative ${CANDIDATE_ID}"
+            body="One original social image was generated for exact post ${POST_ID} and independently reviewed in a separate read-only job. The credential-free writer verified source hashes, dimensions, the one-megabyte budget, and the review pass before opening this proposal. The candidate remains unapproved: merging does not approve media rights, copy, a channel, publication, affiliate expansion, Firebase deployment, email, or spend."
+            message="Prepare reviewed social creative ${CANDIDATE_ID}"
+            git add "web/social/candidates/${CANDIDATE_ID}.json" "web/public/social-media/${CANDIDATE_ID}.jpg" web/src/data/operations.json web/src/app/generated/studio.generated.ts
+          else
+            branch="codex/social-creative-failure-${CANDIDATE_ID}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+            title="Social creative correction required for ${POST_ID}"
+            body="Social creative production for exact post ${POST_ID} stopped at ${FAILURE_CODE}. The credential-free writer discarded partial image and reviewer output, promoted no candidate, approved no media or copy, and created no external post. This proposal stores only the bounded correction receipt for Studio."
+            message="Record social creative failure for ${POST_ID}"
+            git add "web/social/failures/${FAILURE_ID}.json" web/src/data/operations.json web/src/app/generated/studio.generated.ts
+          fi
+          git switch -c "$branch"
+          git diff --cached --quiet && { echo "No bounded social creative result was produced." >&2; exit 1; }
+          git commit -m "$message"
+          git push origin "$branch"
+          gh pr create --base master --head "$branch" --title "$title" --body "$body"

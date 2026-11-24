@@ -14,8 +14,8 @@ const summary = buildAiAutomationPolicySummary(policy);
 const validation = await validateAiAutomationWorkflows({ repoRoot, policy });
 
 assert.equal(summary.activationReady, ['credential_verified_awaiting_activation', 'active'].includes(policy.status));
-assert.equal(summary.protectedWorkflows, 7);
-assert.equal(summary.protectedModelCalls, 21);
+assert.equal(summary.protectedWorkflows, 8);
+assert.equal(summary.protectedModelCalls, 23);
 assert.equal(validation.modelJobsWithGithubWrite, 0);
 assert.equal(validation.writerJobsReceivingOpenAiKey, 0);
 
