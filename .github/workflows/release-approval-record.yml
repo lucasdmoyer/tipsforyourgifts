@@ -140,7 +140,10 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git switch -c "codex/release-approval-$RUN_ID"
-          git add "web/releases/approvals/$APPROVAL_FILE" web/src/data/operations.json web/src/app/generated/studio.generated.ts
+          git add "web/releases/approvals/$APPROVAL_FILE"
+          for generated_path in web/src/data/operations.json web/src/app/generated/studio.generated.ts; do
+            test ! -e "$generated_path" || git add "$generated_path"
+          done
           git commit -m "Record exact release approval $APPROVAL_ID"
           git push origin "codex/release-approval-$RUN_ID"
       - name: Open the approval evidence pull request
