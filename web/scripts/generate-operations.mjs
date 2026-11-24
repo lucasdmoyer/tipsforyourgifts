@@ -447,6 +447,7 @@ const founderAgenda = buildFounderAgenda({
   socialCreativeCandidateCount: socialCandidates.length,
   socialChannelsSha256,
   growthSha256,
+  affiliateExpansionRequests: affiliateExpansionRequests.summaries,
   affiliateLinks: {
     candidates: affiliateLinkState.counts.candidates,
     passedReviews: affiliateLinkState.counts.passedReviews,

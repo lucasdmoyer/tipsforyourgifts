@@ -358,7 +358,8 @@ export { STUDIO_DATA } from './studio-data';
               <p class="connector-gate">The existing Sapiens pilot remains the only active Bookshop product. This request does not expand the activation list, alter editorial rankings, or authorize production.</p>
               <p class="connector-gate"><strong>Article review:</strong> {{ request.currentArticleMatchesIndependentReview ? 'current and canonically hash-bound' : 'stale; a fresh review is mandatory before any new link can be created' }}. Once an approved partner export is merged, every new exact candidate automatically enters its own independent tracking and purchase-action review. Lucas still approves each reviewed paid link separately.</p>
               <p class="connector-gate"><strong>Next gate:</strong> {{ request.nextGate }}</p>
-              @if (request.status === 'awaiting_founder_scope_approval_and_partner_export') { <p class="connector-gate"><a href="https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/affiliate-expansion-approve.yml" target="_blank" rel="noopener">Open founder scope approval workflow</a></p> }
+              <details class="connector-gate"><summary>Review the nine exact editions</summary><ol>@for (product of request.products; track product.productId) { <li>{{ product.productName }} · ISBN {{ product.isbn13 }}</li> }</ol><div class="command">program revision: {{ request.expectedProgramRevision }} → {{ request.proposedProgramRevision }}<br>approval boundary sha256: {{ request.approvalBoundarySha256 }}</div></details>
+              @if (request.status === 'awaiting_founder_scope_approval_and_partner_export' && request.approvalIssueUrl) { <p class="connector-gate"><a [href]="request.approvalIssueUrl" target="_blank" rel="noopener">Review exact scope approval</a></p> }
             </article>
           }
           @for (request of content.operations.affiliate.reportingRequests; track request.id) {

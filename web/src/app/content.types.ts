@@ -637,11 +637,17 @@ export interface Operations {
       id: string;
       status: 'awaiting_founder_scope_approval_and_partner_export' | 'scope_approved_awaiting_partner_export';
       programId: string;
+      expectedProgramRevision: number;
+      proposedProgramRevision: number;
       articleSlug: string;
       requestedProducts: number;
+      requestedProductIds: string[];
+      products: Array<{ productId: string; productName: string; isbn13: string }>;
       catalogProductsVerified: number;
       paidUrlsCollected: number;
       currentArticleMatchesIndependentReview: boolean;
+      approvalBoundarySha256: string;
+      approvalIssueUrl: string | null;
       nextGate: string;
     }>;
     reportingRequests: Array<{
