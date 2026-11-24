@@ -9,6 +9,7 @@ import { affiliateActivationProposalSchema, validateAffiliateActivationProposals
 import { validateAffiliateExpansionRequests } from './lib/affiliate-expansion-request-contract.mjs';
 import { validateAffiliateReportingRequests } from './lib/affiliate-reporting-request-contract.mjs';
 import { buildAiAutomationPolicySummary, parseAiAutomationPolicy } from './lib/ai-automation-policy-contract.mjs';
+import { buildAiAutomationBudgetIssueUrl } from './lib/ai-automation-budget-request-contract.mjs';
 import { automationReadinessEvidenceSchema, buildAutomationReadiness } from './lib/automation-readiness-contract.mjs';
 import { buildCommercialScorecard } from './lib/commercial-scorecard.mjs';
 import { buildEditorialReviewQueue } from './lib/editorial-review-queue-contract.mjs';
@@ -155,6 +156,11 @@ const aiAutomationPolicy = {
   budgetConfiguration: {
     available: aiAutomationPolicySummary.status === 'awaiting_founder_platform_budget',
     workflowUrl: aiAutomationBudgetWorkflowUrl,
+    approvalIssueUrl: buildAiAutomationBudgetIssueUrl({
+      expectedPolicySha256: aiAutomationPolicySha256,
+      monthlyBudgetUsd: aiAutomationPolicySummary.spendControl.recommendation.monthlyHardLimitUsd,
+      alertThresholdUsd: aiAutomationPolicySummary.spendControl.recommendation.alertThresholdUsd
+    }),
     confirmation: 'CONFIGURE-ai-automation-budget',
     evidenceMode: 'founder_attested_external_platform_configuration',
     command: `gh workflow run ai-automation-budget-configure.yml --repo lucasdmoyer/tipsforyourgifts --ref master -f expected_policy_sha256=${aiAutomationPolicySha256} -f monthly_budget_usd='<APPROVED_HARD_LIMIT_USD>' -f hard_limit_enabled=true -f alert_threshold_usd='<APPROVED_ALERT_USD>' -f platform_evidence_url='<OPENAI_PLATFORM_SETTINGS_URL>' -f confirmation='CONFIGURE-ai-automation-budget'`

@@ -8,6 +8,7 @@ import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { parse as parseYaml } from 'yaml';
 import { buildAiAutomationPolicySummary, parseAiAutomationPolicy } from './lib/ai-automation-policy-contract.mjs';
+import { aiBudgetAuthorityLines, buildAiAutomationBudgetIssueUrl, resolveAiAutomationBudgetIssueRequest, resolveAiAutomationBudgetManualRequest } from './lib/ai-automation-budget-request-contract.mjs';
 
 const scriptDirectory = path.dirname(fileURLToPath(import.meta.url));
 const webRoot = path.resolve(scriptDirectory, '..');
@@ -83,6 +84,48 @@ assert.equal(safeOutput.modelCalled, false);
 assert.equal(safeOutput.externalApiCalled, false);
 assert.equal(safeOutput.policyActivated, false);
 
+const approvalUrl = new URL(buildAiAutomationBudgetIssueUrl({
+  expectedPolicySha256: awaitingPolicySha256,
+  monthlyBudgetUsd: 50,
+  alertThresholdUsd: 25
+}));
+assert.equal(approvalUrl.origin, 'https://github.com');
+assert.equal(approvalUrl.pathname, '/lucasdmoyer/tipsforyourgifts/issues/new');
+const issueTitle = approvalUrl.searchParams.get('title');
+const uncheckedIssueBody = approvalUrl.searchParams.get('body');
+assert.equal(issueTitle, `[Configure AI Budget] policy ${awaitingPolicySha256.slice(0, 12)}`);
+for (const line of aiBudgetAuthorityLines) assert.ok(uncheckedIssueBody.includes(`- [ ] ${line}`));
+const checkedIssueBody = uncheckedIssueBody.replaceAll('- [ ] ', '- [x] ');
+const validIssue = {
+  title: issueTitle,
+  body: checkedIssueBody,
+  html_url: 'https://github.com/lucasdmoyer/tipsforyourgifts/issues/998',
+  user: { login: 'lucasdmoyer' },
+  author_association: 'OWNER'
+};
+const issueRequest = resolveAiAutomationBudgetIssueRequest({ issue: validIssue, actualPolicySha256: awaitingPolicySha256, policyStatus: awaitingPolicy.status });
+assert.equal(issueRequest.monthlyBudgetUsd, '50');
+assert.equal(issueRequest.alertThresholdUsd, '25');
+assert.equal(issueRequest.hardLimitEnabled, 'true');
+assert.equal(issueRequest.source, 'owner_issue');
+const manualRequest = resolveAiAutomationBudgetManualRequest({
+  expectedPolicySha256: awaitingPolicySha256,
+  monthlyBudgetUsd: '50',
+  hardLimitEnabled: 'true',
+  alertThresholdUsd: '25',
+  platformEvidenceUrl: 'https://platform.openai.com/settings/organization/limits',
+  confirmation: 'CONFIGURE-ai-automation-budget',
+  actualPolicySha256: awaitingPolicySha256,
+  policyStatus: awaitingPolicy.status
+});
+assert.equal(manualRequest.source, 'workflow_dispatch');
+assert.throws(() => resolveAiAutomationBudgetIssueRequest({ issue: { ...validIssue, body: uncheckedIssueBody }, actualPolicySha256: awaitingPolicySha256, policyStatus: awaitingPolicy.status }), /authority check is missing/);
+assert.throws(() => resolveAiAutomationBudgetIssueRequest({ issue: { ...validIssue, user: { login: 'someone-else' } }, actualPolicySha256: awaitingPolicySha256, policyStatus: awaitingPolicy.status }), /repository owner/);
+assert.throws(() => resolveAiAutomationBudgetIssueRequest({ issue: { ...validIssue, html_url: 'https://github.com/elsewhere/repository/issues/998' }, actualPolicySha256: awaitingPolicySha256, policyStatus: awaitingPolicy.status }), /outside the canonical repository/);
+const staleIssueDigest = `${awaitingPolicySha256.slice(0, 12)}${'0'.repeat(52)}`;
+assert.throws(() => resolveAiAutomationBudgetIssueRequest({ issue: { ...validIssue, body: checkedIssueBody.replace(awaitingPolicySha256, staleIssueDigest) }, actualPolicySha256: awaitingPolicySha256, policyStatus: awaitingPolicy.status }), /changed after founder review/);
+assert.throws(() => resolveAiAutomationBudgetIssueRequest({ issue: validIssue, actualPolicySha256: awaitingPolicySha256, policyStatus: 'active' }), /not awaiting founder budget approval/);
+
 const stale = run(await createFixture(), { 'expected-policy-sha256': '0'.repeat(64) });
 assert.notEqual(stale.status, 0);
 assert.match(stale.stderr, /changed after founder review/);
@@ -127,20 +170,25 @@ assert.match(repeated.stderr, /not awaiting founder budget approval/);
 
 const workflowSource = await fs.readFile(workflowPath, 'utf8');
 const workflow = parseYaml(workflowSource);
-assert.deepEqual(workflow.permissions, { contents: 'read' });
-assert.deepEqual(workflow.jobs.prepare.permissions, { contents: 'read' });
+assert.deepEqual(workflow.permissions, { contents: 'read', issues: 'read' });
+assert.deepEqual(workflow.jobs.prepare.permissions, { contents: 'read', issues: 'read' });
 assert.deepEqual(workflow.jobs.open_pull_request.permissions, { contents: 'write', 'pull-requests': 'write' });
 assert.match(workflowSource, /CONFIGURE-ai-automation-budget/);
 assert.match(workflowSource, /persist-credentials: false/);
 assert.match(workflowSource, /git diff --binary HEAD > ai-budget\.patch/);
 assert.match(workflowSource, /actions\/upload-artifact@v7/);
 assert.match(workflowSource, /actions\/download-artifact@v8/);
+assert.match(workflowSource, /issues:\s*\n\s+types: \[opened, reopened\]/);
+assert.match(workflowSource, /github\.event\.issue\.author_association == 'OWNER'/);
+assert.match(workflowSource, /resolve-ai-automation-budget-request\.mjs --request-path=/);
+assert.doesNotMatch(workflowSource, /ai:budget:configure[^\n]*inputs\.expected_policy_sha256/);
 assert.doesNotMatch(workflowSource, /OPENAI_API_KEY|CODEX_API_KEY|codex-action|firebase-tools|hosting:channel|google-github-actions\/auth|secrets\./iu);
 
 console.log(JSON.stringify({
   aiAutomationBudgetCommandTests: 'passed',
-  commandNegativeChecks: 28,
-  workflowSafetyChecks: 9,
+  commandNegativeChecks: 33,
+  workflowSafetyChecks: 13,
+  mobileOwnerIssue: 'passed',
   transition: `${awaitingPolicy.status} -> ${configured.status}`,
   credentialValueStored: false,
   modelCalled: false,

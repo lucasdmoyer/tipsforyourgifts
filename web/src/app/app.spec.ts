@@ -520,7 +520,8 @@ describe('App', () => {
       expect(policy.policySha256).toMatch(/^[a-f0-9]{64}$/);
       expect(element.textContent).toContain(policy.policySha256);
       expect(element.textContent).toContain('Lucas must first set a real monthly project spend limit');
-      expect(element.textContent).toContain('does not create the external limit or alert, add a credential, call a model, activate the policy, merge, or deploy');
+      expect(element.textContent).toContain('First create the external limit and alert.');
+      expect(element.textContent).toContain('does not add a credential, call a model, activate the policy, merge, or deploy');
       expect(element.textContent).toContain(`$${policy.spendControl.recommendation.monthlyHardLimitUsd} hard limit`);
       expect(element.textContent).toContain(`$${policy.spendControl.recommendation.alertThresholdUsd} alert`);
       expect(element.textContent).toContain('hard-limit enforcement is not instantaneous');
@@ -529,7 +530,8 @@ describe('App', () => {
       expect(policy.budgetConfiguration.command).toContain('hard_limit_enabled=true');
       expect(policy.budgetConfiguration.command).toContain("alert_threshold_usd='<APPROVED_ALERT_USD>'");
       expect(element.textContent).toContain(policy.budgetConfiguration.command);
-      expect(element.querySelector(`a[href="${policy.budgetConfiguration.workflowUrl}"]`)).not.toBeNull();
+      expect(anchorWithExactHref(element, policy.budgetConfiguration.approvalIssueUrl)?.textContent).toContain('Review the exact budget packet');
+      expect(anchorWithExactHref(element, policy.budgetConfiguration.workflowUrl)).not.toBeNull();
       expect(policy.credential.valueStoredInGit).toBe(false);
     } finally {
       Object.assign(policy, original);
