@@ -376,21 +376,24 @@ export function buildFounderAgenda(input) {
     const approvalPending = input.affiliateLinks.queue.find((candidate) => candidate.stage === 'founder_approval_required');
     const failedCandidate = input.affiliateLinks.queue.find((candidate) => candidate.stage === 'review_failed');
     const candidate = approvalPending ?? reviewPending ?? failedCandidate;
-    if (input.affiliateLinks.activeOverlays === 0 || candidate) {
-      const mode = approvalPending ? 'approve' : reviewPending ? 'review' : failedCandidate ? 'replace' : 'create';
+    const expansionPending = input.affiliateExpansionRequests?.find((request) => request.status === 'awaiting_founder_scope_approval_and_partner_export') ?? null;
+    if (input.affiliateLinks.activeOverlays === 0 || candidate || expansionPending) {
+      const mode = approvalPending ? 'approve' : reviewPending ? 'review' : failedCandidate ? 'replace' : expansionPending ? 'expand' : 'create';
       decisions.push({
         id: 'choose-affiliate-pilot',
         rank: 0,
         priorityScore: 65,
         horizon: 'later',
         category: 'monetization',
-        title: mode === 'approve' ? 'Decide on one independently reviewed paid link' : mode === 'review' ? 'Send the first exact paid link to evidence review' : mode === 'replace' ? 'Replace the failed paid-link candidate' : 'Choose one existing editorial winner for a paid-link pilot',
+        title: mode === 'approve' ? 'Decide on one independently reviewed paid link' : mode === 'review' ? 'Send the first exact paid link to evidence review' : mode === 'replace' ? 'Replace the failed paid-link candidate' : mode === 'expand' ? 'Review the next narrow Bookshop scope' : 'Choose one existing editorial winner for a paid-link pilot',
         recommendation: mode === 'approve'
           ? `Review and approve ${candidate.candidateId} only if its exact destination and separate evidence receipt are acceptable.`
           : mode === 'review'
             ? `Run the isolated evidence editor for ${candidate.candidateId}; a candidate alone remains inert.`
             : mode === 'replace'
               ? `Leave ${candidate.candidateId} blocked and create an incremented candidate only after its stated evidence problem is corrected.`
+              : mode === 'expand'
+                ? `Review the exact ${expansionPending.requestedProducts}-edition Bookshop allowlist before requesting partner-issued URLs.`
               : `Start with one product from ${enabledPrograms[0].eligibleArticleSlugs[0]} that already won on editorial merit.`,
         decisionQuestion: mode === 'approve'
           ? 'Do you approve this exact candidate and clean review hashes for a preview-only paid-link overlay?'
@@ -398,17 +401,27 @@ export function buildFounderAgenda(input) {
             ? 'Should the independent evidence editor verify this exact destination now?'
             : mode === 'replace'
               ? 'Has the failed destination or evidence problem been corrected enough to create a new immutable candidate revision?'
+              : mode === 'expand'
+                ? `Do you approve this exact ${expansionPending.requestedProducts}-edition research scope for partner-link collection only?`
               : 'Which already-recommended product should receive the first bounded affiliate-link candidate?',
-        rationale: 'Program activation alone cannot prove that one tracked URL still lands on the intended product, preserves approved tracking, and leaves the recommendation useful without commission.',
+        rationale: mode === 'expand'
+          ? 'The first paid link proves the narrow process, but broader monetization still needs an explicit edition allowlist before partner URLs are collected. Scope approval keeps commission separate from editorial selection.'
+          : 'Program activation alone cannot prove that one tracked URL still lands on the intended product, preserves approved tracking, and leaves the recommendation useful without commission.',
         evidence: [
           `${enabledPrograms.length} affiliate program is enabled and ${input.affiliateLinks.activeOverlays} paid-link overlays are active.`,
           `${input.affiliateLinks.candidates} exact candidates, ${input.affiliateLinks.passedReviews} clean independent reviews, and ${input.affiliateLinks.approvals} founder approvals are recorded.`,
-          candidate ? `${candidate.candidateId} is at ${candidate.stage}.` : 'No exact product-level paid-link candidate exists yet.',
+          candidate ? `${candidate.candidateId} is at ${candidate.stage}.` : expansionPending ? `${expansionPending.catalogProductsVerified}/${expansionPending.requestedProducts} requested editions have clean catalog-page observations and zero partner-issued paid URLs.` : 'No exact product-level paid-link candidate exists yet.',
           `${input.publicationManifest.counts.affiliateLinks} paid links are bound into the current release manifest.`
         ],
-        unlocks: 'One approved overlay creates a measurable monetization pilot without rewriting product order, scores, gift logic, pairings, or raw editorial evidence.',
-        tradeoff: 'A paid-link pilot adds destination monitoring, disclosure, terms, and reader-trust obligations before conversion evidence exists.',
-        guardrail: 'Require exact candidate, independent review, and founder approval hashes; then inspect the Firebase preview. Approval does not authorize production deployment.',
+        unlocks: mode === 'expand'
+          ? 'A reviewed scope pull request permits collection of partner-issued URLs for nine existing editorial winners; it still creates no paid links.'
+          : 'One approved overlay creates a measurable monetization pilot without rewriting product order, scores, gift logic, pairings, or raw editorial evidence.',
+        tradeoff: mode === 'expand'
+          ? 'Nine additional editions create nine separate destination-monitoring and approval obligations before any additional revenue can be measured.'
+          : 'A paid-link pilot adds destination monitoring, disclosure, terms, and reader-trust obligations before conversion evidence exists.',
+        guardrail: mode === 'expand'
+          ? 'Scope approval may open one deterministic review pull request only. It cannot collect or approve paid URLs, change editorial rankings, merge, preview, or deploy.'
+          : 'Require exact candidate, independent review, and founder approval hashes; then inspect the Firebase preview. Approval does not authorize production deployment.',
         reversibility: 'high',
         founderActionRequired: true,
         action: mode === 'approve' ? {
@@ -419,6 +432,10 @@ export function buildFounderAgenda(input) {
           label: 'Open independent review',
           url: 'https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/affiliate-link-review.yml',
           command: `gh workflow run affiliate-link-review.yml -f candidate_id=${candidate.candidateId} -f expected_candidate_sha256=${candidate.candidateSha256}`
+        } : mode === 'expand' ? {
+          label: 'Review exact expansion',
+          url: expansionPending.approvalIssueUrl,
+          command: `gh workflow run affiliate-expansion-approve.yml -f request_id=${expansionPending.id} -f expected_approval_boundary_sha256=${expansionPending.approvalBoundarySha256} -f confirmation=APPROVE-${expansionPending.id}-${expansionPending.approvalBoundarySha256}`
         } : {
           label: 'Open link candidate',
           url: 'https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/affiliate-link-candidate.yml',

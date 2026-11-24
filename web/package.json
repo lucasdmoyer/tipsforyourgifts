@@ -95,6 +95,7 @@
     "affiliate:record-verification": "node scripts/record-affiliate-verification.mjs",
     "affiliate:activate": "node scripts/activate-affiliate-program.mjs",
     "affiliate:expansion:approve": "node scripts/approve-affiliate-expansion-request.mjs",
+    "affiliate:expansion:approval:resolve": "node scripts/resolve-affiliate-expansion-approval-request.mjs",
     "affiliate:link:candidate": "node scripts/create-affiliate-link-candidate.mjs",
     "affiliate:link:batch-candidate": "node scripts/create-affiliate-link-batch.mjs",
     "affiliate:link:batch:prepare": "node scripts/prepare-affiliate-link-batch.mjs",

@@ -15,28 +15,72 @@ on:
         description: "Type APPROVE-<request-id>-<exact-boundary-sha256>"
         required: true
         type: string
+  issues:
+    types: [opened, reopened]
 
 permissions:
-  contents: write
-  pull-requests: write
+  contents: read
 
 concurrency:
-  group: affiliate-expansion-${{ inputs.request_id }}
+  group: affiliate-expansion-${{ github.event.issue.number || inputs.request_id }}
   cancel-in-progress: false
 
 jobs:
+  prepare:
+    if: github.event_name == 'workflow_dispatch' || startsWith(github.event.issue.title, '[Approve Affiliate Expansion] ')
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      issues: read
+    outputs:
+      request_id: ${{ steps.resolve.outputs.request_id }}
+      expected_approval_boundary_sha256: ${{ steps.resolve.outputs.expected_approval_boundary_sha256 }}
+      confirmation: ${{ steps.resolve.outputs.confirmation }}
+      request_source: ${{ steps.resolve.outputs.request_source }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: master
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "24.14.0"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - name: Install and resolve the exact founder request
+        id: resolve
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EVENT_NAME: ${{ github.event_name }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          INPUT_REQUEST_ID: ${{ inputs.request_id }}
+          INPUT_EXPECTED_BOUNDARY: ${{ inputs.expected_approval_boundary_sha256 }}
+          INPUT_CONFIRMATION: ${{ inputs.confirmation }}
+        run: |
+          npm ci --prefix web
+          if [ "$EVENT_NAME" = "issues" ]; then
+            gh api "repos/$GITHUB_REPOSITORY/issues/$ISSUE_NUMBER" > "$RUNNER_TEMP/affiliate-expansion-issue.json"
+            node web/scripts/resolve-affiliate-expansion-approval-request.mjs --root=web --request-path="$RUNNER_TEMP/affiliate-expansion-issue.json" >> "$GITHUB_OUTPUT"
+          else
+            node web/scripts/resolve-affiliate-expansion-approval-request.mjs --root=web --request-id="$INPUT_REQUEST_ID" --expected-approval-boundary-sha256="$INPUT_EXPECTED_BOUNDARY" --confirmation="$INPUT_CONFIRMATION" >> "$GITHUB_OUTPUT"
+          fi
+
   approve:
+    needs: prepare
     runs-on: ubuntu-latest
     timeout-minutes: 30
     environment: affiliate-expansion
+    permissions:
+      contents: write
+      pull-requests: write
     steps:
       - name: Require repository-owner action-time approval
         env:
           ACTOR: ${{ github.actor }}
           OWNER: ${{ github.repository_owner }}
-          REQUEST_ID: ${{ inputs.request_id }}
-          EXPECTED_BOUNDARY: ${{ inputs.expected_approval_boundary_sha256 }}
-          CONFIRMATION: ${{ inputs.confirmation }}
+          REQUEST_ID: ${{ needs.prepare.outputs.request_id }}
+          EXPECTED_BOUNDARY: ${{ needs.prepare.outputs.expected_approval_boundary_sha256 }}
+          CONFIRMATION: ${{ needs.prepare.outputs.confirmation }}
         run: |
           test "$ACTOR" = "$OWNER" || { echo "Only the repository owner may approve an affiliate expansion." >&2; exit 1; }
           [[ "$REQUEST_ID" =~ ^[a-z0-9]+(-[a-z0-9]+)*$ ]] || { echo "Invalid request ID." >&2; exit 1; }

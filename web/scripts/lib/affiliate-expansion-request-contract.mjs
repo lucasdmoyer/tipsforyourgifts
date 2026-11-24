@@ -9,6 +9,13 @@ const slug = z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/);
 const sha256 = z.string().regex(/^[a-f0-9]{64}$/);
 const httpsUrl = z.string().url().refine((value) => new URL(value).protocol === 'https:', 'must use HTTPS');
 const safeIdentity = z.string().regex(/^[A-Za-z0-9][A-Za-z0-9._-]{2,79}$/);
+const repository = 'lucasdmoyer/tipsforyourgifts';
+
+export const affiliateExpansionApprovalAuthorityLines = Object.freeze([
+  'I reviewed the exact nine-edition scope, ISBNs, program revisions, and approval-boundary digest shown in this packet.',
+  'I authorize the protected workflow to record only this exact activation allowlist in a review pull request.',
+  'This does not authorize a partner export, paid URL, account or terms change, editorial reranking, merge, Firebase preview, or production deployment.'
+]);
 
 function isbn13IsValid(value) {
   const digits = [...value].map(Number);
@@ -108,6 +115,106 @@ export function affiliateExpansionApprovalBoundarySha256(request) {
   return createHash('sha256').update(`${JSON.stringify(boundary, null, 2)}\n`).digest('hex');
 }
 
+function exactAffiliateExpansionDecision(request) {
+  return {
+    schemaVersion: '1.0.0',
+    decision: 'approve_affiliate_expansion_scope',
+    requestId: request.id,
+    approvalBoundarySha256: affiliateExpansionApprovalBoundarySha256(request),
+    programId: request.programId,
+    expectedProgramRevision: request.expectedProgramRevision,
+    proposedProgramRevision: request.proposedProgramRevision,
+    articleSlug: request.articleSlug,
+    requestedProductIds: request.requestedProductIds
+  };
+}
+
+export function parseAffiliateExpansionExactApproval(body) {
+  const blocks = [];
+  const pattern = /(?:^|\n)## Exact approval\s*\n```json\s*\n([\s\S]*?)\n```/g;
+  for (const match of String(body ?? '').replaceAll('\r\n', '\n').matchAll(pattern)) blocks.push(match[1]);
+  if (blocks.length !== 1) throw new Error('Affiliate expansion request must contain exactly one Exact approval JSON block');
+  let decision;
+  try { decision = JSON.parse(blocks[0]); } catch { throw new Error('Affiliate expansion Exact approval block is not valid JSON'); }
+  const expectedKeys = ['approvalBoundarySha256', 'articleSlug', 'decision', 'expectedProgramRevision', 'programId', 'proposedProgramRevision', 'requestId', 'requestedProductIds', 'schemaVersion'];
+  if (!decision || Array.isArray(decision) || JSON.stringify(Object.keys(decision).sort()) !== JSON.stringify(expectedKeys)) {
+    throw new Error('Affiliate expansion Exact approval contains unexpected fields');
+  }
+  if (decision.schemaVersion !== '1.0.0' || decision.decision !== 'approve_affiliate_expansion_scope') throw new Error('Affiliate expansion decision is unsupported');
+  if (!slug.safeParse(decision.requestId).success || !slug.safeParse(decision.programId).success || !slug.safeParse(decision.articleSlug).success) throw new Error('Affiliate expansion approval identity is invalid');
+  if (!sha256.safeParse(decision.approvalBoundarySha256).success) throw new Error('Affiliate expansion approval boundary SHA-256 is invalid');
+  if (!Number.isInteger(decision.expectedProgramRevision) || !Number.isInteger(decision.proposedProgramRevision)) throw new Error('Affiliate expansion program revisions are invalid');
+  if (!Array.isArray(decision.requestedProductIds) || decision.requestedProductIds.length < 1 || decision.requestedProductIds.some((id) => !slug.safeParse(id).success)) throw new Error('Affiliate expansion requested product IDs are invalid');
+  return decision;
+}
+
+function assertAffiliateExpansionAuthority(body) {
+  const normalized = String(body ?? '').replaceAll('\r\n', '\n').toLowerCase();
+  for (const line of affiliateExpansionApprovalAuthorityLines) {
+    if (!normalized.includes(`- [x] ${line}`.toLowerCase())) throw new Error(`Affiliate expansion authority check is missing: ${line}`);
+  }
+}
+
+export function buildAffiliateExpansionApprovalIssueUrl(request) {
+  if (request.status !== 'awaiting_founder_scope_approval_and_partner_export') throw new Error('Affiliate expansion approval packet requires a pending scope request');
+  const decision = exactAffiliateExpansionDecision(request);
+  const title = `[Approve Affiliate Expansion] ${request.id} ${decision.approvalBoundarySha256.slice(0, 12)}`;
+  const body = [
+    '# Approve one exact Bookshop activation scope',
+    '',
+    'Lucas, this packet expands the eligible Bookshop allowlist from one reviewed edition to ten. It does not create paid links. Review every edition, check all three authority boxes, then submit. The protected workflow will independently verify the current repository state and may open a review pull request only.',
+    '',
+    '## Scope',
+    '',
+    `- **Request:** ${request.id}`,
+    `- **Program:** ${request.programId}, revision ${request.expectedProgramRevision} to ${request.proposedProgramRevision}`,
+    `- **Article:** ${request.articleSlug}`,
+    `- **Existing active product:** ${request.currentActivationProductIds.join(', ')}`,
+    `- **New editions:** ${request.products.length}`,
+    `- **Approval boundary SHA-256:** ${decision.approvalBoundarySha256}`,
+    '',
+    '## Exact editions',
+    '',
+    ...request.products.map((product, index) => `${index + 1}. **${product.productName}** — ISBN ${product.isbn13} — [clean Bookshop catalog page](${product.cleanBookshopCatalogUrl})`),
+    '',
+    '## Exact approval',
+    '',
+    '```json',
+    JSON.stringify(decision, null, 2),
+    '```',
+    '',
+    '## Authority boundary',
+    '',
+    ...affiliateExpansionApprovalAuthorityLines.map((line) => `- [ ] ${line}`),
+    '',
+    '> A founder-attested partner export, one immutable candidate per paid URL, independent destination and tracking review, separate founder approval for each link, and an exact-commit Firebase preview remain mandatory.'
+  ].join('\n');
+  const url = new URL(`https://github.com/${repository}/issues/new`);
+  url.searchParams.set('title', title);
+  url.searchParams.set('body', body);
+  if (url.toString().length > 12_000) throw new Error('Affiliate expansion approval issue exceeds the safe GitHub URL limit');
+  return url.toString();
+}
+
+export function resolveAffiliateExpansionApprovalIssue({ issue, request }) {
+  if (issue?.user?.login !== 'lucasdmoyer' || issue?.author_association !== 'OWNER') throw new Error('Affiliate expansion approval must be submitted by repository owner lucasdmoyer');
+  if (!new RegExp(`^https://github\\.com/${repository.replace('/', '\\/')}/issues/[1-9]\\d*$`).test(issue?.html_url ?? '')) throw new Error('Affiliate expansion approval URL is outside the canonical repository');
+  if (request.status !== 'awaiting_founder_scope_approval_and_partner_export') throw new Error('Affiliate expansion request is not awaiting founder scope approval');
+  const decision = parseAffiliateExpansionExactApproval(issue.body);
+  const expected = exactAffiliateExpansionDecision(request);
+  if (JSON.stringify(decision) !== JSON.stringify(expected)) throw new Error('Affiliate expansion approval does not match the current exact request');
+  const expectedTitle = `[Approve Affiliate Expansion] ${request.id} ${expected.approvalBoundarySha256.slice(0, 12)}`;
+  if (issue.title !== expectedTitle) throw new Error(`Affiliate expansion approval title must be exactly ${expectedTitle}`);
+  assertAffiliateExpansionAuthority(issue.body);
+  return {
+    requestId: request.id,
+    expectedApprovalBoundarySha256: expected.approvalBoundarySha256,
+    confirmation: `APPROVE-${request.id}-${expected.approvalBoundarySha256}`,
+    source: 'owner_issue',
+    issueUrl: issue.html_url
+  };
+}
+
 async function readBoundJson(root, reference) {
   const raw = await fs.readFile(path.join(root, reference.path));
   const digest = createHash('sha256').update(raw).digest('hex');
@@ -192,11 +299,17 @@ export async function validateAffiliateExpansionRequests({ root, document: input
       id: request.id,
       status: request.status,
       programId: request.programId,
+      expectedProgramRevision: request.expectedProgramRevision,
+      proposedProgramRevision: request.proposedProgramRevision,
       articleSlug: request.articleSlug,
       requestedProducts: request.products.length,
+      requestedProductIds: request.requestedProductIds,
+      products: request.products.map((product) => ({ productId: product.productId, productName: product.productName, isbn13: product.isbn13 })),
       catalogProductsVerified: catalogObservation.records.length,
       paidUrlsCollected: 0,
       currentArticleMatchesIndependentReview: request.independentReview.currentArticleMatchesReceipt,
+      approvalBoundarySha256,
+      approvalIssueUrl: scopePending ? buildAffiliateExpansionApprovalIssueUrl(request) : null,
       nextGate: scopePending ? 'Lucas approves this exact nine-book scope, then supplies a founder-attested Bookshop export containing partner-issued URLs.' : 'Supply a founder-attested Bookshop export containing exact partner-issued URLs; every destination still requires independent review and separate founder approval.'
     });
   }

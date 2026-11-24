@@ -621,6 +621,9 @@ describe('App', () => {
     for (const request of OPERATIONS.affiliate.expansionRequests) {
       expect(element.textContent).toContain('Bookshop expansion handoff');
       expect(element.textContent).toContain(`${request.requestedProducts} editions identified. ${request.catalogProductsVerified} clean catalog pages independently verified. ${request.paidUrlsCollected} partner-issued paid URLs collected.`);
+      expect(element.textContent).toContain(request.approvalBoundarySha256);
+      for (const product of request.products) expect(element.textContent).toContain(`ISBN ${product.isbn13}`);
+      if (request.approvalIssueUrl) expect(Array.from(element.querySelectorAll<HTMLAnchorElement>('a')).some((anchor) => anchor.href === request.approvalIssueUrl)).toBe(true);
     }
     for (const proposal of OPERATIONS.affiliate.activationProposals) {
       expect(element.textContent).toContain('Bookshop decision packet');

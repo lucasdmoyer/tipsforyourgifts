@@ -5,12 +5,14 @@ import path from 'node:path';
 import process from 'node:process';
 import { buildFounderAgenda, parseFounderAgenda } from './lib/founder-agenda-contract.mjs';
 import { buildFirebasePreviewIdentityPlan, parseFirebasePreviewIdentityExactApproval } from './lib/firebase-preview-identity-plan-contract.mjs';
+import { validateAffiliateExpansionRequests } from './lib/affiliate-expansion-request-contract.mjs';
 import { loadReleaseApprovals, summarizeReleaseApprovals } from './lib/release-approval-contract.mjs';
 
 const root = process.cwd();
 const readJson = async (relativePath) => JSON.parse(await fs.readFile(path.join(root, relativePath), 'utf8'));
 const strategy = await readJson('src/data/strategy.json');
 const affiliate = await readJson('config/affiliate-programs.json');
+const affiliateExpansionRequests = await validateAffiliateExpansionRequests({ root, document: await readJson('config/affiliate-expansion-requests.json'), affiliate });
 const socialChannelsRaw = await fs.readFile(path.join(root, 'config/social-channels.json'));
 const socialChannels = JSON.parse(socialChannelsRaw.toString('utf8'));
 const socialChannelsSha256 = createHash('sha256').update(socialChannelsRaw).digest('hex');
@@ -46,6 +48,7 @@ const baseInput = {
   socialCreativeCandidateCount: socialCandidateCount,
   socialChannelsSha256,
   growthSha256,
+  affiliateExpansionRequests: affiliateExpansionRequests.summaries,
   affiliateLinks: { candidates: 0, passedReviews: 0, approvals: 0, activeOverlays: 0, queue: [] }
 };
 const base = buildFounderAgenda(baseInput);
@@ -97,6 +100,14 @@ if (currentSocialDecision?.title === 'Complete the first Pinterest operating pac
   assert.match(currentSocialDecision.action.command, /configuration_evidence_url=https:\/\/github\.com\/lucasdmoyer\/tipsforyourgifts\/issues\/61/);
   assert.doesNotMatch(currentSocialDecision.action.command, /REPLACE_WITH_ISSUE_NUMBER/);
   assert.ok(currentSocialDecision.evidence.includes(`${socialCandidateCount} original creative candidate${socialCandidateCount === 1 ? ' is' : 's are'} locally verified.`));
+}
+const currentAffiliateDecision = base.decisions.find((decision) => decision.id === 'choose-affiliate-pilot');
+const pendingExpansion = affiliateExpansionRequests.summaries.find((request) => request.status === 'awaiting_founder_scope_approval_and_partner_export');
+if (pendingExpansion) {
+  assert.equal(currentAffiliateDecision.title, 'Review the next narrow Bookshop scope');
+  assert.equal(currentAffiliateDecision.action.url, pendingExpansion.approvalIssueUrl);
+  assert.match(currentAffiliateDecision.action.command, new RegExp(pendingExpansion.approvalBoundarySha256));
+  assert.match(new URL(currentAffiliateDecision.action.url).searchParams.get('title'), /^\[Approve Affiliate Expansion\]/);
 }
 assert.deepEqual(base.decisions.map((decision) => decision.rank), base.decisions.map((_decision, index) => index + 1));
 const priorityWeight = { high: 3, medium: 2, low: 1 };
