@@ -2,8 +2,22 @@ import { createHash } from 'node:crypto';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import process from 'node:process';
-import { parsePublicationManifest } from './lib/publication-manifest-contract.mjs';
+import { z } from 'zod';
 import { parseReleaseApproval } from './lib/release-approval-contract.mjs';
+
+const releaseCandidateManifestSchema = z.object({
+  schemaVersion: z.enum(['1.2.0', '1.4.0']),
+  manifestId: z.string().regex(/^publication-set-[a-f0-9]{16}$/),
+  contentSetSha256: z.string().regex(/^[a-f0-9]{64}$/),
+  counts: z.object({
+    articles: z.number().int().positive(),
+    affiliateLinks: z.number().int().nonnegative()
+  }).passthrough()
+}).passthrough().superRefine((manifest, context) => {
+  if (manifest.manifestId !== `publication-set-${manifest.contentSetSha256.slice(0, 16)}`) {
+    context.addIssue({ code: z.ZodIssueCode.custom, path: ['manifestId'], message: 'manifest ID must bind the content-set SHA-256' });
+  }
+});
 
 const args = Object.fromEntries(process.argv.slice(2).map((argument) => {
   const [key, ...parts] = argument.replace(/^--/, '').split('=');
@@ -22,7 +36,7 @@ if (Date.parse(observedAt) > Date.now()) throw new Error('observed-at cannot be 
 
 const pullRequest = JSON.parse(await fs.readFile(requiredPath('pull-request-json'), 'utf8'));
 const comment = JSON.parse(await fs.readFile(requiredPath('approval-comment-json'), 'utf8'));
-const manifest = parsePublicationManifest(JSON.parse(await fs.readFile(requiredPath('publication-manifest'), 'utf8')));
+const manifest = releaseCandidateManifestSchema.parse(JSON.parse(await fs.readFile(requiredPath('publication-manifest'), 'utf8')));
 const outputPath = requiredPath('output');
 const repository = 'lucasdmoyer/tipsforyourgifts';
 const prNumber = Number(pullRequest.number);
