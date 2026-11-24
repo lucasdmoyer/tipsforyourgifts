@@ -236,6 +236,7 @@ jobs:
           npm run build
           npm run smoke
       - name: Commit the bounded visual result
+        id: pull_request
         env:
           GH_TOKEN: ${{ github.token }}
           REQUEST_ID: ${{ needs.resolve.outputs.request_id }}
@@ -251,7 +252,7 @@ jobs:
           if [ "$ROUTE" = "promotion" ]; then
             branch="codex/visual-production-${REQUEST_ID}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
             title="Promote reviewed visuals for ${ARTICLE_SLUG}"
-            body="Automated proposal for visual request ${REQUEST_ID}. Generation and independent multimodal review ran in separate read-only jobs. The writer received no OpenAI credential. Validation, build, and smoke passed. No Firebase deployment, affiliate activation, social publication, or email was attempted."
+            body="Automated proposal for visual request ${REQUEST_ID}. Generation and independent multimodal review ran in separate read-only jobs. The writer received no OpenAI credential. Validation, build, and smoke passed. If both the exact mission snapshot and current publication policy are automatic-after-proven, GitHub may queue check-gated squash auto-merge; otherwise founder review remains required. No Firebase deployment, affiliate activation, social publication, or email was attempted."
             message="feat: promote reviewed visuals for ${ARTICLE_SLUG}"
             git add web/visuals/article-visuals.json web/visuals/PROMPTS.md web/visuals/reviews web/visuals/sources "web/visuals/requests/${REQUEST_ID}.json" "web/public/blog-images/${ARTICLE_SLUG}" "web/research/runs/${RUN_ID}.json" "web/research/missions/${MISSION_ID}.json" "web/src/data/blog/${ARTICLE_SLUG}.md" web/src/data/operations.json web/src/app/generated/content.generated.ts web/src/app/generated/studio.generated.ts web/public/publication-manifest.json web/public/sitemap.xml
           else
@@ -265,4 +266,17 @@ jobs:
           git diff --cached --quiet && { echo "No bounded visual result was produced." >&2; exit 1; }
           git commit -m "$message"
           git push origin "$branch"
-          gh pr create --base master --head "$branch" --title "$title" --body "$body"
+          pr_url="$(gh pr create --base master --head "$branch" --title "$title" --body "$body")"
+          echo "pr_url=$pr_url" >> "$GITHUB_OUTPUT"
+      - name: Resolve the proven-policy visual merge boundary without a credential
+        id: auto_merge
+        env:
+          MISSION_ID: ${{ needs.resolve.outputs.mission_id }}
+          ROUTE: ${{ steps.route.outputs.route }}
+        run: npm --prefix web run visual:auto-merge:resolve -- --mission-id="$MISSION_ID" --route="$ROUTE"
+      - name: Queue check-gated visual auto-merge only under the proven policy
+        if: steps.auto_merge.outputs.eligible == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_URL: ${{ steps.pull_request.outputs.pr_url }}
+        run: gh pr merge --auto --squash "$PR_URL"

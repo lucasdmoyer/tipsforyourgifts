@@ -17,6 +17,7 @@ import {
 } from './lib/visual-production-contract.mjs';
 import { visualFailureReceiptSchema } from './lib/visual-failure-contract.mjs';
 import { parseAiAutomationPolicy, validateDirectApiWorkflowDocument } from './lib/ai-automation-policy-contract.mjs';
+import { resolveVisualAutoMerge } from './lib/visual-auto-merge-contract.mjs';
 
 const webRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const repoRoot = path.resolve(webRoot, '..');
@@ -120,4 +121,34 @@ for (const jobName of ['produce', 'independent_review']) {
   assert.doesNotMatch(JSON.stringify(workflow.jobs[jobName].permissions), /write/);
 }
 
-console.log(JSON.stringify({ gate: 'passed', credentialedModelSteps: 2, maximumApiCallsPerRun: 13, maximumGeneratedAssetsPerRun: 12, usageEvidenceRequired: true, dollarCostInvented: false, independentReviewRequired: true, failedReviewPromotionBlocked: true, generationFailureRecorded: true, reviewFailureRecorded: true, partialVisualOutputPreserved: false, reviewReceiptFabricated: false, writerReceivesOpenAiKey: false, firebaseDeploymentAuthorized: false }, null, 2));
+const automaticPolicy = {
+  mode: 'automatic_after_proven',
+  automaticPromotion: { enabled: true }
+};
+const automaticMission = {
+  missionId: 'research-mission-123-1',
+  status: 'completed',
+  publicationPolicySnapshot: { mode: 'automatic_after_proven', automaticPromotionEnabled: true },
+  completion: { articleSlug: 'sample-article', publicationReadiness: 'automatic_merge_eligible' }
+};
+assert.deepEqual(resolveVisualAutoMerge({ route: 'promotion', publicationPolicy: automaticPolicy, mission: automaticMission }), {
+  eligible: true,
+  reason: 'proven_policy_and_mission_eligible',
+  missionId: 'research-mission-123-1',
+  articleSlug: 'sample-article'
+});
+assert.equal(resolveVisualAutoMerge({ route: 'failure', publicationPolicy: automaticPolicy, mission: automaticMission }).eligible, false);
+assert.equal(resolveVisualAutoMerge({ route: 'promotion', publicationPolicy: { mode: 'founder_reviewed', automaticPromotion: { enabled: false } }, mission: automaticMission }).eligible, false);
+assert.equal(resolveVisualAutoMerge({ route: 'promotion', publicationPolicy: automaticPolicy, mission: { ...automaticMission, publicationPolicySnapshot: { mode: 'founder_reviewed', automaticPromotionEnabled: false } } }).eligible, false);
+assert.equal(resolveVisualAutoMerge({ route: 'promotion', publicationPolicy: automaticPolicy, mission: { ...automaticMission, completion: { ...automaticMission.completion, publicationReadiness: 'founder_review_required' } } }).eligible, false);
+const pullRequestStep = workflow.jobs.detached_writer.steps.find((step) => step.name === 'Commit the bounded visual result');
+const autoMergeResolverStep = workflow.jobs.detached_writer.steps.find((step) => step.name === 'Resolve the proven-policy visual merge boundary without a credential');
+const autoMergeStep = workflow.jobs.detached_writer.steps.find((step) => step.name === 'Queue check-gated visual auto-merge only under the proven policy');
+assert.equal(pullRequestStep.id, 'pull_request');
+assert.match(pullRequestStep.run, /pr_url=.*gh pr create/);
+assert.match(autoMergeResolverStep.run, /visual:auto-merge:resolve/);
+assert.equal(autoMergeStep.if, "steps.auto_merge.outputs.eligible == 'true'");
+assert.match(autoMergeStep.run, /gh pr merge --auto --squash "\$PR_URL"/);
+assert.doesNotMatch(JSON.stringify(autoMergeResolverStep), /OPENAI_API_KEY/);
+
+console.log(JSON.stringify({ gate: 'passed', credentialedModelSteps: 2, maximumApiCallsPerRun: 13, maximumGeneratedAssetsPerRun: 12, usageEvidenceRequired: true, dollarCostInvented: false, independentReviewRequired: true, failedReviewPromotionBlocked: true, generationFailureRecorded: true, reviewFailureRecorded: true, partialVisualOutputPreserved: false, reviewReceiptFabricated: false, writerReceivesOpenAiKey: false, provenVisualAutoMergeGuarded: true, firebaseDeploymentAuthorized: false }, null, 2));
