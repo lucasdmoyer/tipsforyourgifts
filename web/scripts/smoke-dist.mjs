@@ -97,6 +97,25 @@ const sourceArticles = await Promise.all(articleNames.map(async (name) => ({
 const readyArticles = sourceArticles.filter((article) => article.status === 'publication_ready');
 const readyArticleSlugs = new Set(readyArticles.map((article) => article.slug));
 const draftArticles = sourceArticles.filter((article) => article.status === 'draft');
+const staticReaderPaths = [
+  'index.html',
+  'blog/index.html',
+  'gifts/index.html',
+  'standards/index.html',
+  'affiliate-disclosure/index.html',
+  ...readyArticles.map((article) => path.join('blog', article.slug, 'index.html'))
+];
+for (const relativePath of staticReaderPaths) {
+  const html = await fs.readFile(path.join(dist, relativePath), 'utf8');
+  if (/modulepreload|\bmain-[A-Z0-9]+\.js|id="ng-state"|\sngh=/i.test(html)) failures.push(`${relativePath}: static reader route retains Angular hydration work`);
+  if (relativePath.startsWith(`blog${path.sep}`) && relativePath !== path.join('blog', 'index.html') && !/public-enhancements-[a-f0-9]{12}\.js/.test(html)) {
+    failures.push(`${relativePath}: article share controls lost their lightweight enhancement`);
+  }
+}
+for (const relativePath of ['gift-finder/index.html', 'studio/index.html', 'studio/brief/index.html', 'studio/decisions/index.html']) {
+  const html = await fs.readFile(path.join(dist, relativePath), 'utf8');
+  if (!/\bmain-[A-Z0-9]+\.js/i.test(html) || !html.includes('id="ng-state"')) failures.push(`${relativePath}: interactive route lost its Angular runtime`);
+}
 const visualRegistry = JSON.parse(await fs.readFile(path.join(root, 'visuals', 'article-visuals.json'), 'utf8'));
 const visualAssets = new Map(visualRegistry.assets.map((asset) => [asset.id, asset]));
 const articleVisuals = new Map(visualRegistry.articles.map((article) => [article.slug, article]));

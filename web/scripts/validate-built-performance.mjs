@@ -2,13 +2,16 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import process from 'node:process';
 import { gzipSync } from 'node:zlib';
+import { isInteractiveRoute } from './lib/static-public-performance-contract.mjs';
 
 const root = process.cwd();
 const dist = path.join(root, 'dist');
 const kib = 1024;
 const budgets = {
-  initialRawBytes: 320 * kib,
-  initialGzipBytes: 110 * kib,
+  staticPublicRawBytes: 40 * kib,
+  staticPublicGzipBytes: 10 * kib,
+  interactiveRawBytes: 325 * kib,
+  interactiveGzipBytes: 110 * kib,
   publicHtmlBytes: 96 * kib,
   studioHtmlBytes: 320 * kib
 };
@@ -18,34 +21,43 @@ const expect = (condition, message) => {
 };
 const read = (relative) => fs.readFile(path.join(dist, relative));
 
-const indexBuffer = await read('index.html');
-const indexHtml = indexBuffer.toString('utf8');
-const localAssetNames = new Set();
-for (const pattern of [
-  /<link\b[^>]*\brel="(?:stylesheet|modulepreload)"[^>]*\bhref="([^"]+)"/g,
-  /<script\b[^>]*\bsrc="([^"]+)"[^>]*>/g
-]) {
-  for (const match of indexHtml.matchAll(pattern)) {
-    const asset = match[1].replace(/^\//, '');
-    expect(!asset.includes('..') && !/^https?:/i.test(asset), `initial asset must remain local: ${match[1]}`);
-    localAssetNames.add(asset);
+async function assetGraph(relativeHtmlPath, html) {
+  const localAssetNames = new Set();
+  for (const pattern of [
+    /<link\b[^>]*\brel="(?:stylesheet|modulepreload)"[^>]*\bhref="([^"]+)"/g,
+    /<script\b[^>]*\bsrc="([^"]+)"[^>]*>/g
+  ]) {
+    for (const match of html.matchAll(pattern)) {
+      const asset = match[1].replace(/^\//, '');
+      expect(!asset.includes('..') && !/^https?:/i.test(asset), `${relativeHtmlPath} initial asset must remain local: ${match[1]}`);
+      localAssetNames.add(asset);
+    }
   }
+  expect(localAssetNames.size > 0, `${relativeHtmlPath} has no initial CSS or JavaScript assets`);
+  let rawBytes = 0;
+  let gzipBytes = 0;
+  const assets = [];
+  for (const asset of [...localAssetNames].sort()) {
+    const bytes = await read(asset);
+    const compressedBytes = gzipSync(bytes, { level: 9 }).byteLength;
+    rawBytes += bytes.byteLength;
+    gzipBytes += compressedBytes;
+    assets.push({ asset, rawBytes: bytes.byteLength, gzipBytes: compressedBytes });
+  }
+  return { rawBytes, gzipBytes, assets };
 }
-expect(localAssetNames.size > 0, 'no initial CSS or JavaScript assets were found in dist/index.html');
 
-let initialRawBytes = 0;
-let initialGzipBytes = 0;
-const initialAssets = [];
-for (const asset of [...localAssetNames].sort()) {
-  const bytes = await read(asset);
-  const gzipBytes = gzipSync(bytes, { level: 9 }).byteLength;
-  initialRawBytes += bytes.byteLength;
-  initialGzipBytes += gzipBytes;
-  initialAssets.push({ asset, rawBytes: bytes.byteLength, gzipBytes });
-}
+const indexHtml = (await read('index.html')).toString('utf8');
+const giftFinderHtml = (await read('gift-finder/index.html')).toString('utf8');
+const staticPublicInitial = await assetGraph('index.html', indexHtml);
+const interactiveInitial = await assetGraph('gift-finder/index.html', giftFinderHtml);
 
-expect(initialRawBytes <= budgets.initialRawBytes, `initial local assets are ${initialRawBytes} bytes; budget is ${budgets.initialRawBytes}`);
-expect(initialGzipBytes <= budgets.initialGzipBytes, `initial local assets gzip to ${initialGzipBytes} bytes; budget is ${budgets.initialGzipBytes}`);
+expect(!/modulepreload|\bmain-[A-Z0-9]+\.js|id="ng-state"|\sngh=/i.test(indexHtml), 'static home must not hydrate Angular in the browser');
+expect(/\bmain-[A-Z0-9]+\.js/i.test(giftFinderHtml) && giftFinderHtml.includes('id="ng-state"'), 'gift finder must retain its interactive Angular runtime');
+expect(staticPublicInitial.rawBytes <= budgets.staticPublicRawBytes, `static public assets are ${staticPublicInitial.rawBytes} bytes; budget is ${budgets.staticPublicRawBytes}`);
+expect(staticPublicInitial.gzipBytes <= budgets.staticPublicGzipBytes, `static public assets gzip to ${staticPublicInitial.gzipBytes} bytes; budget is ${budgets.staticPublicGzipBytes}`);
+expect(interactiveInitial.rawBytes <= budgets.interactiveRawBytes, `interactive assets are ${interactiveInitial.rawBytes} bytes; budget is ${budgets.interactiveRawBytes}`);
+expect(interactiveInitial.gzipBytes <= budgets.interactiveGzipBytes, `interactive assets gzip to ${interactiveInitial.gzipBytes} bytes; budget is ${budgets.interactiveGzipBytes}`);
 
 const htmlFiles = [];
 const walk = async (directory) => {
@@ -58,19 +70,33 @@ const walk = async (directory) => {
 await walk(dist);
 
 let largestPublicRoute = { route: '/', bytes: 0 };
-let studioHtmlBytes = null;
+let largestStudioRoute = { route: '/studio', bytes: 0 };
+let staticPublicRoutes = 0;
+let interactiveRoutes = 0;
 for (const filePath of htmlFiles) {
   const relative = path.relative(dist, filePath);
+  const normalized = relative.replaceAll('\\', '/');
   const bytes = (await fs.stat(filePath)).size;
-  if (relative === path.join('studio', 'index.html')) {
-    studioHtmlBytes = bytes;
-    continue;
+  const html = await fs.readFile(filePath, 'utf8');
+  const route = relative === 'index.html' ? '/' : `/${path.dirname(relative)}`;
+  if (isInteractiveRoute(relative)) {
+    interactiveRoutes += 1;
+    expect(/\bmain-[A-Z0-9]+\.js/i.test(html) && html.includes('id="ng-state"'), `${normalized} lost its interactive Angular runtime`);
+  } else {
+    staticPublicRoutes += 1;
+    expect(!/modulepreload|\bmain-[A-Z0-9]+\.js|id="ng-state"|\sngh=/i.test(html), `${normalized} retains Angular hydration work`);
+    if (normalized.startsWith('blog/') && normalized !== 'blog/index.html') {
+      expect(/public-enhancements-[a-f0-9]{12}\.js/.test(html), `${normalized} lost its lightweight share enhancement`);
+    }
   }
-  expect(bytes <= budgets.publicHtmlBytes, `${relative} is ${bytes} bytes; public HTML budget is ${budgets.publicHtmlBytes}`);
-  if (bytes > largestPublicRoute.bytes) largestPublicRoute = { route: relative === 'index.html' ? '/' : `/${path.dirname(relative)}`, bytes };
+  if (normalized.startsWith('studio/')) {
+    expect(bytes <= budgets.studioHtmlBytes, `${normalized} is ${bytes} bytes; studio HTML budget is ${budgets.studioHtmlBytes}`);
+    if (bytes > largestStudioRoute.bytes) largestStudioRoute = { route, bytes };
+  } else {
+    expect(bytes <= budgets.publicHtmlBytes, `${normalized} is ${bytes} bytes; public HTML budget is ${budgets.publicHtmlBytes}`);
+    if (bytes > largestPublicRoute.bytes) largestPublicRoute = { route, bytes };
+  }
 }
-expect(studioHtmlBytes !== null, 'dist/studio/index.html is missing');
-expect(studioHtmlBytes <= budgets.studioHtmlBytes, `studio HTML is ${studioHtmlBytes} bytes; budget is ${budgets.studioHtmlBytes}`);
 
 const fallbackPattern = /<img\b[^>]*\bsrc="(\/blog-images\/[^"]+\.webp)"/g;
 for (const filePath of htmlFiles) {
@@ -83,11 +109,12 @@ for (const filePath of htmlFiles) {
 console.log(JSON.stringify({
   builtPerformance: 'valid',
   budgets,
-  initialRawBytes,
-  initialGzipBytes,
-  initialAssets,
+  staticPublicInitial,
+  interactiveInitial,
   prerenderedHtmlFiles: htmlFiles.length,
+  staticPublicRoutes,
+  interactiveRoutes,
   largestPublicRoute,
-  studioHtmlBytes,
+  largestStudioRoute,
   responsiveFallbackMaximumWidth: 1200
 }, null, 2));
