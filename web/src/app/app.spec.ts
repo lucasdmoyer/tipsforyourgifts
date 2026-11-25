@@ -1,13 +1,23 @@
 import { TestBed } from '@angular/core/testing';
 import { provideRouter, Router } from '@angular/router';
 import { App } from './app';
-import { ARTICLES, GROWTH, OPERATIONS, STRATEGY } from './generated/content.generated';
-import { ArticlePage, FounderBriefPage, GiftFinderPage, PairCardComponent, ProductCardComponent, StudioPage } from './pages';
+import { ARTICLES } from './generated/content.generated';
+import { GROWTH, OPERATIONS, STRATEGY } from './generated/studio.generated';
+import { ArticlePage, GiftFinderPage, PairCardComponent, ProductCardComponent } from './public-pages';
+import { FounderBriefPage, STUDIO_DATA, StudioPage } from './studio-pages';
 import { readerBodyComesFirst, readerBodyHtml, readerEvidenceHtml, readerLanguage, readerLead } from './reader-copy';
 
 describe('App', () => {
   beforeEach(async () => {
-    await TestBed.configureTestingModule({ imports: [App, ArticlePage, StudioPage, FounderBriefPage, GiftFinderPage, ProductCardComponent, PairCardComponent], providers: [provideRouter([{ path: 'blog/:slug', component: ArticlePage }])] }).compileComponents();
+    TestBed.overrideComponent(StudioPage, {
+      set: { providers: [{ provide: STUDIO_DATA, useValue: { operations: OPERATIONS, strategy: STRATEGY, growth: GROWTH } }] }
+    });
+    await TestBed.configureTestingModule({
+      imports: [App, ArticlePage, StudioPage, FounderBriefPage, GiftFinderPage, ProductCardComponent, PairCardComponent],
+      providers: [
+        provideRouter([{ path: 'blog/:slug', component: ArticlePage }])
+      ]
+    }).compileComponents();
   });
 
   it('renders the editorial brand and primary navigation', () => {
@@ -375,7 +385,13 @@ describe('App', () => {
     expect(element.textContent).toContain(`${OPERATIONS.affiliate.linkCandidates} exact candidates · ${OPERATIONS.affiliate.linkReviewsPassed} clean independent reviews · ${OPERATIONS.affiliate.linkApprovals} founder approvals.`);
     for (const proposal of OPERATIONS.affiliate.activationProposals) {
       expect(element.textContent).toContain('Bookshop decision packet');
-      expect(element.textContent).toContain(proposal.activationState === 'activation_recorded' ? 'Narrow program activation recorded. No paid links yet.' : 'Verified account. One observed book link. Still disabled.');
+      expect(element.textContent).toContain(
+        proposal.activationState === 'activation_recorded' && OPERATIONS.affiliate.activeOverlays > 0
+          ? `Narrow program active. ${OPERATIONS.affiliate.activeOverlays} independently reviewed paid ${OPERATIONS.affiliate.activeOverlays === 1 ? 'link is' : 'links are'} live.`
+          : proposal.activationState === 'activation_recorded'
+            ? 'Narrow program activation recorded. No paid links yet.'
+            : 'Verified account. One observed book link. Still disabled.'
+      );
       expect(element.textContent).toContain(proposal.evidence.publicTrackingIdentity);
       expect(element.textContent).toContain(`ISBN ${proposal.evidence.productIsbn}`);
       expect(element.textContent).toContain(`HTTP ${proposal.evidence.automatedFetchStatus}`);
@@ -407,7 +423,7 @@ describe('App', () => {
     }
   });
 
-  it('renders the post-activation Bookshop state without implying a paid link or deployment', () => {
+  it('renders the post-activation Bookshop state with the exact active paid-link boundary', () => {
     const proposal = OPERATIONS.affiliate.activationProposals[0];
     const originalState = proposal.activationState;
     proposal.activationState = 'activation_recorded';
@@ -415,9 +431,11 @@ describe('App', () => {
       const fixture = TestBed.createComponent(StudioPage);
       fixture.detectChanges();
       const element = fixture.nativeElement as HTMLElement;
-      expect(element.textContent).toContain('Narrow program activation recorded. No paid links yet.');
-      expect(element.textContent).toContain('Create one exact product-level candidate, complete an independent destination review, and obtain a separate founder approval before any paid link can enter a Firebase preview.');
+      expect(element.textContent).toContain(`Narrow program active. ${OPERATIONS.affiliate.activeOverlays} independently reviewed paid link is live.`);
+      expect(element.textContent).toContain('Independent product-level review and founder approval are recorded for the exact active overlay.');
+      expect(element.textContent).toContain('Keep the narrow Sapiens link verified. Add another paid link only after a fresh exact-destination review and separate founder approval.');
       expect(element.textContent).not.toContain('Verified account. One observed book link. Still disabled.');
+      expect(element.textContent).not.toContain('No paid links yet.');
     } finally {
       proposal.activationState = originalState;
     }
