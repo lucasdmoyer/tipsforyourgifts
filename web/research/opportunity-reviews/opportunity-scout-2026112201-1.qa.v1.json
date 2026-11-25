@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "1.0.0",
+  "receiptId": "opportunity-scout-2026112201-1-qa",
+  "scoutId": "opportunity-scout-2026112201-1",
+  "reviewedAt": "2026-11-22T06:49:03.017Z",
+  "reviewerRole": "independent-opportunity-editor",
+  "reviewerId": "codex-opportunity-red-team-20261122",
+  "workflowRunId": "2026112201",
+  "verdict": "passed",
+  "startedMissionSha256": "70c6e8e2add9075179b684a8eb981a7f48596a67c509a1d16d7f88273d288375",
+  "draftReportSha256": "a1bd1bc7a41f8f3e43c81dd0502487ed71636cc304431d26a79a4e4efaaa714b",
+  "proposalSha256": "5cbbdc9634e8eebb5b67a3d750ca54a5f4edbbc1aeb163906e721058e8c880fa",
+  "blockers": [],
+  "warnings": []
+}

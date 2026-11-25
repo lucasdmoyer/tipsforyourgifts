@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.1.0",
-  "updatedAt": "2026-08-23T19:50:08.618Z",
+  "updatedAt": "2026-11-22T06:40:44.000Z",
   "northStar": "Become the most trusted place to make a confident gift decision without wasting time or money.",
   "currentBet": "Build three evergreen recipient-intent guides around routines shoppers can actually observe: clean and dry muddy paws at the door, preserve a fiber-art work in progress and its exact stopping point, and move a cleaned vinyl record into a fresh sleeve instead of returning it to dust.",
   "thoughtfulnessFramework": {
@@ -623,6 +623,36 @@
         "minimumSocialAngles": 5
       },
       "researchBrief": "Research manual vinyl-cleaning plus fresh-inner-sleeve pairs for collectors with an observed queue of used or dusty records. Require exact record-format and material support, fluid and water instructions, label and drying controls, level workspace, batch size, replacement supplies, sleeve material and dimensions, jacket clearance, artwork retention, independent usefulness, and one clean-dry-rehouse interaction. Exclude unsupported media, invented preservation or sound claims, powered systems, exact current prices, and any workflow the recipient did not ask to maintain."
+    },
+    {
+      "id": "founder-idea-014",
+      "revision": 1,
+      "founderDisposition": "proposed",
+      "ideaType": "editorial",
+      "thesisType": "recipient_friction",
+      "title": "Open the box, start the game: an exact-title organizer for the board game they already love",
+      "audience": "Someone buying for an adult board-game fan who repeatedly plays one component-heavy title but still sorts its cards, tokens, and player pieces from baggies",
+      "occasion": "Birthday, holiday, game-night host gift, or a new-expansion milestone",
+      "budget": "$25-$140",
+      "priority": "high",
+      "insight": "The thoughtful upgrade is not another game chosen by taste; it is a verified organizer for the exact title they already bring to the table, making the familiar game easier to start and put away.",
+      "observedFriction": "They spend the beginning and end of a favorite game opening, sorting, and refilling many small bags, or they choose a simpler game because the component-heavy favorite takes too long to stage.",
+      "selfPurchaseReluctance": "Games and expansions feel like the fun purchase; an organizer feels like infrastructure, and comparing edition, expansion, sleeve, lid, shelf, material, and assembly compatibility is easy to postpone.",
+      "fitSignals": [
+        "You have watched them set up and pack away the same game more than once, and loose bags or token piles are a recurring part of the routine.",
+        "You can identify the exact game printing, owned expansions, card-sleeve setup, storage orientation, and whether the current insert already works for them."
+      ],
+      "avoidIf": [
+        "They enjoy the setup, rarely replay the title, already have a trusted system, or use a factory insert that gets the game to the table without friction.",
+        "The organizer's edition, expansion list, sleeve capacity, box dimensions, lid closure, vertical-storage behavior, material, weight, or assembly burden is not explicitly verified."
+      ],
+      "successMetric": "Five independently qualified organizers for repeatedly played titles, each with a plain-language compatibility matrix, a demonstrated setup advantage, and an explicit buy-or-skip decision",
+      "deliverables": {
+        "minimumFinalists": 5,
+        "minimumQualifiedPairs": 0,
+        "minimumSocialAngles": 5
+      },
+      "researchBrief": "Research exact-title board-game organizers for adults who repeatedly tolerate bag sorting and long setup or teardown for a favorite component-heavy game. Require exact title, edition or printing, owned expansions, card sleeves and sleeve thickness, box dimensions, lid lift, vertical or horizontal storage, removable table-ready trays, assembly, material, weight, travel behavior, and proof that the recipient actually replays the game. Treat ordinary bags and the factory insert as valid fallbacks, recommend one organizer as enough, and reject generic accessories, duplicate systems, guessed compatibility, or organizers that create more bulk and work than they remove."
     }
   ]
 }
