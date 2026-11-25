@@ -1,0 +1,11 @@
+{
+  "schemaVersion": "1.0.0",
+  "status": "active",
+  "effectiveAt": "2026-11-22T00:00:00.000Z",
+  "legacyDisposition": "independent_review_only_not_founder_approved",
+  "legacyValidatedHighRiskRunIds": [
+    "20260802-editorial-standard-6a5ce1b9",
+    "20260816-one-photo-one-story-4cf6dd3f",
+    "20260816-read-a-scene-say-it-aloud-c92b2f7e"
+  ]
+}

@@ -1,7 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import process from 'node:process';
-import { researchMissionSchema, sha256 } from './lib/research-mission-contract.mjs';
+import { researchMissionSchema, reviewReceiptBelongsToMission, sha256 } from './lib/research-mission-contract.mjs';
 
 const args = Object.fromEntries(process.argv.slice(2).map((value) => {
   const [key, ...rest] = value.replace(/^--/, '').split('=');
@@ -28,7 +28,7 @@ const reviewPath = path.join(root, run.qa.receiptPath);
 const reviewRaw = await fs.readFile(reviewPath);
 const review = JSON.parse(reviewRaw);
 if (review.verdict !== 'passed' || review.blockers.length > 0 || review.runId !== run.runId) throw new Error('Independent review did not pass cleanly');
-if (review.workflowRunId !== mission.trigger.workflowRunId) throw new Error('Review receipt does not belong to this mission workflow run');
+if (!reviewReceiptBelongsToMission(review, mission)) throw new Error('Review receipt does not belong to this research mission');
 
 const completedAt = args['completed-at'] ?? new Date().toISOString();
 const automatic = mission.publicationPolicySnapshot.automaticPromotionEnabled;

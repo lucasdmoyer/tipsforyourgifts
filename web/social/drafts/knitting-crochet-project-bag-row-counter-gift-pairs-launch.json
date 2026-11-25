@@ -18,9 +18,9 @@
       "status": "draft",
       "angle": "Separate physical project state from decision state",
       "headline": "A paused knitting project has two states to protect",
-      "copy": "The bag keeps fabric, yarn, and small tools such as scissors and stitch markers together. The counter or chart marker preserves the last completed row or next instruction. A thoughtful pair solves both restart jobs without guessing at yarn or needles.",
+      "copy": "The bag keeps fabric, yarn, and small tools such as scissors and stitch markers together. The physical counter preserves the maker's chosen row number. A thoughtful pair solves both restart jobs without guessing at yarn or needles.",
       "assetBrief": "Original vertical two-column diagram labeled Physical state and Decision state, converging on a clean restart; generic yarn and chart icons only.",
-      "altText": "Diagram showing a project bag protecting yarn and tools while a counter or chart board preserves the next instruction.",
+      "altText": "Diagram showing a project bag protecting yarn and tools while a physical counter preserves the chosen row number.",
       "destinationUrl": "https://tipsforyourgifts.web.app/blog/knitting-crochet-project-bag-row-counter-gift-pairs",
       "claimIds": [
         "claim-fiber-restart-friction",
@@ -85,24 +85,26 @@
       "externalPostId": null
     },
     {
-      "id": "fiber-paper-versus-app",
+      "id": "fiber-mini-versus-standard",
       "platform": "instagram",
       "format": "five-slide-carousel",
       "status": "draft",
-      "angle": "Route paper-pattern makers and app users differently",
-      "headline": "Chart board or no chart board? Watch the pattern habit",
-      "copy": "A magnetic board can preserve one paper chart line, but an app user may not need it. Measure the recipient's actual chart against the usable surface. Owner stitching reports conflict and do not establish a defect rate, so inspect it and check returns. The nine loose magnets also need controlled storage under general CPSC guidance—not an exact finding about this board.",
-      "assetBrief": "Five original slides: paper chart, phone pattern, actual-chart measurement overlay, stitching-and-returns check, and a buy-or-skip card that states the qualified general small-magnet storage boundary without labeling the product recalled or hazardous.",
-      "altText": "Carousel comparing paper and app knitting-pattern workflows, measuring the actual chart, checking stitching and returns, and storing the board's nine loose magnets under general CPSC guidance.",
+      "angle": "Choose the exact physical counter from the storage habit",
+      "headline": "Mini with a lock—or standard with a push button?",
+      "copy": "Clover Mini item 3118 documents a lock and cord hole. Standard item 336 is a hand-held push counter whose official page does not list those features. Choose the Mini for loose bag storage; choose the standard counter for a protected zip pocket and someone who wants a simple mechanical clicker. Skip both when paper or an app already works.",
+      "assetBrief": "Five original slides: Mini 3118 silhouette, standard 336 silhouette, loose-bag versus protected-pocket storage, completed-row versus next-row convention, and a buy-one-or-skip card; no copied product photography.",
+      "altText": "Carousel comparing the lockable Clover Mini 3118 with the hand-held Clover standard 336 and showing the storage and row-convention checks.",
       "destinationUrl": "https://tipsforyourgifts.web.app/blog/knitting-crochet-project-bag-row-counter-gift-pairs",
       "claimIds": [
-        "claim-makers-board-benefit",
-        "claim-makers-board-drawback",
-        "claim-makers-board-stitching-durability-conflict",
-        "claim-makers-board-magnet-boundary"
+        "claim-clover-benefit",
+        "claim-clover-standard-benefit",
+        "claim-clover-standard-drawback",
+        "claim-clover-variant-availability",
+        "claim-counter-convention"
       ],
       "productIds": [
-        "cocoknits-makers-board"
+        "clover-mini-kacha-kacha-3118",
+        "clover-standard-kacha-kacha-336"
       ],
       "pairIds": [],
       "disclosureRequired": false,
@@ -146,18 +148,18 @@
       "destinationUrl": "https://tipsforyourgifts.web.app/blog/knitting-crochet-project-bag-row-counter-gift-pairs",
       "claimIds": [
         "claim-pair-della-clover",
-        "claim-pair-lands-end-board",
+        "claim-pair-lands-end-standard-counter",
         "claim-fiber-duplicate-boundary"
       ],
       "productIds": [
         "della-q-makers-mini-messenger",
         "clover-mini-kacha-kacha-3118",
         "lands-end-medium-5-pocket-zip-top-tote",
-        "cocoknits-makers-board"
+        "clover-standard-kacha-kacha-336"
       ],
       "pairIds": [
         "compact-bag-locked-count-loop",
-        "large-tote-paper-chart-loop"
+        "large-tote-handheld-count-loop"
       ],
       "disclosureRequired": false,
       "externalPostId": null

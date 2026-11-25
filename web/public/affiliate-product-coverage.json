@@ -4,8 +4,8 @@
   "registryUpdatedAt": "2026-11-07T23:25:53.490Z",
   "definition": "Program assignments are research queues only. They do not assert exact-product availability, account acceptance, tracking validity, or commission eligibility.",
   "counts": {
-    "publicationReadyProductLinksCataloged": 60,
-    "productsAssignedToPartnerResearch": 60,
+    "publicationReadyProductLinksCataloged": 65,
+    "productsAssignedToPartnerResearch": 65,
     "productsWithoutPartnerResearch": 0,
     "productsWithVerifiedPaidDestination": 1
   },
@@ -26,8 +26,8 @@
       "priority": 2,
       "status": "proposed",
       "selectionMode": "all_publication_ready_products",
-      "eligibleArticleCount": 9,
-      "productResearchCandidates": 60,
+      "eligibleArticleCount": 10,
+      "productResearchCandidates": 65,
       "verifiedPaidLinks": 0
     },
     {
@@ -36,8 +36,8 @@
       "priority": 3,
       "status": "proposed",
       "selectionMode": "all_publication_ready_products",
-      "eligibleArticleCount": 9,
-      "productResearchCandidates": 60,
+      "eligibleArticleCount": 10,
+      "productResearchCandidates": 65,
       "verifiedPaidLinks": 0
     },
     {
@@ -46,8 +46,8 @@
       "priority": 4,
       "status": "proposed",
       "selectionMode": "all_publication_ready_products",
-      "eligibleArticleCount": 9,
-      "productResearchCandidates": 60,
+      "eligibleArticleCount": 10,
+      "productResearchCandidates": 65,
       "verifiedPaidLinks": 0
     },
     {
@@ -56,8 +56,8 @@
       "priority": 5,
       "status": "proposed",
       "selectionMode": "all_publication_ready_products",
-      "eligibleArticleCount": 9,
-      "productResearchCandidates": 60,
+      "eligibleArticleCount": 10,
+      "productResearchCandidates": 65,
       "verifiedPaidLinks": 0
     }
   ],
@@ -132,6 +132,86 @@
       "productName": "Titleist Tour Double Canopy Umbrella",
       "ordinaryUrl": "https://www.titleist.com/product/tour-double-canopy/26TATDC.html",
       "ordinaryHostname": "www.titleist.com",
+      "candidateProgramIds": [
+        "amazon-associates-us",
+        "target-partners-us",
+        "walmart-creator-us",
+        "ebay-partner-network-us"
+      ],
+      "preferredResearchProgramId": "amazon-associates-us",
+      "verifiedPaidProgramId": null,
+      "status": "ordinary_link_research_assigned"
+    },
+    {
+      "articleSlug": "knitting-crochet-project-bag-row-counter-gift-pairs",
+      "productId": "clover-mini-kacha-kacha-3118",
+      "productName": "Clover Mini Kacha-Kacha Knitting Counter 3118",
+      "ordinaryUrl": "https://clover-usa.com/products/knitting-counter-mini-kacha-kacha",
+      "ordinaryHostname": "clover-usa.com",
+      "candidateProgramIds": [
+        "amazon-associates-us",
+        "target-partners-us",
+        "walmart-creator-us",
+        "ebay-partner-network-us"
+      ],
+      "preferredResearchProgramId": "amazon-associates-us",
+      "verifiedPaidProgramId": null,
+      "status": "ordinary_link_research_assigned"
+    },
+    {
+      "articleSlug": "knitting-crochet-project-bag-row-counter-gift-pairs",
+      "productId": "clover-standard-kacha-kacha-336",
+      "productName": "Clover Knitting Counter Kacha-Kacha 336",
+      "ordinaryUrl": "https://www.clover-mfg.com/en/product/n336/",
+      "ordinaryHostname": "www.clover-mfg.com",
+      "candidateProgramIds": [
+        "amazon-associates-us",
+        "target-partners-us",
+        "walmart-creator-us",
+        "ebay-partner-network-us"
+      ],
+      "preferredResearchProgramId": "amazon-associates-us",
+      "verifiedPaidProgramId": null,
+      "status": "ordinary_link_research_assigned"
+    },
+    {
+      "articleSlug": "knitting-crochet-project-bag-row-counter-gift-pairs",
+      "productId": "cocoknits-knitting-row-counter",
+      "productName": "Cocoknits Knitting Row Counter",
+      "ordinaryUrl": "https://cocoknits.com/products/knitting-row-counter",
+      "ordinaryHostname": "cocoknits.com",
+      "candidateProgramIds": [
+        "amazon-associates-us",
+        "target-partners-us",
+        "walmart-creator-us",
+        "ebay-partner-network-us"
+      ],
+      "preferredResearchProgramId": "amazon-associates-us",
+      "verifiedPaidProgramId": null,
+      "status": "ordinary_link_research_assigned"
+    },
+    {
+      "articleSlug": "knitting-crochet-project-bag-row-counter-gift-pairs",
+      "productId": "della-q-makers-mini-messenger",
+      "productName": "della Q Maker's Canvas Mini Messenger",
+      "ordinaryUrl": "https://dellaq.com/products/makers-canvas-mini-messenger-red",
+      "ordinaryHostname": "dellaq.com",
+      "candidateProgramIds": [
+        "amazon-associates-us",
+        "target-partners-us",
+        "walmart-creator-us",
+        "ebay-partner-network-us"
+      ],
+      "preferredResearchProgramId": "amazon-associates-us",
+      "verifiedPaidProgramId": null,
+      "status": "ordinary_link_research_assigned"
+    },
+    {
+      "articleSlug": "knitting-crochet-project-bag-row-counter-gift-pairs",
+      "productId": "lands-end-medium-5-pocket-zip-top-tote",
+      "productName": "Lands' End Medium 5 Pocket Canvas Tote with zip top",
+      "ordinaryUrl": "https://www.landsend.com/products/canvas-pocket-tote/id_390049",
+      "ordinaryHostname": "www.landsend.com",
       "candidateProgramIds": [
         "amazon-associates-us",
         "target-partners-us",

@@ -76,8 +76,11 @@ jobs:
         uses: openai/codex-action@v1
         with:
           openai-api-key: ${{ secrets.OPENAI_API_KEY }}
+          model: gpt-6.2-sol
+          effort: high
           safety-strategy: drop-sudo
-          codex-args: --search
+          sandbox: workspace-write
+          codex-args: '["--search","--ephemeral"]'
           prompt: |
             Use $research-gift-opportunities as the evidence and editorial standard, then act only as the Tips for Your Gifts opportunity-research desk.
 
@@ -116,7 +119,7 @@ jobs:
           git add -N .
           while IFS= read -r changed_path; do
             case "$changed_path" in
-              "$MISSION_PATH"|"web/research/opportunities/$MISSION_ID.json"|web/src/data/strategy.json|web/src/data/operations.json|web/src/app/generated/content.generated.ts|web/public/sitemap.xml) ;;
+              "$MISSION_PATH"|"web/research/opportunities/$MISSION_ID.json"|web/src/data/strategy.json|web/src/data/operations.json|web/src/app/generated/content.generated.ts|web/src/app/generated/studio.generated.ts|web/public/sitemap.xml) ;;
               *) echo "Opportunity scout changed forbidden path: $changed_path" >&2; exit 1 ;;
             esac
           done < <(git diff --name-only HEAD)
@@ -182,8 +185,11 @@ jobs:
         uses: openai/codex-action@v1
         with:
           openai-api-key: ${{ secrets.OPENAI_API_KEY }}
+          model: gpt-6.2-sol
+          effort: high
           safety-strategy: drop-sudo
-          codex-args: --search
+          sandbox: workspace-write
+          codex-args: '["--search","--ephemeral"]'
           prompt: |
             Act only as the independent opportunity editor for scout ${{ needs.discover.outputs.mission_id }}. Read the repository research skill, trusted mission, drafted opportunity report, and proposed strategy idea. Challenge public-source independence, social-evidence handling, recipient language, observed workaround, self-purchase gap, contradictions, duplicate and clutter risks, candidate scoring, rejection conditions, commission independence, and pair coherence. Reject any demographic guess, generic novelty list, affiliate-led ranking, or pair that merely increases basket size.
 
@@ -202,7 +208,7 @@ jobs:
           test -f "web/research/opportunity-reviews/$MISSION_ID.qa.v1.json"
           while IFS= read -r changed_path; do
             case "$changed_path" in
-              "$MISSION_PATH"|"web/research/opportunities/$MISSION_ID.json"|"web/research/opportunity-reviews/$MISSION_ID.qa.v1.json"|web/src/data/strategy.json|web/src/data/operations.json|web/src/app/generated/content.generated.ts|web/public/sitemap.xml) ;;
+              "$MISSION_PATH"|"web/research/opportunities/$MISSION_ID.json"|"web/research/opportunity-reviews/$MISSION_ID.qa.v1.json"|web/src/data/strategy.json|web/src/data/operations.json|web/src/app/generated/content.generated.ts|web/src/app/generated/studio.generated.ts|web/public/sitemap.xml) ;;
               *) echo "Opportunity reviewer changed forbidden path: $changed_path" >&2; exit 1 ;;
             esac
           done < <(git status --short | cut -c4-)

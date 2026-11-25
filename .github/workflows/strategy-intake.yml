@@ -62,7 +62,11 @@ jobs:
         uses: openai/codex-action@v1
         with:
           openai-api-key: ${{ secrets.OPENAI_API_KEY }}
+          model: gpt-6.2-sol
+          effort: high
           safety-strategy: drop-sudo
+          sandbox: workspace-write
+          codex-args: '["--ephemeral"]'
           prompt: |
             Act as the Tips for Your Gifts strategy council. Read AGENTS.md, docs/THOUGHTFUL_GIFT_FRAMEWORK.md, web/src/data/strategy.json, and strategy-intake.json.
 
@@ -83,7 +87,7 @@ jobs:
           git add -N .
           while IFS= read -r changed_path; do
             case "$changed_path" in
-              web/src/data/strategy.json|web/src/data/operations.json|web/src/app/generated/content.generated.ts|web/public/sitemap.xml) ;;
+              web/src/data/strategy.json|web/src/data/operations.json|web/src/app/generated/content.generated.ts|web/src/app/generated/studio.generated.ts|web/public/sitemap.xml) ;;
               *) echo "Strategy council changed forbidden path: $changed_path" >&2; exit 1 ;;
             esac
           done < <(git diff --name-only HEAD)
