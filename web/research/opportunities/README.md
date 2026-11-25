@@ -1,3 +1,3 @@
 # Opportunity scout reports
 
-This directory contains validated, source-backed opportunity reports created by the autonomous strategy desk. A report may support one appended `proposed` strategy idea, but it never approves research, publishes content, enrolls an affiliate, starts spend, changes an account, or deploys production.
+This directory contains validated, source-backed opportunity reports created by the autonomous strategy desk. New reports use schema 1.1 and disclose each source's commercial relationship, evidence-use decision, and qualification rationale. Merchant catalogs, affiliate-supported sources, supplied products, sponsorships, unknown relationships, and Tier-D sources may help discovery but cannot qualify a signal, candidate, or selected proposal. A report may support one appended `proposed` strategy idea, but it never approves research, publishes content, enrolls an affiliate, starts spend, changes an account, or deploys production.

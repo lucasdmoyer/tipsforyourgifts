@@ -1,0 +1,21 @@
+{
+  "schemaVersion": "1.1.0",
+  "receiptId": "20260823-fiber-art-pause-269f700c-qa-v1",
+  "receiptRevision": 1,
+  "runId": "20260823-fiber-art-pause-269f700c",
+  "articleSlug": "knitting-crochet-project-bag-row-counter-gift-pairs",
+  "reviewedAt": "2026-11-23T02:39:22Z",
+  "reviewerRole": "independent-editor",
+  "reviewerId": "codex-independent-editor-fiber-recheck-20261122",
+  "workflowRunId": "local-fiber-draft-safe-independent-recheck-20261122",
+  "verdict": "passed",
+  "evidenceSha256": "9f372dc114b0a1f9553b992e60329b0830699d5b56ea3fe8adb029a78a6be947",
+  "articleSha256": "f304cf60ec2212b3d2165ae82efdaa51ec190ef6a3445c6c6361bc15435f7b88",
+  "socialSha256": "63b9adcc2b8ad23c3ae0460ee496c3eac25685159e31eee6ec8d34b7fba0464c",
+  "blockers": [],
+  "warnings": [
+    "The Cocoknits counter has mixed owner reliability reports and remains a lower-scored alternative rather than a bundle anchor.",
+    "Clover's Mini item 3118 and standard item 336 are distinct variants; only the Mini documents a lock and cord hole, so recheck the exact item, stock, and fulfillment timing before promotion.",
+    "The standard 336 counter has current exact-product purchase options, but the direct Clover USA storefront was sold out during the 2026-11-22 research pass; recheck the exact seller, stock, delivery, and return terms before publication."
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "1.0.0",
+  "candidateId": "mini-paint-one-mix-one-record-v1",
+  "packId": "miniature-painting-wet-palette-recipe-pairs-launch",
+  "postId": "mini-paint-one-mix-one-record",
+  "platform": "pinterest",
+  "packSha256": "4d5b61897dfa40de20a1d57ff0f29f244d02eeb98c56887ca0600ebad17de81a",
+  "postSha256": "96de96382937d7240a5e434841ce36c5f1589b17cd19274dbad6a14feaabc979",
+  "assetPath": "/social-media/mini-paint-one-mix-one-record-v1.jpg",
+  "publicUrl": "https://tipsforyourgifts.web.app/social-media/mini-paint-one-mix-one-record-v1.jpg",
+  "contentSha256": "c24386558eccdebb1fcc4740d51c63ceb9d3f0b72e540e44bbf677cad310d46b",
+  "contentType": "image/jpeg",
+  "byteLength": 649353,
+  "width": 1024,
+  "height": 1536,
+  "aspectRatio": "2:3",
+  "altText": "Diagram showing a live acrylic mix on a wet palette and the same mix recorded as a labeled dry swatch for a later painting session.",
+  "generator": "openai-built-in-imagegen",
+  "generatedAt": "2026-11-23T08:06:15.000Z",
+  "rightsPosture": "original-ai-generated-candidate-unapproved",
+  "status": "candidate",
+  "automatedChecks": {
+    "exactTextVerified": true,
+    "postBriefMatch": true,
+    "noThirdPartyLogos": true,
+    "noMerchantImagery": true,
+    "noProductClaims": true,
+    "dimensionsVerified": true
+  }
+}

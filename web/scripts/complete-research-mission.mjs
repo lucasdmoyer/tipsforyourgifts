@@ -1,7 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import process from 'node:process';
-import { researchMissionSchema, sha256 } from './lib/research-mission-contract.mjs';
+import { researchMissionSchema, reviewReceiptBelongsToMission, sha256 } from './lib/research-mission-contract.mjs';
 
 const args = Object.fromEntries(process.argv.slice(2).map((value) => {
   const [key, ...rest] = value.replace(/^--/, '').split('=');
@@ -12,7 +12,7 @@ if (!args['mission-id'] || !args['run-id']) throw new Error('Usage: node scripts
 const root = process.cwd();
 const missionPath = path.join(root, 'research/missions', `${args['mission-id']}.json`);
 const mission = researchMissionSchema.parse(JSON.parse(await fs.readFile(missionPath, 'utf8')));
-if (mission.status !== 'started' || mission.completion !== null) throw new Error('Only a started mission can be completed');
+if (!['started', 'visual_pending'].includes(mission.status) || mission.completion !== null) throw new Error('Only a started or visual-pending mission can be completed');
 const runPath = path.join(root, 'research/runs', `${args['run-id']}.json`);
 const runRaw = await fs.readFile(runPath);
 const run = JSON.parse(runRaw);
@@ -28,7 +28,18 @@ const reviewPath = path.join(root, run.qa.receiptPath);
 const reviewRaw = await fs.readFile(reviewPath);
 const review = JSON.parse(reviewRaw);
 if (review.verdict !== 'passed' || review.blockers.length > 0 || review.runId !== run.runId) throw new Error('Independent review did not pass cleanly');
-if (review.workflowRunId !== mission.trigger.workflowRunId) throw new Error('Review receipt does not belong to this mission workflow run');
+if (!reviewReceiptBelongsToMission(review, mission)) throw new Error('Review receipt does not belong to this research mission');
+const visualRegistry = JSON.parse(await fs.readFile(path.join(root, 'visuals', 'article-visuals.json'), 'utf8'));
+if (!(visualRegistry.articles ?? []).some((entry) => entry.slug === run.article.slug)) throw new Error('Mission completion requires an approved visual mapping for the article');
+if (mission.status === 'visual_pending') {
+  const pendingRequestPath = path.join(root, 'visuals', 'requests', `${run.runId}-visuals.json`);
+  try {
+    await fs.access(pendingRequestPath);
+    throw new Error('Mission completion requires the fulfilled visual request to be removed');
+  } catch (error) {
+    if (error.code !== 'ENOENT') throw error;
+  }
+}
 
 const completedAt = args['completed-at'] ?? new Date().toISOString();
 const automatic = mission.publicationPolicySnapshot.automaticPromotionEnabled;
@@ -37,6 +48,7 @@ mission.completedAt = completedAt;
 mission.teamStages = [
   { id: 'research', role: 'research-editorial-team', authority: 'draft_only', status: 'completed' },
   { id: 'quality_review', role: 'independent-evidence-editor', authority: 'review_receipt_only', status: 'completed' },
+  { id: 'visual_production', role: 'visual-production-team', authority: 'original_assets_and_visual_receipt_only', status: 'completed' },
   { id: 'release_preparation', role: 'release-operator', authority: 'preview_and_pr_only', status: 'ready' },
   { id: 'growth_follow_up', role: 'growth-analyst', authority: 'aggregate_measurement_only', status: 'queued' }
 ];

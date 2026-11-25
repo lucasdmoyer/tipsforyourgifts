@@ -125,6 +125,42 @@ function model() {
   };
 }
 
+function upgradeToCommerciallyQualifiedReport(input) {
+  const report = input.reports[0].data;
+  report.schemaVersion = '1.1.0';
+  for (const source of report.sources) {
+    if (source.sourceClass === 'manufacturer_category') {
+      source.commercialRelationship = 'first_party';
+      source.evidenceUse = 'qualifying';
+    } else if (source.sourceClass === 'merchant_catalog') {
+      source.commercialRelationship = 'merchant_catalog';
+      source.evidenceUse = 'context_only';
+    } else if (source.sourceClass === 'search_discovery') {
+      source.commercialRelationship = 'unknown';
+      source.evidenceUse = 'context_only';
+    } else {
+      source.commercialRelationship = 'none_observed';
+      source.evidenceUse = 'qualifying';
+    }
+    source.qualificationRationale = 'This explicit source decision keeps commercial discovery separate from evidence used to rank the opportunity.';
+  }
+  report.signals[0].sourceIds = [report.sources[3].id, report.sources[4].id];
+  report.signals[1].sourceIds = [report.sources[3].id, report.sources[2].id];
+  report.signals[2].sourceIds = [report.sources[4].id, report.sources[2].id];
+  report.signals[3].sourceIds = [report.sources[2].id, report.sources[3].id];
+  report.signals[4].sourceIds = [report.sources[5].id, report.sources[6].id];
+  report.signals[5].sourceIds = [report.sources[2].id, report.sources[4].id];
+  report.candidates[0].sourceIds = [report.sources[2].id, report.sources[3].id, report.sources[4].id];
+  report.candidates[1].sourceIds = [report.sources[2].id, report.sources[4].id, report.sources[5].id];
+  report.candidates[2].sourceIds = [report.sources[3].id, report.sources[4].id, report.sources[6].id];
+  report.selectedProposal.sourceIds = [...report.candidates[0].sourceIds];
+  return input;
+}
+
+function commercialModel() {
+  return upgradeToCommerciallyQualifiedReport(model());
+}
+
 function assertValid(name, input) {
   const result = validateOpportunityScoutRecords(input);
   if (result.issues.length > 0) throw new Error(`${name} should pass: ${result.issues.join('; ')}`);
@@ -132,6 +168,14 @@ function assertValid(name, input) {
 let checks = 0;
 function expectFailure(name, mutate, expected) {
   const input = model();
+  mutate(input);
+  const result = validateOpportunityScoutRecords(input);
+  if (!result.issues.join(' ').toLowerCase().includes(expected.toLowerCase())) throw new Error(`${name} did not fail with ${expected}: ${result.issues.join('; ')}`);
+  checks += 1;
+}
+
+function expectCommercialFailure(name, mutate, expected) {
+  const input = commercialModel();
   mutate(input);
   const result = validateOpportunityScoutRecords(input);
   if (!result.issues.join(' ').toLowerCase().includes(expected.toLowerCase())) throw new Error(`${name} did not fail with ${expected}: ${result.issues.join('; ')}`);
@@ -147,6 +191,7 @@ function attachDraftReview(input, overrides = {}) {
 }
 
 assertValid('valid drafted scout', model());
+assertValid('valid schema 1.1 commercially qualified scout', commercialModel());
 expectFailure('mission filename binding', (input) => { input.missions[0].filename = 'wrong.json'; }, 'filename must match');
 expectFailure('mission run binding', (input) => { input.missions[0].data.missionId = 'opportunity-scout-999-1'; }, 'mission ID must match');
 expectFailure('stale policy', (input) => { input.missions[0].data.policySnapshot.minimumSources = 11; }, 'snapshot is stale');
@@ -163,6 +208,16 @@ expectFailure('candidate thoughtfulness threshold', (input) => { input.reports[0
 expectFailure('pairing evidence', (input) => { input.reports[0].data.signals[3].kind = 'commercial_breadth'; }, 'lacks pairing evidence');
 expectFailure('personal identifiers', (input) => { input.reports[0].data.sources[0].containsPersonalIdentifiers = true; }, 'expected false');
 expectFailure('commission influence', (input) => { input.reports[0].data.commercialBoundary.commissionIndependent = false; }, 'expected true');
+expectCommercialFailure('missing commercial relationship', (input) => { delete input.reports[0].data.sources[2].commercialRelationship; }, 'missing its commercial relationship');
+expectCommercialFailure('affiliate-supported evidence qualifies', (input) => { input.reports[0].data.sources[2].commercialRelationship = 'affiliate_links'; }, 'cannot qualify opportunity evidence');
+expectCommercialFailure('supplied-product evidence qualifies', (input) => { input.reports[0].data.sources[2].commercialRelationship = 'supplied_product'; }, 'cannot qualify opportunity evidence');
+expectCommercialFailure('tier-d evidence qualifies', (input) => { input.reports[0].data.sources[2].trustTier = 'D'; }, 'tier-d source');
+expectCommercialFailure('candidate uses context-only catalog evidence', (input) => { input.reports[0].data.candidates[0].sourceIds[0] = input.reports[0].data.sources[1].id; }, 'relies on context-only');
+expectCommercialFailure('recipient language lacks public community evidence', (input) => { input.reports[0].data.signals[0].sourceIds = [input.reports[0].data.sources[2].id, input.reports[0].data.sources[5].id]; }, 'needs qualifying public social or community evidence');
+expectCommercialFailure('candidate lacks commercially independent groups', (input) => {
+  const report = input.reports[0].data;
+  for (const sourceId of report.candidates[0].sourceIds) report.sources.find((source) => source.id === sourceId).independenceGroup = 'same-commercial-group';
+}, 'two commercially independent qualifying source groups');
 expectFailure('started mission digest', (input) => { attachDraftReview(input, { startedMissionSha256: 'b'.repeat(64) }); }, 'started mission digest mismatch');
 expectFailure('draft report digest', (input) => { attachDraftReview(input, { draftReportSha256: 'b'.repeat(64) }); }, 'draft report digest mismatch');
 expectFailure('proposal digest', (input) => { attachDraftReview(input, { proposalSha256: 'b'.repeat(64) }); }, 'proposal digest mismatch');

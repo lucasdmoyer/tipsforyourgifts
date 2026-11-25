@@ -43,7 +43,7 @@ jobs:
         with:
           ref: master
           fetch-depth: 0
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: "24.14.0"
           cache: npm
@@ -63,7 +63,7 @@ jobs:
         run: |
           while IFS= read -r changed_path; do
             case "$changed_path" in
-              web/config/social-channels.json|web/src/data/operations.json|web/src/app/generated/content.generated.ts|web/public/sitemap.xml) ;;
+              web/config/social-channels.json|web/src/data/operations.json|web/src/app/generated/content.generated.ts|web/src/app/generated/studio.generated.ts|web/public/sitemap.xml) ;;
               *) echo "Social channel activation changed forbidden path: $changed_path" >&2; exit 1 ;;
             esac
           done < <(git diff --name-only HEAD)
@@ -80,7 +80,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git switch -c "codex/activate-social-channel-$RUN_ID"
-          git add web/config/social-channels.json web/src/data/operations.json web/src/app/generated/content.generated.ts web/public/sitemap.xml
+          git add web/config/social-channels.json web/src/data/operations.json web/src/app/generated/content.generated.ts web/src/app/generated/studio.generated.ts web/public/sitemap.xml
           git commit -m "Activate official $CHANNEL_ID publishing boundary"
           git push origin "codex/activate-social-channel-$RUN_ID"
       - name: Open the activation pull request

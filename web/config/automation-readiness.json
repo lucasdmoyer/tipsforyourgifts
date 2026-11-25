@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "1.1.0",
+  "observedAt": "2026-11-23T14:03:51.000Z",
+  "sourceMode": "versioned_snapshot_not_live_poll",
+  "externalGates": [
+    {
+      "id": "openai-platform-credential",
+      "label": "Research model credential",
+      "status": "blocked_external_configuration",
+      "summary": "A read-only GitHub check found no repository or production-environment secret named OPENAI_API_KEY, and the versioned policy still has no founder-approved OpenAI project hard limit or earlier spend alert; scheduled research therefore stops before any model call.",
+      "evidenceUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/57#issuecomment-7091612791",
+      "diagnosticUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/57",
+      "nextAction": "Lucas first approves and configures an OpenAI project hard spend limit plus an earlier alert; only afterward may the dedicated project key be stored as OPENAI_API_KEY and separately verified.",
+      "authorityBoundary": "The proposed $50 hard limit and $25 alert are planning-only, not approved. No credential value may be displayed, logged, downloaded, committed, or placed in Studio data, and model activation remains a separate exact-policy gate."
+    },
+    {
+      "id": "firebase-preview-identity",
+      "label": "Keyless Firebase preview identity",
+      "status": "blocked_external_configuration",
+      "summary": "PR 84's protected validation and exact-artifact build pass, but automated deploy stops at Google authentication because the tips-github-preview/github-preview Workload Identity provider is missing; the exact commit was reviewed through the manual Firebase preview fallback.",
+      "evidenceUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/84#issuecomment-7103277446",
+      "diagnosticUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/runs/45179737865",
+      "nextAction": "Approve and provision GitHub OIDC trust only for repository lucasdmoyer/tipsforyourgifts, actor lucasdmoyer, and ref refs/pull/84/merge, with the existing Firebase Hosting Admin role limited to the PR-84 preview workflow.",
+      "authorityBoundary": "Use short-lived impersonation for Firebase Hosting previews only. No Firebase Auth Admin, user-managed service-account key, or production Hosting authorization."
+    },
+    {
+      "id": "firebase-auto-production-identity",
+      "label": "Keyless automatic-production identity",
+      "status": "blocked_external_configuration",
+      "summary": "Automatic-after-proven publication remains disabled, and its dedicated master-bound Google Workload Identity provider and service account have not been provisioned or verified.",
+      "evidenceUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/issues/43",
+      "diagnosticUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/firebase-auto-production.yml",
+      "nextAction": "After ten verified founder-reviewed releases, separately approve and provision the dedicated tips-github-auto-production identity, then review the policy activation pull request and production environment boundary.",
+      "authorityBoundary": "Use short-lived impersonation only for the master-pinned automatic Firebase Hosting workflow. No Firebase Auth Admin, user-managed service-account key, database access, affiliate activation, social publishing, or policy bypass."
+    }
+  ],
+  "releaseCandidate": {
+    "status": "exact_preview_verified",
+    "sha": "d07ffbde27a75245985c7a03dad7c3a7f6783f05",
+    "pullRequestUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/84",
+    "reviewUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/84#issuecomment-7103277446",
+    "previewUrl": "https://tipsforyourgifts--pr83-d07ffbd-qpgk679y.web.app/",
+    "summary": "The exact PR-84 Firebase preview passed Node 24.14 validation, a 20-route build, static and hosted smoke checks across 11 publication-ready articles, and visual review. Mobile Lighthouse scored 100 for performance, accessibility, and best practices, with 0.8 second LCP, 60 millisecond total blocking time, and zero layout shift.",
+    "nextAction": "Provision the PR-84-only OIDC preview trust, require the protected preview workflow to pass on unchanged SHA d07ffbde27a75245985c7a03dad7c3a7f6783f05, then merge without an admin bypass; request fresh exact-master-SHA approval before any production deployment because merge identity may differ."
+  }
+}

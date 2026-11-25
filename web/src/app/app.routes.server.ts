@@ -1,5 +1,5 @@
 import { PrerenderFallback, RenderMode, ServerRoute } from '@angular/ssr';
-import { ARTICLES } from './generated/content.generated';
+import { ARTICLE_SLUGS } from './generated/article-loaders.generated';
 
 export const serverRoutes: ServerRoute[] = [
   {
@@ -7,9 +7,7 @@ export const serverRoutes: ServerRoute[] = [
     renderMode: RenderMode.Prerender,
     fallback: PrerenderFallback.None,
     async getPrerenderParams() {
-      return ARTICLES
-        .filter((article) => article.status === 'publication_ready')
-        .map((article) => ({ slug: article.slug }));
+      return ARTICLE_SLUGS.map((slug) => ({ slug }));
     }
   },
   { path: '**', renderMode: RenderMode.Prerender }

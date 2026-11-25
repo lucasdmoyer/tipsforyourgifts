@@ -1,0 +1,114 @@
+name: Record founder editorial safety decision
+
+on:
+  workflow_dispatch:
+    inputs:
+      run_id:
+        description: "Exact research run ID containing the high-risk claim language"
+        required: true
+        type: string
+      decision:
+        description: "Decision on the exact current content and high-risk claims"
+        required: true
+        type: choice
+        options:
+          - approved
+          - rejected
+      confirmation:
+        description: "REVIEW- followed by the run ID, a hyphen, and the decision"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: editorial-safety-${{ inputs.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  record_decision:
+    if: github.actor == github.repository_owner && github.actor == 'lucasdmoyer'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    environment: editorial-safety-approval
+    steps:
+      - name: Require the repository owner and exact action-time confirmation
+        env:
+          RUN_ID: ${{ inputs.run_id }}
+          DECISION: ${{ inputs.decision }}
+          CONFIRMATION: ${{ inputs.confirmation }}
+          ACTOR: ${{ github.actor }}
+          OWNER: ${{ github.repository_owner }}
+        run: |
+          test "$ACTOR" = "$OWNER"
+          test "$ACTOR" = "lucasdmoyer"
+          test "$CONFIRMATION" = "REVIEW-$RUN_ID-$DECISION"
+      - uses: actions/checkout@v5
+        with:
+          ref: master
+          fetch-depth: 0
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "24.14.0"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - name: Validate the trusted base and record one immutable decision
+        id: decision
+        env:
+          RUN_ID: ${{ inputs.run_id }}
+          DECISION: ${{ inputs.decision }}
+          FOUNDER_LOGIN: ${{ github.actor }}
+          WORKFLOW_RUN_ID: ${{ github.run_id }}
+          WORKFLOW_RUN_ATTEMPT: ${{ github.run_attempt }}
+        run: |
+          npm ci --prefix web
+          npm run validate
+          npm --prefix web run editorial:safety:record -- \
+            --run-id="$RUN_ID" \
+            --decision="$DECISION" \
+            --approver-login="$FOUNDER_LOGIN" \
+            --workflow-run-id="$WORKFLOW_RUN_ID" \
+            --workflow-run-attempt="$WORKFLOW_RUN_ATTEMPT" \
+            --actor="$FOUNDER_LOGIN"
+          npm --prefix web run generate
+      - name: Prove scope and validate the resulting proposal
+        env:
+          APPROVAL_PATH: ${{ steps.decision.outputs.approval_path }}
+        run: |
+          git add -N .
+          while IFS= read -r changed_path; do
+            case "$changed_path" in
+              "$APPROVAL_PATH"|web/src/data/operations.json|web/src/app/generated/content.generated.ts|web/src/app/generated/studio.generated.ts|web/public/publication-manifest.json|web/public/sitemap.xml) ;;
+              *) echo "Founder safety decision changed forbidden path: $changed_path" >&2; exit 1 ;;
+            esac
+          done < <(git diff --name-only HEAD)
+          npm run validate
+          npm run build
+          npm run smoke
+          git diff --check
+      - name: Commit the isolated decision branch
+        env:
+          RUN_ID: ${{ inputs.run_id }}
+          APPROVAL_PATH: ${{ steps.decision.outputs.approval_path }}
+          WORKFLOW_RUN_ID: ${{ github.run_id }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -c "codex/editorial-safety-$WORKFLOW_RUN_ID"
+          git add "$APPROVAL_PATH" web/src/data/operations.json web/src/app/generated/content.generated.ts web/src/app/generated/studio.generated.ts web/public/publication-manifest.json web/public/sitemap.xml
+          git commit -m "Record founder safety decision for $RUN_ID"
+          git push origin "codex/editorial-safety-$WORKFLOW_RUN_ID"
+      - name: Open the decision pull request without merging or deploying
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ inputs.run_id }}
+          DECISION: ${{ inputs.decision }}
+          WORKFLOW_RUN_ID: ${{ github.run_id }}
+        run: |
+          gh pr create \
+            --base master \
+            --head "codex/editorial-safety-$WORKFLOW_RUN_ID" \
+            --title "Record founder safety decision for $RUN_ID" \
+            --body "Lucas recorded a $DECISION decision for the exact reviewable content and high-risk claim hashes in $RUN_ID. This receipt does not replace independent QA, approve an affiliate link, merge the pull request, or authorize publication or production deployment."
