@@ -4,6 +4,10 @@ import path from 'node:path';
 import process from 'node:process';
 import matter from './lib/front-matter.mjs';
 import { z } from 'zod';
+import {
+  assertReviewReceiptIdentity,
+  reviewReceiptPathPattern
+} from './lib/editorial-review-receipt-contract.mjs';
 
 const root = process.cwd();
 const runsDir = path.join(root, 'research', 'runs');
@@ -58,6 +62,33 @@ const thoughtfulnessSchema = z.object({
     total: z.number().int().min(0).max(20)
   })
 });
+const sourceQualificationSchema = z.object({
+  sourceId: z.string().min(4),
+  role: z.enum(['primary', 'independent']),
+  productMatch: z.enum(['exact_product', 'same_product_line', 'category_only', 'not_applicable']),
+  contentFormat: z.enum([
+    'manufacturer_page',
+    'first_person_review',
+    'comparative_review',
+    'owner_review_corpus',
+    'public_forum_discussion',
+    'affiliate_listicle',
+    'retailer_page',
+    'other'
+  ]),
+  commercialRelationship: z.enum([
+    'first_party',
+    'none_observed',
+    'affiliate_links',
+    'merchant_hosted_reviews',
+    'supplied_product',
+    'sponsored',
+    'unknown'
+  ]),
+  qualification: z.enum(['qualifies', 'context_only', 'excluded']),
+  rationale: z.string().min(30),
+  conflictIds: z.array(z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)).default([])
+});
 const candidateSchema = z.object({
   id: z.string().min(3),
   name: z.string().min(3),
@@ -66,6 +97,7 @@ const candidateSchema = z.object({
   drawbacks: z.array(z.string().min(8)).default([]),
   primarySourceIds: z.array(z.string()).default([]),
   independentSourceIds: z.array(z.string()).default([]),
+  sourceQualifications: z.array(sourceQualificationSchema).optional(),
   claimIds: z.array(z.string()).default([]),
   evidenceMode: z.enum(['desk_research', 'hands_on']).default('desk_research'),
   thoughtfulness: thoughtfulnessSchema.optional()
@@ -105,7 +137,7 @@ const affiliateLinkSchema = z.object({
   trackingPreserved: z.boolean()
 });
 const runSchema = z.object({
-  schemaVersion: z.enum(['1.0.0', '1.1.0']),
+  schemaVersion: z.enum(['1.0.0', '1.1.0', '1.2.0']),
   runId: z.string().regex(/^\d{8}-[a-z0-9-]+-[a-f0-9]{8}$/),
   supersedesRunId: z.string().regex(/^\d{8}-[a-z0-9-]+-[a-f0-9]{8}$/).optional(),
   ideaId: z.string().min(3),
@@ -156,27 +188,10 @@ const runSchema = z.object({
     passed: z.boolean(),
     reviewerRole: z.literal('independent-editor'),
     reviewerId: z.string().min(3),
-    receiptPath: z.string().regex(/^research\/reviews\/[a-z0-9-]+\.qa\.v1\.json$/),
+    receiptPath: z.string().regex(/^research\/reviews\/[a-z0-9-]+\.qa\.v[1-9]\d*\.json$/),
     blockers: z.array(z.string()),
     warnings: z.array(z.string())
   })
-});
-
-const reviewReceiptSchema = z.object({
-  schemaVersion: z.literal('1.0.0'),
-  receiptId: z.string().regex(/^\d{8}-[a-z0-9-]+-[a-f0-9]{8}-qa$/),
-  runId: z.string().regex(/^\d{8}-[a-z0-9-]+-[a-f0-9]{8}$/),
-  articleSlug: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
-  reviewedAt: z.string().datetime(),
-  reviewerRole: z.literal('independent-editor'),
-  reviewerId: z.string().min(3),
-  workflowRunId: z.string().min(1),
-  verdict: z.enum(['passed', 'failed']),
-  evidenceSha256: z.string().regex(/^[a-f0-9]{64}$/),
-  articleSha256: z.string().regex(/^[a-f0-9]{64}$/),
-  socialSha256: z.string().regex(/^[a-f0-9]{64}$/).nullable(),
-  blockers: z.array(z.string()),
-  warnings: z.array(z.string())
 });
 
 const socialPostSchema = z.object({
@@ -448,11 +463,12 @@ for (const runFile of runFiles) {
 
   const strategyIdea = strategyIdeasById.get(run.ideaId);
   const runPairs = run.pairs ?? [];
-  if (run.schemaVersion === '1.1.0') {
-    if (!strategyIdea) errors.push(`${run.runId}: schema 1.1 run references an unknown strategy idea`);
-    if (!run.ideaRevision) errors.push(`${run.runId}: schema 1.1 run requires ideaRevision`);
-    if (!run.ideaSha256) errors.push(`${run.runId}: schema 1.1 run requires ideaSha256`);
-    if (!run.decisionLens) errors.push(`${run.runId}: schema 1.1 run requires decisionLens`);
+  const usesThoughtfulSchema = ['1.1.0', '1.2.0'].includes(run.schemaVersion);
+  if (usesThoughtfulSchema) {
+    if (!strategyIdea) errors.push(`${run.runId}: schema ${run.schemaVersion} run references an unknown strategy idea`);
+    if (!run.ideaRevision) errors.push(`${run.runId}: schema ${run.schemaVersion} run requires ideaRevision`);
+    if (!run.ideaSha256) errors.push(`${run.runId}: schema ${run.schemaVersion} run requires ideaSha256`);
+    if (!run.decisionLens) errors.push(`${run.runId}: schema ${run.schemaVersion} run requires decisionLens`);
     if (strategyIdea) {
       if (strategyIdea.founderDisposition !== 'approved_for_research') errors.push(`${run.runId}: strategy idea is not founder-approved for research`);
       if (run.ideaRevision !== strategyIdea.revision) errors.push(`${run.runId}: strategy idea revision is stale`);
@@ -464,11 +480,12 @@ for (const runFile of runFiles) {
       if (run.finalists.length < strategyIdea.deliverables.minimumFinalists) errors.push(`${run.runId}: does not meet the strategy minimum finalist count`);
       if (runPairs.length < strategyIdea.deliverables.minimumQualifiedPairs) errors.push(`${run.runId}: does not meet the strategy minimum qualified-pair count`);
     }
-    for (const claim of run.claims) if (!claim.kind) errors.push(`${run.runId}: schema 1.1 claim ${claim.id} requires a kind`);
+    for (const claim of run.claims) if (!claim.kind) errors.push(`${run.runId}: schema ${run.schemaVersion} claim ${claim.id} requires a kind`);
   }
 
   const sourceIds = new Set(run.sources.map((source) => source.id));
   if (sourceIds.size !== run.sources.length) errors.push(`${run.runId}: source IDs must be unique`);
+  const conflictIds = new Set((run.conflicts ?? []).map((conflict) => conflict.id));
   const claimIds = new Set(run.claims.map((claim) => claim.id));
   if (claimIds.size !== run.claims.length) errors.push(`${run.runId}: claim IDs must be unique`);
   const candidateIds = new Set(run.candidates.map((candidate) => candidate.id));
@@ -526,7 +543,66 @@ for (const runFile of runFiles) {
       if (finalist.claimIds.length < 2) errors.push(`${run.runId}: finalist ${finalist.id} needs linked benefit and drawback claims`);
       for (const claimId of finalist.claimIds) if (!claimIds.has(claimId)) errors.push(`${run.runId}: finalist ${finalist.id} references missing claim ${claimId}`);
 
-      if (run.schemaVersion === '1.1.0') {
+      if (run.schemaVersion === '1.2.0') {
+        const qualifications = finalist.sourceQualifications ?? [];
+        const qualificationBySource = new Map();
+        for (const qualification of qualifications) {
+          if (qualificationBySource.has(qualification.sourceId)) errors.push(`${run.runId}: finalist ${finalist.id} repeats source qualification ${qualification.sourceId}`);
+          qualificationBySource.set(qualification.sourceId, qualification);
+        }
+
+        const expectedQualifications = [
+          ...finalist.primarySourceIds.map((sourceId) => ({ sourceId, role: 'primary' })),
+          ...finalist.independentSourceIds.map((sourceId) => ({ sourceId, role: 'independent' }))
+        ];
+        const expectedSourceIds = new Set(expectedQualifications.map(({ sourceId }) => sourceId));
+        if (qualifications.length !== expectedSourceIds.size || qualifications.some(({ sourceId }) => !expectedSourceIds.has(sourceId))) {
+          errors.push(`${run.runId}: finalist ${finalist.id} source qualifications must exactly cover its primary and independent source IDs`);
+        }
+
+        for (const expected of expectedQualifications) {
+          const qualification = qualificationBySource.get(expected.sourceId);
+          if (!qualification) {
+            errors.push(`${run.runId}: finalist ${finalist.id} is missing source qualification ${expected.sourceId}`);
+            continue;
+          }
+          const source = run.sources.find((entry) => entry.id === expected.sourceId);
+          if (qualification.role !== expected.role) errors.push(`${run.runId}: finalist ${finalist.id} source ${expected.sourceId} has the wrong qualification role`);
+          if (qualification.qualification !== 'qualifies') errors.push(`${run.runId}: finalist ${finalist.id} source ${expected.sourceId} is listed as qualifying evidence but its decision is ${qualification.qualification}`);
+          if (qualification.productMatch !== 'exact_product') errors.push(`${run.runId}: finalist ${finalist.id} source ${expected.sourceId} does not prove an exact-product match`);
+          for (const conflictId of qualification.conflictIds) if (!conflictIds.has(conflictId)) errors.push(`${run.runId}: finalist ${finalist.id} source ${expected.sourceId} references missing conflict ${conflictId}`);
+
+          if (expected.role === 'primary') {
+            if (qualification.contentFormat !== 'manufacturer_page' || qualification.commercialRelationship !== 'first_party') {
+              errors.push(`${run.runId}: finalist ${finalist.id} primary source ${expected.sourceId} must be qualified as a first-party manufacturer page`);
+            }
+            continue;
+          }
+
+          if (['first_party', 'supplied_product', 'sponsored', 'unknown'].includes(qualification.commercialRelationship)) {
+            errors.push(`${run.runId}: finalist ${finalist.id} independent source ${expected.sourceId} has a disqualifying commercial relationship`);
+          }
+          if (!['first_person_review', 'comparative_review', 'owner_review_corpus', 'public_forum_discussion'].includes(qualification.contentFormat)) {
+            errors.push(`${run.runId}: finalist ${finalist.id} independent source ${expected.sourceId} does not use a qualifying review format`);
+          }
+          if (qualification.contentFormat === 'affiliate_listicle') {
+            errors.push(`${run.runId}: finalist ${finalist.id} independent source ${expected.sourceId} is an affiliate listicle and cannot qualify`);
+          }
+          if (qualification.commercialRelationship === 'affiliate_links') {
+            if (!['first_person_review', 'comparative_review'].includes(qualification.contentFormat) || source?.trustTier !== 'C') {
+              errors.push(`${run.runId}: finalist ${finalist.id} affiliate-supported source ${expected.sourceId} must be a disclosed Tier-C first-person or comparative review`);
+            }
+          }
+          if (qualification.commercialRelationship === 'merchant_hosted_reviews' && qualification.contentFormat !== 'owner_review_corpus') {
+            errors.push(`${run.runId}: finalist ${finalist.id} merchant-hosted source ${expected.sourceId} must be an exact-product owner review corpus`);
+          }
+          if (!['none_observed', 'first_party'].includes(qualification.commercialRelationship) && qualification.conflictIds.length === 0) {
+            errors.push(`${run.runId}: finalist ${finalist.id} source ${expected.sourceId} must bind its commercial relationship to the conflict ledger`);
+          }
+        }
+      }
+
+      if (usesThoughtfulSchema) {
         const thoughtfulness = finalist.thoughtfulness;
         if (!thoughtfulness) {
           errors.push(`${run.runId}: finalist ${finalist.id} needs a thoughtfulness scorecard`);
@@ -573,7 +649,7 @@ for (const runFile of runFiles) {
     for (const claimId of pair.claimIds) {
       const claim = run.claims.find((entry) => entry.id === claimId);
       if (!claim) errors.push(`${run.runId}: pair ${pair.id} references missing claim ${claimId}`);
-      else if (run.schemaVersion === '1.1.0' && claim.kind !== 'pair_coherence') errors.push(`${run.runId}: pair ${pair.id} must reference pair_coherence claims`);
+      else if (usesThoughtfulSchema && claim.kind !== 'pair_coherence') errors.push(`${run.runId}: pair ${pair.id} must reference pair_coherence claims`);
     }
     for (const check of pair.compatibilityChecks) for (const claimId of check.claimIds) if (!claimIds.has(claimId)) errors.push(`${run.runId}: pair ${pair.id} compatibility references missing claim ${claimId}`);
   }
@@ -648,6 +724,38 @@ for (const runFile of runFiles) {
   const falseExperience = impliesFirstHandExperience(article.body);
   if (falseExperience && run.article.evidenceMode !== 'hands_on') errors.push(`${run.runId}: non-hands-on article implies first-hand product experience`);
   if (run.qa.warnings.length > 0) warnings.push(...run.qa.warnings.map((warning) => `${run.runId}: ${warning}`));
+}
+
+const reviewFiles = await filesUnder(reviewsDir, '.json');
+const reviewReceiptIds = new Set();
+const reviewRevisionKeys = new Set();
+for (const reviewFile of reviewFiles) {
+  const relativePath = `research/reviews/${path.basename(reviewFile)}`;
+  if (!reviewReceiptPathPattern.test(relativePath)) {
+    errors.push(`${relativePath}: review filename does not use the versioned run receipt pattern`);
+    continue;
+  }
+  try {
+    const receipt = assertReviewReceiptIdentity(JSON.parse(await fs.readFile(reviewFile, 'utf8')), relativePath);
+    const run = runsById.get(receipt.runId);
+    if (!run) errors.push(`${relativePath}: referenced research run is missing`);
+    else {
+      if (receipt.articleSlug !== run.article.slug) errors.push(`${relativePath}: article slug differs from the research run`);
+      if (receipt.reviewerId === run.draftAuthor) errors.push(`${relativePath}: draft author cannot be the independent reviewer`);
+    }
+    if (reviewReceiptIds.has(receipt.receiptId)) errors.push(`${relativePath}: duplicate review receipt ID ${receipt.receiptId}`);
+    reviewReceiptIds.add(receipt.receiptId);
+    const revision = Number(/\.qa\.v([1-9]\d*)\.json$/.exec(relativePath)?.[1]);
+    const revisionKey = `${receipt.runId}:${revision}`;
+    if (reviewRevisionKeys.has(revisionKey)) errors.push(`${relativePath}: duplicate review revision ${revisionKey}`);
+    reviewRevisionKeys.add(revisionKey);
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      for (const issue of error.issues) errors.push(`${relativePath} ${issue.path.join('.')}: ${issue.message}`);
+    } else {
+      errors.push(`${relativePath}: ${error.message}`);
+    }
+  }
 }
 
 for (const run of runsById.values()) {
@@ -729,7 +837,7 @@ for (const socialFile of socialFiles) {
     for (const claimId of post.claimIds) if (!runClaimIds.has(claimId)) errors.push(`${pack.packId}: ${post.id} references unknown claim ${claimId}`);
     for (const productId of post.productIds) if (!runProductIds.has(productId)) errors.push(`${pack.packId}: ${post.id} references unknown product ${productId}`);
     for (const pairId of post.pairIds) if (!runPairIds.has(pairId)) errors.push(`${pack.packId}: ${post.id} references unknown pair ${pairId}`);
-    if (run?.schemaVersion === '1.1.0' && (post.claimIds.length === 0 || post.productIds.length + post.pairIds.length === 0)) errors.push(`${pack.packId}: ${post.id} needs reviewed claim and product or pair references`);
+    if (run && ['1.1.0', '1.2.0'].includes(run.schemaVersion) && (post.claimIds.length === 0 || post.productIds.length + post.pairIds.length === 0)) errors.push(`${pack.packId}: ${post.id} needs reviewed claim and product or pair references`);
   }
   if (pack.status !== 'draft' && !pack.policy.externalPublishingAuthorized) errors.push(`${pack.packId}: pack cannot advance beyond draft without external publishing authorization`);
   if (pack.policy.containsAffiliateLinks) errors.push(`${pack.packId}: social launch packs must drive to owned content, not affiliate destinations`);
@@ -745,12 +853,12 @@ for (const run of runsById.values()) {
   let receiptRaw;
   try {
     receiptRaw = await fs.readFile(receiptPath, 'utf8');
-    receipt = reviewReceiptSchema.parse(JSON.parse(receiptRaw));
+    receipt = assertReviewReceiptIdentity(JSON.parse(receiptRaw), run.qa.receiptPath);
   } catch (error) {
     errors.push(`${run.runId}: independent QA receipt is missing or invalid (${error.message})`);
     continue;
   }
-  if (receipt.receiptId !== `${run.runId}-qa` || receipt.runId !== run.runId || receipt.articleSlug !== run.article.slug) errors.push(`${run.runId}: QA receipt identity does not match the run`);
+  if (receipt.runId !== run.runId || receipt.articleSlug !== run.article.slug) errors.push(`${run.runId}: QA receipt identity does not match the run`);
   if (receipt.verdict !== 'passed' || receipt.blockers.length > 0) errors.push(`${run.runId}: QA receipt did not pass cleanly`);
   if (receipt.reviewerId !== run.qa.reviewerId || receipt.reviewerId === run.draftAuthor) errors.push(`${run.runId}: QA receipt reviewer separation failed`);
   const currentEvidenceSha256 = evidenceDigest(rawRunsById.get(run.runId));
@@ -773,6 +881,7 @@ else {
     researchRuns: runFiles.length,
     articles: articleFiles.length,
     socialPacks: socialFiles.length,
+    independentReviewReceipts: reviewFiles.length,
     enabledAffiliatePrograms: enabledPrograms.size,
     warnings
   }, null, 2));

@@ -5,7 +5,7 @@ import os from 'node:os';
 import path from 'node:path';
 import process from 'node:process';
 import { promisify } from 'node:util';
-import { parsePublicationReceipt } from './lib/publication-receipt-contract.mjs';
+import { parsePublicationReceipt, summarizeDurableFounderReviewedReleaseReceipts } from './lib/publication-receipt-contract.mjs';
 
 const execFileAsync = promisify(execFile);
 
@@ -85,6 +85,19 @@ automatic.releaseMode = 'automatic_after_proven';
 automatic.sourceWorkflow = 'firebase-auto-production';
 automatic.workflow.eventName = 'push';
 parsePublicationReceipt(automatic);
+
+const secondFounderReviewed = clone(base);
+secondFounderReviewed.releaseSha = 'd'.repeat(40);
+secondFounderReviewed.receiptId = `firebase-${secondFounderReviewed.releaseSha.slice(0, 12)}-54321-1`;
+secondFounderReviewed.rollbackTarget.targetChannel = 'rollback-dddddddddddd-54321-1';
+secondFounderReviewed.rollbackTarget.protectsReleaseSha = secondFounderReviewed.releaseSha;
+secondFounderReviewed.rollbackTarget.rollbackCommand = 'firebase hosting:clone tipsforyourgifts:rollback-dddddddddddd-54321-1 tipsforyourgifts:live --project tipsforyourgifts';
+secondFounderReviewed.workflow.runId = '54321';
+const durableSummary = summarizeDurableFounderReviewedReleaseReceipts([base, clone(base), secondFounderReviewed, automatic]);
+assert.equal(durableSummary.receiptCount, 3, 'only founder-reviewed manual receipts belong in the durable progress ledger');
+assert.equal(durableSummary.uniqueReleaseCount, 2, 'duplicate release SHAs count once');
+assert.deepEqual(durableSummary.releaseShas, ['a'.repeat(40), 'd'.repeat(40)]);
+assert.throws(() => summarizeDurableFounderReviewedReleaseReceipts([{ ...base, status: 'failed' }]), undefined, 'invalid receipts fail closed');
 
 const fixtureRoot = await fs.mkdtemp(path.join(os.tmpdir(), 'tfyg-publication-receipt-'));
 let commandReceipt;

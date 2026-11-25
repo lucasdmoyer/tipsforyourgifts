@@ -50,6 +50,13 @@ const candidateArgs = [
   '--created-by=lucasdmoyer',
   `--confirmation=CANDIDATE-${candidateId}`
 ];
+const sourceReviewPath = path.join(root, 'research', 'reviews', '20261018-read-it-then-play-it-c437f208.qa.v1.json');
+const sourceReviewRaw = await fs.readFile(sourceReviewPath);
+const staleSourceReview = JSON.parse(sourceReviewRaw.toString('utf8'));
+staleSourceReview.articleSha256 = 'f'.repeat(64);
+await fs.writeFile(sourceReviewPath, `${JSON.stringify(staleSourceReview, null, 2)}\n`);
+await assert.rejects(() => execFileAsync(process.execPath, candidateArgs, { cwd: root }), /independent review does not match the current article/);
+await fs.writeFile(sourceReviewPath, sourceReviewRaw);
 await execFileAsync(process.execPath, candidateArgs, { cwd: root });
 const candidatePath = path.join(root, 'affiliate', 'candidates', `${candidateId}.json`);
 const candidateRaw = await fs.readFile(candidatePath);
@@ -203,4 +210,4 @@ await execFileAsync(process.execPath, [
 const approval = JSON.parse(await fs.readFile(path.join(root, 'affiliate', 'approvals', `${candidateId}-approval.json`), 'utf8'));
 assert.equal(approval.assertions.productionDeploymentAuthorized, false);
 
-console.log(JSON.stringify({ affiliateLinkCommandTests: 'passed', candidateCreation: 'passed', founderAttestedPartnerBatchImport: 'passed', completeBatchManifest: 'passed', exactSetBinding: 'passed', programBinding: 'passed', idempotentRecovery: 'passed', failedReviewBlocksApproval: 'passed', lateReviewRollback: 'passed', correctedReviewRecovery: 'passed', cleanReviewFounderApproval: 'passed', deployed: false }, null, 2));
+console.log(JSON.stringify({ affiliateLinkCommandTests: 'passed', staleArticleReviewBlocksCandidateCreation: 'passed', candidateCreation: 'passed', founderAttestedPartnerBatchImport: 'passed', completeBatchManifest: 'passed', exactSetBinding: 'passed', programBinding: 'passed', idempotentRecovery: 'passed', failedReviewBlocksApproval: 'passed', lateReviewRollback: 'passed', correctedReviewRecovery: 'passed', cleanReviewFounderApproval: 'passed', deployed: false }, null, 2));

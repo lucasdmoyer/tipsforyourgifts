@@ -5,6 +5,7 @@ const slug = z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/);
 const sha256 = z.string().regex(/^[a-f0-9]{64}$/);
 const httpsUrl = z.string().url().refine((value) => value.startsWith('https://'), 'must use HTTPS');
 const externalId = z.string().min(2).max(160).regex(/^[A-Za-z0-9._:-]+$/);
+const maximumStaticSocialImageBytes = 1_000_000;
 
 function isPrivateIpv4(hostname) {
   const octets = hostname.split('.').map(Number);
@@ -96,7 +97,7 @@ export const socialCreativeCandidateSchema = z.object({
   publicUrl: httpsUrl,
   contentSha256: sha256,
   contentType: z.enum(['image/png', 'image/jpeg', 'image/webp']),
-  byteLength: z.number().int().positive().max(20_000_000),
+  byteLength: z.number().int().positive().max(maximumStaticSocialImageBytes, 'static social image must not exceed 1,000,000 bytes'),
   width: z.number().int().min(600).max(3840),
   height: z.number().int().min(600).max(3840),
   aspectRatio: z.literal('2:3'),
@@ -129,7 +130,7 @@ export const socialMediaAssetSchema = z.object({
   publicUrl: httpsUrl,
   contentSha256: sha256,
   contentType: z.enum(['image/png', 'image/jpeg', 'image/webp']),
-  byteLength: z.number().int().positive().max(20_000_000),
+  byteLength: z.number().int().positive().max(maximumStaticSocialImageBytes, 'static social image must not exceed 1,000,000 bytes'),
   altText: z.string().min(10).max(500),
   rightsEvidenceUrl: httpsUrl,
   founderLogin: z.string().regex(/^[A-Za-z0-9-]+$/),

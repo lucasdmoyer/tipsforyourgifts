@@ -26,7 +26,7 @@ jobs:
         with:
           ref: ${{ github.sha }}
           persist-credentials: false
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: "24.14.0"
           cache: npm
@@ -39,22 +39,24 @@ jobs:
           enabled="$(node -p "String(require('./web/config/publication-policy.json').automaticPromotion.enabled)")"
           echo "enabled=$enabled" >> "$GITHUB_OUTPUT"
 
-  release:
+  preview:
     needs: policy_gate
     if: needs.policy_gate.outputs.enabled == 'true'
     runs-on: ubuntu-latest
-    environment: production
     timeout-minutes: 30
     permissions:
       contents: read
-      deployments: read
+      id-token: write
+    outputs:
+      preview_url: ${{ steps.firebase_preview.outputs.preview_url }}
+      artifact_name: ${{ steps.artifact.outputs.name }}
     steps:
       - uses: actions/checkout@v5
         with:
           ref: ${{ github.sha }}
           fetch-depth: 0
           persist-credentials: false
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: "24.14.0"
           cache: npm
@@ -71,61 +73,181 @@ jobs:
           npm run validate
           npm run build
           npm run smoke
-      - name: Deploy the exact artifact to a temporary Firebase channel
-        id: preview
-        uses: FirebaseExtended/action-hosting-deploy@v0
+      - name: Bind the static artifact to this exact automatic release
+        id: artifact
+        run: echo "name=firebase-auto-candidate-$GITHUB_SHA-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT" >> "$GITHUB_OUTPUT"
+      - uses: actions/upload-artifact@v7
         with:
-          repoToken: ${{ secrets.GITHUB_TOKEN }}
-          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_TIPSFORYOURGIFTS }}
-          projectId: tipsforyourgifts
-          channelId: auto-${{ github.run_id }}-${{ github.run_attempt }}
-          expires: 1d
+          name: ${{ steps.artifact.outputs.name }}
+          path: web/dist
+          if-no-files-found: error
+          retention-days: 14
+      - name: Install the pinned Firebase CLI before cloud authentication
+        run: |
+          npm install --prefix "$RUNNER_TEMP/firebase-cli" --no-audit --no-fund firebase-tools@15.26.0
+          echo "FIREBASE_CLI=$RUNNER_TEMP/firebase-cli/node_modules/firebase-tools/lib/bin/firebase.js" >> "$GITHUB_ENV"
+      - name: Refuse identity outside the trusted master-push workflow
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          REF_VALUE: ${{ github.ref }}
+          REPOSITORY_ID: ${{ github.repository_id }}
+          REPOSITORY_OWNER_ID: ${{ github.repository_owner_id }}
+          WORKFLOW_REF: ${{ github.workflow_ref }}
+        run: |
+          test "$REPOSITORY_ID" = "171694140"
+          test "$REPOSITORY_OWNER_ID" = "23782501"
+          test "$EVENT_NAME" = "push"
+          test "$REF_VALUE" = "refs/heads/master"
+          test "$WORKFLOW_REF" = "lucasdmoyer/tipsforyourgifts/.github/workflows/firebase-auto-production.yml@refs/heads/master"
+      - id: google_auth
+        name: Mint short-lived credentials for the exact automatic preview
+        uses: google-github-actions/auth@v3
+        with:
+          project_id: tipsforyourgifts
+          workload_identity_provider: projects/647657919626/locations/global/workloadIdentityPools/tips-github-auto-production/providers/github-auto-production
+          service_account: github-auto-production@tipsforyourgifts.iam.gserviceaccount.com
+          create_credentials_file: true
+          export_environment_variables: true
+      - name: Deploy the exact artifact to a temporary Firebase channel
+        id: firebase_preview
+        env:
+          CHANNEL_ID: auto-${{ github.run_id }}-${{ github.run_attempt }}
+        run: |
+          node "$FIREBASE_CLI" hosting:channel:deploy "$CHANNEL_ID" \
+            --expires 1d \
+            --project tipsforyourgifts \
+            --non-interactive
+          channel_file="$RUNNER_TEMP/firebase-hosting-channels.json"
+          node "$FIREBASE_CLI" hosting:channel:list \
+            --site tipsforyourgifts \
+            --project tipsforyourgifts \
+            --json > "$channel_file"
+          preview_url="$(node -e 'const fs = require("node:fs"); const data = JSON.parse(fs.readFileSync(process.argv[1], "utf8")); const suffix = `/channels/${process.env.CHANNEL_ID}`; const channel = data?.result?.channels?.find((entry) => entry.name?.endsWith(suffix)); if (!channel?.url) throw new Error(`Firebase preview URL missing for ${process.env.CHANNEL_ID}`); process.stdout.write(channel.url);' "$channel_file")"
+          echo "preview_url=$preview_url" >> "$GITHUB_OUTPUT"
+      - name: Remove local cloud credentials before hosted verification
+        if: always()
+        run: |
+          if [ -n "${GOOGLE_APPLICATION_CREDENTIALS:-}" ]; then
+            rm -f -- "$GOOGLE_APPLICATION_CREDENTIALS"
+          fi
+          echo "GOOGLE_APPLICATION_CREDENTIALS=" >> "$GITHUB_ENV"
+          echo "CLOUDSDK_AUTH_CREDENTIAL_FILE_OVERRIDE=" >> "$GITHUB_ENV"
+          echo "GOOGLE_GHA_CREDS_PATH=" >> "$GITHUB_ENV"
       - name: Smoke the exact-SHA preview before live mutation
         env:
-          PREVIEW_URL: ${{ steps.preview.outputs.details_url }}
-        run: curl --fail --silent --show-error --location --max-time 30 "$PREVIEW_URL" | grep -F "Good gifts, minus the guesswork."
-      - uses: google-github-actions/auth@v3
+          PREVIEW_URL: ${{ steps.firebase_preview.outputs.preview_url }}
+        run: npm --prefix web run smoke:hosted -- "$PREVIEW_URL"
+
+  release:
+    needs: preview
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: ${{ needs.preview.outputs.preview_url }}
+    timeout-minutes: 25
+    permissions:
+      contents: read
+      deployments: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v5
         with:
-          credentials_json: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_TIPSFORYOURGIFTS }}
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "24.14.0"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - run: npm ci --prefix web
+      - uses: actions/download-artifact@v8
+        with:
+          name: ${{ needs.preview.outputs.artifact_name }}
+          path: web/dist
+      - name: Re-prove the exact master SHA, artifact, policy, and reviewed preview
+        env:
+          PREVIEW_URL: ${{ needs.preview.outputs.preview_url }}
+          RELEASE_SHA: ${{ github.sha }}
+        run: |
+          git fetch --no-tags origin master
+          test "$(git rev-parse HEAD)" = "$RELEASE_SHA"
+          test "$(git rev-parse origin/master)" = "$RELEASE_SHA"
+          test "$(node -p "String(require('./web/config/publication-policy.json').automaticPromotion.enabled)")" = "true"
+          npm run smoke
+          npm --prefix web run smoke:hosted -- "$PREVIEW_URL"
+      - name: Install the pinned Firebase CLI before cloud authentication
+        run: |
+          npm install --prefix "$RUNNER_TEMP/firebase-cli" --no-audit --no-fund firebase-tools@15.26.0
+          echo "FIREBASE_CLI=$RUNNER_TEMP/firebase-cli/node_modules/firebase-tools/lib/bin/firebase.js" >> "$GITHUB_ENV"
+      - name: Refuse identity outside the trusted master-push workflow
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          REF_VALUE: ${{ github.ref }}
+          REPOSITORY_ID: ${{ github.repository_id }}
+          REPOSITORY_OWNER_ID: ${{ github.repository_owner_id }}
+          WORKFLOW_REF: ${{ github.workflow_ref }}
+        run: |
+          test "$REPOSITORY_ID" = "171694140"
+          test "$REPOSITORY_OWNER_ID" = "23782501"
+          test "$EVENT_NAME" = "push"
+          test "$REF_VALUE" = "refs/heads/master"
+          test "$WORKFLOW_REF" = "lucasdmoyer/tipsforyourgifts/.github/workflows/firebase-auto-production.yml@refs/heads/master"
+      - id: google_auth
+        name: Mint short-lived credentials for the protected automatic release
+        uses: google-github-actions/auth@v3
+        with:
           project_id: tipsforyourgifts
+          workload_identity_provider: projects/647657919626/locations/global/workloadIdentityPools/tips-github-auto-production/providers/github-auto-production
+          service_account: github-auto-production@tipsforyourgifts.iam.gserviceaccount.com
           create_credentials_file: true
+          export_environment_variables: true
       - name: Clone the current live release to a 30-day rollback channel
+        id: rollback
         env:
           RELEASE_SHA: ${{ github.sha }}
           RUN_ID: ${{ github.run_id }}
           RUN_ATTEMPT: ${{ github.run_attempt }}
         run: |
           rollback_channel="rollback-${RELEASE_SHA:0:12}-$RUN_ID-$RUN_ATTEMPT"
-          npx --yes firebase-tools@15.26.0 hosting:channel:create "$rollback_channel" --expires 30d --site tipsforyourgifts --project tipsforyourgifts --non-interactive
-          npx --yes firebase-tools@15.26.0 hosting:clone tipsforyourgifts:live "tipsforyourgifts:$rollback_channel" --project tipsforyourgifts --non-interactive
-          npm --prefix web run publication:rollback-record -- --release-sha="$RELEASE_SHA" --target-channel="$rollback_channel" --output=../rollback-target.json
-      - uses: actions/upload-artifact@v4
-        with:
-          name: firebase-rollback-target-${{ github.run_id }}-${{ github.run_attempt }}
-          path: rollback-target.json
-          if-no-files-found: error
-          retention-days: 90
+          node "$FIREBASE_CLI" hosting:channel:create "$rollback_channel" --expires 30d --site tipsforyourgifts --project tipsforyourgifts --non-interactive
+          node "$FIREBASE_CLI" hosting:clone tipsforyourgifts:live "tipsforyourgifts:$rollback_channel" --project tipsforyourgifts --non-interactive
+          echo "channel=$rollback_channel" >> "$GITHUB_OUTPUT"
       - name: Promote the same verified checkout to Firebase live
-        id: live
-        uses: FirebaseExtended/action-hosting-deploy@v0
-        with:
-          repoToken: ${{ secrets.GITHUB_TOKEN }}
-          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_TIPSFORYOURGIFTS }}
-          projectId: tipsforyourgifts
-          channelId: live
+        run: node "$FIREBASE_CLI" deploy --only hosting --project tipsforyourgifts --non-interactive
+      - name: Remove local cloud credentials before receipt generation
+        if: always()
+        run: |
+          if [ -n "${GOOGLE_APPLICATION_CREDENTIALS:-}" ]; then
+            rm -f -- "$GOOGLE_APPLICATION_CREDENTIALS"
+          fi
+          echo "GOOGLE_APPLICATION_CREDENTIALS=" >> "$GITHUB_ENV"
+          echo "CLOUDSDK_AUTH_CREDENTIAL_FILE_OVERRIDE=" >> "$GITHUB_ENV"
+          echo "GOOGLE_GHA_CREDS_PATH=" >> "$GITHUB_ENV"
+      - name: Record the exact rollback target without cloud authority
+        env:
+          RELEASE_SHA: ${{ github.sha }}
+          ROLLBACK_CHANNEL: ${{ steps.rollback.outputs.channel }}
+        run: npm --prefix web run publication:rollback-record -- --release-sha="$RELEASE_SHA" --target-channel="$ROLLBACK_CHANNEL" --output=../rollback-target.json
       - name: Read-only hosted smoke after automatic publication
-        run: curl --fail --silent --show-error --location --max-time 30 https://tipsforyourgifts.web.app | grep -F "Good gifts, minus the guesswork."
+        run: npm --prefix web run smoke:hosted -- https://tipsforyourgifts.web.app
       - name: Create the exact-SHA verified publication receipt
         env:
           RELEASE_SHA: ${{ github.sha }}
-          PREVIEW_URL: ${{ steps.preview.outputs.details_url }}
+          PREVIEW_URL: ${{ needs.preview.outputs.preview_url }}
           GITHUB_REPOSITORY: ${{ github.repository }}
           GITHUB_RUN_ID: ${{ github.run_id }}
           GITHUB_RUN_ATTEMPT: ${{ github.run_attempt }}
           GITHUB_ACTOR: ${{ github.actor }}
           GITHUB_EVENT_NAME: ${{ github.event_name }}
         run: npm --prefix web run publication:receipt -- --release-sha="$RELEASE_SHA" --mode=automatic_after_proven --source-workflow=firebase-auto-production --preview-url="$PREVIEW_URL" --rollback-target=../rollback-target.json --manifest=dist/publication-manifest.json --output=../publication-receipt.json
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
+        with:
+          name: firebase-rollback-target-${{ github.run_id }}-${{ github.run_attempt }}
+          path: rollback-target.json
+          if-no-files-found: error
+          retention-days: 90
+      - uses: actions/upload-artifact@v7
         with:
           name: firebase-publication-receipt-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
           path: publication-receipt.json

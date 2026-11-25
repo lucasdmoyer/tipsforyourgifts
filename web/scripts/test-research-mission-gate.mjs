@@ -17,30 +17,35 @@ const run = {
 };
 const articleRaw = Buffer.from('---\nstatus: publication_ready\n---\nEvidence-backed article.\n');
 const social = { packId: 'gifts-for-a-golf-friend-launch', researchRun: run.runId };
-const review = { runId: run.runId, workflowRunId: '123', verdict: 'passed', blockers: [] };
+const review = { schemaVersion: '1.2.0', runId: run.runId, workflowName: 'editorial-independent-review.yml', missionId: 'research-mission-123-1', workflowRunId: '999', verdict: 'passed', blockers: [] };
 const runRaw = Buffer.from(JSON.stringify(run));
 const socialRaw = Buffer.from(JSON.stringify(social));
 const reviewRaw = Buffer.from(JSON.stringify(review));
 
 function startedMission(workflowRunId = '123') {
   return {
-    schemaVersion: '1.0.0', missionId: `research-mission-${workflowRunId}-1`, status: 'started',
-    createdAt: '2026-08-03T10:00:00.000Z', completedAt: null,
+    schemaVersion: '1.4.0', missionId: `research-mission-${workflowRunId}-1`, status: 'started',
+    createdAt: '2026-08-03T10:00:00.000Z', failedAt: null, completedAt: null,
     trigger: { type: 'approved_strategy_dispatch', workflow: 'research-agent.yml', workflowRunId, workflowRunAttempt: 1, actor: 'lucasdmoyer', baseSha: 'a'.repeat(40) },
     idea: { id: idea.id, revision: idea.revision, sha256: canonicalIdeaSha256(idea), title: idea.title, thesisType: idea.thesisType },
     teamStages: [
       { id: 'research', role: 'research-editorial-team', authority: 'draft_only', status: 'in_progress' },
       { id: 'quality_review', role: 'independent-evidence-editor', authority: 'review_receipt_only', status: 'queued' },
+      { id: 'visual_production', role: 'visual-production-team', authority: 'original_assets_and_visual_receipt_only', status: 'queued' },
       { id: 'release_preparation', role: 'release-operator', authority: 'preview_and_pr_only', status: 'queued' },
       { id: 'growth_follow_up', role: 'growth-analyst', authority: 'aggregate_measurement_only', status: 'queued' }
     ],
-    deliverables: { researchRuns: 1, articles: 1, socialLaunchPacks: 1, independentReviewReceipts: 1 },
+    deliverables: { researchRuns: 1, articles: 1, socialLaunchPacks: 1, independentReviewReceipts: 1, approvedVisualSets: 1 },
     qualityGates: {
       minimumResearchPasses: 3, minimumSourceClasses: 5, minimumFinalists: 5, minimumEditorialScore: 75,
       minimumEvidenceConfidence: 70, minimumThoughtfulnessScore: 15, minimumPairCoherenceScore: 80,
       independentReviewerRequired: true, affiliatePosture: 'enabled_registry_only'
     },
     publicationPolicySnapshot: { mode: 'founder_reviewed', automaticPromotionEnabled: false, verifiedSuccessfulReleaseCount: 0, minimumSuccessfulFounderReviewedReleases: 10 },
+    researchFailureHandoff: null,
+    reviewFailureHandoff: null,
+    qaFailureHandoff: null,
+    visualHandoff: null,
     completion: null
   };
 }
@@ -51,7 +56,8 @@ function completedMission() {
   mission.completedAt = '2026-08-03T11:00:00.000Z';
   mission.teamStages[0].status = 'completed';
   mission.teamStages[1].status = 'completed';
-  mission.teamStages[2].status = 'ready';
+  mission.teamStages[2].status = 'completed';
+  mission.teamStages[3].status = 'ready';
   mission.completion = {
     runId: run.runId, runSha256: sha256(runRaw), articleSlug: run.article.slug, articleSha256: sha256(articleRaw),
     socialPackId: social.packId, socialPackSha256: sha256(socialRaw), reviewReceiptPath: run.qa.receiptPath,
@@ -61,6 +67,48 @@ function completedMission() {
   return mission;
 }
 
+function researchFailedModel() {
+  const mission = startedMission();
+  mission.status = 'research_failed';
+  mission.failedAt = '2026-08-03T10:20:00.000Z';
+  mission.teamStages[0].status = 'blocked';
+  mission.researchFailureHandoff = {
+    reasonCode: 'model_step_failed',
+    workflowRunUrl: `https://github.com/lucasdmoyer/tipsforyourgifts/actions/runs/${mission.trigger.workflowRunId}`,
+    nextGate: 'Open the research failure pull request, inspect the credential-free evidence, and retry from a new workflow run after correction.'
+  };
+  return model(mission);
+}
+
+function reviewFailedModel() {
+  const mission = startedMission();
+  const failedRun = copy(run);
+  failedRun.status = 'drafted';
+  failedRun.article.status = 'draft';
+  failedRun.qa.passed = false;
+  const failedRunRaw = Buffer.from(JSON.stringify(failedRun));
+  const failedArticleRaw = Buffer.from('---\nstatus: draft\n---\nEvidence-backed article.\n');
+  mission.status = 'review_failed';
+  mission.failedAt = '2026-08-03T10:40:00.000Z';
+  mission.teamStages[0].status = 'completed';
+  mission.teamStages[1].status = 'blocked';
+  mission.reviewFailureHandoff = {
+    runId: run.runId, runSha256: sha256(failedRunRaw), articleSlug: run.article.slug, articleSha256: sha256(failedArticleRaw),
+    socialPackId: social.packId, socialPackSha256: sha256(socialRaw), reasonCode: 'review_result_invalid',
+    workflowRunUrl: `https://github.com/lucasdmoyer/tipsforyourgifts/actions/runs/${mission.trigger.workflowRunId}`,
+    nextGate: 'Open the review-failure pull request, inspect the credential-free draft, and retry the independent review in a new workflow run.'
+  };
+  return {
+    records: [{ filename: `${mission.missionId}.json`, raw: Buffer.from(JSON.stringify(mission)), data: mission }],
+    strategy: copy(strategy), publicationPolicy: copy(publicationPolicy),
+    runsById: new Map([[run.runId, { raw: failedRunRaw, data: failedRun }]]),
+    articlesBySlug: new Map([[run.article.slug, { raw: failedArticleRaw, data: { slug: run.article.slug } }]]),
+    socialByRunId: new Map([[run.runId, { raw: socialRaw, data: copy(social) }]]),
+    reviewsByPath: new Map(),
+    visualRequestsByPath: new Map()
+  };
+}
+
 function model(mission = completedMission()) {
   return {
     records: [{ filename: `${mission.missionId}.json`, raw: Buffer.from(JSON.stringify(mission)), data: mission }],
@@ -68,7 +116,76 @@ function model(mission = completedMission()) {
     runsById: new Map([[run.runId, { raw: runRaw, data: copy(run) }]]),
     articlesBySlug: new Map([[run.article.slug, { raw: articleRaw, data: { slug: run.article.slug } }]]),
     socialByRunId: new Map([[run.runId, { raw: socialRaw, data: copy(social) }]]),
-    reviewsByPath: new Map([[run.qa.receiptPath, { raw: reviewRaw, data: copy(review) }]])
+    reviewsByPath: new Map([[run.qa.receiptPath, { raw: reviewRaw, data: copy(review) }]]),
+    visualRequestsByPath: new Map()
+  };
+}
+
+function visualPendingModel() {
+  const mission = startedMission();
+  const pendingRun = copy(run);
+  pendingRun.status = 'drafted';
+  pendingRun.article.status = 'draft';
+  pendingRun.qa.passed = false;
+  const pendingRunRaw = Buffer.from(JSON.stringify(pendingRun));
+  const pendingArticleRaw = Buffer.from('---\nstatus: draft\n---\nEvidence-backed article.\n');
+  const visualRequestPath = `visuals/requests/${run.runId}-visuals.json`;
+  const visualRequest = { runId: run.runId, articleSlug: run.article.slug };
+  const visualRequestRaw = Buffer.from(JSON.stringify(visualRequest));
+  mission.status = 'visual_pending';
+  mission.teamStages[0].status = 'completed';
+  mission.teamStages[1].status = 'completed';
+  mission.teamStages[2].status = 'in_progress';
+  mission.visualHandoff = {
+    runId: run.runId, runSha256: sha256(pendingRunRaw), articleSlug: run.article.slug, articleSha256: sha256(pendingArticleRaw),
+    socialPackId: social.packId, socialPackSha256: sha256(socialRaw), reviewReceiptPath: run.qa.receiptPath,
+    reviewReceiptSha256: sha256(reviewRaw), visualRequestPath, visualRequestSha256: sha256(visualRequestRaw),
+    nextGate: 'Create original art, responsive derivatives, a registry mapping, and a separate visual review receipt.'
+  };
+  return {
+    records: [{ filename: `${mission.missionId}.json`, raw: Buffer.from(JSON.stringify(mission)), data: mission }],
+    strategy: copy(strategy), publicationPolicy: copy(publicationPolicy),
+    runsById: new Map([[run.runId, { raw: pendingRunRaw, data: pendingRun }]]),
+    articlesBySlug: new Map([[run.article.slug, { raw: pendingArticleRaw, data: { slug: run.article.slug } }]]),
+    socialByRunId: new Map([[run.runId, { raw: socialRaw, data: copy(social) }]]),
+    reviewsByPath: new Map([[run.qa.receiptPath, { raw: reviewRaw, data: copy(review) }]]),
+    visualRequestsByPath: new Map([[visualRequestPath, { raw: visualRequestRaw, data: visualRequest }]])
+  };
+}
+
+function qaFailedModel() {
+  const mission = startedMission();
+  const failedRun = copy(run);
+  failedRun.status = 'drafted';
+  failedRun.article.status = 'draft';
+  failedRun.qa.passed = false;
+  const failedRunRaw = Buffer.from(JSON.stringify(failedRun));
+  const failedArticleRaw = Buffer.from('---\nstatus: draft\n---\nEvidence-backed article.\n');
+  const failedReview = {
+    schemaVersion: '1.2.0', runId: run.runId, workflowName: 'research-agent.yml', missionId: mission.missionId,
+    workflowRunId: mission.trigger.workflowRunId, verdict: 'failed', reviewerId: 'evidence-red-team-123',
+    reviewedAt: '2026-08-03T10:45:00.000Z', blockers: ['Independent evidence does not yet support the central recipient-fit claim.'], warnings: ['Keep the draft private until the corrected bundle receives a new review.']
+  };
+  const failedReviewRaw = Buffer.from(JSON.stringify(failedReview));
+  mission.status = 'qa_failed';
+  mission.failedAt = '2026-08-03T10:46:00.000Z';
+  mission.teamStages[0].status = 'completed';
+  mission.teamStages[1].status = 'blocked';
+  mission.qaFailureHandoff = {
+    runId: run.runId, runSha256: sha256(failedRunRaw), articleSlug: run.article.slug, articleSha256: sha256(failedArticleRaw),
+    socialPackId: social.packId, socialPackSha256: sha256(socialRaw), reviewReceiptPath: run.qa.receiptPath,
+    reviewReceiptSha256: sha256(failedReviewRaw), reviewerId: failedReview.reviewerId, reviewedAt: failedReview.reviewedAt,
+    blockers: failedReview.blockers, warnings: failedReview.warnings,
+    nextGate: 'Open the correction pull request, revise the evidence-bound draft, and require a new independent review before promotion.'
+  };
+  return {
+    records: [{ filename: `${mission.missionId}.json`, raw: Buffer.from(JSON.stringify(mission)), data: mission }],
+    strategy: copy(strategy), publicationPolicy: copy(publicationPolicy),
+    runsById: new Map([[run.runId, { raw: failedRunRaw, data: failedRun }]]),
+    articlesBySlug: new Map([[run.article.slug, { raw: failedArticleRaw, data: { slug: run.article.slug } }]]),
+    socialByRunId: new Map([[run.runId, { raw: socialRaw, data: copy(social) }]]),
+    reviewsByPath: new Map([[run.qa.receiptPath, { raw: failedReviewRaw, data: failedReview }]]),
+    visualRequestsByPath: new Map()
   };
 }
 
@@ -86,6 +203,10 @@ function expectFailure(name, mutate, expected) {
 }
 
 assertValid('valid started mission', model(startedMission()));
+assertValid('valid research-failed mission', researchFailedModel());
+assertValid('valid review-failed mission', reviewFailedModel());
+assertValid('valid visual-pending mission', visualPendingModel());
+assertValid('valid qa-failed mission', qaFailedModel());
 assertValid('valid completed mission', model());
 expectFailure('filename binding', (input) => { input.records[0].filename = 'wrong.json'; }, 'filename must match');
 expectFailure('mission ID binding', (input) => { input.records[0].data.missionId = 'research-mission-999-1'; }, 'mission id must match');
@@ -98,7 +219,36 @@ expectFailure('duplicate active mission', (input) => { const first = startedMiss
 expectFailure('completed mission evidence', (input) => { input.records[0].data.completion = null; }, 'needs completion evidence');
 expectFailure('run digest', (input) => { input.records[0].data.completion.runSha256 = 'c'.repeat(64); }, 'run digest mismatch');
 expectFailure('run idea binding', (input) => { input.runsById.get(run.runId).data.ideaRevision = 2; }, 'not bound to the mission idea');
-expectFailure('review workflow binding', (input) => { input.reviewsByPath.get(run.qa.receiptPath).data.workflowRunId = '999'; }, 'workflow run mismatch');
+expectFailure('review mission binding', (input) => { input.reviewsByPath.get(run.qa.receiptPath).data.missionId = 'research-mission-999-1'; }, 'mission provenance mismatch');
+expectFailure('research-agent workflow run binding', (input) => { const receipt = input.reviewsByPath.get(run.qa.receiptPath).data; receipt.workflowName = 'research-agent.yml'; receipt.workflowRunId = '999'; }, 'mission provenance mismatch');
 expectFailure('publication readiness', (input) => { input.records[0].data.completion.publicationReadiness = 'automatic_merge_eligible'; }, 'readiness differs');
+{
+  const input = researchFailedModel();
+  input.records[0].data.researchFailureHandoff.workflowRunUrl = 'https://github.com/lucasdmoyer/tipsforyourgifts/actions/runs/999';
+  const result = validateResearchMissionRecords(input);
+  if (!result.issues.join(' ').includes('workflow URL does not match')) throw new Error(`research failure workflow identity did not fail closed: ${result.issues.join('; ')}`);
+  checks += 1;
+}
+{
+  const input = reviewFailedModel();
+  input.records[0].data.reviewFailureHandoff.workflowRunUrl = 'https://github.com/lucasdmoyer/tipsforyourgifts/actions/runs/999';
+  const result = validateResearchMissionRecords(input);
+  if (!result.issues.join(' ').includes('review failure workflow URL does not match')) throw new Error(`review failure workflow identity did not fail closed: ${result.issues.join('; ')}`);
+  checks += 1;
+}
+{
+  const input = qaFailedModel();
+  input.reviewsByPath.get(run.qa.receiptPath).data.blockers = [];
+  const result = validateResearchMissionRecords(input);
+  if (!result.issues.join(' ').includes('failed verdict and blockers')) throw new Error(`QA failure without receipt blockers did not fail closed: ${result.issues.join('; ')}`);
+  checks += 1;
+}
+{
+  const input = visualPendingModel();
+  input.visualRequestsByPath.clear();
+  const result = validateResearchMissionRecords(input);
+  if (!result.issues.join(' ').includes('visual handoff request is missing')) throw new Error(`missing visual request did not fail closed: ${result.issues.join('; ')}`);
+  checks += 1;
+}
 
-console.log(JSON.stringify({ researchMissionNegativeGateTests: 'passed', checks, validStartedMission: 'passed', validCompletedMission: 'passed' }, null, 2));
+console.log(JSON.stringify({ researchMissionNegativeGateTests: 'passed', checks, validStartedMission: 'passed', validResearchFailedMission: 'passed', validReviewFailedMission: 'passed', validQaFailedMission: 'passed', validVisualPendingMission: 'passed', validCompletedMission: 'passed' }, null, 2));
