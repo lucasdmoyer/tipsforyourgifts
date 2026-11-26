@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "1.0.0",
+  "candidateId": "one-photo-ten-minute-ritual-v1",
+  "packId": "one-photo-one-story-gift-pairs-launch",
+  "postId": "one-photo-ten-minute-ritual",
+  "platform": "pinterest",
+  "packSha256": "59d437f207fa0bdaf31ba7a5281be9d892f3a7e06e94750681b13878873db7aa",
+  "postSha256": "af92531eb715ceff7b8c206ffad97c73d5bd389e778f8cfff23032ab6d464792",
+  "assetPath": "/social-media/one-photo-ten-minute-ritual-v1.jpg",
+  "publicUrl": "https://tipsforyourgifts.web.app/social-media/one-photo-ten-minute-ritual-v1.jpg",
+  "contentSha256": "812c9b4ecbd539b9709bc4faa0cd86842bc7e583a8d29163d3605b6a8f6ea860",
+  "contentType": "image/jpeg",
+  "byteLength": 567868,
+  "width": 1024,
+  "height": 1536,
+  "aspectRatio": "2:3",
+  "altText": "Two-step map for asking one approved family-story question and writing the consented caption on the photo enclosure.",
+  "generator": "openai-built-in-imagegen",
+  "generatedAt": "2026-11-23T08:04:57.000Z",
+  "rightsPosture": "original-ai-generated-candidate-unapproved",
+  "status": "candidate",
+  "automatedChecks": {
+    "exactTextVerified": true,
+    "postBriefMatch": true,
+    "noThirdPartyLogos": true,
+    "noMerchantImagery": true,
+    "noProductClaims": true,
+    "dimensionsVerified": true
+  }
+}

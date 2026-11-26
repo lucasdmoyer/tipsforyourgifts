@@ -13,8 +13,7 @@ on:
         type: string
 
 permissions:
-  contents: write
-  pull-requests: write
+  contents: read
 
 concurrency:
   group: affiliate-link-review-${{ inputs.candidate_id }}
@@ -37,7 +36,7 @@ jobs:
         run: |
           [[ "$CANDIDATE_ID" =~ ^[a-z0-9]+(-[a-z0-9]+)*$ ]] || { echo "Invalid candidate ID." >&2; exit 1; }
           [[ "$EXPECTED_CANDIDATE_SHA256" =~ ^[a-f0-9]{64}$ ]] || { echo "Invalid candidate SHA-256." >&2; exit 1; }
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: "24.14.0"
           cache: npm
@@ -54,8 +53,11 @@ jobs:
         uses: openai/codex-action@v1
         with:
           openai-api-key: ${{ secrets.OPENAI_API_KEY }}
+          model: gpt-6.2-sol
+          effort: high
           safety-strategy: drop-sudo
-          codex-args: --search
+          sandbox: workspace-write
+          codex-args: '["--search","--ephemeral"]'
           prompt: |
             Use the repository research-gift-opportunities skill only as the independent affiliate evidence editor for candidate ${{ inputs.candidate_id }}, exact SHA-256 ${{ inputs.expected_candidate_sha256 }}.
 
@@ -77,6 +79,50 @@ jobs:
               *) echo "Affiliate reviewer changed forbidden path: $changed_path" >&2; exit 1 ;;
             esac
           done < <(git diff --name-only HEAD)
+          npm run validate
+          npm run build
+          npm run smoke
+          git diff --check
+      - name: Upload the isolated review receipt
+        uses: actions/upload-artifact@v7
+        with:
+          name: affiliate-link-review-${{ github.run_id }}
+          path: web/affiliate/reviews/${{ inputs.candidate_id }}-review.json
+          if-no-files-found: error
+          retention-days: 30
+
+  open_review_pull_request:
+    needs: review
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: master
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "24.14.0"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - name: Install the trusted writer environment
+        run: npm ci --prefix web
+      - name: Download only the independent review receipt
+        uses: actions/download-artifact@v8
+        with:
+          name: affiliate-link-review-${{ github.run_id }}
+          path: web/affiliate/reviews
+      - name: Revalidate the detached review receipt
+        env:
+          CANDIDATE_ID: ${{ inputs.candidate_id }}
+          EXPECTED_CANDIDATE_SHA256: ${{ inputs.expected_candidate_sha256 }}
+        run: |
+          test -f "web/affiliate/reviews/$CANDIDATE_ID-review.json"
+          test "$(node -p "require('./web/affiliate/reviews/$CANDIDATE_ID-review.json').candidateSha256")" = "$EXPECTED_CANDIDATE_SHA256"
           npm run validate
           npm run build
           npm run smoke

@@ -110,3 +110,17 @@ export const publicationReceiptSchema = z.object({
 export function parsePublicationReceipt(value) {
   return publicationReceiptSchema.parse(value);
 }
+
+export function summarizeDurableFounderReviewedReleaseReceipts(values) {
+  const receipts = values.map((value) => parsePublicationReceipt(value));
+  const founderReviewed = receipts.filter((receipt) =>
+    receipt.releaseMode === 'founder_reviewed'
+    && receipt.sourceWorkflow === 'firebase-production'
+  );
+  const releaseShas = [...new Set(founderReviewed.map((receipt) => receipt.releaseSha))].sort();
+  return {
+    receiptCount: founderReviewed.length,
+    uniqueReleaseCount: releaseShas.length,
+    releaseShas
+  };
+}

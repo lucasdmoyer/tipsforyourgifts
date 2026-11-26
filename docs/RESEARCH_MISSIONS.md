@@ -26,6 +26,10 @@ Before Codex receives a key, the trusted workflow writes `web/research/missions/
 
 The drafting agent cannot edit that envelope. A separate editor can create only the hash-bound QA receipt. Trusted scripts promote the reviewed bundle and complete the mission receipt with the exact SHA-256 digest of every output.
 
+Before the first evidence-editor call, a trusted router checks the run's explicit claim risk. Low-risk work continues directly to independent QA. High-risk work opens a non-public founder-safety handoff with no review receipt and no auto-merge; after the exact language is approved, the separate recheck workflow resumes the same started mission.
+
+Review receipts use immutable revisions and bind their workflow plus mission provenance. A failed `qa.vN` remains in Git; a later review writes `qa.vN+1` and cannot overwrite the earlier evidence. Promotion records the exact passing receipt path in the run and, when a mission exists, in the mission completion record.
+
 ## Team handoffs
 
 1. **Research editorial team — draft only.** Deep public research, typed claim ledger, qualified finalists, thoughtful-fit analysis, article, and draft social pack.
@@ -45,4 +49,5 @@ The current publication policy is `founder_reviewed`. After ten verified founder
 - The initial mission envelope is uploaded before the model runs, preserving the intended scope when research fails or returns no patch.
 - A retry receives a new mission ID because the workflow attempt is part of the identity.
 - The quality job rejects a changed envelope, multiple run artifacts, forbidden paths, self-review, changed evidence after review, or a failed deterministic gate.
+- A high-risk draft is preserved as a reviewable Git handoff rather than disappearing when immediate promotion is forbidden; its mission remains started until the post-approval editor passes it.
 - A completed receipt never authorizes affiliate enrollment, credential creation, account configuration, social posting, or production mutation.

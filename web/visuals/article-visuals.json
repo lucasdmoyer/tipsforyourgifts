@@ -53,11 +53,11 @@
     {
       "id": "fiber-art-pause-resume",
       "src": "/blog-images/knitting-crochet-project-bag-row-counter-gift-pairs/hero.webp",
-      "alt": "A knitter places a work in progress in a project case while holding a row counter beside an abstract magnetic chart.",
+      "alt": "A knitter closes a work in progress and paper pattern into a project case while clicking a mechanical row counter.",
       "caption": "A useful fiber-art pair protects the maker's place so the next session starts with less reconstruction.",
-      "sourceSha256": "f0acd0497f3c18fc54fbc009183788c405d7f2d05e7322e172612811e0f27d69",
-      "fileSha256": "52898c63117d8482f81de54a2ec094494c07bc20827aaf8c03a1be73af21142c",
-      "promptSummary": "One adult maker uses a structured project case, mechanical row counter, and abstract magnetic chart in a mark-close-resume loop."
+      "sourceSha256": "fb9fc837ef506614dcaee6438cb4777871f8babb00bdd31ed9c99cc2034b54aa",
+      "fileSha256": "935ceec02ac9d4597a20b00d871aaf263247f4b336f13e4497856894cfdd0ae0",
+      "promptSummary": "One adult maker closes a knitted work and paper pattern into a structured project case while clicking a mechanical row counter."
     },
     {
       "id": "language-read-retell",

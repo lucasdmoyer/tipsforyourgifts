@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "1.0.0",
+  "candidateId": "read-play-disagree-v1",
+  "packId": "read-it-then-play-it-gift-pairs-launch",
+  "postId": "read-play-disagree",
+  "platform": "instagram",
+  "packSha256": "73de3115757ea4a19d07e99fdc8d9bf88e129c55081f48525ffbc2a732f6cc34",
+  "postSha256": "4db33ed09c5680f548cc1676b6f30440f3ee4403b09083a5dfbca636619f8697",
+  "assetPath": "/social-media/read-play-disagree-v1.jpg",
+  "publicUrl": "https://tipsforyourgifts.web.app/social-media/read-play-disagree-v1.jpg",
+  "contentSha256": "6f57a4a09f3443b998144a615a375573caa4006d961e7f6ba45eee9a46a3ea0e",
+  "contentType": "image/jpeg",
+  "byteLength": 640684,
+  "width": 1024,
+  "height": 1536,
+  "aspectRatio": "2:3",
+  "altText": "Editorial graphic explaining The big-history strategy debate, its interaction, and the check that determines whether to choose only one item.",
+  "generator": "openai-built-in-imagegen",
+  "generatedAt": "2026-11-23T08:01:50.000Z",
+  "rightsPosture": "original-ai-generated-candidate-unapproved",
+  "status": "candidate",
+  "automatedChecks": {
+    "exactTextVerified": true,
+    "postBriefMatch": true,
+    "noThirdPartyLogos": true,
+    "noMerchantImagery": true,
+    "noProductClaims": true,
+    "dimensionsVerified": true
+  }
+}

@@ -106,6 +106,9 @@ expectFailure('content approval binds exact media record', (model, _packs, recei
 expectFailure('media approval binds exact creative candidate', (_model, _packs, _receipts, assets, _publications, candidates) => {
   const asset = copy(validAsset); asset.creativeCandidateRecordSha256 = 'c'.repeat(64); assets.push(asset); candidates.push(copy(validCandidate));
 }, 'creative candidate record changed');
+expectFailure('creative candidates must stay within the static image performance budget', (_model, _packs, _receipts, _assets, _publications, candidates) => {
+  const candidate = copy(validCandidate); candidate.byteLength = 1_000_001; candidates.push(candidate);
+}, 'static social image must not exceed 1,000,000 bytes');
 
 try {
   createPinterestPublicationPlan({ config: activeModel, packs: [basePack], approvals: [], assets: [validAsset], candidates: [validCandidate], postId: approvedPost.id });
@@ -131,4 +134,4 @@ expectFailure('publication requires a verifiable external ID', (model, _packs, r
   configurePinterest(model, true); receipts.push(copy(validReceipt)); assets.push(copy(validAsset)); candidates.push(copy(validCandidate)); const invalid = copy(publication); invalid.externalPostId = ''; publications.push(invalid);
 }, 'externalPostId');
 
-console.log(JSON.stringify({ socialNegativeGateTests: 'passed', checks: 13, validCreativeCandidateCheck: 'passed', validMediaReceiptCheck: 'passed', validContentReceiptCheck: 'passed', dryRunPlanCheck: 'passed', validPublicationReceiptCheck: 'passed' }, null, 2));
+console.log(JSON.stringify({ socialNegativeGateTests: 'passed', checks: 14, staticImagePerformanceBudget: 'passed', validCreativeCandidateCheck: 'passed', validMediaReceiptCheck: 'passed', validContentReceiptCheck: 'passed', dryRunPlanCheck: 'passed', validPublicationReceiptCheck: 'passed' }, null, 2));

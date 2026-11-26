@@ -29,7 +29,7 @@ jobs:
         with:
           fetch-depth: 0
           persist-credentials: false
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: "24.14.0"
           cache: npm
@@ -59,7 +59,7 @@ jobs:
         env:
           REASON: ${{ steps.scout.outputs.reason }}
         run: echo "Opportunity scout stopped before model execution because $REASON."
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: steps.scout.outputs.should_scout == 'true'
         with:
           name: opportunity-mission-envelope-${{ steps.scout.outputs.mission_id }}
@@ -76,8 +76,11 @@ jobs:
         uses: openai/codex-action@v1
         with:
           openai-api-key: ${{ secrets.OPENAI_API_KEY }}
+          model: gpt-6.2-sol
+          effort: high
           safety-strategy: drop-sudo
-          codex-args: --search
+          sandbox: workspace-write
+          codex-args: '["--search","--ephemeral"]'
           prompt: |
             Use $research-gift-opportunities as the evidence and editorial standard, then act only as the Tips for Your Gifts opportunity-research desk.
 
@@ -116,7 +119,7 @@ jobs:
           git add -N .
           while IFS= read -r changed_path; do
             case "$changed_path" in
-              "$MISSION_PATH"|"web/research/opportunities/$MISSION_ID.json"|web/src/data/strategy.json|web/src/data/operations.json|web/src/app/generated/content.generated.ts|web/public/sitemap.xml) ;;
+              "$MISSION_PATH"|"web/research/opportunities/$MISSION_ID.json"|web/src/data/strategy.json|web/src/data/operations.json|web/src/app/generated/content.generated.ts|web/src/app/generated/studio.generated.ts|web/public/sitemap.xml) ;;
               *) echo "Opportunity scout changed forbidden path: $changed_path" >&2; exit 1 ;;
             esac
           done < <(git diff --name-only HEAD)
@@ -129,7 +132,7 @@ jobs:
           git diff --binary HEAD > opportunity-draft.patch
           test -s opportunity-draft.patch
           echo "has_patch=true" >> "$GITHUB_OUTPUT"
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: steps.diff.outputs.has_patch == 'true'
         with:
           name: opportunity-draft-${{ github.run_id }}
@@ -149,12 +152,12 @@ jobs:
         with:
           fetch-depth: 0
           persist-credentials: false
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           name: opportunity-draft-${{ github.run_id }}
       - name: Apply the untrusted draft without staging it
         run: git apply opportunity-draft.patch
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: "24.14.0"
           cache: npm
@@ -182,8 +185,11 @@ jobs:
         uses: openai/codex-action@v1
         with:
           openai-api-key: ${{ secrets.OPENAI_API_KEY }}
+          model: gpt-6.2-sol
+          effort: high
           safety-strategy: drop-sudo
-          codex-args: --search
+          sandbox: workspace-write
+          codex-args: '["--search","--ephemeral"]'
           prompt: |
             Act only as the independent opportunity editor for scout ${{ needs.discover.outputs.mission_id }}. Read the repository research skill, trusted mission, drafted opportunity report, and proposed strategy idea. Challenge public-source independence, social-evidence handling, recipient language, observed workaround, self-purchase gap, contradictions, duplicate and clutter risks, candidate scoring, rejection conditions, commission independence, and pair coherence. Reject any demographic guess, generic novelty list, affiliate-led ranking, or pair that merely increases basket size.
 
@@ -202,7 +208,7 @@ jobs:
           test -f "web/research/opportunity-reviews/$MISSION_ID.qa.v1.json"
           while IFS= read -r changed_path; do
             case "$changed_path" in
-              "$MISSION_PATH"|"web/research/opportunities/$MISSION_ID.json"|"web/research/opportunity-reviews/$MISSION_ID.qa.v1.json"|web/src/data/strategy.json|web/src/data/operations.json|web/src/app/generated/content.generated.ts|web/public/sitemap.xml) ;;
+              "$MISSION_PATH"|"web/research/opportunities/$MISSION_ID.json"|"web/research/opportunity-reviews/$MISSION_ID.qa.v1.json"|web/src/data/strategy.json|web/src/data/operations.json|web/src/app/generated/content.generated.ts|web/src/app/generated/studio.generated.ts|web/public/sitemap.xml) ;;
               *) echo "Opportunity reviewer changed forbidden path: $changed_path" >&2; exit 1 ;;
             esac
           done < <(git status --short | cut -c4-)
@@ -219,7 +225,7 @@ jobs:
           git diff --binary HEAD > reviewed-opportunity.patch
           test -s reviewed-opportunity.patch
           echo "has_patch=true" >> "$GITHUB_OUTPUT"
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: reviewed-opportunity-${{ github.run_id }}
           path: reviewed-opportunity.patch
@@ -237,11 +243,11 @@ jobs:
       - uses: actions/checkout@v5
         with:
           fetch-depth: 0
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           name: reviewed-opportunity-${{ github.run_id }}
       - run: git apply --index reviewed-opportunity.patch
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: "24.14.0"
           cache: npm

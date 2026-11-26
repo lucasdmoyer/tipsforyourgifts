@@ -1,6 +1,8 @@
 import { z } from 'zod';
 
 const httpsUrl = z.string().url().refine((value) => value.startsWith('https://'), 'must use HTTPS');
+const searchConsoleDecisionPacketUrl = 'https://github.com/lucasdmoyer/tipsforyourgifts/issues/59';
+const pinterestDecisionPacketUrl = 'https://github.com/lucasdmoyer/tipsforyourgifts/issues/61';
 const decisionSchema = z.object({
   id: z.enum(['review-release-candidate', 'choose-next-thesis', 'establish-measurement', 'configure-first-social-channel', 'choose-affiliate-pilot']),
   rank: z.number().int().min(1).max(5),
@@ -77,16 +79,19 @@ export function buildFounderAgenda(input) {
   const candidateContentIsVerifiedLive = input.livePublication.status === 'verified_managed_content_release' &&
     latestLiveRelease?.publicationManifest.contentSetSha256 === release.contentSetSha256;
   if (release.counts.articles > 0 && !candidateContentIsVerifiedLive) {
+    const hasManagedLiveRelease = Boolean(latestLiveRelease);
     decisions.push({
       id: 'review-release-candidate',
       rank: 0,
       priorityScore: 100,
       horizon: 'now',
       category: 'release',
-      title: 'Review the first accountable Angular release',
-      recommendation: `Review ${release.manifestId} as the first founder-controlled Firebase release candidate.`,
-      decisionQuestion: 'Does this exact content set represent the site you want readers to see first?',
-      rationale: 'The research and release machinery cannot create traffic, trust, or revenue while the modern reviewed site remains only a local candidate.',
+      title: hasManagedLiveRelease ? 'Review the next accountable Angular release' : 'Review the first accountable Angular release',
+      recommendation: `Review ${release.manifestId} as the ${hasManagedLiveRelease ? 'next' : 'first'} founder-controlled Firebase release candidate.`,
+      decisionQuestion: hasManagedLiveRelease ? 'Should this exact reviewed content set replace the currently verified live set?' : 'Does this exact content set represent the site you want readers to see first?',
+      rationale: hasManagedLiveRelease
+        ? 'The candidate adds reviewed content and operating improvements beyond the verified live set, but it must retain exact-SHA preview, rollback, and founder-control evidence before replacement.'
+        : 'The research and release machinery cannot create traffic, trust, or revenue while the modern reviewed site remains only a local candidate.',
       evidence: [
         `${release.counts.articles} publication-ready articles are in the candidate set.`,
         `${release.counts.independentReviews} independent QA receipts are hash-bound to those articles.`,
@@ -96,7 +101,9 @@ export function buildFounderAgenda(input) {
           : 'No managed Firebase content-release receipt is durably recorded in Git yet.'
       ],
       unlocks: 'A protected exact-SHA preview and founder-reviewed Firebase release establish the owned destination for every later growth and affiliate action.',
-      tradeoff: 'The first release creates a public baseline and monitoring responsibility, while affiliate links and social publishing remain separately disabled.',
+      tradeoff: hasManagedLiveRelease
+        ? 'Replacing the live set advances the publication but creates a new monitoring and rollback obligation; affiliate and social authority remain separately bounded.'
+        : 'The first release creates a public baseline and monitoring responsibility, while affiliate links and social publishing remain separately disabled.',
       guardrail: 'Commit and review the exact candidate first; the workflow must still clone live, expose the preview, require founder approval, smoke production, and mint a manifest-bound receipt.',
       reversibility: 'high',
       founderActionRequired: true,
@@ -110,6 +117,8 @@ export function buildFounderAgenda(input) {
 
   const strategyCandidate = selectStrategyCandidate(input.strategy);
   if (strategyCandidate) {
+    const proposalQueueIsFull = input.openStrategyProposals >= input.maxOpenStrategyProposals;
+    const proposalCapacityRemaining = Math.max(input.maxOpenStrategyProposals - input.openStrategyProposals, 0);
     decisions.push({
       id: 'choose-next-thesis',
       rank: 0,
@@ -119,14 +128,18 @@ export function buildFounderAgenda(input) {
       title: 'Choose the next recipient problem to research',
       recommendation: `Approve ${strategyCandidate.id} revision ${strategyCandidate.revision}: ${strategyCandidate.title}.`,
       decisionQuestion: 'Should this be the next bounded research mission for the editorial team?',
-      rationale: 'The founder proposal queue is full, so one decision both chooses the next article direction and restores capacity to the autonomous opportunity scout.',
+      rationale: proposalQueueIsFull
+        ? 'The founder proposal queue has reached its configured cap, so one decision both chooses the next article direction and restores capacity to the autonomous opportunity scout.'
+        : `The proposal is awaiting founder direction, and ${proposalCapacityRemaining} of ${input.maxOpenStrategyProposals} proposal slots remain available; deciding it now chooses the next article direction without pretending the research is already approved.`,
       evidence: [
         `${input.openStrategyProposals}/${input.maxOpenStrategyProposals} founder proposal slots are occupied.`,
         `The recommended thesis has ${strategyCandidate.priority} strategic priority.`,
         `Its pair-coherence hypothesis scores ${strategyCandidate.pairing?.coherenceScore ?? 'not applicable'}/100 before product research.`,
         `The brief requires ${strategyCandidate.deliverables.minimumFinalists} finalists, ${strategyCandidate.deliverables.minimumQualifiedPairs} qualified pairs, and ${strategyCandidate.deliverables.minimumSocialAngles} social angles.`
       ],
-      unlocks: 'Merging the deterministic approval pull request starts one hash-bound research mission and reopens one weekly opportunity-scout slot.',
+      unlocks: proposalQueueIsFull
+        ? 'Merging the deterministic approval pull request starts one hash-bound research mission and reopens one weekly opportunity-scout slot.'
+        : 'Merging the deterministic approval pull request starts one hash-bound research mission while the autonomous opportunity scout retains the capacity already shown in Studio.',
       tradeoff: 'Approval spends research capacity on one audience and ritual before product evidence has been collected; the mission may still reject the thesis.',
       guardrail: 'This action authorizes research only. It cannot approve evidence, add affiliate tracking, publish content, spend money, or deploy Firebase.',
       reversibility: 'high',
@@ -155,7 +168,7 @@ export function buildFounderAgenda(input) {
         ? 'Run the read-only finalized Search Console collector and let its aggregate snapshot pass the full pull-request gates.'
         : configured
           ? 'Activate the exact reviewed Search Console configuration so its scheduled read-only collector can begin.'
-          : 'Start with the exact canonical URL-prefix property and read-only page aggregates before adding broader analytics.',
+          : 'Review the credential-free issue 59 decision packet, then configure only its exact URL-prefix property and read-only page-aggregate boundary.',
       decisionQuestion: active
         ? 'Do you want the team to collect the first finalized seven-day organic-search snapshot now?'
         : configured
@@ -174,17 +187,17 @@ export function buildFounderAgenda(input) {
       reversibility: 'high',
       founderActionRequired: true,
       action: {
-        label: active ? 'Collect first snapshot' : configured ? 'Open measurement activation' : 'Open measurement setup',
+        label: active ? 'Collect first snapshot' : configured ? 'Open measurement activation' : 'Open measurement decision packet',
         url: active
           ? 'https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/search-console-collect.yml'
           : configured
             ? 'https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/search-console-activate.yml'
-            : 'https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/search-console-configure.yml',
+            : searchConsoleDecisionPacketUrl,
         command: active
           ? 'gh workflow run search-console-collect.yml'
           : configured
             ? `gh workflow run search-console-activate.yml -f expected_growth_sha256=${input.growthSha256} -f confirmation=ACTIVATE-search-console`
-            : `gh workflow run search-console-configure.yml -f expected_growth_sha256=${input.growthSha256} -f property_reference=https://tipsforyourgifts.web.app/ -f configuration_evidence_url=https://github.com/lucasdmoyer/tipsforyourgifts/issues/REPLACE_WITH_ISSUE_NUMBER -f confirmation=CONFIGURE-search-console`
+            : `gh workflow run search-console-configure.yml -f expected_growth_sha256=${input.growthSha256} -f property_reference=https://tipsforyourgifts.web.app/ -f configuration_evidence_url=${searchConsoleDecisionPacketUrl} -f confirmation=CONFIGURE-search-console`
       }
     });
   }
@@ -199,17 +212,17 @@ export function buildFounderAgenda(input) {
       priorityScore: 75,
       horizon: 'next',
       category: 'distribution',
-      title: channelConfigured ? 'Activate the configured Pinterest publishing boundary' : 'Decide whether Pinterest becomes the first owned distribution channel',
+      title: channelConfigured ? 'Activate the configured Pinterest publishing boundary' : 'Complete the first Pinterest operating packet',
       recommendation: channelConfigured
         ? `Activate ${firstChannel.id} only after rechecking its configured account, official target, API credential reference, cadence, and protected publishing environment.`
-        : `Configure ${firstChannel.id} as the first bounded channel only after the official account, API, rights, cadence, and reporting posture are approved.`,
+        : 'Complete credential-free issue 61, then configure Pinterest only after the exact business account, public board, Standard API access, minimum scopes, rights, cadence, and reporting boundary are evidenced.',
       decisionQuestion: channelConfigured
         ? 'Do you authorize this exact configured Pinterest channel for protected per-post official-API publishing?'
         : 'Do you want to establish the official Pinterest operating envelope for the prepared launch queue?',
       rationale: 'The team has reusable decision-first creative, but drafts cannot drive traffic until one official channel has a founder-approved and measurable publishing boundary.',
       evidence: [
         `${input.socialDraftCount} reviewed social drafts are prepared.`,
-        `${input.socialCreativeCandidateCount} original creative candidate is locally verified.`,
+        `${input.socialCreativeCandidateCount} original creative candidate${input.socialCreativeCandidateCount === 1 ? ' is' : 's are'} locally verified.`,
         `${activeChannels.length}/${input.socialChannels.channels.length} official social channels are active.`,
         `${firstChannel.id} is channel priority ${firstChannel.priority}.`
       ],
@@ -221,13 +234,13 @@ export function buildFounderAgenda(input) {
       reversibility: 'medium',
       founderActionRequired: true,
       action: {
-        label: channelConfigured ? 'Open channel activation' : 'Open channel setup',
+        label: channelConfigured ? 'Open channel activation' : 'Open Pinterest decision packet',
         url: channelConfigured
           ? 'https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/social-channel-activate.yml'
-          : 'https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/social-channel-configure.yml',
+          : pinterestDecisionPacketUrl,
         command: channelConfigured
           ? `gh workflow run social-channel-activate.yml -f channel_id=${firstChannel.id} -f expected_config_sha256=${input.socialChannelsSha256} -f confirmation=ACTIVATE-${firstChannel.id}`
-          : null
+          : `gh workflow run social-channel-configure.yml -f channel_id=${firstChannel.id} -f expected_config_sha256=${input.socialChannelsSha256} -f official_account_reference="$PINTEREST_ACCOUNT_REFERENCE" -f official_publication_target_id="$PINTEREST_BOARD_ID" -f max_posts_per_week=3 -f configuration_evidence_url=${pinterestDecisionPacketUrl} -f confirmation=CONFIGURE-${firstChannel.id}`
       }
     });
   }

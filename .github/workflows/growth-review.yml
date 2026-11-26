@@ -23,7 +23,7 @@ jobs:
         with:
           fetch-depth: 0
           persist-credentials: false
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: "24.14.0"
           cache: npm
@@ -41,8 +41,11 @@ jobs:
         uses: openai/codex-action@v1
         with:
           openai-api-key: ${{ secrets.OPENAI_API_KEY }}
+          model: gpt-6.2-sol
+          effort: high
           safety-strategy: drop-sudo
-          codex-args: --search
+          sandbox: workspace-write
+          codex-args: '["--search","--ephemeral"]'
           prompt: |
             Act as the Tips for Your Gifts growth lead and executive analyst. Read docs/GROWTH_MEASUREMENT.md, web/src/data/growth.json, web/src/data/operations.json, web/src/data/strategy.json, and the publication-ready article metadata.
 
@@ -57,7 +60,7 @@ jobs:
           git add -N .
           while IFS= read -r changed_path; do
             case "$changed_path" in
-              web/src/data/growth.json|web/src/data/operations.json|web/src/app/generated/content.generated.ts|web/public/sitemap.xml) ;;
+              web/src/data/growth.json|web/src/data/operations.json|web/src/app/generated/content.generated.ts|web/src/app/generated/studio.generated.ts|web/public/sitemap.xml) ;;
               *) echo "Growth review changed forbidden path: $changed_path" >&2; exit 1 ;;
             esac
           done < <(git diff --name-only HEAD)
@@ -72,7 +75,7 @@ jobs:
           else
             echo "has_patch=false" >> "$GITHUB_OUTPUT"
           fi
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: steps.diff.outputs.has_patch == 'true'
         with:
           name: growth-review-patch-${{ github.run_id }}
@@ -91,11 +94,11 @@ jobs:
       - uses: actions/checkout@v5
         with:
           fetch-depth: 0
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           name: growth-review-patch-${{ github.run_id }}
       - run: git apply --index growth-review.patch
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: "24.14.0"
           cache: npm

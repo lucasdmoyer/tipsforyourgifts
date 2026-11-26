@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-11-07T23:58:13.560Z",
+  "generatedAt": "2026-11-23T08:06:15.000Z",
   "founderAgenda": {
     "schemaVersion": "1.0.0",
-    "generatedAt": "2026-11-07T23:58:13.560Z",
+    "generatedAt": "2026-11-23T08:06:15.000Z",
     "posture": "founder_decisions_required",
     "primaryDecisionId": "review-release-candidate",
     "profitabilityEvidence": "unknown_until_aggregate_measurement",
@@ -14,18 +14,18 @@
         "priorityScore": 100,
         "horizon": "now",
         "category": "release",
-        "title": "Review the first accountable Angular release",
-        "recommendation": "Review publication-set-8e8287a5ec7db534 as the first founder-controlled Firebase release candidate.",
-        "decisionQuestion": "Does this exact content set represent the site you want readers to see first?",
-        "rationale": "The research and release machinery cannot create traffic, trust, or revenue while the modern reviewed site remains only a local candidate.",
+        "title": "Review the next accountable Angular release",
+        "recommendation": "Review publication-set-4bc6216cd2440947 as the next founder-controlled Firebase release candidate.",
+        "decisionQuestion": "Should this exact reviewed content set replace the currently verified live set?",
+        "rationale": "The candidate adds reviewed content and operating improvements beyond the verified live set, but it must retain exact-SHA preview, rollback, and founder-control evidence before replacement.",
         "evidence": [
-          "10 publication-ready articles are in the candidate set.",
-          "10 independent QA receipts are hash-bound to those articles.",
-          "60 reviewed social drafts are prepared for later distribution.",
-          "The latest Git-recorded live content set is publication-set-0e33c0313ad4afec, which differs from this candidate."
+          "11 publication-ready articles are in the candidate set.",
+          "11 independent QA receipts are hash-bound to those articles.",
+          "66 reviewed social drafts are prepared for later distribution.",
+          "The latest Git-recorded live content set is publication-set-8e8287a5ec7db534, which differs from this candidate."
         ],
         "unlocks": "A protected exact-SHA preview and founder-reviewed Firebase release establish the owned destination for every later growth and affiliate action.",
-        "tradeoff": "The first release creates a public baseline and monitoring responsibility, while affiliate links and social publishing remain separately disabled.",
+        "tradeoff": "Replacing the live set advances the publication but creates a new monitoring and rollback obligation; affiliate and social authority remain separately bounded.",
         "guardrail": "Commit and review the exact candidate first; the workflow must still clone live, expose the preview, require founder approval, smoke production, and mint a manifest-bound receipt.",
         "reversibility": "high",
         "founderActionRequired": true,
@@ -36,13 +36,40 @@
         }
       },
       {
-        "id": "establish-measurement",
+        "id": "choose-next-thesis",
         "rank": 2,
+        "priorityScore": 95,
+        "horizon": "now",
+        "category": "editorial_direction",
+        "title": "Choose the next recipient problem to research",
+        "recommendation": "Approve founder-idea-014 revision 1: Show the turn, mark the condition: a tabletop RPG combat pair.",
+        "decisionQuestion": "Should this be the next bounded research mission for the editorial team?",
+        "rationale": "The proposal is awaiting founder direction, and 4 of 5 proposal slots remain available; deciding it now chooses the next article direction without pretending the research is already approved.",
+        "evidence": [
+          "1/5 founder proposal slots are occupied.",
+          "The recommended thesis has medium strategic priority.",
+          "Its pair-coherence hypothesis scores 90/100 before product research.",
+          "The brief requires 4 finalists, 2 qualified pairs, and 5 social angles."
+        ],
+        "unlocks": "Merging the deterministic approval pull request starts one hash-bound research mission while the autonomous opportunity scout retains the capacity already shown in Studio.",
+        "tradeoff": "Approval spends research capacity on one audience and ritual before product evidence has been collected; the mission may still reject the thesis.",
+        "guardrail": "This action authorizes research only. It cannot approve evidence, add affiliate tracking, publish content, spend money, or deploy Firebase.",
+        "reversibility": "high",
+        "founderActionRequired": true,
+        "action": {
+          "label": "Open strategy approval",
+          "url": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/strategy-approval.yml",
+          "command": "gh workflow run strategy-approval.yml -f idea_id=founder-idea-014 -f expected_revision=1"
+        }
+      },
+      {
+        "id": "establish-measurement",
+        "rank": 3,
         "priorityScore": 85,
         "horizon": "next",
         "category": "measurement",
         "title": "Configure the first aggregate measurement source",
-        "recommendation": "Start with the exact canonical URL-prefix property and read-only page aggregates before adding broader analytics.",
+        "recommendation": "Review the credential-free issue 59 decision packet, then configure only its exact URL-prefix property and read-only page-aggregate boundary.",
         "decisionQuestion": "Do you approve configuring the low-data first measurement path for organic discovery?",
         "rationale": "Traffic, conversions, and revenue are currently unknown. Measurement must exist before the team can distinguish useful growth work from activity.",
         "evidence": [
@@ -57,24 +84,24 @@
         "reversibility": "high",
         "founderActionRequired": true,
         "action": {
-          "label": "Open measurement setup",
-          "url": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/search-console-configure.yml",
-          "command": "gh workflow run search-console-configure.yml -f expected_growth_sha256=346381274ded976f220327d0de058fbc5cce77c764998cdf09e7cd6116515728 -f property_reference=https://tipsforyourgifts.web.app/ -f configuration_evidence_url=https://github.com/lucasdmoyer/tipsforyourgifts/issues/REPLACE_WITH_ISSUE_NUMBER -f confirmation=CONFIGURE-search-console"
+          "label": "Open measurement decision packet",
+          "url": "https://github.com/lucasdmoyer/tipsforyourgifts/issues/59",
+          "command": "gh workflow run search-console-configure.yml -f expected_growth_sha256=346381274ded976f220327d0de058fbc5cce77c764998cdf09e7cd6116515728 -f property_reference=https://tipsforyourgifts.web.app/ -f configuration_evidence_url=https://github.com/lucasdmoyer/tipsforyourgifts/issues/59 -f confirmation=CONFIGURE-search-console"
         }
       },
       {
         "id": "configure-first-social-channel",
-        "rank": 3,
+        "rank": 4,
         "priorityScore": 75,
         "horizon": "next",
         "category": "distribution",
-        "title": "Decide whether Pinterest becomes the first owned distribution channel",
-        "recommendation": "Configure pinterest as the first bounded channel only after the official account, API, rights, cadence, and reporting posture are approved.",
+        "title": "Complete the first Pinterest operating packet",
+        "recommendation": "Complete credential-free issue 61, then configure Pinterest only after the exact business account, public board, Standard API access, minimum scopes, rights, cadence, and reporting boundary are evidenced.",
         "decisionQuestion": "Do you want to establish the official Pinterest operating envelope for the prepared launch queue?",
         "rationale": "The team has reusable decision-first creative, but drafts cannot drive traffic until one official channel has a founder-approved and measurable publishing boundary.",
         "evidence": [
           "78 reviewed social drafts are prepared.",
-          "1 original creative candidate is locally verified.",
+          "4 original creative candidates are locally verified.",
           "0/3 official social channels are active.",
           "pinterest is channel priority 1."
         ],
@@ -84,17 +111,309 @@
         "reversibility": "medium",
         "founderActionRequired": true,
         "action": {
-          "label": "Open channel setup",
-          "url": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/social-channel-configure.yml",
-          "command": null
+          "label": "Open Pinterest decision packet",
+          "url": "https://github.com/lucasdmoyer/tipsforyourgifts/issues/61",
+          "command": "gh workflow run social-channel-configure.yml -f channel_id=pinterest -f expected_config_sha256=62b26e49b547b253e48dcdb608a3f725ce88ec9b6d54f71fd3912b4bbe43031f -f official_account_reference=\"$PINTEREST_ACCOUNT_REFERENCE\" -f official_publication_target_id=\"$PINTEREST_BOARD_ID\" -f max_posts_per_week=3 -f configuration_evidence_url=https://github.com/lucasdmoyer/tipsforyourgifts/issues/61 -f confirmation=CONFIGURE-pinterest"
         }
       }
     ]
   },
+  "automationReadiness": {
+    "schemaVersion": "1.1.0",
+    "observedAt": "2026-11-23T07:25:48.000Z",
+    "sourceMode": "versioned_snapshot_not_live_poll",
+    "posture": "founder_action_required",
+    "summary": "The operating system can validate content and run a narrow affiliate pilot today. Research generation, automated previews, distribution, measurement, release approval, and eventual keyless automatic publication still require explicit bounded founder actions.",
+    "counts": {
+      "teams": 8,
+      "ready": 1,
+      "limited": 2,
+      "blocked": 4,
+      "founderActions": 6
+    },
+    "teams": [
+      {
+        "id": "research-generation",
+        "label": "Research generation",
+        "status": "blocked_external_configuration",
+        "evidence": "Scheduled research workflows stop before any model call because no founder-approved OpenAI project hard limit, earlier spend alert, or dedicated OPENAI_API_KEY is configured.",
+        "nextAction": "Lucas first approves and configures an OpenAI project hard spend limit plus an earlier alert; only afterward may the dedicated project key be stored as OPENAI_API_KEY and separately verified.",
+        "actionUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/57#issuecomment-7091612791",
+        "founderActionRequired": true
+      },
+      {
+        "id": "deterministic-quality",
+        "label": "Deterministic quality gates",
+        "status": "ready",
+        "evidence": "12 validated research runs and 11 publication-ready posts currently pass the versioned deterministic gates.",
+        "nextAction": "Keep drafting and independent review separate; every new research bundle must pass validation and build before release review.",
+        "actionUrl": null,
+        "founderActionRequired": false
+      },
+      {
+        "id": "affiliate-monetization",
+        "label": "Affiliate monetization",
+        "status": "limited_live",
+        "evidence": "1 independently reviewed and founder-approved paid-link overlay is active; editorial source artifacts remain unchanged.",
+        "nextAction": "Measure the narrow pilot before expanding; keep affiliate economics separate from editorial rankings.",
+        "actionUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/affiliate-link-review.yml",
+        "founderActionRequired": false
+      },
+      {
+        "id": "social-distribution",
+        "label": "Social distribution",
+        "status": "blocked_founder_configuration",
+        "evidence": "78 drafts are prepared; 0 official social channels are active.",
+        "nextAction": "Approve one official account, rights boundary, cadence, and official API configuration before any post can publish.",
+        "actionUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/social-channel-configure.yml",
+        "founderActionRequired": true
+      },
+      {
+        "id": "growth-measurement",
+        "label": "Aggregate growth measurement",
+        "status": "blocked_founder_configuration",
+        "evidence": "0 aggregate connectors are active and 0 complete measurement snapshots exist; unknown traffic is never reported as zero.",
+        "nextAction": "Configure the approved read-only Search Console page-aggregate boundary and establish the first complete baseline.",
+        "actionUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/search-console-configure.yml",
+        "founderActionRequired": true
+      },
+      {
+        "id": "preview-delivery",
+        "label": "Firebase preview delivery",
+        "status": "manual_fallback_verified",
+        "evidence": "The exact optimized Firebase preview passed Node 24 validation, build, smoke, hosted smoke across 17 routes and 11 articles, and final visual review. Home transfer fell from 299 KiB to 218 KiB while Lighthouse performance, accessibility, and best practices remained 100 on the reviewed routes. Automated keyless delivery remains blocked: PR 67's protected validation and exact-artifact build pass, but deploy stops at Google authentication because the tips-github-preview/github-preview Workload Identity provider is missing.",
+        "nextAction": "Approve and provision GitHub OIDC trust only for repository lucasdmoyer/tipsforyourgifts, actor lucasdmoyer, and ref refs/pull/67/merge, with Firebase Hosting Admin limited to the PR-67 preview workflow.",
+        "actionUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/67#issuecomment-7092964553",
+        "founderActionRequired": true
+      },
+      {
+        "id": "production-release",
+        "label": "Production release",
+        "status": "founder_approval_required",
+        "evidence": "Exact candidate 5a60eb521b9f64a9b3fbdd38116852b26698885e has a reviewed Firebase preview; production remains unchanged and separately gated.",
+        "nextAction": "Provision the PR-67-only OIDC preview trust, require the protected preview to pass on unchanged SHA 5a60eb521b9f64a9b3fbdd38116852b26698885e, then merge without an admin bypass; production remains a separate action-time gate.",
+        "actionUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/67#issuecomment-7092964553",
+        "founderActionRequired": true
+      },
+      {
+        "id": "automatic-publication",
+        "label": "Proven automatic publication",
+        "status": "blocked_external_configuration",
+        "evidence": "Automatic-after-proven publication remains disabled, and its dedicated master-bound Google Workload Identity provider and service account have not been provisioned or verified. The repository ledger contains 2 of 10 durable verified founder-reviewed release receipts. Final activation still requires the live GitHub deployment recount and separate founder approval.",
+        "nextAction": "After ten verified founder-reviewed releases, separately approve and provision the dedicated tips-github-auto-production identity, then review the policy activation pull request and production environment boundary.",
+        "actionUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/issues/43",
+        "founderActionRequired": true
+      }
+    ],
+    "externalGates": [
+      {
+        "id": "openai-platform-credential",
+        "label": "Research model credential",
+        "status": "blocked_external_configuration",
+        "summary": "Scheduled research workflows stop before any model call because no founder-approved OpenAI project hard limit, earlier spend alert, or dedicated OPENAI_API_KEY is configured.",
+        "evidenceUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/57#issuecomment-7091612791",
+        "diagnosticUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/57",
+        "nextAction": "Lucas first approves and configures an OpenAI project hard spend limit plus an earlier alert; only afterward may the dedicated project key be stored as OPENAI_API_KEY and separately verified.",
+        "authorityBoundary": "The proposed $50 hard limit and $25 alert are planning-only, not approved. No credential value may be displayed, logged, downloaded, committed, or placed in Studio data, and model activation remains a separate exact-policy gate."
+      },
+      {
+        "id": "firebase-preview-identity",
+        "label": "Keyless Firebase preview identity",
+        "status": "blocked_external_configuration",
+        "summary": "PR 67's protected validation and exact-artifact build pass, but deploy stops at Google authentication because the tips-github-preview/github-preview Workload Identity provider is missing.",
+        "evidenceUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/67#issuecomment-7092964553",
+        "diagnosticUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/runs/45121359814",
+        "nextAction": "Approve and provision GitHub OIDC trust only for repository lucasdmoyer/tipsforyourgifts, actor lucasdmoyer, and ref refs/pull/67/merge, with Firebase Hosting Admin limited to the PR-67 preview workflow.",
+        "authorityBoundary": "Use short-lived impersonation for Firebase Hosting previews only. No Firebase Auth Admin, user-managed service-account key, or production Hosting authorization."
+      },
+      {
+        "id": "firebase-auto-production-identity",
+        "label": "Keyless automatic-production identity",
+        "status": "blocked_external_configuration",
+        "summary": "Automatic-after-proven publication remains disabled, and its dedicated master-bound Google Workload Identity provider and service account have not been provisioned or verified.",
+        "evidenceUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/issues/43",
+        "diagnosticUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/firebase-auto-production.yml",
+        "nextAction": "After ten verified founder-reviewed releases, separately approve and provision the dedicated tips-github-auto-production identity, then review the policy activation pull request and production environment boundary.",
+        "authorityBoundary": "Use short-lived impersonation only for the master-pinned automatic Firebase Hosting workflow. No Firebase Auth Admin, user-managed service-account key, database access, affiliate activation, social publishing, or policy bypass."
+      }
+    ],
+    "releaseCandidate": {
+      "status": "exact_preview_verified",
+      "sha": "5a60eb521b9f64a9b3fbdd38116852b26698885e",
+      "pullRequestUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/67",
+      "reviewUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/67#issuecomment-7092964553",
+      "previewUrl": "https://tipsforyourgifts--pr-67-5a60eb52-21eq8qrw.web.app/",
+      "summary": "The exact optimized Firebase preview passed Node 24 validation, build, smoke, hosted smoke across 17 routes and 11 articles, and final visual review. Home transfer fell from 299 KiB to 218 KiB while Lighthouse performance, accessibility, and best practices remained 100 on the reviewed routes.",
+      "nextAction": "Provision the PR-67-only OIDC preview trust, require the protected preview to pass on unchanged SHA 5a60eb521b9f64a9b3fbdd38116852b26698885e, then merge without an admin bypass; production remains a separate action-time gate."
+    }
+  },
+  "aiAutomationPolicy": {
+    "schemaVersion": "1.1.0",
+    "status": "awaiting_founder_platform_budget",
+    "activationReady": false,
+    "activationBlockers": [
+      "Dedicated OpenAI project credential is not configured.",
+      "Founder-approved OpenAI project hard spend limit, earlier alert, and platform evidence are not recorded.",
+      "Versioned automation policy is not active."
+    ],
+    "protectedWorkflows": 6,
+    "protectedModelCalls": 8,
+    "credential": {
+      "secretName": "OPENAI_API_KEY",
+      "status": "not_configured",
+      "scope": "dedicated_openai_project",
+      "valueStoredInGit": false,
+      "verification": {
+        "status": "not_verified",
+        "method": null,
+        "endpoint": null,
+        "verifiedAt": null,
+        "evidenceUrl": null,
+        "receiptPath": null,
+        "receiptSha256": null,
+        "responseBodyStored": false,
+        "modelCalled": false
+      }
+    },
+    "spendControl": {
+      "status": "not_configured",
+      "enforcement": "openai_project_hard_spend_limit",
+      "monthlyBudgetUsd": null,
+      "hardLimitEnabled": false,
+      "alertThresholdUsd": null,
+      "evidenceUrl": null,
+      "repositoryHardCap": false,
+      "enforcementLagAcknowledged": true,
+      "documentationUrl": "https://developers.openai.com/api/docs/guides/spend-limits",
+      "activationRule": "Record a founder-approved OpenAI project monthly spend limit with hard-limit enforcement enabled, an earlier spend alert, and credential-free platform evidence before activating this policy or adding the repository secret.",
+      "recommendation": {
+        "status": "planning_only_not_approved",
+        "monthlyHardLimitUsd": 50,
+        "alertThresholdUsd": 25,
+        "rationale": "Start with a deliberately small, reversible project cap and a halfway warning while real per-mission usage is measured. This is an operating guardrail, not a revenue forecast or approval.",
+        "reviewedAt": "2026-11-23T04:16:34Z"
+      }
+    },
+    "runtime": {
+      "action": "openai/codex-action@v1",
+      "documentationUrl": "https://learn.chatgpt.com/docs/github-action",
+      "safetyStrategy": "drop-sudo",
+      "sandbox": "workspace-write",
+      "sessionMode": "ephemeral",
+      "modelPolicy": "gpt-6.2-sol",
+      "effortPolicy": "high",
+      "trustedInitiators": "repository_write_collaborators_and_bounded_github_automation"
+    },
+    "authority": {
+      "modelJobGithubContents": "read",
+      "modelJobCanWritePullRequests": false,
+      "detachedWriterJobsMayOpenProposalPullRequests": true,
+      "writerJobsReceiveOpenAiKey": false,
+      "canDeployFirebase": false,
+      "canActivateAffiliateLinks": false,
+      "canPublishSocialPosts": false,
+      "canSendEmail": false,
+      "canCreateCredentials": false
+    },
+    "workflows": [
+      {
+        "file": "research-agent.yml",
+        "codexJobs": [
+          "research",
+          "quality_review"
+        ],
+        "codexSteps": 2,
+        "searchEnabled": true,
+        "githubActionsBotAllowed": true,
+        "purpose": "Draft one founder-approved research bundle and run a separate independent editorial review."
+      },
+      {
+        "file": "opportunity-scout.yml",
+        "codexJobs": [
+          "discover",
+          "independent_review"
+        ],
+        "codexSteps": 2,
+        "searchEnabled": true,
+        "githubActionsBotAllowed": false,
+        "purpose": "Propose one evidence-backed gift opportunity and run a separate opportunity red team."
+      },
+      {
+        "file": "editorial-independent-review.yml",
+        "codexJobs": [
+          "independent_review"
+        ],
+        "codexSteps": 1,
+        "searchEnabled": true,
+        "githubActionsBotAllowed": true,
+        "purpose": "Independently review one exact editorial run after its founder safety gate."
+      },
+      {
+        "file": "growth-review.yml",
+        "codexJobs": [
+          "analyze"
+        ],
+        "codexSteps": 1,
+        "searchEnabled": true,
+        "githubActionsBotAllowed": false,
+        "purpose": "Propose one measured growth experiment from committed aggregate evidence only."
+      },
+      {
+        "file": "strategy-intake.yml",
+        "codexJobs": [
+          "propose"
+        ],
+        "codexSteps": 1,
+        "searchEnabled": false,
+        "githubActionsBotAllowed": false,
+        "purpose": "Turn one owner-authored executive brief into a proposed strategy record without approving it."
+      },
+      {
+        "file": "affiliate-link-review.yml",
+        "codexJobs": [
+          "review"
+        ],
+        "codexSteps": 1,
+        "searchEnabled": true,
+        "githubActionsBotAllowed": false,
+        "purpose": "Independently review one exact paid-link candidate without approving or activating it."
+      }
+    ],
+    "shutdownConditions": [
+      "A missing repository secret stops the job before a model call.",
+      "A policy that is not active stops the job even if a credential appears.",
+      "Missing project hard-limit, early-alert, or platform evidence prevents policy activation.",
+      "Workflow permission, sandbox, session, or credential-placement drift fails deterministic validation.",
+      "Any proposed patch outside its workflow-specific allowlist fails deterministic validation.",
+      "A project hard-limit response, repeated failures, or suspected credential exposure requires the founder to disable runs and rotate the credential before resuming."
+    ],
+    "policySha256": "2ca0948879b814321b07dbc7bbf13f0b11311b8d0606aa1c9419681a20ed5fb8",
+    "budgetConfiguration": {
+      "available": true,
+      "workflowUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/ai-automation-budget-configure.yml",
+      "confirmation": "CONFIGURE-ai-automation-budget",
+      "evidenceMode": "founder_attested_external_platform_configuration",
+      "command": "gh workflow run ai-automation-budget-configure.yml --repo lucasdmoyer/tipsforyourgifts --ref master -f expected_policy_sha256=2ca0948879b814321b07dbc7bbf13f0b11311b8d0606aa1c9419681a20ed5fb8 -f monthly_budget_usd='<APPROVED_HARD_LIMIT_USD>' -f hard_limit_enabled=true -f alert_threshold_usd='<APPROVED_ALERT_USD>' -f platform_evidence_url='<OPENAI_PLATFORM_SETTINGS_URL>' -f confirmation='CONFIGURE-ai-automation-budget'"
+    },
+    "credentialVerification": {
+      "available": false,
+      "workflowUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/ai-automation-credential-verify.yml",
+      "confirmation": "VERIFY-ai-automation-credential",
+      "method": "openai_models_endpoint",
+      "endpoint": "https://api.openai.com/v1/models",
+      "command": "gh workflow run ai-automation-credential-verify.yml --repo lucasdmoyer/tipsforyourgifts --ref master -f expected_policy_sha256=2ca0948879b814321b07dbc7bbf13f0b11311b8d0606aa1c9419681a20ed5fb8 -f confirmation='VERIFY-ai-automation-credential'"
+    },
+    "policyActivation": {
+      "available": false,
+      "workflowUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/ai-automation-activate.yml",
+      "confirmation": "ACTIVATE-ai-automation",
+      "command": "gh workflow run ai-automation-activate.yml --repo lucasdmoyer/tipsforyourgifts --ref master -f expected_policy_sha256=2ca0948879b814321b07dbc7bbf13f0b11311b8d0606aa1c9419681a20ed5fb8 -f confirmation='ACTIVATE-ai-automation'"
+    }
+  },
   "researchRuns": 14,
-  "validatedRuns": 11,
-  "publicationReadyPosts": 10,
-  "draftPosts": 3,
+  "validatedRuns": 12,
+  "publicationReadyPosts": 11,
+  "draftPosts": 2,
   "affiliateProgramsEnabled": 1,
   "affiliateProgramsProposed": 4,
   "affiliateProgramsFounderApproved": 0,
@@ -104,57 +423,19 @@
   "socialApproved": 0,
   "socialPublished": 0,
   "approvedIdeas": 13,
-  "proposedIdeas": 0,
-  "pairingIdeas": 10,
+  "proposedIdeas": 1,
+  "pairingIdeas": 11,
   "recipientFrictionIdeas": 2,
   "editorialReview": {
-    "schemaVersion": "1.0.0",
+    "schemaVersion": "1.1.0",
     "counts": {
-      "pendingBundles": 3,
-      "founderSafetyReviewsRequired": 3,
-      "independentReviewsRequired": 3,
-      "highRiskClaims": 7
+      "pendingBundles": 2,
+      "founderSafetyReviewsRequired": 2,
+      "founderSafetyApprovalsCurrent": 0,
+      "independentReviewsRequired": 2,
+      "highRiskClaims": 6
     },
     "queue": [
-      {
-        "runId": "20260823-fiber-art-pause-269f700c",
-        "ideaId": "founder-idea-012",
-        "articleSlug": "knitting-crochet-project-bag-row-counter-gift-pairs",
-        "status": "qa_failed",
-        "reviewerId": "independent-evidence-audit-20261010",
-        "blockers": [
-          "The repaired evidence bundle and reader article require a fresh independent review; the drafting research desk cannot certify its own work.",
-          "Founder review is required for the qualified small-magnet safety boundary before publication; the cited CPSC guidance is general and is not an exact-product finding or recall for the Maker's Board."
-        ],
-        "warnings": [
-          "The Cocoknits counter has mixed owner reliability reports and remains a lower-scored alternative rather than a bundle anchor.",
-          "Clover's Mini item 3118 and standard item 336 are distinct variants; recheck the exact item, stock, and fulfillment timing before promotion.",
-          "Maker's Board owner reports conflict on value, stitching, durability, and magnetic-cable interaction. The stitching anecdotes do not establish a defect rate; product and pair scores were reduced, and the recipient's chart, tools, and return options require a pre-gift check."
-        ],
-        "highRiskClaims": [
-          {
-            "id": "claim-makers-board-magnet-boundary",
-            "text": "Cocoknits lists nine loose included magnets: four PLA-covered round magnets, two small uncovered round magnets, and three strong uncovered rectangular magnets. CPSC's general guidance for small magnets in non-toy products says to keep them away from young children or anyone likely to swallow them, inspect for missing pieces, and seek immediate medical attention if ingestion is suspected; that guidance is not an exact-product finding or recall for the Maker's Board.",
-            "sourceIds": [
-              "src-makers-board-official",
-              "src-cpsc-small-magnet-guidance"
-            ]
-          }
-        ],
-        "founderSafetyReviewRequired": true,
-        "independentReviewRequired": true,
-        "sourcePaths": {
-          "run": "research/runs/20260823-fiber-art-pause-269f700c.json",
-          "article": "src/data/blog/knitting-crochet-project-bag-row-counter-gift-pairs.md",
-          "social": "social/drafts/knitting-crochet-project-bag-row-counter-gift-pairs-launch.json"
-        },
-        "sourceSha256": {
-          "run": "afc512957357b2d01226bda0b3104057b616e3c2a28ab7b7f615044efa20880a",
-          "article": "ec08428c406968b7719359b1d6fc26fff109ecefca5bfa8efc92a0a00b2ea9b4",
-          "social": "d72f7f6a657b352a8569640ecce7449950f625b341b4c9e756a063dc5a0ee682"
-        },
-        "nextGate": "Lucas reviews the exact high-risk claim language and reader-facing safety boundary; a separate independent editor then issues a new hash-bound receipt."
-      },
       {
         "runId": "20260823-muddy-paw-arrival-e09ff303",
         "ideaId": "founder-idea-011",
@@ -213,7 +494,15 @@
             ]
           }
         ],
+        "founderDecisionPacket": {
+          "workflowUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/editorial-safety-approval.yml",
+          "approveCommand": "gh workflow run editorial-safety-approval.yml -f run_id=20260823-muddy-paw-arrival-e09ff303 -f decision=approved -f confirmation=REVIEW-20260823-muddy-paw-arrival-e09ff303-approved",
+          "rejectCommand": "gh workflow run editorial-safety-approval.yml -f run_id=20260823-muddy-paw-arrival-e09ff303 -f decision=rejected -f confirmation=REVIEW-20260823-muddy-paw-arrival-e09ff303-rejected",
+          "authorityBoundary": "This decision binds only the exact current run, article, social, and high-risk claim hashes. It does not replace independent QA, merge a pull request, or authorize publication."
+        },
         "founderSafetyReviewRequired": true,
+        "founderSafetyReviewStatus": "approval_required",
+        "safetyApproval": null,
         "independentReviewRequired": true,
         "sourcePaths": {
           "run": "research/runs/20260823-muddy-paw-arrival-e09ff303.json",
@@ -225,7 +514,7 @@
           "article": "2a5a2f877e5cc56cf5d5fad663e983a02794e46f70e859a2fcbdb669bed36ed8",
           "social": "91545c599b5c982e81111bbae224d9947b3f8adc33c19caccdb5e132444dad82"
         },
-        "nextGate": "Lucas reviews the exact high-risk claim language and reader-facing safety boundary; a separate independent editor then issues a new hash-bound receipt."
+        "nextGate": "Lucas records an owner-only, hash-bound decision on the exact high-risk claim language; approval still does not replace independent QA or authorize publication."
       },
       {
         "runId": "20260823-used-record-reset-53a6b604",
@@ -252,7 +541,15 @@
             ]
           }
         ],
+        "founderDecisionPacket": {
+          "workflowUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/editorial-safety-approval.yml",
+          "approveCommand": "gh workflow run editorial-safety-approval.yml -f run_id=20260823-used-record-reset-53a6b604 -f decision=approved -f confirmation=REVIEW-20260823-used-record-reset-53a6b604-approved",
+          "rejectCommand": "gh workflow run editorial-safety-approval.yml -f run_id=20260823-used-record-reset-53a6b604 -f decision=rejected -f confirmation=REVIEW-20260823-used-record-reset-53a6b604-rejected",
+          "authorityBoundary": "This decision binds only the exact current run, article, social, and high-risk claim hashes. It does not replace independent QA, merge a pull request, or authorize publication."
+        },
         "founderSafetyReviewRequired": true,
+        "founderSafetyReviewStatus": "approval_required",
+        "safetyApproval": null,
         "independentReviewRequired": true,
         "sourcePaths": {
           "run": "research/runs/20260823-used-record-reset-53a6b604.json",
@@ -264,7 +561,7 @@
           "article": "c15ea7a3362ea193b9cb7fff587e42c750b4216b451aa9e97ee97786fc909f56",
           "social": "fe56464843b6f49fe43406d17df490f6fe74344d7ad26765d8c6659f16ec7637"
         },
-        "nextGate": "Lucas reviews the exact high-risk claim language and reader-facing safety boundary; a separate independent editor then issues a new hash-bound receipt."
+        "nextGate": "Lucas records an owner-only, hash-bound decision on the exact high-risk claim language; approval still does not replace independent QA or authorize publication."
       }
     ]
   },
@@ -281,8 +578,8 @@
     "cadence": "weekly",
     "posture": "capacity_available",
     "maxOpenProposals": 5,
-    "openProposals": 0,
-    "capacityRemaining": 5,
+    "openProposals": 1,
+    "capacityRemaining": 4,
     "totalMissions": 0,
     "activeMissions": 0,
     "completedMissions": 0,
@@ -309,10 +606,10 @@
     "founderApprovedPrograms": 0,
     "externallyVerifiedPrograms": 0,
     "enabledPrograms": 1,
-    "publicationReadyProductLinksCataloged": 60,
+    "publicationReadyProductLinksCataloged": 65,
     "publicationReadyPaidLinksVerified": 1,
-    "publicationReadyOrdinaryLinks": 59,
-    "productsAssignedToPartnerResearch": 60,
+    "publicationReadyOrdinaryLinks": 64,
+    "productsAssignedToPartnerResearch": 65,
     "productsWithoutPartnerResearch": 0,
     "productCoverageArtifactPath": "/affiliate-product-coverage.json",
     "productCoverageDefinition": "Program assignments are research queues only. They do not assert exact-product availability, account acceptance, tracking validity, or commission eligibility.",
@@ -381,6 +678,19 @@
         },
         "activationState": "activation_recorded",
         "approvalBoundarySha256": "9c521256d14e650a50359f02f58dba81b07d0689b972c42b2c01e33630b91295"
+      }
+    ],
+    "expansionRequests": [
+      {
+        "id": "bookshop-read-play-expansion-v1",
+        "status": "awaiting_founder_scope_approval_and_partner_export",
+        "programId": "bookshop-org-us-media",
+        "articleSlug": "read-it-then-play-it-gift-pairs",
+        "requestedProducts": 9,
+        "catalogProductsVerified": 9,
+        "paidUrlsCollected": 0,
+        "currentArticleMatchesIndependentReview": true,
+        "nextGate": "Lucas approves this exact nine-book scope, then supplies a founder-attested Bookshop export containing partner-issued URLs."
       }
     ],
     "approvedOverlaySetSha256": "7052e5fe641aa1f01231cf8aa5d9c62bc5309127d7ff19076a25aad17f412e02",
@@ -473,7 +783,7 @@
         "founderDisposition": "proposed",
         "eligibleArticleSlugs": [],
         "productSelectionMode": "all_publication_ready_products",
-        "productResearchCandidates": 60,
+        "productResearchCandidates": 65,
         "verifiedPaidLinks": 0,
         "enrollmentStage": "founder_approval_required",
         "publicApplicationPacketReady": true,
@@ -521,7 +831,7 @@
         "founderDisposition": "proposed",
         "eligibleArticleSlugs": [],
         "productSelectionMode": "all_publication_ready_products",
-        "productResearchCandidates": 60,
+        "productResearchCandidates": 65,
         "verifiedPaidLinks": 0,
         "enrollmentStage": "founder_approval_required",
         "publicApplicationPacketReady": true,
@@ -569,7 +879,7 @@
         "founderDisposition": "proposed",
         "eligibleArticleSlugs": [],
         "productSelectionMode": "all_publication_ready_products",
-        "productResearchCandidates": 60,
+        "productResearchCandidates": 65,
         "verifiedPaidLinks": 0,
         "enrollmentStage": "founder_approval_required",
         "publicApplicationPacketReady": true,
@@ -619,7 +929,7 @@
         "founderDisposition": "proposed",
         "eligibleArticleSlugs": [],
         "productSelectionMode": "all_publication_ready_products",
-        "productResearchCandidates": 60,
+        "productResearchCandidates": 65,
         "verifiedPaidLinks": 0,
         "enrollmentStage": "founder_approval_required",
         "publicApplicationPacketReady": true,
@@ -668,7 +978,7 @@
     "channelsTotal": 3,
     "channelsConfigured": 0,
     "channelsActive": 0,
-    "creativeCandidates": 1,
+    "creativeCandidates": 4,
     "mediaAssetsApproved": 0,
     "approvalReceipts": 0,
     "publicationReceipts": 0,
@@ -726,9 +1036,9 @@
         "angle": "Translate a golfer's visible workaround into a safer gift decision",
         "status": "creative_candidate",
         "creativeCandidateId": "golf-friend-friction-decoder-v1",
-        "creativeCandidateRecordSha256": "09227ab0e247bc75654292b331af409f2aad5d3bc8084917bbe724df39caab38",
-        "creativeCandidateAssetPath": "/social-media/golf-friend-friction-decoder-v1.png",
-        "creativeCandidateContentSha256": "4f2ca07b52851c7b96a03af1fd289c2389f37b65de10c0dfb33bcf3a5eb7f760",
+        "creativeCandidateRecordSha256": "acb6381d11b0ff067de746eb701adab19131c6f4980f62a1682d69e9c04ebbe8",
+        "creativeCandidateAssetPath": "/social-media/golf-friend-friction-decoder-v1.jpg",
+        "creativeCandidateContentSha256": "4489cd9c18d93a2cadd502245e408aa7f1d185ebfa93c157b209d41be3212623",
         "creativeCandidateGeneratedAt": "2026-08-03T09:09:00.000Z",
         "creativeCandidateRightsPosture": "original-ai-generated-candidate-unapproved",
         "creativeCandidateAltText": "Checklist showing four observed golfer frictions: dirty grooves, a worn towel, wet grip, and postponed putting practice.",
@@ -928,7 +1238,7 @@
       {
         "postId": "fiber-two-states",
         "packId": "knitting-crochet-project-bag-row-counter-gift-pairs-launch",
-        "packSha256": "d72f7f6a657b352a8569640ecce7449950f625b341b4c9e756a063dc5a0ee682",
+        "packSha256": "63b9adcc2b8ad23c3ae0460ee496c3eac25685159e31eee6ec8d34b7fba0464c",
         "articleSlug": "knitting-crochet-project-bag-row-counter-gift-pairs",
         "platform": "pinterest",
         "format": "two-part-diagram",
@@ -958,7 +1268,7 @@
       {
         "postId": "fiber-name-the-wip",
         "packId": "knitting-crochet-project-bag-row-counter-gift-pairs-launch",
-        "packSha256": "d72f7f6a657b352a8569640ecce7449950f625b341b4c9e756a063dc5a0ee682",
+        "packSha256": "63b9adcc2b8ad23c3ae0460ee496c3eac25685159e31eee6ec8d34b7fba0464c",
         "articleSlug": "knitting-crochet-project-bag-row-counter-gift-pairs",
         "platform": "instagram",
         "format": "six-slide-carousel",
@@ -988,7 +1298,7 @@
       {
         "postId": "fiber-counter-convention",
         "packId": "knitting-crochet-project-bag-row-counter-gift-pairs-launch",
-        "packSha256": "d72f7f6a657b352a8569640ecce7449950f625b341b4c9e756a063dc5a0ee682",
+        "packSha256": "63b9adcc2b8ad23c3ae0460ee496c3eac25685159e31eee6ec8d34b7fba0464c",
         "articleSlug": "knitting-crochet-project-bag-row-counter-gift-pairs",
         "platform": "pinterest",
         "format": "vertical-checklist",
@@ -1016,14 +1326,14 @@
         "nextGate": "Generate an original rights-controlled creative bound to this exact post and pack."
       },
       {
-        "postId": "fiber-paper-versus-app",
+        "postId": "fiber-mini-versus-standard",
         "packId": "knitting-crochet-project-bag-row-counter-gift-pairs-launch",
-        "packSha256": "d72f7f6a657b352a8569640ecce7449950f625b341b4c9e756a063dc5a0ee682",
+        "packSha256": "63b9adcc2b8ad23c3ae0460ee496c3eac25685159e31eee6ec8d34b7fba0464c",
         "articleSlug": "knitting-crochet-project-bag-row-counter-gift-pairs",
         "platform": "instagram",
         "format": "five-slide-carousel",
-        "headline": "Chart board or no chart board? Watch the pattern habit",
-        "angle": "Route paper-pattern makers and app users differently",
+        "headline": "Mini with a lock—or standard with a push button?",
+        "angle": "Choose the exact physical counter from the storage habit",
         "status": "draft",
         "creativeCandidateId": null,
         "creativeCandidateRecordSha256": null,
@@ -1039,8 +1349,8 @@
         "externalPostUrl": null,
         "publicationReceiptId": null,
         "publishReadiness": "blocked_creative",
-        "claimCount": 4,
-        "productCount": 1,
+        "claimCount": 5,
+        "productCount": 2,
         "pairCount": 0,
         "destinationUrl": "https://tipsforyourgifts.web.app/blog/knitting-crochet-project-bag-row-counter-gift-pairs",
         "nextGate": "Generate an original rights-controlled creative bound to this exact post and pack."
@@ -1048,7 +1358,7 @@
       {
         "postId": "fiber-pause-ritual",
         "packId": "knitting-crochet-project-bag-row-counter-gift-pairs-launch",
-        "packSha256": "d72f7f6a657b352a8569640ecce7449950f625b341b4c9e756a063dc5a0ee682",
+        "packSha256": "63b9adcc2b8ad23c3ae0460ee496c3eac25685159e31eee6ec8d34b7fba0464c",
         "articleSlug": "knitting-crochet-project-bag-row-counter-gift-pairs",
         "platform": "tiktok",
         "format": "thirty-second-script",
@@ -1078,7 +1388,7 @@
       {
         "postId": "fiber-buy-one-or-skip",
         "packId": "knitting-crochet-project-bag-row-counter-gift-pairs-launch",
-        "packSha256": "d72f7f6a657b352a8569640ecce7449950f625b341b4c9e756a063dc5a0ee682",
+        "packSha256": "63b9adcc2b8ad23c3ae0460ee496c3eac25685159e31eee6ec8d34b7fba0464c",
         "articleSlug": "knitting-crochet-project-bag-row-counter-gift-pairs",
         "platform": "pinterest",
         "format": "buy-skip-card",
@@ -1264,26 +1574,26 @@
         "format": "two-part-diagram",
         "headline": "The miniature-painting gift that solves two different losses",
         "angle": "Separate the live-mix problem from the next-session memory problem",
-        "status": "draft",
-        "creativeCandidateId": null,
-        "creativeCandidateRecordSha256": null,
-        "creativeCandidateAssetPath": null,
-        "creativeCandidateContentSha256": null,
-        "creativeCandidateGeneratedAt": null,
-        "creativeCandidateRightsPosture": null,
-        "creativeCandidateAltText": null,
+        "status": "creative_candidate",
+        "creativeCandidateId": "mini-paint-one-mix-one-record-v1",
+        "creativeCandidateRecordSha256": "abb57a2995963b8ec81831b3aec191aeb73758b648470b01f20102f64a567fa2",
+        "creativeCandidateAssetPath": "/social-media/mini-paint-one-mix-one-record-v1.jpg",
+        "creativeCandidateContentSha256": "c24386558eccdebb1fcc4740d51c63ceb9d3f0b72e540e44bbf677cad310d46b",
+        "creativeCandidateGeneratedAt": "2026-11-23T08:06:15.000Z",
+        "creativeCandidateRightsPosture": "original-ai-generated-candidate-unapproved",
+        "creativeCandidateAltText": "Diagram showing a live acrylic mix on a wet palette and the same mix recorded as a labeled dry swatch for a later painting session.",
         "mediaAssetId": null,
         "mediaAssetRecordSha256": null,
         "approvalId": null,
         "externalPostId": null,
         "externalPostUrl": null,
         "publicationReceiptId": null,
-        "publishReadiness": "blocked_creative",
+        "publishReadiness": "blocked_media_approval",
         "claimCount": 2,
         "productCount": 2,
         "pairCount": 1,
         "destinationUrl": "https://tipsforyourgifts.web.app/blog/miniature-painting-wet-palette-recipe-pairs",
-        "nextGate": "Generate an original rights-controlled creative bound to this exact post and pack."
+        "nextGate": "Review the exact creative in a Firebase preview, release its stable owned URL, then record founder media-rights approval."
       },
       {
         "postId": "mini-paint-material-boundary",
@@ -1984,26 +2294,26 @@
         "format": "two-step-map",
         "headline": "One photo. One willing story. Ten minutes.",
         "angle": "Turn an overwhelming family archive into one consent-led ten-minute ritual",
-        "status": "draft",
-        "creativeCandidateId": null,
-        "creativeCandidateRecordSha256": null,
-        "creativeCandidateAssetPath": null,
-        "creativeCandidateContentSha256": null,
-        "creativeCandidateGeneratedAt": null,
-        "creativeCandidateRightsPosture": null,
-        "creativeCandidateAltText": null,
+        "status": "creative_candidate",
+        "creativeCandidateId": "one-photo-ten-minute-ritual-v1",
+        "creativeCandidateRecordSha256": "a326c710f453a8de5d6fb3f9b1a68dc49a7ceed640ed2d38273272f8beff2b7e",
+        "creativeCandidateAssetPath": "/social-media/one-photo-ten-minute-ritual-v1.jpg",
+        "creativeCandidateContentSha256": "812c9b4ecbd539b9709bc4faa0cd86842bc7e583a8d29163d3605b6a8f6ea860",
+        "creativeCandidateGeneratedAt": "2026-11-23T08:04:57.000Z",
+        "creativeCandidateRightsPosture": "original-ai-generated-candidate-unapproved",
+        "creativeCandidateAltText": "Two-step map for asking one approved family-story question and writing the consented caption on the photo enclosure.",
         "mediaAssetId": null,
         "mediaAssetRecordSha256": null,
         "approvalId": null,
         "externalPostId": null,
         "externalPostUrl": null,
         "publicationReceiptId": null,
-        "publishReadiness": "blocked_creative",
+        "publishReadiness": "blocked_media_approval",
         "claimCount": 3,
         "productCount": 2,
         "pairCount": 1,
         "destinationUrl": "https://tipsforyourgifts.web.app/blog/one-photo-one-story-gift-pairs",
-        "nextGate": "Generate an original rights-controlled creative bound to this exact post and pack."
+        "nextGate": "Review the exact creative in a Firebase preview, release its stable owned URL, then record founder media-rights approval."
       },
       {
         "postId": "one-photo-permission-check",
@@ -2404,26 +2714,26 @@
         "format": "five-slide-carousel",
         "headline": "Read it, play it, disagree with it",
         "angle": "Teach the The big-history strategy debate decision through recipient fit and a concrete interaction",
-        "status": "draft",
-        "creativeCandidateId": null,
-        "creativeCandidateRecordSha256": null,
-        "creativeCandidateAssetPath": null,
-        "creativeCandidateContentSha256": null,
-        "creativeCandidateGeneratedAt": null,
-        "creativeCandidateRightsPosture": null,
-        "creativeCandidateAltText": null,
+        "status": "creative_candidate",
+        "creativeCandidateId": "read-play-disagree-v1",
+        "creativeCandidateRecordSha256": "2c0acc964944d7fd1a2361268a690f4ce279e7363c7d4c60561610cdc31d316f",
+        "creativeCandidateAssetPath": "/social-media/read-play-disagree-v1.jpg",
+        "creativeCandidateContentSha256": "6f57a4a09f3443b998144a615a375573caa4006d961e7f6ba45eee9a46a3ea0e",
+        "creativeCandidateGeneratedAt": "2026-11-23T08:01:50.000Z",
+        "creativeCandidateRightsPosture": "original-ai-generated-candidate-unapproved",
+        "creativeCandidateAltText": "Editorial graphic explaining The big-history strategy debate, its interaction, and the check that determines whether to choose only one item.",
         "mediaAssetId": null,
         "mediaAssetRecordSha256": null,
         "approvalId": null,
         "externalPostId": null,
         "externalPostUrl": null,
         "publicationReceiptId": null,
-        "publishReadiness": "blocked_creative",
+        "publishReadiness": "blocked_media_approval",
         "claimCount": 7,
         "productCount": 2,
         "pairCount": 1,
         "destinationUrl": "https://tipsforyourgifts.web.app/blog/read-it-then-play-it-gift-pairs",
-        "nextGate": "Generate an original rights-controlled creative bound to this exact post and pack."
+        "nextGate": "Review the exact creative in a Firebase preview, release its stable owned URL, then record founder media-rights approval."
       },
       {
         "postId": "bird-cards-to-outdoors",
@@ -3061,34 +3371,37 @@
     "mode": "founder_reviewed",
     "automaticPromotionEnabled": false,
     "verifiedSuccessfulReleaseCount": 0,
+    "durableVerifiedFounderReviewedReleaseCount": 2,
     "minimumSuccessfulFounderReviewedReleases": 10,
     "verifiedReleaseReceiptRequired": true,
     "receiptRetentionDays": 90,
     "releaseEvidenceSource": "github_production_deployments_at_enable_time",
+    "durableReceiptEvidenceSource": "repository_verified_publication_receipts",
     "currentLive": {
       "status": "verified_managed_content_release",
-      "updatedAt": "2026-08-31T18:24:14.891Z",
-      "receiptId": "firebase-6fed7c2a9898-33424522855-1",
-      "receiptSha256": "c8d02f502cc39c6317e488d95a40d09e993dea452f0a58f4168ec064982c5fac",
-      "receiptPath": "releases/receipts/firebase-6fed7c2a9898-33424522855-1.json",
-      "releaseSha": "6fed7c2a9898eeb03f0ad78020c398c5c9b4cdd7",
-      "workflowRunUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/runs/33424522855",
-      "manifestId": "publication-set-0e33c0313ad4afec",
-      "contentSetSha256": "0e33c0313ad4afeca7b72b10d0895f51f9f62895b51cabb36924efeced9a0ba5",
+      "updatedAt": "2026-11-22T06:16:08.292Z",
+      "receiptId": "firebase-90aa88bdbbc2-44992730111-1",
+      "receiptSha256": "2b0ea60fa2db96063847d8314ba31133f14a85c75a792c15ddbe9ea1f59dcb5d",
+      "receiptPath": "releases/receipts/firebase-90aa88bdbbc2-44992730111-1.json",
+      "releaseSha": "90aa88bdbbc2319f8b94eeb5c6f2c87736ee9a65",
+      "workflowRunUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/runs/44992730111",
+      "manifestId": "publication-set-8e8287a5ec7db534",
+      "contentSetSha256": "8e8287a5ec7db534c5c2255d15cca7c050aed88bc63df25a0fdd46aecda2dae6",
       "articles": 10,
-      "affiliateLinks": 0,
+      "affiliateLinks": 1,
       "matchesCurrentCandidate": false
     },
     "currentCandidate": {
       "status": "release_candidate",
-      "manifestId": "publication-set-8e8287a5ec7db534",
-      "contentSetSha256": "8e8287a5ec7db534c5c2255d15cca7c050aed88bc63df25a0fdd46aecda2dae6",
-      "articles": 10,
-      "independentReviews": 10,
-      "socialLaunchPacks": 9,
-      "socialDrafts": 60,
+      "manifestId": "publication-set-4bc6216cd2440947",
+      "contentSetSha256": "4bc6216cd244094741ce91798355d8682d5438fcfe92e316f192937983409414",
+      "articles": 11,
+      "independentReviews": 11,
+      "founderSafetyApprovals": 0,
+      "socialLaunchPacks": 10,
+      "socialDrafts": 66,
       "missionBoundArticles": 0,
-      "preMissionValidatedArticles": 10,
+      "preMissionValidatedArticles": 11,
       "affiliateLinks": 1
     }
   },
@@ -3103,6 +3416,56 @@
     "proposedExperiments": 3,
     "approvedExperiments": 0,
     "runningExperiments": 0,
+    "commercialScorecard": {
+      "status": "awaiting_observed_export",
+      "evidenceStage": "awaiting_observed_export",
+      "periodStart": null,
+      "periodEnd": null,
+      "reportingWindowDays": null,
+      "snapshotIds": [],
+      "sourceConnectorIds": [],
+      "articleCount": 0,
+      "knownMetrics": [],
+      "missingMetrics": [
+        "searchImpressions",
+        "organicClicks",
+        "engagedSessions",
+        "outboundMerchantClicks",
+        "affiliateConversions",
+        "revenueUsd",
+        "socialImpressions",
+        "socialEngagements",
+        "ownedSiteClicks"
+      ],
+      "totals": {
+        "searchImpressions": null,
+        "organicClicks": null,
+        "engagedSessions": null,
+        "outboundMerchantClicks": null,
+        "affiliateConversions": null,
+        "revenueUsd": null,
+        "socialImpressions": null,
+        "socialEngagements": null,
+        "ownedSiteClicks": null
+      },
+      "rates": {
+        "organicClickThrough": null,
+        "merchantClickThrough": null,
+        "affiliateConversion": null,
+        "earningsPerOutboundClickUsd": null,
+        "revenuePerConversionUsd": null,
+        "socialOwnedClickThrough": null
+      },
+      "leaders": {
+        "organicClicks": null,
+        "outboundMerchantClicks": null,
+        "affiliateConversions": null,
+        "revenueUsd": null,
+        "ownedSiteClicks": null
+      },
+      "profitabilityConclusion": "unknown_until_observed_revenue_and_cost_evidence",
+      "nextGate": "Import one complete approved aggregate reporting window. Missing traffic, conversion, and revenue remain unknown rather than zero."
+    },
     "searchConsole": {
       "status": "not_connected",
       "founderApproved": false,
@@ -3175,26 +3538,31 @@
     },
     {
       "ideaId": "founder-idea-012",
-      "stage": "independent_review",
-      "nextGate": "Resolve evidence or editorial blockers and obtain a hash-bound independent review receipt."
+      "stage": "publication_ready",
+      "nextGate": "Review the exact-SHA pull request and Firebase preview before production release."
     },
     {
       "ideaId": "founder-idea-013",
       "stage": "independent_review",
       "nextGate": "Resolve evidence or editorial blockers and obtain a hash-bound independent review receipt."
+    },
+    {
+      "ideaId": "founder-idea-014",
+      "stage": "proposed",
+      "nextGate": "Founder approves, pauses, or rejects the research thesis."
     }
   ],
   "pipeline": {
-    "idea": 13,
+    "idea": 14,
     "researching": 0,
     "missionsActive": 0,
     "missionsCompleted": 0,
     "opportunityScoutsActive": 0,
     "opportunityReportsValidated": 0,
-    "qa": 3,
-    "proposed": 0,
+    "qa": 2,
+    "proposed": 1,
     "ready": 0,
-    "publicationReady": 10,
+    "publicationReady": 11,
     "socialDrafts": 78
   },
   "alerts": [
@@ -3202,10 +3570,11 @@
     "4 affiliate program candidates await founder review; approval does not enroll or enable tracking.",
     "1 exact affiliate link candidate: 1 independently reviewed and founder-approved overlay active in generated content.",
     "78 social launch drafts await approved media, content approval, and official API access.",
-    "1 original social creative candidate is locally verified but not rights-approved, released, or published.",
+    "4 original social creative candidates are locally verified but not rights-approved, released, or published.",
     "Growth measurement is not connected; traffic, conversions, and revenue remain unknown rather than zero.",
     "3 growth experiments await founder review and an aggregate baseline.",
+    "1 strategy proposal awaits a founder approval decision before research can start.",
     "Production promotion remains founder-reviewed; automatic release requires 10 verified successful releases and a separate founder approval.",
-    "3 article bundles remain blocked in the editorial decision queue; none can self-certify or publish."
+    "2 article bundles remain blocked in the editorial decision queue; none can self-certify or publish."
   ]
 }

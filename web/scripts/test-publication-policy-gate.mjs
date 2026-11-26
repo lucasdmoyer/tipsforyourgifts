@@ -10,9 +10,26 @@ const manualWorkflow = await fs.readFile(path.join(repositoryRoot, '.github', 'w
 const automaticWorkflow = await fs.readFile(path.join(repositoryRoot, '.github', 'workflows', 'firebase-auto-production.yml'), 'utf8');
 const previewWorkflow = await fs.readFile(path.join(repositoryRoot, '.github', 'workflows', 'firebase-preview-deploy.yml'), 'utf8');
 const previewCallerWorkflow = await fs.readFile(path.join(repositoryRoot, '.github', 'workflows', 'firebase-preview.yml'), 'utf8');
+const workflowDirectory = path.join(repositoryRoot, '.github', 'workflows');
+const workflowNames = (await fs.readdir(workflowDirectory)).filter((name) => name.endsWith('.yml')).sort();
+let generatedOutputReferenceLines = 0;
+for (const workflowName of workflowNames) {
+  const source = await fs.readFile(path.join(workflowDirectory, workflowName), 'utf8');
+  for (const [lineIndex, line] of source.split('\n').entries()) {
+    if (!line.includes('web/src/app/generated/content.generated.ts')) continue;
+    generatedOutputReferenceLines += 1;
+    assert.ok(
+      line.includes('web/src/app/generated/studio.generated.ts'),
+      `${workflowName}:${lineIndex + 1} must stage or allow both generated application outputs`,
+    );
+  }
+}
+assert.ok(generatedOutputReferenceLines > 0, 'workflow generated-output parity scan must inspect at least one reference');
 const [previewBuildJob, previewDeployJob = ''] = previewWorkflow.split('\n  deploy:\n');
 const previewAuthIndex = previewDeployJob.indexOf('id: google_auth');
 const previewAfterAuth = previewAuthIndex >= 0 ? previewDeployJob.slice(previewAuthIndex) : '';
+const automaticAuthIndexes = [...automaticWorkflow.matchAll(/id: google_auth/g)].map((match) => match.index);
+const automaticCleanupIndexes = [...automaticWorkflow.matchAll(/Remove local cloud credentials/g)].map((match) => match.index);
 const clone = (value) => structuredClone(value);
 
 function expectFailure(label, mutate) {
@@ -44,9 +61,32 @@ assert.match(automaticWorkflow, /hosting:clone tipsforyourgifts:live/, 'automati
 assert.match(automaticWorkflow, /hosting:channel:create.*--expires 30d/, 'automatic rollback clone must receive the maximum bounded expiry');
 assert.match(automaticWorkflow, /publication:receipt/, 'automatic release must create a verified receipt');
 assert.match(automaticWorkflow, /--manifest=dist\/publication-manifest\.json/, 'automatic release receipt must bind the deployed publication manifest');
+assert.equal((automaticWorkflow.match(/id-token: write/g) || []).length, 2, 'automatic preview and live jobs must each request only short-lived OIDC authority');
+assert.equal(automaticAuthIndexes.length, 2, 'automatic preview and live jobs must each mint a fresh short-lived credential');
+assert.equal(automaticCleanupIndexes.length, 2, 'automatic preview and live jobs must each remove local cloud credentials after Firebase mutation');
+assert.doesNotMatch(automaticWorkflow, /FIREBASE_SERVICE_ACCOUNT_TIPSFORYOURGIFTS|credentials_json:/, 'automatic release must not depend on a long-lived service-account key');
+assert.doesNotMatch(automaticWorkflow, /FirebaseExtended\/action-hosting-deploy|npx --yes firebase-tools/, 'automatic release must use only the pre-authenticated pinned Firebase CLI');
+assert.equal((automaticWorkflow.match(/firebase-tools@15\.26\.0/g) || []).length, 2, 'automatic jobs must install the same pinned Firebase CLI before authentication');
+assert.ok(automaticWorkflow.indexOf('npm run validate') < automaticAuthIndexes[0], 'automatic preview must complete validation before cloud authentication');
+assert.ok(automaticWorkflow.indexOf('actions/upload-artifact@v7') < automaticAuthIndexes[0], 'automatic preview must upload the exact static artifact with the Node 24 action before cloud authentication');
+assert.match(automaticWorkflow, /needs: preview[\s\S]*url: \$\{\{ needs\.preview\.outputs\.preview_url \}\}/, 'automatic live release must wait for and expose the exact preview URL');
+assert.match(automaticWorkflow, /actions\/download-artifact@v8[\s\S]*name: \$\{\{ needs\.preview\.outputs\.artifact_name \}\}/, 'automatic live release must download the previewed static artifact with the Node 24 action');
+assert.equal((automaticWorkflow.match(/tips-github-auto-production\/providers\/github-auto-production/g) || []).length, 2, 'automatic jobs must use the isolated automatic-production identity pool');
+assert.equal((automaticWorkflow.match(/service_account: github-auto-production@tipsforyourgifts\.iam\.gserviceaccount\.com/g) || []).length, 2, 'automatic jobs must use the dedicated automatic-production service account');
+assert.equal((automaticWorkflow.match(/test "\$REPOSITORY_ID" = "171694140"/g) || []).length, 2, 'automatic jobs must bind the immutable repository ID before authentication');
+assert.equal((automaticWorkflow.match(/test "\$REPOSITORY_OWNER_ID" = "23782501"/g) || []).length, 2, 'automatic jobs must bind the immutable repository-owner ID before authentication');
+assert.equal((automaticWorkflow.match(/test "\$EVENT_NAME" = "push"/g) || []).length, 2, 'automatic jobs must accept only the master push event');
+assert.equal((automaticWorkflow.match(/test "\$REF_VALUE" = "refs\/heads\/master"/g) || []).length, 2, 'automatic jobs must accept only the master ref');
+assert.equal((automaticWorkflow.match(/firebase-auto-production\.yml@refs\/heads\/master/g) || []).length, 2, 'automatic jobs must bind the master-pinned workflow path');
+assert.match(automaticWorkflow, /hosting:channel:deploy "\$CHANNEL_ID"[\s\S]*hosting:channel:list[\s\S]*--site tipsforyourgifts/, 'automatic preview must deploy and resolve one exact temporary channel');
+assert.match(automaticWorkflow, /node "\$FIREBASE_CLI" deploy --only hosting --project tipsforyourgifts --non-interactive/, 'automatic live mutation must target only Hosting in the explicit project');
+assert.ok(automaticCleanupIndexes[0] > automaticAuthIndexes[0] && automaticCleanupIndexes[1] > automaticAuthIndexes[1], 'automatic jobs must clean credentials only after their own authenticated Firebase work');
+assert.match(automaticWorkflow, /rm -f -- "\$GOOGLE_APPLICATION_CREDENTIALS"/, 'automatic jobs must delete the temporary credential file');
+assert.match(automaticWorkflow, /npm --prefix web run smoke:hosted -- "\$PREVIEW_URL"/, 'automatic preview must smoke every public route without cloud credentials');
+assert.match(automaticWorkflow, /npm --prefix web run smoke:hosted -- https:\/\/tipsforyourgifts\.web\.app/, 'automatic production must smoke every public route without cloud credentials');
 assert.match(manualWorkflow, /needs: preview/, 'founder-reviewed live release must wait for the exact-SHA preview job');
 assert.match(manualWorkflow, /url: \$\{\{ needs\.preview\.outputs\.preview_url \}\}/, 'production approval must expose the exact preview URL');
-assert.match(manualWorkflow, /actions\/download-artifact@v4/, 'founder-reviewed release must download the reviewed static artifact');
+assert.match(manualWorkflow, /actions\/download-artifact@v8/, 'founder-reviewed release must download the reviewed static artifact with the Node 24 action');
 assert.doesNotMatch(manualWorkflow, /inputs\.preview_url/, 'founder-reviewed release must not trust a caller-supplied preview URL');
 assert.match(manualWorkflow, /id-token: write/, 'founder-reviewed release must explicitly request a short-lived GitHub OIDC token');
 assert.match(manualWorkflow, /tips-github-production\/providers\/github-production/, 'founder-reviewed release must use the isolated production identity pool');
@@ -67,7 +107,7 @@ assert.match(previewDeployJob, /test "\$BASE_REF" = "master"/, 'preview deploy m
 assert.match(previewDeployJob, /test "\$HEAD_REPOSITORY_ID" = "\$REPOSITORY_ID"/, 'preview deploy must reject fork-controlled heads');
 assert.match(previewDeployJob, /test "\$REF_VALUE" = "refs\/pull\/\$PR_NUMBER\/merge"/, 'preview deploy must bind the current merge ref and PR number');
 assert.match(previewDeployJob, /ref: master[\s\S]*path: trusted-config[\s\S]*sparse-checkout: firebase\.json/, 'preview deploy must read Firebase configuration from trusted master');
-assert.ok(previewDeployJob.indexOf('actions/download-artifact@v4') < previewAuthIndex, 'preview artifact must be downloaded before cloud authentication');
+assert.ok(previewDeployJob.indexOf('actions/download-artifact@v8') < previewAuthIndex, 'preview artifact must be downloaded with the Node 24 action before cloud authentication');
 assert.match(previewDeployJob, /tips-github-preview\/providers\/github-preview/, 'preview deploy must use the isolated reusable-workflow provider');
 assert.match(previewDeployJob, /service_account: github-action-171694140@tipsforyourgifts\.iam\.gserviceaccount\.com/, 'preview deploy must use the dedicated Hosting preview service account');
 assert.doesNotMatch(previewAfterAuth, /actions\/checkout|npm (?:ci|run)|npm --prefix web/, 'preview deploy must not check out or execute pull-request application code after authentication');
@@ -82,4 +122,4 @@ assert.doesNotMatch(previewCallerWorkflow, /github-pr-20|refs\/pull\/20\/merge|t
 assert.doesNotMatch(previewCallerWorkflow, /google-github-actions\/auth|hosting:channel:deploy/, 'preview caller must delegate all authenticated behavior to the master-pinned reusable workflow');
 assert.match(previewCallerWorkflow, /\n  preview:\n[\s\S]*name: preview[\s\S]*needs:[\s\S]*- deploy_preview[\s\S]*permissions: \{\}[\s\S]*test "\$DEPLOY_PREVIEW_RESULT" = "success"/, 'preview caller must preserve the required check name and fail it when delegated execution fails');
 
-console.log(JSON.stringify({ publicationPolicyNegativeGateTests: 'passed', negativeChecks: 8, workflowReleaseChecks: 45 }, null, 2));
+console.log(JSON.stringify({ publicationPolicyNegativeGateTests: 'passed', negativeChecks: 8, workflowReleaseChecks: 68 + generatedOutputReferenceLines, generatedOutputReferenceLines }, null, 2));
