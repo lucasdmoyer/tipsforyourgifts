@@ -77,7 +77,9 @@ jobs:
         with:
           openai-api-key: ${{ secrets.OPENAI_API_KEY }}
           safety-strategy: drop-sudo
-          codex-args: --search
+          sandbox: workspace-write
+          codex-args: '["--search","--ephemeral"]'
+          allow-bots: true
           prompt: |
             Use $research-gift-opportunities in this repository.
 
@@ -125,6 +127,7 @@ jobs:
     timeout-minutes: 45
     outputs:
       has_patch: ${{ steps.reviewed_diff.outputs.has_patch }}
+      review_route: ${{ steps.identify.outputs.review_route }}
     steps:
       - uses: actions/checkout@v5
         with:
@@ -162,25 +165,31 @@ jobs:
           echo "article_slug=$article_slug" >> "$GITHUB_OUTPUT"
           echo "source_patch_sha=$source_patch_sha" >> "$GITHUB_OUTPUT"
           echo "mission_id=$EXPECTED_MISSION_ID" >> "$GITHUB_OUTPUT"
+          npm --prefix web run research:review:route -- --run-id="$run_id" --mission-id="$EXPECTED_MISSION_ID"
       - name: Verify autonomous agent credential
+        if: steps.identify.outputs.review_route == 'independent_review'
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: node web/scripts/require-openai-api-key.mjs
       - name: Run a separate independent editorial review
+        if: steps.identify.outputs.review_route == 'independent_review'
         uses: openai/codex-action@v1
         with:
           openai-api-key: ${{ secrets.OPENAI_API_KEY }}
           safety-strategy: drop-sudo
-          codex-args: --search
+          sandbox: workspace-write
+          codex-args: '["--search","--ephemeral"]'
+          allow-bots: true
           prompt: |
             Act only as the independent evidence and compliance editor for mission ${{ steps.identify.outputs.mission_id }} and run ${{ steps.identify.outputs.run_id }}.
             Read the repository research skill and review the exact run, matching article, and social launch pack. Challenge source independence, product fit, benefits, drawbacks, safety, unsupported experience, merchant links, affiliate posture, social policy, observed-friction specificity, self-purchase logic, recipient-fit signals, duplicate and clutter risk, ownership burden, pair coherence, and every compatibility check. Reject a companion that only increases basket size or rescues a weak anchor. Do not modify any existing file and do not draft new copy.
 
             If and only if the exact bundle passes without blockers, create the hash-bound receipt by running:
-            npm --prefix web run review:receipt -- --run-id=${{ steps.identify.outputs.run_id }} --reviewer-id=evidence-red-team-${{ github.run_id }} --verdict=passed --workflow-run-id=${{ github.run_id }}
+            npm --prefix web run review:receipt -- --run-id=${{ steps.identify.outputs.run_id }} --reviewer-id=evidence-red-team-${{ github.run_id }} --workflow-name=research-agent.yml --mission-id=${{ steps.identify.outputs.mission_id }} --verdict=passed --workflow-run-id=${{ github.run_id }}
 
-            If it has any blocker, run the same command with --verdict=failed. You may create only web/research/reviews/${{ steps.identify.outputs.run_id }}.qa.v1.json. Never approve work by changing the source bundle.
+            If it has any blocker, run the same command with --verdict=failed. The command creates the next immutable web/research/reviews/${{ steps.identify.outputs.run_id }}.qa.vN.json revision. You may create only that one receipt. Never approve work by changing the source bundle.
       - name: Prove reviewer isolation and promote only a passing receipt
+        if: steps.identify.outputs.review_route == 'independent_review'
         env:
           MISSION_ID: ${{ steps.identify.outputs.mission_id }}
           RUN_ID: ${{ steps.identify.outputs.run_id }}
@@ -189,7 +198,8 @@ jobs:
         run: |
           actual_source_patch_sha="$(git diff --binary HEAD -- "web/research/runs/$RUN_ID.json" "web/src/data/blog/$ARTICLE_SLUG.md" "web/social/drafts/$ARTICLE_SLUG-launch.json" | shasum -a 256 | cut -d ' ' -f 1)"
           test "$actual_source_patch_sha" = "$EXPECTED_SOURCE_PATCH_SHA"
-          test -f "web/research/reviews/$RUN_ID.qa.v1.json"
+          mapfile -t receipt_files < <(git status --short | cut -c4- | grep -E "^web/research/reviews/$RUN_ID\\.qa\\.v[1-9][0-9]*\\.json$")
+          test "${#receipt_files[@]}" -eq 1
           while IFS= read -r changed_path; do
             case "$changed_path" in
               web/research/missions/*.json|web/research/runs/*.json|web/research/reviews/*.json|web/social/drafts/*.json|web/src/data/blog/*.md|web/src/data/operations.json|web/src/app/generated/content.generated.ts|web/public/publication-manifest.json|web/public/sitemap.xml) ;;
@@ -201,7 +211,24 @@ jobs:
           npm run validate
           npm run build
           npm run smoke
-      - name: Serialize the independently reviewed patch
+      - name: Preserve a high-risk draft for founder safety review
+        if: steps.identify.outputs.review_route == 'founder_safety'
+        env:
+          RUN_ID: ${{ steps.identify.outputs.run_id }}
+          ARTICLE_SLUG: ${{ steps.identify.outputs.article_slug }}
+          EXPECTED_SOURCE_PATCH_SHA: ${{ steps.identify.outputs.source_patch_sha }}
+        run: |
+          actual_source_patch_sha="$(git diff --binary HEAD -- "web/research/runs/$RUN_ID.json" "web/src/data/blog/$ARTICLE_SLUG.md" "web/social/drafts/$ARTICLE_SLUG-launch.json" | shasum -a 256 | cut -d ' ' -f 1)"
+          test "$actual_source_patch_sha" = "$EXPECTED_SOURCE_PATCH_SHA"
+          test "$(node -p "['drafted','qa_failed'].includes(JSON.parse(require('fs').readFileSync('web/research/runs/$RUN_ID.json','utf8')).status)")" = "true"
+          test "$(node -p "JSON.parse(require('fs').readFileSync('web/research/runs/$RUN_ID.json','utf8')).qa.passed")" = "false"
+          test "$(node -p "require('fs').readFileSync('web/src/data/blog/$ARTICLE_SLUG.md','utf8').match(/^status:\\s*(draft|publication_ready)\\s*$/m)?.[1] || ''")" = "draft"
+          mapfile -t receipt_files < <(git status --short | cut -c4- | grep -E "^web/research/reviews/$RUN_ID\\.qa\\.v[1-9][0-9]*\\.json$" || true)
+          test "${#receipt_files[@]}" -eq 0
+          npm run validate
+          npm run build
+          npm run smoke
+      - name: Serialize the independently reviewed or safety-routed patch
         id: reviewed_diff
         run: |
           git add -N .
@@ -251,31 +278,47 @@ jobs:
       - name: Commit and push the validated content branch
         env:
           MISSION_ID: ${{ needs.research.outputs.mission_id }}
+          REVIEW_ROUTE: ${{ needs.quality_review.outputs.review_route }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git switch -c "codex/content-$MISSION_ID"
-          git commit -m "Complete gift research mission $MISSION_ID"
+          if [ "$REVIEW_ROUTE" = "founder_safety" ]; then
+            git commit -m "Prepare founder safety review for $MISSION_ID"
+          else
+            git commit -m "Complete gift research mission $MISSION_ID"
+          fi
           git push origin "codex/content-$MISSION_ID"
       - name: Open founder-review pull request
         id: pull_request
         env:
           GH_TOKEN: ${{ github.token }}
           MISSION_ID: ${{ needs.research.outputs.mission_id }}
+          REVIEW_ROUTE: ${{ needs.quality_review.outputs.review_route }}
         run: |
+          if [ "$REVIEW_ROUTE" = "founder_safety" ]; then
+            pr_title="Founder safety handoff for $MISSION_ID"
+            pr_body="Codex completed the draft research bundle for $MISSION_ID and deterministically found one or more explicitly classified high-risk claims. No independent receipt was created and the draft is excluded from the public site. Merging this pull request stores the versioned draft on master so Lucas can review the exact claim language through the protected editorial-safety workflow. A separate post-approval evidence editor must still pass the exact bundle before it can become publication-ready. This pull request does not publish, deploy, activate affiliate links, or enable auto-merge."
+          else
+            pr_title="Gift research mission $MISSION_ID"
+            pr_body="Codex completed the hash-bound research mission $MISSION_ID from a founder-authorized strategy dispatch. Review the evidence, independent QA receipt, affiliate posture, exact-SHA Firebase preview, and rollback evidence before merging. The completed mission is not itself a production deployment. Merge remains the publication approval gate while the founder-reviewed policy is active."
+          fi
           pr_url="$(gh pr create \
             --base master \
             --head "codex/content-$MISSION_ID" \
-            --title "Gift research mission $MISSION_ID" \
-            --body "Codex completed the hash-bound research mission $MISSION_ID from a founder-authorized strategy dispatch. Review the evidence, independent QA receipt, affiliate posture, exact-SHA Firebase preview, and rollback evidence before merging. The completed mission is not itself a production deployment. Merge remains the publication approval gate while the founder-reviewed policy is active.")"
+            --title "$pr_title" \
+            --body "$pr_body")"
           echo "pr_url=$pr_url" >> "$GITHUB_OUTPUT"
       - name: Enable check-gated auto-merge only under the proven policy
         env:
           GH_TOKEN: ${{ github.token }}
           PR_URL: ${{ steps.pull_request.outputs.pr_url }}
+          REVIEW_ROUTE: ${{ needs.quality_review.outputs.review_route }}
         run: |
           enabled="$(node -p "String(require('./web/config/publication-policy.json').automaticPromotion.enabled)")"
-          if [ "$enabled" = "true" ]; then
+          if [ "$REVIEW_ROUTE" = "founder_safety" ]; then
+            echo "High-risk drafts always require the protected founder safety decision; auto-merge is disabled."
+          elif [ "$enabled" = "true" ]; then
             gh pr merge --auto --squash "$PR_URL"
           else
             echo "Automatic promotion is disabled; founder review remains required."

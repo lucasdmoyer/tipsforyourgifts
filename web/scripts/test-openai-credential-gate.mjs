@@ -1,4 +1,5 @@
 import fs from 'node:fs/promises';
+import os from 'node:os';
 import path from 'node:path';
 import process from 'node:process';
 import { spawnSync } from 'node:child_process';
@@ -11,6 +12,8 @@ const guardPath = path.join(webRoot, 'scripts', 'require-openai-api-key.mjs');
 const workflowDir = path.join(repoRoot, '.github', 'workflows');
 const secretExpression = '${{ secrets.OPENAI_API_KEY }}';
 const fakeSecret = 'test-only-openai-key-never-send-or-store';
+const policyPath = path.join(webRoot, 'config', 'ai-automation-policy.json');
+const temporaryDirectory = await fs.mkdtemp(path.join(os.tmpdir(), 'tips-openai-guard-test-'));
 
 const missing = spawnSync(process.execPath, [guardPath], {
   cwd: webRoot,
@@ -22,14 +25,52 @@ if (missing.status === 0 || !missing.stderr.includes('Autonomous agent credentia
   throw new Error('The credential guard must fail with an actionable error when OPENAI_API_KEY is absent.');
 }
 
+const inactivePolicy = JSON.parse(await fs.readFile(policyPath, 'utf8'));
+inactivePolicy.status = 'awaiting_founder_platform_budget';
+inactivePolicy.credential.status = 'not_configured';
+inactivePolicy.credential.verification.status = 'not_verified';
+for (const key of ['method', 'endpoint', 'verifiedAt', 'evidenceUrl', 'receiptPath', 'receiptSha256']) inactivePolicy.credential.verification[key] = null;
+inactivePolicy.spendControl.status = 'not_configured';
+inactivePolicy.spendControl.monthlyBudgetUsd = null;
+inactivePolicy.spendControl.evidenceUrl = null;
+const inactivePolicyPath = path.join(temporaryDirectory, 'inactive-policy.json');
+await fs.writeFile(inactivePolicyPath, `${JSON.stringify(inactivePolicy, null, 2)}\n`);
+const blockedByPolicy = spawnSync(process.execPath, [guardPath], {
+  cwd: webRoot,
+  encoding: 'utf8',
+  env: { ...process.env, GITHUB_ACTIONS: 'false', OPENAI_API_KEY: fakeSecret, AI_AUTOMATION_POLICY_PATH: inactivePolicyPath }
+});
+
+if (blockedByPolicy.status === 0 || !blockedByPolicy.stderr.includes('AI automation policy not active')) {
+  throw new Error('A configured credential must remain blocked until the versioned budget policy is active.');
+}
+
+const activePolicy = JSON.parse(await fs.readFile(policyPath, 'utf8'));
+activePolicy.status = 'active';
+activePolicy.credential.status = 'configured_external';
+Object.assign(activePolicy.credential.verification, {
+  status: 'verified_external',
+  method: 'openai_models_endpoint',
+  endpoint: 'https://api.openai.com/v1/models',
+  verifiedAt: '2026-11-22T18:00:00.000Z',
+  evidenceUrl: 'https://github.com/lucasdmoyer/tipsforyourgifts/actions/runs/12345',
+  receiptPath: 'config/ai-credential-verification.json',
+  receiptSha256: 'a'.repeat(64)
+});
+activePolicy.spendControl.status = 'configured_external';
+activePolicy.spendControl.monthlyBudgetUsd = 25;
+activePolicy.spendControl.evidenceUrl = 'https://platform.openai.com/settings/organization/limits';
+const activePolicyPath = path.join(temporaryDirectory, 'active-policy.json');
+await fs.writeFile(activePolicyPath, `${JSON.stringify(activePolicy, null, 2)}\n`);
+
 const configured = spawnSync(process.execPath, [guardPath], {
   cwd: webRoot,
   encoding: 'utf8',
-  env: { ...process.env, OPENAI_API_KEY: fakeSecret }
+  env: { ...process.env, GITHUB_ACTIONS: 'false', OPENAI_API_KEY: fakeSecret, AI_AUTOMATION_POLICY_PATH: activePolicyPath }
 });
 
 if (configured.status !== 0) throw new Error(configured.stderr || configured.stdout);
-if (`${missing.stdout}${missing.stderr}${configured.stdout}${configured.stderr}`.includes(fakeSecret)) {
+if (`${missing.stdout}${missing.stderr}${blockedByPolicy.stdout}${blockedByPolicy.stderr}${configured.stdout}${configured.stderr}`.includes(fakeSecret)) {
   throw new Error('The credential guard exposed the secret value.');
 }
 
@@ -65,14 +106,25 @@ for (const workflowName of workflowNames) {
       if (step.with?.['openai-api-key'] !== secretExpression) {
         throw new Error(`${workflowName}:${jobName} must pass only secrets.OPENAI_API_KEY to Codex.`);
       }
+      if (step.with?.['safety-strategy'] !== 'drop-sudo' || step.with?.sandbox !== 'workspace-write') {
+        throw new Error(`${workflowName}:${jobName} must use the explicit reviewed privilege boundary.`);
+      }
+      const codexArgs = JSON.parse(step.with?.['codex-args'] ?? '[]');
+      if (!codexArgs.includes('--ephemeral')) {
+        throw new Error(`${workflowName}:${jobName} must use an ephemeral Codex session.`);
+      }
+      const permissions = job.permissions ?? workflow.permissions ?? {};
+      if (permissions.contents !== 'read' || Object.values(permissions).includes('write')) {
+        throw new Error(`${workflowName}:${jobName} cannot expose the model key in a GitHub write-capable job.`);
+      }
     }
   }
 
   if (workflowUsesCodex) protectedWorkflows.push(workflowName);
 }
 
-if (codexSteps !== 7 || protectedWorkflows.length !== 5) {
-  throw new Error(`Expected 7 Codex steps across 5 workflows, found ${codexSteps} across ${protectedWorkflows.length}.`);
+if (codexSteps !== 8 || protectedWorkflows.length !== 6) {
+  throw new Error(`Expected 8 Codex steps across 6 workflows, found ${codexSteps} across ${protectedWorkflows.length}.`);
 }
 
 console.log(JSON.stringify({
@@ -80,5 +132,7 @@ console.log(JSON.stringify({
   codexSteps,
   protectedWorkflows,
   missingCredentialFailsBeforeModelCall: true,
+  inactivePolicyFailsBeforeModelCall: true,
+  modelJobsWithGithubWrite: 0,
   secretValuePrinted: false
 }, null, 2));

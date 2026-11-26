@@ -1,19 +1,19 @@
 {
   "schemaVersion": "1.0.0",
   "receiptId": "gift-thread-v1-independent-visual-qa",
-  "reviewedAt": "2026-09-07T04:43:38Z",
+  "reviewedAt": "2026-11-23T02:41:39Z",
   "reviewerRole": "independent-visual-editor",
-  "reviewerId": "codex-popper-independent-visual-editor-20260906",
-  "workflowRunId": "local-recipient-specialty-visual-review-20260906",
+  "reviewerId": "codex-independent-visual-editor-20261122",
+  "workflowRunId": "local-fiber-draft-safe-recheck-20261122",
   "verdict": "passed",
   "registryPath": "visuals/article-visuals.json",
-  "registrySha256": "18eab9efa2f8590a9569d9734c90cc36e95a01d7d0780c7cf7ff2f6213336b3a",
+  "registrySha256": "7a221fa6c5244db3caf0443f253dc061a3e4225a06f43ebf567b46dd0b38604c",
   "promptBookPath": "visuals/PROMPTS.md",
-  "promptBookSha256": "9c2d4f043b3f6250b2044913abf72f6c84d0e537fc907972cca12ec68035a3f6",
+  "promptBookSha256": "eff7c0ce3fcf526e0e16a9bbfafb1d2f4f38f1f0eaa52dc2d2c59a71f142ad32",
   "scope": {
     "sourceAssetsReviewed": 22,
-    "publicAssetsReviewed": 19,
-    "draftOnlyAssetsReviewed": 3,
+    "publicAssetsReviewed": 20,
+    "draftOnlyAssetsReviewed": 2,
     "articleMappingsReviewed": 13,
     "productMappingsReviewed": 75,
     "pairMappingsReviewed": 29
@@ -29,7 +29,8 @@
   },
   "blockers": [],
   "warnings": [
-    "This receipt certifies visual QA only and does not certify the three draft articles' editorial evidence, affiliate links, deployment, or production state.",
-    "PROMPTS.md is hash-bound as one versioned prompt book; individual prompt sections are not independently hashed."
+    "This receipt certifies visual QA only and does not certify affiliate links, deployment, or production state.",
+    "PROMPTS.md is hash-bound as one versioned prompt book; individual prompt sections are not independently hashed.",
+    "The repaired fiber-art asset was promoted from draft delivery to the publication-ready source tree after editorial QA; its 1536x1024 original and 768x512 responsive derivative passed file-integrity and visual checks without a preview or production deployment."
   ]
 }

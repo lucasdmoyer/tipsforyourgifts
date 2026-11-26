@@ -17,7 +17,7 @@ const run = {
 };
 const articleRaw = Buffer.from('---\nstatus: publication_ready\n---\nEvidence-backed article.\n');
 const social = { packId: 'gifts-for-a-golf-friend-launch', researchRun: run.runId };
-const review = { runId: run.runId, workflowRunId: '123', verdict: 'passed', blockers: [] };
+const review = { schemaVersion: '1.2.0', runId: run.runId, workflowName: 'editorial-independent-review.yml', missionId: 'research-mission-123-1', workflowRunId: '999', verdict: 'passed', blockers: [] };
 const runRaw = Buffer.from(JSON.stringify(run));
 const socialRaw = Buffer.from(JSON.stringify(social));
 const reviewRaw = Buffer.from(JSON.stringify(review));
@@ -98,7 +98,8 @@ expectFailure('duplicate active mission', (input) => { const first = startedMiss
 expectFailure('completed mission evidence', (input) => { input.records[0].data.completion = null; }, 'needs completion evidence');
 expectFailure('run digest', (input) => { input.records[0].data.completion.runSha256 = 'c'.repeat(64); }, 'run digest mismatch');
 expectFailure('run idea binding', (input) => { input.runsById.get(run.runId).data.ideaRevision = 2; }, 'not bound to the mission idea');
-expectFailure('review workflow binding', (input) => { input.reviewsByPath.get(run.qa.receiptPath).data.workflowRunId = '999'; }, 'workflow run mismatch');
+expectFailure('review mission binding', (input) => { input.reviewsByPath.get(run.qa.receiptPath).data.missionId = 'research-mission-999-1'; }, 'mission provenance mismatch');
+expectFailure('research-agent workflow run binding', (input) => { const receipt = input.reviewsByPath.get(run.qa.receiptPath).data; receipt.workflowName = 'research-agent.yml'; receipt.workflowRunId = '999'; }, 'mission provenance mismatch');
 expectFailure('publication readiness', (input) => { input.records[0].data.completion.publicationReadiness = 'automatic_merge_eligible'; }, 'readiness differs');
 
 console.log(JSON.stringify({ researchMissionNegativeGateTests: 'passed', checks, validStartedMission: 'passed', validCompletedMission: 'passed' }, null, 2));

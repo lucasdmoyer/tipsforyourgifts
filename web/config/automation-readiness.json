@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "1.1.0",
+  "observedAt": "2026-11-22T15:18:34.000Z",
+  "sourceMode": "versioned_snapshot_not_live_poll",
+  "externalGates": [
+    {
+      "id": "openai-platform-credential",
+      "label": "Research model credential",
+      "status": "blocked_external_configuration",
+      "summary": "Scheduled research workflows stop before any model call because the repository has no OPENAI_API_KEY secret configured.",
+      "evidenceUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/issues/37",
+      "diagnosticUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/runs/44413289046",
+      "nextAction": "Approve one dedicated OpenAI Platform project credential with a bounded monthly limit, stored only as the GitHub Actions secret OPENAI_API_KEY.",
+      "authorityBoundary": "The credential value must never be displayed, logged, downloaded, committed, or placed in Studio data. It authorizes only the existing proposal, research, growth-review, and independent-QA workflows."
+    },
+    {
+      "id": "firebase-preview-identity",
+      "label": "Keyless Firebase preview identity",
+      "status": "blocked_external_configuration",
+      "summary": "The reusable preview deploy cannot authenticate because its Google Workload Identity provider is missing or unavailable.",
+      "evidenceUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/issues/41",
+      "diagnosticUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/runs/44998331230",
+      "nextAction": "Create or enable the narrowly scoped tips-github-preview pool and github-preview provider for pull-request merge refs and the master-pinned reusable preview workflow.",
+      "authorityBoundary": "Use short-lived impersonation for Firebase Hosting previews only. No Firebase Auth Admin, user-managed service-account key, or production Hosting authorization."
+    },
+    {
+      "id": "firebase-auto-production-identity",
+      "label": "Keyless automatic-production identity",
+      "status": "blocked_external_configuration",
+      "summary": "Automatic-after-proven publication remains disabled, and its dedicated master-bound Google Workload Identity provider and service account have not been provisioned or verified.",
+      "evidenceUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/issues/43",
+      "diagnosticUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/firebase-auto-production.yml",
+      "nextAction": "After ten verified founder-reviewed releases, separately approve and provision the dedicated tips-github-auto-production identity, then review the policy activation pull request and production environment boundary.",
+      "authorityBoundary": "Use short-lived impersonation only for the master-pinned automatic Firebase Hosting workflow. No Firebase Auth Admin, user-managed service-account key, database access, affiliate activation, social publishing, or policy bypass."
+    }
+  ],
+  "releaseCandidate": {
+    "status": "exact_preview_verified",
+    "sha": "011b110d05d334d5e9b42752b902dc17916e5504",
+    "pullRequestUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/39",
+    "reviewUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/pull/39#issuecomment-7080869696",
+    "previewUrl": "https://tipsforyourgifts--release-011b110-20261122-gd6h6lnx.web.app/",
+    "summary": "The exact Firebase preview passed Node 24 validation, 29 Angular tests, build, smoke, artifact-hash verification, and a true 390 by 844 review of all 18 prerendered routes.",
+    "nextAction": "Lucas approves this exact SHA as the replacement release candidate and authorizes fast-forward integration into PR 33. Production remains a separate gate."
+  }
+}
