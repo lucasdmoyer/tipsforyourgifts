@@ -208,12 +208,12 @@ export const OPERATIONS: Operations = {
         "ideaId": "founder-idea-013",
         "articleSlug": "vinyl-record-cleaner-inner-sleeve-gift-pairs",
         "status": "qa_failed",
-        "reviewerId": "independent-evidence-audit-20261010",
+        "reviewerId": "codex-independent-editor-vinyl-20261122",
         "blockers": [
-          "Founder review is required for the qualified current GrooveWasher G2 product-label safety boundary before promotion or publication.",
-          "The repaired bundle has not received a fresh independent review after exact-product source replacement, shopping-link refresh, claim-role separation, and score changes."
+          "Founder review is required for the qualified current GrooveWasher G2 product-label safety boundary before promotion or publication."
         ],
         "warnings": [
+          "Independent editorial review passed the exact evidence, article, and social hashes; that pass does not satisfy the separate founder safety gate.",
           "Sound Matters remains in the source ledger only as a Tier-D conflict record and is not used in any scored claim or finalist source set.",
           "The Big Fudge manufacturer page was marked sold out during review; the reader link uses the exact 12-inch 50-count product at Binaural Records and availability still requires a pre-publication recheck.",
           "Every product link remains ordinary and unpaid; no affiliate tracking was added."
@@ -221,7 +221,7 @@ export const OPERATIONS: Operations = {
         "highRiskClaims": [
           {
             "id": "claim-groovewasher-g2-label-boundary",
-            "text": "GrooveWasher's current G2 label says the fluid is for hard surfaces only, can cause eye irritation, should be kept away from eyes, skin, clothing, and food, must not be swallowed, and includes exposure-specific first-aid directions; this manufacturer-label summary requires founder review before publication.",
+            "text": "GrooveWasher's current G2 label says improper use can be hazardous to humans and domestic animals; the fluid is for hard surfaces only, can cause eye irritation, should be kept away from eyes, skin, clothing, and food, must not be swallowed, and includes exposure-specific first-aid directions. The manufacturer also displays a California Proposition 65 warning for cancer and reproductive harm; this records the manufacturer's warning and does not claim that this particular use causes those harms. This manufacturer-label summary requires founder review before publication.",
             "sourceIds": [
               "src-groovewasher-official",
               "src-groovewasher-g2-label"
@@ -236,8 +236,8 @@ export const OPERATIONS: Operations = {
           "social": "social/drafts/vinyl-record-cleaner-inner-sleeve-gift-pairs-launch.json"
         },
         "sourceSha256": {
-          "run": "5c0982692b4a3e078530ce90ed3afff2982e9a20b71df972ed32f5fa08783599",
-          "article": "c15ea7a3362ea193b9cb7fff587e42c750b4216b451aa9e97ee97786fc909f56",
+          "run": "52143adab0fe05a9071957c230d463ece63414d7b1573a917f9024fe8ff162a8",
+          "article": "b3918ac96ef18f5bb6648045ff4984df6505f84f1da5ad8b0c0b2f7afe590869",
           "social": "fe56464843b6f49fe43406d17df490f6fe74344d7ad26765d8c6659f16ec7637"
         },
         "nextGate": "Lucas reviews the exact high-risk claim language and reader-facing safety boundary; a separate independent editor then issues a new hash-bound receipt."
