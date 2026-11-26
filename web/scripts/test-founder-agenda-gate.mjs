@@ -46,7 +46,26 @@ const currentContentIsVerified = livePublication.status === 'verified_managed_co
   && livePublication.latestVerifiedContentRelease?.publicationManifest?.contentSetSha256 === publicationManifest.contentSetSha256;
 assert.equal(base.primaryDecisionId, currentContentIsVerified ? 'establish-measurement' : 'review-release-candidate');
 assert.equal(base.decisions.some((decision) => decision.id === 'review-release-candidate'), !currentContentIsVerified);
+if (!currentContentIsVerified && livePublication.latestVerifiedContentRelease) {
+  assert.equal(base.decisions.find((decision) => decision.id === 'review-release-candidate').title, 'Review the next accountable Angular release');
+}
 assert.equal(base.profitabilityEvidence, 'unknown_until_aggregate_measurement');
+const currentMeasurementDecision = base.decisions.find((decision) => decision.id === 'establish-measurement');
+if (currentMeasurementDecision?.title === 'Configure the first aggregate measurement source') {
+  assert.equal(currentMeasurementDecision.action.url, 'https://github.com/lucasdmoyer/tipsforyourgifts/issues/59');
+  assert.match(currentMeasurementDecision.action.command, /configuration_evidence_url=https:\/\/github\.com\/lucasdmoyer\/tipsforyourgifts\/issues\/59/);
+  assert.doesNotMatch(currentMeasurementDecision.action.command, /REPLACE_WITH_ISSUE_NUMBER/);
+}
+const currentSocialDecision = base.decisions.find((decision) => decision.id === 'configure-first-social-channel');
+if (currentSocialDecision?.title === 'Complete the first Pinterest operating packet') {
+  assert.equal(currentSocialDecision.action.url, 'https://github.com/lucasdmoyer/tipsforyourgifts/issues/61');
+  assert.match(currentSocialDecision.action.command, new RegExp(`expected_config_sha256=${socialChannelsSha256}`));
+  assert.match(currentSocialDecision.action.command, /official_account_reference="\$PINTEREST_ACCOUNT_REFERENCE"/);
+  assert.match(currentSocialDecision.action.command, /official_publication_target_id="\$PINTEREST_BOARD_ID"/);
+  assert.match(currentSocialDecision.action.command, /max_posts_per_week=3/);
+  assert.match(currentSocialDecision.action.command, /configuration_evidence_url=https:\/\/github\.com\/lucasdmoyer\/tipsforyourgifts\/issues\/61/);
+  assert.doesNotMatch(currentSocialDecision.action.command, /REPLACE_WITH_ISSUE_NUMBER/);
+}
 assert.deepEqual(base.decisions.map((decision) => decision.rank), base.decisions.map((_decision, index) => index + 1));
 const priorityWeight = { high: 3, medium: 2, low: 1 };
 const expectedStrategyCandidate = [...proposedIdeas].sort((left, right) => (priorityWeight[right.priority] ?? 0) - (priorityWeight[left.priority] ?? 0) || (right.pairing?.coherenceScore ?? 0) - (left.pairing?.coherenceScore ?? 0) || left.id.localeCompare(right.id))[0];
@@ -65,6 +84,18 @@ verifiedLiveInput.livePublication = {
 };
 const verifiedLiveAgenda = buildFounderAgenda(verifiedLiveInput);
 assert.equal(verifiedLiveAgenda.decisions.some((decision) => decision.id === 'review-release-candidate'), false, 'current verified live content must not be proposed for release again');
+
+const noManagedReleaseAgenda = buildFounderAgenda({ ...structuredClone(baseInput), livePublication: {
+  schemaVersion: livePublication.schemaVersion,
+  projectId: livePublication.projectId,
+  siteId: livePublication.siteId,
+  hostingChannel: livePublication.hostingChannel,
+  productionUrl: livePublication.productionUrl,
+  status: 'no_verified_managed_release',
+  updatedAt: null,
+  latestVerifiedContentRelease: null
+} });
+assert.equal(noManagedReleaseAgenda.decisions.find((decision) => decision.id === 'review-release-candidate').title, 'Review the first accountable Angular release');
 
 const configuredMeasurementInput = structuredClone(baseInput);
 const configuredSearch = configuredMeasurementInput.growth.connectors.find((connector) => connector.id === 'search-console');

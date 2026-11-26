@@ -116,7 +116,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git switch -c "codex/record-social-publish-$RUN_ID"
-          git add "web/social/publications/$POST_ID.json" web/src/data/operations.json web/src/app/generated/content.generated.ts web/public/sitemap.xml
+          git add "web/social/publications/$POST_ID.json" web/src/data/operations.json web/src/app/generated/content.generated.ts web/src/app/generated/studio.generated.ts web/public/sitemap.xml
           git commit -m "Record Pinterest publication $POST_ID"
           git push origin "codex/record-social-publish-$RUN_ID"
       - name: Open the publication receipt pull request

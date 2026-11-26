@@ -1,13 +1,23 @@
 import { TestBed } from '@angular/core/testing';
 import { provideRouter, Router } from '@angular/router';
 import { App } from './app';
-import { ARTICLES, GROWTH, OPERATIONS, STRATEGY } from './generated/content.generated';
-import { ArticlePage, FounderBriefPage, GiftFinderPage, PairCardComponent, ProductCardComponent, StudioPage } from './pages';
+import { ARTICLES } from './generated/content.generated';
+import { GROWTH, OPERATIONS, STRATEGY } from './generated/studio.generated';
+import { ArticlePage, GiftFinderPage, PairCardComponent, ProductCardComponent } from './public-pages';
+import { FounderBriefPage, STUDIO_DATA, StudioPage } from './studio-pages';
 import { readerBodyComesFirst, readerBodyHtml, readerEvidenceHtml, readerLanguage, readerLead } from './reader-copy';
 
 describe('App', () => {
   beforeEach(async () => {
-    await TestBed.configureTestingModule({ imports: [App, ArticlePage, StudioPage, FounderBriefPage, GiftFinderPage, ProductCardComponent, PairCardComponent], providers: [provideRouter([{ path: 'blog/:slug', component: ArticlePage }])] }).compileComponents();
+    TestBed.overrideComponent(StudioPage, {
+      set: { providers: [{ provide: STUDIO_DATA, useValue: { operations: OPERATIONS, strategy: STRATEGY, growth: GROWTH } }] }
+    });
+    await TestBed.configureTestingModule({
+      imports: [App, ArticlePage, StudioPage, FounderBriefPage, GiftFinderPage, ProductCardComponent, PairCardComponent],
+      providers: [
+        provideRouter([{ path: 'blog/:slug', component: ArticlePage }])
+      ]
+    }).compileComponents();
   });
 
   it('renders the editorial brand and primary navigation', () => {
@@ -65,6 +75,10 @@ describe('App', () => {
     const image = fixture.nativeElement.querySelector('.product-context-visual img') as HTMLImageElement;
     const link = fixture.nativeElement.querySelector('[data-event-name="merchant_outbound_click"]') as HTMLAnchorElement;
     expect(image.src).toContain('/blog-images/');
+    expect(image.getAttribute('srcset')).toContain('-768.webp 768w');
+    expect(image.getAttribute('srcset')).toContain('-1200.webp 1200w');
+    expect(image.getAttribute('srcset')).toContain('.webp 1536w');
+    expect(image.getAttribute('sizes')).toContain('100vw');
     expect(image.alt.length).toBeGreaterThan(40);
     expect(image.getAttribute('aria-hidden')).toBeNull();
     expect(fixture.nativeElement.textContent).toContain('not a product photo');
@@ -102,6 +116,10 @@ describe('App', () => {
         expect(element.textContent).toContain('Before you buy');
         expect(pairImages).toHaveLength(1);
         expect(pairImages[0].src).toContain('/blog-images/');
+        expect(pairImages[0].getAttribute('srcset')).toContain('-768.webp 768w');
+        expect(pairImages[0].getAttribute('srcset')).toContain('-1200.webp 1200w');
+        expect(pairImages[0].getAttribute('srcset')).toContain('.webp 1536w');
+        expect(pairImages[0].getAttribute('sizes')).toContain('100vw');
         expect((pairImages[0].getAttribute('alt') ?? '').length).toBeGreaterThan(40);
         expect(element.querySelector('.pairing-context-visual figcaption')?.textContent).toContain('not product photography');
         expect(Array.from(productLinks).map((link) => link.href)).toEqual([anchor.url, companion.url]);
@@ -242,6 +260,11 @@ describe('App', () => {
     const element = fixture.nativeElement as HTMLElement;
     expect(element.textContent).toContain('Measure first. Scale what earns attention.');
     expect(element.textContent).toContain('Personal data stored');
+    const scorecard = element.querySelector('#commercial-scorecard') as HTMLElement;
+    expect(scorecard).toBeTruthy();
+    expect(scorecard.textContent).toContain('Every commercial value below remains unknown—not zero.');
+    expect(scorecard.textContent).toContain('Revenue is not profit.');
+    expect(scorecard.textContent).toContain('0/9');
     const connectorLists = element.querySelectorAll('.connector-list');
     expect(connectorLists[connectorLists.length - 1].querySelectorAll('.connector-row')).toHaveLength(OPERATIONS.growth.connectorsTotal);
     const experimentGrids = element.querySelectorAll('.experiment-grid');
@@ -264,15 +287,17 @@ describe('App', () => {
       expect(element.textContent).toContain(proposedIdeas[0].title);
     }
     expect(element.textContent).toContain(`Publication mode: ${OPERATIONS.publication.mode.replaceAll('_', ' ')}`);
-    expect(element.textContent).toContain(`policy snapshot ${OPERATIONS.publication.verifiedSuccessfulReleaseCount}/${OPERATIONS.publication.minimumSuccessfulFounderReviewedReleases}`);
+    expect(element.textContent).toContain(`Durable verified founder-reviewed receipts: ${OPERATIONS.publication.durableVerifiedFounderReviewedReleaseCount}/${OPERATIONS.publication.minimumSuccessfulFounderReviewedReleases}`);
+    expect(element.textContent).toContain(`Activation audit snapshot: ${OPERATIONS.publication.verifiedSuccessfulReleaseCount}`);
     expect(element.textContent).toContain('recounts unique successful GitHub production deployments');
+    expect(element.textContent).toContain('neither this repository count nor the frozen snapshot grants publication authority');
     expect(element.querySelector('a[href*="publication-policy-enable.yml"]')).not.toBeNull();
     expect(element.querySelector('a[href*="firebase-production.yml"]')).not.toBeNull();
     expect(element.textContent).toContain('pauses with its preview URL for production approval');
     expect(element.textContent).toContain('promotes the same static artifact');
     expect(element.textContent).toContain('Current release candidate: publication-set-');
     const candidate = OPERATIONS.publication.currentCandidate;
-    expect(element.textContent).toContain(`${candidate.articles} articles · ${candidate.independentReviews} independent receipts · ${candidate.socialLaunchPacks} launch packs · ${candidate.socialDrafts} social drafts · ${candidate.affiliateLinks} affiliate links`);
+    expect(element.textContent).toContain(`${candidate.articles} articles · ${candidate.independentReviews} independent receipts · ${candidate.founderSafetyApprovals} founder safety receipts · ${candidate.socialLaunchPacks} launch packs · ${candidate.socialDrafts} social drafts · ${candidate.affiliateLinks} affiliate links`);
     expect(element.textContent).toContain('prepared bytes; it is not proof of a live deployment');
     expect(element.textContent).toContain('Exact candidate content digest');
     if (OPERATIONS.publication.currentLive.status === 'verified_managed_content_release') {
@@ -320,6 +345,11 @@ describe('App', () => {
         expect(element.textContent).toContain(claim.id);
         expect(element.textContent).toContain(claim.text);
       }
+      if (review.founderDecisionPacket) {
+        expect(element.textContent).toContain(review.founderDecisionPacket.approveCommand);
+        expect(element.textContent).toContain(review.founderDecisionPacket.rejectCommand);
+        expect(element.textContent).toContain(review.founderDecisionPacket.authorityBoundary);
+      }
     }
   });
 
@@ -338,6 +368,99 @@ describe('App', () => {
       expect(element.querySelector(`a[href="${decision.action.url}"]`)).not.toBeNull();
     }
     expect(element.querySelectorAll('.agenda-card')).toHaveLength(Math.max(0, agenda.decisions.length - 1));
+  });
+
+  it('renders a timestamped fail-closed AI team readiness board', () => {
+    const fixture = TestBed.createComponent(StudioPage);
+    fixture.detectChanges();
+    const element = fixture.nativeElement as HTMLElement;
+    const readiness = OPERATIONS.automationReadiness;
+    expect(element.textContent).toContain('What can run. What needs Lucas.');
+    expect(element.textContent).toContain('This is versioned operating evidence, not a live account poll.');
+    expect(element.querySelectorAll('.readiness-card')).toHaveLength(readiness.teams.length);
+    expect(element.textContent).toContain(`${readiness.counts.ready}fully ready`);
+    expect(element.textContent).toContain(`${readiness.counts.limited}limited or fallback`);
+    expect(element.textContent).toContain(`${readiness.counts.blocked}blocked`);
+    expect(element.textContent).toContain(`${readiness.counts.founderActions}need founder action`);
+    for (const team of readiness.teams) {
+      expect(element.textContent).toContain(team.label);
+      expect(element.textContent).toContain(team.evidence);
+      expect(element.textContent).toContain(team.nextAction);
+      if (team.actionUrl) expect(element.querySelector(`a[href="${team.actionUrl}"]`)).not.toBeNull();
+    }
+    for (const gate of readiness.externalGates) {
+      expect(element.textContent).toContain(gate.label);
+      expect(element.querySelector(`a[href="${gate.evidenceUrl}"]`)).not.toBeNull();
+      expect(element.querySelector(`a[href="${gate.diagnosticUrl}"]`)).not.toBeNull();
+    }
+    expect(element.textContent).toContain(readiness.releaseCandidate.sha.slice(0, 7));
+    expect(element.querySelector(`a[href="${readiness.releaseCandidate.previewUrl}"]`)).not.toBeNull();
+    expect(element.textContent).not.toContain('gho_');
+    expect(element.textContent).not.toMatch(/\bsk-[A-Za-z0-9_-]{20,}\b/);
+  });
+
+  it('renders an exact-hash founder budget handoff without granting runtime authority', () => {
+    const policy = OPERATIONS.aiAutomationPolicy;
+    const original = structuredClone(policy);
+    try {
+      policy.status = 'awaiting_founder_platform_budget';
+      policy.budgetConfiguration.available = true;
+      policy.credentialVerification.available = false;
+      policy.policyActivation.available = false;
+      policy.activationReady = false;
+      const fixture = TestBed.createComponent(StudioPage);
+      fixture.detectChanges();
+      const element = fixture.nativeElement as HTMLElement;
+      expect(policy.policySha256).toMatch(/^[a-f0-9]{64}$/);
+      expect(element.textContent).toContain(policy.policySha256);
+      expect(element.textContent).toContain('Lucas must first set a real monthly project spend limit');
+      expect(element.textContent).toContain('does not create the external limit or alert, add a credential, call a model, activate the policy, merge, or deploy');
+      expect(element.textContent).toContain(`$${policy.spendControl.recommendation.monthlyHardLimitUsd} hard limit`);
+      expect(element.textContent).toContain(`$${policy.spendControl.recommendation.alertThresholdUsd} alert`);
+      expect(element.textContent).toContain('hard-limit enforcement is not instantaneous');
+      expect(policy.budgetConfiguration.command).toContain(`expected_policy_sha256=${policy.policySha256}`);
+      expect(policy.budgetConfiguration.command).toContain("monthly_budget_usd='<APPROVED_HARD_LIMIT_USD>'");
+      expect(policy.budgetConfiguration.command).toContain('hard_limit_enabled=true');
+      expect(policy.budgetConfiguration.command).toContain("alert_threshold_usd='<APPROVED_ALERT_USD>'");
+      expect(element.textContent).toContain(policy.budgetConfiguration.command);
+      expect(element.querySelector(`a[href="${policy.budgetConfiguration.workflowUrl}"]`)).not.toBeNull();
+      expect(policy.credential.valueStoredInGit).toBe(false);
+    } finally {
+      Object.assign(policy, original);
+    }
+  });
+
+  it('keeps credential verification and policy activation as separate founder actions', () => {
+    const policy = OPERATIONS.aiAutomationPolicy;
+    const original = structuredClone(policy);
+    try {
+      policy.status = 'budget_approved_awaiting_credential';
+      policy.budgetConfiguration.available = false;
+      policy.credentialVerification.available = true;
+      policy.policyActivation.available = false;
+      let fixture = TestBed.createComponent(StudioPage);
+      fixture.detectChanges();
+      let element = fixture.nativeElement as HTMLElement;
+      expect(element.textContent).toContain('Verify dedicated AI credential');
+      expect(element.textContent).toContain('checks out and runs no repository code');
+      expect(element.textContent).toContain(policy.credentialVerification.command);
+      expect(element.querySelector(`a[href="${policy.credentialVerification.workflowUrl}"]`)).not.toBeNull();
+      expect(element.textContent).not.toContain('Propose AI policy activation');
+
+      policy.status = 'credential_verified_awaiting_activation';
+      policy.credentialVerification.available = false;
+      policy.policyActivation.available = true;
+      fixture = TestBed.createComponent(StudioPage);
+      fixture.detectChanges();
+      element = fixture.nativeElement as HTMLElement;
+      expect(element.textContent).toContain('Propose AI policy activation');
+      expect(element.textContent).toContain('Only merging that exact proposal activates');
+      expect(element.textContent).toContain(policy.policyActivation.command);
+      expect(element.querySelector(`a[href="${policy.policyActivation.workflowUrl}"]`)).not.toBeNull();
+      expect(element.textContent).not.toContain('Verify dedicated AI credential');
+    } finally {
+      Object.assign(policy, original);
+    }
   });
 
   it('renders the fail-closed autonomous opportunity desk', () => {
@@ -375,7 +498,13 @@ describe('App', () => {
     expect(element.textContent).toContain(`${OPERATIONS.affiliate.linkCandidates} exact candidates · ${OPERATIONS.affiliate.linkReviewsPassed} clean independent reviews · ${OPERATIONS.affiliate.linkApprovals} founder approvals.`);
     for (const proposal of OPERATIONS.affiliate.activationProposals) {
       expect(element.textContent).toContain('Bookshop decision packet');
-      expect(element.textContent).toContain(proposal.activationState === 'activation_recorded' ? 'Narrow program activation recorded. No paid links yet.' : 'Verified account. One observed book link. Still disabled.');
+      expect(element.textContent).toContain(
+        proposal.activationState === 'activation_recorded' && OPERATIONS.affiliate.activeOverlays > 0
+          ? `Narrow program active. ${OPERATIONS.affiliate.activeOverlays} independently reviewed paid ${OPERATIONS.affiliate.activeOverlays === 1 ? 'link is' : 'links are'} live.`
+          : proposal.activationState === 'activation_recorded'
+            ? 'Narrow program activation recorded. No paid links yet.'
+            : 'Verified account. One observed book link. Still disabled.'
+      );
       expect(element.textContent).toContain(proposal.evidence.publicTrackingIdentity);
       expect(element.textContent).toContain(`ISBN ${proposal.evidence.productIsbn}`);
       expect(element.textContent).toContain(`HTTP ${proposal.evidence.automatedFetchStatus}`);
@@ -407,7 +536,7 @@ describe('App', () => {
     }
   });
 
-  it('renders the post-activation Bookshop state without implying a paid link or deployment', () => {
+  it('renders the post-activation Bookshop state with the exact active paid-link boundary', () => {
     const proposal = OPERATIONS.affiliate.activationProposals[0];
     const originalState = proposal.activationState;
     proposal.activationState = 'activation_recorded';
@@ -415,9 +544,11 @@ describe('App', () => {
       const fixture = TestBed.createComponent(StudioPage);
       fixture.detectChanges();
       const element = fixture.nativeElement as HTMLElement;
-      expect(element.textContent).toContain('Narrow program activation recorded. No paid links yet.');
-      expect(element.textContent).toContain('Create one exact product-level candidate, complete an independent destination review, and obtain a separate founder approval before any paid link can enter a Firebase preview.');
+      expect(element.textContent).toContain(`Narrow program active. ${OPERATIONS.affiliate.activeOverlays} independently reviewed paid link is live.`);
+      expect(element.textContent).toContain('Independent product-level review and founder approval are recorded for the exact active overlay.');
+      expect(element.textContent).toContain('Keep the narrow Sapiens link verified. Add another paid link only after a fresh exact-destination review and separate founder approval.');
       expect(element.textContent).not.toContain('Verified account. One observed book link. Still disabled.');
+      expect(element.textContent).not.toContain('No paid links yet.');
     } finally {
       proposal.activationState = originalState;
     }

@@ -4,12 +4,22 @@
 
 - Protect `master`; require content quality and Firebase preview checks.
 - Create the GitHub `production` environment and require Lucas as a reviewer for the first ten releases.
-- Add `OPENAI_API_KEY` as a repository secret for the read-only strategy, research, independent-review, opportunity, growth, and affiliate-evidence jobs. Every Codex step runs the reviewed presence-only preflight immediately before model execution; a missing secret now fails with an actionable message before the model action starts and never prints a secret value.
+- Before adding `OPENAI_API_KEY`, create one dedicated OpenAI Platform project and set a founder-approved monthly project budget. From Studio, open **Record Lucas-approved budget** and dispatch `ai-automation-budget-configure.yml` with the exact displayed policy SHA-256, approved amount, credential-free `https://platform.openai.com/...` settings URL, and `CONFIGURE-ai-automation-budget` confirmation. The workflow records only a founder attestation in a review pull request; it does not create or verify the external budget, add a key, call a model, activate the policy, merge, or deploy. Its read-only preparation job passes a binary patch to a separate credential-free writer job, following the [trusted CI separation recommended by OpenAI](https://learn.chatgpt.com/docs/non-interactive-mode). Review and merge that pull request, verify the dedicated credential through a separate gate, and activate the versioned policy in another reviewed pull request before adding the key only as the repository secret. Every Codex step runs the reviewed credential-and-policy preflight immediately before model execution; a missing key or inactive budget policy fails before the model action starts and never prints a secret value.
+- Confirm the budget record produces the intermediate `budget_approved_awaiting_credential` state. It must retain `credential.status: not_configured`, `activationReady: false`, and the remaining credential and policy-activation blockers. A budget receipt is never runtime authorization.
+- Create the protected `ai-automation-credential` environment with Lucas as required reviewer. Add the dedicated project key only as repository secret `OPENAI_API_KEY`; never place the value in Git, workflow inputs, logs, screenshots, or a job-level environment. Dispatch the exact-hash credential workflow from `master`. Its secret-bearing verifier job must check out and execute no repository code, call only the documented `GET /v1/models` authentication endpoint, discard the response body, call no model, and pass only a credential-free receipt to the separate writer job.
+- Confirm the credential receipt produces `credential_verified_awaiting_activation`, binds the exact master SHA and budget-approved policy SHA-256, and leaves `status` non-active. A successful API authentication check is not permission to spend.
+- Create the protected `ai-automation-activation` environment with Lucas as required reviewer. Dispatch the exact-hash activation workflow only after reviewing the budget and credential receipt. The workflow itself receives no OpenAI key and calls no external API; it opens a pull request, and only merging that unchanged proposal activates the six bounded model workflows.
+- Confirm `npm --prefix web run validate:ai-automation-policy` reports six protected workflows, eight model steps, zero model jobs with GitHub write permission, and zero writer jobs receiving the OpenAI key. Every model step must explicitly use `drop-sudo`, `workspace-write`, and an ephemeral session. The separate writer jobs may open proposal pull requests but have no model credential and no Firebase, affiliate-activation, social-publishing, email, or credential-creation authority.
 - Confirm owner-authored `[Strategy]` issues can run the strategy-intake workflow and that non-owner issues cannot access the AI job.
 - Confirm `/studio/brief` blocks incomplete or credential-like drafts, opens the exact owner-authored GitHub issue for review, and grants no research or publication authority by itself.
 - Require review on strategy proposal and strategy approval pull requests; the AI proposal job must never set `approved_for_research`.
 - Confirm the weekly opportunity scout exits before model execution at the founder proposal cap, creates no mission file in that posture, and can append at most one `proposed` idea when capacity exists.
 - Require a separate hash-bound opportunity editor receipt; the scout author must never validate their own report or advance a proposal to `approved_for_research`.
+- Create the protected `editorial-safety-approval` environment with Lucas as required reviewer. Confirm only repository owner `lucasdmoyer` can record a decision, the workflow has no model or Firebase credential, and it can open but cannot merge or deploy its pull request.
+- Confirm an approved safety-decision merge triggers the read-only independent recheck, while a rejection exits without a model call. Verify the model can create only structured findings and the credential-free job creates the next immutable `qa.vN` receipt.
+- Test both review outcomes: a failed receipt remains auditable without changing the article, while a clean current receipt alone may promote and open a pull request. Neither path may merge or deploy.
+- Test the research router with both claim postures: low-risk drafts reach the independent editor; high-risk drafts skip that model call, create no premature receipt, remain non-public, and open a founder-safety handoff with auto-merge disabled.
+- Confirm a post-safety passing receipt binds the original research mission even though it came from the separate recheck workflow, and that mission completion rejects a receipt bound to another mission.
 - Configure the founder-reviewed production workflow with its dedicated, workflow-path-bound GitHub OIDC provider and keyless Firebase Hosting service account; never add a long-lived service-account JSON key.
 - Keep Dependabot enabled for `/web`.
 
@@ -29,6 +39,7 @@
 - Complete at least ten successful founder-reviewed production deployments recorded in the GitHub `production` environment.
 - Review correction rate, preview failures, incident history, and rollback drills before changing the policy.
 - Enable GitHub auto-merge and retain required content-quality and Firebase-preview checks.
+- Provision the dedicated `tips-github-auto-production/github-auto-production` provider and `github-auto-production@tipsforyourgifts.iam.gserviceaccount.com` only after action-time approval. Bind it to the immutable repository and owner IDs, `push`, `refs/heads/master`, and the exact master-pinned automatic workflow path; create no user-managed key and grant no Firebase Auth Admin role.
 - Confirm the automatic release workflow clones the current Firebase live release to a unique rollback channel before live mutation and issues no success receipt before hosted smoke.
 - Merge the publication-policy pull request only after intentionally deciding whether to remove the production environment's per-release reviewer.
 - Test the emergency return to `founder_reviewed` mode and notification path.
@@ -49,6 +60,8 @@
 - Distinguish a deferred useful purchase from something the recipient does not want.
 - Require compatibility, duplicate, clutter, ownership-burden, and rejection checks for every finalist.
 - Require pair coherence of at least 80 and prove that both items qualify independently and perform different roles.
+- For every explicitly high-risk claim, review the exact reader-facing language and source bindings through the owner workflow. Treat approval as language acceptance only; require a fresh independent QA receipt afterward.
+- Confirm that changing the run, article, social draft, or high-risk claim content makes the latest founder safety decision stale and blocks promotion.
 
 ## Affiliate controls
 

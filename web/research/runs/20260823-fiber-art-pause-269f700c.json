@@ -6,7 +6,7 @@
   "ideaSha256": "269f700c139d83f3f0f6c9e54e51252ff270764e506d9835d3987434010feddb",
   "decisionLens": "gift_pairing",
   "contentType": "pairing-guide",
-  "status": "qa_failed",
+  "status": "validated",
   "topic": "Project-sized fiber-art containers paired with physical row or paper-pattern state trackers for easier restart",
   "audience": "People buying for a knitter or crocheter who loses tools, pattern state, or the last completed row when a work in progress is paused",
   "occasion": "Birthday, holiday, first sweater or blanket, craft retreat, or return to a paused hobby",
@@ -154,8 +154,8 @@
       "id": "src-lands-end-tote-reddit-2026",
       "url": "https://www.reddit.com/r/knitting/comments/1wtinbl/tell_me_about_the_knitting_bags_you_love/",
       "publisher": "Reddit r/knitting",
-      "title": "Owner describes zip-top pocket-tote organization and keeping projects contained",
-      "accessedAt": "2026-10-10",
+      "title": "Owner describes zip-top pocket-tote organization, containment, and its heavier canvas weight",
+      "accessedAt": "2026-11-22",
       "sourceClass": "independent-review",
       "trustTier": "C",
       "independenceGroup": "reddit-knitting-bags-2026"
@@ -172,13 +172,33 @@
     },
     {
       "id": "src-clover-standard-official",
-      "url": "https://clover-usa.com/products/knitting-counter",
-      "publisher": "Clover",
-      "title": "Standard Knitting Counter item 336 official SKU page",
-      "accessedAt": "2026-10-10",
+      "url": "https://www.clover-mfg.com/en/product/n336/",
+      "publisher": "Clover Mfg.",
+      "title": "Standard Knitting Counter item 336 official push-button function and product identity",
+      "accessedAt": "2026-11-22",
       "sourceClass": "manufacturer",
       "trustTier": "A",
       "independenceGroup": "clover"
+    },
+    {
+      "id": "src-clover-standard-ebay-reviews",
+      "url": "https://www.ebay.com/p/691305692",
+      "publisher": "eBay",
+      "title": "Exact Clover 336 verified-owner reviews describe one-button use, reset wheels, project-bag storage, no batteries, and eventual wear",
+      "accessedAt": "2026-11-22",
+      "sourceClass": "independent-review",
+      "trustTier": "B",
+      "independenceGroup": "ebay-clover-336-owners"
+    },
+    {
+      "id": "src-clover-standard-jimmy-beans-reviews",
+      "url": "https://www.jimmybeansadmin.com/knitting/yarn/Clover/KnittingCounterVideoReviews.asp?specPCVID=1062",
+      "publisher": "Jimmy Beans Wool",
+      "title": "Exact Kacha-Kacha product review corpus and video describe the hand-held 00-to-99 counter and project-bag portability",
+      "accessedAt": "2026-11-22",
+      "sourceClass": "independent-review",
+      "trustTier": "B",
+      "independenceGroup": "jimmy-beans-clover-counter-reviews"
     },
     {
       "id": "src-clover-mini-hookabee-review",
@@ -391,7 +411,7 @@
     {
       "id": "claim-lands-end-drawback",
       "kind": "product_drawback",
-      "text": "The product page is configurable, so a buyer must actively select Medium and Zip Top; owners describe the tote as general-purpose storage and warn that exposed yarn can catch near the zipper unless the project is settled before closing.",
+      "text": "The product page is configurable, so a buyer must actively select Medium and Zip Top; one exact-product owner says the sturdy canvas tote is heavier than dedicated project bags.",
       "risk": "medium",
       "status": "supported",
       "sourceIds": [
@@ -435,7 +455,7 @@
     {
       "id": "claim-clover-variant-availability",
       "kind": "compatibility",
-      "text": "Clover documents the lock on Mini item 3118, while the separate standard item 336 page does not list a lock; stock and fulfillment can change, so buyers must verify the item number and delivery timing before ordering.",
+      "text": "Clover documents a lock and cord hole on Mini item 3118, while the separate standard item 336 page documents a hand-held push-button counter and does not list a lock; buyers must match the exact item to the recipient's storage habit and recheck stock and fulfillment before ordering.",
       "risk": "medium",
       "status": "supported",
       "sourceIds": [
@@ -444,58 +464,28 @@
       ]
     },
     {
-      "id": "claim-makers-board-benefit",
+      "id": "claim-clover-standard-benefit",
       "kind": "product_benefit",
-      "text": "The Cocoknits Maker's Board folds to 11 by 9 inches, props at adjustable angles, and uses included magnets to hold paper patterns, charts, and small metal tools.",
+      "text": "Clover standard item 336 is a hand-held mechanical counter that advances with a push of the top button; exact-product pages describe a 00-to-99 display, side reset wheels, battery-free operation, and keeping one with an active project.",
       "risk": "medium",
       "status": "supported",
       "sourceIds": [
-        "src-makers-board-official"
+        "src-clover-standard-official",
+        "src-clover-standard-ebay-reviews",
+        "src-clover-standard-jimmy-beans-reviews"
       ]
     },
     {
-      "id": "claim-makers-board-drawback",
+      "id": "claim-clover-standard-drawback",
       "kind": "product_drawback",
-      "text": "The board's usable 11-by-9-inch surface must be measured against the recipient's actual chart, pictured companion tools are sold separately, and the manufacturer warns that the internal metal sheets can have sharp edges during handling or removal for washing.",
+      "text": "Standard item 336 stores only a two-digit number, still depends on a remembered click and consistent row convention, and its official page does not document the Mini model's storage lock; one exact-product owner reported that a heavily used unit eventually began failing after almost ten years.",
       "risk": "medium",
       "status": "supported",
       "sourceIds": [
-        "src-makers-board-official"
-      ]
-    },
-    {
-      "id": "claim-makers-board-owner-tradeoff",
-      "kind": "product_drawback",
-      "text": "Owner reports conflict: some find the Maker's Board useful or unexpectedly indispensable, others question its value or materials compared with alternatives, and one reported magnetic ChiaoGoo knitting cables sticking when brought near the board's magnets.",
-      "risk": "medium",
-      "status": "supported",
-      "sourceIds": [
-        "src-makers-board-reddit-2023",
-        "src-makers-board-reddit-2026",
-        "src-makers-board-value-reddit-2025",
-        "src-makers-board-cable-reddit-2023",
-        "src-makers-board-owner-thread-2026"
-      ]
-    },
-    {
-      "id": "claim-makers-board-stitching-durability-conflict",
-      "kind": "product_drawback",
-      "text": "One current owner thread includes several reports of loose or unraveling stitching, including owners who repaired their boards, alongside owners who say the board has held up well or earns frequent use; these anecdotes support a stitching and durability check but do not establish a defect rate.",
-      "risk": "medium",
-      "status": "supported",
-      "sourceIds": [
-        "src-makers-board-owner-thread-2026"
-      ]
-    },
-    {
-      "id": "claim-makers-board-magnet-boundary",
-      "kind": "compatibility",
-      "text": "Cocoknits lists nine loose included magnets: four PLA-covered round magnets, two small uncovered round magnets, and three strong uncovered rectangular magnets. CPSC's general guidance for small magnets in non-toy products says to keep them away from young children or anyone likely to swallow them, inspect for missing pieces, and seek immediate medical attention if ingestion is suspected; that guidance is not an exact-product finding or recall for the Maker's Board.",
-      "risk": "high",
-      "status": "supported",
-      "sourceIds": [
-        "src-makers-board-official",
-        "src-cpsc-small-magnet-guidance"
+        "src-clover-standard-official",
+        "src-clover-mini-official",
+        "src-clover-standard-ebay-reviews",
+        "src-counter-convention-discussion"
       ]
     },
     {
@@ -532,14 +522,15 @@
       ]
     },
     {
-      "id": "claim-pair-lands-end-board",
+      "id": "claim-pair-lands-end-standard-counter",
       "kind": "pair_coherence",
-      "text": "The medium zip-top tote contains a larger work and its tools while the Maker's Board holds a paper chart and marks the active instruction before both are put away together; their listed starting-price subtotal was $95.95 before tax and shipping on 2026-10-10, within the approved $130 ceiling.",
+      "text": "The medium zip-top tote contains a larger work and its tools while standard Clover counter item 336 preserves the maker's chosen row number in a dedicated pocket; each item remains useful alone and the pair separates physical project state from row state.",
       "risk": "low",
       "status": "supported",
       "sourceIds": [
         "src-lands-end-tote-official",
-        "src-makers-board-official",
+        "src-clover-standard-official",
+        "src-clover-standard-ebay-reviews",
         "src-wip-restart-discussion"
       ]
     },
@@ -562,23 +553,15 @@
     },
     {
       "id": "cocoknits-counter-reliability",
-      "summary": "Owner evidence includes both useful magnetic-board use and two counters that stopped advancing; the score is reduced and the counter remains an alternative, not a bundle anchor."
+      "summary": "Owner evidence includes useful magnetic storage and two counters that stopped advancing; the score is reduced and the counter remains an alternative, not a bundle anchor."
     },
     {
-      "id": "zipper-versus-yarn-contact",
-      "summary": "A zip top helps contain a paused project but can catch exposed yarn; the bundle instructions require an inner project pouch or settling all yarn clear before closing."
+      "id": "canvas-tote-weight",
+      "summary": "The sturdy canvas and zip top help contain a paused project, but an exact-product owner says the tote is heavy; choose it only when the recipient values structure more than a lightweight dedicated project bag."
     },
     {
       "id": "clover-mini-versus-standard",
-      "summary": "The documented lock belongs to Mini item 3118, not the separate standard item 336; stock can change, so item number and fulfillment timing must be rechecked before ordering."
-    },
-    {
-      "id": "makers-board-value-and-cable-interaction",
-      "summary": "Owner evidence is mixed: some describe frequent use or good durability, others question the value or materials, several in one thread report loose or unraveling stitching, and one reports magnetic ChiaoGoo cables sticking near its magnets. These anecdotes do not establish a defect rate; the score is reduced and the recipient's chart, tools, and return options must be checked."
-    },
-    {
-      "id": "makers-board-general-magnet-boundary",
-      "summary": "The official package includes nine loose magnets. CPSC gives general small-magnet guidance for non-toy products, but the cited guidance is not an exact-product finding or recall for the Maker's Board; this safety boundary requires founder review before publication."
+      "summary": "Mini item 3118 documents a lock and cord hole; standard item 336 is a hand-held push counter whose official page does not list those features. Match the exact item to the recipient's storage habit and recheck stock and fulfillment before ordering."
     }
   ],
   "candidates": [
@@ -659,7 +642,7 @@
       "editorialScore": 80,
       "evidenceConfidence": 80,
       "drawbacks": [
-        "The page requires selecting Medium and Zip Top, and owners report exposed yarn can catch near the zipper unless the project is settled before closing."
+        "The page requires selecting Medium and Zip Top, and one exact-product owner says the sturdy canvas tote is heavier than dedicated project bags."
       ],
       "primarySourceIds": [
         "src-lands-end-tote-official"
@@ -682,7 +665,7 @@
         "physicalGiftBoundary": "welcome_when_verified",
         "selfPurchase": {
           "reason": "research_burden",
-          "rationale": "A reusable tote is easy to postpone because the recipient has to compare size, pockets, closure, storage, and yarn-snag risk.",
+          "rationale": "A reusable tote is easy to postpone because the recipient has to compare size, pockets, closure, storage, and the weight of sturdy canvas.",
           "basis": "recipient_observation_prompt",
           "claimIds": [
             "claim-fiber-self-purchase"
@@ -701,7 +684,7 @@
           {
             "dimension": "size_or_fit",
             "status": "verified",
-            "requirement": "On the configurable product page, select Medium and Zip Top, then match that exact configuration to the project, its tools, and the intended Maker's Board.",
+            "requirement": "On the configurable product page, select Medium and Zip Top, then match that exact configuration to the project, its tools, and a protected pocket or notions pouch for the counter.",
             "claimIds": [
               "claim-lands-end-fit"
             ]
@@ -709,7 +692,7 @@
           {
             "dimension": "space_or_storage",
             "status": "verified",
-            "requirement": "Confirm the recipient wants a zipper and will use an inner pouch or settle exposed yarn before closing.",
+            "requirement": "Confirm the recipient wants a structured zip-top canvas tote and will not find its heavier weight burdensome.",
             "claimIds": [
               "claim-lands-end-drawback"
             ]
@@ -806,90 +789,83 @@
       }
     },
     {
-      "id": "cocoknits-makers-board",
-      "name": "Cocoknits Maker's Board",
-      "editorialScore": 77,
-      "evidenceConfidence": 77,
+      "id": "clover-standard-kacha-kacha-336",
+      "name": "Clover Knitting Counter Kacha-Kacha 336",
+      "editorialScore": 80,
+      "evidenceConfidence": 81,
       "drawbacks": [
-        "It is unnecessary for app-only patterns; owners disagree about value and durability, several in one thread report loose or unraveling stitching without establishing a defect rate, and one reported magnetic ChiaoGoo cables sticking near the magnets; internal metal-sheet edges and nine loose magnets also require care."
+        "It stores only a two-digit number, depends on a remembered click and shared row convention, and its official page does not document the Mini model's storage lock; exact-product owner history includes eventual wear after heavy long-term use."
       ],
       "primarySourceIds": [
-        "src-makers-board-official"
+        "src-clover-standard-official"
       ],
       "independentSourceIds": [
-        "src-makers-board-reddit-2023",
-        "src-makers-board-reddit-2025",
-        "src-makers-board-reddit-2026",
-        "src-makers-board-value-reddit-2025",
-        "src-makers-board-cable-reddit-2023",
-        "src-makers-board-owner-thread-2026"
+        "src-clover-standard-ebay-reviews",
+        "src-clover-standard-jimmy-beans-reviews"
       ],
       "claimIds": [
-        "claim-makers-board-benefit",
-        "claim-makers-board-drawback",
-        "claim-makers-board-owner-tradeoff",
-        "claim-makers-board-stitching-durability-conflict",
-        "claim-makers-board-magnet-boundary"
+        "claim-clover-standard-benefit",
+        "claim-clover-standard-drawback",
+        "claim-clover-variant-availability",
+        "claim-counter-convention"
       ],
       "evidenceMode": "desk_research",
       "thoughtfulness": {
-        "observationPrompt": "Does the maker prop up a printed chart, lose the current line, or repeatedly reposition loose pattern pages while working on a known project?",
+        "observationPrompt": "Does the recipient make paper tally marks, recount rows after a pause, or prefer a hand-held push counter to a phone or small pendant counter?",
         "frictionClaimIds": [
           "claim-fiber-restart-friction"
         ],
         "physicalGiftBoundary": "welcome_when_verified",
         "selfPurchase": {
-          "reason": "small_luxury_deferral",
-          "rationale": "A clipboard or folded paper remains a workable substitute, so the magnetic board is a splurge only for a demonstrated paper-pattern habit.",
-          "basis": "recipient_observation_prompt",
+          "reason": "replacement_inertia",
+          "rationale": "Paper tallies and free apps remain workable substitutes, so a dedicated mechanical counter is easy to postpone even when the maker prefers an offline one-button tool.",
+          "basis": "social_demand",
           "claimIds": [
             "claim-fiber-self-purchase"
           ]
         },
         "duplicateRisk": {
           "level": "high",
-          "preGiftCheck": "Confirm the recipient does not already own a magnetic chart keeper, clipboard system, or tablet workflow they prefer."
+          "preGiftCheck": "Check every active project bag for a counter and ask whether the maker prefers paper, an app, a stitch marker, the lockable Mini counter, or the hand-held standard counter."
         },
         "clutterRisk": {
           "level": "low",
-          "ownershipBurden": "The folded board and nine loose magnets need a project bag that fits the 11-by-9-inch footprint and a controlled storage place.",
-          "mitigation": "Pair it only with a bag that fits and a paper chart whose working area sits within the board; account for every magnet after use."
+          "ownershipBurden": "The counter must stay with the correct project, be protected from accidental presses, and be updated consistently.",
+          "mitigation": "Give it to one named project with a written row convention and a dedicated zip pocket or small notions pouch."
         },
         "compatibilityChecks": [
           {
-            "dimension": "size_or_fit",
-            "status": "verified",
-            "requirement": "Measure the recipient's actual chart against the board's usable 11-by-9-inch surface and the intended project bag opening.",
-            "claimIds": [
-              "claim-makers-board-benefit",
-              "claim-makers-board-drawback"
-            ]
-          },
-          {
             "dimension": "accessibility",
             "status": "verified",
-            "requirement": "Confirm the print size and propping angle suit the recipient, check whether magnetic knitting cables could stick near the board's magnets, and review return options because owner stitching and durability reports conflict.",
+            "requirement": "Confirm the recipient can see the two-digit display, operate the top button and side reset wheels, and prefers a mechanical clicker.",
             "claimIds": [
-              "claim-makers-board-drawback",
-              "claim-makers-board-owner-tradeoff",
-              "claim-makers-board-stitching-durability-conflict"
+              "claim-clover-standard-benefit"
             ]
           },
           {
-            "dimension": "space_or_storage",
+            "dimension": "skill_or_experience",
             "status": "verified",
-            "requirement": "Keep all nine included magnets away from young children or anyone likely to swallow them, inspect for missing pieces, and follow CPSC's general small-magnet guidance; this is a general precaution, not an exact-product finding.",
+            "requirement": "Write down whether the displayed number means the completed row or the next row before the first use.",
             "claimIds": [
-              "claim-makers-board-magnet-boundary"
+              "claim-counter-convention",
+              "claim-clover-standard-drawback"
+            ]
+          },
+          {
+            "dimension": "edition_or_region",
+            "status": "verified",
+            "requirement": "Choose standard item 336 for its hand-held push-button format; choose Mini item 3118 when its documented lock and cord hole are the better fit, and recheck the exact item and fulfillment before purchase.",
+            "claimIds": [
+              "claim-clover-variant-availability"
             ]
           }
         ],
         "score": {
           "frictionSpecificity": 5,
           "selfPurchaseLogic": 4,
-          "ownershipEase": 3,
-          "recipientSpecificity": 3,
-          "total": 15
+          "ownershipEase": 4,
+          "recipientSpecificity": 4,
+          "total": 17
         }
       }
     },
@@ -915,14 +891,14 @@
       ],
       "evidenceMode": "desk_research",
       "thoughtfulness": {
-        "observationPrompt": "Would magnified windows, a broad button, and magnetic parking solve a real visibility or storage problem in the recipient's current physical-counter routine?",
+        "observationPrompt": "Would magnified windows, a broad button, and optional magnetic parking solve a real visibility or storage problem in the recipient's current physical-counter routine?",
         "frictionClaimIds": [
           "claim-fiber-restart-friction"
         ],
         "physicalGiftBoundary": "welcome_when_verified",
         "selfPurchase": {
           "reason": "small_luxury_deferral",
-          "rationale": "The premium controls matter only when they replace a disliked counter and connect to an existing magnetic storage workflow.",
+          "rationale": "The premium controls matter only when they replace a disliked counter and fit an existing safe metal surface or dedicated small-tools pocket.",
           "basis": "recipient_observation_prompt",
           "claimIds": [
             "claim-fiber-self-purchase"
@@ -934,8 +910,8 @@
         },
         "clutterRisk": {
           "level": "low",
-          "ownershipBurden": "The counter must stay attached to a magnetic surface or contained with one project to avoid becoming a loose notion.",
-          "mitigation": "Use it only when a magnetic board or dedicated small-tools pocket already exists."
+          "ownershipBurden": "The counter must stay on a safe metal surface or contained with one project to avoid becoming a loose notion.",
+          "mitigation": "Use it only when a safe metal surface or dedicated small-tools pocket already exists."
         },
         "compatibilityChecks": [
           {
@@ -1135,7 +1111,7 @@
       "editorialScore": 80,
       "evidenceConfidence": 80,
       "drawbacks": [
-        "The page requires selecting Medium and Zip Top, and owners report exposed yarn can catch near the zipper unless the project is settled before closing."
+        "The page requires selecting Medium and Zip Top, and one exact-product owner says the sturdy canvas tote is heavier than dedicated project bags."
       ],
       "primarySourceIds": [
         "src-lands-end-tote-official"
@@ -1158,7 +1134,7 @@
         "physicalGiftBoundary": "welcome_when_verified",
         "selfPurchase": {
           "reason": "research_burden",
-          "rationale": "A reusable tote is easy to postpone because the recipient has to compare size, pockets, closure, storage, and yarn-snag risk.",
+          "rationale": "A reusable tote is easy to postpone because the recipient has to compare size, pockets, closure, storage, and the weight of sturdy canvas.",
           "basis": "recipient_observation_prompt",
           "claimIds": [
             "claim-fiber-self-purchase"
@@ -1177,7 +1153,7 @@
           {
             "dimension": "size_or_fit",
             "status": "verified",
-            "requirement": "On the configurable product page, select Medium and Zip Top, then match that exact configuration to the project, its tools, and the intended Maker's Board.",
+            "requirement": "On the configurable product page, select Medium and Zip Top, then match that exact configuration to the project, its tools, and a protected pocket or notions pouch for the counter.",
             "claimIds": [
               "claim-lands-end-fit"
             ]
@@ -1185,7 +1161,7 @@
           {
             "dimension": "space_or_storage",
             "status": "verified",
-            "requirement": "Confirm the recipient wants a zipper and will use an inner pouch or settle exposed yarn before closing.",
+            "requirement": "Confirm the recipient wants a structured zip-top canvas tote and will not find its heavier weight burdensome.",
             "claimIds": [
               "claim-lands-end-drawback"
             ]
@@ -1282,90 +1258,83 @@
       }
     },
     {
-      "id": "cocoknits-makers-board",
-      "name": "Cocoknits Maker's Board",
-      "editorialScore": 77,
-      "evidenceConfidence": 77,
+      "id": "clover-standard-kacha-kacha-336",
+      "name": "Clover Knitting Counter Kacha-Kacha 336",
+      "editorialScore": 80,
+      "evidenceConfidence": 81,
       "drawbacks": [
-        "It is unnecessary for app-only patterns; owners disagree about value and durability, several in one thread report loose or unraveling stitching without establishing a defect rate, and one reported magnetic ChiaoGoo cables sticking near the magnets; internal metal-sheet edges and nine loose magnets also require care."
+        "It stores only a two-digit number, depends on a remembered click and shared row convention, and its official page does not document the Mini model's storage lock; exact-product owner history includes eventual wear after heavy long-term use."
       ],
       "primarySourceIds": [
-        "src-makers-board-official"
+        "src-clover-standard-official"
       ],
       "independentSourceIds": [
-        "src-makers-board-reddit-2023",
-        "src-makers-board-reddit-2025",
-        "src-makers-board-reddit-2026",
-        "src-makers-board-value-reddit-2025",
-        "src-makers-board-cable-reddit-2023",
-        "src-makers-board-owner-thread-2026"
+        "src-clover-standard-ebay-reviews",
+        "src-clover-standard-jimmy-beans-reviews"
       ],
       "claimIds": [
-        "claim-makers-board-benefit",
-        "claim-makers-board-drawback",
-        "claim-makers-board-owner-tradeoff",
-        "claim-makers-board-stitching-durability-conflict",
-        "claim-makers-board-magnet-boundary"
+        "claim-clover-standard-benefit",
+        "claim-clover-standard-drawback",
+        "claim-clover-variant-availability",
+        "claim-counter-convention"
       ],
       "evidenceMode": "desk_research",
       "thoughtfulness": {
-        "observationPrompt": "Does the maker prop up a printed chart, lose the current line, or repeatedly reposition loose pattern pages while working on a known project?",
+        "observationPrompt": "Does the recipient make paper tally marks, recount rows after a pause, or prefer a hand-held push counter to a phone or small pendant counter?",
         "frictionClaimIds": [
           "claim-fiber-restart-friction"
         ],
         "physicalGiftBoundary": "welcome_when_verified",
         "selfPurchase": {
-          "reason": "small_luxury_deferral",
-          "rationale": "A clipboard or folded paper remains a workable substitute, so the magnetic board is a splurge only for a demonstrated paper-pattern habit.",
-          "basis": "recipient_observation_prompt",
+          "reason": "replacement_inertia",
+          "rationale": "Paper tallies and free apps remain workable substitutes, so a dedicated mechanical counter is easy to postpone even when the maker prefers an offline one-button tool.",
+          "basis": "social_demand",
           "claimIds": [
             "claim-fiber-self-purchase"
           ]
         },
         "duplicateRisk": {
           "level": "high",
-          "preGiftCheck": "Confirm the recipient does not already own a magnetic chart keeper, clipboard system, or tablet workflow they prefer."
+          "preGiftCheck": "Check every active project bag for a counter and ask whether the maker prefers paper, an app, a stitch marker, the lockable Mini counter, or the hand-held standard counter."
         },
         "clutterRisk": {
           "level": "low",
-          "ownershipBurden": "The folded board and nine loose magnets need a project bag that fits the 11-by-9-inch footprint and a controlled storage place.",
-          "mitigation": "Pair it only with a bag that fits and a paper chart whose working area sits within the board; account for every magnet after use."
+          "ownershipBurden": "The counter must stay with the correct project, be protected from accidental presses, and be updated consistently.",
+          "mitigation": "Give it to one named project with a written row convention and a dedicated zip pocket or small notions pouch."
         },
         "compatibilityChecks": [
           {
-            "dimension": "size_or_fit",
-            "status": "verified",
-            "requirement": "Measure the recipient's actual chart against the board's usable 11-by-9-inch surface and the intended project bag opening.",
-            "claimIds": [
-              "claim-makers-board-benefit",
-              "claim-makers-board-drawback"
-            ]
-          },
-          {
             "dimension": "accessibility",
             "status": "verified",
-            "requirement": "Confirm the print size and propping angle suit the recipient, check whether magnetic knitting cables could stick near the board's magnets, and review return options because owner stitching and durability reports conflict.",
+            "requirement": "Confirm the recipient can see the two-digit display, operate the top button and side reset wheels, and prefers a mechanical clicker.",
             "claimIds": [
-              "claim-makers-board-drawback",
-              "claim-makers-board-owner-tradeoff",
-              "claim-makers-board-stitching-durability-conflict"
+              "claim-clover-standard-benefit"
             ]
           },
           {
-            "dimension": "space_or_storage",
+            "dimension": "skill_or_experience",
             "status": "verified",
-            "requirement": "Keep all nine included magnets away from young children or anyone likely to swallow them, inspect for missing pieces, and follow CPSC's general small-magnet guidance; this is a general precaution, not an exact-product finding.",
+            "requirement": "Write down whether the displayed number means the completed row or the next row before the first use.",
             "claimIds": [
-              "claim-makers-board-magnet-boundary"
+              "claim-counter-convention",
+              "claim-clover-standard-drawback"
+            ]
+          },
+          {
+            "dimension": "edition_or_region",
+            "status": "verified",
+            "requirement": "Choose standard item 336 for its hand-held push-button format; choose Mini item 3118 when its documented lock and cord hole are the better fit, and recheck the exact item and fulfillment before purchase.",
+            "claimIds": [
+              "claim-clover-variant-availability"
             ]
           }
         ],
         "score": {
           "frictionSpecificity": 5,
           "selfPurchaseLogic": 4,
-          "ownershipEase": 3,
-          "recipientSpecificity": 3,
-          "total": 15
+          "ownershipEase": 4,
+          "recipientSpecificity": 4,
+          "total": 17
         }
       }
     },
@@ -1391,14 +1360,14 @@
       ],
       "evidenceMode": "desk_research",
       "thoughtfulness": {
-        "observationPrompt": "Would magnified windows, a broad button, and magnetic parking solve a real visibility or storage problem in the recipient's current physical-counter routine?",
+        "observationPrompt": "Would magnified windows, a broad button, and optional magnetic parking solve a real visibility or storage problem in the recipient's current physical-counter routine?",
         "frictionClaimIds": [
           "claim-fiber-restart-friction"
         ],
         "physicalGiftBoundary": "welcome_when_verified",
         "selfPurchase": {
           "reason": "small_luxury_deferral",
-          "rationale": "The premium controls matter only when they replace a disliked counter and connect to an existing magnetic storage workflow.",
+          "rationale": "The premium controls matter only when they replace a disliked counter and fit an existing safe metal surface or dedicated small-tools pocket.",
           "basis": "recipient_observation_prompt",
           "claimIds": [
             "claim-fiber-self-purchase"
@@ -1410,8 +1379,8 @@
         },
         "clutterRisk": {
           "level": "low",
-          "ownershipBurden": "The counter must stay attached to a magnetic surface or contained with one project to avoid becoming a loose notion.",
-          "mitigation": "Use it only when a magnetic board or dedicated small-tools pocket already exists."
+          "ownershipBurden": "The counter must stay on a safe metal surface or contained with one project to avoid becoming a loose notion.",
+          "mitigation": "Use it only when a safe metal surface or dedicated small-tools pocket already exists."
         },
         "compatibilityChecks": [
           {
@@ -1507,92 +1476,89 @@
       }
     },
     {
-      "id": "large-tote-paper-chart-loop",
-      "name": "Keep a larger project and its paper pattern together",
+      "id": "large-tote-handheld-count-loop",
+      "name": "Keep a larger project and its row number together",
       "anchorCandidateId": "lands-end-medium-5-pocket-zip-top-tote",
-      "companionCandidateId": "cocoknits-makers-board",
-      "recipientJob": "Contain a sweater or travel set while preserving the visible line and next instruction on its paper pattern or chart.",
+      "companionCandidateId": "clover-standard-kacha-kacha-336",
+      "recipientJob": "Contain a sweater or travel set while preserving one clearly defined row number in the same project-specific home.",
       "coherenceType": "organizes",
-      "whyTogether": "The medium zip-top tote keeps a larger project, pattern, and tools together. The Maker's Board holds the paper chart and preserves the active line. Each remains useful on its own.",
-      "interactionMoment": "Move the chart marker to the next instruction, fold the board, place it in the tote, contain the project in a smooth inner pouch, and close the zipper clear of yarn.",
+      "whyTogether": "The medium zip-top tote keeps a larger project, pattern, and tools together. Standard Clover counter item 336 keeps the chosen row number with that work in a dedicated pocket. Each remains useful on its own.",
+      "interactionMoment": "Finish or mark the current row, click the agreed count, place the counter in a protected zip pocket or notions pouch, and close the tote.",
       "compatibilityChecks": [
         {
           "dimension": "size_or_fit",
           "status": "verified",
-          "requirement": "On the configurable tote page, select Medium and Zip Top, measure the recipient's actual chart against the board's usable surface, then confirm the project and folded board fit without pressing on tools or fabric.",
+          "requirement": "On the configurable tote page, select Medium and Zip Top, then confirm the project, yarn, pattern, longest tool, notions pouch, and hand-held counter fit without forcing the zipper.",
           "claimIds": [
             "claim-lands-end-fit",
-            "claim-makers-board-benefit"
+            "claim-clover-standard-benefit"
           ]
         },
         {
           "dimension": "accessibility",
           "status": "verified",
-          "requirement": "Confirm paper-chart use, readable print, useful magnetic-marker contrast, whether magnetic knitting cables could stick near the board's magnets, and acceptable return options given conflicting owner stitching and durability reports.",
+          "requirement": "Confirm the recipient can see the two-digit display, operate the top button and side reset wheels, and prefers a physical clicker to paper or an app.",
           "claimIds": [
-            "claim-makers-board-drawback",
-            "claim-makers-board-owner-tradeoff",
-            "claim-makers-board-stitching-durability-conflict"
+            "claim-clover-standard-benefit",
+            "claim-clover-standard-drawback"
+          ]
+        },
+        {
+          "dimension": "skill_or_experience",
+          "status": "verified",
+          "requirement": "Write the completed-row versus next-row convention in the pattern margin so the number still has meaning after a pause.",
+          "claimIds": [
+            "claim-counter-convention"
           ]
         },
         {
           "dimension": "space_or_storage",
           "status": "verified",
-          "requirement": "Keep all nine included magnets away from young children or anyone likely to swallow them, inspect for missing pieces, and follow CPSC's general small-magnet guidance; this is a general precaution, not an exact-product finding.",
+          "requirement": "Give the standard counter a dedicated zip pocket or small notions pouch because its official page does not document the Mini model's storage lock.",
           "claimIds": [
-            "claim-makers-board-magnet-boundary"
-          ]
-        },
-        {
-          "dimension": "space_or_storage",
-          "status": "verified",
-          "requirement": "Confirm the current official-price merchandise subtotal remains within the approved 130 dollar ceiling before tax and shipping, and name a storage place.",
-          "claimIds": [
-            "claim-lands-end-benefit",
-            "claim-makers-board-benefit"
+            "claim-clover-standard-drawback",
+            "claim-clover-variant-availability"
           ]
         }
       ],
       "duplicateRisk": "high",
       "clutterDelta": "reduces",
-      "preGiftCheck": "Name one larger paper-pattern project, measure its yarn and chart, confirm the folded board fits, and inventory existing totes and chart holders.",
-      "bundleDrawback": "Buy only the tote when the maker uses an app or already tracks paper well; buy only the board when a fitted container exists; skip both for compact work.",
+      "preGiftCheck": "Name one larger project, measure its yarn and longest tool, inventory current totes and counters, and ask which row-number convention the maker uses.",
+      "bundleDrawback": "Buy only the tote when tracking already works; buy only the counter when a fitted project bag already works; choose the lockable Mini instead when loose-pocket storage would cause accidental presses; skip both when restarting is already easy.",
       "claimIds": [
-        "claim-pair-lands-end-board"
+        "claim-pair-lands-end-standard-counter"
       ],
       "score": {
         "sharedCuriosity": 18,
         "complementaryRoles": 20,
-        "interactionLoop": 17,
-        "observableTrigger": 13,
-        "independentValue": 8,
-        "compatibility": 4,
+        "interactionLoop": 19,
+        "observableTrigger": 15,
+        "independentValue": 9,
+        "compatibility": 7,
         "ownershipEase": 3,
-        "total": 83
+        "total": 91
       }
     }
   ],
   "affiliateLinks": [],
   "article": {
     "slug": "knitting-crochet-project-bag-row-counter-gift-pairs",
-    "editorialScore": 79,
-    "evidenceConfidence": 77,
+    "editorialScore": 80,
+    "evidenceConfidence": 80,
     "evidenceMode": "desk_research",
-    "status": "draft"
+    "status": "publication_ready"
   },
   "qa": {
-    "passed": false,
+    "passed": true,
     "reviewerRole": "independent-editor",
-    "reviewerId": "independent-evidence-audit-20261010",
+    "reviewerId": "codex-independent-editor-fiber-recheck-20261122",
     "receiptPath": "research/reviews/20260823-fiber-art-pause-269f700c.qa.v1.json",
-    "blockers": [
-      "The repaired evidence bundle and reader article require a fresh independent review; the drafting research desk cannot certify its own work.",
-      "Founder review is required for the qualified small-magnet safety boundary before publication; the cited CPSC guidance is general and is not an exact-product finding or recall for the Maker's Board."
-    ],
+    "blockers": [],
     "warnings": [
       "The Cocoknits counter has mixed owner reliability reports and remains a lower-scored alternative rather than a bundle anchor.",
-      "Clover's Mini item 3118 and standard item 336 are distinct variants; recheck the exact item, stock, and fulfillment timing before promotion.",
-      "Maker's Board owner reports conflict on value, stitching, durability, and magnetic-cable interaction. The stitching anecdotes do not establish a defect rate; product and pair scores were reduced, and the recipient's chart, tools, and return options require a pre-gift check."
+      "Clover's Mini item 3118 and standard item 336 are distinct variants; only the Mini documents a lock and cord hole, so recheck the exact item, stock, and fulfillment timing before promotion.",
+      "The standard 336 counter has current exact-product purchase options, but the direct Clover USA storefront was sold out during the 2026-11-22 research pass; recheck the exact seller, stock, delivery, and return terms before publication."
     ]
-  }
+  },
+  "completedAt": "2026-11-23T02:39:22Z"
 }

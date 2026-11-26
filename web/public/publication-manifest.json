@@ -1,27 +1,29 @@
 {
-  "schemaVersion": "1.2.0",
-  "manifestId": "publication-set-8e8287a5ec7db534",
-  "generatedAt": "2026-11-07T23:58:13.560Z",
+  "schemaVersion": "1.3.0",
+  "manifestId": "publication-set-4bc6216cd2440947",
+  "generatedAt": "2026-11-23T02:39:22.000Z",
   "status": "release_candidate",
   "projectId": "tipsforyourgifts",
   "siteId": "tipsforyourgifts",
   "publicBaseUrl": "https://tipsforyourgifts.web.app",
-  "contentSetSha256": "8e8287a5ec7db534c5c2255d15cca7c050aed88bc63df25a0fdd46aecda2dae6",
+  "contentSetSha256": "4bc6216cd244094741ce91798355d8682d5438fcfe92e316f192937983409414",
   "counts": {
-    "articles": 10,
-    "researchRuns": 10,
-    "independentReviews": 10,
-    "socialLaunchPacks": 9,
-    "socialDrafts": 60,
+    "articles": 11,
+    "researchRuns": 11,
+    "independentReviews": 11,
+    "founderSafetyApprovals": 0,
+    "legacyHighRiskIndependentReviewOnly": 3,
+    "socialLaunchPacks": 10,
+    "socialDrafts": 66,
     "missionBoundArticles": 0,
-    "preMissionValidatedArticles": 10,
+    "preMissionValidatedArticles": 11,
     "affiliateLinks": 1,
-    "visualAssets": 19
+    "visualAssets": 20
   },
   "visualPosture": {
     "styleVersion": "gift-thread-editorial-cartoon-v1.0",
     "registryPath": "visuals/article-visuals.json",
-    "registrySha256": "18eab9efa2f8590a9569d9734c90cc36e95a01d7d0780c7cf7ff2f6213336b3a",
+    "registrySha256": "7a221fa6c5244db3caf0443f253dc061a3e4225a06f43ebf567b46dd0b38604c",
     "founderApproved": true,
     "generator": "openai-built-in-imagegen",
     "rightsPosture": "founder-approved-original-ai-generated",
@@ -30,6 +32,11 @@
         "id": "family-one-photo-one-story",
         "path": "blog-images/one-photo-one-story-gift-pairs/hero.webp",
         "sha256": "5082090f12ba440c2c81da822b53abfff3328f95880706f72994bfdadd7632e3"
+      },
+      {
+        "id": "fiber-art-pause-resume",
+        "path": "blog-images/knitting-crochet-project-bag-row-counter-gift-pairs/hero.webp",
+        "sha256": "935ceec02ac9d4597a20b00d871aaf263247f4b336f13e4497856894cfdd0ae0"
       },
       {
         "id": "golf-friction-kit",
@@ -123,6 +130,17 @@
       }
     ]
   },
+  "editorialSafetyPosture": {
+    "policyPath": "config/editorial-safety-policy.json",
+    "policySha256": "73bc7c3d0b69055f3f6940115c5bc7ac547073ae6663d5c245f56614cc5ca99d",
+    "effectiveAt": "2026-11-22T00:00:00.000Z",
+    "legacyDisposition": "independent_review_only_not_founder_approved",
+    "legacyValidatedHighRiskRunIds": [
+      "20260802-editorial-standard-6a5ce1b9",
+      "20260816-one-photo-one-story-4cf6dd3f",
+      "20260816-read-a-scene-say-it-aloud-c92b2f7e"
+    ]
+  },
   "affiliatePosture": {
     "registrySha256": "4145e34d6a8c0c1e5087f31d76d06983d4e3e2a64b5aae62d4a7e6d4eee0bde5",
     "approvedOverlaySetSha256": "7052e5fe641aa1f01231cf8aa5d9c62bc5309127d7ff19076a25aad17f412e02",
@@ -151,6 +169,8 @@
       "independentReviewPath": "research/reviews/20260803-gifts-for-golf-friend-53cb00a5.qa.v1.json",
       "independentReviewSha256": "c903f92019cf3f951d2e816ba3cd602baebcb6f109c425dae7f09d6e175e532e",
       "reviewedEvidenceSha256": "fb90be30adba2972f9d5543e99e33f0cc633de4844b0ef334a06873a166639b9",
+      "founderSafetyPosture": "not_required",
+      "founderSafetyApproval": null,
       "mission": null,
       "socialPack": {
         "packId": "gifts-for-a-golf-friend-launch",
@@ -177,6 +197,7 @@
         "socialLaunchPackReviewed": true,
         "affiliateRegistryEnforced": true,
         "affiliateLinkApprovalEnforced": true,
+        "founderSafetyPolicyEnforced": true,
         "allArtifactsHashBound": true
       }
     },
@@ -194,6 +215,8 @@
       "independentReviewPath": "research/reviews/20260802-editorial-standard-6a5ce1b9.qa.v1.json",
       "independentReviewSha256": "23728f042b9762138c84dbaf64766d33a79a172b94100a13561ddcc3e0aaa763",
       "reviewedEvidenceSha256": "f871ef023df1df7b801e71b3b0603a2feb0aa26558548d736ab3dfe67f949ad1",
+      "founderSafetyPosture": "legacy_independent_review_only",
+      "founderSafetyApproval": null,
       "mission": null,
       "socialPack": null,
       "editorialScore": 94,
@@ -214,6 +237,53 @@
         "socialLaunchPackReviewed": null,
         "affiliateRegistryEnforced": true,
         "affiliateLinkApprovalEnforced": true,
+        "founderSafetyPolicyEnforced": true,
+        "allArtifactsHashBound": true
+      }
+    },
+    {
+      "articleSlug": "knitting-crochet-project-bag-row-counter-gift-pairs",
+      "title": "Gift Pairs for Knitters and Crocheters Who Lose Their Place",
+      "route": "/blog/knitting-crochet-project-bag-row-counter-gift-pairs",
+      "updatedAt": "2026-11-22T00:00:00.000Z",
+      "articlePath": "src/data/blog/knitting-crochet-project-bag-row-counter-gift-pairs.md",
+      "articleSha256": "f6a2ecc9d6c6c22929cb550f023ae4b0e9d8bc59f93b860e0a6fe5d26c25369b",
+      "reviewedArticleSha256": "f304cf60ec2212b3d2165ae82efdaa51ec190ef6a3445c6c6361bc15435f7b88",
+      "researchRunId": "20260823-fiber-art-pause-269f700c",
+      "researchRunPath": "research/runs/20260823-fiber-art-pause-269f700c.json",
+      "researchRunSha256": "2f6c249b26f285108da71887444edf637402ae5f58a14de66a36caa330640266",
+      "independentReviewPath": "research/reviews/20260823-fiber-art-pause-269f700c.qa.v1.json",
+      "independentReviewSha256": "f5d13efabf10c2ab5440238793f3e442be59fad9419028ba92d1a4bdc747d21a",
+      "reviewedEvidenceSha256": "9f372dc114b0a1f9553b992e60329b0830699d5b56ea3fe8adb029a78a6be947",
+      "founderSafetyPosture": "not_required",
+      "founderSafetyApproval": null,
+      "mission": null,
+      "socialPack": {
+        "packId": "knitting-crochet-project-bag-row-counter-gift-pairs-launch",
+        "path": "social/drafts/knitting-crochet-project-bag-row-counter-gift-pairs-launch.json",
+        "sha256": "63b9adcc2b8ad23c3ae0460ee496c3eac25685159e31eee6ec8d34b7fba0464c",
+        "status": "draft",
+        "postCount": 6
+      },
+      "editorialScore": 80,
+      "evidenceConfidence": 80,
+      "evidenceMode": "desk_research",
+      "finalistCount": 5,
+      "productCount": 5,
+      "pairCount": 2,
+      "visualAssetIds": [
+        "fiber-art-pause-resume"
+      ],
+      "affiliateLinkCount": 0,
+      "affiliateLinks": [],
+      "quality": {
+        "researchValidated": true,
+        "independentReviewPassed": true,
+        "articlePublicationReady": true,
+        "socialLaunchPackReviewed": true,
+        "affiliateRegistryEnforced": true,
+        "affiliateLinkApprovalEnforced": true,
+        "founderSafetyPolicyEnforced": true,
         "allArtifactsHashBound": true
       }
     },
@@ -231,6 +301,8 @@
       "independentReviewPath": "research/reviews/20260816-read-a-scene-say-it-aloud-c92b2f7e.qa.v1.json",
       "independentReviewSha256": "838c08254b2d07e1ba16020749b03e399ab2536cdcdd722b72a9b0c79a2065ef",
       "reviewedEvidenceSha256": "f5a9c18606efc84f5519207408cfe9eff5da1056497e686bb207b63bc3fa142b",
+      "founderSafetyPosture": "legacy_independent_review_only",
+      "founderSafetyApproval": null,
       "mission": null,
       "socialPack": {
         "packId": "language-learning-gifts-read-a-scene-say-it-aloud-launch",
@@ -257,6 +329,7 @@
         "socialLaunchPackReviewed": true,
         "affiliateRegistryEnforced": true,
         "affiliateLinkApprovalEnforced": true,
+        "founderSafetyPolicyEnforced": true,
         "allArtifactsHashBound": true
       }
     },
@@ -274,6 +347,8 @@
       "independentReviewPath": "research/reviews/20260816-miniature-painting-recipe-pairs-08892218.qa.v1.json",
       "independentReviewSha256": "c567d842102d1624c327bc1d9e731790511a1d83f0d15352f2e4bb0f631ce55b",
       "reviewedEvidenceSha256": "b8e70258603646368248facc20c70cc87f532640a834a3fea9710cc56ed52ea6",
+      "founderSafetyPosture": "not_required",
+      "founderSafetyApproval": null,
       "mission": null,
       "socialPack": {
         "packId": "miniature-painting-wet-palette-recipe-pairs-launch",
@@ -300,6 +375,7 @@
         "socialLaunchPackReviewed": true,
         "affiliateRegistryEnforced": true,
         "affiliateLinkApprovalEnforced": true,
+        "founderSafetyPolicyEnforced": true,
         "allArtifactsHashBound": true
       }
     },
@@ -317,6 +393,8 @@
       "independentReviewPath": "research/reviews/20260816-neighborhood-tree-walk-b8a44f32.qa.v1.json",
       "independentReviewSha256": "17832e5d8d59d341517369e358c60fe47fdcd7a7f0079118227d863122359e8b",
       "reviewedEvidenceSha256": "a47f496a769999593ef100f2450cd4a398a61b11289f9826958a5b8ac56a92a0",
+      "founderSafetyPosture": "not_required",
+      "founderSafetyApproval": null,
       "mission": null,
       "socialPack": {
         "packId": "neighborhood-tree-walk-field-guide-loupe-gift-pairs-launch",
@@ -343,6 +421,7 @@
         "socialLaunchPackReviewed": true,
         "affiliateRegistryEnforced": true,
         "affiliateLinkApprovalEnforced": true,
+        "founderSafetyPolicyEnforced": true,
         "allArtifactsHashBound": true
       }
     },
@@ -360,6 +439,8 @@
       "independentReviewPath": "research/reviews/20260816-night-sky-ritual-a5594a7b.qa.v1.json",
       "independentReviewSha256": "3242bc1768b7de70dc9267ec00ef87337906723ca473dc791a2a891ce394fd62",
       "reviewedEvidenceSha256": "0280028eac7052bef7ccba74e2dbc39f467a3c99c6ff3b5eb30198108854c550",
+      "founderSafetyPosture": "not_required",
+      "founderSafetyApproval": null,
       "mission": null,
       "socialPack": {
         "packId": "night-sky-planisphere-red-light-gift-pairs-launch",
@@ -386,6 +467,7 @@
         "socialLaunchPackReviewed": true,
         "affiliateRegistryEnforced": true,
         "affiliateLinkApprovalEnforced": true,
+        "founderSafetyPolicyEnforced": true,
         "allArtifactsHashBound": true
       }
     },
@@ -403,6 +485,8 @@
       "independentReviewPath": "research/reviews/20260816-one-photo-one-story-4cf6dd3f.qa.v1.json",
       "independentReviewSha256": "420c67c8f03617eea7a8550dee862b02e85e6db91bc7b13ade09eff3a081435f",
       "reviewedEvidenceSha256": "18e02e52b438cf3a9ca8fbad47cbcd85e8f771df06c9009d79129d6c270013ac",
+      "founderSafetyPosture": "legacy_independent_review_only",
+      "founderSafetyApproval": null,
       "mission": null,
       "socialPack": {
         "packId": "one-photo-one-story-gift-pairs-launch",
@@ -429,6 +513,7 @@
         "socialLaunchPackReviewed": true,
         "affiliateRegistryEnforced": true,
         "affiliateLinkApprovalEnforced": true,
+        "founderSafetyPolicyEnforced": true,
         "allArtifactsHashBound": true
       }
     },
@@ -446,6 +531,8 @@
       "independentReviewPath": "research/reviews/20260816-puzzle-start-store-a30ab01a.qa.v1.json",
       "independentReviewSha256": "ae2bb02ca796d5cf396f756391dc04fadfc772a693ca0e354126bc3aec0ecb03",
       "reviewedEvidenceSha256": "ddf1ba5c8fff832c606be278579ea3d43feaf7db91c0ac8efaeead70b62a898c",
+      "founderSafetyPosture": "not_required",
+      "founderSafetyApproval": null,
       "mission": null,
       "socialPack": {
         "packId": "puzzle-board-sorting-tray-gift-pairs-launch",
@@ -472,6 +559,7 @@
         "socialLaunchPackReviewed": true,
         "affiliateRegistryEnforced": true,
         "affiliateLinkApprovalEnforced": true,
+        "founderSafetyPolicyEnforced": true,
         "allArtifactsHashBound": true
       }
     },
@@ -489,6 +577,8 @@
       "independentReviewPath": "research/reviews/20261018-read-it-then-play-it-c437f208.qa.v1.json",
       "independentReviewSha256": "50f9adf5cd650ae9d63ca4818d46f813a365bf0ada48edc64391712fa4bda070",
       "reviewedEvidenceSha256": "f12d4375585d9f8101f461eb996955b01b9e03118602baed20bd420e84dffcf5",
+      "founderSafetyPosture": "not_required",
+      "founderSafetyApproval": null,
       "mission": null,
       "socialPack": {
         "packId": "read-it-then-play-it-gift-pairs-launch",
@@ -539,6 +629,7 @@
         "socialLaunchPackReviewed": true,
         "affiliateRegistryEnforced": true,
         "affiliateLinkApprovalEnforced": true,
+        "founderSafetyPolicyEnforced": true,
         "allArtifactsHashBound": true
       }
     },
@@ -556,6 +647,8 @@
       "independentReviewPath": "research/reviews/20260803-useful-gifts-hard-to-shop-for-adults-ceca335c.qa.v1.json",
       "independentReviewSha256": "3e376c10f43bf56aae09ed9ccc456b92d40bcf565858b9e8437570f604b90e27",
       "reviewedEvidenceSha256": "d2e2ab1623ab6cb3e7d50a158886b949b180a3ae2cdd793d1bd1a2de1a393bf8",
+      "founderSafetyPosture": "not_required",
+      "founderSafetyApproval": null,
       "mission": null,
       "socialPack": {
         "packId": "useful-gifts-for-hard-to-shop-for-adults-launch",
@@ -582,6 +675,7 @@
         "socialLaunchPackReviewed": true,
         "affiliateRegistryEnforced": true,
         "affiliateLinkApprovalEnforced": true,
+        "founderSafetyPolicyEnforced": true,
         "allArtifactsHashBound": true
       }
     }
