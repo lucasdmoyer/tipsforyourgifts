@@ -5,25 +5,25 @@
   "hostingChannel": "live",
   "productionUrl": "https://tipsforyourgifts.web.app/",
   "status": "verified_managed_content_release",
-  "updatedAt": "2026-08-31T18:24:14.891Z",
+  "updatedAt": "2026-11-22T06:16:08.292Z",
   "latestVerifiedContentRelease": {
-    "receiptId": "firebase-6fed7c2a9898-33424522855-1",
-    "receiptPath": "releases/receipts/firebase-6fed7c2a9898-33424522855-1.json",
-    "receiptSha256": "c8d02f502cc39c6317e488d95a40d09e993dea452f0a58f4168ec064982c5fac",
-    "releaseSha": "6fed7c2a9898eeb03f0ad78020c398c5c9b4cdd7",
+    "receiptId": "firebase-90aa88bdbbc2-44992730111-1",
+    "receiptPath": "releases/receipts/firebase-90aa88bdbbc2-44992730111-1.json",
+    "receiptSha256": "2b0ea60fa2db96063847d8314ba31133f14a85c75a792c15ddbe9ea1f59dcb5d",
+    "releaseSha": "90aa88bdbbc2319f8b94eeb5c6f2c87736ee9a65",
     "releaseMode": "founder_reviewed",
     "sourceWorkflow": "firebase-production",
-    "workflowRunUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/runs/33424522855",
-    "createdAt": "2026-08-31T18:24:14.891Z",
-    "productionVerifiedAt": "2026-08-31T18:24:14.891Z",
+    "workflowRunUrl": "https://github.com/lucasdmoyer/tipsforyourgifts/actions/runs/44992730111",
+    "createdAt": "2026-11-22T06:16:08.292Z",
+    "productionVerifiedAt": "2026-11-22T06:16:08.292Z",
     "publicationManifest": {
-      "manifestId": "publication-set-0e33c0313ad4afec",
-      "sha256": "cf7a4bb1c1d9ffab1fc389958fa3800da11ad1507d8279d694f9f578771fd9f9",
-      "contentSetSha256": "0e33c0313ad4afeca7b72b10d0895f51f9f62895b51cabb36924efeced9a0ba5",
+      "manifestId": "publication-set-8e8287a5ec7db534",
+      "sha256": "b601cd6bf024469fbdfbc690411552d454c38913cfea8e2328c142522fde1d59",
+      "contentSetSha256": "8e8287a5ec7db534c5c2255d15cca7c050aed88bc63df25a0fdd46aecda2dae6",
       "articles": 10,
       "independentReviews": 10,
-      "affiliateLinks": 0
+      "affiliateLinks": 1
     },
-    "rollbackChannel": "rollback-6fed7c2a9898-33424522855-1"
+    "rollbackChannel": "rollback-90aa88bdbbc2-44992730111-1"
   }
 }

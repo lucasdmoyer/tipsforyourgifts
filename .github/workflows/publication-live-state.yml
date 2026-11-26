@@ -49,13 +49,13 @@ jobs:
         with:
           ref: master
           fetch-depth: 0
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         if: steps.discover.outputs.found == 'true'
         with:
           node-version: "24.14.0"
           cache: npm
           cache-dependency-path: web/package-lock.json
-      - uses: actions/download-artifact@v5
+      - uses: actions/download-artifact@v8
         if: steps.discover.outputs.found == 'true'
         with:
           github-token: ${{ github.token }}
@@ -85,7 +85,7 @@ jobs:
           git add -N .
           while IFS= read -r changed_path; do
             case "$changed_path" in
-              web/config/live-publication.json|web/releases/receipts/*.json|web/src/data/operations.json|web/src/app/generated/content.generated.ts) ;;
+              web/config/live-publication.json|web/releases/receipts/*.json|web/src/data/operations.json|web/src/app/generated/content.generated.ts|web/src/app/generated/studio.generated.ts) ;;
               *) echo "Live-state synchronization changed forbidden path: $changed_path" >&2; exit 1 ;;
             esac
           done < <(git diff --name-only HEAD)
@@ -102,7 +102,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git switch -c "codex/record-live-content-$RUN_ID"
-          git add web/config/live-publication.json "web/$RECEIPT_PATH" web/src/data/operations.json web/src/app/generated/content.generated.ts
+          git add web/config/live-publication.json "web/$RECEIPT_PATH" web/src/data/operations.json web/src/app/generated/content.generated.ts web/src/app/generated/studio.generated.ts
           git commit -m "Record verified Firebase live content"
           git push origin "codex/record-live-content-$RUN_ID"
       - name: Open and check-gate the receipt pull request

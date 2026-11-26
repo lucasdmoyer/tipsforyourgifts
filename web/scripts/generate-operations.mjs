@@ -6,9 +6,16 @@ import matter from './lib/front-matter.mjs';
 import { affiliateCoverageSchema } from './lib/affiliate-coverage-contract.mjs';
 import { affiliateEnrollmentReadinessSchema, buildAffiliateEnrollmentReadiness } from './lib/affiliate-enrollment-contract.mjs';
 import { affiliateActivationProposalSchema, validateAffiliateActivationProposals } from './lib/affiliate-activation-proposal-contract.mjs';
+import { validateAffiliateExpansionRequests } from './lib/affiliate-expansion-request-contract.mjs';
+import { buildAiAutomationPolicySummary, parseAiAutomationPolicy } from './lib/ai-automation-policy-contract.mjs';
+import { automationReadinessEvidenceSchema, buildAutomationReadiness } from './lib/automation-readiness-contract.mjs';
+import { buildCommercialScorecard } from './lib/commercial-scorecard.mjs';
 import { buildEditorialReviewQueue } from './lib/editorial-review-queue-contract.mjs';
+import { assessEditorialSafetyApproval, reviewedContentDigests } from './lib/editorial-safety-contract.mjs';
+import { latestEditorialSafetyApproval, loadEditorialSafetyApprovalRecords } from './lib/editorial-safety-store.mjs';
 import { buildFounderAgenda } from './lib/founder-agenda-contract.mjs';
 import { loadAffiliateLinkState } from './lib/affiliate-link-contract.mjs';
+import { summarizeDurableFounderReviewedReleaseReceipts } from './lib/publication-receipt-contract.mjs';
 
 const root = process.cwd();
 const runsDir = path.join(root, 'research', 'runs');
@@ -29,29 +36,33 @@ const affiliateCoveragePath = path.join(root, 'public', 'affiliate-product-cover
 const affiliateEnrollmentPath = path.join(root, 'public', 'affiliate-enrollment-readiness.json');
 const affiliateEnrollmentPlanPath = path.join(root, 'config', 'affiliate-enrollment-plans.json');
 const affiliateActivationProposalPath = path.join(root, 'config', 'affiliate-activation-proposals.json');
+const affiliateExpansionRequestPath = path.join(root, 'config', 'affiliate-expansion-requests.json');
 const socialChannelsPath = path.join(root, 'config', 'social-channels.json');
 const livePublicationPath = path.join(root, 'config', 'live-publication.json');
 const publicationPolicyPath = path.join(root, 'config', 'publication-policy.json');
 const opportunityPolicyPath = path.join(root, 'config', 'opportunity-scout-policy.json');
+const automationReadinessPath = path.join(root, 'config', 'automation-readiness.json');
+const aiAutomationPolicyPath = path.join(root, 'config', 'ai-automation-policy.json');
 const publicationManifestPath = path.join(root, 'public', 'publication-manifest.json');
+const publicationReceiptDir = path.join(root, 'releases', 'receipts');
 const outputPath = path.join(root, 'src', 'data', 'operations.json');
 
 const runNames = (await fs.readdir(runsDir)).filter((name) => name.endsWith('.json')).sort();
 const runRecords = await Promise.all(runNames.map(async (name) => {
   const raw = await fs.readFile(path.join(runsDir, name));
-  return { name, data: JSON.parse(raw), sha256: createHash('sha256').update(raw).digest('hex') };
+  return { name, raw, data: JSON.parse(raw.toString('utf8')), sha256: createHash('sha256').update(raw).digest('hex') };
 }));
 const runs = runRecords.map((record) => record.data);
 const articleNames = (await fs.readdir(blogDir)).filter((name) => name.endsWith('.md')).sort();
 const articleRecords = await Promise.all(articleNames.map(async (name) => {
   const raw = await fs.readFile(path.join(blogDir, name));
-  return { name, data: matter(raw.toString('utf8')).data, sha256: createHash('sha256').update(raw).digest('hex') };
+  return { name, raw, data: matter(raw.toString('utf8')).data, sha256: createHash('sha256').update(raw).digest('hex') };
 }));
 const articles = articleRecords.map((record) => record.data);
 const socialNames = (await fs.readdir(socialDir)).filter((name) => name.endsWith('.json')).sort();
 const socialPacks = await Promise.all(socialNames.map(async (name) => {
   const raw = await fs.readFile(path.join(socialDir, name));
-  return { ...JSON.parse(raw), name, sha256: createHash('sha256').update(raw).digest('hex') };
+  return { ...JSON.parse(raw.toString('utf8')), name, raw, sha256: createHash('sha256').update(raw).digest('hex') };
 }));
 let socialApprovalNames = [];
 try { socialApprovalNames = (await fs.readdir(socialApprovalDir)).filter((name) => name.endsWith('.json')); } catch {}
@@ -103,6 +114,11 @@ const affiliateActivationProposals = validateAffiliateActivationProposals({
   articles: articleRecords.map((record) => ({ ...record.data, slug: record.name.replace(/\.md$/, '') })),
   evidenceRecords: affiliateActivationEvidenceRecords
 });
+const affiliateExpansionRequests = await validateAffiliateExpansionRequests({
+  root,
+  document: JSON.parse(await fs.readFile(affiliateExpansionRequestPath, 'utf8')),
+  affiliate
+});
 const affiliateLinkState = await loadAffiliateLinkState(root);
 const socialChannelsRaw = await fs.readFile(socialChannelsPath);
 const socialChannels = JSON.parse(socialChannelsRaw.toString('utf8'));
@@ -110,7 +126,43 @@ const socialChannelsSha256 = createHash('sha256').update(socialChannelsRaw).dige
 const livePublication = JSON.parse(await fs.readFile(livePublicationPath, 'utf8'));
 const publicationPolicy = JSON.parse(await fs.readFile(publicationPolicyPath, 'utf8'));
 const opportunityPolicy = JSON.parse(await fs.readFile(opportunityPolicyPath, 'utf8'));
+const automationReadinessEvidence = automationReadinessEvidenceSchema.parse(JSON.parse(await fs.readFile(automationReadinessPath, 'utf8')));
+const aiAutomationPolicyRaw = await fs.readFile(aiAutomationPolicyPath);
+const aiAutomationPolicySha256 = createHash('sha256').update(aiAutomationPolicyRaw).digest('hex');
+const aiAutomationPolicySummary = buildAiAutomationPolicySummary(parseAiAutomationPolicy(JSON.parse(aiAutomationPolicyRaw.toString('utf8'))));
+const aiAutomationBudgetWorkflowUrl = 'https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/ai-automation-budget-configure.yml';
+const aiAutomationCredentialWorkflowUrl = 'https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/ai-automation-credential-verify.yml';
+const aiAutomationActivationWorkflowUrl = 'https://github.com/lucasdmoyer/tipsforyourgifts/actions/workflows/ai-automation-activate.yml';
+const aiAutomationPolicy = {
+  ...aiAutomationPolicySummary,
+  policySha256: aiAutomationPolicySha256,
+  budgetConfiguration: {
+    available: aiAutomationPolicySummary.status === 'awaiting_founder_platform_budget',
+    workflowUrl: aiAutomationBudgetWorkflowUrl,
+    confirmation: 'CONFIGURE-ai-automation-budget',
+    evidenceMode: 'founder_attested_external_platform_configuration',
+    command: `gh workflow run ai-automation-budget-configure.yml --repo lucasdmoyer/tipsforyourgifts --ref master -f expected_policy_sha256=${aiAutomationPolicySha256} -f monthly_budget_usd='<APPROVED_HARD_LIMIT_USD>' -f hard_limit_enabled=true -f alert_threshold_usd='<APPROVED_ALERT_USD>' -f platform_evidence_url='<OPENAI_PLATFORM_SETTINGS_URL>' -f confirmation='CONFIGURE-ai-automation-budget'`
+  },
+  credentialVerification: {
+    available: aiAutomationPolicySummary.status === 'budget_approved_awaiting_credential',
+    workflowUrl: aiAutomationCredentialWorkflowUrl,
+    confirmation: 'VERIFY-ai-automation-credential',
+    method: 'openai_models_endpoint',
+    endpoint: 'https://api.openai.com/v1/models',
+    command: `gh workflow run ai-automation-credential-verify.yml --repo lucasdmoyer/tipsforyourgifts --ref master -f expected_policy_sha256=${aiAutomationPolicySha256} -f confirmation='VERIFY-ai-automation-credential'`
+  },
+  policyActivation: {
+    available: aiAutomationPolicySummary.status === 'credential_verified_awaiting_activation',
+    workflowUrl: aiAutomationActivationWorkflowUrl,
+    confirmation: 'ACTIVATE-ai-automation',
+    command: `gh workflow run ai-automation-activate.yml --repo lucasdmoyer/tipsforyourgifts --ref master -f expected_policy_sha256=${aiAutomationPolicySha256} -f confirmation='ACTIVATE-ai-automation'`
+  }
+};
 const publicationManifest = JSON.parse(await fs.readFile(publicationManifestPath, 'utf8'));
+const publicationReceiptNames = (await fs.readdir(publicationReceiptDir)).filter((name) => name.endsWith('.json')).sort();
+const publicationReceipts = await Promise.all(publicationReceiptNames.map(async (name) => JSON.parse(await fs.readFile(path.join(publicationReceiptDir, name), 'utf8'))));
+const durableFounderReviewedReleaseSummary = summarizeDurableFounderReviewedReleaseReceipts(publicationReceipts);
+const editorialSafetyApprovals = await loadEditorialSafetyApprovalRecords(root);
 
 const validatedRuns = runs.filter((run) => run.status === 'validated').length;
 const publicationReadyPosts = articles.filter((article) => article.status === 'publication_ready').length;
@@ -174,6 +226,18 @@ const editorialReviewQueue = buildEditorialReviewQueue(runRecords
     const articleRecord = articleRecordByRun.get(record.data.runId);
     if (!articleRecord) throw new Error(`${record.data.runId}: editorial review queue cannot find its article`);
     const socialPack = socialPackByRun.get(record.data.runId);
+    const latestSafetyApproval = latestEditorialSafetyApproval(editorialSafetyApprovals, record.data.runId);
+    const safetyAssessment = latestSafetyApproval
+      ? assessEditorialSafetyApproval({
+        approval: latestSafetyApproval.data,
+        run: record.data,
+        currentReviewedContentSha256: reviewedContentDigests({
+          run: record.data,
+          articleRaw: articleRecord.raw,
+          socialRaw: socialPack?.raw ?? null
+        })
+      })
+      : null;
     return {
       run: record.data,
       runPath: `research/runs/${record.name}`,
@@ -181,7 +245,15 @@ const editorialReviewQueue = buildEditorialReviewQueue(runRecords
       articlePath: `src/data/blog/${articleRecord.name}`,
       articleSha256: articleRecord.sha256,
       socialPath: socialPack ? `social/drafts/${socialPack.name}` : null,
-      socialSha256: socialPack?.sha256 ?? null
+      socialSha256: socialPack?.sha256 ?? null,
+      safetyApproval: latestSafetyApproval ? {
+        status: safetyAssessment.status,
+        revision: latestSafetyApproval.data.approvalRevision,
+        decision: latestSafetyApproval.data.decision,
+        reviewedAt: latestSafetyApproval.data.reviewedAt,
+        path: latestSafetyApproval.path,
+        sha256: latestSafetyApproval.sha256
+      } : null
     };
   }));
 const socialPublished = socialPublications.length;
@@ -243,6 +315,7 @@ const proposedGrowthExperiments = growth.experiments.filter((experiment) => expe
 const approvedGrowthExperiments = growth.experiments.filter((experiment) => experiment.founderDisposition === 'approved').length;
 const runningGrowthExperiments = growth.experiments.filter((experiment) => experiment.status === 'running').length;
 const latestGrowthSnapshot = [...growth.snapshots].sort((left, right) => right.periodEnd.localeCompare(left.periodEnd))[0];
+const commercialScorecard = buildCommercialScorecard(growth);
 const measurementStatus = activeGrowthConnectors === 0
   ? 'not_connected'
   : latestGrowthSnapshot ? 'measured' : 'awaiting_snapshot';
@@ -291,6 +364,7 @@ const sourceDates = [
   ...affiliateLinkState.candidates.map((record) => record.data.createdAt),
   ...affiliateLinkState.reviews.map((record) => record.data.reviewedAt),
   ...affiliateLinkState.approvals.map((record) => record.data.approvedAt),
+  ...editorialSafetyApprovals.map((record) => record.data.reviewedAt),
   ...articles.flatMap((article) => [article.publishDate, article.updatedDate]).filter(Boolean)
 ].map((value) => new Date(value).valueOf()).filter(Number.isFinite);
 const generatedAt = new Date(Math.max(...sourceDates)).toISOString();
@@ -317,10 +391,24 @@ const founderAgenda = buildFounderAgenda({
     queue: affiliateLinkQueue
   }
 });
+const automationReadiness = buildAutomationReadiness({
+  evidence: automationReadinessEvidence,
+  validatedRuns,
+  publicationReadyPosts,
+  activeAffiliateOverlays: affiliateLinkState.counts.activeOverlays,
+  activeSocialChannels,
+  socialDrafts,
+  activeGrowthConnectors,
+  growthSnapshots: growth.snapshots.length,
+  durableFounderReviewedReleases: durableFounderReviewedReleaseSummary.uniqueReleaseCount,
+  minimumFounderReviewedReleases: publicationPolicy.automaticPromotion.minimumSuccessfulFounderReviewedReleases
+});
 
 const operations = {
   generatedAt,
   founderAgenda,
+  automationReadiness,
+  aiAutomationPolicy,
   researchRuns: runs.length,
   validatedRuns,
   publicationReadyPosts,
@@ -443,6 +531,7 @@ const operations = {
     linkApprovals: affiliateLinkState.counts.approvals,
     activeOverlays: affiliateLinkState.counts.activeOverlays,
     activationProposals: affiliateActivationProposals.proposals,
+    expansionRequests: affiliateExpansionRequests.summaries,
     approvedOverlaySetSha256: publicationManifest.affiliatePosture.approvedOverlaySetSha256,
     linkQueue: affiliateLinkQueue,
     programs: [...affiliate.programs].sort((left, right) => left.priority - right.priority).map((program) => ({
@@ -557,10 +646,12 @@ const operations = {
     mode: publicationPolicy.mode,
     automaticPromotionEnabled: publicationPolicy.automaticPromotion.enabled,
     verifiedSuccessfulReleaseCount: publicationPolicy.automaticPromotion.verifiedSuccessfulReleaseCount,
+    durableVerifiedFounderReviewedReleaseCount: durableFounderReviewedReleaseSummary.uniqueReleaseCount,
     minimumSuccessfulFounderReviewedReleases: publicationPolicy.automaticPromotion.minimumSuccessfulFounderReviewedReleases,
     verifiedReleaseReceiptRequired: publicationPolicy.requiredGates.verifiedReleaseReceipt,
     receiptRetentionDays: 90,
     releaseEvidenceSource: 'github_production_deployments_at_enable_time',
+    durableReceiptEvidenceSource: 'repository_verified_publication_receipts',
     currentLive: {
       status: livePublication.status,
       updatedAt: livePublication.updatedAt,
@@ -581,6 +672,7 @@ const operations = {
       contentSetSha256: publicationManifest.contentSetSha256,
       articles: publicationManifest.counts.articles,
       independentReviews: publicationManifest.counts.independentReviews,
+      founderSafetyApprovals: publicationManifest.counts.founderSafetyApprovals,
       socialLaunchPacks: publicationManifest.counts.socialLaunchPacks,
       socialDrafts: publicationManifest.counts.socialDrafts,
       missionBoundArticles: publicationManifest.counts.missionBoundArticles,
@@ -599,6 +691,7 @@ const operations = {
     proposedExperiments: proposedGrowthExperiments,
     approvedExperiments: approvedGrowthExperiments,
     runningExperiments: runningGrowthExperiments,
+    commercialScorecard,
     searchConsole: (() => {
       const connector = growth.connectors.find((entry) => entry.id === 'search-console');
       return {

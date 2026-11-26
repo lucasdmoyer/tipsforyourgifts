@@ -21,7 +21,7 @@ Require 75 or better. Commission never changes the rank.
 
 ## Thoughtfulness score
 
-For schema 1.1, score each finalist out of 20: friction specificity 5, self-purchase logic 5, ownership ease 5, and recipient specificity 5. Require 15 or better with no component below 3. The scorecard must use an observation prompt, not assert private facts about a recipient.
+For schema 1.2, score each finalist out of 20: friction specificity 5, self-purchase logic 5, ownership ease 5, and recipient specificity 5. Require 15 or better with no component below 3. The scorecard must use an observation prompt, not assert private facts about a recipient. Historical schema 1.1 runs retain the same score rule.
 
 "They would not buy it" is not sufficient. Distinguish replacement inertia, research burden, a deferred small luxury, or coordination burden from simply not wanting the product.
 

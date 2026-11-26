@@ -32,6 +32,10 @@ idea -> researching -> drafted -> independent QA -> validated -> preview -> foun
           +---- blocked / qa_failed / rejected <-------+
 ```
 
+When a draft contains an explicitly classified high-risk claim, insert a founder language decision before final independent QA. The owner-only decision is an immutable, hash-bound Git artifact; it neither certifies the evidence nor authorizes publication. Rejected or stale language fails closed. Promotion and the publication manifest both require the latest approved decision to match the same reviewable content and exact high-risk claim hashes.
+
+That branch is deterministic: the initial research workflow routes high-risk drafts directly to a non-public founder-safety pull request and does not spend an independent-review model call or create a premature receipt. Auto-merge is always disabled for this route. After the approved language receipt merges, the separate editor produces a mission-bound receipt; a clean pass promotes the bundle and completes the original mission, while a failure changes neither the run nor article.
+
 A validated roundup requires at least 12 candidates, five finalists, five source classes, three research passes, two final passes below 10 percent material novelty, supported claims, an editorial score of at least 75, evidence confidence of at least 70, and a clean independent review.
 
 ## Publication architecture
@@ -40,9 +44,13 @@ Git is the content database. A research run and its matching Markdown article ar
 
 Each founder-started Codex workflow is represented by a versioned research mission receipt. The trusted envelope fixes the approved idea, base commit, team roles, required deliverables, quality thresholds, and publication policy before the drafting role begins. The independent review and completion scripts bind exact artifact hashes; a model response alone cannot complete a mission.
 
+Founder safety decisions live under `web/research/safety-approvals/`. Only the protected owner workflow may add a versioned decision. The deterministic promotion script and publication-manifest builder independently re-evaluate it, so copying an old approval or changing the reviewed language cannot advance a bundle.
+
+Independent editorial receipts are append-only revisions. New receipts bind both the exact review workflow and the trusted research mission when one exists. The evidence editor runs with read-only repository permission and returns structured findings only. A credential-free job creates `qa.vN`, preserves failed attempts, and promotes only a clean receipt whose hashes still match the run, article, and social pack. That job may open a pull request; it cannot merge or deploy.
+
 Mission completion advances the bundle to release preparation. While publication mode is founder reviewed, it still requires the exact-SHA pull request, Firebase preview, and founder merge decision. Once the separately approved automatic-after-proven policy is active, the same completion receipt can make the pull request eligible for required-check automatic merge.
 
-The GitHub research job has read-only repository permission while the OpenAI key is present. It serializes a patch, rejects edits outside content-only paths, and discards the credential. A second job with write permission applies the patch, reruns every gate without the AI credential, pushes a branch, and opens a pull request.
+The GitHub research job has read-only repository permission while the OpenAI key is present. Before the key is injected, a credential-free guard proves the versioned AI policy is active and the exact workflow/job is allowlisted; a second guard then verifies the credential immediately before the model action. The job serializes a patch, rejects edits outside content-only paths, and discards the credential. A second job with write permission applies the patch, reruns every gate without the AI credential, pushes a branch, and opens a pull request.
 
 The strategy-intake job follows the same separation. It accepts only an owner-authored `[Strategy]` issue, exposes the issue to the AI as untrusted data, permits at most one appended `proposed` idea, and regenerates only deterministic operating files. Approval is a different workflow with no AI credential; it advances the exact proposed revision and opens a founder-controlled pull request.
 
@@ -63,6 +71,14 @@ Paid links must be clearly disclosed, land on the intended product, preserve app
 ## Growth posture
 
 Start with high-intent owned content and Pinterest-ready creative because evergreen gift discovery maps well to visual search. AI may generate an original creative candidate and bind it to exact source and byte hashes, but that candidate remains unapproved until its stable Firebase URL is released and the founder records current media rights evidence. Social output remains gated until official accounts, platform policies, API credentials, and founder-approved cadence exist. Never automate browser posting or scrape private groups.
+
+The site also publishes a credential-free RSS feed generated deterministically from publication-ready articles. It contains only reader-facing titles, summaries, categories, and first-party article permalinks—never draft content, internal editorial evidence, product destinations, affiliate tracking, or Studio state. This provides an owned syndication path without changing editorial rankings or creating an external-account dependency.
+
+High-intent gift paths are also deterministic views over the publication-ready catalog. They group existing guides by public recipient signals or qualified pair coverage, require at least three shopping guides, and fail validation if a path becomes thin, duplicates another path, or includes a non-shopping editorial article. The paths create no new product claim and do not change recommendation order or affiliate eligibility.
+
+Every public article includes a reader-controlled sharing surface that uses the browser's native share sheet when available and otherwise copies only the stable first-party article URL. It carries deterministic aggregate event labels for future measurement but installs no analytics client, sends nothing automatically, and never changes or decorates merchant destinations.
+
+Every public article also receives a deterministic reader journey at build time: one visible breadcrumb back to the most specific matching gift path and exactly three publication-ready related guides. The generator prefers the same recipient path, excludes the current article and draft content, and stores no reader profile. These links are a distribution layer only; they do not change product ranking, affiliate eligibility, or the source article.
 
 Track content-level impressions, clicks, engaged sessions, outbound merchant clicks, approved affiliate conversions, revenue, and article age. The first decision is whether a page helps a reader; the second is whether qualified traffic grows; revenue comes after both.
 

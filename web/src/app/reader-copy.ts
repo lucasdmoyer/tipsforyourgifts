@@ -1,5 +1,7 @@
 import type { Article } from './content.types';
 
+type ReaderArticleMetadata = Pick<Article, 'slug' | 'title' | 'description' | 'tags'>;
+
 const INTERNAL_SECTION_PATTERN = /<h2>(?:Every finalist has to earn its place|Four pairs we rejected|Four pairs we left out|What did not qualify|What the research rejected|What we left out)<\/h2>[\s\S]*?(?=<h2>|$)/gi;
 
 export function readerLanguage(value: string) {
@@ -33,11 +35,11 @@ function compactReadAndPlayHtml(value: string) {
   return withHeading.replace(INTERNAL_SECTION_PATTERN, '');
 }
 
-export function readerDescription(article: Article) {
+export function readerDescription(article: ReaderArticleMetadata) {
   return article.description;
 }
 
-export function readerTitle(article: Article) {
+export function readerTitle(article: ReaderArticleMetadata) {
   return article.title;
 }
 
@@ -49,7 +51,7 @@ export function readerLead(article: Article) {
   return article.readerIntro?.lead ?? `If you know someone who likes ${article.audience}, start with what they already enjoy.`;
 }
 
-export function readerTags(article: Article) {
+export function readerTags(article: ReaderArticleMetadata) {
   if (article.slug === 'how-we-research-gifts') return ['thoughtful gifts', 'gift ideas', 'how to choose'];
   return article.tags;
 }

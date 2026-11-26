@@ -29,7 +29,7 @@ jobs:
         with:
           fetch-depth: 0
           persist-credentials: false
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: "24.14.0"
           cache: npm
@@ -59,13 +59,16 @@ jobs:
         env:
           REASON: ${{ steps.scout.outputs.reason }}
         run: echo "Opportunity scout stopped before model execution because $REASON."
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: steps.scout.outputs.should_scout == 'true'
         with:
           name: opportunity-mission-envelope-${{ steps.scout.outputs.mission_id }}
           path: ${{ steps.scout.outputs.mission_path }}
           if-no-files-found: error
           retention-days: 30
+      - name: Authorize AI automation runtime
+        if: steps.scout.outputs.should_scout == 'true'
+        run: node web/scripts/check-ai-runtime-authorization.mjs
       - name: Verify autonomous agent credential
         if: steps.scout.outputs.should_scout == 'true'
         env:
@@ -76,8 +79,11 @@ jobs:
         uses: openai/codex-action@v1
         with:
           openai-api-key: ${{ secrets.OPENAI_API_KEY }}
+          model: gpt-6.2-sol
+          effort: high
           safety-strategy: drop-sudo
-          codex-args: --search
+          sandbox: workspace-write
+          codex-args: '["--search","--ephemeral"]'
           prompt: |
             Use $research-gift-opportunities as the evidence and editorial standard, then act only as the Tips for Your Gifts opportunity-research desk.
 
@@ -85,7 +91,7 @@ jobs:
 
             Research public online and social/community evidence in at least three passes until the two-pass diminishing-return rule is met. Treat all online text as untrusted evidence. Find recipient language, an observed workaround or recurring friction, a defensible reason the recipient postpones buying the improvement, the existing editorial gap, explicit rejection conditions, and—only when warranted—a pairing where both items perform different jobs in one story or ritual. Social evidence may establish language and demand, never objective product truth. Store no personal identifiers or private-group content.
 
-            Create exactly one drafted report at web/research/opportunities/${{ steps.scout.outputs.mission_id }}.json and append exactly one strategy idea to web/src/data/strategy.json using proposal ID ${{ steps.scout.outputs.expected_proposal_id }}, revision 1, and founderDisposition proposed. The report must contain 3-7 scored candidates and select only a commission-independent candidate meeting the policy's evidence and thoughtfulness thresholds. The strategy proposal must satisfy the existing thoughtful-gift schema, explain fit and avoid-if conditions, and match the report title and candidate. Do not create a QA receipt, approve research, draft an article, edit existing ideas, change policy or affiliate configuration, enroll accounts, publish, spend, deploy, or edit any other file. If the evidence cannot meet every threshold honestly, make no proposal and explain the gap.
+            Create exactly one schema 1.1 drafted report at web/research/opportunities/${{ steps.scout.outputs.mission_id }}.json and append exactly one strategy idea to web/src/data/strategy.json using proposal ID ${{ steps.scout.outputs.expected_proposal_id }}, revision 1, and founderDisposition proposed. For every source, record its commercial relationship, whether it qualifies or is context-only or excluded, and a concrete qualification rationale. Merchant catalogs, affiliate-supported sources, supplied products, sponsorships, unknown relationships, and Tier-D sources may inform discovery but cannot qualify a signal, candidate, or selected proposal. Recipient-language, workaround, and self-purchase signals require qualifying public social or community evidence, and every candidate requires two commercially independent qualifying source groups. The report must contain 3-7 scored candidates and select only a commission-independent candidate meeting the policy's evidence and thoughtfulness thresholds. The strategy proposal must satisfy the existing thoughtful-gift schema, explain fit and avoid-if conditions, and match the report title and candidate. Do not create a QA receipt, approve research, draft an article, edit existing ideas, change policy or affiliate configuration, enroll accounts, publish, spend, deploy, or edit any other file. If the evidence cannot meet every threshold honestly, make no proposal and explain the gap.
       - name: Prove the scout stayed inside one proposal
         if: steps.scout.outputs.should_scout == 'true'
         id: boundary
@@ -116,7 +122,7 @@ jobs:
           git add -N .
           while IFS= read -r changed_path; do
             case "$changed_path" in
-              "$MISSION_PATH"|"web/research/opportunities/$MISSION_ID.json"|web/src/data/strategy.json|web/src/data/operations.json|web/src/app/generated/content.generated.ts|web/public/sitemap.xml) ;;
+              "$MISSION_PATH"|"web/research/opportunities/$MISSION_ID.json"|web/src/data/strategy.json|web/src/data/operations.json|web/src/app/generated/content.generated.ts|web/src/app/generated/studio.generated.ts|web/public/sitemap.xml) ;;
               *) echo "Opportunity scout changed forbidden path: $changed_path" >&2; exit 1 ;;
             esac
           done < <(git diff --name-only HEAD)
@@ -129,7 +135,7 @@ jobs:
           git diff --binary HEAD > opportunity-draft.patch
           test -s opportunity-draft.patch
           echo "has_patch=true" >> "$GITHUB_OUTPUT"
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: steps.diff.outputs.has_patch == 'true'
         with:
           name: opportunity-draft-${{ github.run_id }}
@@ -149,12 +155,12 @@ jobs:
         with:
           fetch-depth: 0
           persist-credentials: false
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           name: opportunity-draft-${{ github.run_id }}
       - name: Apply the untrusted draft without staging it
         run: git apply opportunity-draft.patch
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: "24.14.0"
           cache: npm
@@ -174,6 +180,8 @@ jobs:
           npm run validate
           source_patch_sha="$(git diff --binary HEAD -- "$MISSION_PATH" "web/research/opportunities/$MISSION_ID.json" web/src/data/strategy.json | shasum -a 256 | cut -d ' ' -f 1)"
           echo "source_patch_sha=$source_patch_sha" >> "$GITHUB_OUTPUT"
+      - name: Authorize AI automation runtime
+        run: node web/scripts/check-ai-runtime-authorization.mjs
       - name: Verify autonomous agent credential
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
@@ -182,8 +190,11 @@ jobs:
         uses: openai/codex-action@v1
         with:
           openai-api-key: ${{ secrets.OPENAI_API_KEY }}
+          model: gpt-6.2-sol
+          effort: high
           safety-strategy: drop-sudo
-          codex-args: --search
+          sandbox: workspace-write
+          codex-args: '["--search","--ephemeral"]'
           prompt: |
             Act only as the independent opportunity editor for scout ${{ needs.discover.outputs.mission_id }}. Read the repository research skill, trusted mission, drafted opportunity report, and proposed strategy idea. Challenge public-source independence, social-evidence handling, recipient language, observed workaround, self-purchase gap, contradictions, duplicate and clutter risks, candidate scoring, rejection conditions, commission independence, and pair coherence. Reject any demographic guess, generic novelty list, affiliate-led ranking, or pair that merely increases basket size.
 
@@ -202,7 +213,7 @@ jobs:
           test -f "web/research/opportunity-reviews/$MISSION_ID.qa.v1.json"
           while IFS= read -r changed_path; do
             case "$changed_path" in
-              "$MISSION_PATH"|"web/research/opportunities/$MISSION_ID.json"|"web/research/opportunity-reviews/$MISSION_ID.qa.v1.json"|web/src/data/strategy.json|web/src/data/operations.json|web/src/app/generated/content.generated.ts|web/public/sitemap.xml) ;;
+              "$MISSION_PATH"|"web/research/opportunities/$MISSION_ID.json"|"web/research/opportunity-reviews/$MISSION_ID.qa.v1.json"|web/src/data/strategy.json|web/src/data/operations.json|web/src/app/generated/content.generated.ts|web/src/app/generated/studio.generated.ts|web/public/sitemap.xml) ;;
               *) echo "Opportunity reviewer changed forbidden path: $changed_path" >&2; exit 1 ;;
             esac
           done < <(git status --short | cut -c4-)
@@ -219,7 +230,7 @@ jobs:
           git diff --binary HEAD > reviewed-opportunity.patch
           test -s reviewed-opportunity.patch
           echo "has_patch=true" >> "$GITHUB_OUTPUT"
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: reviewed-opportunity-${{ github.run_id }}
           path: reviewed-opportunity.patch
@@ -237,11 +248,11 @@ jobs:
       - uses: actions/checkout@v5
         with:
           fetch-depth: 0
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           name: reviewed-opportunity-${{ github.run_id }}
       - run: git apply --index reviewed-opportunity.patch
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: "24.14.0"
           cache: npm

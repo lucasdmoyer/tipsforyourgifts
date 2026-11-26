@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.1.0",
-  "updatedAt": "2026-08-23T19:50:08.618Z",
+  "updatedAt": "2026-11-23T10:03:56.000Z",
   "northStar": "Become the most trusted place to make a confident gift decision without wasting time or money.",
   "currentBet": "Build three evergreen recipient-intent guides around routines shoppers can actually observe: clean and dry muddy paws at the door, preserve a fiber-art work in progress and its exact stopping point, and move a cleaned vinyl record into a fresh sleeve instead of returning it to dust.",
   "thoughtfulnessFramework": {
@@ -623,6 +623,86 @@
         "minimumSocialAngles": 5
       },
       "researchBrief": "Research manual vinyl-cleaning plus fresh-inner-sleeve pairs for collectors with an observed queue of used or dusty records. Require exact record-format and material support, fluid and water instructions, label and drying controls, level workspace, batch size, replacement supplies, sleeve material and dimensions, jacket clearance, artwork retention, independent usefulness, and one clean-dry-rehouse interaction. Exclude unsupported media, invented preservation or sound claims, powered systems, exact current prices, and any workflow the recipient did not ask to maintain."
+    },
+    {
+      "id": "founder-idea-014",
+      "revision": 1,
+      "founderDisposition": "proposed",
+      "ideaType": "editorial",
+      "thesisType": "ritual_pairing",
+      "title": "Show the turn, mark the condition: a tabletop RPG combat pair",
+      "audience": "Someone buying for a game master who runs in-person tabletop RPG battles with miniatures or standees",
+      "occasion": "Birthday, holiday, campaign launch, first game-master milestone, or the start of a new in-person campaign",
+      "budget": "$20-$80",
+      "priority": "medium",
+      "insight": "The thoughtful upgrade removes two different facts from the game master's memory: a visible tracker shows whose turn comes next, while a removable marker shows which figure is affected right now.",
+      "observedFriction": "The game master rewrites turn order on scrap paper or a hidden note while temporary conditions live in memory, loose tokens, or improvised bottle rings, so players ask who is next and effects can be missed during a crowded battle.",
+      "selfPurchaseReluctance": "Books, miniatures, maps, and dice feel like the exciting purchases; table-admin tools feel like boring infrastructure and require unglamorous research into rules, figure size, screen setup, and available table space.",
+      "fitSignals": [
+        "You have watched them run an in-person battle with miniatures or standees and pause to restate turn order or a temporary condition.",
+        "You know the exact game system and edition, whether they use a game-master screen, the figures on their table, and that they prefer physical rather than digital tracking."
+      ],
+      "avoidIf": [
+        "They play online, prefer theater-of-the-mind combat, already trust a digital tracker, or have a physical tracking system they use without friction.",
+        "The labels do not match the rules, the markers obscure or damage their figures, or the tracker consumes more screen or table space than the routine can justify."
+      ],
+      "pairing": {
+        "unifyingIdea": "Make both the next turn and the current effect visible at a glance without replacing the books, map, miniatures, or standees the group already trusts.",
+        "itemRoles": [
+          {
+            "item": "A reusable initiative tracker sized for the game master's screen or available table space",
+            "role": "The sequence layer that shows the current and upcoming turns to the game master and, when appropriate, the players."
+          },
+          {
+            "item": "System-compatible removable condition markers sized for the group's miniatures or standees",
+            "role": "The state layer that keeps a temporary effect attached to the exact creature it changes until that effect ends."
+          }
+        ],
+        "interactionMoment": "At the start of a battle, arrange the visible turn order; when a condition begins, place one readable marker on the affected figure, then remove it as soon as the effect ends.",
+        "compatibilityChecks": [
+          "Confirm the exact ruleset and edition, initiative structure, condition vocabulary, combatant capacity, reading distance, player visibility, and available game-master-screen or table dimensions.",
+          "Confirm miniature, base, or standee dimensions; marker stacking and removal; color and vision accessibility; storage; surface care; and that the accessories add less setup than the recipient's existing method."
+        ],
+        "coherenceScore": 90,
+        "clutterRisk": "A system-specific label set or bulky rail can become another box beside the campaign; both pieces must fit one observed combat routine and remain simpler than the paper, screen, or digital method already in use."
+      },
+      "successMetric": "Two independently qualified physical tracking pairs for different table setups, each with exact system, capacity, legibility, figure-fit, accessibility, storage, and duplicate checks",
+      "deliverables": {
+        "minimumFinalists": 4,
+        "minimumQualifiedPairs": 2,
+        "minimumSocialAngles": 5
+      },
+      "researchBrief": "Research reusable initiative-tracker plus removable condition-marker pairs for game masters who run in-person tabletop RPG battles with miniatures or standees. Require official rules evidence, exact system and edition, combatant capacity, terminology, player-facing legibility, screen or table footprint, figure and base fit, marker stacking and removal, color and vision accessibility, dry-erase or surface care, storage, independent usefulness, and one order-mark-remove interaction. Reject digital-only tables, theater-of-the-mind play, duplicate systems, wrong-edition labels, and accessories that add more setup than they remove."
+    },
+    {
+      "id": "founder-idea-015",
+      "revision": 1,
+      "founderDisposition": "proposed",
+      "ideaType": "editorial",
+      "thesisType": "recipient_friction",
+      "title": "Press it, hold it, keep it flat: a quilter's clapper upgrade",
+      "audience": "Someone buying for a quilter or sewist who presses seams, fights bulky intersections, or improvises a flat weight while the fabric cools",
+      "occasion": "Birthday, holiday, first quilt milestone, sewing-room upgrade, or return to a paused sewing hobby",
+      "budget": "$15-$75",
+      "priority": "high",
+      "insight": "They already own the general-purpose iron; the thoughtful gift is the narrow specialty tool that holds a difficult seam flat as it cools without replacing the pressing routine they trust.",
+      "observedFriction": "Freshly pressed seams or bulky intersections lift again, so the recipient repeats the pressing step, holds the fabric by hand, or improvises with a cutting board or another smooth flat weight.",
+      "selfPurchaseReluctance": "A hardwood block can look too simple to justify buying, easy to improvise, and less exciting than fabric or a new pattern even when it would improve a step the recipient repeats throughout a project.",
+      "fitSignals": [
+        "You have watched them press quilt or garment seams and then place a board, book, ruler, or other flat object over a difficult intersection while it cools.",
+        "They have mentioned seams that will not stay flat, bulky joins, repeated pressing, or curiosity about a clapper, and you can confirm they do not already own a preferred one."
+      ],
+      "avoidIf": [
+        "They rarely press seams, already own a clapper or trusted pressing system, or primarily work with materials for which pressure, heat, or steam is inappropriate.",
+        "The exact product lacks a smooth unfinished pressing surface, verified dimensions and material, clean independently purchased evidence, or fabric-appropriate use guidance."
+      ],
+      "successMetric": "Five independently qualified exact-product clapper finalists with reconciled dimensions, material, finish, grip, storage, fabric-boundary, duplicate, and ownership-burden checks",
+      "deliverables": {
+        "minimumFinalists": 5,
+        "minimumQualifiedPairs": 0,
+        "minimumSocialAngles": 5
+      },
+      "researchBrief": "Research the quilter's and tailor's clapper category for a gift shopper who has observed repeated seam pressing or an improvised cooling weight. Compare exact products only after confirming manufacturer identity, dimensions, hardwood or other material, pressing-surface finish, smoothness, grip, weight, storage, care, and fabric-appropriate heat and steam boundaries. Require qualifying public recipient-language and workaround evidence plus two commercially independent, independently purchased exact-product sources for each finalist. Treat merchants, merchant-hosted reviews, affiliate-supported reviews, supplied products, sponsorships, unknown relationships, and category-only guidance as context rather than ranking evidence. Reconcile any SKU or size disagreement, do not preselect Riley Blake, name the pile or hair-fabric pressure warning, and reject a clapper when the recipient already owns one or the actual pressing routine does not support it."
     }
   ]
 }

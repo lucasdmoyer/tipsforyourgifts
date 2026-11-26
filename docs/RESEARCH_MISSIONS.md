@@ -26,6 +26,10 @@ Before Codex receives a key, the trusted workflow writes `web/research/missions/
 
 The drafting agent cannot edit that envelope. A separate editor can create only the hash-bound QA receipt. Trusted scripts promote the reviewed bundle and complete the mission receipt with the exact SHA-256 digest of every output.
 
+Before the first evidence-editor call, a trusted router checks the run's explicit claim risk. Low-risk work continues directly to independent QA. High-risk work opens a non-public founder-safety handoff with no review receipt and no auto-merge; after the exact language is approved, the separate recheck workflow resumes the same started mission.
+
+Review receipts use immutable revisions and bind their workflow plus mission provenance. A failed `qa.vN` remains in Git; a later review writes `qa.vN+1` and cannot overwrite the earlier evidence. Promotion records the exact passing receipt path in the run and, when a mission exists, in the mission completion record.
+
 ## Team handoffs
 
 1. **Research editorial team — draft only.** Deep public research, typed claim ledger, qualified finalists, thoughtful-fit analysis, article, and draft social pack.
@@ -39,10 +43,13 @@ A completed mission proves that one versioned research bundle passed independent
 
 The current publication policy is `founder_reviewed`. After ten verified founder-reviewed releases and a separate founder approval, the repository can switch to `automatic_after_proven`; at that point, a completed mission becomes eligible for check-gated automatic merge. The generated publication manifest binds the mission's exact content and QA artifacts into the release-candidate set, but remains preparation evidence only. Production deployment still requires the exact commit, an exact-SHA Firebase candidate, a cloned rollback channel, live smoke, and a validated release receipt that binds the deployed manifest bytes.
 
+`npm --prefix web run test:autonomous-handoff-gate` protects this whole control chain as one contract: exact strategy approval on `master`, trusted research dispatch, separate drafting and independent-QA model jobs, a credential-free pull-request writer, high-risk auto-merge refusal, proven-policy check-gated merge, and exact-preview-before-live Firebase publication. The test does not enable automatic publication or authorize a production mutation; it prevents those handoffs from silently drifting apart.
+
 ## Failure and retry behavior
 
 - Concurrency is keyed by idea ID so two missions cannot research the same approved thesis simultaneously.
 - The initial mission envelope is uploaded before the model runs, preserving the intended scope when research fails or returns no patch.
 - A retry receives a new mission ID because the workflow attempt is part of the identity.
 - The quality job rejects a changed envelope, multiple run artifacts, forbidden paths, self-review, changed evidence after review, or a failed deterministic gate.
+- A high-risk draft is preserved as a reviewable Git handoff rather than disappearing when immediate promotion is forbidden; its mission remains started until the post-approval editor passes it.
 - A completed receipt never authorizes affiliate enrollment, credential creation, account configuration, social posting, or production mutation.

@@ -4,6 +4,8 @@ import path from 'node:path';
 import matter from './front-matter.mjs';
 import { z } from 'zod';
 import { loadAffiliateLinkState } from './affiliate-link-contract.mjs';
+import { editorialSafetyPolicySchema, highRiskClaimsForRun, requireCurrentFounderSafetyApproval, reviewedContentDigests } from './editorial-safety-contract.mjs';
+import { latestEditorialSafetyApproval, loadEditorialSafetyApprovalRecords } from './editorial-safety-store.mjs';
 
 const sha256Schema = z.string().regex(/^[a-f0-9]{64}$/);
 const slugSchema = z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/);
@@ -41,6 +43,23 @@ const visualAssetEntrySchema = z.object({
   path: z.string().regex(/^blog-images\/[a-z0-9]+(?:-[a-z0-9]+)*\/[a-z0-9]+(?:-[a-z0-9]+)*\.webp$/),
   sha256: sha256Schema
 }).strict();
+const founderSafetyApprovalEntrySchema = z.object({
+  approvalId: z.string().regex(/^\d{8}-[a-z0-9-]+-[a-f0-9]{8}-founder-safety-v[1-9]\d*$/),
+  approvalRevision: z.number().int().positive(),
+  path: z.string().regex(/^research\/safety-approvals\/\d{8}-[a-z0-9-]+-[a-f0-9]{8}\.founder-safety\.v[1-9]\d*\.json$/),
+  sha256: sha256Schema,
+  reviewedAt: z.string().datetime(),
+  decision: z.literal('approved'),
+  reviewedContentSha256: z.object({
+    run: sha256Schema,
+    article: sha256Schema,
+    social: sha256Schema.nullable()
+  }).strict(),
+  highRiskClaims: z.array(z.object({
+    claimId: z.string().min(4),
+    claimSha256: sha256Schema
+  }).strict()).min(1)
+}).strict();
 const articleEntrySchema = z.object({
   articleSlug: slugSchema,
   title: z.string().min(12),
@@ -52,9 +71,11 @@ const articleEntrySchema = z.object({
   researchRunId: runIdSchema,
   researchRunPath: z.string().regex(/^research\/runs\/\d{8}-[a-z0-9-]+-[a-f0-9]{8}\.json$/),
   researchRunSha256: sha256Schema,
-  independentReviewPath: z.string().regex(/^research\/reviews\/\d{8}-[a-z0-9-]+-[a-f0-9]{8}\.qa\.v1\.json$/),
+  independentReviewPath: z.string().regex(/^research\/reviews\/\d{8}-[a-z0-9-]+-[a-f0-9]{8}\.qa\.v[1-9]\d*\.json$/),
   independentReviewSha256: sha256Schema,
   reviewedEvidenceSha256: sha256Schema,
+  founderSafetyPosture: z.enum(['not_required', 'legacy_independent_review_only', 'approved_current']),
+  founderSafetyApproval: founderSafetyApprovalEntrySchema.nullable(),
   mission: missionSchema.nullable(),
   socialPack: socialPackSchema.nullable(),
   editorialScore: z.number().min(75).max(100),
@@ -73,12 +94,13 @@ const articleEntrySchema = z.object({
     socialLaunchPackReviewed: z.literal(true).nullable(),
     affiliateRegistryEnforced: z.literal(true),
     affiliateLinkApprovalEnforced: z.literal(true),
+    founderSafetyPolicyEnforced: z.literal(true),
     allArtifactsHashBound: z.literal(true)
   }).strict()
 }).strict();
 
 export const publicationManifestSchema = z.object({
-  schemaVersion: z.literal('1.2.0'),
+  schemaVersion: z.literal('1.3.0'),
   manifestId: z.string().regex(/^publication-set-[a-f0-9]{16}$/),
   generatedAt: z.string().datetime(),
   status: z.literal('release_candidate'),
@@ -90,6 +112,8 @@ export const publicationManifestSchema = z.object({
     articles: z.number().int().positive(),
     researchRuns: z.number().int().positive(),
     independentReviews: z.number().int().positive(),
+    founderSafetyApprovals: z.number().int().nonnegative(),
+    legacyHighRiskIndependentReviewOnly: z.number().int().nonnegative(),
     socialLaunchPacks: z.number().int().nonnegative(),
     socialDrafts: z.number().int().nonnegative(),
     missionBoundArticles: z.number().int().nonnegative(),
@@ -105,6 +129,13 @@ export const publicationManifestSchema = z.object({
     generator: z.literal('openai-built-in-imagegen'),
     rightsPosture: z.literal('founder-approved-original-ai-generated'),
     assets: z.array(visualAssetEntrySchema).min(1)
+  }).strict(),
+  editorialSafetyPosture: z.object({
+    policyPath: z.literal('config/editorial-safety-policy.json'),
+    policySha256: sha256Schema,
+    effectiveAt: z.string().datetime(),
+    legacyDisposition: z.literal('independent_review_only_not_founder_approved'),
+    legacyValidatedHighRiskRunIds: z.array(runIdSchema)
   }).strict(),
   affiliatePosture: z.object({
     registrySha256: sha256Schema,
@@ -125,6 +156,8 @@ export const publicationManifestSchema = z.object({
   let socialDrafts = 0;
   let missionBound = 0;
   let affiliateLinks = 0;
+  let founderSafetyApprovals = 0;
+  let legacyHighRiskIndependentReviewOnly = 0;
   for (const [index, article] of manifest.articles.entries()) {
     if (slugs.has(article.articleSlug)) context.addIssue({ code: z.ZodIssueCode.custom, path: ['articles', index, 'articleSlug'], message: 'article slugs must be unique' });
     if (runIds.has(article.researchRunId)) context.addIssue({ code: z.ZodIssueCode.custom, path: ['articles', index, 'researchRunId'], message: 'research runs must map to exactly one article' });
@@ -132,6 +165,9 @@ export const publicationManifestSchema = z.object({
     runIds.add(article.researchRunId);
     if (article.route !== `/blog/${article.articleSlug}`) context.addIssue({ code: z.ZodIssueCode.custom, path: ['articles', index, 'route'], message: 'article route must match slug' });
     if (article.mission) missionBound += 1;
+    if (article.founderSafetyApproval) founderSafetyApprovals += 1;
+    if (article.founderSafetyPosture === 'legacy_independent_review_only') legacyHighRiskIndependentReviewOnly += 1;
+    if ((article.founderSafetyPosture === 'approved_current') !== (article.founderSafetyApproval !== null)) context.addIssue({ code: z.ZodIssueCode.custom, path: ['articles', index, 'founderSafetyApproval'], message: 'current approval posture must bind exactly one approval record' });
     if (article.socialPack) {
       socialPacks += 1;
       socialDrafts += article.socialPack.postCount;
@@ -144,6 +180,8 @@ export const publicationManifestSchema = z.object({
     articles: manifest.articles.length,
     researchRuns: runIds.size,
     independentReviews: manifest.articles.length,
+    founderSafetyApprovals,
+    legacyHighRiskIndependentReviewOnly,
     socialLaunchPacks: socialPacks,
     socialDrafts,
     missionBoundArticles: missionBound,
@@ -161,7 +199,9 @@ export const publicationManifestSchema = z.object({
   if (publishedVisualIds.size !== usedVisualIds.size || [...usedVisualIds].some((id) => !publishedVisualIds.has(id))) context.addIssue({ code: z.ZodIssueCode.custom, path: ['visualPosture', 'assets'], message: 'visual posture must bind every and only released article asset' });
   const overlayEntries = manifest.articles.flatMap((article) => article.affiliateLinks.map((link) => ({ articleSlug: article.articleSlug, ...link })));
   if (manifest.affiliatePosture.approvedOverlaySetSha256 !== canonicalSha256(overlayEntries)) context.addIssue({ code: z.ZodIssueCode.custom, path: ['affiliatePosture', 'approvedOverlaySetSha256'], message: 'approved overlay digest must bind all paid-link approval records' });
-  const expectedContentSetSha256 = canonicalSha256({ articles: manifest.articles, affiliatePosture: manifest.affiliatePosture, visualPosture: manifest.visualPosture });
+  const legacyRunIds = manifest.articles.filter((article) => article.founderSafetyPosture === 'legacy_independent_review_only').map((article) => article.researchRunId).sort();
+  if (JSON.stringify(legacyRunIds) !== JSON.stringify(manifest.editorialSafetyPosture.legacyValidatedHighRiskRunIds)) context.addIssue({ code: z.ZodIssueCode.custom, path: ['editorialSafetyPosture', 'legacyValidatedHighRiskRunIds'], message: 'legacy policy run IDs must match released legacy high-risk articles' });
+  const expectedContentSetSha256 = canonicalSha256({ articles: manifest.articles, affiliatePosture: manifest.affiliatePosture, editorialSafetyPosture: manifest.editorialSafetyPosture, visualPosture: manifest.visualPosture });
   if (manifest.contentSetSha256 !== expectedContentSetSha256) context.addIssue({ code: z.ZodIssueCode.custom, path: ['contentSetSha256'], message: 'content set SHA-256 must bind the canonical article and affiliate posture' });
   if (manifest.manifestId !== `publication-set-${manifest.contentSetSha256.slice(0, 16)}`) context.addIssue({ code: z.ZodIssueCode.custom, path: ['manifestId'], message: 'manifest ID must bind the content set SHA-256' });
 });
@@ -204,6 +244,9 @@ function reviewedArticleSha256(raw) {
 
 export async function buildPublicationManifest(root) {
   const affiliateLinkState = await loadAffiliateLinkState(root);
+  const editorialSafetyApprovalRecords = await loadEditorialSafetyApprovalRecords(root);
+  const editorialSafetyPolicyRaw = await fs.readFile(path.join(root, 'config', 'editorial-safety-policy.json'));
+  const editorialSafetyPolicy = editorialSafetyPolicySchema.parse(JSON.parse(editorialSafetyPolicyRaw.toString('utf8')));
   const visualRegistryRaw = await fs.readFile(path.join(root, 'visuals', 'article-visuals.json'));
   const visualRegistry = JSON.parse(visualRegistryRaw.toString('utf8'));
   if (visualRegistry.status !== 'founder_approved' || visualRegistry.styleVersion !== 'gift-thread-editorial-cartoon-v1.0' || visualRegistry.generator !== 'openai-built-in-imagegen' || visualRegistry.rightsPosture !== 'founder-approved-original-ai-generated') throw new Error('Visual registry is not in the approved Gift-Thread release posture');
@@ -228,6 +271,7 @@ export async function buildPublicationManifest(root) {
   const articleNames = (await fs.readdir(path.join(root, 'src', 'data', 'blog'))).filter((name) => name.endsWith('.md')).sort();
   const articles = [];
   const dates = [
+    editorialSafetyPolicy.effectiveAt,
     ...affiliateLinkState.candidates.map((record) => record.data.createdAt),
     ...affiliateLinkState.reviews.map((record) => record.data.reviewedAt),
     ...affiliateLinkState.approvals.map((record) => record.data.approvedAt)
@@ -253,6 +297,24 @@ export async function buildPublicationManifest(root) {
     const social = socialByRun.get(run.data.runId) ?? null;
     if (social && (social.data.articleSlug !== slug || social.data.status !== 'draft' || review.data.socialSha256 !== sha256(social.raw))) throw new Error(`${slug}: reviewed social launch pack changed`);
     if (!social && review.data.socialSha256 !== null) throw new Error(`${slug}: review expects a missing social launch pack`);
+    const currentReviewedContentSha256 = reviewedContentDigests({ run: run.data, articleRaw, socialRaw: social?.raw ?? null });
+    const latestSafetyRecord = latestEditorialSafetyApproval(editorialSafetyApprovalRecords, run.data.runId);
+    let founderSafetyPosture;
+    let safetyRecord = null;
+    if (highRiskClaimsForRun(run.data).length === 0) {
+      requireCurrentFounderSafetyApproval({ run: run.data, currentReviewedContentSha256, approvals: editorialSafetyApprovalRecords.map((record) => record.data) });
+      founderSafetyPosture = 'not_required';
+    } else if (latestSafetyRecord) {
+      const safetyAssessment = requireCurrentFounderSafetyApproval({ run: run.data, currentReviewedContentSha256, approvals: editorialSafetyApprovalRecords.map((record) => record.data) });
+      if (safetyAssessment.status !== 'approved_current') throw new Error(`${slug}: high-risk founder safety decision is not currently approved`);
+      founderSafetyPosture = 'approved_current';
+      safetyRecord = latestSafetyRecord;
+    } else if (editorialSafetyPolicy.legacyValidatedHighRiskRunIds.includes(run.data.runId)) {
+      if (!run.data.completedAt || new Date(run.data.completedAt) >= new Date(editorialSafetyPolicy.effectiveAt)) throw new Error(`${slug}: pre-policy high-risk disposition does not predate the active gate`);
+      founderSafetyPosture = 'legacy_independent_review_only';
+    } else {
+      throw new Error(`${slug}: founder safety approval is required for high-risk claims`);
+    }
     const mission = missionByRun.get(run.data.runId) ?? null;
     const articleSha = sha256(articleRaw);
     const runSha = sha256(run.raw);
@@ -289,7 +351,7 @@ export async function buildPublicationManifest(root) {
       if (!sourceProduct) throw new Error(`${slug}: approved affiliate overlay targets an unknown product ${overlay.productId}`);
     }
     const updatedAt = new Date(parsed.data.updatedDate ?? parsed.data.publishDate).toISOString();
-    dates.push(updatedAt, run.data.completedAt, review.data.reviewedAt, social?.data.createdAt, mission?.data.completedAt);
+    dates.push(updatedAt, run.data.completedAt, review.data.reviewedAt, social?.data.createdAt, mission?.data.completedAt, safetyRecord?.data.reviewedAt);
     articles.push({
       articleSlug: slug,
       title: parsed.data.title,
@@ -304,6 +366,17 @@ export async function buildPublicationManifest(root) {
       independentReviewPath: reviewPath,
       independentReviewSha256: reviewSha,
       reviewedEvidenceSha256: review.data.evidenceSha256,
+      founderSafetyPosture,
+      founderSafetyApproval: safetyRecord ? {
+        approvalId: safetyRecord.data.approvalId,
+        approvalRevision: safetyRecord.data.approvalRevision,
+        path: safetyRecord.path,
+        sha256: safetyRecord.sha256,
+        reviewedAt: safetyRecord.data.reviewedAt,
+        decision: safetyRecord.data.decision,
+        reviewedContentSha256: safetyRecord.data.reviewedContentSha256,
+        highRiskClaims: safetyRecord.data.highRiskClaims
+      } : null,
       mission: mission ? {
         missionId: mission.data.missionId,
         path: `research/missions/${mission.name}`,
@@ -334,6 +407,7 @@ export async function buildPublicationManifest(root) {
         socialLaunchPackReviewed: social ? true : null,
         affiliateRegistryEnforced: true,
         affiliateLinkApprovalEnforced: true,
+        founderSafetyPolicyEnforced: true,
         allArtifactsHashBound: true
       }
     });
@@ -376,9 +450,16 @@ export async function buildPublicationManifest(root) {
     rightsPosture: visualRegistry.rightsPosture,
     assets: publishedVisualAssets
   };
-  const contentSetSha256 = canonicalSha256({ articles, affiliatePosture, visualPosture });
+  const editorialSafetyPosture = {
+    policyPath: 'config/editorial-safety-policy.json',
+    policySha256: sha256(editorialSafetyPolicyRaw),
+    effectiveAt: editorialSafetyPolicy.effectiveAt,
+    legacyDisposition: editorialSafetyPolicy.legacyDisposition,
+    legacyValidatedHighRiskRunIds: editorialSafetyPolicy.legacyValidatedHighRiskRunIds
+  };
+  const contentSetSha256 = canonicalSha256({ articles, affiliatePosture, editorialSafetyPosture, visualPosture });
   const manifest = {
-    schemaVersion: '1.2.0',
+    schemaVersion: '1.3.0',
     manifestId: `publication-set-${contentSetSha256.slice(0, 16)}`,
     generatedAt: new Date(Math.max(...dates.filter(Boolean).map((value) => new Date(value).valueOf()))).toISOString(),
     status: 'release_candidate',
@@ -390,6 +471,8 @@ export async function buildPublicationManifest(root) {
       articles: articles.length,
       researchRuns: articles.length,
       independentReviews: articles.length,
+      founderSafetyApprovals: articles.filter((article) => article.founderSafetyApproval).length,
+      legacyHighRiskIndependentReviewOnly: articles.filter((article) => article.founderSafetyPosture === 'legacy_independent_review_only').length,
       socialLaunchPacks: articles.filter((article) => article.socialPack).length,
       socialDrafts: articles.reduce((sum, article) => sum + (article.socialPack?.postCount ?? 0), 0),
       missionBoundArticles: articles.filter((article) => article.mission).length,
@@ -398,6 +481,7 @@ export async function buildPublicationManifest(root) {
       visualAssets: publishedVisualAssets.length
     },
     visualPosture,
+    editorialSafetyPosture,
     affiliatePosture,
     articles
   };
