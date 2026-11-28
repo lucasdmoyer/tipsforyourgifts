@@ -1,12 +1,12 @@
 {
   "schemaVersion": "1.2.0",
-  "manifestId": "publication-set-082b69f71d9719ec",
+  "manifestId": "publication-set-d8d46c1e7efbad7f",
   "generatedAt": "2026-11-07T23:58:13.560Z",
   "status": "release_candidate",
   "projectId": "tipsforyourgifts",
   "siteId": "tipsforyourgifts",
   "publicBaseUrl": "https://tipsforyourgifts.web.app",
-  "contentSetSha256": "082b69f71d9719ec4f728bd4eb52522fe9ae6edc7e16f7cadbf11102bf0f3dc7",
+  "contentSetSha256": "d8d46c1e7efbad7f9fb152d81061a4f0cd212e347db30c18a90a200494f09086",
   "counts": {
     "articles": 10,
     "researchRuns": 10,
@@ -125,13 +125,19 @@
   },
   "productVisualPosture": {
     "registryPath": "visuals/product-images.json",
-    "registrySha256": "372706014dcbd11e4def5a9fdc8b5bf1073ce9256105d5566cef9647ba1dfe4d",
+    "registrySha256": "8b63fb22f6f1441ddfbe6137e0073a66c866e53f2cf558bbb36466cfdd56e26b",
     "assets": [
       {
         "articleSlug": "read-it-then-play-it-gift-pairs",
         "productId": "codenames-2025-english",
         "path": "product-images/codenames-2025-english-3387058e70ff.webp",
         "sha256": "3387058e70ff00fda496a6ea931b22ed3da2ea481dc91df9fc2d9e347585397c"
+      },
+      {
+        "articleSlug": "neighborhood-tree-walk-field-guide-loupe-gift-pairs",
+        "productId": "princeton-eastern-north-america",
+        "path": "product-images/princeton-eastern-north-america-7905cd879322.webp",
+        "sha256": "7905cd879322bf29f8d6ae4f9eec58cd5784d69efa08eea753a8f4989fa6299e"
       }
     ]
   },

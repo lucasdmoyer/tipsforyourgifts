@@ -15,7 +15,7 @@
         "horizon": "now",
         "category": "release",
         "title": "Review the first accountable Angular release",
-        "recommendation": "Review publication-set-082b69f71d9719ec as the first founder-controlled Firebase release candidate.",
+        "recommendation": "Review publication-set-d8d46c1e7efbad7f as the first founder-controlled Firebase release candidate.",
         "decisionQuestion": "Does this exact content set represent the site you want readers to see first?",
         "rationale": "The research and release machinery cannot create traffic, trust, or revenue while the modern reviewed site remains only a local candidate.",
         "evidence": [
@@ -3081,8 +3081,8 @@
     },
     "currentCandidate": {
       "status": "release_candidate",
-      "manifestId": "publication-set-082b69f71d9719ec",
-      "contentSetSha256": "082b69f71d9719ec4f728bd4eb52522fe9ae6edc7e16f7cadbf11102bf0f3dc7",
+      "manifestId": "publication-set-d8d46c1e7efbad7f",
+      "contentSetSha256": "d8d46c1e7efbad7f9fb152d81061a4f0cd212e347db30c18a90a200494f09086",
       "articles": 10,
       "independentReviews": 10,
       "socialLaunchPacks": 9,

@@ -4,6 +4,7 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ContentService } from './content.service';
 import { browseGiftGuides, emptyGiftBrowseFilters, giftBudgets, giftRecipients, giftTopics, readGiftBrowseFilters, type GiftBrowseFilters } from './gift-browse';
 import { readerDescription, readerTitle } from './reader-copy';
+import { exactProductImage, productDestinationName } from './product-images';
 import { SeoService } from './seo.service';
 
 @Component({
@@ -22,6 +23,8 @@ export class GiftBrowsePage {
   readonly recipients = giftRecipients;
   readonly title = readerTitle;
   readonly description = readerDescription;
+  readonly exactImage = exactProductImage;
+  readonly destination = productDestinationName;
   readonly filters = computed(() => readGiftBrowseFilters(this.query()));
   readonly results = computed(() => browseGiftGuides(this.content.articles, this.filters()));
   readonly closedFilters = computed(() => !Object.values(this.filters()).some(Boolean));

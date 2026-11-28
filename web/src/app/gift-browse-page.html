@@ -77,8 +77,13 @@
                   <summary>{{ result.picks.length }} {{ result.picks.length === 1 ? 'matching gift' : 'matching gifts' }}</summary>
                   <ul>
                     @for (pick of result.picks; track pick.product.id) {
-                      <li><a [routerLink]="['/blog', result.article.slug]" [fragment]="pick.fragment">{{ pick.product.name }}</a>
-                        @if (pick.product.priceBand) { <span>{{ pick.product.priceBand }}</span> }
+                      <li [class.shop-pick-with-image]="!!exactImage(result.article.slug, pick.product.id)">
+                        @if (exactImage(result.article.slug, pick.product.id); as photo) {
+                          <img class="shop-pick-image" [src]="photo.src" [alt]="photo.alt" [width]="photo.width" [height]="photo.height" loading="lazy" decoding="async">
+                        }
+                        <div><a [routerLink]="['/blog', result.article.slug]" [fragment]="pick.fragment">{{ pick.product.name }}</a>
+                          <span>{{ destination(pick.product) }}@if (pick.product.priceBand) { · {{ pick.product.priceBand }} }</span>
+                        </div>
                       </li>
                     }
                   </ul>

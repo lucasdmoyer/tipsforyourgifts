@@ -69,4 +69,15 @@ describe('gift guide shopping filters', () => {
     expect(router.url).toBe('/gifts?utm_source=test');
     expect(root.querySelectorAll('.shop-card')).toHaveLength(ARTICLES.filter((article) => article.products.length).length);
   });
+
+  it('shows the exact product image only alongside the matching product and identifies its destination', async () => {
+    TestBed.configureTestingModule({ providers: [provideRouter([{ path: 'gifts', component: GiftBrowsePage }])] });
+    const harness = await RouterTestingHarness.create('/gifts?topic=outdoors&budget=75&for=mom');
+    const root = harness.routeNativeElement!;
+    const picks = Array.from(root.querySelectorAll('.shop-pick-with-image'));
+    expect(picks).toHaveLength(1);
+    expect(picks[0].querySelector('img')?.getAttribute('src')).toContain('/product-images/princeton-eastern-north-america-');
+    expect(picks[0].querySelector('a')?.textContent).toContain('Trees of Eastern North America');
+    expect(picks[0].querySelector('span')?.textContent).toContain('Princeton University Press');
+  });
 });

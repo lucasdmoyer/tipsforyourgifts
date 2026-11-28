@@ -1,6 +1,12 @@
 import type { Article, Product } from './content.types';
 import images from '../../visuals/product-images.json';
 
+const exactImages = new Map(images.items.map((image) => [`${image.articleSlug}/${image.productId}`, image]));
+
+export function exactProductImage(articleSlug: string, productId: string) {
+  return exactImages.get(`${articleSlug}/${productId}`);
+}
+
 export function productDestinationName(product: Product) {
   // Steam is the activation platform for this edition; the actual destination
   // is the 2K storefront. Do not change the vetted target or product name.
