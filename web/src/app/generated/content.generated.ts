@@ -2102,7 +2102,7 @@ export const OPERATIONS: Operations = {
         "horizon": "now",
         "category": "release",
         "title": "Review the first accountable Angular release",
-        "recommendation": "Review publication-set-8e8287a5ec7db534 as the first founder-controlled Firebase release candidate.",
+        "recommendation": "Review publication-set-d8d46c1e7efbad7f as the first founder-controlled Firebase release candidate.",
         "decisionQuestion": "Does this exact content set represent the site you want readers to see first?",
         "rationale": "The research and release machinery cannot create traffic, trust, or revenue while the modern reviewed site remains only a local candidate.",
         "evidence": [
@@ -5168,8 +5168,8 @@ export const OPERATIONS: Operations = {
     },
     "currentCandidate": {
       "status": "release_candidate",
-      "manifestId": "publication-set-8e8287a5ec7db534",
-      "contentSetSha256": "8e8287a5ec7db534c5c2255d15cca7c050aed88bc63df25a0fdd46aecda2dae6",
+      "manifestId": "publication-set-d8d46c1e7efbad7f",
+      "contentSetSha256": "d8d46c1e7efbad7f9fb152d81061a4f0cd212e347db30c18a90a200494f09086",
       "articles": 10,
       "independentReviews": 10,
       "socialLaunchPacks": 9,

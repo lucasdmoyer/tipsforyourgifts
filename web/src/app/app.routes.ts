@@ -5,7 +5,6 @@ import {
   BlogPage,
   FounderBriefPage,
   GiftFinderPage,
-  GiftsPage,
   HomePage,
   NotFoundPage,
   StandardsPage,
@@ -15,7 +14,7 @@ import {
 export const routes: Routes = [
   { path: '', component: HomePage },
   { path: 'gift-finder', component: GiftFinderPage },
-  { path: 'gifts', component: GiftsPage },
+  { path: 'gifts', loadComponent: () => import('./gift-browse-page').then((page) => page.GiftBrowsePage) },
   { path: 'blog', component: BlogPage },
   { path: 'blog/:slug', component: ArticlePage },
   { path: 'standards', component: StandardsPage },

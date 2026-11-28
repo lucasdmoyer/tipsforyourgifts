@@ -41,6 +41,17 @@ const visualAssetEntrySchema = z.object({
   path: z.string().regex(/^blog-images\/[a-z0-9]+(?:-[a-z0-9]+)*\/[a-z0-9]+(?:-[a-z0-9]+)*\.webp$/),
   sha256: sha256Schema
 }).strict();
+const productVisualEntrySchema = z.object({
+  articleSlug: slugSchema,
+  productId: slugSchema,
+  path: z.string().regex(/^product-images\/[a-z0-9-]+-[a-f0-9]{12}\.webp$/),
+  sha256: sha256Schema
+}).strict();
+const productVisualPostureSchema = z.object({
+  registryPath: z.literal('visuals/product-images.json'),
+  registrySha256: sha256Schema,
+  assets: z.array(productVisualEntrySchema).min(1)
+}).strict();
 const articleEntrySchema = z.object({
   articleSlug: slugSchema,
   title: z.string().min(12),
@@ -106,6 +117,9 @@ export const publicationManifestSchema = z.object({
     rightsPosture: z.literal('founder-approved-original-ai-generated'),
     assets: z.array(visualAssetEntrySchema).min(1)
   }).strict(),
+  // Optional for exact-byte compatibility with released manifests that had
+  // illustrations only. New real product images must bind into the set digest.
+  productVisualPosture: productVisualPostureSchema.optional(),
   affiliatePosture: z.object({
     registrySha256: sha256Schema,
     approvedOverlaySetSha256: sha256Schema,
@@ -161,8 +175,18 @@ export const publicationManifestSchema = z.object({
   if (publishedVisualIds.size !== usedVisualIds.size || [...usedVisualIds].some((id) => !publishedVisualIds.has(id))) context.addIssue({ code: z.ZodIssueCode.custom, path: ['visualPosture', 'assets'], message: 'visual posture must bind every and only released article asset' });
   const overlayEntries = manifest.articles.flatMap((article) => article.affiliateLinks.map((link) => ({ articleSlug: article.articleSlug, ...link })));
   if (manifest.affiliatePosture.approvedOverlaySetSha256 !== canonicalSha256(overlayEntries)) context.addIssue({ code: z.ZodIssueCode.custom, path: ['affiliatePosture', 'approvedOverlaySetSha256'], message: 'approved overlay digest must bind all paid-link approval records' });
-  const expectedContentSetSha256 = canonicalSha256({ articles: manifest.articles, affiliatePosture: manifest.affiliatePosture, visualPosture: manifest.visualPosture });
-  if (manifest.contentSetSha256 !== expectedContentSetSha256) context.addIssue({ code: z.ZodIssueCode.custom, path: ['contentSetSha256'], message: 'content set SHA-256 must bind the canonical article and affiliate posture' });
+  const photoIds = new Set();
+  const photoPaths = new Set();
+  for (const [index, asset] of (manifest.productVisualPosture?.assets ?? []).entries()) {
+    const id = `${asset.articleSlug}/${asset.productId}`;
+    if (!slugs.has(asset.articleSlug) || photoIds.has(id) || photoPaths.has(asset.path) || !asset.path.endsWith(`-${asset.sha256.slice(0, 12)}.webp`)) {
+      context.addIssue({ code: z.ZodIssueCode.custom, path: ['productVisualPosture', 'assets', index], message: 'asset needs a unique product and immutable filename on a released article' });
+    }
+    photoIds.add(id);
+    photoPaths.add(asset.path);
+  }
+  const expectedContentSetSha256 = canonicalSha256({ articles: manifest.articles, affiliatePosture: manifest.affiliatePosture, visualPosture: manifest.visualPosture, ...(manifest.productVisualPosture ? { productVisualPosture: manifest.productVisualPosture } : {}) });
+  if (manifest.contentSetSha256 !== expectedContentSetSha256) context.addIssue({ code: z.ZodIssueCode.custom, path: ['contentSetSha256'], message: 'content set SHA-256 must bind articles, affiliate posture, and released visuals' });
   if (manifest.manifestId !== `publication-set-${manifest.contentSetSha256.slice(0, 16)}`) context.addIssue({ code: z.ZodIssueCode.custom, path: ['manifestId'], message: 'manifest ID must bind the content set SHA-256' });
 });
 
@@ -227,6 +251,7 @@ export async function buildPublicationManifest(root) {
   const enabledProgramIds = affiliate.programs.filter((program) => program.enabled).map((program) => program.id).sort();
   const articleNames = (await fs.readdir(path.join(root, 'src', 'data', 'blog'))).filter((name) => name.endsWith('.md')).sort();
   const articles = [];
+  const publicProductIds = new Map();
   const dates = [
     ...affiliateLinkState.candidates.map((record) => record.data.createdAt),
     ...affiliateLinkState.reviews.map((record) => record.data.reviewedAt),
@@ -263,6 +288,7 @@ export async function buildPublicationManifest(root) {
       if (!social || completion.socialPackSha256 !== sha256(social.raw) || completion.socialPackId !== social.data.packId) throw new Error(`${slug}: completed mission social pack differs from release artifact`);
     }
     const productCount = Array.isArray(parsed.data.products) ? parsed.data.products.length : 0;
+    publicProductIds.set(slug, new Set((parsed.data.products ?? []).map((product) => product.id)));
     const sourceAffiliateLinkCount = Array.isArray(parsed.data.products) ? parsed.data.products.filter((product) => product.affiliate).length : 0;
     if (sourceAffiliateLinkCount !== run.data.affiliateLinks.length) throw new Error(`${slug}: article and run affiliate link counts differ`);
     if (sourceAffiliateLinkCount > 0) throw new Error(`${slug}: source editorial artifacts must keep ordinary links; paid links require the separate approval overlay`);
@@ -376,7 +402,27 @@ export async function buildPublicationManifest(root) {
     rightsPosture: visualRegistry.rightsPosture,
     assets: publishedVisualAssets
   };
-  const contentSetSha256 = canonicalSha256({ articles, affiliatePosture, visualPosture });
+  const photoRegistryPath = 'visuals/product-images.json';
+  const photoRegistryRaw = await fs.readFile(path.join(root, photoRegistryPath)).catch((error) => {
+    if (error?.code !== 'ENOENT') throw error;
+    return null;
+  });
+  const photoRegistry = photoRegistryRaw ? JSON.parse(photoRegistryRaw) : { items: [] };
+  if (!Array.isArray(photoRegistry.items)) throw new Error('Product image registry must have an items array');
+  const productVisualAssets = [];
+  for (const item of photoRegistry.items) {
+    if (!publicProductIds.get(item.articleSlug)?.has(item.productId)) throw new Error(`${item.productId}: product image does not reference a released product`);
+    const asset = productVisualEntrySchema.parse({ articleSlug: item.articleSlug, productId: item.productId, path: item.src.replace(/^\//, ''), sha256: item.fileSha256 });
+    if (sha256(await fs.readFile(path.join(root, 'public', asset.path))) !== asset.sha256) throw new Error(`${asset.productId}: product image differs from its registry checksum`);
+    productVisualAssets.push(asset);
+  }
+  const productVisualPosture = productVisualAssets.length ? {
+    registryPath: photoRegistryPath,
+    registrySha256: sha256(photoRegistryRaw),
+    assets: productVisualAssets.sort((a, b) => a.path.localeCompare(b.path))
+  } : undefined;
+  const productVisualBinding = productVisualPosture ? { productVisualPosture } : {};
+  const contentSetSha256 = canonicalSha256({ articles, affiliatePosture, visualPosture, ...productVisualBinding });
   const manifest = {
     schemaVersion: '1.2.0',
     manifestId: `publication-set-${contentSetSha256.slice(0, 16)}`,
@@ -398,6 +444,7 @@ export async function buildPublicationManifest(root) {
       visualAssets: publishedVisualAssets.length
     },
     visualPosture,
+    ...productVisualBinding,
     affiliatePosture,
     articles
   };

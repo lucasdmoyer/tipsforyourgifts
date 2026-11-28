@@ -10,6 +10,7 @@ const dist = path.join(root, 'dist');
 const checks = [
   ['home', 'index.html', ['Good gifts, minus the guesswork.', 'THE REAL GIFT', 'Give them permission to enjoy it.', 'rel="canonical"', 'tfg-root']],
   ['gift finder', 'gift-finder/index.html', ['Who are they when no one is shopping for them?', 'Places to begin', 'Do not invent a new person for them.', 'gift_finder_guide_open']],
+  ['gift browsing', 'gifts/index.html', ['Find a gift that feels like them.', 'Filter gifts', 'gift-for', 'gift-topic', 'gift-budget', 'not the whole pair', 'topic=games', 'budget=25']],
   ['blog index', 'blog/index.html', ['A gift starts before the shopping.', 'The Gift Hiding in Plain Sight']],
   ['standards', 'standards/index.html', ['Buy the thing they would talk themselves out of.', 'A thoughtful gift says: I noticed the part of your life you keep putting second.']],
   ['studio', 'studio/index.html', ['Executive studio', 'Founder agenda', 'unknown until aggregate measurement', 'noindex,nofollow']],
@@ -138,6 +139,7 @@ for (const article of readyArticles) {
   if (!sitemap.includes(`/blog/${article.slug}`)) failures.push(`${article.slug}: missing from sitemap`);
   const products = Array.isArray(article.products) ? article.products : [];
   if (products.length > 0 && !giftsIndex.includes(article.title)) failures.push(`${article.slug}: roundup missing from gifts index`);
+  if (products.length > 0 && !html.includes('href="/gifts?topic=')) failures.push(`${article.slug}: missing path to browse related gifts`);
   for (const product of products) {
     if (!html.includes(escapeHtmlText(product.name))) failures.push(`${article.slug}: missing product ${product.id}`);
     if (!html.includes(`data-product-id="${product.id}"`)) failures.push(`${article.slug}: missing outbound marker for ${product.id}`);
@@ -158,7 +160,7 @@ for (const article of readyArticles) {
   }
   const pairs = Array.isArray(article.pairs) ? article.pairs : [];
   if (pairs.length > 0) {
-    for (const marker of ['Why this makes a good gift', 'Before you buy', 'Original illustration of the gift idea—not product photography.']) {
+    for (const marker of ['Why this makes a good gift', 'Before you buy', 'Product page:']) {
       if (!html.includes(marker)) failures.push(`${article.slug}: pairing layout missing ${JSON.stringify(marker)}`);
     }
     for (const pair of pairs) {
@@ -169,6 +171,18 @@ for (const article of readyArticles) {
       if (companion && !html.includes(escapeHtmlText(companion.name))) failures.push(`${article.slug}: pair ${pair.id} missing companion product`);
     }
   }
+  const renderedImagePaths = [...html.matchAll(/<img\b[^>]*\bsrc="(\/(?:blog|product)-images\/[^\"]+)"/g)].map((match) => match[1]);
+  if (renderedImagePaths.length !== new Set(renderedImagePaths).size) failures.push(`${article.slug}: repeats an image on the article page`);
+}
+
+const actualImages = JSON.parse(await fs.readFile(path.join(root, 'visuals', 'product-images.json'), 'utf8'));
+for (const item of actualImages.items) {
+  const html = await fs.readFile(path.join(dist, 'blog', item.articleSlug, 'index.html'), 'utf8');
+  const imagePosition = html.indexOf(`src="${item.src}"`);
+  if (imagePosition < 0 || imagePosition > html.indexOf('Start with the person')) failures.push(`${item.productId}: actual product image missing from the opening of the article`);
+  if (!html.includes(`Official product image · ${item.credit}`)) failures.push(`${item.productId}: official product image credit not rendered`);
+  const publishedImage = await fs.readFile(path.join(dist, item.src.slice(1)));
+  if (sha256(publishedImage) !== item.fileSha256) failures.push(`${item.productId}: built product photo differs from the registered bytes`);
 }
 
 const readerFacingHtml = [

@@ -2,12 +2,15 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import process from 'node:process';
 import matter from './lib/front-matter.mjs';
+import { parsePublicationManifest, sha256 } from './lib/publication-manifest-contract.mjs';
 
 const baseUrl = process.argv[2];
 if (!baseUrl) throw new Error('Usage: npm run smoke:hosted -- https://example.web.app');
 
 const root = process.cwd();
 const sitemap = await fs.readFile(path.join(root, 'public', 'sitemap.xml'), 'utf8');
+const manifest = parsePublicationManifest(JSON.parse(await fs.readFile(path.join(root, 'public', 'publication-manifest.json'), 'utf8')));
+const photoAssets = manifest.productVisualPosture?.assets ?? [];
 const paths = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => new URL(match[1]).pathname);
 if (paths.length === 0) throw new Error('No public routes found in sitemap.xml');
 
@@ -39,6 +42,7 @@ await Promise.all(paths.map(async (pathname) => {
   const html = await response.text();
   if (!response.ok) failures.push(`${pathname}: HTTP ${response.status}`);
   if (!html.includes('<tfg-root')) failures.push(`${pathname}: Angular application root missing`);
+  if (pathname === '/gifts' && !html.includes('gift-budget')) failures.push(`${pathname}: gift browse filters missing`);
 
   const articleMatch = pathname.match(/^\/blog\/([^/]+)\/?$/);
   if (!articleMatch) return;
@@ -57,9 +61,17 @@ await Promise.all(paths.map(async (pathname) => {
     if (!html.includes(`data-product-id="${product.id}"`)) failures.push(`${pathname}: missing outbound marker for ${product.id}`);
   }
   if ((article.pairs ?? []).length > 0) {
-    for (const marker of ['Why this makes a good gift', 'Before you buy', 'not product photography']) {
+    for (const marker of ['Why this makes a good gift', 'Before you buy', 'Product page:']) {
       if (!html.includes(marker)) failures.push(`${pathname}: missing pairing marker ${JSON.stringify(marker)}`);
     }
+  }
+  for (const photo of photoAssets.filter(({ articleSlug }) => articleSlug === slug)) {
+    const imageIndex = html.indexOf(`src="/${photo.path}"`);
+    if (imageIndex < 0 || imageIndex > html.indexOf('Start with the person')) failures.push(`${pathname}: official product image is missing from the opening of the guide`);
+    try {
+      const image = await fetch(new URL(`/${photo.path}`, baseUrl), { redirect: 'error', signal: AbortSignal.timeout(15_000) });
+      if (!image.ok || sha256(Buffer.from(await image.arrayBuffer())) !== photo.sha256) failures.push(`${pathname}: hosted ${photo.productId} asset differs from the exact manifest bytes`);
+    } catch { failures.push(`${pathname}: could not read the exact product image`); }
   }
 }));
 

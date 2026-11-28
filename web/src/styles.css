@@ -103,6 +103,21 @@ h3 { font-size: 1.35rem; }
 .pairing-context-visual figcaption { border-top: 1px solid rgba(24, 49, 43, 0.08); background: #fff7dc; }
 .product-card h3 { margin-bottom: 10px; }
 .product-card .scores { display: flex; gap: 8px; margin: 16px 0; }
+.product-source { color: var(--ink-soft); font-size: .9rem; }
+.product-first-look { margin: 24px 0 30px; }
+.product-first-look h2 { font-size: clamp(1.4rem, 3vw, 2rem); margin-bottom: 12px; }
+.product-first-look-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 265px), 1fr)); gap: 14px; }
+.product-first-look figure { margin: 0; display: grid; grid-template-columns: clamp(94px, 20vw, 144px) minmax(0, 1fr); align-items: center; gap: 16px; padding: 16px; border: 1px solid var(--line); border-radius: 16px; background: var(--paper); }
+.product-first-look figure img { width: 100%; height: auto; max-height: 180px; object-fit: contain; }
+.product-first-look figcaption span, .product-first-look figcaption small { display: block; }
+.product-first-look figcaption a { display: inline-block; color: var(--evergreen-dark); font-weight: 800; }
+.product-first-look figcaption span, .product-first-look figcaption small { color: var(--ink-soft); font-size: .82rem; }
+.reader-pair-card, .product-card { scroll-margin-top: 110px; }
+.article-browse-next { margin-top: 36px; }
+.article-browse-next h2 { margin-bottom: 8px; font-size: 1.55rem; }
+.article-browse-next p { margin: 0 0 12px; }
+.article-browse-links { display: flex; flex-wrap: wrap; gap: 8px 18px; }
+.article-browse-links a { display: inline-flex; align-items: center; min-height: 42px; color: var(--evergreen-dark); font-weight: 760; }
 .score { border-radius: 10px; background: var(--mint); padding: 7px 10px; font-size: 0.82rem; font-weight: 850; }
 .drawback { padding: 12px 14px; background: #fff0eb; border-radius: 12px; color: #713727; }
 .article-rule { margin: 48px 0; border: 0; border-top: 1px solid var(--line); }

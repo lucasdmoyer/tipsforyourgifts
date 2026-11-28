@@ -1,12 +1,12 @@
 {
   "schemaVersion": "1.2.0",
-  "manifestId": "publication-set-8e8287a5ec7db534",
+  "manifestId": "publication-set-d8d46c1e7efbad7f",
   "generatedAt": "2026-11-07T23:58:13.560Z",
   "status": "release_candidate",
   "projectId": "tipsforyourgifts",
   "siteId": "tipsforyourgifts",
   "publicBaseUrl": "https://tipsforyourgifts.web.app",
-  "contentSetSha256": "8e8287a5ec7db534c5c2255d15cca7c050aed88bc63df25a0fdd46aecda2dae6",
+  "contentSetSha256": "d8d46c1e7efbad7f9fb152d81061a4f0cd212e347db30c18a90a200494f09086",
   "counts": {
     "articles": 10,
     "researchRuns": 10,
@@ -120,6 +120,24 @@
         "id": "useful-friction-five",
         "path": "blog-images/useful-gifts-for-hard-to-shop-for-adults/hero.webp",
         "sha256": "1e22103222125f2c606b605fa524ba43d9eb1762ac592b81e20748ff4ca5f40d"
+      }
+    ]
+  },
+  "productVisualPosture": {
+    "registryPath": "visuals/product-images.json",
+    "registrySha256": "8b63fb22f6f1441ddfbe6137e0073a66c866e53f2cf558bbb36466cfdd56e26b",
+    "assets": [
+      {
+        "articleSlug": "read-it-then-play-it-gift-pairs",
+        "productId": "codenames-2025-english",
+        "path": "product-images/codenames-2025-english-3387058e70ff.webp",
+        "sha256": "3387058e70ff00fda496a6ea931b22ed3da2ea481dc91df9fc2d9e347585397c"
+      },
+      {
+        "articleSlug": "neighborhood-tree-walk-field-guide-loupe-gift-pairs",
+        "productId": "princeton-eastern-north-america",
+        "path": "product-images/princeton-eastern-north-america-7905cd879322.webp",
+        "sha256": "7905cd879322bf29f8d6ae4f9eec58cd5784d69efa08eea753a8f4989fa6299e"
       }
     ]
   },
