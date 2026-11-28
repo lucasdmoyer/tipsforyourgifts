@@ -1,0 +1,22 @@
+{
+  "schemaVersion": "1.0.0",
+  "items": [
+    {
+      "articleSlug": "read-it-then-play-it-gift-pairs",
+      "productId": "codenames-2025-english",
+      "edition": "English 2025 refresh, CGE00125 / EAN 8594156311254",
+      "src": "/product-images/codenames-2025-english-3387058e70ff.webp",
+      "alt": "Codenames 2025 English box, with orange and blue spies on the front",
+      "credit": "Czech Games Edition",
+      "width": 487,
+      "height": 720,
+      "kind": "official_packaging_image",
+      "rightsBasis": "publisher_press_kit_editorial_web_use",
+      "rightsUrl": "https://www.czechgames.com/for-press-games",
+      "sourcePage": "https://www.czechgames.com/for-press-games/codenames",
+      "sourceUrl": "https://cdn.prod.website-files.com/67d17a45b4e1484b40ea8869/683628f1faacab84950b1961_CN%203D%20box%20ENwebp.webp",
+      "sourceSha256": "d7a292d425f983c1430abab12ace36e6d890e284b4bd1ae81232f51ffe441246",
+      "fileSha256": "3387058e70ff00fda496a6ea931b22ed3da2ea481dc91df9fc2d9e347585397c"
+    }
+  ]
+}

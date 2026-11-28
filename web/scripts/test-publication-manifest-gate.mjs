@@ -29,4 +29,8 @@ expectFailure('article route must bind slug', (manifest) => { manifest.articles[
 expectFailure('duplicate article slug rejected', (manifest) => { manifest.articles[1].articleSlug = manifest.articles[0].articleSlug; manifest.articles[1].route = manifest.articles[0].route; });
 expectFailure('duplicate research run rejected', (manifest) => { manifest.articles[1].researchRunId = manifest.articles[0].researchRunId; });
 expectFailure('unexpected fields rejected', (manifest) => { manifest.unverifiedNote = 'trust me'; });
-console.log(JSON.stringify({ publicationManifestNegativeGateTests: 'passed', checks: 18, articles: base.counts.articles, hashBoundReviews: base.counts.independentReviews, hashBoundVisuals: base.counts.visualAssets, hashBoundAffiliateOverlays: base.counts.affiliateLinks }, null, 2));
+assert.ok(base.productVisualPosture?.assets.length, 'product visuals must be in the publication manifest');
+expectFailure('removing the real product image posture changes the content set', (manifest) => { delete manifest.productVisualPosture; });
+expectFailure('product image rights registry digest cannot drift', (manifest) => { manifest.productVisualPosture.registrySha256 = 'f'.repeat(64); });
+expectFailure('product image checksum cannot drift', (manifest) => { manifest.productVisualPosture.assets[0].sha256 = 'f'.repeat(64); });
+console.log(JSON.stringify({ publicationManifestNegativeGateTests: 'passed', checks: 21, articles: base.counts.articles, hashBoundReviews: base.counts.independentReviews, hashBoundVisuals: base.counts.visualAssets, hashBoundProductImages: base.productVisualPosture.assets.length, hashBoundAffiliateOverlays: base.counts.affiliateLinks }, null, 2));

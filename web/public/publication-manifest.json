@@ -1,12 +1,12 @@
 {
   "schemaVersion": "1.2.0",
-  "manifestId": "publication-set-8e8287a5ec7db534",
+  "manifestId": "publication-set-082b69f71d9719ec",
   "generatedAt": "2026-11-07T23:58:13.560Z",
   "status": "release_candidate",
   "projectId": "tipsforyourgifts",
   "siteId": "tipsforyourgifts",
   "publicBaseUrl": "https://tipsforyourgifts.web.app",
-  "contentSetSha256": "8e8287a5ec7db534c5c2255d15cca7c050aed88bc63df25a0fdd46aecda2dae6",
+  "contentSetSha256": "082b69f71d9719ec4f728bd4eb52522fe9ae6edc7e16f7cadbf11102bf0f3dc7",
   "counts": {
     "articles": 10,
     "researchRuns": 10,
@@ -120,6 +120,18 @@
         "id": "useful-friction-five",
         "path": "blog-images/useful-gifts-for-hard-to-shop-for-adults/hero.webp",
         "sha256": "1e22103222125f2c606b605fa524ba43d9eb1762ac592b81e20748ff4ca5f40d"
+      }
+    ]
+  },
+  "productVisualPosture": {
+    "registryPath": "visuals/product-images.json",
+    "registrySha256": "372706014dcbd11e4def5a9fdc8b5bf1073ce9256105d5566cef9647ba1dfe4d",
+    "assets": [
+      {
+        "articleSlug": "read-it-then-play-it-gift-pairs",
+        "productId": "codenames-2025-english",
+        "path": "product-images/codenames-2025-english-3387058e70ff.webp",
+        "sha256": "3387058e70ff00fda496a6ea931b22ed3da2ea481dc91df9fc2d9e347585397c"
       }
     ]
   },

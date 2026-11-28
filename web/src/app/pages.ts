@@ -5,6 +5,8 @@ import type { Article, Product, ProductPair, StrategyIdea, VisualAsset } from '.
 import { ContentService } from './content.service';
 import { assessFounderBrief, buildFounderBriefMarkdown, buildStrategyIssueUrl, EMPTY_FOUNDER_BRIEF, type FounderBriefDraft } from './founder-brief';
 import { findGiftGuides, type GiftShape, type RecipientSignal } from './gift-finder';
+import { browseTopicsForArticle } from './gift-browse';
+import { officialProductImages, productDestinationName } from './product-images';
 import { readerBodyComesFirst, readerBodyHtml, readerDescription, readerEvidenceHtml, readerGiftIdea, readerLanguage, readerLead, readerTags, readerTitle } from './reader-copy';
 import { SeoService } from './seo.service';
 
@@ -40,17 +42,19 @@ export class ArticleCardComponent {
   selector: 'tfg-product-card',
   template: `
     <article class="product-card" [id]="product().id">
-      <figure class="product-context-visual">
-        <img [src]="visual().src" [alt]="visual().alt" width="1536" height="1024" loading="lazy" decoding="async">
-        <figcaption>Original illustration of the gift idea—not a product photo.</figcaption>
-      </figure>
+      @if (showArtwork()) {
+        <figure class="product-context-visual">
+          <img [src]="visual().src" [alt]="visual().alt" width="1536" height="1024" loading="lazy" decoding="async">
+          <figcaption>Original illustration of the gift idea—not a product photo.</figcaption>
+        </figure>
+      }
       <p class="eyebrow">A gift to consider</p>
       <h3>{{ product().name }}</h3>
       <p>{{ display(product().whyItFits) }}</p>
       <p class="drawback"><strong>Before you buy:</strong> {{ display(product().drawback) }}</p>
-      <p class="quiet">From {{ product().merchant }} @if (product().priceBand) { · {{ product().priceBand }} }</p>
+      <p class="product-source"><strong>Product page:</strong> {{ destination(product()) }} @if (product().priceBand) { · Budget guide: {{ product().priceBand }} }</p>
       <a class="button" [href]="product().url" target="_blank" [attr.rel]="product().affiliate ? 'sponsored noopener' : 'noopener'" data-event-name="merchant_outbound_click" [attr.data-article-slug]="articleSlug()" [attr.data-product-id]="product().id" [attr.data-paid-link]="product().affiliate">
-        See product details at {{ product().merchant }}{{ product().affiliate ? ' (paid link)' : '' }}
+        See product details at {{ destination(product()) }}{{ product().affiliate ? ' (paid link)' : '' }}
       </a>
     </article>
   `,
@@ -60,7 +64,9 @@ export class ProductCardComponent {
   readonly product = input.required<Product>();
   readonly articleSlug = input.required<string>();
   readonly visual = input.required<VisualAsset>();
+  readonly showArtwork = input(true);
   readonly display = readerLanguage;
+  readonly destination = productDestinationName;
 }
 
 @Component({
@@ -69,31 +75,34 @@ export class ProductCardComponent {
     <article class="reader-pair-card" [id]="pair().id">
       <p class="eyebrow">A thoughtful pair</p>
       <h2>{{ pair().name }}</h2>
-      <figure class="pairing-context-visual">
-        <img [src]="pairVisual().src" [alt]="pairVisual().alt" width="1536" height="1024" loading="lazy" decoding="async">
-        <figcaption>{{ display(pairVisual().caption) }} Original illustration of the gift idea—not product photography.</figcaption>
-      </figure>
+      @if (showArtwork()) {
+        <figure class="pairing-context-visual">
+          <img [src]="pairVisual().src" [alt]="pairVisual().alt" width="1536" height="1024" loading="lazy" decoding="async">
+          <figcaption>{{ display(pairVisual().caption) }} Original illustration of the gift idea—not product photography.</figcaption>
+        </figure>
+      }
       <div class="reader-pair-products">
         @if (anchorProduct(); as product) {
           <section class="reader-pair-product">
             <p class="pair-role">Start with</p>
             <h3>{{ product.name }}</h3>
+            <p class="product-source"><strong>Product page:</strong> {{ destination(product) }} @if (product.priceBand) { · Budget guide: {{ product.priceBand }} }</p>
             <p>{{ display(product.whyItFits) }}</p>
             <p class="product-caveat"><strong>Good to know:</strong> {{ display(product.drawback) }}</p>
-            <a class="read" [href]="product.url" target="_blank" [attr.rel]="product.affiliate ? 'sponsored noopener' : 'noopener'" data-event-name="merchant_outbound_click" [attr.data-article-slug]="article().slug" [attr.data-product-id]="product.id" [attr.data-paid-link]="product.affiliate">See product details at {{ product.merchant }}{{ product.affiliate ? ' (paid link)' : '' }} →</a>
+            <a class="read" [href]="product.url" target="_blank" [attr.rel]="product.affiliate ? 'sponsored noopener' : 'noopener'" data-event-name="merchant_outbound_click" [attr.data-article-slug]="article().slug" [attr.data-product-id]="product.id" [attr.data-paid-link]="product.affiliate">See product details at {{ destination(product) }}{{ product.affiliate ? ' (paid link)' : '' }} →</a>
           </section>
         }
         @if (companionProduct(); as product) {
           <section class="reader-pair-product">
             <p class="pair-role">Pair it with</p>
             <h3>{{ product.name }}</h3>
+            <p class="product-source"><strong>Product page:</strong> {{ destination(product) }} @if (product.priceBand) { · Budget guide: {{ product.priceBand }} }</p>
             <p>{{ display(product.whyItFits) }}</p>
             <p class="product-caveat"><strong>Good to know:</strong> {{ display(product.drawback) }}</p>
-            <a class="read" [href]="product.url" target="_blank" [attr.rel]="product.affiliate ? 'sponsored noopener' : 'noopener'" data-event-name="merchant_outbound_click" [attr.data-article-slug]="article().slug" [attr.data-product-id]="product.id" [attr.data-paid-link]="product.affiliate">See product details at {{ product.merchant }}{{ product.affiliate ? ' (paid link)' : '' }} →</a>
+            <a class="read" [href]="product.url" target="_blank" [attr.rel]="product.affiliate ? 'sponsored noopener' : 'noopener'" data-event-name="merchant_outbound_click" [attr.data-article-slug]="article().slug" [attr.data-product-id]="product.id" [attr.data-paid-link]="product.affiliate">See product details at {{ destination(product) }}{{ product.affiliate ? ' (paid link)' : '' }} →</a>
           </section>
         }
       </div>
-      <p class="illustration-note">The links below open the current product pages.</p>
       <section class="why-good-gift" [attr.aria-labelledby]="pair().id + '-why-good-gift'">
         <h3 [id]="pair().id + '-why-good-gift'">Why this makes a good gift</h3>
         <p>{{ display(pair().whyTogether) }}</p>
@@ -111,7 +120,9 @@ export class ProductCardComponent {
 export class PairCardComponent {
   readonly article = input.required<Article>();
   readonly pair = input.required<ProductPair>();
+  readonly showArtwork = input(true);
   readonly display = readerLanguage;
+  readonly destination = productDestinationName;
   anchorProduct() { return this.article().products.find((product) => product.id === this.pair().anchorProductId); }
   companionProduct() { return this.article().products.find((product) => product.id === this.pair().companionProductId); }
   pairVisual(): VisualAsset {
@@ -320,38 +331,6 @@ export class GiftFinderPage {
 }
 
 @Component({
-  imports: [RouterLink, ArticleCardComponent],
-  template: `
-    <section class="shell section">
-      <p class="eyebrow">Gift guides</p>
-      <h1>The things they will not buy themselves.</h1>
-      <p class="lede">A better tool for the hobby. A small luxury. The upgrade they keep postponing because the old one still works. Start there.</p>
-      @if (guides.length > 0) {
-        <div class="grid three spaced-grid">
-          @for (post of guides; track post.slug) { <tfg-article-card [article]="post" /> }
-        </div>
-      } @else {
-        <div class="panel empty-panel">
-          <p class="eyebrow">More ideas are coming</p>
-          <h2>We have not found the right one yet.</h2>
-          <p>A page full of generic gifts is easy. A gift that sounds like someone you love takes longer.</p>
-          <a class="button" routerLink="/standards">Read our gift philosophy</a>
-        </div>
-      }
-    </section>
-  `,
-  changeDetection: ChangeDetectionStrategy.OnPush
-})
-export class GiftsPage {
-  private readonly content = inject(ContentService);
-  readonly guides = this.content.articles.filter((article) => article.products.length > 0);
-  private readonly seo = inject(SeoService);
-  constructor() {
-    this.seo.set({ title: 'Thoughtful gift guides', description: 'Gift ideas for the hobbies, useful upgrades, and small luxuries people keep postponing for themselves.', path: '/gifts' });
-  }
-}
-
-@Component({
   imports: [ArticleCardComponent],
   template: `
     <section class="shell section">
@@ -385,6 +364,26 @@ export class BlogPage {
           <time [attr.datetime]="article.publishDate">Published {{ article.publishDate | date: 'MMMM d, y': 'UTC' }}</time>
           <span>·</span><span>For {{ article.audience }}</span>
         </div>
+        @if (article.affiliateDisclosure) {
+          <aside class="disclosure"><strong>Affiliate disclosure:</strong> We may earn a commission when you purchase through links on this page. That never changes who the gift is for or why it belongs here.</aside>
+        }
+        @if (productImages.length) {
+          <section class="product-first-look" aria-labelledby="product-first-look-title">
+            <h2 id="product-first-look-title">What the gifts look like</h2>
+            <div class="product-first-look-grid">
+              @for (item of productImages; track item.product.id) {
+                <figure>
+                  <img [src]="item.image.src" [alt]="item.image.alt" [width]="item.image.width" [height]="item.image.height" [attr.loading]="$first ? 'eager' : 'lazy'" decoding="async">
+                  <figcaption>
+                    <a [routerLink]="[]" [fragment]="item.fragment">{{ item.product.name }} ↓</a>
+                    <span>Product page: {{ destination(item.product) }}</span>
+                    <small>Official product image · {{ item.image.credit }}</small>
+                  </figcaption>
+                </figure>
+              }
+            </div>
+          </section>
+        }
         <figure class="article-hero-visual">
           <img [src]="article.visual.hero.src" [alt]="article.visual.hero.alt" width="1536" height="1024" fetchpriority="high" decoding="async">
           <figcaption>{{ display(article.visual.hero.caption) }} <span>Original illustration made for this guide.</span></figcaption>
@@ -394,9 +393,6 @@ export class BlogPage {
           <h2>{{ lead(article) }}</h2>
           <p>{{ giftIdea(article) }}</p>
         </aside>
-        @if (article.affiliateDisclosure) {
-          <aside class="disclosure"><strong>Affiliate disclosure:</strong> We may earn a commission when you purchase through links on this page. That never changes who the gift is for or why it belongs here.</aside>
-        }
         @if (article.specialtyLens; as lens) {
           <section class="specialty-lens" [attr.aria-labelledby]="article.slug + '-specialty-lens-title'">
             <p class="eyebrow">The quick version</p>
@@ -419,7 +415,7 @@ export class BlogPage {
             <h2 id="pairings">Gift pairings for this person</h2>
             <div class="reader-pair-list">
               @for (pair of article.pairs; track pair.id) {
-                <tfg-pair-card [article]="article" [pair]="pair" />
+                <tfg-pair-card [article]="article" [pair]="pair" [showArtwork]="uniqueArtwork.has(pair.id)" />
               }
             </div>
           </section>
@@ -429,7 +425,7 @@ export class BlogPage {
             <p class="eyebrow">One gift can be enough</p>
             <h2 id="recommendations">Good gifts on their own</h2>
             <div class="product-list">
-              @for (product of unpairedProducts(); track product.id) { <tfg-product-card [product]="product" [articleSlug]="article.slug" [visual]="productVisual(product.id)" /> }
+              @for (product of unpairedProducts(); track product.id) { <tfg-product-card [product]="product" [articleSlug]="article.slug" [visual]="productVisual(product.id)" [showArtwork]="uniqueArtwork.has(product.id)" /> }
             </div>
           </section>
         }
@@ -446,6 +442,17 @@ export class BlogPage {
           <section class="article-evidence" aria-label="Sources behind this guide">
             <div class="prose" [innerHTML]="evidence(article)"></div>
           </section>
+        }
+        @if (relatedTopics.length) {
+          <aside class="panel article-browse-next" aria-labelledby="article-browse-next-title">
+            <h2 id="article-browse-next-title">Not quite their thing?</h2>
+            <p>Browse more ideas for what they’re into, then pick your budget.</p>
+            <div class="article-browse-links">
+              @for (topic of relatedTopics; track topic.value) {
+                <a routerLink="/gifts" [queryParams]="{topic: topic.value}">{{ topic.label }}</a>
+              }
+            </div>
+          </aside>
         }
       </article>
     } @else {
@@ -471,6 +478,26 @@ export class ArticlePage {
   readonly bodyComesFirst = readerBodyComesFirst;
   readonly evidence = readerEvidenceHtml;
   readonly display = readerLanguage;
+  readonly destination = productDestinationName;
+  readonly productImages = this.article ? officialProductImages(this.article) : [];
+  readonly relatedTopics = this.article ? browseTopicsForArticle(this.article).slice(0, 3) : [];
+  readonly uniqueArtwork = this.selectUniqueArtwork();
+  private selectUniqueArtwork() {
+    const locations = new Set<string>();
+    if (!this.article) return locations;
+    const sources = new Set([this.article.visual.hero.src]);
+    const add = (id: string, src: string) => {
+      if (sources.has(src)) return;
+      sources.add(src);
+      locations.add(id);
+    };
+    for (const pair of this.article.pairs) {
+      const visualId = this.article.visual.pairSceneIds[pair.id];
+      add(pair.id, this.article.visual.scenes.find(({ id }) => id === visualId)?.src ?? this.article.visual.hero.src);
+    }
+    for (const product of this.unpairedProducts()) add(product.id, this.productVisual(product.id).src);
+    return locations;
+  }
   unpairedProducts() {
     if (!this.article) return [];
     const pairedIds = new Set(this.article.pairs.flatMap((pair) => [pair.anchorProductId, pair.companionProductId]));

@@ -1,0 +1,100 @@
+<section class="shell section gift-shop">
+  <header class="shop-intro">
+    <p class="eyebrow">Gift guides</p>
+    <h1>Find a gift that feels like them.</h1>
+    <p class="lede">Start with what they love, who you’re shopping for, or how much you want to spend. Mix and match to narrow it down.</p>
+    <nav class="shop-shortcuts" aria-label="Start with a popular interest">
+      <span>Start here</span>
+      <a routerLink="/gifts" [queryParams]="{ topic: 'outdoors' }">Outdoors &amp; nature</a>
+      <a routerLink="/gifts" [queryParams]="{ topic: 'games' }">Games &amp; puzzles</a>
+      <a routerLink="/gifts" [queryParams]="{ budget: '25' }">$25 or less</a>
+    </nav>
+  </header>
+
+  <div class="shop-layout">
+    <aside class="shop-filters" aria-labelledby="shop-filter-heading">
+      <div class="shop-filter-top">
+        <h2 id="shop-filter-heading">Filter gifts</h2>
+        <button type="button" class="shop-reset" (click)="resetFilters()" [disabled]="closedFilters()">Clear all</button>
+      </div>
+      <div class="shop-fields">
+        <label for="gift-for">Who is it for?</label>
+        <select id="gift-for" (change)="changeFilter('for', $event)">
+          <option value="" [selected]="!filters().for">Anyone</option>
+          @for (option of recipients; track option.value) { <option [value]="option.value" [selected]="filters().for === option.value">{{ option.label }}</option> }
+        </select>
+        <label for="gift-topic">What are they into?</label>
+        <select id="gift-topic" (change)="changeFilter('topic', $event)">
+          <option value="" [selected]="!filters().topic">Any interest</option>
+          @for (option of topics; track option.value) { <option [value]="option.value" [selected]="filters().topic === option.value">{{ option.label }}</option> }
+        </select>
+        <label for="gift-budget">What’s your budget?</label>
+        <select id="gift-budget" (change)="changeFilter('budget', $event)" aria-describedby="gift-budget-note">
+          <option value="" [selected]="!filters().budget">Any budget</option>
+          @for (option of budgets; track option.value) { <option [value]="option.value" [selected]="filters().budget === option.value">{{ option.label }}</option> }
+        </select>
+      </div>
+      <p id="gift-budget-note">Budget filters use estimated prices for one item, not the whole pair. Check the seller for the current price.</p>
+    </aside>
+
+    <section class="shop-results" aria-labelledby="shop-results-heading">
+      <div class="shop-results-top">
+        <h2 id="shop-results-heading">{{ closedFilters() ? 'All gift guides' : 'Matching gift guides' }}</h2>
+        <p class="shop-count" role="status" aria-atomic="true">{{ results().length }} {{ results().length === 1 ? 'guide' : 'guides' }}{{ closedFilters() ? '' : ' found' }}</p>
+      </div>
+      @if (!closedFilters()) {
+        <ul class="shop-badges" aria-label="Active filters">
+          @for (badge of badges(); track badge.key) {
+            @if (badge.label) {
+              <li><button type="button" (click)="removeFilter(badge.key)" [attr.aria-label]="'Remove filter: ' + badge.label">{{ badge.label }} <span aria-hidden="true">×</span></button></li>
+            }
+          }
+        </ul>
+      }
+      @if (filters().for === 'kids') {
+        <p class="shop-note">We don’t have reviewed gifts for kids yet.</p>
+      } @else if (filters().for === 'niece' || filters().for === 'nephew') {
+        <p class="shop-note">These picks are for an adult niece or nephew. Shopping for a child? Try the <a routerLink="/gifts" [queryParams]="{ for: 'kids' }" queryParamsHandling="merge">Kids filter</a>.</p>
+      }
+      @if (results().length) {
+        <div class="shop-cards">
+          @for (result of results(); track result.article.slug) {
+            <article class="article-card shop-card">
+              <a class="article-card-visual" [routerLink]="['/blog', result.article.slug]" [attr.aria-label]="'Read ' + title(result.article)">
+                <img [src]="result.article.visual.hero.src" [alt]="result.article.visual.hero.alt" width="1536" height="1024" loading="lazy" decoding="async">
+              </a>
+              <div class="shop-tags">
+                @for (topic of topics; track topic.value) {
+                  @if ((!filters().topic || filters().topic === topic.value) && result.topics.includes(topic.value)) {
+                    <span>{{ topic.label }}</span>
+                  }
+                }
+              </div>
+              <h3><a [routerLink]="['/blog', result.article.slug]">{{ title(result.article) }}</a></h3>
+              @if (filters().for !== 'kids') { <p class="shop-description">{{ description(result.article) }}</p> }
+              @if (!closedFilters()) {
+                <details class="shop-picks" [open]="!!(filters().budget || filters().topic)">
+                  <summary>{{ result.picks.length }} {{ result.picks.length === 1 ? 'matching gift' : 'matching gifts' }}</summary>
+                  <ul>
+                    @for (pick of result.picks; track pick.product.id) {
+                      <li><a [routerLink]="['/blog', result.article.slug]" [fragment]="pick.fragment">{{ pick.product.name }}</a>
+                        @if (pick.product.priceBand) { <span>{{ pick.product.priceBand }}</span> }
+                      </li>
+                    }
+                  </ul>
+                </details>
+              }
+              <a class="read" [routerLink]="['/blog', result.article.slug]" data-event-name="guide_open" [attr.data-guide-slug]="result.article.slug">Read the guide →</a>
+            </article>
+          }
+        </div>
+      } @else {
+        <div class="panel shop-empty">
+          <h3>No gifts match those filters yet.</h3>
+          <p>Try a different interest, or remove a filter to see more ideas. We’d rather show nothing than suggest the wrong gift.</p>
+          <button type="button" class="button secondary" (click)="resetFilters()">See all gift guides</button>
+        </div>
+      }
+    </section>
+  </div>
+</section>

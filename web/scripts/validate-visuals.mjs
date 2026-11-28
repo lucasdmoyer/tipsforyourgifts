@@ -184,6 +184,46 @@ const registeredPublicSources = new Set([...publicAssetIds].map((id) => assets.g
 for (const src of publicWebps) expect(registeredPublicSources.has(src), `Unregistered deployable visual: ${src}`);
 expect(publicWebps.length === publicAssetIds.size, `Deployable WebP count ${publicWebps.length} must match ${publicAssetIds.size} public registry assets`);
 
+// Keep exact-product images separate from the independently reviewed illustration
+// package. No outside image URLs or affiliate embeds are served to the reader.
+const productRegistry = JSON.parse(await fs.readFile(path.join(root, 'visuals', 'product-images.json'), 'utf8'));
+const registeredPhotoFiles = new Set();
+const photographedProducts = new Set();
+const exactHttps = (value) => {
+  try {
+    const url = new URL(value);
+    return url.protocol === 'https:' && !url.username && !url.password;
+  } catch { return false; }
+};
+expect(productRegistry.schemaVersion === '1.0.0' && Array.isArray(productRegistry.items), 'Invalid product image registry');
+for (const item of productRegistry.items ?? []) {
+  const article = articles.get(item.articleSlug);
+  const key = `${item.articleSlug}/${item.productId}`;
+  expect(article?.status === 'publication_ready' && article.products.some(({ id }) => id === item.productId), `${key}: image must bind a published exact product`);
+  expect(!photographedProducts.has(key), `${key}: duplicate product image`);
+  photographedProducts.add(key);
+  expect(['publisher_press_kit_editorial_web_use', 'written_rightsholder_permission', 'original_product_photo'].includes(item.rightsBasis), `${key}: no eligible image rights basis`);
+  expect(['official_packaging_image', 'official_product_photo', 'original_product_photo'].includes(item.kind), `${key}: unsupported image type`);
+  expect([item.rightsUrl, item.sourceUrl, item.sourcePage].every(exactHttps), `${key}: explicit HTTPS rights and source evidence required`);
+  expect([item.credit, item.alt, item.edition].every((value) => typeof value === 'string' && value.trim().length >= 5), `${key}: credit, alt text, and edition required`);
+  expect(/^[a-f0-9]{64}$/.test(item.sourceSha256 ?? ''), `${key}: invalid source fingerprint`);
+  if (!/^\/product-images\/[a-z0-9-]+-[a-f0-9]{12}\.webp$/.test(item.src ?? '') || !item.src.endsWith(`-${item.fileSha256?.slice(0, 12)}.webp`)) {
+    errors.push(`${key}: product image must be a local WebP with a content-versioned filename`);
+    continue;
+  }
+  expect(!registeredPhotoFiles.has(item.src), `${key}: duplicate published image path`);
+  registeredPhotoFiles.add(item.src);
+  try {
+    const bytes = await fs.readFile(path.join(root, 'public', item.src.slice(1)));
+    const dimensions = webpDimensions(bytes);
+    expect(sha256(bytes) === item.fileSha256 && bytes.length <= 160 * 1024, `${key}: incorrect or oversized image bytes`);
+    expect(dimensions?.width === item.width && dimensions?.height === item.height, `${key}: published image dimensions differ from registry`);
+  } catch (error) { errors.push(`${key}: cannot read product image (${error.message})`); }
+}
+for (const name of await fs.readdir(path.join(root, 'public', 'product-images'))) {
+  expect(registeredPhotoFiles.has(`/product-images/${name}`), `Unregistered deployable product image: ${name}`);
+}
+
 const productCount = [...articles.values()].reduce((sum, article) => sum + article.products.length, 0);
 const pairCount = [...articles.values()].reduce((sum, article) => sum + article.pairs.length, 0);
 expect(independentReview.scope?.sourceAssetsReviewed === assets.size, 'Independent visual review source asset count is stale');
@@ -200,3 +240,4 @@ if (errors.length > 0) {
 }
 
 console.log(`Validated ${assets.size} original visuals (${publicAssetIds.size} public, ${draftAssetIds.size} draft-only) across ${articles.size} articles, ${productCount} products, and ${pairCount} pairs`);
+console.log(`Validated ${registeredPhotoFiles.size} separate exact-product images`);
